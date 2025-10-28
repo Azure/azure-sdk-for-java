@@ -44,7 +44,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -54,7 +54,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
 
     /**
      * Get the id property: The id property.
-     * 
+     *
      * @return the id value.
      */
     @Generated
@@ -64,7 +64,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
 
     /**
      * Set the id property: The id property.
-     * 
+     *
      * @param id the id value to set.
      * @return the SessionResponseItem object itself.
      */
@@ -76,7 +76,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
 
     /**
      * Get the object property: The object property.
-     * 
+     *
      * @return the object value.
      */
     @Generated
@@ -86,7 +86,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
 
     /**
      * Set the object property: The object property.
-     * 
+     *
      * @param object the object value to set.
      * @return the SessionResponseItem object itself.
      */
@@ -111,7 +111,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
 
     /**
      * Reads an instance of SessionResponseItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SessionResponseItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -120,29 +120,23 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
     @Generated
     public static SessionResponseItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("message".equals(discriminatorValue)) {
-                    return SessionResponseMessageItem.fromJson(readerToUse.reset());
-                } else if ("function_call".equals(discriminatorValue)) {
-                    return ResponseFunctionCallItem.fromJson(readerToUse.reset());
-                } else if ("function_call_output".equals(discriminatorValue)) {
-                    return ResponseFunctionCallOutputItem.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
+            // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+            // We're inside readObject callback, so pass true for alreadyInObject
+            String jsonString = JsonReaderHelper.readObjectAsString(reader, true);
+            String discriminatorValue = JsonReaderHelper.extractDiscriminator(jsonString, "type");
+
+            // Create fresh JsonReader for the subtype
+            JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
+
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("message".equals(discriminatorValue)) {
+                return SessionResponseMessageItem.fromJson(freshReader);
+            } else if ("function_call".equals(discriminatorValue)) {
+                return ResponseFunctionCallItem.fromJson(freshReader);
+            } else if ("function_call_output".equals(discriminatorValue)) {
+                return ResponseFunctionCallOutputItem.fromJson(freshReader);
+            } else {
+                return fromJsonKnownDiscriminator(freshReader);
             }
         });
     }

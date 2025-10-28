@@ -45,42 +45,27 @@ public abstract class VoiceProvider {
             return null;
         }
 
-        // Buffer the whole object once so we can replay it twice:
-        // 1) to read the "type", 2) to delegate to the subtype parser.
-        JsonReader snapshot = jsonReader.bufferObject();
-
-        // Pass 1: find the discriminator
-        String type = snapshot.readObject(reader -> {
-            String t = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String name = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(name)) {
-                    t = reader.getString();
-                    // Still need to finish the object to leave reader in a consistent state
-                    reader.skipChildren();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return t;
-        });
+        // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+        // Read the entire object as string first, then extract discriminator and create fresh reader
+        // Pass false because we're positioned AT START_OBJECT (not inside it yet)
+        String jsonString = JsonReaderHelper.readObjectAsString(jsonReader, false);
+        String type = JsonReaderHelper.extractDiscriminator(jsonString, "type");
 
         if (type == null) {
             // No discriminator — choose policy; returning null keeps parsing lenient.
             return null;
         }
 
-        // Pass 2: replay for the subtype
-        JsonReader replay = snapshot.bufferObject();
+        // Create fresh JsonReader and delegate to subtype
+        JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
         switch (type) {
             case VoiceProvider.TYPE_OPENAI:
-                return OpenAIVoice.fromJson(replay);
+                return OpenAIVoice.fromJson(freshReader);
 
             case VoiceProvider.TYPE_AZURE_CUSTOM:
             case VoiceProvider.TYPE_AZURE_STANDARD:
             case VoiceProvider.TYPE_AZURE_PERSONAL:
-                return AzureVoice.fromJson(replay);
+                return AzureVoice.fromJson(freshReader);
 
             default:
                 // Unknown discriminator — return null (or throw if you prefer strictness).

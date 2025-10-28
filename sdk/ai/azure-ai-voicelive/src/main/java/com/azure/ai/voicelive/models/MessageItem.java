@@ -141,29 +141,23 @@ public class MessageItem extends ConversationRequestItem {
     @Generated
     public static MessageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("role".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("system".equals(discriminatorValue)) {
-                    return SystemMessageItem.fromJson(readerToUse.reset());
-                } else if ("user".equals(discriminatorValue)) {
-                    return UserMessageItem.fromJson(readerToUse.reset());
-                } else if ("assistant".equals(discriminatorValue)) {
-                    return AssistantMessageItem.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
+            // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+            // We're inside readObject callback, so pass true for alreadyInObject
+            String jsonString = JsonReaderHelper.readObjectAsString(reader, true);
+            String discriminatorValue = JsonReaderHelper.extractDiscriminator(jsonString, "role");
+
+            // Create fresh JsonReader for the subtype
+            JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
+
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("system".equals(discriminatorValue)) {
+                return SystemMessageItem.fromJson(freshReader);
+            } else if ("user".equals(discriminatorValue)) {
+                return UserMessageItem.fromJson(freshReader);
+            } else if ("assistant".equals(discriminatorValue)) {
+                return AssistantMessageItem.fromJson(freshReader);
+            } else {
+                return fromJsonKnownDiscriminator(freshReader);
             }
         });
     }

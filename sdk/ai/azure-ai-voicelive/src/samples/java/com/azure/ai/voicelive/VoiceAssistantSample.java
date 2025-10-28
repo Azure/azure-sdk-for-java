@@ -12,9 +12,7 @@ import reactor.core.scheduler.Schedulers;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
@@ -28,25 +26,40 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Enhanced Voice Assistant sample demonstrating real-time microphone input and audio playback.
  *
- * This sample shows how to:
- * - Capture audio from microphone in real-time
- * - Send captured audio to VoiceLive service
- * - Receive and play audio responses from the service
- * - Handle conversation flow with proper interruption
- * - Manage audio streaming with proper threading
+ * <p>This sample shows how to:</p>
+ * <ul>
+ *   <li>Capture audio from microphone in real-time</li>
+ *   <li>Send captured audio to VoiceLive service</li>
+ *   <li>Receive and play audio responses from the service</li>
+ *   <li>Handle conversation flow with proper interruption</li>
+ *   <li>Manage audio streaming with proper threading</li>
+ * </ul>
+ *
+ * <p><strong>Environment Variables Required:</strong></p>
+ * <ul>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ * </ul>
+ *
+ * <p><strong>Audio Requirements:</strong></p>
+ * The sample requires a working microphone and speakers/headphones.
+ * Audio format is 24kHz, 16-bit PCM, mono as required by the VoiceLive service.
  */
 public class VoiceAssistantSample {
 
-    // Constants
+    // Service configuration constants
     private static final String DEFAULT_API_VERSION = "2025-10-01";
     private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
-    private static final int SAMPLE_RATE = 24000;  // 24kHz as required by VoiceLive
-    private static final int CHANNELS = 1;         // Mono
-    private static final int SAMPLE_SIZE_BITS = 16; // 16-bit PCM
-    private static final int CHUNK_SIZE = 1200;    // 50ms chunks (24000 * 0.05)
+
+    // Audio format constants (VoiceLive requirements)
+    private static final int SAMPLE_RATE = 24000;      // 24kHz as required by VoiceLive
+    private static final int CHANNELS = 1;             // Mono
+    private static final int SAMPLE_SIZE_BITS = 16;    // 16-bit PCM
+    private static final int CHUNK_SIZE = 1200;        // 50ms chunks (24000 * 0.05)
 
     /**
-     * Audio packet for playback queue management
+     * Audio packet for playback queue management.
+     * Uses sequence numbers to support interruption handling.
      */
     private static class AudioPlaybackPacket {
         final int sequenceNumber;
@@ -59,7 +72,15 @@ public class VoiceAssistantSample {
     }
 
     /**
-     * Handles real-time audio capture and playback for the voice assistant.
+     * Handles real-time audio capture from microphone and playback to speakers.
+     *
+     * <p>This class manages two separate threads:</p>
+     * <ul>
+     *   <li>Capture thread: Continuously reads audio from microphone and sends to VoiceLive service</li>
+     *   <li>Playback thread: Receives audio responses and plays them through speakers</li>
+     * </ul>
+     *
+     * <p>Supports interruption handling where user speech can cancel ongoing assistant responses.</p>
      */
     private static class AudioProcessor {
         private final VoiceLiveSession session;
@@ -75,9 +96,6 @@ public class VoiceAssistantSample {
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
         private final AtomicInteger nextSequenceNumber = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
-
-        // Session management for cancellation
-        private final AtomicReference<String> currentResponseId = new AtomicReference<>();
 
         AudioProcessor(VoiceLiveSession session) {
             this.session = session;
@@ -167,6 +185,7 @@ public class VoiceAssistantSample {
          */
         private void captureAudioLoop() {
             byte[] buffer = new byte[CHUNK_SIZE * 2]; // 16-bit samples
+            System.out.println("🎤 Audio capture loop started");
 
             while (isCapturing.get() && microphone != null) {
                 try {
@@ -180,7 +199,12 @@ public class VoiceAssistantSample {
                             .subscribeOn(Schedulers.boundedElastic())
                             .subscribe(
                                 v -> {}, // onNext
-                                error -> System.err.println("❌ Error sending audio: " + error.getMessage()) // onError
+                                error -> {
+                                    // Only log non-interruption errors
+                                    if (!error.getMessage().contains("cancelled")) {
+                                        System.err.println("❌ Error sending audio: " + error.getMessage());
+                                    }
+                                }
                             );
                     }
                 } catch (Exception e) {
@@ -190,6 +214,7 @@ public class VoiceAssistantSample {
                     break;
                 }
             }
+            System.out.println("🎤 Audio capture loop ended");
         }
 
         /**
@@ -205,8 +230,10 @@ public class VoiceAssistantSample {
                         break;
                     }
 
-                    // Check if packet should be skipped
-                    if (packet.sequenceNumber < playbackBase.get()) {
+                    // Check if packet should be skipped (interrupted)
+                    int currentBase = playbackBase.get();
+                    if (packet.sequenceNumber < currentBase) {
+                        // Skip interrupted audio
                         continue;
                     }
 
@@ -240,30 +267,11 @@ public class VoiceAssistantSample {
         void skipPendingAudio() {
             playbackBase.set(nextSequenceNumber.get());
             playbackQueue.clear();
-        }
 
-        /**
-         * Cancel current response and skip audio
-         */
-        void cancelCurrentResponse() {
-            skipPendingAudio();
-            // Try to cancel any ongoing response
-            String responseId = currentResponseId.get();
-            if (responseId != null) {
-                session.startResponse() // This will effectively cancel previous response
-                    .subscribeOn(Schedulers.boundedElastic())
-                    .subscribe(
-                        v -> {}, // onNext
-                        error -> {} // onError - ignore cancellation errors
-                    );
+            // Also drain the speaker buffer to stop playback immediately
+            if (speaker != null && speaker.isOpen()) {
+                speaker.flush();
             }
-        }
-
-        /**
-         * Set current response ID for tracking
-         */
-        void setCurrentResponseId(String responseId) {
-            currentResponseId.set(responseId);
         }
 
         /**
@@ -296,8 +304,8 @@ public class VoiceAssistantSample {
      */
     public static void main(String[] args) {
         // Validate environment variables
-        String endpoint = System.getenv("VOICELIVE_OPENAI_ENDPOINT");
-        String apiKey = System.getenv("VOICELIVE_OPENAI_API_KEY");
+        String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
+        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
         if (endpoint == null || apiKey == null) {
             printUsage();
@@ -355,10 +363,10 @@ public class VoiceAssistantSample {
      * Print usage instructions
      */
     private static void printUsage() {
-        System.err.println("Please set VOICELIVE_OPENAI_ENDPOINT and VOICELIVE_OPENAI_API_KEY environment variables");
+        System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
         System.err.println("\nExample:");
-        System.err.println("  export VOICELIVE_OPENAI_ENDPOINT=https://your-resource.cognitiveservices.azure.com/");
-        System.err.println("  export VOICELIVE_OPENAI_API_KEY=your-api-key");
+        System.err.println("  export AZURE_VOICELIVE_ENDPOINT=https://your-resource.cognitiveservices.azure.com/");
+        System.err.println("  export AZURE_VOICELIVE_API_KEY=your-api-key");
     }
 
     /**
@@ -380,9 +388,7 @@ public class VoiceAssistantSample {
 
         // Configure session options for voice conversation
         VoiceLiveSessionOptions sessionOptions = createVoiceSessionOptions();
-
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
-        AtomicBoolean sessionUpdateSent = new AtomicBoolean(false);
 
         // Execute the reactive workflow - start with just the model
         client.startSession(DEFAULT_MODEL)
@@ -392,13 +398,6 @@ public class VoiceAssistantSample {
                 // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
-
-                System.out.println("📤 Sending session.update configuration...");
-                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                session.sendEvent(updateEvent)
-                                .doOnSuccess(v -> System.out.println("✓ Session configuration sent"))
-                                .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                                .subscribe();
 
                 // Subscribe to receive server events asynchronously
                 session.receiveEvents()
@@ -413,6 +412,14 @@ public class VoiceAssistantSample {
                         error -> System.err.println("❌ Error receiving events: " + error.getMessage()),
                         () -> System.out.println("✓ Event stream completed")
                     );
+
+                System.out.println("📤 Sending session.update configuration...");
+                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
+                session.sendEvent(updateEvent)
+                    .doOnSuccess(v -> System.out.println("✓ Session configuration sent"))
+                    .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
+                    .subscribe();
+
 
                 // Start audio systems
                 audioProcessor.startPlayback();
@@ -463,7 +470,7 @@ public class VoiceAssistantSample {
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
             .setInputAudioSamplingRate(SAMPLE_RATE)
-            .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION))
+            .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.NEAR_FIELD))
             .setInputAudioEchoCancellation(new AudioEchoCancellation())
             .setTurnDetection(turnDetection);
 
@@ -482,24 +489,35 @@ public class VoiceAssistantSample {
         try {
             if (eventType == ServerEventType.SESSION_CREATED) {
                 System.out.println("✓ Session created - initializing...");
+
             } else if (eventType == ServerEventType.SESSION_UPDATED) {
-                System.out.println("✓ Session ready - starting microphone");
-                audioProcessor.startCapture();
+                System.out.println("✓ Session updated - starting microphone");
 
-            } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                System.out.println("🎤 Listening...");
-                audioProcessor.cancelCurrentResponse();
+                // Now that bufferObject() bug is fixed in generated code, we can access the typed class
+                if (event instanceof SessionUpdateSessionUpdated) {
+                    SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
 
-            } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
-                System.out.println("🤔 Processing...");
+                    // Print the full JSON representation
+                    System.out.println("📄 Session Updated Event (Full JSON):");
+                    String eventJson = BinaryData.fromObject(sessionUpdated).toString();
+                    System.out.println(eventJson);
 
-            } else if (eventType == ServerEventType.RESPONSE_CREATED) {
-                System.out.println("🤖 Assistant responding...");
-                if (event instanceof SessionUpdateResponseCreated) {
-                    SessionUpdateResponseCreated responseEvent = (SessionUpdateResponseCreated) event;
-                    audioProcessor.setCurrentResponseId(responseEvent.getResponse().getId());
+                    // Also print specific fields for convenience
+                    VoiceLiveSessionResponse session = sessionUpdated.getSession();
+                    System.out.println("\n📋 Session Details:");
+                    System.out.println("  Session ID: " + session.getId());
+                    System.out.println("  Model: " + session.getModel());
+                    System.out.println("  Voice: " + (session.getVoice() != null ? session.getVoice() : "N/A"));
                 }
 
+                audioProcessor.startCapture();
+            } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
+                System.out.println("🎤 Speech detected");
+                // Server handles interruption automatically with interruptResponse=true
+                // Just clear any pending audio in the playback queue
+                audioProcessor.skipPendingAudio();
+            } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
+                System.out.println("🤔 Speech ended - processing...");
             } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
                 // Handle audio response - extract and queue for playback
                 if (event instanceof SessionUpdateResponseAudioDelta) {
@@ -507,17 +525,12 @@ public class VoiceAssistantSample {
                     byte[] audioData = audioEvent.getDelta();
                     if (audioData != null && audioData.length > 0) {
                         audioProcessor.queueAudio(audioData);
-                        System.out.println("🔊 Queueing audio response (" + audioData.length + " bytes)");
                     }
                 }
-
             } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
-                System.out.println("✓ Assistant finished speaking");
                 System.out.println("🎤 Ready for next input...");
-
             } else if (eventType == ServerEventType.RESPONSE_DONE) {
                 System.out.println("✅ Response complete");
-
             } else if (eventType == ServerEventType.ERROR) {
                 if (event instanceof SessionUpdateError) {
                     SessionUpdateError errorEvent = (SessionUpdateError) event;
@@ -525,76 +538,10 @@ public class VoiceAssistantSample {
                 } else {
                     System.out.println("❌ VoiceLive error occurred");
                 }
-
-            } else if (eventType == ServerEventType.CONVERSATION_ITEM_CREATED) {
-                System.out.println("📝 Conversation item created");
-
-            } else if (eventType == ServerEventType.RESPONSE_CONTENT_PART_DONE) {
-                System.out.println("📝 Conversation content part done");
-
-            } else if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
-                System.out.println("🔊 Response output item done");
-
-            } else if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DELTA) {
-                System.out.println("🔊 Response audio transcript delta");
-
-            } else {
-                System.out.printf("📋 Unhandled event: %s%n", eventType);
             }
-
         } catch (Exception e) {
             System.err.println("❌ Error handling event: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    // ========================================================================
-    // Utility Methods
-    // ========================================================================
-
-    /**
-     * Create demo audio data (for testing purposes)
-     */
-    private static byte[] createDemoAudio(int durationMs) {
-        int samples = (SAMPLE_RATE * durationMs) / 1000;
-        byte[] audio = new byte[samples * 2]; // 16-bit samples
-
-        // Generate a simple sine wave for testing
-        for (int i = 0; i < samples; i++) {
-            double sample = Math.sin(2.0 * Math.PI * 440.0 * i / SAMPLE_RATE); // 440Hz tone
-            short value = (short) (sample * Short.MAX_VALUE * 0.1); // Low volume
-            audio[i * 2] = (byte) (value & 0xFF);
-            audio[i * 2 + 1] = (byte) ((value >> 8) & 0xFF);
-        }
-
-        return audio;
-    }
-
-    /**
-     * List available audio devices (for debugging)
-     */
-    @SuppressWarnings("unused")
-    private static void listAudioDevices() {
-        System.out.println("\n🎧 Available Audio Devices:");
-
-        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for (Mixer.Info mixerInfo : mixers) {
-            System.out.println("Mixer: " + mixerInfo.getName());
-
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-
-            // Input lines
-            Line.Info[] sourceLines = mixer.getSourceLineInfo();
-            for (Line.Info lineInfo : sourceLines) {
-                System.out.println("  Input: " + lineInfo);
-            }
-
-            // Output lines
-            Line.Info[] targetLines = mixer.getTargetLineInfo();
-            for (Line.Info lineInfo : targetLines) {
-                System.out.println("  Output: " + lineInfo);
-            }
-        }
-        System.out.println();
     }
 }

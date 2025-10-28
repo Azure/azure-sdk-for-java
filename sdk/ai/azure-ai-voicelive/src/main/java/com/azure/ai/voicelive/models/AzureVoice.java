@@ -62,29 +62,23 @@ public class AzureVoice extends VoiceProvider implements JsonSerializable<AzureV
     @Generated
     public static AzureVoice fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("azure-custom".equals(discriminatorValue)) {
-                    return AzureCustomVoice.fromJson(readerToUse.reset());
-                } else if ("azure-standard".equals(discriminatorValue)) {
-                    return AzureStandardVoice.fromJson(readerToUse.reset());
-                } else if ("azure-personal".equals(discriminatorValue)) {
-                    return AzurePersonalVoice.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
+            // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+            // We're inside readObject callback, so pass true for alreadyInObject
+            String jsonString = JsonReaderHelper.readObjectAsString(reader, true);
+            String discriminatorValue = JsonReaderHelper.extractDiscriminator(jsonString, "type");
+
+            // Create fresh JsonReader for the subtype
+            JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
+
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("azure-custom".equals(discriminatorValue)) {
+                return AzureCustomVoice.fromJson(freshReader);
+            } else if ("azure-standard".equals(discriminatorValue)) {
+                return AzureStandardVoice.fromJson(freshReader);
+            } else if ("azure-personal".equals(discriminatorValue)) {
+                return AzurePersonalVoice.fromJson(freshReader);
+            } else {
+                return fromJsonKnownDiscriminator(freshReader);
             }
         });
     }

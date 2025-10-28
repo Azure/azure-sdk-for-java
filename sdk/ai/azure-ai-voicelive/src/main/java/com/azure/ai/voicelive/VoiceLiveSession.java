@@ -70,15 +70,27 @@ import java.util.concurrent.atomic.AtomicReference;
  * Alternatively, users can use the convenience methods on {@link VoiceLiveAsyncClient} which delegate to
  * the internal session.
  * </p>
+ *
+ * <p><strong>Thread Safety:</strong></p>
+ * This class is thread-safe and supports concurrent operations.
+ *
+ * <p><strong>Resource Management:</strong></p>
+ * Sessions should be properly closed using {@link #close()} or {@link #closeAsync()} to release resources.
  */
 public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveSession.class);
     private static final String COGNITIVE_SERVICES_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
-    private static final HttpHeaderName OPENAI_BETA_HEADER = HttpHeaderName.fromString("OpenAI-Beta");
-    private static final String OPENAI_BETA_VALUE = "assistants=v2";
-    private static final WebsocketClientSpec WEBSOCKET_CLIENT_SPEC
-        = WebsocketClientSpec.builder().protocols("realtime").build();
+
+    // WebSocket configuration constants
+    private static final String WEBSOCKET_PROTOCOL = "realtime";
+    private static final int MAX_FRAME_SIZE_BYTES = 10 * 1024 * 1024; // 10MB for large audio messages
+    private static final int INBOUND_BUFFER_CAPACITY = 1024;
+
+    private static final WebsocketClientSpec WEBSOCKET_CLIENT_SPEC = WebsocketClientSpec.builder()
+        .protocols(WEBSOCKET_PROTOCOL)
+        .maxFramePayloadLength(MAX_FRAME_SIZE_BYTES)
+        .build();
 
     private final URI endpoint;
     private final AzureKeyCredential keyCredential;
@@ -89,22 +101,20 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final AtomicBoolean isSendingAudioStream = new AtomicBoolean(false);
 
-    // Sink for receiving messages
+    // Reactive sinks for bidirectional message flow
     private final Sinks.Many<BinaryData> receiveSink = Sinks.many().multicast().onBackpressureBuffer();
-
-    // Sink for sending messages
     private final Sinks.Many<WebSocketFrame> sendSink = Sinks.many().multicast().onBackpressureBuffer();
 
-    // WebSocket references
+    // WebSocket connection state management
     private final AtomicReference<WebsocketInbound> inboundRef = new AtomicReference<>();
     private final AtomicReference<WebsocketOutbound> outboundRef = new AtomicReference<>();
     private final AtomicReference<Sinks.One<Void>> connectionCloseSignalRef = new AtomicReference<>();
+
+    // Subscription lifecycle management
     private final AtomicReference<Disposable> receiveSubscriptionRef = new AtomicReference<>();
     private final AtomicReference<Disposable> sendSubscriptionRef = new AtomicReference<>();
     private final AtomicReference<Disposable> closeStatusSubscriptionRef = new AtomicReference<>();
     private final AtomicReference<Disposable> connectionLifecycleSubscriptionRef = new AtomicReference<>();
-
-    private static final int INBOUND_BUFFER_CAPACITY = 1024;
 
     /**
      * Creates a new VoiceLiveSession with API key authentication.
@@ -154,9 +164,6 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
         Sinks.One<Void> readySink = Sinks.one();
         Sinks.One<Void> closeSignal = Sinks.one();
         connectionCloseSignalRef.set(closeSignal);
-
-        LOGGER.info("Connecting to VoiceLive WebSocket endpoint: {}", endpoint);
-
         Mono<Void> connectionMono
             = getAuthorizationHeaders().map(authHeaders -> buildConnectionHeaders(authHeaders, additionalHeaders))
                 .flatMap(requestHeaders -> {
@@ -171,9 +178,10 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
                         isConnected.set(true);
 
                         LOGGER.info("WebSocket connection established");
-                        LOGGER.info("Inbound aggregator: {}", inbound.aggregateFrames());
-                        LOGGER.info("Outbound: {}", outbound);
 
+                        // CRITICAL FIX: Set frame aggregation to 10MB to handle large audio delta messages
+                        // Without this, Netty's default 64KB limit causes "content length exceeded 65536 bytes" errors
+                        inbound.aggregateFrames(10 * 1024 * 1024);
                         Flux<BinaryData> receiveFlux = inbound.receive()
                             .retain()
                             .doOnSubscribe(s -> LOGGER.info("Receive flux subscribed"))
@@ -409,25 +417,25 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
 
     /**
      * Parses raw BinaryData into a SessionUpdate object.
+     * <p>
+     * Now that the bufferObject() bug is fixed in the generated code (using JsonReaderHelper),
+     * we can simply call SessionUpdate.fromJson() directly. The generated code now reads the
+     * entire JSON object as a string first, then creates fresh JsonReaders for polymorphic
+     * deserialization, avoiding all bufferObject() issues.
+     * </p>
      *
      * @param data The raw binary data from the service.
-     * @return A Mono containing the parsed SessionUpdate.
+     * @return A Mono containing the parsed SessionUpdate, or empty if parsing fails.
      */
     private Mono<SessionUpdate> parseToSessionUpdate(BinaryData data) {
         return Mono.fromCallable(() -> {
-            String jsonString = data.toString();
-
-            // Try to parse as SessionUpdate using the standard fromJson
-            // Note: This may fail due to TypeSpec code generator bufferObject() bug with nested polymorphic types
             try {
-                return SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(jsonString));
-            } catch (Exception e) {
+                return SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(data.toString()));
+            } catch (IOException e) {
                 LOGGER.warning("Failed to parse SessionUpdate: {}", e.getMessage());
                 return null;
             }
-        })
-            .filter(update -> update != null) // Filter out nulls
-            .subscribeOn(Schedulers.boundedElastic());
+        }).filter(update -> update != null).subscribeOn(Schedulers.boundedElastic());
     }
 
     // ============================================================================
@@ -855,21 +863,6 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
         // Only add it if explicitly provided in additionalHeaders
 
         return requestHeaders;
-    }
-
-    private boolean containsHeaderIgnoreCase(HttpHeaders headers, HttpHeaderName headerName) {
-        if (headers == null) {
-            return false;
-        }
-
-        String targetName = headerName.toString();
-
-        for (HttpHeader header : headers) {
-            if (header.getName().equalsIgnoreCase(targetName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void disposeLifecycleSubscription() {

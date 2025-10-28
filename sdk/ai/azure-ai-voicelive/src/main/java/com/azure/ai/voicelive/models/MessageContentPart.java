@@ -32,7 +32,7 @@ public class MessageContentPart implements JsonSerializable<MessageContentPart> 
 
     /**
      * Get the type property: The type of the content part.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -53,7 +53,7 @@ public class MessageContentPart implements JsonSerializable<MessageContentPart> 
 
     /**
      * Reads an instance of MessageContentPart from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MessageContentPart if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -62,29 +62,23 @@ public class MessageContentPart implements JsonSerializable<MessageContentPart> 
     @Generated
     public static MessageContentPart fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("input_text".equals(discriminatorValue)) {
-                    return InputTextContentPart.fromJson(readerToUse.reset());
-                } else if ("input_audio".equals(discriminatorValue)) {
-                    return InputAudioContentPart.fromJson(readerToUse.reset());
-                } else if ("text".equals(discriminatorValue)) {
-                    return OutputTextContentPart.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
+            // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+            // We're inside readObject callback, so pass true for alreadyInObject
+            String jsonString = JsonReaderHelper.readObjectAsString(reader, true);
+            String discriminatorValue = JsonReaderHelper.extractDiscriminator(jsonString, "type");
+
+            // Create fresh JsonReader for the subtype
+            JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
+
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("input_text".equals(discriminatorValue)) {
+                return InputTextContentPart.fromJson(freshReader);
+            } else if ("input_audio".equals(discriminatorValue)) {
+                return InputAudioContentPart.fromJson(freshReader);
+            } else if ("text".equals(discriminatorValue)) {
+                return OutputTextContentPart.fromJson(freshReader);
+            } else {
+                return fromJsonKnownDiscriminator(freshReader);
             }
         });
     }

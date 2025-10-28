@@ -32,7 +32,7 @@ public class TurnDetection implements JsonSerializable<TurnDetection> {
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -53,7 +53,7 @@ public class TurnDetection implements JsonSerializable<TurnDetection> {
 
     /**
      * Reads an instance of TurnDetection from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TurnDetection if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -62,31 +62,29 @@ public class TurnDetection implements JsonSerializable<TurnDetection> {
     @Generated
     public static TurnDetection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("server_vad".equals(discriminatorValue)) {
-                    return ServerVadTurnDetection.fromJson(readerToUse.reset());
-                } else if ("azure_semantic_vad".equals(discriminatorValue)) {
-                    return AzureSemanticVadTurnDetection.fromJson(readerToUse.reset());
-                } else if ("azure_semantic_vad_en".equals(discriminatorValue)) {
-                    return AzureSemanticVadTurnDetectionEn.fromJson(readerToUse.reset());
-                } else if ("azure_semantic_vad_multilingual".equals(discriminatorValue)) {
-                    return AzureSemanticVadTurnDetectionMultilingual.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
+            // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+            // Pass true because we're already inside the object (readObject has consumed START_OBJECT)
+            String jsonString = JsonReaderHelper.readObjectAsString(reader, true);
+            String discriminatorValue = JsonReaderHelper.extractDiscriminator(jsonString, "type");
+
+            if (discriminatorValue == null) {
+                return fromJsonKnownDiscriminator(com.azure.json.JsonProviders.createReader(jsonString));
+            }
+
+            // Create fresh JsonReader for subtype deserialization
+            JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
+
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("server_vad".equals(discriminatorValue)) {
+                return ServerVadTurnDetection.fromJson(freshReader);
+            } else if ("azure_semantic_vad".equals(discriminatorValue)) {
+                return AzureSemanticVadTurnDetection.fromJson(freshReader);
+            } else if ("azure_semantic_vad_en".equals(discriminatorValue)) {
+                return AzureSemanticVadTurnDetectionEn.fromJson(freshReader);
+            } else if ("azure_semantic_vad_multilingual".equals(discriminatorValue)) {
+                return AzureSemanticVadTurnDetectionMultilingual.fromJson(freshReader);
+            } else {
+                return fromJsonKnownDiscriminator(freshReader);
             }
         });
     }

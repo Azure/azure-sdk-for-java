@@ -37,7 +37,7 @@ public class ToolChoice implements JsonSerializable<ToolChoice> {
 
     /**
      * Reads an instance of ToolChoice from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ToolChoice if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -45,43 +45,37 @@ public class ToolChoice implements JsonSerializable<ToolChoice> {
      */
     @Generated
     public static ToolChoice fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            // Check if it's a string (literal) or an object (selection)
-            JsonToken token = reader.currentToken();
-            if (token == null) {
-                token = reader.nextToken();
-            }
+        // Check if it's a string (literal) or an object (selection)
+        JsonToken token = jsonReader.currentToken();
+        if (token == null) {
+            token = jsonReader.nextToken();
+        }
 
-            if (token == JsonToken.STRING) {
-                // It's a literal string value
-                String value = reader.getString();
-                return new ToolChoiceLiteralValue(value);
-            } else if (token == JsonToken.START_OBJECT) {
-                // It's a selection object - peek at the discriminator
-                String discriminatorValue = null;
-                try (JsonReader readerToUse = reader.bufferObject()) {
-                    readerToUse.nextToken(); // Prepare for reading
-                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = readerToUse.getFieldName();
-                        readerToUse.nextToken();
-                        if ("type".equals(fieldName)) {
-                            discriminatorValue = readerToUse.getString();
-                            break;
-                        } else {
-                            readerToUse.skipChildren();
-                        }
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("function".equals(discriminatorValue)) {
-                        return ToolChoiceFunctionSelection.fromJson(readerToUse.reset());
-                    } else {
-                        return ToolChoiceSelection.fromJsonKnownDiscriminator(readerToUse.reset());
-                    }
+        if (token == JsonToken.STRING) {
+            // It's a literal string value
+            String value = jsonReader.getString();
+            return new ToolChoiceLiteralValue(value);
+        } else if (token == JsonToken.START_OBJECT) {
+            // It's a selection object - use readObject to consume it
+            return jsonReader.readObject(reader -> {
+                // FIXED: Use JsonReaderHelper to avoid bufferObject() bug
+                // We're inside readObject callback, so pass true for alreadyInObject
+                String jsonString = JsonReaderHelper.readObjectAsString(reader, true);
+                String discriminatorValue = JsonReaderHelper.extractDiscriminator(jsonString, "type");
+
+                // Create fresh JsonReader for the subtype
+                JsonReader freshReader = com.azure.json.JsonProviders.createReader(jsonString);
+
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("function".equals(discriminatorValue)) {
+                    return ToolChoiceFunctionSelection.fromJson(freshReader);
+                } else {
+                    return ToolChoiceSelection.fromJsonKnownDiscriminator(freshReader);
                 }
-            } else {
-                return new ToolChoice();
-            }
-        });
+            });
+        } else {
+            return new ToolChoice();
+        }
     }
 
     /**
@@ -104,7 +98,7 @@ public class ToolChoice implements JsonSerializable<ToolChoice> {
 
     /**
      * Creates a ToolChoice from a literal string value.
-     * 
+     *
      * @param literal The literal string value (auto, none, required).
      * @return A ToolChoice instance representing the literal.
      */
@@ -117,7 +111,7 @@ public class ToolChoice implements JsonSerializable<ToolChoice> {
 
     /**
      * Creates a ToolChoice from a literal string value.
-     * 
+     *
      * @param literalValue The literal string value (auto, none, required).
      * @return A ToolChoice instance representing the literal.
      */
