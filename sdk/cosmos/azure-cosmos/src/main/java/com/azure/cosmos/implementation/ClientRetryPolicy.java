@@ -33,7 +33,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(ClientRetryPolicy.class);
 
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
-    final static int MaxRetryCount = 10; // TODO: Remember to set this back after done testing
+    final static int MaxRetryCount = 121; // TODO: Remember to set this back after done testing
     private final static int MaxServiceUnavailableRetryCount = 1;
 
     private final DocumentClientRetryPolicy throttlingRetry;
@@ -521,6 +521,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
         this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);
+        logger.info("regional routing context resolved to {} with region {}", this.regionalRoutingContext.getGatewayRegionalEndpoint(), this.regionalRoutingContext.getRegion());
 
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.regionalRoutingContext);

@@ -325,13 +325,14 @@ public class GlobalEndpointManager implements AutoCloseable {
         }
 
         // TODO: revert after testing done
-        //logger.info("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
-        int testRefreshInterval = 3000;
-        logger.info("registering a refresh in [{}] ms", testRefreshInterval);
+        logger.info("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
+        //int testRefreshInterval = 3000;
+        //logger.info("registering a refresh in [{}] ms", testRefreshInterval);
         LocalDateTime now = LocalDateTime.now();
 
-        //int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
-        int delayInMillis = initialization ? 0: testRefreshInterval;
+        // TODO: revert after testing done
+        int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
+        //int delayInMillis = initialization ? 0: testRefreshInterval;
 
         this.refreshInBackground.set(true);
 

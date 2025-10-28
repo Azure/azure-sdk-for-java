@@ -113,6 +113,10 @@ public class ConsistencyWriter {
         TimeoutHelper timeout,
         boolean forceRefresh) {
 
+        logger.info("entered writeAsync with region {} and endpoint {}",
+            entity.requestContext.regionalRoutingContextToRoute.getRegion(),
+            entity.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint());
+
         if (timeout.isElapsed() &&
             // skip throwing RequestTimeout on first retry because the first retry with
             // force address refresh header can be critical to recover for example from
@@ -148,6 +152,10 @@ public class ConsistencyWriter {
         RxDocumentServiceRequest request,
         TimeoutHelper timeout,
         boolean forceRefresh) {
+
+        logger.info("entered writePrivate with region {} and endpoint {}",
+            request.requestContext.regionalRoutingContextToRoute.getRegion(),
+            request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint());
 
         if (timeout.isElapsed() &&
             // skip throwing RequestTimeout on first retry because the first retry with
@@ -325,6 +333,10 @@ public class ConsistencyWriter {
     }
 
     Mono<StoreResponse> barrierForGlobalStrong(RxDocumentServiceRequest request, StoreResponse response) {
+        logger.info("inside barrierForGlobalStrong with region {} and endpoint {}",
+            request.requestContext.regionalRoutingContextToRoute.getRegion(),
+            request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint());
+
         try {
             if (ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response)) {
                 Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1L);

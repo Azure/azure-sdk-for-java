@@ -32,6 +32,8 @@ public class BarrierRequestTests  extends TestSuiteBase {
     String primaryRegion = "Central US";
     String secondaryRegion = "East US";
 
+    GlobalEndpointManager globalEndpointManager = null;
+
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public BarrierRequestTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
@@ -52,7 +54,7 @@ public class BarrierRequestTests  extends TestSuiteBase {
 
             // After the initial write, simulate a network failure on address resolution.
             // This will trigger the SDK's failover logic.
-            if (simulateAddressRefreshFailures.get() &&
+            /*if (simulateAddressRefreshFailures.get() &&
                 request.isAddressRefresh() &&
                 request.requestContext.regionalRoutingContextToRoute.getRegion().equalsIgnoreCase(this.primaryRegion)) // Target the primary region
             {
@@ -65,9 +67,9 @@ public class BarrierRequestTests  extends TestSuiteBase {
                 Map<String, String> headers = new HashMap<>();
                 headers.put(HttpConstants.HttpHeaders.SUB_STATUS, Integer.toString(GATEWAY_ENDPOINT_UNAVAILABLE));
                 throw new CosmosException(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE, "Simulating network failure for address resolution for region", headers, new ConnectTimeoutException());
-            }
+            }*/
 
-            // Once the failover is triggered, intercept the subsequent metadata refresh call.
+            // Once the failover is triggered, trigger a subsequent metadata refresh call (intercepted in httpRequestInterceptor).
             logger.info("Checking failoverTriggered to intercept metadata refresh call: " + failoverTriggered.get());
             //logger.info("isMetadataRequest: " + request.isMetadataRequest());
             if (failoverTriggered.get() && request.getResourceType() == ResourceType.DatabaseAccount && request.getOperationType() == OperationType.Read)
@@ -112,6 +114,17 @@ public class BarrierRequestTests  extends TestSuiteBase {
             // Track barrier requests (Head operations on a collection)
             if (request.getOperationType() == OperationType.Head && request.getResourceType() == ResourceType.DocumentCollection)
             {
+                logger.info("Barrier request intercepted in storeResponseInterceptor for region: {}", request.requestContext.regionalRoutingContextToRoute.getRegion());
+                logger.info("Setting failoverTriggered to true");
+                failoverTriggered.compareAndSet(false, true);
+
+                if (globalEndpointManager != null) {
+                    logger.info("Trigerring metadata refresh");
+                    globalEndpointManager.refreshLocationAsync(null, true).block();
+                } else {
+                    logger.info("globalEndpointManager is null, cannot trigger metadata refresh");
+                }
+
                 // If the barrier request is in the secondary region, allow it to succeed.
                 logger.info("Barrier request detected for region: {}", request.requestContext.regionalRoutingContextToRoute.getRegion());
                 if (request.requestContext.regionalRoutingContextToRoute.getRegion().equalsIgnoreCase(this.secondaryRegion))
@@ -131,6 +144,8 @@ public class BarrierRequestTests  extends TestSuiteBase {
 
         CosmosAsyncClient client = clientBuilder.buildAsyncClient();
         CosmosAsyncContainer container = getSharedSinglePartitionCosmosContainer(client);
+
+        globalEndpointManager = BridgeInternal.getContextClient(client).getGlobalEndpointManager();
 
         CosmosItemResponse<CosmosDiagnosticsTest.TestItem> response = container.createItem(CosmosDiagnosticsTest.TestItem.createNewItem()).block();
         logger.info("Item created");
