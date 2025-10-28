@@ -1403,7 +1403,7 @@ public class BlobAsyncClientBase {
                             Object decoderState = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
                                 .orElse(null);
                             if (decoderState != null) {
-                                retryContext = firstRangeContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                                retryContext = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
                             }
                         }
                         
