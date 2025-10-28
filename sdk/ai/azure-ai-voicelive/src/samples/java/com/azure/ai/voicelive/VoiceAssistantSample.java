@@ -22,7 +22,9 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.AzureCliCredentialBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -50,12 +52,13 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>Receive and play audio responses from the service</li>
  *   <li>Handle conversation flow with proper interruption</li>
  *   <li>Manage audio streaming with proper threading</li>
+ *   <li>Authenticate using API key or token credentials</li>
  * </ul>
  *
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - The API key (required if not using --use-token-credential)</li>
  * </ul>
  *
  * <p><strong>Audio Requirements:</strong></p>
@@ -327,14 +330,35 @@ public final class VoiceAssistantSample {
     /**
      * Main method to run the voice assistant sample.
      *
-     * @param args Command line arguments (not used).
+     * <p>Supports two authentication methods:</p>
+     * <ul>
+     *   <li>API Key: Default authentication (requires AZURE_VOICELIVE_API_KEY env var)</li>
+     *   <li>Token Credential: Use --use-token-credential flag</li>
+     * </ul>
+     *
+     * @param args Command line arguments. Use --use-token-credential to use token-based authentication.
      */
     public static void main(String[] args) {
+        // Parse command line arguments
+        boolean useTokenCredential = false;
+        for (String arg : args) {
+            if ("--use-token-credential".equals(arg)) {
+                useTokenCredential = true;
+                break;
+            }
+        }
+
         // Validate environment variables
         String endpoint = System.getenv(ENV_ENDPOINT);
         String apiKey = System.getenv(ENV_API_KEY);
 
-        if (endpoint == null || apiKey == null) {
+        if (endpoint == null) {
+            printUsage();
+            return;
+        }
+
+        if (!useTokenCredential && apiKey == null) {
+            System.err.println("❌ AZURE_VOICELIVE_API_KEY environment variable is required when not using --use-token-credential");
             printUsage();
             return;
         }
@@ -348,7 +372,17 @@ public final class VoiceAssistantSample {
         System.out.println("🎙️ Starting Voice Assistant...");
 
         try {
-            runVoiceAssistant(endpoint, apiKey);
+            if (useTokenCredential) {
+                // Use token credential authentication (Azure CLI)
+                System.out.println("🔑 Using Token Credential authentication (Azure CLI)");
+                System.out.println("   Make sure you have run 'az login' before running this sample");
+                TokenCredential credential = new AzureCliCredentialBuilder().build();
+                runVoiceAssistant(endpoint, credential);
+            } else {
+                // Use API Key authentication
+                System.out.println("🔑 Using API Key authentication");
+                runVoiceAssistant(endpoint, new AzureKeyCredential(apiKey));
+            }
             System.out.println("✓ Voice Assistant completed successfully");
         } catch (Exception e) {
             System.err.println("❌ Voice Assistant failed: " + e.getMessage());
@@ -390,26 +424,59 @@ public final class VoiceAssistantSample {
      * Prints usage instructions for setting up environment variables.
      */
     private static void printUsage() {
-        System.err.println("Please set " + ENV_ENDPOINT + " and " + ENV_API_KEY + " environment variables");
-        System.err.println("\nExample:");
-        System.err.println("  export " + ENV_ENDPOINT + "=https://your-resource.openai.azure.com/");
-        System.err.println("  export " + ENV_API_KEY + "=your-api-key");
+        System.err.println("\nRequired Environment Variables:");
+        System.err.println("  " + ENV_ENDPOINT + "=<your-voicelive-endpoint>");
+        System.err.println("  " + ENV_API_KEY + "=<your-api-key> (required if not using --use-token-credential)");
+        System.err.println("\nOptional:");
+        System.err.println("  Use --use-token-credential flag to authenticate with Azure CLI (requires 'az login')");
     }
 
     /**
-     * Run the voice assistant
+     * Run the voice assistant with API key authentication.
+     *
+     * @param endpoint The VoiceLive service endpoint
+     * @param credential The API key credential
      */
-    private static void runVoiceAssistant(String endpoint, String apiKey) {
+    private static void runVoiceAssistant(String endpoint, AzureKeyCredential credential) {
         System.out.println("🔧 Initializing VoiceLive client:");
         System.out.println("   Endpoint: " + endpoint);
 
         // Create the VoiceLive client
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(credential)
             .apiVersion(DEFAULT_API_VERSION)
             .buildAsyncClient();
 
+        runVoiceAssistantWithClient(client);
+    }
+
+    /**
+     * Run the voice assistant with Azure AD authentication.
+     *
+     * @param endpoint The VoiceLive service endpoint
+     * @param credential The token credential
+     */
+    private static void runVoiceAssistant(String endpoint, TokenCredential credential) {
+        System.out.println("🔧 Initializing VoiceLive client:");
+        System.out.println("   Endpoint: " + endpoint);
+
+        // Create the VoiceLive client
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .apiVersion(DEFAULT_API_VERSION)
+            .buildAsyncClient();
+
+        runVoiceAssistantWithClient(client);
+    }
+
+    /**
+     * Run the voice assistant with the configured client.
+     *
+     * @param client The VoiceLive async client
+     */
+    private static void runVoiceAssistantWithClient(VoiceLiveAsyncClient client) {
         System.out.println("✓ VoiceLive client created");
 
         // Configure session options for voice conversation
