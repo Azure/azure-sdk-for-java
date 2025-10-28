@@ -56,6 +56,8 @@ extends:
                 Selection: sparse
                 NonSparseParameters: Agent
                 GenerateVMJobs: true
+            MatrixFilters:
+              - ${{ parameters.MatrixFilters }}
             MatrixReplace:
               - AZURE_TEST.*=.*/
               - .*Version=1.2(1|5)/1.17
