@@ -58,7 +58,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 // Decode using the stateful decoder
                 Flux<ByteBuffer> decodedStream = decoder.decode(httpResponse.getBody());
                 
-                return new DecodedResponse(httpResponse, decodedStream);
+                // Update context with decoder state for potential retries
+                context.setData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoder);
+                
+                return new DecodedResponse(httpResponse, decodedStream, decoder);
             }
 
             return httpResponse;
@@ -138,11 +141,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     static class DecodedResponse extends HttpResponse {
         private final Flux<ByteBuffer> decodedBody;
         private final HttpResponse originalResponse;
+        private final StatefulStructuredMessageDecoder decoder;
 
-        DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody) {
+        DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody, 
+                       StatefulStructuredMessageDecoder decoder) {
             super(httpResponse.getRequest());
             this.originalResponse = httpResponse;
             this.decodedBody = decodedBody;
+            this.decoder = decoder;
         }
 
         @Override
@@ -178,6 +184,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
             return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
+
+        /**
+         * Gets the decoder instance for retry state tracking.
+         *
+         * @return The stateful decoder.
+         */
+        public StatefulStructuredMessageDecoder getDecoder() {
+            return decoder;
         }
     }
 }

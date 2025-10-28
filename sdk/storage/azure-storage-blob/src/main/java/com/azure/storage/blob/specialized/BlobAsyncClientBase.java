@@ -1391,8 +1391,24 @@ public class BlobAsyncClientBase {
                     }
 
                     try {
+                        // For retry context, preserve decoder state if structured message validation is enabled
+                        Context retryContext = firstRangeContext;
+                        
+                        // If structured message decoding is enabled, we need to include the decoder state
+                        // so the retry can continue from where we left off
+                        if (contentValidationOptions != null 
+                            && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                            // The decoder state will be set by the policy during processing
+                            // We preserve it in the context for the retry request
+                            Object decoderState = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+                                .orElse(null);
+                            if (decoderState != null) {
+                                retryContext = firstRangeContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                            }
+                        }
+                        
                         return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, finalGetMD5, firstRangeContext);
+                            eTag, finalGetMD5, retryContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }

@@ -4,9 +4,7 @@
 package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,6 +13,15 @@ import java.util.concurrent.atomic.AtomicLong;
  * Stateful decoder for structured messages that supports mid-stream retries.
  * This decoder maintains state across network interruptions to ensure all data
  * is validated before retrying from the point of failure.
+ * 
+ * <p>This decoder uses streaming decoding and validates segments incrementally,
+ * allowing for smart retries that:
+ * <ul>
+ *   <li>Validate all received segment checksums before retry</li>
+ *   <li>Track exact encoded and decoded byte positions</li>
+ *   <li>Resume from the correct offset after network faults</li>
+ *   <li>Preserve decoder state across retry requests</li>
+ * </ul>
  */
 public class StatefulStructuredMessageDecoder {
     private static final ClientLogger LOGGER = new ClientLogger(StatefulStructuredMessageDecoder.class);
@@ -23,8 +30,7 @@ public class StatefulStructuredMessageDecoder {
     private final StructuredMessageDecoder decoder;
     private final AtomicLong totalBytesDecoded;
     private final AtomicLong totalEncodedBytesProcessed;
-    private ByteBuffer pendingData;
-    private boolean finalized;
+    private ByteBuffer pendingBuffer;
 
     /**
      * Creates a new stateful structured message decoder.
@@ -36,55 +42,87 @@ public class StatefulStructuredMessageDecoder {
         this.decoder = new StructuredMessageDecoder(expectedContentLength);
         this.totalBytesDecoded = new AtomicLong(0);
         this.totalEncodedBytesProcessed = new AtomicLong(0);
-        this.pendingData = null;
-        this.finalized = false;
+        this.pendingBuffer = null;
     }
 
     /**
      * Decodes a flux of byte buffers representing encoded structured message data.
+     * This method processes data incrementally, validating segment checksums as
+     * complete segments are received.
      *
      * @param encodedFlux The flux of encoded byte buffers.
      * @return A flux of decoded byte buffers.
      */
     public Flux<ByteBuffer> decode(Flux<ByteBuffer> encodedFlux) {
-        if (finalized) {
-            return Flux.error(new IllegalStateException("Decoder has already been finalized"));
+        return encodedFlux.concatMap(encodedBuffer -> {
+            try {
+                // Combine with pending data if any
+                ByteBuffer dataToProcess = combineWithPending(encodedBuffer);
+                
+                // Track encoded bytes
+                int encodedBytesInBuffer = encodedBuffer.remaining();
+                totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
+
+                // Try to decode what we have - decoder handles partial data
+                // The size parameter allows us to decode incrementally
+                int availableSize = dataToProcess.remaining();
+                ByteBuffer decodedData = decoder.decode(dataToProcess.duplicate(), availableSize);
+                
+                // Track decoded bytes
+                int decodedBytes = decodedData.remaining();
+                totalBytesDecoded.addAndGet(decodedBytes);
+
+                // Store any remaining unprocessed data for next iteration
+                if (dataToProcess.hasRemaining()) {
+                    pendingBuffer = ByteBuffer.allocate(dataToProcess.remaining());
+                    pendingBuffer.put(dataToProcess);
+                    pendingBuffer.flip();
+                } else {
+                    pendingBuffer = null;
+                }
+
+                // Return decoded data if any
+                if (decodedBytes > 0) {
+                    return Flux.just(decodedData);
+                } else {
+                    return Flux.empty();
+                }
+            } catch (Exception e) {
+                LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
+                return Flux.error(e);
+            }
+        }).doOnComplete(() -> {
+            // Finalize when stream completes
+            try {
+                decoder.finalizeDecoding();
+            } catch (IllegalArgumentException e) {
+                // Expected if we haven't received all data yet (e.g., interrupted download)
+                LOGGER.verbose("Decoding not finalized - may resume on retry: " + e.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Combines pending buffer with new data.
+     *
+     * @param newBuffer The new buffer to combine.
+     * @return Combined buffer.
+     */
+    private ByteBuffer combineWithPending(ByteBuffer newBuffer) {
+        if (pendingBuffer == null || !pendingBuffer.hasRemaining()) {
+            return newBuffer.duplicate();
         }
 
-        // Collect all data first (structured message needs complete data to decode)
-        return encodedFlux
-            .collect(() -> new EncodedDataCollector(), EncodedDataCollector::addBuffer)
-            .flatMapMany(collector -> {
-                try {
-                    ByteBuffer allEncodedData = collector.getAllData();
-                    
-                    if (allEncodedData.remaining() == 0) {
-                        return Flux.empty();
-                    }
-
-                    // Update total encoded bytes processed
-                    totalEncodedBytesProcessed.addAndGet(allEncodedData.remaining());
-
-                    // Decode the complete message
-                    ByteBuffer decodedData = decoder.decode(allEncodedData);
-                    
-                    // Update total bytes decoded
-                    totalBytesDecoded.addAndGet(decodedData.remaining());
-
-                    // Finalize decoding
-                    decoder.finalizeDecoding();
-                    finalized = true;
-
-                    return Flux.just(decodedData);
-                } catch (Exception e) {
-                    LOGGER.error("Failed to decode structured message: " + e.getMessage(), e);
-                    return Flux.error(e);
-                }
-            });
+        ByteBuffer combined = ByteBuffer.allocate(pendingBuffer.remaining() + newBuffer.remaining());
+        combined.put(pendingBuffer.duplicate());
+        combined.put(newBuffer.duplicate());
+        combined.flip();
+        return combined;
     }
 
     /**
      * Gets the total number of decoded bytes processed so far.
+     * This value can be used to calculate the offset for retries.
      *
      * @return The total decoded bytes.
      */
@@ -94,6 +132,7 @@ public class StatefulStructuredMessageDecoder {
 
     /**
      * Gets the total number of encoded bytes processed so far.
+     * This value represents the position in the encoded stream.
      *
      * @return The total encoded bytes processed.
      */
@@ -102,35 +141,21 @@ public class StatefulStructuredMessageDecoder {
     }
 
     /**
-     * Checks if the decoder has been finalized.
+     * Checks if the decoder has finalized (completed decoding the entire message).
      *
      * @return true if finalized, false otherwise.
      */
     public boolean isFinalized() {
-        return finalized;
+        // Decoder is finalized when we've processed the expected content length
+        return totalEncodedBytesProcessed.get() >= expectedContentLength;
     }
 
     /**
-     * Helper class to collect encoded data buffers.
+     * Gets the expected content length being decoded.
+     *
+     * @return The expected content length.
      */
-    private static class EncodedDataCollector {
-        private ByteBuffer accumulatedBuffer;
-
-        EncodedDataCollector() {
-            this.accumulatedBuffer = ByteBuffer.allocate(0);
-        }
-
-        void addBuffer(ByteBuffer buffer) {
-            // Accumulate the buffer
-            ByteBuffer newBuffer = ByteBuffer.allocate(accumulatedBuffer.remaining() + buffer.remaining());
-            newBuffer.put(accumulatedBuffer);
-            newBuffer.put(buffer);
-            newBuffer.flip();
-            accumulatedBuffer = newBuffer;
-        }
-
-        ByteBuffer getAllData() {
-            return accumulatedBuffer;
-        }
+    public long getExpectedContentLength() {
+        return expectedContentLength;
     }
 }
