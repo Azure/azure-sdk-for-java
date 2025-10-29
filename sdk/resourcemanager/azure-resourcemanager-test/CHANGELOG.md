@@ -1,14 +1,10 @@
 # Release History
 
-## 2.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.0.0-beta.3 (2025-10-29)
 
 ### Other Changes
+
+- Switched `azureCliSignedInUser()`'s implementation from using `az ad`.
 
 ## 2.0.0-beta.2 (2025-08-20)
 

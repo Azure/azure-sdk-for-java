@@ -21,6 +21,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.resourcemanager.test.model.AzureUser;
@@ -230,14 +231,32 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected AzureUser azureCliSignedInUser() {
         AzureUser azureCliUser = new AzureUser(testResourceNamer);
         if (!isPlaybackMode()) {
-            String azCommand = "az ad signed-in-user show --output json";
+            // Due to AADSTS530084, Access to Graph API(scope) has been blocked by conditional access token protection policy configured by msft.
+            // We can't use "az ad" command anymore, nor auth to Graph scope. To learn more, see https://aka.ms/TBCADocs.
+            // Access to ARM scope token should be safe, as this is what we do in ARM auth.
+            String azCommand = "az account get-access-token --query accessToken -o tsv";
 
             try {
-                String processOutput = CliRunner.run(azCommand);
-                try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                String token = CliRunner.run(azCommand);
+
+                // Decode Base64 token
+                // Split and get payload
+                String payload = token.split("\\.")[1];
+
+                // Add padding if needed
+                int padding = 4 - (payload.length() % 4);
+                if (padding < 4) {
+                    payload += "=".repeat(padding);
+                }
+
+                // Decode Base64 URL-safe
+                byte[] decodedBytes = Base64.getUrlDecoder().decode(payload);
+                String jsonString = new String(decodedBytes, StandardCharsets.UTF_8);
+
+                try (JsonReader reader = JsonProviders.createReader(jsonString)) {
                     Map<String, Object> signedInUserInfo = reader.readMap(JsonReader::readUntyped);
-                    String userPrincipalName = (String) signedInUserInfo.get("userPrincipalName");
-                    String id = (String) signedInUserInfo.get("id");
+                    String userPrincipalName = (String) signedInUserInfo.get("upn");
+                    String id = (String) signedInUserInfo.get("oid");
                     azureCliUser = new AzureUser(testResourceNamer, id, userPrincipalName);
                 }
             } catch (IOException | InterruptedException e) {
