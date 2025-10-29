@@ -21,7 +21,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.resourcemanager.test.model.AzureUser;
@@ -246,7 +245,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 // Add padding if needed
                 int padding = 4 - (payload.length() % 4);
                 if (padding < 4) {
-                    payload += "=".repeat(padding);
+                    payload += String.join("", Collections.nCopies(padding, "="));
                 }
 
                 // Decode Base64 URL-safe
