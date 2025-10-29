@@ -9,7 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Enables hostname validation for connections to gateway and backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+* Enabled hostname validation for connections to gateway and backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
 * Changed to use incremental change feed to get partition key ranges. - [46810](https://github.com/Azure/azure-sdk-for-java/pull/46810)
 
 ### 4.75.0 (2025-10-21)
