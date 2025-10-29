@@ -128,8 +128,8 @@ public final class SearchKnowledgeBaseClient {
      * @return the output contract for the retrieval response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeBaseRetrievalResponse> retrieveWithResponse(
-        KnowledgeBaseRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization, Context context) {
+    public Response<KnowledgeBaseRetrievalResponse> retrieveWithResponse(KnowledgeBaseRetrievalRequest retrievalRequest,
+        String xMsQuerySourceAuthorization, Context context) {
         return retrievals.retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, null, context);
     }
 }

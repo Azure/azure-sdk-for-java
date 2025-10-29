@@ -137,8 +137,8 @@ public final class SearchKnowledgeBaseAsyncClient {
         return withContext(context -> retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, context));
     }
 
-    Mono<Response<KnowledgeBaseRetrievalResponse>> retrieveWithResponse(
-        KnowledgeBaseRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization, Context context) {
+    Mono<Response<KnowledgeBaseRetrievalResponse>> retrieveWithResponse(KnowledgeBaseRetrievalRequest retrievalRequest,
+        String xMsQuerySourceAuthorization, Context context) {
         try {
             return retrievals.retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
