@@ -21,73 +21,38 @@ public final class HttpRouteConfigInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpRouteConfigInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"provisioningErrors\":[{\"timestamp\":\"2021-02-06T22:47:44Z\",\"message\":\"isczskoswo\"}],\"fqdn\":\"qazu\",\"customDomains\":[{\"name\":\"xzkrrcoi\",\"bindingType\":\"Disabled\",\"certificateId\":\"mnppccekuztd\"},{\"name\":\"bezaxyfukzxuiz\",\"bindingType\":\"Auto\",\"certificateId\":\"epkpe\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"qiubxdukecpxda\",\"revision\":\"dhctmmko\",\"label\":\"udblnsntrp\",\"weight\":823892785},{\"containerApp\":\"kiofkbt\",\"revision\":\"hklbnldpvcbh\",\"label\":\"zyqu\",\"weight\":1363935913},{\"containerApp\":\"qxutrpbrruyuua\",\"revision\":\"lmbjwcolbmxlbnw\",\"label\":\"cpahprzrvxhm\",\"weight\":825654866},{\"containerApp\":\"ocnxz\",\"revision\":\"jhngxnoq\",\"label\":\"tdisnjevhdlmyd\",\"weight\":1625170254}],\"routes\":[{\"match\":{},\"action\":{}},{\"match\":{},\"action\":{}}],\"description\":\"jfdoesxxhm\"},{\"targets\":[{\"containerApp\":\"bckyoikxk\",\"revision\":\"negknjzrb\",\"label\":\"me\",\"weight\":1365496443},{\"containerApp\":\"ukaobrlbpgsnbag\",\"revision\":\"hjhgem\",\"label\":\"wakywalhjymxcgq\",\"weight\":318375489}],\"routes\":[{\"match\":{},\"action\":{}},{\"match\":{},\"action\":{}}],\"description\":\"ljomevt\"}]},\"id\":\"cnlbv\",\"name\":\"jcodkkgjiiytssi\",\"type\":\"izbcufqbvntnr\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningErrors\":[{\"timestamp\":\"2021-04-06T20:01:23Z\",\"message\":\"wjizcilnghgsh\"},{\"timestamp\":\"2021-03-29T23:15:43Z\",\"message\":\"bxqmu\"},{\"timestamp\":\"2021-05-18T00:36:38Z\",\"message\":\"xqzv\"},{\"timestamp\":\"2021-07-23T03:53:30Z\",\"message\":\"bycucrwnamikz\"}],\"fqdn\":\"rqbsmswziq\",\"customDomains\":[{\"name\":\"hokzrusw\",\"bindingType\":\"Disabled\",\"certificateId\":\"zznvfbyc\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"wix\",\"revision\":\"umwmxqhnd\",\"label\":\"oamld\"},{\"containerApp\":\"ehaohdjhh\",\"revision\":\"z\",\"label\":\"xcoxpelnjet\"},{\"containerApp\":\"gltsxoat\",\"revision\":\"g\",\"label\":\"npbs\"}],\"routes\":[{\"match\":{},\"action\":{}}],\"description\":\"ccsrmozihmipgaw\"}]},\"id\":\"xp\",\"name\":\"y\",\"type\":\"cxcjxgry\"}")
             .toObject(HttpRouteConfigInner.class);
-        Assertions.assertEquals("xzkrrcoi", model.properties().customDomains().get(0).name());
+        Assertions.assertEquals("hokzrusw", model.properties().customDomains().get(0).name());
         Assertions.assertEquals(BindingType.DISABLED, model.properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("mnppccekuztd", model.properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("qiubxdukecpxda", model.properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("dhctmmko", model.properties().rules().get(0).targets().get(0).revision());
-        Assertions.assertEquals("udblnsntrp", model.properties().rules().get(0).targets().get(0).label());
-        Assertions.assertEquals(823892785, model.properties().rules().get(0).targets().get(0).weight());
-        Assertions.assertEquals("jfdoesxxhm", model.properties().rules().get(0).description());
+        Assertions.assertEquals("zznvfbyc", model.properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("wix", model.properties().rules().get(0).targets().get(0).containerApp());
+        Assertions.assertEquals("umwmxqhnd", model.properties().rules().get(0).targets().get(0).revision());
+        Assertions.assertEquals("oamld", model.properties().rules().get(0).targets().get(0).label());
+        Assertions.assertEquals("ccsrmozihmipgaw", model.properties().rules().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HttpRouteConfigInner model = new HttpRouteConfigInner().withProperties(new HttpRouteConfigProperties()
-            .withCustomDomains(Arrays.asList(
-                new CustomDomain().withName("xzkrrcoi")
-                    .withBindingType(BindingType.DISABLED)
-                    .withCertificateId("mnppccekuztd"),
-                new CustomDomain().withName("bezaxyfukzxuiz")
-                    .withBindingType(BindingType.AUTO)
-                    .withCertificateId("epkpe")))
-            .withRules(Arrays.asList(
-                new HttpRouteRule()
-                    .withTargets(Arrays.asList(
-                        new HttpRouteTarget().withContainerApp("qiubxdukecpxda")
-                            .withRevision("dhctmmko")
-                            .withLabel("udblnsntrp")
-                            .withWeight(823892785),
-                        new HttpRouteTarget().withContainerApp("kiofkbt")
-                            .withRevision("hklbnldpvcbh")
-                            .withLabel("zyqu")
-                            .withWeight(1363935913),
-                        new HttpRouteTarget().withContainerApp("qxutrpbrruyuua")
-                            .withRevision("lmbjwcolbmxlbnw")
-                            .withLabel("cpahprzrvxhm")
-                            .withWeight(825654866),
-                        new HttpRouteTarget().withContainerApp("ocnxz")
-                            .withRevision("jhngxnoq")
-                            .withLabel("tdisnjevhdlmyd")
-                            .withWeight(1625170254)))
-                    .withRoutes(
-                        Arrays.asList(new HttpRoute().withMatch(new HttpRouteMatch()).withAction(new HttpRouteAction()),
-                            new HttpRoute().withMatch(new HttpRouteMatch()).withAction(new HttpRouteAction())))
-                    .withDescription("jfdoesxxhm"),
-                new HttpRouteRule()
-                    .withTargets(Arrays.asList(
-                        new HttpRouteTarget().withContainerApp("bckyoikxk")
-                            .withRevision("negknjzrb")
-                            .withLabel("me")
-                            .withWeight(1365496443),
-                        new HttpRouteTarget().withContainerApp("ukaobrlbpgsnbag")
-                            .withRevision("hjhgem")
-                            .withLabel("wakywalhjymxcgq")
-                            .withWeight(318375489)))
-                    .withRoutes(
-                        Arrays.asList(new HttpRoute().withMatch(new HttpRouteMatch()).withAction(new HttpRouteAction()),
-                            new HttpRoute().withMatch(new HttpRouteMatch()).withAction(new HttpRouteAction())))
-                    .withDescription("ljomevt"))));
+            .withCustomDomains(Arrays.asList(new CustomDomain().withName("hokzrusw")
+                .withBindingType(BindingType.DISABLED)
+                .withCertificateId("zznvfbyc")))
+            .withRules(Arrays.asList(new HttpRouteRule()
+                .withTargets(Arrays.asList(
+                    new HttpRouteTarget().withContainerApp("wix").withRevision("umwmxqhnd").withLabel("oamld"),
+                    new HttpRouteTarget().withContainerApp("ehaohdjhh").withRevision("z").withLabel("xcoxpelnjet"),
+                    new HttpRouteTarget().withContainerApp("gltsxoat").withRevision("g").withLabel("npbs")))
+                .withRoutes(
+                    Arrays.asList(new HttpRoute().withMatch(new HttpRouteMatch()).withAction(new HttpRouteAction())))
+                .withDescription("ccsrmozihmipgaw"))));
         model = BinaryData.fromObject(model).toObject(HttpRouteConfigInner.class);
-        Assertions.assertEquals("xzkrrcoi", model.properties().customDomains().get(0).name());
+        Assertions.assertEquals("hokzrusw", model.properties().customDomains().get(0).name());
         Assertions.assertEquals(BindingType.DISABLED, model.properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("mnppccekuztd", model.properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("qiubxdukecpxda", model.properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("dhctmmko", model.properties().rules().get(0).targets().get(0).revision());
-        Assertions.assertEquals("udblnsntrp", model.properties().rules().get(0).targets().get(0).label());
-        Assertions.assertEquals(823892785, model.properties().rules().get(0).targets().get(0).weight());
-        Assertions.assertEquals("jfdoesxxhm", model.properties().rules().get(0).description());
+        Assertions.assertEquals("zznvfbyc", model.properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("wix", model.properties().rules().get(0).targets().get(0).containerApp());
+        Assertions.assertEquals("umwmxqhnd", model.properties().rules().get(0).targets().get(0).revision());
+        Assertions.assertEquals("oamld", model.properties().rules().get(0).targets().get(0).label());
+        Assertions.assertEquals("ccsrmozihmipgaw", model.properties().rules().get(0).description());
     }
 }

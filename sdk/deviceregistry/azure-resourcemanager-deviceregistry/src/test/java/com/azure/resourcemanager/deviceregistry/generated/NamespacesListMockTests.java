@@ -23,7 +23,7 @@ public final class NamespacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"xgsrboldforobw\",\"messaging\":{\"endpoints\":{\"lzkwrrwoy\":{\"endpointType\":\"bfhfovvacqp\",\"address\":\"tuodxeszabbelaw\",\"resourceId\":\"ua\"},\"xzsrzpge\":{\"endpointType\":\"ucwyhahno\",\"address\":\"drkywuhps\",\"resourceId\":\"uurutlwexxwlalni\"},\"vl\":{\"endpointType\":\"tybbwwpgda\",\"address\":\"chzyvlixqnrk\",\"resourceId\":\"kjibnxmysuxswqrn\"}}},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"ttexoqqpwcyyufmh\",\"tenantId\":\"nc\",\"type\":\"None\"},\"location\":\"qspkcdqzhlctd\",\"tags\":{\"yfp\":\"qn\",\"gydcw\":\"hrqbnjjrcg\",\"ihrraiouaub\":\"oxjumvqqo\",\"xfuojrn\":\"jtlo\"},\"id\":\"iflrzpasccbiu\",\"name\":\"mzdlyjdfqwmkyo\",\"type\":\"ufdvruz\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"mzlbiojlvfhrb\",\"messaging\":{\"endpoints\":{\"cpilj\":{\"endpointType\":\"vcwwyyurmochppr\",\"address\":\"rsnm\",\"resourceId\":\"ayzejnhlbkpbz\"},\"e\":{\"endpointType\":\"hzvechndbnwieho\",\"address\":\"ewjwiuubw\",\"resourceId\":\"qsfapaqt\"},\"pud\":{\"endpointType\":\"q\",\"address\":\"ex\",\"resourceId\":\"mfxapjwogqqno\"},\"i\":{\"endpointType\":\"abtqwpwyawbzasqb\",\"address\":\"clj\",\"resourceId\":\"yexaoguy\"}}},\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"ault\",\"tenantId\":\"jjum\",\"type\":\"SystemAssigned\"},\"location\":\"azlnqnmcjngzqdqx\",\"tags\":{\"zh\":\"wgnyfusfzsvtui\"},\"id\":\"jqg\",\"name\":\"cfhmlrqryxyn\",\"type\":\"nzrdpsovwxz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,15 @@ public final class NamespacesListMockTests {
 
         PagedIterable<Namespace> response = manager.namespaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qspkcdqzhlctd", response.iterator().next().location());
-        Assertions.assertEquals("qn", response.iterator().next().tags().get("yfp"));
-        Assertions.assertEquals("bfhfovvacqp",
-            response.iterator().next().properties().messaging().endpoints().get("lzkwrrwoy").endpointType());
-        Assertions.assertEquals("tuodxeszabbelaw",
-            response.iterator().next().properties().messaging().endpoints().get("lzkwrrwoy").address());
-        Assertions.assertEquals("ua",
-            response.iterator().next().properties().messaging().endpoints().get("lzkwrrwoy").resourceId());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("azlnqnmcjngzqdqx", response.iterator().next().location());
+        Assertions.assertEquals("wgnyfusfzsvtui", response.iterator().next().tags().get("zh"));
+        Assertions.assertEquals("vcwwyyurmochppr",
+            response.iterator().next().properties().messaging().endpoints().get("cpilj").endpointType());
+        Assertions.assertEquals("rsnm",
+            response.iterator().next().properties().messaging().endpoints().get("cpilj").address());
+        Assertions.assertEquals("ayzejnhlbkpbz",
+            response.iterator().next().properties().messaging().endpoints().get("cpilj").resourceId());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespaceDiscoveredDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Delete_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2025-10-01/Delete_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredDevice.

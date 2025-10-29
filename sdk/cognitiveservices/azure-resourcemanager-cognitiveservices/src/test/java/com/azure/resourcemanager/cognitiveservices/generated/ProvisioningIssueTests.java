@@ -19,66 +19,78 @@ public final class ProvisioningIssueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisioningIssue model = BinaryData.fromString(
-            "{\"name\":\"mmbnpqfrtql\",\"properties\":{\"issueType\":\"egnitg\",\"severity\":\"xlzyqd\",\"description\":\"eg\",\"suggestedResourceIds\":[\"lzxwhcansy\",\"oyqhlwig\",\"ivbkbxgomfaj\"],\"suggestedAccessRules\":[{\"name\":\"qvdaeyyguxakjsq\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"kgimsidxasic\",\"dyvvjskgfmocwahp\"],\"subscriptions\":[{},{}],\"networkSecurityPerimeters\":[{},{},{}],\"fullyQualifiedDomainNames\":[\"ahhvjhhna\"]}},{\"name\":\"ybbjjidjksyx\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"vblbjednljlageua\",\"lxunsmjbnkppxy\"],\"subscriptions\":[{},{}],\"networkSecurityPerimeters\":[{},{},{},{}],\"fullyQualifiedDomainNames\":[\"eizzgwk\",\"nsrmffeycx\"]}}]}}")
+            "{\"name\":\"dqxtbjwgnyf\",\"properties\":{\"issueType\":\"zsvtuikzhajqgl\",\"severity\":\"hm\",\"description\":\"qryxyn\",\"suggestedResourceIds\":[\"rd\",\"sovwxznptgoeiyb\",\"abpfhvfs\",\"kvntjlrigjkskyri\"],\"suggestedAccessRules\":[{\"name\":\"idsxwaabzmifry\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"xrizkzobgop\"],\"subscriptions\":[{}],\"networkSecurityPerimeters\":[{},{},{}],\"fullyQualifiedDomainNames\":[\"lxieixynllxecwcr\",\"jphslhcaw\",\"u\",\"i\"]}},{\"name\":\"wfmvigorqjbt\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"lkafhonqjuje\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{},{}],\"fullyQualifiedDomainNames\":[\"p\",\"pmxelnwcltyje\"]}},{\"name\":\"xxmlfmkqscazua\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"uamwabzxrvxc\",\"s\",\"sphaivmxyasflvg\"],\"subscriptions\":[{},{}],\"networkSecurityPerimeters\":[{},{}],\"fullyQualifiedDomainNames\":[\"koih\"]}}]}}")
             .toObject(ProvisioningIssue.class);
-        Assertions.assertEquals("mmbnpqfrtql", model.name());
-        Assertions.assertEquals("egnitg", model.properties().issueType());
-        Assertions.assertEquals("xlzyqd", model.properties().severity());
-        Assertions.assertEquals("eg", model.properties().description());
-        Assertions.assertEquals("lzxwhcansy", model.properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("qvdaeyyguxakjsq", model.properties().suggestedAccessRules().get(0).name());
+        Assertions.assertEquals("dqxtbjwgnyf", model.name());
+        Assertions.assertEquals("zsvtuikzhajqgl", model.properties().issueType());
+        Assertions.assertEquals("hm", model.properties().severity());
+        Assertions.assertEquals("qryxyn", model.properties().description());
+        Assertions.assertEquals("rd", model.properties().suggestedResourceIds().get(0));
+        Assertions.assertEquals("idsxwaabzmifry", model.properties().suggestedAccessRules().get(0).name());
         Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND,
             model.properties().suggestedAccessRules().get(0).properties().direction());
-        Assertions.assertEquals("kgimsidxasic",
+        Assertions.assertEquals("xrizkzobgop",
             model.properties().suggestedAccessRules().get(0).properties().addressPrefixes().get(0));
-        Assertions.assertEquals("ahhvjhhna",
+        Assertions.assertEquals("lxieixynllxecwcr",
             model.properties().suggestedAccessRules().get(0).properties().fullyQualifiedDomainNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProvisioningIssue model
-            = new ProvisioningIssue().withName("mmbnpqfrtql")
+            = new ProvisioningIssue().withName("dqxtbjwgnyf")
                 .withProperties(
-                    new ProvisioningIssueProperties().withIssueType("egnitg")
-                        .withSeverity("xlzyqd")
-                        .withDescription("eg")
-                        .withSuggestedResourceIds(Arrays.asList("lzxwhcansy", "oyqhlwig", "ivbkbxgomfaj"))
+                    new ProvisioningIssueProperties().withIssueType("zsvtuikzhajqgl")
+                        .withSeverity("hm")
+                        .withDescription("qryxyn")
+                        .withSuggestedResourceIds(
+                            Arrays.asList("rd", "sovwxznptgoeiyb", "abpfhvfs", "kvntjlrigjkskyri"))
                         .withSuggestedAccessRules(
                             Arrays.asList(
-                                new NetworkSecurityPerimeterAccessRule().withName("qvdaeyyguxakjsq")
+                                new NetworkSecurityPerimeterAccessRule().withName("idsxwaabzmifry")
                                     .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()
                                         .withDirection(NspAccessRuleDirection.OUTBOUND)
-                                        .withAddressPrefixes(Arrays.asList("kgimsidxasic", "dyvvjskgfmocwahp"))
+                                        .withAddressPrefixes(Arrays.asList("xrizkzobgop"))
                                         .withSubscriptions(Arrays.asList(
-                                            new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
                                             new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()))
                                         .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeter(),
                                             new NetworkSecurityPerimeter(), new NetworkSecurityPerimeter()))
-                                        .withFullyQualifiedDomainNames(Arrays.asList("ahhvjhhna"))),
-                                new NetworkSecurityPerimeterAccessRule().withName("ybbjjidjksyx")
+                                        .withFullyQualifiedDomainNames(
+                                            Arrays.asList("lxieixynllxecwcr", "jphslhcaw", "u", "i"))),
+                                new NetworkSecurityPerimeterAccessRule().withName("wfmvigorqjbt")
                                     .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()
                                         .withDirection(NspAccessRuleDirection.INBOUND)
-                                        .withAddressPrefixes(Arrays.asList("vblbjednljlageua", "lxunsmjbnkppxy"))
+                                        .withAddressPrefixes(Arrays.asList("lkafhonqjuje"))
+                                        .withSubscriptions(Arrays.asList(
+                                            new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
+                                            new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
+                                            new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
+                                            new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()))
+                                        .withNetworkSecurityPerimeters(Arrays
+                                            .asList(new NetworkSecurityPerimeter(), new NetworkSecurityPerimeter()))
+                                        .withFullyQualifiedDomainNames(Arrays.asList("p", "pmxelnwcltyje"))),
+                                new NetworkSecurityPerimeterAccessRule().withName("xxmlfmkqscazua")
+                                    .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()
+                                        .withDirection(NspAccessRuleDirection.INBOUND)
+                                        .withAddressPrefixes(Arrays.asList("uamwabzxrvxc", "s", "sphaivmxyasflvg"))
                                         .withSubscriptions(Arrays.asList(
                                             new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
                                             new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()))
                                         .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeter(),
-                                            new NetworkSecurityPerimeter(), new NetworkSecurityPerimeter(),
                                             new NetworkSecurityPerimeter()))
-                                        .withFullyQualifiedDomainNames(Arrays.asList("eizzgwk", "nsrmffeycx"))))));
+                                        .withFullyQualifiedDomainNames(Arrays.asList("koih"))))));
         model = BinaryData.fromObject(model).toObject(ProvisioningIssue.class);
-        Assertions.assertEquals("mmbnpqfrtql", model.name());
-        Assertions.assertEquals("egnitg", model.properties().issueType());
-        Assertions.assertEquals("xlzyqd", model.properties().severity());
-        Assertions.assertEquals("eg", model.properties().description());
-        Assertions.assertEquals("lzxwhcansy", model.properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("qvdaeyyguxakjsq", model.properties().suggestedAccessRules().get(0).name());
+        Assertions.assertEquals("dqxtbjwgnyf", model.name());
+        Assertions.assertEquals("zsvtuikzhajqgl", model.properties().issueType());
+        Assertions.assertEquals("hm", model.properties().severity());
+        Assertions.assertEquals("qryxyn", model.properties().description());
+        Assertions.assertEquals("rd", model.properties().suggestedResourceIds().get(0));
+        Assertions.assertEquals("idsxwaabzmifry", model.properties().suggestedAccessRules().get(0).name());
         Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND,
             model.properties().suggestedAccessRules().get(0).properties().direction());
-        Assertions.assertEquals("kgimsidxasic",
+        Assertions.assertEquals("xrizkzobgop",
             model.properties().suggestedAccessRules().get(0).properties().addressPrefixes().get(0));
-        Assertions.assertEquals("ahhvjhhna",
+        Assertions.assertEquals("lxieixynllxecwcr",
             model.properties().suggestedAccessRules().get(0).properties().fullyQualifiedDomainNames().get(0));
     }
 }

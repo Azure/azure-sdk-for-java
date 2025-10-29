@@ -337,7 +337,7 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-01-preview";
+        this.apiVersion = "2025-10-01";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);

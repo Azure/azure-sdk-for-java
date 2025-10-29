@@ -32,7 +32,6 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -4910,7 +4909,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             ResourceType.PartitionKeyRange,
             PartitionKeyRange.class,
-            Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
+            Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT),
+            true);
     }
 
     private RxDocumentServiceRequest getStoredProcedureRequest(String collectionLink, StoredProcedure storedProcedure,
@@ -6199,14 +6199,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
-        return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink);
+        return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink, false);
     }
 
     private <T> Flux<FeedResponse<T>> nonDocumentReadFeedInternal(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
         Class<T> klass,
-        String resourceLink) {
+        String resourceLink,
+        boolean isChangeFeed) {
 
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
@@ -6216,21 +6217,39 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // readFeed is only used for non-document operations - no need to wire up hedging
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
-            if (continuationToken != null) {
-                requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-            }
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
+            if (isChangeFeed) {
+                requestHeaders.put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+            }
+
+            if (StringUtils.isNotEmpty(continuationToken)) {
+                requestHeaders.put(
+                    isChangeFeed ? HttpConstants.HttpHeaders.IF_NONE_MATCH : HttpConstants.HttpHeaders.CONTINUATION,
+                    continuationToken);
+            }
+
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
             return request;
         };
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
-            request -> readFeed(request)
-                .map(response -> feedResponseAccessor.createFeedResponse(
-                                    response,
-                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
-                                    klass));
+            request -> {
+                return readFeed(request)
+                    .map(response -> {
+                        if (isChangeFeed) {
+                            return feedResponseAccessor.createChangeFeedResponse(
+                                response,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                klass);
+                        } else {
+                            return feedResponseAccessor.createFeedResponse(
+                                response,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                klass);
+                        }
+                    });
+            };
 
         return Paginator
             .getPaginatedNonDocumentReadFeedResultAsObservable(
@@ -6240,7 +6259,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 executeFunc,
                 maxPageSize,
                 this.globalEndpointManager,
-                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                isChangeFeed);
     }
 
     @Override
