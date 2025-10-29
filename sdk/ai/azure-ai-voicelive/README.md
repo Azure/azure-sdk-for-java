@@ -127,6 +127,44 @@ The following sections provide code snippets for common scenarios:
 * [Voice configuration](#voice-configuration)
 * [Complete voice assistant with microphone](#complete-voice-assistant-with-microphone)
 
+### Focused Sample Files
+
+For easier learning, explore these focused samples in order:
+
+1. **[BasicVoiceConversationSample.java](src/samples/java/com/azure/ai/voicelive/BasicVoiceConversationSample.java)** - Start here to learn the basics
+   - Minimal setup and session management
+   - Client creation and configuration
+   - Basic event handling
+   - Run: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.BasicVoiceConversationSample" -Dexec.classpathScope=test`
+
+2. **[AuthenticationMethodsSample.java](src/samples/java/com/azure/ai/voicelive/AuthenticationMethodsSample.java)** - Learn authentication options
+   - API Key authentication (default)
+   - Token Credential authentication with DefaultAzureCredential
+   - Run with API key: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AuthenticationMethodsSample" -Dexec.classpathScope=test`
+   - Run with token: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AuthenticationMethodsSample" -Dexec.classpathScope=test -Dexec.args="--token-credential"`
+
+3. **[MicrophoneInputSample.java](src/samples/java/com/azure/ai/voicelive/MicrophoneInputSample.java)** - Add audio input capability
+   - Real-time microphone audio capture
+   - Audio format configuration (24kHz, 16-bit PCM, mono)
+   - Streaming audio to the service
+   - Speech detection events
+   - Run: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.MicrophoneInputSample" -Dexec.classpathScope=test`
+
+4. **[AudioPlaybackSample.java](src/samples/java/com/azure/ai/voicelive/AudioPlaybackSample.java)** - Add audio output capability
+   - Receiving audio responses from service
+   - Audio playback to speakers
+   - Response completion tracking
+   - Run: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AudioPlaybackSample" -Dexec.classpathScope=test`
+
+5. **[VoiceAssistantSample.java](src/samples/java/com/azure/ai/voicelive/VoiceAssistantSample.java)** - Complete production-ready implementation
+   - Full bidirectional audio streaming
+   - Voice Activity Detection (VAD) with interruption handling
+   - Audio transcription with Whisper
+   - Noise reduction and echo cancellation
+   - Multi-threaded audio processing
+   - Run with API key: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test`
+   - Run with token: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-token-credential"`
+
 ### Simple voice assistant
 
 Create a basic voice assistant session:
@@ -369,7 +407,7 @@ client.startSession("gpt-4o-realtime-preview")
 ```
 <!-- END: com.azure.ai.voicelive.readme -->
 
-For a complete, runnable implementation with microphone capture and audio playback, see the [VoiceAssistantSample][sample_voice_assistant].
+For complete, runnable implementations, see the [Focused Sample Files](#focused-sample-files) section above.
 
 ## Troubleshooting
 
@@ -414,10 +452,9 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 
 ## Next steps
 
-### Additional samples
+### Sample files
 
-- [VoiceAssistantSample][sample_voice_assistant] - Complete voice assistant with real-time microphone input and audio playback
-- [ReadmeSamples][sample_readme] - Code snippets used in this README
+All sample files are located in [src/samples/java/com/azure/ai/voicelive/](src/samples/java/com/azure/ai/voicelive/). See the [Focused Sample Files](#focused-sample-files) section for detailed descriptions and running instructions.
 
 ### Additional documentation
 

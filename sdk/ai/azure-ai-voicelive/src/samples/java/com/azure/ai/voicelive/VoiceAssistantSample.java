@@ -43,16 +43,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Enhanced Voice Assistant sample demonstrating real-time microphone input and audio playback.
+ * Complete voice assistant sample demonstrating full-featured real-time voice conversation.
  *
- * <p>This sample shows how to:</p>
+ * <p><strong>NOTE:</strong> This is a comprehensive sample showing all features together.
+ * For easier understanding, see these focused samples:</p>
  * <ul>
- *   <li>Capture audio from microphone in real-time</li>
- *   <li>Send captured audio to VoiceLive service</li>
- *   <li>Receive and play audio responses from the service</li>
- *   <li>Handle conversation flow with proper interruption</li>
- *   <li>Manage audio streaming with proper threading</li>
- *   <li>Authenticate using API key or token credentials</li>
+ *   <li>{@link BasicVoiceConversationSample} - Minimal setup and session management</li>
+ *   <li>{@link MicrophoneInputSample} - Audio capture from microphone</li>
+ *   <li>{@link AudioPlaybackSample} - Audio playback to speakers</li>
+ *   <li>{@link AuthenticationMethodsSample} - Different authentication methods</li>
+ * </ul>
+ *
+ * <p>This sample demonstrates:</p>
+ * <ul>
+ *   <li>Real-time microphone audio capture</li>
+ *   <li>Streaming audio to VoiceLive service</li>
+ *   <li>Receiving and playing audio responses</li>
+ *   <li>Voice Activity Detection (VAD) with interruption handling</li>
+ *   <li>Multi-threaded audio processing</li>
+ *   <li>Audio transcription with Whisper</li>
+ *   <li>Noise reduction and echo cancellation</li>
+ *   <li>Dual authentication support (API key and token credential)</li>
  * </ul>
  *
  * <p><strong>Environment Variables Required:</strong></p>
@@ -64,6 +75,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p><strong>Audio Requirements:</strong></p>
  * The sample requires a working microphone and speakers/headphones.
  * Audio format is 24kHz, 16-bit PCM, mono as required by the VoiceLive service.
+ *
+ * <p><strong>How to Run:</strong></p>
+ * <pre>{@code
+ * # With API Key (default):
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test
+ *
+ * # With Token Credential:
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-token-credential"
+ * }</pre>
  */
 public final class VoiceAssistantSample {
 
