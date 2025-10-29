@@ -1261,20 +1261,20 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deleted managed HSM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String location, String name) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+    public Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String name, String location) {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1286,8 +1286,8 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1295,13 +1295,13 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * @return the specified deleted managed HSM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String location, String name,
+    private Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String name, String location,
         Context context) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1312,23 +1312,23 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deleted managed HSM on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedManagedHsmInner> getDeletedAsync(String location, String name) {
-        return getDeletedWithResponseAsync(location, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<DeletedManagedHsmInner> getDeletedAsync(String name, String location) {
+        return getDeletedWithResponseAsync(name, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1336,42 +1336,42 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * @return the specified deleted managed HSM along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedManagedHsmInner> getDeletedWithResponse(String location, String name, Context context) {
-        return getDeletedWithResponseAsync(location, name, context).block();
+    public Response<DeletedManagedHsmInner> getDeletedWithResponse(String name, String location, Context context) {
+        return getDeletedWithResponseAsync(name, location, context).block();
     }
 
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deleted managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedManagedHsmInner getDeleted(String location, String name) {
-        return getDeletedWithResponse(location, name, Context.NONE).getValue();
+    public DeletedManagedHsmInner getDeleted(String name, String location) {
+        return getDeletedWithResponse(name, location, Context.NONE).getValue();
     }
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String name) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+    public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String name, String location) {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.purgeDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1382,8 +1382,8 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1391,13 +1391,13 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String name,
+    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String name, String location,
         Context context) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
         return service.purgeDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1407,16 +1407,16 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String name) {
-        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(location, name);
+    public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String name, String location) {
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(name, location);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1424,8 +1424,8 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1433,9 +1433,9 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String name, String location, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(location, name, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(name, location, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1443,23 +1443,23 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String name) {
-        return this.beginPurgeDeletedAsync(location, name).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String name, String location) {
+        return this.beginPurgeDeletedAsync(name, location).getSyncPoller();
     }
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1467,30 +1467,30 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String name, Context context) {
-        return this.beginPurgeDeletedAsync(location, name, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String name, String location, Context context) {
+        return this.beginPurgeDeletedAsync(name, location, context).getSyncPoller();
     }
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purgeDeletedAsync(String location, String name) {
-        return beginPurgeDeletedAsync(location, name).last().flatMap(this.client::getLroFinalResultOrError);
+    public Mono<Void> purgeDeletedAsync(String name, String location) {
+        return beginPurgeDeletedAsync(name, location).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1498,37 +1498,37 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> purgeDeletedAsync(String location, String name, Context context) {
-        return beginPurgeDeletedAsync(location, name, context).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> purgeDeletedAsync(String name, String location, Context context) {
+        return beginPurgeDeletedAsync(name, location, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeleted(String location, String name) {
-        purgeDeletedAsync(location, name).block();
+    public void purgeDeleted(String name, String location) {
+        purgeDeletedAsync(name, location).block();
     }
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeleted(String location, String name, Context context) {
-        purgeDeletedAsync(location, name, context).block();
+    public void purgeDeleted(String name, String location, Context context) {
+        purgeDeletedAsync(name, location, context).block();
     }
 
     /**

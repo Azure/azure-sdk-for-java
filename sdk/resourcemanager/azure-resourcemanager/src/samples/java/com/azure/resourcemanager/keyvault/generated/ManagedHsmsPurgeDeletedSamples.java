@@ -21,6 +21,6 @@ public final class ManagedHsmsPurgeDeletedSamples {
             .manager()
             .serviceClient()
             .getManagedHsms()
-            .purgeDeleted("westus", "hsm1", com.azure.core.util.Context.NONE);
+            .purgeDeleted("hsm1", "westus", com.azure.core.util.Context.NONE);
     }
 }

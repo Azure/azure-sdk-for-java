@@ -21,6 +21,6 @@ public final class VaultsPurgeDeletedSamples {
             .manager()
             .serviceClient()
             .getVaults()
-            .purgeDeleted("westus", "sample-vault", com.azure.core.util.Context.NONE);
+            .purgeDeleted("sample-vault", "westus", com.azure.core.util.Context.NONE);
     }
 }

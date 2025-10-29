@@ -1269,20 +1269,20 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Gets the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deleted Azure key vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedVaultInner>> getDeletedWithResponseAsync(String location, String vaultName) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+    public Mono<Response<DeletedVaultInner>> getDeletedWithResponseAsync(String vaultName, String location) {
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1294,8 +1294,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Gets the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1303,13 +1303,13 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return the deleted Azure key vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedVaultInner>> getDeletedWithResponseAsync(String location, String vaultName,
+    private Mono<Response<DeletedVaultInner>> getDeletedWithResponseAsync(String vaultName, String location,
         Context context) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1320,23 +1320,23 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Gets the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deleted Azure key vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedVaultInner> getDeletedAsync(String location, String vaultName) {
-        return getDeletedWithResponseAsync(location, vaultName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<DeletedVaultInner> getDeletedAsync(String vaultName, String location) {
+        return getDeletedWithResponseAsync(vaultName, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1344,42 +1344,42 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return the deleted Azure key vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedVaultInner> getDeletedWithResponse(String location, String vaultName, Context context) {
-        return getDeletedWithResponseAsync(location, vaultName, context).block();
+    public Response<DeletedVaultInner> getDeletedWithResponse(String vaultName, String location, Context context) {
+        return getDeletedWithResponseAsync(vaultName, location, context).block();
     }
 
     /**
      * Gets the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deleted Azure key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedVaultInner getDeleted(String location, String vaultName) {
-        return getDeletedWithResponse(location, vaultName, Context.NONE).getValue();
+    public DeletedVaultInner getDeleted(String vaultName, String location) {
+        return getDeletedWithResponse(vaultName, location, Context.NONE).getValue();
     }
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String vaultName) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
+    public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String vaultName, String location) {
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.purgeDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1390,8 +1390,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1399,13 +1399,13 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String vaultName,
+    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String vaultName, String location,
         Context context) {
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
         return service.purgeDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1415,16 +1415,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String vaultName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(location, vaultName);
+    public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String vaultName, String location) {
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1432,8 +1432,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1441,10 +1441,10 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String vaultName,
+    private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String vaultName, String location,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(location, vaultName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1452,23 +1452,23 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String vaultName) {
-        return this.beginPurgeDeletedAsync(location, vaultName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location) {
+        return this.beginPurgeDeletedAsync(vaultName, location).getSyncPoller();
     }
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1476,30 +1476,30 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String vaultName, Context context) {
-        return this.beginPurgeDeletedAsync(location, vaultName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location, Context context) {
+        return this.beginPurgeDeletedAsync(vaultName, location, context).getSyncPoller();
     }
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purgeDeletedAsync(String location, String vaultName) {
-        return beginPurgeDeletedAsync(location, vaultName).last().flatMap(this.client::getLroFinalResultOrError);
+    public Mono<Void> purgeDeletedAsync(String vaultName, String location) {
+        return beginPurgeDeletedAsync(vaultName, location).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1507,38 +1507,38 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> purgeDeletedAsync(String location, String vaultName, Context context) {
-        return beginPurgeDeletedAsync(location, vaultName, context).last()
+    private Mono<Void> purgeDeletedAsync(String vaultName, String location, Context context) {
+        return beginPurgeDeletedAsync(vaultName, location, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeleted(String location, String vaultName) {
-        purgeDeletedAsync(location, vaultName).block();
+    public void purgeDeleted(String vaultName, String location) {
+        purgeDeletedAsync(vaultName, location).block();
     }
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      * 
-     * @param location The name of the Azure region.
      * @param vaultName The name of the vault.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeleted(String location, String vaultName, Context context) {
-        purgeDeletedAsync(location, vaultName, context).block();
+    public void purgeDeleted(String vaultName, String location, Context context) {
+        purgeDeletedAsync(vaultName, location, context).block();
     }
 
     /**

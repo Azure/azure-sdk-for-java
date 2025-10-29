@@ -21,6 +21,6 @@ public final class VaultsGetDeletedSamples {
             .manager()
             .serviceClient()
             .getVaults()
-            .getDeletedWithResponse("westus", "sample-vault", com.azure.core.util.Context.NONE);
+            .getDeletedWithResponse("sample-vault", "westus", com.azure.core.util.Context.NONE);
     }
 }

@@ -21,6 +21,6 @@ public final class ManagedHsmsGetDeletedSamples {
             .manager()
             .serviceClient()
             .getManagedHsms()
-            .getDeletedWithResponse("westus", "hsm1", com.azure.core.util.Context.NONE);
+            .getDeletedWithResponse("hsm1", "westus", com.azure.core.util.Context.NONE);
     }
 }

@@ -486,34 +486,34 @@ public interface ManagedHsmsClient
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deleted managed HSM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String location, String name);
+    Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String name, String location);
 
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deleted managed HSM on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeletedManagedHsmInner> getDeletedAsync(String location, String name);
+    Mono<DeletedManagedHsmInner> getDeletedAsync(String name, String location);
 
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -521,65 +521,65 @@ public interface ManagedHsmsClient
      * @return the specified deleted managed HSM along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeletedManagedHsmInner> getDeletedWithResponse(String location, String name, Context context);
+    Response<DeletedManagedHsmInner> getDeletedWithResponse(String name, String location, Context context);
 
     /**
      * Gets the specified deleted managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deleted managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeletedManagedHsmInner getDeleted(String location, String name);
+    DeletedManagedHsmInner getDeleted(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String name);
+    Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String name);
+    PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String name);
+    SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -587,45 +587,45 @@ public interface ManagedHsmsClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String name, String location, Context context);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> purgeDeletedAsync(String location, String name);
+    Mono<Void> purgeDeletedAsync(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purgeDeleted(String location, String name);
+    void purgeDeleted(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
      * 
-     * @param location The name of the Azure region.
      * @param name The name of the deleted managed HSM.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purgeDeleted(String location, String name, Context context);
+    void purgeDeleted(String name, String location, Context context);
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
