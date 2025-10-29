@@ -123,7 +123,6 @@ public final class SessionUpdateConversationItemTruncated extends SessionUpdate 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("event_id", getEventId());
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("content_index", this.contentIndex);
         jsonWriter.writeIntField("audio_end_ms", this.audioEndMs);

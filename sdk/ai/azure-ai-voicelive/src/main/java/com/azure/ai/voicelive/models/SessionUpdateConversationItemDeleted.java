@@ -85,7 +85,6 @@ public final class SessionUpdateConversationItemDeleted extends SessionUpdate {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("event_id", getEventId());
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("event_id", this.eventId);
