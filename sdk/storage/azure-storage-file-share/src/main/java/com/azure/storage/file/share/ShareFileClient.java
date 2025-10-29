@@ -31,6 +31,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
@@ -77,6 +78,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
@@ -539,13 +541,24 @@ public class ShareFileClient {
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
 
+        Long contentLength;
+        byte[] contentMD5;
+        if (options.getData() != null) {
+            contentLength = options.getData().getLength();
+            contentMD5 = UploadUtils.computeMd5(options.getData().toByteBuffer(), LOGGER);
+        } else {
+            contentLength = null;
+            contentMD5 = null;
+        }
+
         Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
             .createWithResponse(shareName, filePath, options.getSize(), null, options.getMetadata(),
                 options.getFilePermission(), options.getFilePermissionFormat(), smbProperties.getFilePermissionKey(),
                 smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
                 smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
                 requestConditions.getLeaseId(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), options.getShareFileHttpHeaders(),
+                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), contentMD5,
+                options.getFilePropertySemantics(), contentLength, options.getData(), options.getShareFileHttpHeaders(),
                 finalContext);
 
         return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -3260,5 +3273,37 @@ public class ShareFileClient {
                 .getSymbolicLinkWithResponse(shareName, filePath, null, snapshot, null, finalContext);
 
         return ModelHelper.getSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
+    }
+
+    /**
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }
