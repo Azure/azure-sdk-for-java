@@ -6,6 +6,8 @@ package com.azure.storage.blob;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
@@ -18,6 +20,7 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
