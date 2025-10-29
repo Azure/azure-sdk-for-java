@@ -23,7 +23,7 @@ public class InvalidHostnameTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT)
     public void connectingFailsWhenHostnameIsInvalid() throws Exception {
         CosmosDatabase createdDatabase = null;
         CosmosClient client = null;
