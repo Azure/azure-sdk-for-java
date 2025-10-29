@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.  
-// Licensed under the MIT License.  
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.identity.implementation.customtokenproxy;
 
@@ -17,10 +17,13 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class CustomTokenProxyHttpResponse extends HttpResponse {
+public final class CustomTokenProxyHttpResponse extends HttpResponse {
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyHttpResponse.class);
 
     // private final HttpRequest request;
     private final int statusCode;
@@ -52,7 +55,8 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
         try {
             return connection.getResponseCode();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to get status code from token proxy response", e);
+            throw LOGGER
+                .logExceptionAsError(new RuntimeException("Failed to get status code from token proxy response", e));
         }
     }
 
@@ -77,19 +81,26 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
             if (cachedResponseBodyBytes != null) {
                 return cachedResponseBodyBytes;
             }
-            try (InputStream stream = getResponseStream()) {
+
+            InputStream stream = null;
+            try {
+                stream = getResponseStream();
                 if (stream == null) {
                     cachedResponseBodyBytes = new byte[0];
                     return cachedResponseBodyBytes;
                 }
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                byte[] tmp = new byte[4096];
                 int n;
-                while ((n = stream.read(tmp)) != -1) {
-                    buffer.write(tmp, 0, n);
+                byte[] temp = new byte[4096];
+                while ((n = stream.read(temp)) != -1) {
+                    buffer.write(temp, 0, n);
                 }
                 cachedResponseBodyBytes = buffer.toByteArray();
                 return cachedResponseBodyBytes;
+            } finally {
+                if (stream != null) {
+                    stream.close();
+                }
             }
         });
     }

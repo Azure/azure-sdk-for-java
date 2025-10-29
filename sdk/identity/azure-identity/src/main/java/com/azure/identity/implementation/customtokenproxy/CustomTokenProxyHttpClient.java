@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.  
-// Licensed under the MIT License.  
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.identity.implementation.customtokenproxy;
 
@@ -33,18 +33,29 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 
 import reactor.core.publisher.Mono;
 
 public class CustomTokenProxyHttpClient implements HttpClient {
 
+    private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyHttpClient.class);
+
     private final ProxyConfig proxyConfig;
     private volatile SSLContext cachedSSLContext;
     private volatile byte[] cachedFileContent;
+    private final URL proxyUrl;
+    private final String sniName;
+    private final byte[] caData;
+    private final String caFile;
 
     public CustomTokenProxyHttpClient(ProxyConfig proxyConfig) {
         this.proxyConfig = proxyConfig;
+        this.proxyUrl = proxyConfig.getTokenProxyUrl();
+        this.sniName = proxyConfig.getSniName();
+        this.caData = proxyConfig.getCaData();
+        this.caFile = proxyConfig.getCaFile();
     }
 
     @Override
@@ -58,7 +69,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             HttpURLConnection connection = createConnection(request);
             return new CustomTokenProxyHttpResponse(request, connection);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create connection to token proxy", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to create connection to token proxy", e));
         }
     }
 
@@ -69,20 +80,28 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         try {
             SSLContext sslContext = getSSLContext();
             SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            if (!CoreUtils.isNullOrEmpty(proxyConfig.getSniName())) {
-                sslSocketFactory = new IdentitySslUtil.SniSslSocketFactory(sslSocketFactory, proxyConfig.getSniName());
+            if (!CoreUtils.isNullOrEmpty(sniName)) {
+                sslSocketFactory = new IdentitySslUtil.SniSslSocketFactory(sslSocketFactory, sniName);
             }
             connection.setSSLSocketFactory(sslSocketFactory);
-            connection.setHostnameVerifier(sniAwareVerifier(proxyConfig.getSniName(), proxyConfig.getTokenProxyUrl()));
+            connection.setHostnameVerifier(sniAwareVerifier(sniName, proxyUrl));
         } catch (Exception e) {
-            throw new RuntimeException("Failed to set up SSL context for token proxy", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set up SSL context for token proxy", e));
         }
 
-        connection.setRequestMethod(request.getHttpMethod().toString());
+        String method = request.getHttpMethod().toString();
+        connection.setRequestMethod(method);
         connection.setInstanceFollowRedirects(false);
         connection.setConnectTimeout(10_000);
         connection.setReadTimeout(20_000);
-        connection.setDoOutput(true);
+
+        boolean hasBody = request.getBodyAsBinaryData() != null && request.getBodyAsBinaryData().toBytes() != null;
+
+        if (hasBody && ("POST".equals(method) || "PUT".equals(method) || "PATCH".equals(method))) {
+            connection.setDoOutput(true);
+        } else {
+            connection.setDoOutput(false);
+        }
 
         request.getHeaders().forEach(header -> {
             connection.addRequestProperty(header.getName(), header.getValue());
@@ -105,9 +124,10 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             String originalPath = originalUrl.getPath();
             String originalQuery = originalUrl.getQuery();
 
-            String tokenProxyBase = proxyConfig.getTokenProxyUrl().toString();
-            if (!tokenProxyBase.endsWith("/"))
+            String tokenProxyBase = proxyUrl.toString();
+            if (!tokenProxyBase.endsWith("/")) {
                 tokenProxyBase += "/";
+            }
 
             URI combined = URI.create(tokenProxyBase)
                 .resolve(originalPath.startsWith("/") ? originalPath.substring(1) : originalPath);
@@ -120,15 +140,14 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             return new URL(combinedStr);
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to rewrite token request for proxy", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to rewrite token request for proxy", e));
         }
     }
 
     private SSLContext getSSLContext() {
         try {
             // If no CA override provided, use default
-            if (CoreUtils.isNullOrEmpty(proxyConfig.getCaFile())
-                && (proxyConfig.getCaData() == null || proxyConfig.getCaData().length == 0)) {
+            if (CoreUtils.isNullOrEmpty(caFile) && (caData == null || caData.length == 0)) {
                 synchronized (this) {
                     if (cachedSSLContext == null) {
                         cachedSSLContext = SSLContext.getDefault();
@@ -138,26 +157,26 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             }
 
             // If CA data provided, use it
-            if (CoreUtils.isNullOrEmpty(proxyConfig.getCaFile())) {
+            if (CoreUtils.isNullOrEmpty(caFile)) {
                 synchronized (this) {
                     if (cachedSSLContext == null) {
-                        cachedSSLContext = createSslContextFromBytes(proxyConfig.getCaData());
+                        cachedSSLContext = createSslContextFromBytes(caData);
                     }
                 }
                 return cachedSSLContext;
             }
 
             // If CA file provided, read it (and re-read if it changes)
-            Path path = Paths.get(proxyConfig.getCaFile());
+            Path path = Paths.get(caFile);
             if (!Files.exists(path)) {
-                throw new IOException("CA file not found: " + proxyConfig.getCaFile());
+                throw LOGGER.logExceptionAsError(new RuntimeException("CA file not found: " + caFile));
             }
 
             byte[] currentContent = Files.readAllBytes(path);
 
             synchronized (this) {
                 if (currentContent.length == 0) {
-                    throw new IOException("CA file " + proxyConfig.getCaFile() + " is empty");
+                    throw LOGGER.logExceptionAsError(new RuntimeException("CA file " + caFile + " is empty"));
                 }
 
                 if (cachedSSLContext == null || !Arrays.equals(currentContent, cachedFileContent)) {
@@ -168,7 +187,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             return cachedSSLContext;
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize SSLContext for proxy", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to initialize SSLContext for proxy", e));
         }
     }
 
@@ -188,11 +207,11 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             }
 
             if (certificates.isEmpty()) {
-                throw new RuntimeException("No valid certificates found");
+                throw LOGGER.logExceptionAsError(new RuntimeException("No valid certificates found"));
             }
             return createSslContext(certificates);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create SSLContext from bytes", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to create SSLContext from bytes", e));
         }
     }
 
@@ -213,14 +232,14 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             context.init(null, tmf.getTrustManagers(), null);
             return context;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create SSLContext", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to create SSLContext", e));
         }
     }
 
-    private static HostnameVerifier sniAwareVerifier(String sniName, URL proxyUrl) {
+    private static HostnameVerifier sniAwareVerifier(String sniName, URL customProxyUrl) {
         return (urlHost, session) -> {
             String peerHost = session.getPeerHost();
-            String expectedProxyHost = proxyUrl.getHost();
+            String expectedProxyHost = customProxyUrl.getHost();
             return peerHost.equalsIgnoreCase(expectedProxyHost)
                 || (!CoreUtils.isNullOrEmpty(sniName) && peerHost.equalsIgnoreCase(sniName));
         };

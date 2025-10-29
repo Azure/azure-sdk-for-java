@@ -67,6 +67,14 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         return this;
     }
 
+    /**
+     * Enables the Kubernetes token proxy feature for AKS workload identity scenarios.
+     * When enabled, the credential will attempt to use a custom token proxy configured through
+     * environment variables (AZURE_KUBERNETES_TOKEN_PROXY, AZURE_KUBERNETES_CA_FILE,
+     * AZURE_KUBERNETES_CA_DATA, AZURE_KUBERNETES_SNI_NAME).
+     *
+     * @return An updated instance of this builder with Kubernetes token proxy enabled.
+     */
     public WorkloadIdentityCredentialBuilder enableKubernetesTokenProxy() {
         this.enableTokenProxy = true;
         return this;

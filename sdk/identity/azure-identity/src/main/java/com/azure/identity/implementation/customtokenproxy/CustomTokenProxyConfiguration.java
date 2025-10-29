@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.  
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.azure.identity.implementation.customtokenproxy;
@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
-public class CustomTokenProxyConfiguration {
+public final class CustomTokenProxyConfiguration {
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyConfiguration.class);
 
