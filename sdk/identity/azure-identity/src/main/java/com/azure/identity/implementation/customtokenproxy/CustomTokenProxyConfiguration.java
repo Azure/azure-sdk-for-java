@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.  
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation.customtokenproxy;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -60,7 +63,8 @@ public class CustomTokenProxyConfiguration {
             }
         }
 
-        return new ProxyConfig(proxyUrl, sniName, caFile, caCertBytes);
+        ProxyConfig config = new ProxyConfig(proxyUrl, sniName, caFile, caCertBytes);
+        return config;
     }
 
     private static URL validateProxyUrl(String endpoint) {
@@ -104,15 +108,5 @@ public class CustomTokenProxyConfiguration {
             throw new RuntimeException("Unexpected error while validating proxy URL: " + endpoint, e);
         }
     }
-
-    // public static String getTokenProxyUrl() {
-    //     String tokenProxyUrl = System.getenv(AZURE_KUBERNETES_TOKEN_PROXY);
-    //     if (tokenProxyUrl == null || tokenProxyUrl.isEmpty()) {
-    //         throw LOGGER.logExceptionAsError(new IllegalStateException(
-    //             String.format("Environment variable '%s' is not set or is empty. It must be set to the URL of the"
-    //                 + " token proxy.", AZURE_KUBERNETES_TOKEN_PROXY)));
-    //     }
-    //     return tokenProxyUrl;
-    // }
 
 }

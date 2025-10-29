@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.  
+// Licensed under the MIT License.  
+
 package com.azure.identity.implementation.customtokenproxy;
 
 import java.io.ByteArrayInputStream;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -61,7 +65,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     private HttpURLConnection createConnection(HttpRequest request) throws IOException {
         URL updatedUrl = rewriteTokenRequestForProxy(request.getUrl());
         HttpsURLConnection connection = (HttpsURLConnection) updatedUrl.openConnection();
-
         // If SNI explicitly provided
         try {
             SSLContext sslContext = getSSLContext();
@@ -70,6 +73,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                 sslSocketFactory = new IdentitySslUtil.SniSslSocketFactory(sslSocketFactory, proxyConfig.getSniName());
             }
             connection.setSSLSocketFactory(sslSocketFactory);
+            connection.setHostnameVerifier(sniAwareVerifier(proxyConfig.getSniName(), proxyConfig.getTokenProxyUrl()));
         } catch (Exception e) {
             throw new RuntimeException("Failed to set up SSL context for token proxy", e);
         }
@@ -93,7 +97,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                 }
             }
         }
-
         return connection;
     }
 
@@ -162,7 +165,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                     cachedFileContent = currentContent;
                 }
             }
-
             return cachedSSLContext;
 
         } catch (Exception e) {
@@ -176,24 +178,18 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
             List<X509Certificate> certificates = new ArrayList<>();
-            // while(inputStream.available() > 0) {
-            //     X509Certificate cert = (X509Certificate) cf.generateCertificate(inputStream);
-            //     certificates.add(cert);
-            // }
             while (true) {
                 try {
                     X509Certificate cert = (X509Certificate) cf.generateCertificate(inputStream);
                     certificates.add(cert);
                 } catch (CertificateException e) {
-                    break; // end of stream
+                    break;
                 }
             }
 
             if (certificates.isEmpty()) {
                 throw new RuntimeException("No valid certificates found");
             }
-
-            // X509Certificate caCert = certificates.get(0);
             return createSslContext(certificates);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create SSLContext from bytes", e);
@@ -219,6 +215,15 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         } catch (Exception e) {
             throw new RuntimeException("Failed to create SSLContext", e);
         }
+    }
+
+    private static HostnameVerifier sniAwareVerifier(String sniName, URL proxyUrl) {
+        return (urlHost, session) -> {
+            String peerHost = session.getPeerHost();
+            String expectedProxyHost = proxyUrl.getHost();
+            return peerHost.equalsIgnoreCase(expectedProxyHost)
+                || (!CoreUtils.isNullOrEmpty(sniName) && peerHost.equalsIgnoreCase(sniName));
+        };
     }
 
 }

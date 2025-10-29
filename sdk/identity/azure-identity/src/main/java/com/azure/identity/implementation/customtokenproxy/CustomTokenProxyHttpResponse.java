@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.  
+// Licensed under the MIT License.  
+
 package com.azure.identity.implementation.customtokenproxy;
 
 import java.io.ByteArrayOutputStream;
@@ -68,17 +71,6 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
         return headers;
     }
 
-    // @Override
-    // public Mono<byte[]> getBodyAsByteArray() {
-    //     return Mono.fromCallable(() -> {
-    //         try (InputStream inputStream = connection.getInputStream()) {
-    //             return inputStream.readAllBytes();
-    //         } catch (IOException e) {
-    //             throw new RuntimeException("Failed to read body from token proxy response", e);
-    //         }
-    //     });
-    // }
-
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.fromCallable(() -> {
@@ -126,7 +118,6 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
         try {
             return connection.getInputStream();
         } catch (IOException e) {
-            // On non-2xx responses, getInputStream() throws, use error stream instead
             return connection.getErrorStream();
         }
     }

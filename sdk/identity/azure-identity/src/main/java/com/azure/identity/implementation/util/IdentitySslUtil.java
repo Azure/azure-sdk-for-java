@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SNIHostName;
+import javax.net.ssl.SNIServerName;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
@@ -19,6 +19,7 @@ import javax.net.ssl.X509TrustManager;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,9 +27,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public final class IdentitySslUtil {
     public static final HostnameVerifier ALL_HOSTS_ACCEPT_HOSTNAME_VERIFIER;
@@ -196,10 +195,15 @@ public final class IdentitySslUtil {
             if (socket instanceof SSLSocket && !CoreUtils.isNullOrEmpty(sniName)) {
                 SSLSocket sslSocket = (SSLSocket) socket;
                 SSLParameters sslParameters = sslSocket.getSSLParameters();
-                sslParameters.setServerNames(Collections.singletonList(new SNIHostName(sniName)));
+                sslParameters.setServerNames(Collections.singletonList(new RawSniServerName(sniName)));
                 sslSocket.setSSLParameters(sslParameters);
             }
         }
+    }
 
+    public static final class RawSniServerName extends SNIServerName {
+        public RawSniServerName(String sniHost) {
+            super(0, sniHost.getBytes(StandardCharsets.UTF_8));
+        }
     }
 }
