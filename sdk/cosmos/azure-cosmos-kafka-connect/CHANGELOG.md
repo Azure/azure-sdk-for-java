@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Enables hostname validation for connections to gateway and backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
 
 ### 2.6.0 (2025-10-21)
 #### Other Changes
