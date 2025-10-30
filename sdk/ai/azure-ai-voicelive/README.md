@@ -89,9 +89,9 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
 
 The main entry point for interacting with the Azure VoiceLive service. Use the `VoiceLiveClientBuilder` to construct a client instance. The client provides methods to start sessions and manage real-time voice conversations.
 
-### VoiceLiveSession
+### VoiceLiveSessionAsyncClient
 
-Represents an active WebSocket connection for bidirectional streaming communication. Sessions support:
+Represents an active WebSocket connection for bidirectional streaming communication. This async client supports:
 - Sending audio input streams via `sendInputAudio()`
 - Sending command events via `sendEvent()`
 - Receiving server events as a reactive stream (Flux) via `receiveEvents()`
@@ -135,26 +135,21 @@ For easier learning, explore these focused samples in order:
    - Minimal setup and session management
    - Client creation and configuration
    - Basic event handling
-   - Run: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.BasicVoiceConversationSample" -Dexec.classpathScope=test`
 
 2. **[AuthenticationMethodsSample.java](src/samples/java/com/azure/ai/voicelive/AuthenticationMethodsSample.java)** - Learn authentication options
    - API Key authentication (default)
    - Token Credential authentication with DefaultAzureCredential
-   - Run with API key: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AuthenticationMethodsSample" -Dexec.classpathScope=test`
-   - Run with token: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AuthenticationMethodsSample" -Dexec.classpathScope=test -Dexec.args="--token-credential"`
 
 3. **[MicrophoneInputSample.java](src/samples/java/com/azure/ai/voicelive/MicrophoneInputSample.java)** - Add audio input capability
    - Real-time microphone audio capture
    - Audio format configuration (24kHz, 16-bit PCM, mono)
    - Streaming audio to the service
    - Speech detection events
-   - Run: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.MicrophoneInputSample" -Dexec.classpathScope=test`
 
 4. **[AudioPlaybackSample.java](src/samples/java/com/azure/ai/voicelive/AudioPlaybackSample.java)** - Add audio output capability
    - Receiving audio responses from service
    - Audio playback to speakers
    - Response completion tracking
-   - Run: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AudioPlaybackSample" -Dexec.classpathScope=test`
 
 5. **[VoiceAssistantSample.java](src/samples/java/com/azure/ai/voicelive/VoiceAssistantSample.java)** - Complete production-ready implementation
    - Full bidirectional audio streaming
@@ -162,8 +157,6 @@ For easier learning, explore these focused samples in order:
    - Audio transcription with Whisper
    - Noise reduction and echo cancellation
    - Multi-threaded audio processing
-   - Run with API key: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test`
-   - Run with token: `mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-token-credential"`
 
 ### Simple voice assistant
 

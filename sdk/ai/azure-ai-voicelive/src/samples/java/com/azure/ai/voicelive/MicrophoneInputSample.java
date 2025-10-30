@@ -15,7 +15,7 @@ import com.azure.ai.voicelive.models.SessionResponseMessageItem;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -94,7 +94,7 @@ public final class MicrophoneInputSample {
         // Create the VoiceLive client
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new KeyCredential(apiKey))
             .buildAsyncClient();
 
         System.out.println("Starting microphone input sample...");
@@ -162,7 +162,7 @@ public final class MicrophoneInputSample {
      * @param isCapturing Flag to control capture loop
      * @param microphoneRef Reference to store the microphone line
      */
-    private static void startMicrophone(VoiceLiveSession session, AtomicBoolean isCapturing, TargetDataLine[] microphoneRef) {
+    private static void startMicrophone(VoiceLiveSessionAsyncClient session, AtomicBoolean isCapturing, TargetDataLine[] microphoneRef) {
         try {
             AudioFormat format = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,

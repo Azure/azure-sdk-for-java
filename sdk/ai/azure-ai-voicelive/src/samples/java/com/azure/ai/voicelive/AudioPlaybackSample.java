@@ -18,7 +18,7 @@ import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -104,7 +104,7 @@ public final class AudioPlaybackSample {
         // Create the VoiceLive client
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new KeyCredential(apiKey))
             .buildAsyncClient();
 
         System.out.println("Starting audio playback sample...");

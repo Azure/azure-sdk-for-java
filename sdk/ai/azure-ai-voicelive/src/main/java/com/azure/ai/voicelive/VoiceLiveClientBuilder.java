@@ -4,10 +4,14 @@
 package com.azure.ai.voicelive;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.KeyCredentialTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.URI;
@@ -18,21 +22,20 @@ import java.util.Objects;
  * Builder for creating instances of {@link VoiceLiveAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = { VoiceLiveAsyncClient.class })
-public final class VoiceLiveClientBuilder {
+public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceLiveClientBuilder>,
+    KeyCredentialTrait<VoiceLiveClientBuilder>, EndpointTrait<VoiceLiveClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveClientBuilder.class);
-    private static final String DEFAULT_API_VERSION = "2025-10-01";
 
     private URI endpoint;
-    private AzureKeyCredential keyCredential;
+    private KeyCredential keyCredential;
     private TokenCredential tokenCredential;
-    private String apiVersion;
-    private final HttpHeaders additionalHeaders = new HttpHeaders();
+    private VoiceLiveServiceVersion serviceVersion;
+    private ClientOptions clientOptions;
 
     /**
      * Creates a new instance of VoiceLiveClientBuilder.
      */
     public VoiceLiveClientBuilder() {
-        this.apiVersion = DEFAULT_API_VERSION;
     }
 
     /**
@@ -43,6 +46,7 @@ public final class VoiceLiveClientBuilder {
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed as a URI.
      */
+    @Override
     public VoiceLiveClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         try {
@@ -56,13 +60,14 @@ public final class VoiceLiveClientBuilder {
     }
 
     /**
-     * Sets the {@link AzureKeyCredential} used for authentication.
+     * Sets the {@link KeyCredential} used for authentication.
      *
      * @param keyCredential The API key credential.
      * @return The updated VoiceLiveClientBuilder instance.
      * @throws NullPointerException if {@code keyCredential} is null.
      */
-    public VoiceLiveClientBuilder credential(AzureKeyCredential keyCredential) {
+    @Override
+    public VoiceLiveClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         return this;
     }
@@ -74,33 +79,31 @@ public final class VoiceLiveClientBuilder {
      * @return The updated VoiceLiveClientBuilder instance.
      * @throws NullPointerException if {@code tokenCredential} is null.
      */
+    @Override
     public VoiceLiveClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
         return this;
     }
 
     /**
-     * Sets the API version.
+     * Sets the service version.
      *
-     * @param apiVersion The API version.
+     * @param serviceVersion The service version.
      * @return The updated VoiceLiveClientBuilder instance.
      */
-    public VoiceLiveClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public VoiceLiveClientBuilder serviceVersion(VoiceLiveServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
     /**
-     * Adds a header to be included in all requests.
+     * Sets the client options such as application ID and custom headers to set on a request.
      *
-     * @param name The header name.
-     * @param value The header value.
+     * @param clientOptions The client options.
      * @return The updated VoiceLiveClientBuilder instance.
      */
-    public VoiceLiveClientBuilder addHeader(HttpHeaderName name, String value) {
-        Objects.requireNonNull(name, "'name' cannot be null");
-        Objects.requireNonNull(value, "'value' cannot be null");
-        this.additionalHeaders.set(name, value);
+    public VoiceLiveClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 
@@ -119,12 +122,13 @@ public final class VoiceLiveClientBuilder {
                 new IllegalStateException("Either 'keyCredential' or 'tokenCredential' must be set"));
         }
 
-        String apiVersion = this.apiVersion != null ? this.apiVersion : DEFAULT_API_VERSION;
+        VoiceLiveServiceVersion version = serviceVersion != null ? serviceVersion : VoiceLiveServiceVersion.getLatest();
+        HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
 
         if (keyCredential != null) {
-            return new VoiceLiveAsyncClient(endpoint, keyCredential, apiVersion, additionalHeaders);
+            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders);
         } else {
-            return new VoiceLiveAsyncClient(endpoint, tokenCredential, apiVersion, additionalHeaders);
+            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders);
         }
     }
 }

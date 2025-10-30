@@ -137,7 +137,7 @@ public final class AuthenticationMethodsSample {
 
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new com.azure.core.credential.AzureKeyCredential(apiKey))
+            .credential(new com.azure.core.credential.KeyCredential(apiKey))
             .buildAsyncClient();
 
         runSampleSession(client, "API Key");

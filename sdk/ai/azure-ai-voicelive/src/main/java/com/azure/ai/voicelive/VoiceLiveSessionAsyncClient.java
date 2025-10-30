@@ -23,7 +23,7 @@ import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.ConversationRequestItem;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeader;
@@ -65,7 +65,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * simultaneously sending and receiving WebSocket messages.
  * </p>
  * <p>
- * Users can obtain a VoiceLiveSession instance from {@link VoiceLiveAsyncClient#startSession(String)} and work directly with it for optimal performance.
+ * Users can obtain a VoiceLiveSessionAsyncClient instance from {@link VoiceLiveAsyncClient#startSession(String)} and work directly with it for optimal performance.
  * Alternatively, users can use the convenience methods on {@link VoiceLiveAsyncClient} which delegate to
  * the internal session.
  * </p>
@@ -76,8 +76,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p><strong>Resource Management:</strong></p>
  * Sessions should be properly closed using {@link #close()} or {@link #closeAsync()} to release resources.
  */
-public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
-    private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveSession.class);
+public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveSessionAsyncClient.class);
     private static final String COGNITIVE_SERVICES_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
 
@@ -93,7 +93,7 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
         .build();
 
     private final URI endpoint;
-    private final AzureKeyCredential keyCredential;
+    private final KeyCredential keyCredential;
     private final TokenCredential tokenCredential;
     private final SerializerAdapter serializer;
 
@@ -117,12 +117,12 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     private final AtomicReference<Disposable> connectionLifecycleSubscriptionRef = new AtomicReference<>();
 
     /**
-     * Creates a new VoiceLiveSession with API key authentication.
+     * Creates a new VoiceLiveSessionAsyncClient with API key authentication.
      *
      * @param endpoint The WebSocket endpoint.
      * @param keyCredential The API key credential.
      */
-    VoiceLiveSession(URI endpoint, AzureKeyCredential keyCredential) {
+    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
@@ -130,12 +130,12 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     }
 
     /**
-     * Creates a new VoiceLiveSession with token authentication.
+     * Creates a new VoiceLiveSessionAsyncClient with token authentication.
      *
      * @param endpoint The WebSocket endpoint.
      * @param tokenCredential The token credential.
      */
-    VoiceLiveSession(URI endpoint, TokenCredential tokenCredential) {
+    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");

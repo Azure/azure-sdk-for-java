@@ -21,7 +21,7 @@ import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
@@ -133,7 +133,7 @@ public final class VoiceAssistantSample {
      * <p>Supports interruption handling where user speech can cancel ongoing assistant responses.</p>
      */
     private static class AudioProcessor {
-        private final VoiceLiveSession session;
+        private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
         // Audio capture components
@@ -147,7 +147,7 @@ public final class VoiceAssistantSample {
         private final AtomicInteger nextSequenceNumber = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
 
-        AudioProcessor(VoiceLiveSession session) {
+        AudioProcessor(VoiceLiveSessionAsyncClient session) {
             this.session = session;
             this.audioFormat = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
@@ -401,7 +401,7 @@ public final class VoiceAssistantSample {
             } else {
                 // Use API Key authentication
                 System.out.println("🔑 Using API Key authentication");
-                runVoiceAssistant(endpoint, new AzureKeyCredential(apiKey));
+                runVoiceAssistant(endpoint, new KeyCredential(apiKey));
             }
             System.out.println("✓ Voice Assistant completed successfully");
         } catch (Exception e) {
@@ -457,7 +457,7 @@ public final class VoiceAssistantSample {
      * @param endpoint The VoiceLive service endpoint
      * @param credential The API key credential
      */
-    private static void runVoiceAssistant(String endpoint, AzureKeyCredential credential) {
+    private static void runVoiceAssistant(String endpoint, KeyCredential credential) {
         System.out.println("🔧 Initializing VoiceLive client:");
         System.out.println("   Endpoint: " + endpoint);
 
@@ -465,7 +465,7 @@ public final class VoiceAssistantSample {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .apiVersion(DEFAULT_API_VERSION)
+            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
             .buildAsyncClient();
 
         runVoiceAssistantWithClient(client);
@@ -485,7 +485,7 @@ public final class VoiceAssistantSample {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .apiVersion(DEFAULT_API_VERSION)
+            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
             .buildAsyncClient();
 
         runVoiceAssistantWithClient(client);

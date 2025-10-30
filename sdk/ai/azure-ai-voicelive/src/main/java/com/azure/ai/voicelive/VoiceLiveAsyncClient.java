@@ -4,7 +4,7 @@
 package com.azure.ai.voicelive;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,7 +23,7 @@ public final class VoiceLiveAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveAsyncClient.class);
 
     private final URI endpoint;
-    private final AzureKeyCredential keyCredential;
+    private final KeyCredential keyCredential;
     private final TokenCredential tokenCredential;
     private final String apiVersion;
     private final HttpHeaders additionalHeaders;
@@ -36,8 +36,7 @@ public final class VoiceLiveAsyncClient {
      * @param apiVersion The API version.
      * @param additionalHeaders Additional headers to include in requests.
      */
-    VoiceLiveAsyncClient(URI endpoint, AzureKeyCredential keyCredential, String apiVersion,
-        HttpHeaders additionalHeaders) {
+    VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
@@ -63,32 +62,23 @@ public final class VoiceLiveAsyncClient {
     }
 
     /**
-     * Starts a new VoiceLiveSession for real-time voice communication.
+     * Starts a new VoiceLiveSessionAsyncClient for real-time voice communication.
      *
      * @param model The model to use for the session.
-     * @return A Mono containing the connected VoiceLiveSession.
+     * @return A Mono containing the connected VoiceLiveSessionAsyncClient.
      */
-    public Mono<VoiceLiveSession> startSession(String model) {
+    public Mono<VoiceLiveSessionAsyncClient> startSession(String model) {
         Objects.requireNonNull(model, "'model' cannot be null");
 
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, model)).flatMap(wsEndpoint -> {
-            VoiceLiveSession session;
+            VoiceLiveSessionAsyncClient session;
             if (keyCredential != null) {
-                session = new VoiceLiveSession(wsEndpoint, keyCredential);
+                session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
             } else {
-                session = new VoiceLiveSession(wsEndpoint, tokenCredential);
+                session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
             }
             return session.connect(additionalHeaders).thenReturn(session);
         });
-    }
-
-    /**
-     * Gets the service endpoint.
-     *
-     * @return The service endpoint.
-     */
-    public URI getEndpoint() {
-        return endpoint;
     }
 
     /**

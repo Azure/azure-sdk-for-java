@@ -3,10 +3,9 @@
 
 package com.azure.ai.voicelive;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,16 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class VoiceLiveClientBuilderTest {
 
     @Mock
-    private AzureKeyCredential mockKeyCredential;
+    private KeyCredential mockKeyCredential;
 
     @Mock
     private TokenCredential mockTokenCredential;
 
     @Mock
     private HttpClient mockHttpClient;
-
-    @Mock
-    private HttpPipeline mockHttpPipeline;
 
     @Mock
     private Configuration mockConfiguration;
@@ -98,7 +94,7 @@ class VoiceLiveClientBuilderTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            clientBuilder.endpoint(endpoint).credential((AzureKeyCredential) null).buildAsyncClient();
+            clientBuilder.endpoint(endpoint).credential((KeyCredential) null).buildAsyncClient();
         });
     }
 
@@ -187,16 +183,15 @@ class VoiceLiveClientBuilderTest {
     }
 
     @Test
-    void testBuilderWithApiVersion() {
+    void testBuilderWithServiceVersion() {
         // Arrange
         String endpoint = "https://test.cognitiveservices.azure.com";
-        String apiVersion = "2024-10-01-preview";
 
         // Act & Assert
         assertDoesNotThrow(() -> {
             VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
                 .credential(mockKeyCredential)
-                .apiVersion(apiVersion)
+                .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
                 .buildAsyncClient();
 
             assertNotNull(client);
@@ -207,13 +202,12 @@ class VoiceLiveClientBuilderTest {
     void testBuilderChaining() {
         // Arrange
         String endpoint = "https://test.cognitiveservices.azure.com";
-        String apiVersion = "2024-10-01-preview";
 
         // Act & Assert
         assertDoesNotThrow(() -> {
             VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
                 .credential(mockKeyCredential)
-                .apiVersion(apiVersion)
+                .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
                 .buildAsyncClient();
 
             assertNotNull(client);
@@ -225,6 +219,6 @@ class VoiceLiveClientBuilderTest {
         // Test that all methods return the builder for chaining
         assertSame(clientBuilder, clientBuilder.endpoint("https://test.cognitiveservices.azure.com"));
         assertSame(clientBuilder, clientBuilder.credential(mockKeyCredential));
-        assertSame(clientBuilder, clientBuilder.apiVersion("2024-10-01-preview"));
+        assertSame(clientBuilder, clientBuilder.serviceVersion(VoiceLiveServiceVersion.V2025_10_01));
     }
 }
