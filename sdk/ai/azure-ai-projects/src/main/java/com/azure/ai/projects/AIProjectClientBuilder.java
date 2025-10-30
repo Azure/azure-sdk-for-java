@@ -66,17 +66,13 @@ import java.util.function.Supplier;
 @ServiceClientBuilder(
     serviceClients = {
         ConnectionsClient.class,
-        EvaluationsClient.class,
         DatasetsClient.class,
         IndexesClient.class,
         DeploymentsClient.class,
-        RedTeamsClient.class,
         ConnectionsAsyncClient.class,
-        EvaluationsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
-        DeploymentsAsyncClient.class,
-        RedTeamsAsyncClient.class })
+        DeploymentsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -640,45 +636,5 @@ public final class AIProjectClientBuilder
     @Generated
     public AIProjectClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
-    }
-
-    /**
-     * Builds an instance of EvaluationsAsyncClient class.
-     *
-     * @return an instance of EvaluationsAsyncClient.
-     */
-    @Generated
-    public EvaluationsAsyncClient buildEvaluationsAsyncClient() {
-        return new EvaluationsAsyncClient(buildInnerClient().getEvaluations());
-    }
-
-    /**
-     * Builds an instance of RedTeamsAsyncClient class.
-     *
-     * @return an instance of RedTeamsAsyncClient.
-     */
-    @Generated
-    public RedTeamsAsyncClient buildRedTeamsAsyncClient() {
-        return new RedTeamsAsyncClient(buildInnerClient().getRedTeams());
-    }
-
-    /**
-     * Builds an instance of EvaluationsClient class.
-     *
-     * @return an instance of EvaluationsClient.
-     */
-    @Generated
-    public EvaluationsClient buildEvaluationsClient() {
-        return new EvaluationsClient(buildInnerClient().getEvaluations());
-    }
-
-    /**
-     * Builds an instance of RedTeamsClient class.
-     *
-     * @return an instance of RedTeamsClient.
-     */
-    @Generated
-    public RedTeamsClient buildRedTeamsClient() {
-        return new RedTeamsClient(buildInnerClient().getRedTeams());
     }
 }

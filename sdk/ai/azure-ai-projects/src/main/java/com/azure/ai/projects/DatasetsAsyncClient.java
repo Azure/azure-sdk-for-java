@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.AssetCredentialResult;
+import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.FolderDatasetVersion;
@@ -186,11 +186,11 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AssetCredentialResult> getCredentials(String name, String version) {
+    public Mono<DatasetCredential> getCredentials(String name, String version) {
         // Generated convenience method for getCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCredentialsWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AssetCredentialResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
     }
 
     /**
@@ -304,8 +304,8 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDatasetVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listDatasetVersionsAsync(name, requestOptions);
+    public PagedFlux<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersionsAsync(name, requestOptions);
     }
 
     /**
@@ -339,12 +339,13 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatestDatasetVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestDatasetVersionsAsync(requestOptions);
+    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(requestOptions);
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -377,13 +378,13 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDatasetVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDatasetVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -396,9 +397,8 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDatasetVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteDatasetVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -455,10 +455,9 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateDatasetVersionWithResponse(String name, String version,
-        BinaryData datasetVersion, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDatasetVersionWithResponseAsync(name, version, datasetVersion,
-            requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String name, String version, BinaryData datasetVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(name, version, datasetVersion, requestOptions);
     }
 
     /**
@@ -475,10 +474,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasetVersion> listDatasetVersions(String name) {
-        // Generated convenience method for listDatasetVersions
+    public PagedFlux<DatasetVersion> listVersions(String name) {
+        // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listDatasetVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -505,10 +504,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasetVersion> listLatestDatasetVersions() {
-        // Generated convenience method for listLatestDatasetVersions
+    public PagedFlux<DatasetVersion> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listLatestDatasetVersions(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -524,7 +523,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to retrieve.
@@ -538,15 +538,16 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> getDatasetVersion(String name, String version) {
-        // Generated convenience method for getDatasetVersionWithResponse
+    public Mono<DatasetVersion> get(String name, String version) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -560,10 +561,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDatasetVersion(String name, String version) {
-        // Generated convenience method for deleteDatasetVersionWithResponse
+    public Mono<Void> delete(String name, String version) {
+        // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -582,16 +583,15 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> createOrUpdateDatasetVersion(String name, String version,
-        DatasetVersion datasetVersion) {
-        // Generated convenience method for createOrUpdateDatasetVersionWithResponse
+    public Mono<DatasetVersion> createOrUpdate(String name, String version, DatasetVersion datasetVersion) {
+        // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
         BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         datasetVersionInBinaryData.getLength();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
-        return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
+        return createOrUpdateWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
     }

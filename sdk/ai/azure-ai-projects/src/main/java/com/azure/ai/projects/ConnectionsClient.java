@@ -151,8 +151,8 @@ public final class ConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getConnectionWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getConnectionWithResponse(name, requestOptions);
+    Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(name, requestOptions);
     }
 
     /**
@@ -187,8 +187,8 @@ public final class ConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getConnectionWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getConnectionWithCredentialsWithResponse(name, requestOptions);
+    Response<BinaryData> getWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getWithCredentialsWithResponse(name, requestOptions);
     }
 
     /**
@@ -233,8 +233,28 @@ public final class ConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listConnections(RequestOptions requestOptions) {
-        return this.serviceClient.listConnections(requestOptions);
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.list(requestOptions);
+    }
+
+    /**
+     * Get a connection by name, without populating connection credentials.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connection by name, without populating connection credentials.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Connection get(String name) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getWithResponse(name, requestOptions).getValue().toObject(Connection.class);
     }
 
     /**
@@ -251,10 +271,10 @@ public final class ConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Connection getConnectionWithCredentials(String name) {
-        // Generated convenience method for getConnectionWithCredentialsWithResponse
+    Connection getWithCredentials(String name) {
+        // Generated convenience method for getWithCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getConnectionWithCredentialsWithResponse(name, requestOptions).getValue().toObject(Connection.class);
+        return getWithCredentialsWithResponse(name, requestOptions).getValue().toObject(Connection.class);
     }
 
     /**
@@ -272,8 +292,8 @@ public final class ConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Connection> listConnections(ConnectionType connectionType, Boolean defaultConnection) {
-        // Generated convenience method for listConnections
+    public PagedIterable<Connection> list(ConnectionType connectionType, Boolean defaultConnection) {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
         if (connectionType != null) {
             requestOptions.addQueryParam("connectionType", connectionType.toString(), false);
@@ -281,8 +301,7 @@ public final class ConnectionsClient {
         if (defaultConnection != null) {
             requestOptions.addQueryParam("defaultConnection", String.valueOf(defaultConnection), false);
         }
-        return serviceClient.listConnections(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
+        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
     }
 
     /**
@@ -297,10 +316,9 @@ public final class ConnectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Connection> listConnections() {
-        // Generated convenience method for listConnections
+    public PagedIterable<Connection> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listConnections(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
+        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
     }
 }

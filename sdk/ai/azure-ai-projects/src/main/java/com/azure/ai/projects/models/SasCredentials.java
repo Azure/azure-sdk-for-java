@@ -14,7 +14,7 @@ import java.io.IOException;
  * Shared Access Signature (SAS) credential definition.
  */
 @Immutable
-public final class SasCredentials extends BaseCredentials {
+public final class SASCredentials extends BaseCredentials {
 
     /*
      * The type of credential used by the connection
@@ -61,36 +61,36 @@ public final class SasCredentials extends BaseCredentials {
     }
 
     /**
-     * Reads an instance of SasCredentials from the JsonReader.
+     * Reads an instance of SASCredentials from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SasCredentials if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SASCredentials if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SasCredentials.
+     * @throws IOException If an error occurs while reading the SASCredentials.
      */
     @Generated
-    public static SasCredentials fromJson(JsonReader jsonReader) throws IOException {
+    public static SASCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SasCredentials deserializedSasCredentials = new SasCredentials();
+            SASCredentials deserializedSASCredentials = new SASCredentials();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedSasCredentials.type = CredentialType.fromString(reader.getString());
+                    deserializedSASCredentials.type = CredentialType.fromString(reader.getString());
                 } else if ("SAS".equals(fieldName)) {
-                    deserializedSasCredentials.sasToken = reader.getString();
+                    deserializedSASCredentials.sasToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedSasCredentials;
+            return deserializedSASCredentials;
         });
     }
 
     /**
-     * Creates an instance of SasCredentials class.
+     * Creates an instance of SASCredentials class.
      */
     @Generated
-    private SasCredentials() {
+    private SASCredentials() {
     }
 }

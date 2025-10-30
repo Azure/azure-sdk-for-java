@@ -83,7 +83,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getConnection(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -93,7 +93,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getConnectionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -103,7 +103,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getConnectionWithCredentials(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getWithCredentials(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -113,7 +113,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getConnectionWithCredentialsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getWithCredentialsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -123,7 +123,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listConnections(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -133,7 +133,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listConnectionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -143,7 +143,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listConnectionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -153,7 +153,7 @@ public final class ConnectionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listConnectionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
@@ -190,9 +190,9 @@ public final class ConnectionsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConnectionWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getConnection(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
@@ -227,10 +227,10 @@ public final class ConnectionsImpl {
      * @return a connection by name, without populating connection credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getConnectionWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getConnectionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            accept, requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -265,10 +265,9 @@ public final class ConnectionsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConnectionWithCredentialsWithResponseAsync(String name,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithCredentialsWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getConnectionWithCredentials(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getWithCredentials(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
@@ -303,10 +302,10 @@ public final class ConnectionsImpl {
      * @return a connection by name, with its connection credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getConnectionWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getConnectionWithCredentialsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
+        return service.getWithCredentialsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -351,10 +350,10 @@ public final class ConnectionsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listConnectionsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listConnections(this.client.getEndpoint(),
+            .withContext(context -> service.list(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -401,12 +400,12 @@ public final class ConnectionsImpl {
      * @return paged collection of Connection items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listConnectionsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listConnectionsSinglePageAsync(requestOptions),
-            nextLink -> listConnectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions),
+            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -450,9 +449,9 @@ public final class ConnectionsImpl {
      * @return paged collection of Connection items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listConnectionsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listConnectionsSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -499,12 +498,12 @@ public final class ConnectionsImpl {
      * @return paged collection of Connection items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listConnections(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listConnectionsSinglePage(requestOptions),
-            nextLink -> listConnectionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSinglePage(requestOptions),
+            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -539,12 +538,11 @@ public final class ConnectionsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listConnectionsNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listConnectionsNext(nextLink, this.client.getEndpoint(), accept,
-                requestOptions, context))
+            .withContext(
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -580,10 +578,10 @@ public final class ConnectionsImpl {
      * @return paged collection of Connection items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listConnectionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listConnectionsNextSync(nextLink, this.client.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

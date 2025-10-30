@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.AssetCredentialResult;
+import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.FolderDatasetVersion;
@@ -177,11 +177,10 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetCredentialResult getCredentials(String name, String version) {
+    public DatasetCredential getCredentials(String name, String version) {
         // Generated convenience method for getCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCredentialsWithResponse(name, version, requestOptions).getValue()
-            .toObject(AssetCredentialResult.class);
+        return getCredentialsWithResponse(name, version, requestOptions).getValue().toObject(DatasetCredential.class);
     }
 
     /**
@@ -289,8 +288,8 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDatasetVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listDatasetVersions(name, requestOptions);
+    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersions(name, requestOptions);
     }
 
     /**
@@ -324,12 +323,13 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatestDatasetVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestDatasetVersions(requestOptions);
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.list(requestOptions);
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -361,13 +361,13 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDatasetVersionWithResponse(name, version, requestOptions);
+    public Response<BinaryData> getWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -380,8 +380,8 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDatasetVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteDatasetVersionWithResponse(name, version, requestOptions);
+    public Response<Void> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -438,10 +438,9 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version,
-        BinaryData datasetVersion, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDatasetVersionWithResponse(name, version, datasetVersion,
-            requestOptions);
+    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData datasetVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(name, version, datasetVersion, requestOptions);
     }
 
     /**
@@ -458,10 +457,10 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> listDatasetVersions(String name) {
-        // Generated convenience method for listDatasetVersions
+    public PagedIterable<DatasetVersion> listVersions(String name) {
+        // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listDatasetVersions(name, requestOptions)
+        return serviceClient.listVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
     }
 
@@ -477,15 +476,16 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> listLatestDatasetVersions() {
-        // Generated convenience method for listLatestDatasetVersions
+    public PagedIterable<DatasetVersion> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatestDatasetVersions(requestOptions)
+        return serviceClient.list(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to retrieve.
@@ -499,14 +499,15 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion getDatasetVersion(String name, String version) {
-        // Generated convenience method for getDatasetVersionWithResponse
+    public DatasetVersion get(String name, String version) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDatasetVersionWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
+        return getWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -519,10 +520,10 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDatasetVersion(String name, String version) {
-        // Generated convenience method for deleteDatasetVersionWithResponse
+    public void delete(String name, String version) {
+        // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteDatasetVersionWithResponse(name, version, requestOptions).getValue();
+        deleteWithResponse(name, version, requestOptions).getValue();
     }
 
     /**
@@ -541,16 +542,15 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion createOrUpdateDatasetVersion(String name, String version, DatasetVersion datasetVersion) {
-        // Generated convenience method for createOrUpdateDatasetVersionWithResponse
+    public DatasetVersion createOrUpdate(String name, String version, DatasetVersion datasetVersion) {
+        // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
         BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         datasetVersionInBinaryData.getLength();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
-        return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
-            .getValue()
+        return createOrUpdateWithResponse(name, version, datasetVersionInBinaryData, requestOptions).getValue()
             .toObject(DatasetVersion.class);
     }
 }

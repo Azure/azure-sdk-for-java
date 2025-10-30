@@ -73,8 +73,8 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listIndexVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listIndexVersionsAsync(name, requestOptions);
+    public PagedFlux<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersionsAsync(name, requestOptions);
     }
 
     /**
@@ -105,12 +105,12 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatestIndexVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestIndexVersionsAsync(requestOptions);
+    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(requestOptions);
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -139,13 +139,13 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getIndexVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getIndexVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -158,9 +158,8 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIndexVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteIndexVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -211,9 +210,9 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateIndexVersionWithResponse(String name, String version,
-        BinaryData index, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexVersionWithResponseAsync(name, version, index, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String name, String version, BinaryData index,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(name, version, index, requestOptions);
     }
 
     /**
@@ -230,10 +229,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listIndexVersions(String name) {
-        // Generated convenience method for listIndexVersions
+    public PagedFlux<Index> listVersions(String name) {
+        // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listIndexVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -260,10 +259,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listLatestIndexVersions() {
-        // Generated convenience method for listLatestIndexVersions
+    public PagedFlux<Index> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listLatestIndexVersions(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -279,7 +278,7 @@ public final class IndexesAsyncClient {
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the Index to retrieve.
@@ -293,15 +292,16 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> getIndexVersion(String name, String version) {
-        // Generated convenience method for getIndexVersionWithResponse
+    public Mono<Index> get(String name, String version) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -315,10 +315,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIndexVersion(String name, String version) {
-        // Generated convenience method for deleteIndexVersionWithResponse
+    public Mono<Void> delete(String name, String version) {
+        // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteIndexVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -337,16 +337,15 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> createOrUpdateIndexVersion(String name, String version, Index index) {
-        // Generated convenience method for createOrUpdateIndexVersionWithResponse
+    public Mono<Index> createOrUpdate(String name, String version, Index index) {
+        // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
-        return createOrUpdateIndexVersionWithResponse(name, version, indexInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createOrUpdateWithResponse(name, version, indexInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
     }
 }

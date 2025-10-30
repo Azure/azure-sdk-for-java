@@ -67,8 +67,8 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listIndexVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listIndexVersions(name, requestOptions);
+    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersions(name, requestOptions);
     }
 
     /**
@@ -99,12 +99,12 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatestIndexVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestIndexVersions(requestOptions);
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.list(requestOptions);
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -133,13 +133,13 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getIndexVersionWithResponse(name, version, requestOptions);
+    public Response<BinaryData> getWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -152,8 +152,8 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIndexVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteIndexVersionWithResponse(name, version, requestOptions);
+    public Response<Void> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -204,9 +204,9 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateIndexVersionWithResponse(String name, String version, BinaryData index,
+    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData index,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexVersionWithResponse(name, version, index, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponse(name, version, index, requestOptions);
     }
 
     /**
@@ -223,10 +223,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listIndexVersions(String name) {
-        // Generated convenience method for listIndexVersions
+    public PagedIterable<Index> listVersions(String name) {
+        // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listIndexVersions(name, requestOptions)
+        return serviceClient.listVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
     }
 
@@ -242,15 +242,14 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listLatestIndexVersions() {
-        // Generated convenience method for listLatestIndexVersions
+    public PagedIterable<Index> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatestIndexVersions(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the Index to retrieve.
@@ -264,14 +263,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index getIndexVersion(String name, String version) {
-        // Generated convenience method for getIndexVersionWithResponse
+    public Index get(String name, String version) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexVersionWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
+        return getWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -284,10 +284,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIndexVersion(String name, String version) {
-        // Generated convenience method for deleteIndexVersionWithResponse
+    public void delete(String name, String version) {
+        // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteIndexVersionWithResponse(name, version, requestOptions).getValue();
+        deleteWithResponse(name, version, requestOptions).getValue();
     }
 
     /**
@@ -306,15 +306,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdateIndexVersion(String name, String version, Index index) {
-        // Generated convenience method for createOrUpdateIndexVersionWithResponse
+    public Index createOrUpdate(String name, String version, Index index) {
+        // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
-        return createOrUpdateIndexVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
+        return createOrUpdateWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
             .toObject(Index.class);
     }
 }
