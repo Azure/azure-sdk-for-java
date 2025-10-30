@@ -16,7 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+- Updated core dependency from resources.
 
 ## 2.53.3 (2025-09-24)
 

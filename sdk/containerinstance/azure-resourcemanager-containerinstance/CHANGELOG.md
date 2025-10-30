@@ -16,9 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-network` from `2.53.4` to version `2.54.0`.
-- Upgraded `azure-storage-file-share` from `12.27.2` to version `12.28.0`.
-- Upgraded `azure-resourcemanager-storage` from `2.54.1` to version `2.55.0`.
+- Updated core dependency from resources.
 
 ## 2.53.4 (2025-09-25)
 
