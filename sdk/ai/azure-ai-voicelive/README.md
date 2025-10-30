@@ -131,27 +131,27 @@ The following sections provide code snippets for common scenarios:
 
 For easier learning, explore these focused samples in order:
 
-1. **[BasicVoiceConversationSample.java](src/samples/java/com/azure/ai/voicelive/BasicVoiceConversationSample.java)** - Start here to learn the basics
+1. **BasicVoiceConversationSample.java** - Start here to learn the basics
    - Minimal setup and session management
    - Client creation and configuration
    - Basic event handling
 
-2. **[AuthenticationMethodsSample.java](src/samples/java/com/azure/ai/voicelive/AuthenticationMethodsSample.java)** - Learn authentication options
+2. **AuthenticationMethodsSample.java** - Learn authentication options
    - API Key authentication (default)
    - Token Credential authentication with DefaultAzureCredential
 
-3. **[MicrophoneInputSample.java](src/samples/java/com/azure/ai/voicelive/MicrophoneInputSample.java)** - Add audio input capability
+3. **MicrophoneInputSample.java** - Add audio input capability
    - Real-time microphone audio capture
    - Audio format configuration (24kHz, 16-bit PCM, mono)
    - Streaming audio to the service
    - Speech detection events
 
-4. **[AudioPlaybackSample.java](src/samples/java/com/azure/ai/voicelive/AudioPlaybackSample.java)** - Add audio output capability
+4. **AudioPlaybackSample.java** - Add audio output capability
    - Receiving audio responses from service
    - Audio playback to speakers
    - Response completion tracking
 
-5. **[VoiceAssistantSample.java](src/samples/java/com/azure/ai/voicelive/VoiceAssistantSample.java)** - Complete production-ready implementation
+5. **VoiceAssistantSample.java** - Complete production-ready implementation
    - Full bidirectional audio streaming
    - Voice Activity Detection (VAD) with interruption handling
    - Audio transcription with Whisper
@@ -447,7 +447,7 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 
 ### Sample files
 
-All sample files are located in [src/samples/java/com/azure/ai/voicelive/](src/samples/java/com/azure/ai/voicelive/). See the [Focused Sample Files](#focused-sample-files) section for detailed descriptions and running instructions.
+All sample files are located in the `src/samples/java/com/azure/ai/voicelive/` directory. See the [Focused Sample Files](#focused-sample-files) section for detailed descriptions and running instructions.
 
 ### Additional documentation
 
