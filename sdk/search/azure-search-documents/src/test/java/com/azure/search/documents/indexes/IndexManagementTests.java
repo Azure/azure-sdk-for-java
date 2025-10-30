@@ -1048,7 +1048,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void testProductScoringAggregationApiVersionCompatibility(){
+    public void testProductScoringAggregationApiVersionCompatibility() {
         SearchIndex index = createIndexWithScoringAggregation("api-version-test");
         SearchIndex createdIndex = client.createIndex(index);
         indexesToDelete.add(createdIndex.getName());
@@ -1059,38 +1059,36 @@ public class IndexManagementTests extends SearchTestBase {
 
     @Test
     public void testProductScoringAggregationWithOlderApiVersions() {
-        SearchIndexClient olderApiClient = getSearchIndexClientBuilder(true)
-            .serviceVersion(SearchServiceVersion.V2025_09_01) 
-            .buildClient();
-        
+        SearchIndexClient olderApiClient
+            = getSearchIndexClientBuilder(true).serviceVersion(SearchServiceVersion.V2025_09_01).buildClient();
+
         SearchIndex index = createIndexWithScoringAggregation("older-api-test");
-        
+
         HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
             olderApiClient.createIndex(index);
         });
-        
+
         assertEquals(400, exception.getResponse().getStatusCode());
     }
 
     @Test
-    public void testProductScoringAggregationSerialization(){
+    public void testProductScoringAggregationSerialization() {
         ScoringProfile profile = new ScoringProfile("testProfile")
             .setFunctionAggregation(ScoringFunctionAggregation.PRODUCT)
-            .setFunctions(Arrays.asList(
-                new MagnitudeScoringFunction("rating", 2.0, new MagnitudeScoringParameters(1.0, 5.0))));
+            .setFunctions(
+                Arrays.asList(new MagnitudeScoringFunction("rating", 2.0, new MagnitudeScoringParameters(1.0, 5.0))));
 
         String json = BinaryData.fromObject(profile).toString();
         assertTrue(json.contains("\"functionAggregation\":\"product\""));
     }
 
     @Test
-    public void testProductScoringAggregationDeserialization(){
+    public void testProductScoringAggregationDeserialization() {
         String json = "{\"name\":\"productProfile\",\"functionAggregation\":\"product\",\"functions\":[]}";
 
         ScoringProfile profile = BinaryData.fromString(json).toObject(ScoringProfile.class);
         assertEquals(ScoringFunctionAggregation.PRODUCT, profile.getFunctionAggregation());
     }
-
 
     private SearchIndex createIndexWithScoringAggregation(String suffix) {
         return new SearchIndex(randomIndexName("agg-test"))
