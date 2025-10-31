@@ -1,0 +1,5 @@
+directory: specification/ai/Azure.AI.Agents.V2.java
+commit: 3512dea975eed49e7ac288a52ce6fcc1198b12b4
+repo: Azure/azure-rest-api-specs-pr
+additionalDirectories:
+  - specification/ai/Azure.AI.Projects
