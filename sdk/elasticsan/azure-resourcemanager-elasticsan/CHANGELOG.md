@@ -1,14 +1,156 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.2.0 (2025-10-30)
 
-### Features Added
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. (missing-service-description) Add service description. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SnapshotList` was removed
 
-### Other Changes
+#### `models.SkuCapability` was removed
+
+#### `models.SkuInformationList` was removed
+
+#### `models.VolumeList` was removed
+
+#### `models.ElasticSanList` was removed
+
+#### `models.VolumeGroupList` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.NetworkRuleSet` was modified
+
+* `validate()` was removed
+
+#### `models.ElasticSanUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SnapshotCreationData` was modified
+
+* `validate()` was removed
+
+#### `models.VolumeUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.SourceCreationData` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.KeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VolumeGroupUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.SkuLocationInfo` was modified
+
+* `SkuLocationInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.EncryptionIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualNetworkRule` was modified
+
+* `validate()` was removed
+
+#### `ElasticSanManager` was modified
+
+* `fluent.ElasticSanManagement serviceClient()` -> `fluent.ElasticSanManagementClient serviceClient()`
+
+#### `models.IscsiTargetInfo` was modified
+
+* `IscsiTargetInfo()` was changed to private access
+* `validate()` was removed
+* `withStatus(models.OperationalStatus)` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was changed to private access
+* `validate()` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+
+#### `models.ManagedByInfo` was modified
+
+* `validate()` was removed
+
+#### `models.Identity` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+### Features Added
+
+* `models.PreValidationResponse` was added
+
+* `models.SKUCapability` was added
+
+* `models.AutoScaleProperties` was added
+
+* `models.DiskSnapshotList` was added
+
+* `models.VolumeNameList` was added
+
+* `models.AutoScalePolicyEnforcement` was added
+
+* `models.ScaleUpProperties` was added
+
+#### `models.ElasticSanUpdate` was modified
+
+* `autoScaleProperties()` was added
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan` was modified
+
+* `autoScaleProperties()` was added
+
+#### `models.Volumes` was modified
+
+* `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList)` was added
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList,com.azure.core.util.Context)` was added
+* `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList,com.azure.core.util.Context)` was added
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList)` was added
+
+#### `models.ElasticSan$Definition` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan$Update` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
 
 ## 1.2.0-beta.2 (2025-04-18)
 
