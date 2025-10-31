@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_Namespace_Endpoints.json
+     * x-ms-original-file: 2025-11-01-preview/Update_Namespace_Endpoints.json
      */
     /**
      * Sample code: Update_Namespace_Endpoints.

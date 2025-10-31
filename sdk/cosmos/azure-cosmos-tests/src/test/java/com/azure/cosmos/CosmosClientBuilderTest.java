@@ -52,6 +52,7 @@ public class CosmosClientBuilderTest {
                 .buildAsyncClient();
             client.close();
         } catch (Exception e) {
+            assertThat(e).isInstanceOf(Exception.class);
             assertThat(e).isInstanceOf(RuntimeException.class);
             assertThat(e).hasCauseExactlyInstanceOf(URISyntaxException.class);
             assertThat(e.getMessage()).isEqualTo("invalid location [westus1,eastus1] or serviceEndpoint [https://sample-account.documents.azure.com:443/]");
