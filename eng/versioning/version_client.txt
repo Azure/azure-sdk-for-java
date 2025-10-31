@@ -460,7 +460,7 @@ com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-standbypool;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0-beta.1
