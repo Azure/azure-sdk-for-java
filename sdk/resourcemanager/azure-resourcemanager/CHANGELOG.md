@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0 (2025-10-31)
+## 2.56.0 (2025-10-31)
 
 ### azure-resourcemanager-containerservice
 
