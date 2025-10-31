@@ -68,7 +68,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.55.0</version>
+  <version>2.56.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
