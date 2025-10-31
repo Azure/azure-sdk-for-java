@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredDevice.
