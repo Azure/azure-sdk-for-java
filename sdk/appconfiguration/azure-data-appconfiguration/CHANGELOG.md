@@ -3,6 +3,7 @@
 ## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
 
 ### Breaking Changes
 
