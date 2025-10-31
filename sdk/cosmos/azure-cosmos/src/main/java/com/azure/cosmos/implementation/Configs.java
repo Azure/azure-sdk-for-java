@@ -387,6 +387,8 @@ public class Configs {
 
             if (serverCertVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            } else {
+                sslContextBuilder.endpointIdentificationAlgorithm("HTTPS");
             }
 
             if (http2Enabled) {
@@ -401,6 +403,7 @@ public class Configs {
                         )
                     );
             }
+
             return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);

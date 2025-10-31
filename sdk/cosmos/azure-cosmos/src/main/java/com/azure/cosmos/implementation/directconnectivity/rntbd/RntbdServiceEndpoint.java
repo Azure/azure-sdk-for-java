@@ -328,6 +328,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public URI serverKeyUsedAsActualRemoteAddress() {
+        return this.serverKey;
+    }
+
+    @Override
     public void injectConnectionErrors(
         String faultInjectionRuleId,
         double threshold,

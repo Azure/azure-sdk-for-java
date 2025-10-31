@@ -284,7 +284,37 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                     partitionKey = new PartitionKey(null);
                 }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                final PartitionKey pkSnapshot = partitionKey;
+
+                CosmosItemRequestOptions deleteOptions = new CosmosItemRequestOptions();
+                deleteOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .build()
+                );
+
+                return cosmosContainer
+                    .deleteItem(doc.getId(), partitionKey, deleteOptions)
+                    .onErrorResume(t -> {
+                        if (!(t instanceof CosmosException)) {
+                            logger.error("Unexpected failure trying to delete document |{}|/{}", pkSnapshot, doc.getId(), t);
+                            return Mono.error(t);
+                        }
+
+                        CosmosException cosmosError = (CosmosException)t;
+                        if (cosmosError.getStatusCode() == 404 && cosmosError.getSubStatusCode() == 0) {
+                            return Mono.empty();
+                        }
+
+                        if (cosmosError.getStatusCode() == 408
+                            && cosmosError.getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
+
+                            logger.warn("Timeout trying to delete document |{}|/{}", pkSnapshot, doc.getId(), cosmosError);
+                            return Mono.empty();
+                        }
+
+                        logger.error("Failed to delete document |{}|/{}", pkSnapshot, doc.getId(), cosmosError);
+                        return Mono.error(cosmosError);
+                    });
             }).then().block();
     }
 
