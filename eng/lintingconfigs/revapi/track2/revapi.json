@@ -663,6 +663,12 @@
         },
         {
           "ignore": true,
+          "code": "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
+          "justification": "Not a break, same method exists on its parent class."
+        },
+        {
+          "ignore": true,
           "code": "java.class.removed",
           "old" : {
             "matcher": "regex",
