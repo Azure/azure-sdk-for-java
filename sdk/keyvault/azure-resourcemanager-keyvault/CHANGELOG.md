@@ -183,8 +183,6 @@
 
 * `Reason()` was added
 
-### Other Changes
-
 ## 2.53.4 (2025-10-27)
 
 ### Other Changes
