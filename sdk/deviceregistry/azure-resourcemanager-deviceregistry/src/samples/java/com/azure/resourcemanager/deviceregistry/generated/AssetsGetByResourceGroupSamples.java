@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Asset_With_SyncStatus.json
+     * x-ms-original-file: 2025-11-01-preview/Get_Asset_With_SyncStatus.json
      */
     /**
      * Sample code: Get_Asset_With_SyncStatus.
@@ -22,7 +22,7 @@ public final class AssetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_Asset.json
+     * x-ms-original-file: 2025-11-01-preview/Get_Asset.json
      */
     /**
      * Sample code: Get_Asset.
