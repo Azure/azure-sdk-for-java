@@ -18,6 +18,12 @@
 
 - Updated `api-version` to `2024-10-01`.
 
+### azure-resourcemanager-keyvault
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
 ### Other Changes
 
 #### Dependency Updates
