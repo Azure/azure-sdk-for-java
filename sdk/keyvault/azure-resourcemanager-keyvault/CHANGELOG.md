@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0 (2025-10-27)
+## 2.54.0 (2025-10-31)
 
 ### Breaking Changes
 
