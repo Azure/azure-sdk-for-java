@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_SchemaRegistry.json
+     * x-ms-original-file: 2025-11-01-preview/Update_SchemaRegistry.json
      */
     /**
      * Sample code: Update_SchemaRegistry.
