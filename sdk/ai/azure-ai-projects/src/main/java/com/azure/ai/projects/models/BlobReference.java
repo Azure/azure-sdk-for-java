@@ -33,7 +33,21 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
      * Credential info to access the storage account.
      */
     @Generated
-    private final BlobReferenceSasCredential credential;
+    private final SasCredential credential;
+
+    /**
+     * Creates an instance of BlobReference class.
+     *
+     * @param blobUri the blobUri value to set.
+     * @param storageAccountArmId the storageAccountArmId value to set.
+     * @param credential the credential value to set.
+     */
+    @Generated
+    private BlobReference(String blobUri, String storageAccountArmId, SasCredential credential) {
+        this.blobUri = blobUri;
+        this.storageAccountArmId = storageAccountArmId;
+        this.credential = credential;
+    }
 
     /**
      * Get the blobUri property: Blob URI path for client to upload data. Example:
@@ -62,7 +76,7 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
      * @return the credential value.
      */
     @Generated
-    public BlobReferenceSasCredential getCredential() {
+    public SasCredential getCredential() {
         return this.credential;
     }
 
@@ -93,7 +107,7 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
         return jsonReader.readObject(reader -> {
             String blobUri = null;
             String storageAccountArmId = null;
-            BlobReferenceSasCredential credential = null;
+            SasCredential credential = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -102,26 +116,12 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
                 } else if ("storageAccountArmId".equals(fieldName)) {
                     storageAccountArmId = reader.getString();
                 } else if ("credential".equals(fieldName)) {
-                    credential = BlobReferenceSasCredential.fromJson(reader);
+                    credential = SasCredential.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new BlobReference(blobUri, storageAccountArmId, credential);
         });
-    }
-
-    /**
-     * Creates an instance of BlobReference class.
-     *
-     * @param blobUri the blobUri value to set.
-     * @param storageAccountArmId the storageAccountArmId value to set.
-     * @param credential the credential value to set.
-     */
-    @Generated
-    private BlobReference(String blobUri, String storageAccountArmId, BlobReferenceSasCredential credential) {
-        this.blobUri = blobUri;
-        this.storageAccountArmId = storageAccountArmId;
-        this.credential = credential;
     }
 }

@@ -95,5 +95,5 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
      * Azure AI Search.
      */
     @Generated
-    public static final ConnectionType AZURE_AISEARCH = fromString("CognitiveSearch");
+    public static final ConnectionType AZURE_AI_SEARCH = fromString("CognitiveSearch");
 }
