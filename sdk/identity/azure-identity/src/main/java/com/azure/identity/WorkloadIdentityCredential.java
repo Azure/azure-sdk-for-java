@@ -10,6 +10,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyConfiguration;
+import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyHttpClient;
+import com.azure.identity.implementation.customtokenproxy.ProxyConfig;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
@@ -88,6 +91,13 @@ public class WorkloadIdentityCredential implements TokenCredential {
 
         ClientAssertionCredential tempClientAssertionCredential = null;
         String tempClientId = null;
+
+        if (identityClientOptions.isKubernetesTokenProxyEnabled()) {
+            if (CustomTokenProxyConfiguration.isConfigured(configuration)) {
+                ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
+                identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
+            }
+        }
 
         if (!(CoreUtils.isNullOrEmpty(tenantIdInput)
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)

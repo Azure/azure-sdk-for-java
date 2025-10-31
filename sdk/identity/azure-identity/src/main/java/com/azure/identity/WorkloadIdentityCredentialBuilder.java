@@ -47,6 +47,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
 public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
     private String tokenFilePath;
+    private boolean enableTokenProxy = false;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
@@ -63,6 +64,19 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      */
     public WorkloadIdentityCredentialBuilder tokenFilePath(String tokenFilePath) {
         this.tokenFilePath = tokenFilePath;
+        return this;
+    }
+
+    /**
+     * Enables the Kubernetes token proxy feature for AKS workload identity scenarios.
+     * When enabled, the credential will attempt to use a custom token proxy configured through
+     * environment variables (AZURE_KUBERNETES_TOKEN_PROXY, AZURE_KUBERNETES_CA_FILE,
+     * AZURE_KUBERNETES_CA_DATA, AZURE_KUBERNETES_SNI_NAME).
+     *
+     * @return An updated instance of this builder with Kubernetes token proxy enabled.
+     */
+    public WorkloadIdentityCredentialBuilder enableKubernetesTokenProxy() {
+        this.enableTokenProxy = true;
         return this;
     }
 
@@ -87,6 +101,8 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
 
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
+
+        identityClientOptions.setEnableKubernetesTokenProxy(this.enableTokenProxy);
 
         return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
             identityClientOptions.clone());
