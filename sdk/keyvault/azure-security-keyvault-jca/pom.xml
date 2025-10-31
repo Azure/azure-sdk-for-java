@@ -162,6 +162,11 @@
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
                     <exclude>META-INF/services/java.security.Provider</exclude>
+                    <!-- Exclude OSGI metadata since it references original (unshaded) package names
+                         and is not applicable after relocation -->
+                    <exclude>**/OSGI-INF/**</exclude>
+                    <!-- Exclude Bouncy Castle's module-info since it references unshaded packages. -->
+                    <exclude>**/module-info.class</exclude>
                   </excludes>
                 </filter>
               </filters>
@@ -169,6 +174,21 @@
                 <relocation>
                   <pattern>org.bouncycastle</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
+                </relocation>
+                <!-- Manually relocate Bouncy Castle multi-release classes to the correct shaded package.
+                     This workaround is needed because the maven-shade-plugin (as of 3.6.1) relocates the
+                     bytecode but does not move the class files to the shaded directory structure (MSHADE-406).
+                     This additional relocation rule matches the file path pattern and moves multi-release
+                     classes to preserve Java 9+ optimizations while preventing package leakage.
+                     Based on: https://github.com/datafaker-net/datafaker/pull/1008
+                     See:
+                       - https://github.com/apache/maven-shade-plugin/pull/202
+                       - https://issues.apache.org/jira/browse/MSHADE-406
+                       - https://github.com/Azure/azure-sdk-for-java/issues/45277 -->
+                <relocation>
+                  <pattern>META-INF/versions/(\d+)/org/bouncycastle</pattern>
+                  <shadedPattern>META-INF/versions/$1/com/azure/security/keyvault/jca/implementation/shaded/org/bouncycastle</shadedPattern>
+                  <rawString>true</rawString>
                 </relocation>
               </relocations>
               <transformers>
