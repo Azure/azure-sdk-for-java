@@ -422,3 +422,5 @@ springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0
 java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
 java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
 java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5
+org.mockito:mockito-junit-jupiter;4.11.0
+com.github.tomakehurst:wiremock-jre8;2.35.2
