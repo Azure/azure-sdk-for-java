@@ -18,7 +18,7 @@ public final class TilerPartsGetCroppedToBoundingBoxWidthByHeightTests extends P
     public void testTilerPartsGetCroppedToBoundingBoxWidthByHeightTests() {
         // method invocation
         BinaryData response = dataClient.getPartWithDimensions("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.393,
-            33.6798, -84.367, 33.7058, 256.0, 256.0, "png",
+            33.6798, -84.367, 33.7058, 256, 256, "png",
             new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
 
         // response assertion
