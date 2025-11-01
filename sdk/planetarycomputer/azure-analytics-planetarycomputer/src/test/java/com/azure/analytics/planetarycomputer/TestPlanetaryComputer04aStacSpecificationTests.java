@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -204,7 +205,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
             System.out.println("  ID: " + item.getId());
             System.out.println("  Collection: " + item.getCollection());
             if (item.getAssets() != null) {
-                List<String> assetKeys = item.getAssets().keySet().stream().limit(5).toList();
+                List<String> assetKeys = item.getAssets().keySet().stream().limit(5).collect(Collectors.toList());
                 System.out.println("  Assets: " + String.join(", ", assetKeys));
             }
         }

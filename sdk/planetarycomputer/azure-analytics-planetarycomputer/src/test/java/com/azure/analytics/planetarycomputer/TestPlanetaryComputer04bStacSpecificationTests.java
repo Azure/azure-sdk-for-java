@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -176,13 +177,14 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
         }
 
         if (item.getAssets() != null) {
-            List<String> assetKeys = item.getAssets().keySet().stream().toList();
+            List<String> assetKeys = item.getAssets().keySet().stream().collect(Collectors.toList());
             System.out.println("  Assets (" + assetKeys.size() + "): " + String.join(", ", assetKeys));
 
             // Validate common asset types
             String[] commonAssets = new String[] { "image", "tilejson", "thumbnail", "rendered_preview" };
-            List<String> foundAssets
-                = java.util.Arrays.stream(commonAssets).filter(asset -> item.getAssets().containsKey(asset)).toList();
+            List<String> foundAssets = java.util.Arrays.stream(commonAssets)
+                .filter(asset -> item.getAssets().containsKey(asset))
+                .collect(Collectors.toList());
             System.out.println("  Found common assets: " + String.join(", ", foundAssets));
         }
     }

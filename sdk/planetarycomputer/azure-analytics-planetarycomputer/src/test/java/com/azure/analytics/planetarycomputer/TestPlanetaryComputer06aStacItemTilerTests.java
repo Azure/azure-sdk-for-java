@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Tag;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,7 +99,8 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         assertTrue(assets.size() > 0, "Should have at least one asset");
 
         System.out.println("Number of assets: " + assets.size());
-        System.out.println("Available assets: " + String.join(", ", assets.keySet().stream().limit(10).toList()));
+        System.out.println(
+            "Available assets: " + String.join(", ", assets.keySet().stream().limit(10).collect(Collectors.toList())));
 
         if (assets.size() > 0) {
             Map.Entry<String, TilerInfo> firstEntry = assets.entrySet().iterator().next();

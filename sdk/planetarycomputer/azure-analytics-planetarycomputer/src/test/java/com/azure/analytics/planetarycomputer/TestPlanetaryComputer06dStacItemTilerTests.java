@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Tag;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,6 +96,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         assertNotNull(assets);
         assertTrue(assets.size() > 0);
         System.out.println("Number of available assets: " + assets.size());
-        System.out.println("Available assets: " + String.join(", ", assets.stream().limit(10).toList()));
+        System.out
+            .println("Available assets: " + String.join(", ", assets.stream().limit(10).collect(Collectors.toList())));
     }
 }
