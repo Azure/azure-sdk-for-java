@@ -614,7 +614,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
      */
     @Override
     public void read(final ChannelHandlerContext context) {
-        logger.info("inside RntbdRequestManager.read");
+//        logger.info("inside RntbdRequestManager.read");
 
         this.traceOperation(context, "read");
         context.read();
@@ -632,7 +632,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
      */
     @Override
     public void write(final ChannelHandlerContext context, final Object message, final ChannelPromise promise) {
-        logger.info("inside RntbdRequestManager.write");
+//        logger.info("inside RntbdRequestManager.write");
 
         this.traceOperation(context, "write", message);
 
