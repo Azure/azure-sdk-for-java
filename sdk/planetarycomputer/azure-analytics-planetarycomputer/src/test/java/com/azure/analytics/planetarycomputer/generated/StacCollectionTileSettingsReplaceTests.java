@@ -4,34 +4,24 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.DefaultLocation;
 import com.azure.analytics.planetarycomputer.models.TileSettings;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionTileSettingsReplaceTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionTileSettingsReplaceTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionTileSettingsReplaceTests() {
         // method invocation
-        TileSettings response = stacClient.replaceTileSettings("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new TileSettings(13, 10).setDefaultLocation(new DefaultLocation(10, Arrays.asList(0.0, 0.0))));
+        TileSettings response = stacClient.replaceTileSettings("naip-atl", new TileSettings(6, 35));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "minZoom"
-        Assertions.assertEquals(13, response.getMinZoom());
+        Assertions.assertEquals(6, response.getMinZoom());
         // verify property "maxItemsPerTile"
-        Assertions.assertEquals(10, response.getMaxItemsPerTile());
-        // verify property "defaultLocation"
-        DefaultLocation responseDefaultLocation = response.getDefaultLocation();
-        Assertions.assertNotNull(responseDefaultLocation);
-        Assertions.assertEquals(10, responseDefaultLocation.getZoom());
-        List<Double> responseDefaultLocationCoordinates = responseDefaultLocation.getCoordinates();
-        Assertions.assertEquals(0.0, responseDefaultLocationCoordinates.iterator().next());
+        Assertions.assertEquals(35, response.getMaxItemsPerTile());
     }
 }

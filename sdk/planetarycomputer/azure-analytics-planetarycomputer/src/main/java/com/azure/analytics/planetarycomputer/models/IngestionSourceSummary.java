@@ -36,20 +36,18 @@ public final class IngestionSourceSummary implements JsonSerializable<IngestionS
      * Created time in UTC format
      */
     @Generated
-    private final OffsetDateTime created;
+    private OffsetDateTime created;
 
     /**
      * Creates an instance of IngestionSourceSummary class.
      * 
      * @param id the id value to set.
      * @param kind the kind value to set.
-     * @param created the created value to set.
      */
     @Generated
-    private IngestionSourceSummary(String id, IngestionSourceType kind, OffsetDateTime created) {
+    private IngestionSourceSummary(String id, IngestionSourceType kind) {
         this.id = id;
         this.kind = kind;
-        this.created = created;
     }
 
     /**
@@ -126,7 +124,10 @@ public final class IngestionSourceSummary implements JsonSerializable<IngestionS
                     reader.skipChildren();
                 }
             }
-            return new IngestionSourceSummary(id, kind, created);
+            IngestionSourceSummary deserializedIngestionSourceSummary = new IngestionSourceSummary(id, kind);
+            deserializedIngestionSourceSummary.created = created;
+
+            return deserializedIngestionSourceSummary;
         });
     }
 }

@@ -14,23 +14,24 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionMosaicsCreateOrReplaceTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionMosaicsReplaceTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
-    public void testStacCollectionMosaicsCreateOrReplaceTests() {
+    public void testStacCollectionMosaicsReplaceTests() {
         // method invocation
-        StacMosaic response = stacClient.createOrReplaceMosaic("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            "f1b3b3b3-0b3b-4b3b-8b3b-3b3b3b3b3b3b",
-            new StacMosaic("mosaic-default", "Imagery", Arrays.asList()).setDescription("Updated description"));
+        StacMosaic response = stacClient.replaceMosaic("naip-atl", "test-mosaic-1",
+            new StacMosaic("test-mosaic-1", "Test Most recent available", Arrays.asList())
+                .setDescription("Most recent available imagery in this collection - updated"));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("mosaic-default", response.getId());
+        Assertions.assertEquals("test-mosaic-1", response.getId());
         // verify property "name"
-        Assertions.assertEquals("Imagery", response.getName());
+        Assertions.assertEquals("Test Most recent available", response.getName());
         // verify property "description"
-        Assertions.assertEquals("Updated description", response.getDescription());
+        Assertions.assertEquals("Most recent available imagery in this collection - updated",
+            response.getDescription());
         // verify property "cql"
         List<Map<String, BinaryData>> responseCql = response.getCql();
         Assertions.assertEquals(0, responseCql.size());

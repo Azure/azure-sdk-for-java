@@ -5,19 +5,20 @@
 package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.GetStatisticsOptions;
-import com.azure.analytics.planetarycomputer.models.StatisticsResponse;
+import com.azure.analytics.planetarycomputer.models.TilerStacItemStatistics;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerStatisticsGetAllTests extends PlanetaryComputerClientTestBase {
+public final class TilerStatisticsGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerStatisticsGetAllTests() {
         // method invocation
-        StatisticsResponse response
-            = tilerClient.listStatistics("{{collectionId}}", "{{itemId}}", new GetStatisticsOptions());
+        TilerStacItemStatistics response = dataClient.listStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            new GetStatisticsOptions().setAssets(Arrays.asList("image")));
 
         // response assertion
         Assertions.assertNotNull(response);

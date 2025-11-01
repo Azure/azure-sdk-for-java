@@ -11,28 +11,26 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionRenderOptionsGetTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionRenderOptionsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionRenderOptionsGetTests() {
         // method invocation
-        RenderOption response = stacClient.getRenderOption("sentinel-2-l2a-tutorial-7", "natural-color");
+        RenderOption response = stacClient.getRenderOption("naip-atl", "test-natural-color");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("natural-color", response.getId());
+        Assertions.assertEquals("test-natural-color", response.getId());
         // verify property "name"
-        Assertions.assertEquals("Natural color", response.getName());
+        Assertions.assertEquals("Test Natural color updated", response.getName());
         // verify property "description"
-        Assertions.assertEquals("True color composite of visible bands (B04, B03, B02)", response.getDescription());
+        Assertions.assertEquals("RGB from visual assets - updated", response.getDescription());
         // verify property "type"
         Assertions.assertEquals(RenderOptionType.RASTER_TILE, response.getType());
         // verify property "options"
-        Assertions.assertEquals(
-            "assets=B04&assets=B03&assets=B02&nodata=0&color_formula=Gamma RGB 3.2 Saturation 0.8 Sigmoidal RGB 25 0.35",
-            response.getOptions());
+        Assertions.assertEquals("assets=image&asset_bidx=image|1,2,3", response.getOptions());
         // verify property "minZoom"
-        Assertions.assertEquals(9, response.getMinZoom());
+        Assertions.assertEquals(6, response.getMinZoom());
     }
 }

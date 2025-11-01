@@ -4,22 +4,22 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
-import com.azure.analytics.planetarycomputer.models.StacAsset;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.List;
 
 public class MosaicsAssetsForPointsGetPointAssets {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-assets-for-point.mosaics-assets-for-points-get-point-assets
-        List<StacAsset> response = tilerClient.getMosaicsAssetsForPoint("e32e0b12176246816953d75e3356d613", -122.3321,
-            47.6062, null, null, null, null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-assets-for-point.mosaics-assets-for-points-get-point-assets
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-assets-for-point.mosaics-assets-for-points-get-point-assets
+        List<StacItemPointAsset> response = dataClient.getMosaicsAssetsForPoint("ba13fc7947b9b585690d84ee61aaa653",
+            -84.43202751899601, 33.63964763972227, 100, 100, 30, true, true, "EPSG:4326");
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-assets-for-point.mosaics-assets-for-points-get-point-assets
     }
 }

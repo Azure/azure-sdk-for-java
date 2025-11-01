@@ -12,13 +12,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionsDeleteTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionsDeleteTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionsDeleteTests() {
         // method invocation
-        SyncPoller<Operation, Void> response = setPlaybackSyncPollerPollInterval(
-            stacClient.beginDeleteCollection("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92"));
+        SyncPoller<Operation, Void> response
+            = setPlaybackSyncPollerPollInterval(stacClient.beginDeleteCollection("test-partition-type-collection"));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

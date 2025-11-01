@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class IngestionsUpdateTests extends PlanetaryComputerClientTestBase {
+public final class IngestionsUpdateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionsUpdateTests() {
-        BinaryData definition = BinaryData.fromString(
-            "{\"displayName\":\"test-ingestion1\",\"keepOriginalAssets\":false,\"skipExistingItems\":false,\"sourceCatalogUrl\":\"https://uksouthdatazoo.blob.core.windows.net/impactobservatory\"}");
+        BinaryData body
+            = BinaryData.fromString("{\"importType\":\"StaticCatalog\",\"displayName\":\"Updated Ingestion Name\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = ingestionManagementClient.updateWithResponse("potsdam-stacforge",
-            "5e961a4c-7c3e-40ca-b151-2e574bae1635", definition, requestOptions);
+        Response<BinaryData> response = ingestionClient.updateWithResponse("naip-atl",
+            "00000000-0000-0000-0000-000000000000", body, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(
-            "{\"id\":\"5e961a4c-7c3e-40ca-b151-2e574bae1635\",\"creationTime\":\"2025-03-11T17:06:33.3588608Z\",\"importType\":\"StaticCatalog\",\"displayName\":\"test-ingestion1\",\"sourceCatalogUrl\":\"https://uksouthdatazoo.blob.core.windows.net/impactobservatory\",\"skipExistingItems\":false,\"keepOriginalAssets\":false,\"status\":\"Ready\"}")
+            "{\"id\":\"00000000-0000-0000-0000-000000000000\",\"creationTime\":\"2025-10-28T18:41:20.1460122Z\",\"importType\":\"StaticCatalog\",\"displayName\":\"Updated Ingestion Name\",\"sourceCatalogUrl\":\"https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json\",\"skipExistingItems\":true,\"keepOriginalAssets\":true,\"status\":\"Ready\"}")
             .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

@@ -9,6 +9,8 @@ import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.analytics.planetarycomputer.models.StacAsset;
 import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
+import com.azure.analytics.planetarycomputer.models.StacLink;
+import com.azure.analytics.planetarycomputer.models.StacLinkType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
@@ -21,40 +23,39 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacItemsCreateTests extends PlanetaryComputerClientTestBase {
+public final class StacItemsCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacItemsCreateTests() {
         // method invocation
-        SyncPoller<Operation, Void> response
-            = setPlaybackSyncPollerPollInterval(stacClient.beginCreateItem("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-                new StacItem().setStacVersion("1.0.0")
-                    .setLinks(Arrays.asList())
-                    .setStacExtensions(Arrays.asList("https://stac-extensions.github.io/eo/v1.0.0/schema.json",
-                        "https://stac-extensions.github.io/projection/v1.0.0/schema.json"))
-                    .setGeometry(
-                        new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-80.560478, 27.997976),
-                            Arrays.asList(-80.560208, 28.064325), Arrays.asList(-80.627067, 28.064522),
-                            Arrays.asList(-80.627296, 27.998174), Arrays.asList(-80.560478, 27.997976)))))
-                    .setCollection("{{collectionId}}")
-                    .setBoundingBox(Arrays.asList(-80.627296, 27.997976, -80.560208, 28.064522))
-                    .setProperties(new StacItemProperties().setGsd(0.6D)
-                        .setDatetime("2019-12-15T00:00:00Z")
-                        .setAdditionalProperties(mapOf("proj:epsg",
-                            BinaryData.fromBytes("26917".getBytes(StandardCharsets.UTF_8)), "naip:state",
-                            BinaryData.fromBytes("fl".getBytes(StandardCharsets.UTF_8)), "proj:shape",
-                            BinaryData.fromBytes("[12250, 10950]".getBytes(StandardCharsets.UTF_8)), "proj:transform",
-                            BinaryData.fromBytes(
-                                "[0.6, 0, 536646, 0, -0.6, 3104406, 0, 0, 1]".getBytes(StandardCharsets.UTF_8)),
-                            "naip:year", BinaryData.fromBytes("2019".getBytes(StandardCharsets.UTF_8)), "proj:bbox",
-                            BinaryData
-                                .fromBytes("[536646, 3097056, 543216, 3104406]".getBytes(StandardCharsets.UTF_8)))))
-                    .setAssets(mapOf("sample_external", new StacAsset().setTitle("Sample external image")
-                        .setHref(
-                            "https://learn.microsoft.com/en-us/azure/remote-rendering/samples/media/sample-model.png")
-                        .setType("image/png")
-                        .setRoles(Arrays.asList("tiles"))
-                        .setAdditionalProperties(mapOf())))));
+        SyncPoller<Operation, Void> response = setPlaybackSyncPollerPollInterval(stacClient.beginCreateItem("naip-atl",
+            new StacItem().setStacVersion("1.0.0")
+                .setLinks(Arrays.asList(new StacLink().setRel("collection")
+                    .setType(StacLinkType.APPLICATION_JSON)
+                    .setHref("https://planetarycomputer.microsoft.com/api/stac/v1/collections/naip-atl")))
+                .setStacExtensions(Arrays.asList("https://stac-extensions.github.io/projection/v1.0.0/schema.json"))
+                .setGeometry(
+                    new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.372943, 33.621853),
+                        Arrays.asList(-84.370894, 33.689211), Arrays.asList(-84.439575, 33.690654),
+                        Arrays.asList(-84.44157, 33.623293), Arrays.asList(-84.372943, 33.621853)))))
+                .setCollection("naip-atl")
+                .setBoundingBox(Arrays.asList(-84.44157, 33.621853, -84.370894, 33.690654))
+                .setProperties(new StacItemProperties().setGsd(0.6D)
+                    .setDatetime("2021-11-14T16:00:00Z")
+                    .setAdditionalProperties(mapOf("proj:epsg",
+                        BinaryData.fromBytes("26916".getBytes(StandardCharsets.UTF_8)), "naip:state",
+                        BinaryData.fromBytes("ga".getBytes(StandardCharsets.UTF_8)), "proj:shape",
+                        BinaryData.fromBytes("[12460, 10620]".getBytes(StandardCharsets.UTF_8)), "proj:transform",
+                        BinaryData
+                            .fromBytes("[0.6, 0, 737334, 0, -0.6, 3730800, 0, 0, 1]".getBytes(StandardCharsets.UTF_8)),
+                        "naip:year", BinaryData.fromBytes("2021".getBytes(StandardCharsets.UTF_8)), "proj:bbox",
+                        BinaryData.fromBytes("[737334, 3723324, 743706, 3730800]".getBytes(StandardCharsets.UTF_8)))))
+                .setAssets(mapOf("image", new StacAsset().setTitle("RGBIR COG tile")
+                    .setHref(
+                        "https://SANITIZED.blob.core.windows.net/naip/v002/ga/2021/ga_060cm_2021/33084/m_3308421_se_16_060_20211114.tif")
+                    .setType("image/tiff; application=geotiff; profile=cloud-optimized")
+                    .setRoles(Arrays.asList("data"))
+                    .setAdditionalProperties(mapOf())))));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

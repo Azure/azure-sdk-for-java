@@ -5,6 +5,7 @@
 package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.StacQueryable;
+import com.azure.analytics.planetarycomputer.models.StacQueryableDefinitionDataType;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -15,17 +16,16 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacQueryablesCreateTests extends PlanetaryComputerClientTestBase {
+public final class StacQueryablesCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacQueryablesCreateTests() {
         // method invocation
-        List<StacQueryable> response = stacClient.createQueryables("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            Arrays.asList(new StacQueryable("eo:clown_cover",
-                mapOf("description",
-                    BinaryData
-                        .fromBytes("Like cloud cover, but with more party tricks".getBytes(StandardCharsets.UTF_8)),
-                    "data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8))))));
+        List<StacQueryable> response = stacClient.createQueryables("naip-atl",
+            Arrays.asList(new StacQueryable("test:property",
+                mapOf("data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8))))
+                    .setCreateIndex(false)
+                    .setDataType(StacQueryableDefinitionDataType.NUMBER)));
     }
 
     // Use "Map.of" if available

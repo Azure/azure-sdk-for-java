@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionPartitionTypesGetTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionPartitionTypesGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionPartitionTypesGetTests() {
         // method invocation
-        PartitionType response = stacClient.getPartitionType("naip");
+        PartitionType response = stacClient.getPartitionType("naip-atl");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "scheme"
-        Assertions.assertEquals(PartitionTypeScheme.NONE, response.getScheme());
+        Assertions.assertEquals(PartitionTypeScheme.YEAR, response.getScheme());
     }
 }

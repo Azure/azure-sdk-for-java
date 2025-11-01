@@ -26,10 +26,11 @@ public final class GetTileOptions {
     private String expression;
 
     /*
-     * Per asset band indexes (coma separated indexes)
+     * Per asset band indexes (coma separated indexes, e.g. "image|1,2,3" means use the bands 1, 2, and 3 from the asset
+     * named "image")
      */
     @Generated
-    private List<String> assetBandIndices;
+    private String assetBandIndices;
 
     /*
      * Asset as Band
@@ -169,23 +170,25 @@ public final class GetTileOptions {
     }
 
     /**
-     * Get the assetBandIndices property: Per asset band indexes (coma separated indexes).
+     * Get the assetBandIndices property: Per asset band indexes (coma separated indexes, e.g. "image|1,2,3" means use
+     * the bands 1, 2, and 3 from the asset named "image").
      * 
      * @return the assetBandIndices value.
      */
     @Generated
-    public List<String> getAssetBandIndices() {
+    public String getAssetBandIndices() {
         return this.assetBandIndices;
     }
 
     /**
-     * Set the assetBandIndices property: Per asset band indexes (coma separated indexes).
+     * Set the assetBandIndices property: Per asset band indexes (coma separated indexes, e.g. "image|1,2,3" means use
+     * the bands 1, 2, and 3 from the asset named "image").
      * 
      * @param assetBandIndices the assetBandIndices value to set.
      * @return the GetTileOptions object itself.
      */
     @Generated
-    public GetTileOptions setAssetBandIndices(List<String> assetBandIndices) {
+    public GetTileOptions setAssetBandIndices(String assetBandIndices) {
         this.assetBandIndices = assetBandIndices;
         return this;
     }

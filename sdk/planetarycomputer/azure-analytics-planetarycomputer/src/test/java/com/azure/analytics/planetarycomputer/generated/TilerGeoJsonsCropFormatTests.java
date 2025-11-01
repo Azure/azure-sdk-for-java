@@ -10,28 +10,38 @@ import com.azure.analytics.planetarycomputer.models.FeatureType;
 import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.core.util.BinaryData;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerGeoJsonsCropFormatTests extends PlanetaryComputerClientTestBase {
+public final class TilerGeoJsonsCropFormatTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerGeoJsonsCropFormatTests() {
         // method invocation
-        BinaryData response
-            = tilerClient.cropGeoJson("collectionId-0df36a74d7ed", "item-0df36a74d7ed", "png", new CropGeoJsonOptions(),
-                new Feature(new Polygon()
-                    .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-65.75386020444417, 18.252659831448764),
-                        Arrays.asList(-65.75385878091376, 18.252569552371305),
-                        Arrays.asList(-65.75376429311993, 18.252570912467043),
-                        Arrays.asList(-65.75376571660163, 18.252661191551685),
-                        Arrays.asList(-65.75386020444417, 18.252659831448764)))),
-                    FeatureType.FEATURE),
-                null);
+        BinaryData response = dataClient.cropGeoJson("naip-atl", "ga_m_3308421_se_16_060_20211114", "crop.png",
+            new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"),
+            new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
+                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
+                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()),
+            null);
 
         // response assertion
         Assertions.assertNotNull(response);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

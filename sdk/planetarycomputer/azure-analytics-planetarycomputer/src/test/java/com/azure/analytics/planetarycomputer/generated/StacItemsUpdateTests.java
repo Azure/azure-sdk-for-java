@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class StacItemsUpdateTests extends PlanetaryComputerClientTestBase {
+public final class StacItemsUpdateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacItemsUpdateTests() {
         BinaryData body = BinaryData.fromString(
-            "{\"id\":\"{{itemId}}\",\"collection\":\"{{collectionId}}\",\"type\":\"Feature\",\"assets\":{\"sample_external\":null,\"sample_user\":{\"href\":\"https://sample.blob.core.windows.net/samples/4MB.jp2\",\"title\":\"Sample storage account Image (4MB)\",\"type\":\"image/jp2\",\"roles\":[\"data\"]}},\"properties\":{\"datetime\":\"2021-12-15T00:00:00Z\",\"naip:year\":\"2021\"}}");
+            "{\"id\":\"ga_m_3308421_se_16_060_20211114_test\",\"bbox\":[-84.44157,33.621853,-84.370894,33.690654],\"type\":\"Feature\",\"links\":[{\"rel\":\"collection\",\"type\":\"application/json\",\"href\":\"https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/naip-atl\"},{\"rel\":\"parent\",\"type\":\"application/json\",\"href\":\"https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/naip-atl\"},{\"rel\":\"root\",\"type\":\"application/json\",\"href\":\"https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/\"},{\"rel\":\"self\",\"type\":\"application/geo+json\",\"href\":\"https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/naip-atl/items/ga_m_3308421_se_16_060_20211114_test\"}],\"assets\":{\"image\":{\"href\":\"https://SANITIZED.blob.core.windows.net/naip-atl-bde3e846/08a/ga_m_3308421_se_16_060_20211114_test/image.tif\",\"type\":\"image/tiff; application=geotiff; profile=cloud-optimized\",\"roles\":[\"data\"],\"title\":\"RGBIR COG tile\"}},\"_msft:ts\":\"2025-10-28T17:52:49.659975Z\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-84.372943,33.621853],[-84.370894,33.689211],[-84.439575,33.690654],[-84.44157,33.623293],[-84.372943,33.621853]]]},\"_msft:etag\":\"73fab31c-2e93-422b-b30a-7d259590992f\",\"collection\":\"naip-atl\",\"properties\":{\"gsd\":0.6,\"datetime\":\"2021-11-14T16:00:00Z\",\"naip:year\":\"2021\",\"proj:bbox\":[737334,3723324,743706,3730800],\"proj:epsg\":26916,\"naip:state\":\"ga\",\"proj:shape\":[12460,10620],\"proj:transform\":[0.6,0,737334,0,-0.6,3730800,0,0,1],\"platform\":\"Imagery\"},\"stac_extensions\":[\"https://stac-extensions.github.io/projection/v1.1.0/schema.json\"],\"stac_version\":\"1.0.0\"}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response = setPlaybackSyncPollerPollInterval(
-            stacClient.beginUpdateItem("{{collectionId}}", "{{itemId}}", body, requestOptions));
+            stacClient.beginUpdateItem("naip-atl", "ga_m_3308421_se_16_060_20211114_test", body, requestOptions));
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             response.waitForCompletion().getStatus());
     }

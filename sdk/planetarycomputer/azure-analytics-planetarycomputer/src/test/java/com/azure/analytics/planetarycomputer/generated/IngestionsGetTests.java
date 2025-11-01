@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionStatus;
 import com.azure.analytics.planetarycomputer.models.IngestionType;
 import org.junit.jupiter.api.Assertions;
@@ -12,23 +12,25 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionsGetTests extends PlanetaryComputerClientTestBase {
+public final class IngestionsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionsGetTests() {
         // method invocation
-        Ingestion response = ingestionManagementClient.get("collectionId", "24a8a15d-61bd-453f-ac67-b9cec532ed78");
+        IngestionDefinition response = ingestionClient.get("naip-atl", "00000000-0000-0000-0000-000000000000");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("24a8a15d-61bd-453f-ac67-b9cec532ed78", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "importType"
         Assertions.assertEquals(IngestionType.STATIC_CATALOG, response.getImportType());
         // verify property "displayName"
-        Assertions.assertEquals("My Connection", response.getDisplayName());
+        Assertions.assertEquals("Ingestion for Get Test", response.getDisplayName());
         // verify property "sourceCatalogUrl"
-        Assertions.assertEquals("https://sample.blob.core.windows.net/sample2.json", response.getSourceCatalogUrl());
+        Assertions.assertEquals(
+            "https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json",
+            response.getSourceCatalogUrl());
         // verify property "skipExistingItems"
         Assertions.assertEquals(true, response.isSkipExistingItems());
         // verify property "keepOriginalAssets"

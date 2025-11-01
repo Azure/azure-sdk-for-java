@@ -13,24 +13,21 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionSourcesCreateOrReplaceTests extends PlanetaryComputerClientTestBase {
+public final class IngestionSourcesReplaceTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
-    public void testIngestionSourcesCreateOrReplaceTests() {
+    public void testIngestionSourcesReplaceTests() {
         // method invocation
-        IngestionSource response
-            = ingestionManagementClient.createOrReplaceSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-                new SharedAccessSignatureTokenIngestionSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-                    new SharedAccessSignatureTokenConnection("https://sample.blob.core.windows.net/sample2")
-                        .setSharedAccessSignatureToken("fakeTokenPlaceholder")));
+        IngestionSource response = ingestionClient.replaceSource("00000000-0000-0000-0000-000000000000",
+            new SharedAccessSignatureTokenIngestionSource("00000000-0000-0000-0000-000000000000",
+                new SharedAccessSignatureTokenConnection("https://SANITIZED.blob.core.windows.net/sample-container")
+                    .setSharedAccessSignatureToken("fakeTokenPlaceholder")));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "kind"
         Assertions.assertEquals(IngestionSourceType.SHARED_ACCESS_SIGNATURE_TOKEN, response.getKind());
         // verify property "id"
-        Assertions.assertEquals("36fcb8da-9b15-49e0-b400-0d2e751e2062", response.getId());
-        // verify property "created"
-        Assertions.assertNotNull(response.getCreated());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
     }
 }

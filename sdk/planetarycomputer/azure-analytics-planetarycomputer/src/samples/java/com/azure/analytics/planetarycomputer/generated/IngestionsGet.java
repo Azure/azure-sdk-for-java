@@ -4,20 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionsGet {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-get.ingestions-get
-        Ingestion response = ingestionManagementClient.get("collectionId", "24a8a15d-61bd-453f-ac67-b9cec532ed78");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-get.ingestions-get
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-get.ingestions-get
+        IngestionDefinition response = ingestionClient.get("naip-atl", "00000000-0000-0000-0000-000000000000");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-get.ingestions-get
     }
 }

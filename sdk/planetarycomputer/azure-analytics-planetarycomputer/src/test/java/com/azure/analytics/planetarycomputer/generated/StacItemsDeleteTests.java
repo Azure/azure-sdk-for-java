@@ -12,13 +12,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacItemsDeleteTests extends PlanetaryComputerClientTestBase {
+public final class StacItemsDeleteTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacItemsDeleteTests() {
         // method invocation
         SyncPoller<Operation, Void> response = setPlaybackSyncPollerPollInterval(
-            stacClient.beginDeleteItem("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", "9bb31abd-91d6-4649-9c6f-beadbec7c622"));
+            stacClient.beginDeleteItem("naip-atl", "ga_m_3308421_se_16_060_20211114_delete_test"));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

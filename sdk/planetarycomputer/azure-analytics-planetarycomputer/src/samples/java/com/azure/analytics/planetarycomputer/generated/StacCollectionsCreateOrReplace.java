@@ -4,36 +4,71 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
-import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacCollectionTemporalExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
+import com.azure.analytics.planetarycomputer.models.StacLink;
+import com.azure.analytics.planetarycomputer.models.StacLinkType;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StacCollectionsCreateOrReplace {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-or-replace-collection.stac-collections-create-or-replace
-        SyncPoller<Operation, Void> response = stacClient.beginCreateOrReplaceCollection("test-collection-568725878606",
-            new StacCollection("A collection for integration tests purposes", Arrays.asList(), "CC-BY-4.0",
-                new StacExtensionExtent(
-                    new StacExtensionSpatialExtent()
-                        .setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0))),
-                    new StacCollectionTemporalExtent(
-                        Arrays.asList(Arrays.asList(OffsetDateTime.parse("2020-01-01T00:00:00Z"), null)))))
-                            .setStacVersion("1.0.0")
-                            .setTitle("Test Collection d45537668d06")
-                            .setType("Collection"));
+        StacCollection response = stacClient.createOrReplaceCollection("test-collection-lifecycle", new StacCollection(
+            "Test collection for lifecycle operations - UPDATED",
+            Arrays.asList(new StacLink().setRel("items")
+                .setType(StacLinkType.APPLICATION_GEO_JSON)
+                .setHref(
+                    "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/test-collection-lifecycle/items"),
+                new StacLink().setRel("parent")
+                    .setType(StacLinkType.APPLICATION_JSON)
+                    .setHref("https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/"),
+                new StacLink().setRel("root")
+                    .setType(StacLinkType.APPLICATION_JSON)
+                    .setHref("https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/"),
+                new StacLink().setRel("self")
+                    .setType(StacLinkType.APPLICATION_JSON)
+                    .setHref(
+                        "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/test-collection-lifecycle")),
+            "proprietary",
+            new StacExtensionExtent(
+                new StacExtensionSpatialExtent()
+                    .setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0))),
+                new StacCollectionTemporalExtent(Arrays.asList(Arrays.asList(
+                    OffsetDateTime.parse("2020-01-01T00:00:00Z"), OffsetDateTime.parse("2024-12-31T23:59:59Z"))))))
+                        .setCreatedOn("2025-10-28T18:47:27.7827791Z")
+                        .setUpdatedOn("2025-10-28T18:47:27.7827791Z")
+                        .setStacVersion("1.0.0")
+                        .setTitle("Test Collection Lifecycle")
+                        .setType("Collection")
+                        .setAdditionalProperties(mapOf("id",
+                            BinaryData.fromBytes("test-collection-lifecycle".getBytes(StandardCharsets.UTF_8)))));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-or-replace-collection.stac-collections-create-or-replace
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

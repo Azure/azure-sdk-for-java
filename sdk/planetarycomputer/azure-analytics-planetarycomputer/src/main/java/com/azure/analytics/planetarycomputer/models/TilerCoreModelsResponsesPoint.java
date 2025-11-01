@@ -14,10 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Point model.
- * 
- * response model for `/point` endpointsResponse model for point query operations providing values at a specific
- * location.
+ * Response model for point query operations providing values at a specific location.
  */
 @Immutable
 public final class TilerCoreModelsResponsesPoint implements JsonSerializable<TilerCoreModelsResponsesPoint> {

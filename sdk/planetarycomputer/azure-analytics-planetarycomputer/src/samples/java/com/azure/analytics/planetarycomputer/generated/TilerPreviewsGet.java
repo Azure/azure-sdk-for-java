@@ -4,8 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -14,16 +14,17 @@ import java.util.Arrays;
 
 public class TilerPreviewsGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-preview.tiler-previews-get
-        BinaryData response = tilerClient.getPreview("ESP-collection", "18S-2022",
-            new GetPreviewOptions().setAssets(Arrays.asList("data"))
-                .setAssetBandIndices(Arrays.asList("image|1,2,3"))
-                .setMaxSize(400),
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-preview.tiler-previews-get
+        BinaryData response = dataClient.getPreview("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            new GetPreviewOptions().setAssets(Arrays.asList("image"))
+                .setAssetBandIndices("image|1,2,3")
+                .setHeight(512)
+                .setWidth(512),
             null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-preview.tiler-previews-get
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-preview.tiler-previews-get
     }
 }

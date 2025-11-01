@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacConformanceClassGetTests extends PlanetaryComputerClientTestBase {
+public final class StacConformanceClassGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacConformanceClassGetTests() {

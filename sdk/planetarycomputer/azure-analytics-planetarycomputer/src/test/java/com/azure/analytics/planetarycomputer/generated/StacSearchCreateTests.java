@@ -11,6 +11,7 @@ import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
 import com.azure.analytics.planetarycomputer.models.StacModelType;
+import com.azure.analytics.planetarycomputer.models.StacProvider;
 import com.azure.analytics.planetarycomputer.models.StacSearchParameters;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
@@ -21,15 +22,18 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacSearchCreateTests extends PlanetaryComputerClientTestBase {
+public final class StacSearchCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacSearchCreateTests() {
         // method invocation
-        StacItemCollection response = stacClient.search(new StacSearchParameters().setLimit(1)
+        StacItemCollection response = stacClient.search(new StacSearchParameters()
+            .setCollections(Arrays.asList("naip-atl"))
+            .setDatetime("2021-01-01T00:00:00Z/2022-12-31T00:00:00Z")
+            .setLimit(50)
             .setSortBy(Arrays.asList(new StacSortExtension("datetime", StacSearchSortingDirection.DESC)))
             .setFilter(
-                "{op=and, args=[{op==, args=[{property=collection}, landsat-c2-l2]}, {op=s_intersects, args=[{property=geometry}, {type=Polygon, coordinates=[[[-64.40921305524132, -46.66887954721563], [124.52640055523665, -46.66887954721563], [124.52640055523665, 74.90964316425496], [-64.40921305524132, 74.90964316425496], [-64.40921305524132, -46.66887954721563]]]}]}, {op=anyinteracts, args=[{property=datetime}, {interval=[1982-08-22T00:00:00Z, 2025-07-23T23:59:59Z]}]}, {op=<=, args=[{property=eo:cloud_cover}, 20]}]}")
+                "{op=s_intersects, args=[{property=geometry}, {type=Polygon, coordinates=[[[-84.46416308610219, 33.6033686729869], [-84.38815071170247, 33.6033686729869], [-84.38815071170247, 33.6713179813099], [-84.46416308610219, 33.6713179813099], [-84.46416308610219, 33.6033686729869]]]}]}")
             .setFilterLang(FilterLanguage.CQL2_JSON));
 
         // response assertion
@@ -44,20 +48,30 @@ public final class StacSearchCreateTests extends PlanetaryComputerClientTestBase
         Geometry responseFeaturesFirstItemGeometry = responseFeaturesFirstItem.getGeometry();
         Assertions.assertNotNull(responseFeaturesFirstItemGeometry);
         Assertions.assertEquals(GeometryType.POLYGON, responseFeaturesFirstItemGeometry.getType());
-        Assertions.assertEquals("LC09_L2SP_060238_20250714_02_T1", responseFeaturesFirstItem.getId());
-        Assertions.assertEquals("landsat-c2-l2", responseFeaturesFirstItem.getCollection());
+        Assertions.assertEquals("ga_m_3308429_nw_16_060_20211114", responseFeaturesFirstItem.getId());
+        Assertions.assertEquals("naip-atl", responseFeaturesFirstItem.getCollection());
         List<Double> responseFeaturesFirstItemBoundingBox = responseFeaturesFirstItem.getBoundingBox();
-        Assertions.assertEquals(-33.93336757082145, responseFeaturesFirstItemBoundingBox.iterator().next());
+        Assertions.assertEquals(-84.504026, responseFeaturesFirstItemBoundingBox.iterator().next());
         StacItemProperties responseFeaturesFirstItemProperties = responseFeaturesFirstItem.getProperties();
         Assertions.assertNotNull(responseFeaturesFirstItemProperties);
-        Assertions.assertEquals("landsat-9", responseFeaturesFirstItemProperties.getPlatform());
-        List<String> responseFeaturesFirstItemPropertiesInstruments
-            = responseFeaturesFirstItemProperties.getInstruments();
-        Assertions.assertEquals("oli", responseFeaturesFirstItemPropertiesInstruments.iterator().next());
-        Assertions.assertEquals(30.0D, responseFeaturesFirstItemProperties.getGsd());
-        Assertions.assertNotNull(responseFeaturesFirstItemProperties.getCreated());
-        Assertions.assertEquals("Landsat Collection 2 Level-2", responseFeaturesFirstItemProperties.getDescription());
-        Assertions.assertEquals("2025-07-14T21:46:07.025131Z", responseFeaturesFirstItemProperties.getDatetime());
+        List<StacProvider> responseFeaturesFirstItemPropertiesProviders
+            = responseFeaturesFirstItemProperties.getProviders();
+        StacProvider responseFeaturesFirstItemPropertiesProvidersFirstItem
+            = responseFeaturesFirstItemPropertiesProviders.iterator().next();
+        Assertions.assertNotNull(responseFeaturesFirstItemPropertiesProvidersFirstItem);
+        Assertions.assertEquals("USDA Farm Service Agency",
+            responseFeaturesFirstItemPropertiesProvidersFirstItem.getName());
+        List<String> responseFeaturesFirstItemPropertiesProvidersFirstItemRoles
+            = responseFeaturesFirstItemPropertiesProvidersFirstItem.getRoles();
+        Assertions.assertEquals("producer",
+            responseFeaturesFirstItemPropertiesProvidersFirstItemRoles.iterator().next());
+        Assertions.assertEquals(
+            "https://www.fsa.usda.gov/programs-and-services/aerial-photography/imagery-programs/naip-imagery/",
+            responseFeaturesFirstItemPropertiesProvidersFirstItem.getUrl());
+        Assertions.assertEquals(0.6D, responseFeaturesFirstItemProperties.getGsd());
+        Assertions.assertEquals("2021-11-14T16:00:00Z", responseFeaturesFirstItemProperties.getDatetime());
         Assertions.assertNotNull(responseFeaturesFirstItem.getAssets());
+        Assertions.assertEquals("2025-10-22T11:16:45.853226Z", responseFeaturesFirstItem.getTimestamp());
+        Assertions.assertEquals("44ccaf80-46a9-41c9-b3a0-e86329784186", responseFeaturesFirstItem.getETag());
     }
 }

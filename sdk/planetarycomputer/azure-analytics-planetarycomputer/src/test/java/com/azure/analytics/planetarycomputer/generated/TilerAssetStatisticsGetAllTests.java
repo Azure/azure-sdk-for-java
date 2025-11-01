@@ -4,24 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.BandStatistics;
 import com.azure.analytics.planetarycomputer.models.GetAssetStatisticsOptions;
-import com.azure.analytics.planetarycomputer.models.StacAssetStatistics;
-import org.junit.jupiter.api.Assertions;
+import java.util.Arrays;
+import java.util.Map;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerAssetStatisticsGetAllTests extends PlanetaryComputerClientTestBase {
+public final class TilerAssetStatisticsGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerAssetStatisticsGetAllTests() {
         // method invocation
-        StacAssetStatistics response
-            = tilerClient.getAssetStatistics("{{collectionId}}", "{{itemId}}", new GetAssetStatisticsOptions());
-
-        // response assertion
-        Assertions.assertNotNull(response);
-        // verify property "data"
-        Assertions.assertNotNull(response.getData());
+        Map<String, Map<String, BandStatistics>> response = dataClient.getAssetStatistics("naip-atl",
+            "ga_m_3308421_se_16_060_20211114", new GetAssetStatisticsOptions().setAssets(Arrays.asList("image")));
     }
 }

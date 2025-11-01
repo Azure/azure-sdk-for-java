@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionRenderOptionsGetAllTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionRenderOptionsGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionRenderOptionsGetAllTests() {
         // method invocation
-        List<RenderOption> response = stacClient.listRenderOptions("sentinel-2-l2a-tutorial-7");
+        List<RenderOption> response = stacClient.listRenderOptions("naip-atl");
     }
 }

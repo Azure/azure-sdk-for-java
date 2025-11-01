@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MapsClassMapLegendsGetTests extends PlanetaryComputerClientTestBase {
+public final class MapsClassMapLegendsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMapsClassMapLegendsGetTests() {
         // method invocation
-        Map<String, BinaryData> response = tilerClient.getClassMapLegend("mtbs-severity", null, null);
+        Map<String, BinaryData> response = dataClient.getClassMapLegend("mtbs-severity", null, null);
     }
 }

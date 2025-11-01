@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * Legend type to make, one of: `continuous`, `classmap`, `interval` or `none`
- * (note, `none` is a string literal).Defines the legend configuration types for data visualization.
+ * (note, `none` is a string literal).
  */
 public final class LegendConfigType extends ExpandableStringEnum<LegendConfigType> {
     /**

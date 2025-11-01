@@ -4,9 +4,10 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacQueryable;
+import com.azure.analytics.planetarycomputer.models.StacQueryableDefinitionDataType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -19,16 +20,15 @@ import java.util.Map;
 public class StacQueryablesCreate {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-queryables.stac-queryables-create
-        List<StacQueryable> response = stacClient.createQueryables("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            Arrays.asList(new StacQueryable("eo:clown_cover",
-                mapOf("description",
-                    BinaryData
-                        .fromBytes("Like cloud cover, but with more party tricks".getBytes(StandardCharsets.UTF_8)),
-                    "data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8))))));
+        List<StacQueryable> response = stacClient.createQueryables("naip-atl",
+            Arrays.asList(new StacQueryable("test:property",
+                mapOf("data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8))))
+                    .setCreateIndex(false)
+                    .setDataType(StacQueryableDefinitionDataType.NUMBER)));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-queryables.stac-queryables-create
     }
 

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.UserCollectionSettings;
 import com.azure.core.util.Configuration;
@@ -13,11 +13,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class StacCollectionConfigGet {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-collection-configuration.stac-collection-config-get
-        UserCollectionSettings response = stacClient.getCollectionConfiguration("sentinel-2-l2a-tutorial-7");
+        UserCollectionSettings response = stacClient.getCollectionConfiguration("naip-atl");
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-collection-configuration.stac-collection-config-get
     }
 }

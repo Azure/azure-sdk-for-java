@@ -4,9 +4,10 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacQueryable;
+import com.azure.analytics.planetarycomputer.models.StacQueryableDefinitionDataType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -14,20 +15,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StacQueryablesCreateOrReplace {
+public class StacQueryablesReplace {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-or-replace-queryable.stac-queryables-create-or-replace
-        StacQueryable response
-            = stacClient.createOrReplaceQueryable("36fcb8da-9b15-49e0-b400-0d2e751e2061", "naip:state",
-                new StacQueryable("naip:state",
-                    mapOf("data_type", BinaryData.fromBytes("string".getBytes(StandardCharsets.UTF_8)), "description",
-                        BinaryData.fromBytes("State of the NAIP image".getBytes(StandardCharsets.UTF_8)),
-                        "create_index", BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8)))));
-        // END:com.azure.analytics.planetarycomputer.generated.stac-create-or-replace-queryable.stac-queryables-create-or-replace
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-replace-queryable.stac-queryables-replace
+        StacQueryable response = stacClient.replaceQueryable("naip-atl", "test%3Aproperty",
+            new StacQueryable("test:property",
+                mapOf("data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8)), "description",
+                    BinaryData.fromBytes("Test property - updated".getBytes(StandardCharsets.UTF_8))))
+                        .setCreateIndex(false)
+                        .setDataType(StacQueryableDefinitionDataType.NUMBER));
+        // END:com.azure.analytics.planetarycomputer.generated.stac-replace-queryable.stac-queryables-replace
     }
 
     // Use "Map.of" if available

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionStatus;
 import com.azure.analytics.planetarycomputer.models.IngestionType;
 import com.azure.core.http.rest.PagedIterable;
@@ -13,25 +13,27 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionsListTests extends PlanetaryComputerClientTestBase {
+public final class IngestionsListTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionsListTests() {
         // method invocation
-        PagedIterable<Ingestion> response = ingestionManagementClient.lists("collectionId", null, null);
+        PagedIterable<IngestionDefinition> response = ingestionClient.list("naip-atl", null, null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Ingestion firstItem = response.iterator().next();
+        IngestionDefinition firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
         // verify property "id"
-        Assertions.assertEquals("24a8a15d-61bd-453f-ac67-b9cec532ed78", firstItem.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", firstItem.getId());
         // verify property "importType"
         Assertions.assertEquals(IngestionType.STATIC_CATALOG, firstItem.getImportType());
         // verify property "displayName"
-        Assertions.assertEquals("My Connection", firstItem.getDisplayName());
+        Assertions.assertEquals("Ingestion", firstItem.getDisplayName());
         // verify property "sourceCatalogUrl"
-        Assertions.assertEquals("https://sample.blob.core.windows.net/sample1.json", firstItem.getSourceCatalogUrl());
+        Assertions.assertEquals(
+            "https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json",
+            firstItem.getSourceCatalogUrl());
         // verify property "skipExistingItems"
         Assertions.assertEquals(true, firstItem.isSkipExistingItems());
         // verify property "keepOriginalAssets"

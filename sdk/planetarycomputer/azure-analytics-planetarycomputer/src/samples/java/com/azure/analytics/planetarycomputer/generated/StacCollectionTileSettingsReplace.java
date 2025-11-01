@@ -4,23 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
-import com.azure.analytics.planetarycomputer.models.DefaultLocation;
 import com.azure.analytics.planetarycomputer.models.TileSettings;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.util.Arrays;
 
 public class StacCollectionTileSettingsReplace {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-replace-tile-settings.stac-collection-tile-settings-replace
-        TileSettings response = stacClient.replaceTileSettings("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new TileSettings(13, 10).setDefaultLocation(new DefaultLocation(10, Arrays.asList(0.0, 0.0))));
+        TileSettings response = stacClient.replaceTileSettings("naip-atl", new TileSettings(6, 35));
         // END:com.azure.analytics.planetarycomputer.generated.stac-replace-tile-settings.stac-collection-tile-settings-replace
     }
 }

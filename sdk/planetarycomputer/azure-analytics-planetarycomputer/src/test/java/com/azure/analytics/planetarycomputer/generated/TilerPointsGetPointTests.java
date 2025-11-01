@@ -5,30 +5,31 @@
 package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerPointsGetPointTests extends PlanetaryComputerClientTestBase {
+public final class TilerPointsGetPointTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerPointsGetPointTests() {
         // method invocation
-        TilerCoreModelsResponsesPoint response = tilerClient.getPoint("{{collectionId}}", "{{itemId}}",
-            -65.75381224878205, 18.252615371961497, null, null, null, null, null, null, null, null);
+        TilerCoreModelsResponsesPoint response = dataClient.getPoint("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            -84.386, 33.676, Arrays.asList("image"), null, null, null, null, null, null, null);
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "coordinates"
         List<Double> responseCoordinates = response.getCoordinates();
-        Assertions.assertEquals(-65.75381224878205, responseCoordinates.iterator().next());
+        Assertions.assertEquals(-84.386, responseCoordinates.iterator().next());
         // verify property "values"
         List<Double> responseValues = response.getValues();
-        Assertions.assertEquals(0.0, responseValues.iterator().next());
+        Assertions.assertEquals(52.0, responseValues.iterator().next());
         // verify property "bandNames"
         List<String> responseBandNames = response.getBandNames();
-        Assertions.assertEquals("data_b1", responseBandNames.iterator().next());
+        Assertions.assertEquals("image_b1", responseBandNames.iterator().next());
     }
 }

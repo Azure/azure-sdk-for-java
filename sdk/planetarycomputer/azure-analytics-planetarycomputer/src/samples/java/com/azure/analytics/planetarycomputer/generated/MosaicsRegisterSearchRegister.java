@@ -4,20 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MosaicsRegisterSearchRegister {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-register-mosaics-search.mosaics-register-search-register
-        TilerMosaicSearchRegistrationResponse response = tilerClient.registerMosaicsSearch(null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-register-mosaics-search.mosaics-register-search-register
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-register-mosaics-search.mosaics-register-search-register
+        TilerMosaicSearchRegistrationResponse response = dataClient.registerMosaicsSearch(null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-register-mosaics-search.mosaics-register-search-register
     }
 }

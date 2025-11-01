@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -12,11 +12,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class StacCollectionRenderOptionsDelete {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-delete-render-option.stac-collection-render-options-delete
-        stacClient.deleteRenderOption("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", "a1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        stacClient.deleteRenderOption("naip-atl", "test-natural-color");
         // END:com.azure.analytics.planetarycomputer.generated.stac-delete-render-option.stac-collection-render-options-delete
     }
 }

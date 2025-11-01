@@ -18,19 +18,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionConfigGetTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionConfigGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionConfigGetTests() {
         // method invocation
-        UserCollectionSettings response = stacClient.getCollectionConfiguration("sentinel-2-l2a-tutorial-7");
+        UserCollectionSettings response = stacClient.getCollectionConfiguration("naip-atl");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "tileSettings"
         TileSettings responseTileSettings = response.getTileSettings();
         Assertions.assertNotNull(responseTileSettings);
-        Assertions.assertEquals(12, responseTileSettings.getMinZoom());
+        Assertions.assertEquals(6, responseTileSettings.getMinZoom());
         Assertions.assertEquals(35, responseTileSettings.getMaxItemsPerTile());
         // verify property "mosaicConfiguration"
         StacMosaicConfiguration responseMosaicConfiguration = response.getMosaicConfiguration();
@@ -50,13 +50,12 @@ public final class StacCollectionConfigGetTests extends PlanetaryComputerClientT
         Assertions.assertNotNull(responseMosaicConfigurationRenderOptionsFirstItem);
         Assertions.assertEquals("natural-color", responseMosaicConfigurationRenderOptionsFirstItem.getId());
         Assertions.assertEquals("Natural color", responseMosaicConfigurationRenderOptionsFirstItem.getName());
-        Assertions.assertEquals("True color composite of visible bands (B04, B03, B02)",
+        Assertions.assertEquals("RGB from visual assets",
             responseMosaicConfigurationRenderOptionsFirstItem.getDescription());
         Assertions.assertEquals(RenderOptionType.RASTER_TILE,
             responseMosaicConfigurationRenderOptionsFirstItem.getType());
-        Assertions.assertEquals(
-            "assets=B04&assets=B03&assets=B02&nodata=0&color_formula=Gamma RGB 3.2 Saturation 0.8 Sigmoidal RGB 25 0.35",
+        Assertions.assertEquals("assets=image&asset_bidx=image|1,2,3",
             responseMosaicConfigurationRenderOptionsFirstItem.getOptions());
-        Assertions.assertEquals(9, responseMosaicConfigurationRenderOptionsFirstItem.getMinZoom());
+        Assertions.assertEquals(6, responseMosaicConfigurationRenderOptionsFirstItem.getMinZoom());
     }
 }

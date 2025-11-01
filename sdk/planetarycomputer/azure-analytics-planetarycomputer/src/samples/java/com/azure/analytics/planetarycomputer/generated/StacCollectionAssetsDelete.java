@@ -4,20 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class StacCollectionAssetsDelete {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-delete-collection-asset.stac-collection-assets-delete
-        stacClient.deleteCollectionAsset("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92",
-            "a1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        StacCollection response = stacClient.deleteCollectionAsset("naip-atl", "test-asset");
         // END:com.azure.analytics.planetarycomputer.generated.stac-delete-collection-asset.stac-collection-assets-delete
     }
 }

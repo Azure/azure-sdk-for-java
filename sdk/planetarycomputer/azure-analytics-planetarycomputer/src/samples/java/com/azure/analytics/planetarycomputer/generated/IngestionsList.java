@@ -4,21 +4,21 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionsList {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-lists.ingestions-list
-        PagedIterable<Ingestion> response = ingestionManagementClient.lists("collectionId", null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-lists.ingestions-list
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-list.ingestions-list
+        PagedIterable<IngestionDefinition> response = ingestionClient.list("naip-atl", null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-list.ingestions-list
     }
 }

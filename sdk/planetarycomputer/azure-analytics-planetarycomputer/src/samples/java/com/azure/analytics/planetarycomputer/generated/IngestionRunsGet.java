@@ -4,21 +4,21 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionRunsGet {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-run.ingestion-runs-get
-        IngestionRun response = ingestionManagementClient.getRun("weather-sample",
-            "94659cc0-538e-4688-9d01-8c7f464b885b", "23e710f1-d004-4dbc-84b0-259398ef7bab");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-run.ingestion-runs-get
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-get-run.ingestion-runs-get
+        IngestionRun response = ingestionClient.getRun("naip-atl", "00000000-0000-0000-0000-000000000000",
+            "00000000-0000-0000-0000-000000000000");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-get-run.ingestion-runs-get
     }
 }

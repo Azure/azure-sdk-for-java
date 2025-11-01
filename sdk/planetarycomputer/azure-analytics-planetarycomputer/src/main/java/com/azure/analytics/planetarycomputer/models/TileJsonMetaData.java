@@ -14,13 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * TileJSON model.
+ * TileJSON metadata describing a tile set according to the TileJSON specification
  * 
- * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set according
- * to the TileJSON specification.
+ * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0.
  */
 @Immutable
-public final class TileJsonMetaData implements JsonSerializable<TileJsonMetaData> {
+public final class TileJsonMetadata implements JsonSerializable<TileJsonMetadata> {
     /*
      * TileJson
      */
@@ -112,12 +111,12 @@ public final class TileJsonMetaData implements JsonSerializable<TileJsonMetaData
     private List<Double> center;
 
     /**
-     * Creates an instance of TileJsonMetaData class.
+     * Creates an instance of TileJsonMetadata class.
      * 
      * @param tiles the tiles value to set.
      */
     @Generated
-    private TileJsonMetaData(List<String> tiles) {
+    private TileJsonMetadata(List<String> tiles) {
         this.tiles = tiles;
     }
 
@@ -297,16 +296,16 @@ public final class TileJsonMetaData implements JsonSerializable<TileJsonMetaData
     }
 
     /**
-     * Reads an instance of TileJsonMetaData from the JsonReader.
+     * Reads an instance of TileJsonMetadata from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TileJsonMetaData if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of TileJsonMetadata if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TileJsonMetaData.
+     * @throws IOException If an error occurs while reading the TileJsonMetadata.
      */
     @Generated
-    public static TileJsonMetaData fromJson(JsonReader jsonReader) throws IOException {
+    public static TileJsonMetadata fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<String> tiles = null;
             String tileJson = null;
@@ -361,23 +360,23 @@ public final class TileJsonMetaData implements JsonSerializable<TileJsonMetaData
                     reader.skipChildren();
                 }
             }
-            TileJsonMetaData deserializedTileJsonMetaData = new TileJsonMetaData(tiles);
-            deserializedTileJsonMetaData.tileJson = tileJson;
-            deserializedTileJsonMetaData.name = name;
-            deserializedTileJsonMetaData.description = description;
-            deserializedTileJsonMetaData.version = version;
-            deserializedTileJsonMetaData.attribution = attribution;
-            deserializedTileJsonMetaData.template = template;
-            deserializedTileJsonMetaData.legend = legend;
-            deserializedTileJsonMetaData.scheme = scheme;
-            deserializedTileJsonMetaData.grids = grids;
-            deserializedTileJsonMetaData.data = data;
-            deserializedTileJsonMetaData.minZoom = minZoom;
-            deserializedTileJsonMetaData.maxZoom = maxZoom;
-            deserializedTileJsonMetaData.bounds = bounds;
-            deserializedTileJsonMetaData.center = center;
+            TileJsonMetadata deserializedTileJsonMetadata = new TileJsonMetadata(tiles);
+            deserializedTileJsonMetadata.tileJson = tileJson;
+            deserializedTileJsonMetadata.name = name;
+            deserializedTileJsonMetadata.description = description;
+            deserializedTileJsonMetadata.version = version;
+            deserializedTileJsonMetadata.attribution = attribution;
+            deserializedTileJsonMetadata.template = template;
+            deserializedTileJsonMetadata.legend = legend;
+            deserializedTileJsonMetadata.scheme = scheme;
+            deserializedTileJsonMetadata.grids = grids;
+            deserializedTileJsonMetadata.data = data;
+            deserializedTileJsonMetadata.minZoom = minZoom;
+            deserializedTileJsonMetadata.maxZoom = maxZoom;
+            deserializedTileJsonMetadata.bounds = bounds;
+            deserializedTileJsonMetadata.center = center;
 
-            return deserializedTileJsonMetaData;
+            return deserializedTileJsonMetadata;
         });
     }
 }

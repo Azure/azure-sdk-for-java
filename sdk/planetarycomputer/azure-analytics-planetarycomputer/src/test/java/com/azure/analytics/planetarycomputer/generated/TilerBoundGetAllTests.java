@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerBoundGetAllTests extends PlanetaryComputerClientTestBase {
+public final class TilerBoundGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerBoundGetAllTests() {
         // method invocation
-        StacItemBounds response = tilerClient.listBounds("{{collectionId}}", "{{itemId}}");
+        StacItemBounds response = dataClient.getBounds("naip-atl", "ga_m_3308421_se_16_060_20211114");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "bounds"
         List<Double> responseBounds = response.getBounds();
-        Assertions.assertEquals(-65.75386020444417, responseBounds.iterator().next());
+        Assertions.assertEquals(-84.44157, responseBounds.iterator().next());
     }
 }

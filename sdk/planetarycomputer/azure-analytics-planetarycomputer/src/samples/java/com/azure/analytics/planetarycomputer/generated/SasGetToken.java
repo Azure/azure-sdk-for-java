@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.SharedAccessSignatureClient;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureToken;
 import com.azure.core.util.Configuration;
@@ -13,11 +13,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class SasGetToken {
     public static void main(String[] args) {
         SharedAccessSignatureClient sharedAccessSignatureClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-token.sas-get-token
-        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("weather-sample", null);
+        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("naip-atl", null);
         // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-token.sas-get-token
     }
 }

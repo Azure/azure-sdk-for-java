@@ -31,26 +31,26 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Tilers.
+ * An instance of this class provides access to all the operations defined in Datas.
  */
-public final class TilersImpl {
+public final class DatasImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final TilersService service;
+    private final DatasService service;
 
     /**
      * The service client containing this operation class.
      */
-    private final PlanetaryComputerClientImpl client;
+    private final PlanetaryComputerProClientImpl client;
 
     /**
-     * Initializes an instance of TilersImpl.
+     * Initializes an instance of DatasImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    TilersImpl(PlanetaryComputerClientImpl client) {
-        this.service = RestProxy.create(TilersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    DatasImpl(PlanetaryComputerProClientImpl client) {
+        this.service = RestProxy.create(DatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,12 +64,12 @@ public final class TilersImpl {
     }
 
     /**
-     * The interface defining all the services for PlanetaryComputerClientTilers to be used by the proxy service to
+     * The interface defining all the services for PlanetaryComputerProClientDatas to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlanetaryComputerClientTilers")
-    public interface TilersService {
+    @ServiceInterface(name = "PlanetaryComputerProClientDatas")
+    public interface DatasService {
         @Get("/data/tile-matrix-sets/{tileMatrixSetId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -160,7 +160,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBounds(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getBounds(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -171,7 +171,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBoundsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getBoundsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -208,7 +208,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cropGeoJsonWithDimensions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
-            @PathParam("itemId") String itemId, @PathParam("width") double width, @PathParam("height") double height,
+            @PathParam("itemId") String itemId, @PathParam("width") int width, @PathParam("height") int height,
             @PathParam("format") String format, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -221,7 +221,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cropGeoJsonWithDimensionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
-            @PathParam("itemId") String itemId, @PathParam("width") double width, @PathParam("height") double height,
+            @PathParam("itemId") String itemId, @PathParam("width") int width, @PathParam("height") int height,
             @PathParam("format") String format, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -278,7 +278,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAssetsInfo(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getItemAssetDetails(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -289,7 +289,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAssetsInfoSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getItemAssetDetailsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -327,9 +327,9 @@ public final class TilersImpl {
         Mono<Response<BinaryData>> getPartWithDimensions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("minx") double minx, @PathParam("miny") double miny,
-            @PathParam("maxx") double maxx, @PathParam("maxy") double maxy, @PathParam("width") double width,
-            @PathParam("height") double height, @PathParam("format") String format,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("maxx") double maxx, @PathParam("maxy") double maxy, @PathParam("width") int width,
+            @PathParam("height") int height, @PathParam("format") String format, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/data/collections/{collectionId}/items/{itemId}/crop/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}")
         @ExpectedResponses({ 200 })
@@ -340,9 +340,9 @@ public final class TilersImpl {
         Response<BinaryData> getPartWithDimensionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("minx") double minx, @PathParam("miny") double miny,
-            @PathParam("maxx") double maxx, @PathParam("maxy") double maxy, @PathParam("width") double width,
-            @PathParam("height") double height, @PathParam("format") String format,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("maxx") double maxx, @PathParam("maxy") double maxy, @PathParam("width") int width,
+            @PathParam("height") int height, @PathParam("format") String format, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/data/collections/{collectionId}/items/{itemId}/point/{longitude},{latitude}")
         @ExpectedResponses({ 200 })
@@ -1007,8 +1007,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1046,7 +1046,7 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     data (Required): {
+     *     String (Required): {
      *         String (Required): {
      *             min: double (Required)
      *             max: double (Required)
@@ -1081,7 +1081,7 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return return dataset's statistics along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAssetStatisticsWithResponseAsync(String collectionId, String itemId,
@@ -1102,8 +1102,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1141,7 +1141,7 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     data (Required): {
+     *     String (Required): {
      *         String (Required): {
      *             min: double (Required)
      *             max: double (Required)
@@ -1176,7 +1176,7 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return return dataset's statistics along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAssetStatisticsWithResponse(String collectionId, String itemId,
@@ -1275,10 +1275,10 @@ public final class TilersImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listBoundsWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getBoundsWithResponseAsync(String collectionId, String itemId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listBounds(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getBounds(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, accept, requestOptions, context));
     }
 
@@ -1308,10 +1308,10 @@ public final class TilersImpl {
      * @return geographic extent of a dataset expressed as a bounding box along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBoundsWithResponse(String collectionId, String itemId,
+    public Response<BinaryData> getBoundsWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listBoundsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getBoundsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, accept, requestOptions, Context.NONE);
     }
 
@@ -1326,8 +1326,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1435,8 +1435,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1543,8 +1543,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1634,7 +1634,7 @@ public final class TilersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cropGeoJsonWithDimensionsWithResponseAsync(String collectionId, String itemId,
-        double width, double height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+        int width, int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.cropGeoJsonWithDimensions(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, width, height, format, contentType,
@@ -1652,8 +1652,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1742,8 +1742,8 @@ public final class TilersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cropGeoJsonWithDimensionsWithResponse(String collectionId, String itemId, double width,
-        double height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> cropGeoJsonWithDimensionsWithResponse(String collectionId, String itemId, int width,
+        int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         return service.cropGeoJsonWithDimensionsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, width, height, format, contentType,
@@ -1761,8 +1761,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1829,22 +1829,34 @@ public final class TilersImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         statistics (Required): {
+     *             String (Required): {
+     *                 min: double (Required)
+     *                 max: double (Required)
+     *                 mean: double (Required)
+     *                 count: double (Required)
+     *                 sum: double (Required)
+     *                 std: double (Required)
+     *                 median: double (Required)
+     *                 majority: double (Required)
+     *                 minority: double (Required)
+     *                 unique: double (Required)
+     *                 histogram (Required): [
+     *                      (Required)[
+     *                         double (Required)
+     *                     ]
+     *                 ]
+     *                 valid_percent: double (Required)
+     *                 masked_pixels: double (Required)
+     *                 valid_pixels: double (Required)
+     *                 percentile_2: double (Required)
+     *                 percentile_98: double (Required)
+     *             }
+     *         }
+     *          (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     id: String (Required)
-     *     bbox (Required): [
-     *         double (Required)
-     *     ]
-     *     stac_version: String (Optional)
-     *     collection: String (Optional)
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
      * }
      * }
      * </pre>
@@ -1881,8 +1893,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1949,22 +1961,34 @@ public final class TilersImpl {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         statistics (Required): {
+     *             String (Required): {
+     *                 min: double (Required)
+     *                 max: double (Required)
+     *                 mean: double (Required)
+     *                 count: double (Required)
+     *                 sum: double (Required)
+     *                 std: double (Required)
+     *                 median: double (Required)
+     *                 majority: double (Required)
+     *                 minority: double (Required)
+     *                 unique: double (Required)
+     *                 histogram (Required): [
+     *                      (Required)[
+     *                         double (Required)
+     *                     ]
+     *                 ]
+     *                 valid_percent: double (Required)
+     *                 masked_pixels: double (Required)
+     *                 valid_pixels: double (Required)
+     *                 percentile_2: double (Required)
+     *                 percentile_98: double (Required)
+     *             }
+     *         }
+     *          (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     id: String (Required)
-     *     bbox (Required): [
-     *         double (Required)
-     *     ]
-     *     stac_version: String (Optional)
-     *     collection: String (Optional)
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
      * }
      * }
      * </pre>
@@ -2037,7 +2061,7 @@ public final class TilersImpl {
      *             width: Integer (Optional)
      *             height: Integer (Optional)
      *             overviews (Optional): [
-     *                 String (Optional)
+     *                 int (Optional)
      *             ]
      *             scales (Optional): [
      *                 int (Optional)
@@ -2052,6 +2076,7 @@ public final class TilersImpl {
      *             }
      *             minzoom: Integer (Optional)
      *             maxzoom: Integer (Optional)
+     *             crs: String (Optional)
      *         }
      *     }
      *     id: String (Optional)
@@ -2127,7 +2152,7 @@ public final class TilersImpl {
      *             width: Integer (Optional)
      *             height: Integer (Optional)
      *             overviews (Optional): [
-     *                 String (Optional)
+     *                 int (Optional)
      *             ]
      *             scales (Optional): [
      *                 int (Optional)
@@ -2142,6 +2167,7 @@ public final class TilersImpl {
      *             }
      *             minzoom: Integer (Optional)
      *             maxzoom: Integer (Optional)
+     *             crs: String (Optional)
      *         }
      *     }
      *     id: String (Optional)
@@ -2184,7 +2210,7 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     data (Required): {
+     *     String (Required): {
      *         bounds (Required): [
      *             double (Required)
      *         ]
@@ -2208,7 +2234,7 @@ public final class TilersImpl {
      *         width: Integer (Optional)
      *         height: Integer (Optional)
      *         overviews (Optional): [
-     *             String (Optional)
+     *             int (Optional)
      *         ]
      *         scales (Optional): [
      *             int (Optional)
@@ -2223,6 +2249,7 @@ public final class TilersImpl {
      *         }
      *         minzoom: Integer (Optional)
      *         maxzoom: Integer (Optional)
+     *         crs: String (Optional)
      *     }
      * }
      * }
@@ -2235,14 +2262,13 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return return dataset's basic info or the list of available assets along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAssetsInfoWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getItemAssetDetailsWithResponseAsync(String collectionId, String itemId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAssetsInfo(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getItemAssetDetails(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, accept, requestOptions, context));
     }
 
@@ -2263,7 +2289,7 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     data (Required): {
+     *     String (Required): {
      *         bounds (Required): [
      *             double (Required)
      *         ]
@@ -2287,7 +2313,7 @@ public final class TilersImpl {
      *         width: Integer (Optional)
      *         height: Integer (Optional)
      *         overviews (Optional): [
-     *             String (Optional)
+     *             int (Optional)
      *         ]
      *         scales (Optional): [
      *             int (Optional)
@@ -2302,6 +2328,7 @@ public final class TilersImpl {
      *         }
      *         minzoom: Integer (Optional)
      *         maxzoom: Integer (Optional)
+     *         crs: String (Optional)
      *     }
      * }
      * }
@@ -2314,13 +2341,13 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return return dataset's basic info or the list of available assets along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAssetsInfoWithResponse(String collectionId, String itemId,
+    public Response<BinaryData> getItemAssetDetailsWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAssetsInfoSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getItemAssetDetailsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, accept, requestOptions, Context.NONE);
     }
 
@@ -2335,8 +2362,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2428,8 +2455,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2520,8 +2547,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2596,7 +2623,7 @@ public final class TilersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPartWithDimensionsWithResponseAsync(String collectionId, String itemId,
-        double minx, double miny, double maxx, double maxy, double width, double height, String format, String accept,
+        double minx, double miny, double maxx, double maxy, int width, int height, String format, String accept,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.getPartWithDimensions(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, minx, miny, maxx, maxy, width, height,
@@ -2614,8 +2641,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2690,7 +2717,7 @@ public final class TilersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPartWithDimensionsWithResponse(String collectionId, String itemId, double minx,
-        double miny, double maxx, double maxy, double width, double height, String format, String accept,
+        double miny, double maxx, double maxy, int width, int height, String format, String accept,
         RequestOptions requestOptions) {
         return service.getPartWithDimensionsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, minx, miny, maxx, maxy, width, height,
@@ -2708,8 +2735,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2746,10 +2773,8 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return point model.
-     * 
-     * response model for `/point` endpointsResponse model for point query operations providing values at a specific
-     * location along with {@link Response} on successful completion of {@link Mono}.
+     * @return response model for point query operations providing values at a specific location along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPointWithResponseAsync(String collectionId, String itemId, double longitude,
@@ -2771,8 +2796,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2809,10 +2834,8 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return point model.
-     * 
-     * response model for `/point` endpointsResponse model for point query operations providing values at a specific
-     * location along with {@link Response}.
+     * @return response model for point query operations providing values at a specific location along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPointWithResponse(String collectionId, String itemId, double longitude,
@@ -2833,8 +2856,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2920,8 +2943,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3007,8 +3030,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3094,8 +3117,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3355,8 +3378,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3450,8 +3473,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3545,8 +3568,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3642,10 +3665,10 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification along with {@link Response} on successful completion of {@link Mono}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTileJsonWithResponseAsync(String collectionId, String itemId,
@@ -3667,8 +3690,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3764,10 +3787,9 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification along with {@link Response}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTileJsonWithResponse(String collectionId, String itemId, String tileMatrixSetId,
@@ -3788,8 +3810,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3886,8 +3908,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -3982,8 +4004,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -4074,8 +4096,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -4447,35 +4469,44 @@ public final class TilersImpl {
      * {@code
      * [
      *      (Required){
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
+     *         id: String (Required)
+     *         bbox (Required): [
+     *             double (Required)
      *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
      *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
      *                 roles (Optional): [
      *                     String (Optional)
      *                 ]
-     *                 url: String (Optional)
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
      *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         href: String (Optional, Required on create)
-     *         type: String (Optional)
-     *         roles (Optional): [
-     *             String (Optional)
-     *         ]
-     *          (Optional): {
-     *             String: BinaryData (Required)
      *         }
+     *         collection: String (Required)
      *     }
      * ]
      * }
@@ -4529,35 +4560,44 @@ public final class TilersImpl {
      * {@code
      * [
      *      (Required){
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
+     *         id: String (Required)
+     *         bbox (Required): [
+     *             double (Required)
      *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
      *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
      *                 roles (Optional): [
      *                     String (Optional)
      *                 ]
-     *                 url: String (Optional)
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
      *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         href: String (Optional, Required on create)
-     *         type: String (Optional)
-     *         roles (Optional): [
-     *             String (Optional)
-     *         ]
-     *          (Optional): {
-     *             String: BinaryData (Required)
      *         }
+     *         collection: String (Required)
      *     }
      * ]
      * }
@@ -5041,8 +5081,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -5151,10 +5191,10 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification along with {@link Response} on successful completion of {@link Mono}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMosaicsTileJsonWithResponseAsync(String searchId, String tileMatrixSetId,
@@ -5175,8 +5215,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -5285,10 +5325,9 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification along with {@link Response}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMosaicsTileJsonWithResponse(String searchId, String tileMatrixSetId,
@@ -5309,8 +5348,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -5416,8 +5455,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -5522,8 +5561,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -5612,8 +5651,8 @@ public final class TilersImpl {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>

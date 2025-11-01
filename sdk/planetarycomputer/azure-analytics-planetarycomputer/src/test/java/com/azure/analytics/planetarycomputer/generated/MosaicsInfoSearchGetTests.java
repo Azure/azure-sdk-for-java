@@ -16,24 +16,26 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MosaicsInfoSearchGetTests extends PlanetaryComputerClientTestBase {
+public final class MosaicsInfoSearchGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMosaicsInfoSearchGetTests() {
         // method invocation
-        TilerStacSearchRegistration response = tilerClient.getMosaicsSearchInfo("e32e0b12176246816953d75e3356d613");
+        TilerStacSearchRegistration response = dataClient.getMosaicsSearchInfo("ba13fc7947b9b585690d84ee61aaa653");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "search"
         TilerStacSearchDefinition responseSearch = response.getSearch();
         Assertions.assertNotNull(responseSearch);
-        Assertions.assertEquals("e32e0b12176246816953d75e3356d613", responseSearch.getHash());
+        Assertions.assertEquals("ba13fc7947b9b585690d84ee61aaa653", responseSearch.getHash());
         Assertions.assertNotNull(responseSearch.getSearch());
-        Assertions.assertEquals("(collection = 'maxar')", responseSearch.getWhere());
+        Assertions.assertEquals(
+            "(collection = 'naip-atl' AND datetime >= '2021-01-01T00:00:00Z' AND datetime <= '2022-12-31T23:59:59Z')",
+            responseSearch.getWhere());
         Assertions.assertEquals("datetime DESC, id DESC", responseSearch.getOrderBy());
         Assertions.assertNotNull(responseSearch.getLastUsed());
-        Assertions.assertEquals(1, responseSearch.getUseCount());
+        Assertions.assertEquals(132, responseSearch.getUseCount());
         MosaicMetadata responseSearchMetadata = responseSearch.getMetadata();
         Assertions.assertNotNull(responseSearchMetadata);
         Assertions.assertEquals(MosaicMetadataType.MOSAIC, responseSearchMetadata.getType());
@@ -45,7 +47,7 @@ public final class MosaicsInfoSearchGetTests extends PlanetaryComputerClientTest
         Assertions.assertEquals("Mosaic metadata", responseLinksFirstItem.getTitle());
         Assertions.assertEquals(StacLinkType.APPLICATION_JSON, responseLinksFirstItem.getType());
         Assertions.assertEquals(
-            "http://stacforge.axarcnccdbcsduc4.eastus.geocatalog.spatio.azure.com/data/mosaic/e32e0b12176246816953d75e3356d613/info",
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/data/mosaic/ba13fc7947b9b585690d84ee61aaa653/info",
             responseLinksFirstItem.getHref());
     }
 }

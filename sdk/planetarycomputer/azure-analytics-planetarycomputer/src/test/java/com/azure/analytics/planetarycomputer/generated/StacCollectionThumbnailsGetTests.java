@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionThumbnailsGetTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionThumbnailsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionThumbnailsGetTests() {
         // method invocation
-        BinaryData response = stacClient.getCollectionThumbnail("sentinel-2-l2a-tutorial-7", null);
+        BinaryData response = stacClient.getCollectionThumbnail("naip-atl", null);
 
         // response assertion
         Assertions.assertNotNull(response);

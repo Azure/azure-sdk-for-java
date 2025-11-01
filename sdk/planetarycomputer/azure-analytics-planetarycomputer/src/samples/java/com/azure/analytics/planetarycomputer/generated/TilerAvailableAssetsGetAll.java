@@ -4,21 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.List;
 
 public class TilerAvailableAssetsGetAll {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-list-available-assets.tiler-available-assets-get-all
-        List<String> response = tilerClient.listAvailableAssets("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92",
-            "c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-list-available-assets.tiler-available-assets-get-all
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-list-available-assets.tiler-available-assets-get-all
+        List<String> response = dataClient.listAvailableAssets("naip-atl", "ga_m_3308421_se_16_060_20211114");
+        // END:com.azure.analytics.planetarycomputer.generated.data-list-available-assets.tiler-available-assets-get-all
     }
 }

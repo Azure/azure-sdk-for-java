@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacQueryablesGetAllByCollectionTests extends PlanetaryComputerClientTestBase {
+public final class StacQueryablesGetAllByCollectionTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacQueryablesGetAllByCollectionTests() {
         // method invocation
-        Map<String, BinaryData> response = stacClient.listCollectionQueryables("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        Map<String, BinaryData> response = stacClient.getCollectionQueryables("naip-atl");
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.RenderOption;
 import com.azure.analytics.planetarycomputer.models.RenderOptionType;
@@ -14,17 +14,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class StacCollectionRenderOptionsCreate {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-render-option.stac-collection-render-options-create
-        RenderOption response = stacClient.createRenderOption("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new RenderOption("atmospheric-penetration", "Atmospheric penetration").setDescription(
-                "False color rendering with non-visible bands to reduce effects of atmospheric particles (B12, B11, B8A).")
-                .setType(RenderOptionType.RASTER_TILE)
-                .setOptions(
-                    "nodata=0&assets=B12&assets=B11&assets=B8A&color_formula=Gamma RGB 3.7 Saturation 1.5 Sigmoidal RGB 15 0.35")
-                .setMinZoom(9));
+        RenderOption response = stacClient.createRenderOption("naip-atl",
+            new RenderOption("test-natural-color", "Test Natural color").setType(RenderOptionType.RASTER_TILE)
+                .setOptions("assets=image&asset_bidx=image|1,2,3")
+                .setMinZoom(6));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-render-option.stac-collection-render-options-create
     }
 }

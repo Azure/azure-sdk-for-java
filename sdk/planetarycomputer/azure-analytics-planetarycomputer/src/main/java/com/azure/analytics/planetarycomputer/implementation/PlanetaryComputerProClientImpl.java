@@ -13,9 +13,9 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
- * Initializes a new instance of the PlanetaryComputerClient type.
+ * Initializes a new instance of the PlanetaryComputerProClient type.
  */
-public final class PlanetaryComputerClientImpl {
+public final class PlanetaryComputerProClientImpl {
     /**
      * Service host.
      */
@@ -73,17 +73,17 @@ public final class PlanetaryComputerClientImpl {
     }
 
     /**
-     * The IngestionManagementsImpl object to access its operations.
+     * The IngestionsImpl object to access its operations.
      */
-    private final IngestionManagementsImpl ingestionManagements;
+    private final IngestionsImpl ingestions;
 
     /**
-     * Gets the IngestionManagementsImpl object to access its operations.
+     * Gets the IngestionsImpl object to access its operations.
      * 
-     * @return the IngestionManagementsImpl object.
+     * @return the IngestionsImpl object.
      */
-    public IngestionManagementsImpl getIngestionManagements() {
-        return this.ingestionManagements;
+    public IngestionsImpl getIngestions() {
+        return this.ingestions;
     }
 
     /**
@@ -101,17 +101,17 @@ public final class PlanetaryComputerClientImpl {
     }
 
     /**
-     * The TilersImpl object to access its operations.
+     * The DatasImpl object to access its operations.
      */
-    private final TilersImpl tilers;
+    private final DatasImpl datas;
 
     /**
-     * Gets the TilersImpl object to access its operations.
+     * Gets the DatasImpl object to access its operations.
      * 
-     * @return the TilersImpl object.
+     * @return the DatasImpl object.
      */
-    public TilersImpl getTilers() {
-        return this.tilers;
+    public DatasImpl getDatas() {
+        return this.datas;
     }
 
     /**
@@ -129,45 +129,45 @@ public final class PlanetaryComputerClientImpl {
     }
 
     /**
-     * Initializes an instance of PlanetaryComputerClient client.
+     * Initializes an instance of PlanetaryComputerProClient client.
      * 
      * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
-    public PlanetaryComputerClientImpl(String endpoint, PlanetaryComputerServiceVersion serviceVersion) {
+    public PlanetaryComputerProClientImpl(String endpoint, PlanetaryComputerServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of PlanetaryComputerClient client.
+     * Initializes an instance of PlanetaryComputerProClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
-    public PlanetaryComputerClientImpl(HttpPipeline httpPipeline, String endpoint,
+    public PlanetaryComputerProClientImpl(HttpPipeline httpPipeline, String endpoint,
         PlanetaryComputerServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of PlanetaryComputerClient client.
+     * Initializes an instance of PlanetaryComputerProClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
-    public PlanetaryComputerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        PlanetaryComputerServiceVersion serviceVersion) {
+    public PlanetaryComputerProClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint, PlanetaryComputerServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.ingestionManagements = new IngestionManagementsImpl(this);
+        this.ingestions = new IngestionsImpl(this);
         this.stacs = new StacsImpl(this);
-        this.tilers = new TilersImpl(this);
+        this.datas = new DatasImpl(this);
         this.sharedAccessSignatures = new SharedAccessSignaturesImpl(this);
     }
 }

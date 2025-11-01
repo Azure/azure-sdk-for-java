@@ -4,20 +4,23 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
-import com.azure.analytics.planetarycomputer.models.InfoOperationResponse;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.TilerInfo;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
+import java.util.Map;
 
 public class TilerInfoOperationsGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-assets-info.tiler-info-operations-get
-        InfoOperationResponse response = tilerClient.getAssetsInfo("{{collectionId}}", "{{itemId}}", null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-assets-info.tiler-info-operations-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-asset-details.tiler-info-operations-get
+        Map<String, TilerInfo> response
+            = dataClient.getItemAssetDetails("naip-atl", "ga_m_3308421_se_16_060_20211114", Arrays.asList("image"));
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-item-asset-details.tiler-info-operations-get
     }
 }

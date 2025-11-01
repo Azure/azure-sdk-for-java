@@ -4,36 +4,54 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacCollectionTemporalExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StacCollectionsCreate {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-collection.stac-collections-create
         SyncPoller<Operation, Void> response = stacClient.beginCreateCollection(
-            new StacCollection("A collection for integration tests purposes", Arrays.asList(), "CC-BY-4.0",
+            new StacCollection("Temporary collection for partition type testing", Arrays.asList(), "proprietary",
                 new StacExtensionExtent(
                     new StacExtensionSpatialExtent()
                         .setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0))),
-                    new StacCollectionTemporalExtent(
-                        Arrays.asList(Arrays.asList(OffsetDateTime.parse("2020-01-01T00:00:00Z"), null)))))
+                    new StacCollectionTemporalExtent(Arrays.asList(Arrays.asList(
+                        OffsetDateTime.parse("2020-01-01T00:00:00Z"), OffsetDateTime.parse("2099-12-31T23:59:59Z"))))))
                             .setStacVersion("1.0.0")
-                            .setTitle("Test Collection d45537668d06")
-                            .setType("Collection"));
+                            .setTitle("Test Partition Type Collection")
+                            .setType("Collection")
+                            .setAdditionalProperties(mapOf("id", BinaryData
+                                .fromBytes("test-partition-type-collection".getBytes(StandardCharsets.UTF_8)))));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-collection.stac-collections-create
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

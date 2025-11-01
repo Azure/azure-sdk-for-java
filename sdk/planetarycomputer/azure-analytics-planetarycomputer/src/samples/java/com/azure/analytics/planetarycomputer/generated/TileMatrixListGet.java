@@ -4,20 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.List;
 
 public class TileMatrixListGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-list-tile-matrices.tile-matrix-list-get
-        List<String> response = tilerClient.listTileMatrices();
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-list-tile-matrices.tile-matrix-list-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-list-tile-matrices.tile-matrix-list-get
+        List<String> response = dataClient.listTileMatrices();
+        // END:com.azure.analytics.planetarycomputer.generated.data-list-tile-matrices.tile-matrix-list-get
     }
 }

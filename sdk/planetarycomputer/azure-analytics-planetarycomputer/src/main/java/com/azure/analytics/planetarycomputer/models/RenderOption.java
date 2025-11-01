@@ -44,8 +44,7 @@ public final class RenderOption implements JsonSerializable<RenderOption> {
     private RenderOptionType type;
 
     /*
-     * A URL query-string encoded string of TiTiler rendering options. Valid only for
-     * `raster-tile` types.
+     * A URL query-string encoded string of TiTiler rendering options. Valid only for `raster-tile` types.
      * 
      * See [Query Parameters](https://developmentseed.org/titiler/endpoints/cog/#description).
      */

@@ -4,20 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionOperationsGet {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-operation.ingestion-operations-get
-        Operation response = ingestionManagementClient.getOperation("59c757bb-01fc-4196-8036-11e3ee0c08b8");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-operation.ingestion-operations-get
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-get-operation.ingestion-operations-get
+        Operation response = ingestionClient.getOperation("00000000-0000-0000-0000-000000000000");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-get-operation.ingestion-operations-get
     }
 }

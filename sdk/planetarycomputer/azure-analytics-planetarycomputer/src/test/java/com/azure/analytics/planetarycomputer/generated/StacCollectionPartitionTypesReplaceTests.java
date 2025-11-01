@@ -10,11 +10,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionPartitionTypesReplaceTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionPartitionTypesReplaceTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionPartitionTypesReplaceTests() {
         // method invocation
-        stacClient.replacePartitionType("naip", new PartitionType().setScheme(PartitionTypeScheme.NONE));
+        stacClient.replacePartitionType("test-partition-type-collection",
+            new PartitionType().setScheme(PartitionTypeScheme.YEAR));
     }
 }

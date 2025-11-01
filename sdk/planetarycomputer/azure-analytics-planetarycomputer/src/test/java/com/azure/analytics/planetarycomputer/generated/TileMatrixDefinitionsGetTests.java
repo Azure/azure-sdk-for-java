@@ -7,54 +7,48 @@ package com.azure.analytics.planetarycomputer.generated;
 import com.azure.analytics.planetarycomputer.models.TileMatrix;
 import com.azure.analytics.planetarycomputer.models.TileMatrixCornerOfOrigin;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
-import com.azure.analytics.planetarycomputer.models.VariableMatrixWidth;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TileMatrixDefinitionsGetTests extends PlanetaryComputerClientTestBase {
+public final class TileMatrixDefinitionsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTileMatrixDefinitionsGetTests() {
         // method invocation
-        TileMatrixSet response = tilerClient.getTileMatrixDefinitions("WebMercatorQuad");
+        TileMatrixSet response = dataClient.getTileMatrixDefinitions("WebMercatorQuad");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "title"
-        Assertions.assertEquals("CDB 1 Global Grid", response.getTitle());
+        Assertions.assertEquals("Google Maps Compatible for the World", response.getTitle());
         // verify property "id"
-        Assertions.assertEquals("CDB1GlobalGrid", response.getId());
+        Assertions.assertEquals("WebMercatorQuad", response.getId());
         // verify property "uri"
-        Assertions.assertEquals("http://www.opengis.net/def/tilematrixset/OGC/1.0/CDB1GlobalGrid", response.getUri());
+        Assertions.assertEquals("http://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad", response.getUri());
         // verify property "orderedAxes"
         List<String> responseOrderedAxes = response.getOrderedAxes();
-        Assertions.assertEquals("Lat", responseOrderedAxes.iterator().next());
+        Assertions.assertEquals("X", responseOrderedAxes.iterator().next());
         // verify property "crs"
-        Assertions.assertEquals("http://www.opengis.net/def/crs/EPSG/0/4326", response.getCrs());
+        Assertions.assertEquals("http://www.opengis.net/def/crs/EPSG/0/3857", response.getCrs());
+        // verify property "wellKnownScaleSet"
+        Assertions.assertEquals("http://www.opengis.net/def/wkss/OGC/1.0/GoogleMapsCompatible",
+            response.getWellKnownScaleSet());
         // verify property "tileMatrices"
         List<TileMatrix> responseTileMatrices = response.getTileMatrices();
         TileMatrix responseTileMatricesFirstItem = responseTileMatrices.iterator().next();
         Assertions.assertNotNull(responseTileMatricesFirstItem);
-        Assertions.assertEquals("-10", responseTileMatricesFirstItem.getId());
-        Assertions.assertEquals(3.975696099759771E8, responseTileMatricesFirstItem.getScaleDenominator());
-        Assertions.assertEquals(1.0, responseTileMatricesFirstItem.getCellSize());
+        Assertions.assertEquals("0", responseTileMatricesFirstItem.getId());
+        Assertions.assertEquals(5.59082264028717E8, responseTileMatricesFirstItem.getScaleDenominator());
+        Assertions.assertEquals(156543.033928041, responseTileMatricesFirstItem.getCellSize());
         Assertions.assertEquals(TileMatrixCornerOfOrigin.TOP_LEFT, responseTileMatricesFirstItem.getCornerOfOrigin());
         List<Double> responseTileMatricesFirstItemPointOfOrigin = responseTileMatricesFirstItem.getPointOfOrigin();
-        Assertions.assertEquals(90.0, responseTileMatricesFirstItemPointOfOrigin.iterator().next());
-        Assertions.assertEquals(1, responseTileMatricesFirstItem.getTileWidth());
-        Assertions.assertEquals(1, responseTileMatricesFirstItem.getTileHeight());
-        Assertions.assertEquals(360, responseTileMatricesFirstItem.getMatrixWidth());
-        Assertions.assertEquals(180, responseTileMatricesFirstItem.getMatrixHeight());
-        List<VariableMatrixWidth> responseTileMatricesFirstItemVariableMatrixWidths
-            = responseTileMatricesFirstItem.getVariableMatrixWidths();
-        VariableMatrixWidth responseTileMatricesFirstItemVariableMatrixWidthsFirstItem
-            = responseTileMatricesFirstItemVariableMatrixWidths.iterator().next();
-        Assertions.assertNotNull(responseTileMatricesFirstItemVariableMatrixWidthsFirstItem);
-        Assertions.assertEquals(12, responseTileMatricesFirstItemVariableMatrixWidthsFirstItem.getCoalesce());
-        Assertions.assertEquals(0, responseTileMatricesFirstItemVariableMatrixWidthsFirstItem.getMinTileRow());
-        Assertions.assertEquals(0, responseTileMatricesFirstItemVariableMatrixWidthsFirstItem.getMaxTileRow());
+        Assertions.assertEquals(-2.0037508342789244E7, responseTileMatricesFirstItemPointOfOrigin.iterator().next());
+        Assertions.assertEquals(256, responseTileMatricesFirstItem.getTileWidth());
+        Assertions.assertEquals(256, responseTileMatricesFirstItem.getTileHeight());
+        Assertions.assertEquals(1, responseTileMatricesFirstItem.getMatrixWidth());
+        Assertions.assertEquals(1, responseTileMatricesFirstItem.getMatrixHeight());
     }
 }

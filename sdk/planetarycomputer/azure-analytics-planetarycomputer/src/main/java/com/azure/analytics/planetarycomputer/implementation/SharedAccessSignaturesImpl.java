@@ -41,14 +41,14 @@ public final class SharedAccessSignaturesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PlanetaryComputerClientImpl client;
+    private final PlanetaryComputerProClientImpl client;
 
     /**
      * Initializes an instance of SharedAccessSignaturesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SharedAccessSignaturesImpl(PlanetaryComputerClientImpl client) {
+    SharedAccessSignaturesImpl(PlanetaryComputerProClientImpl client) {
         this.service = RestProxy.create(SharedAccessSignaturesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
@@ -64,11 +64,11 @@ public final class SharedAccessSignaturesImpl {
     }
 
     /**
-     * The interface defining all the services for PlanetaryComputerClientSharedAccessSignatures to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PlanetaryComputerProClientSharedAccessSignatures to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlanetaryComputerClientSharedAccessSignatures")
+    @ServiceInterface(name = "PlanetaryComputerProClientSharedAccessSignatures")
     public interface SharedAccessSignaturesService {
         @Get("/sas/sign")
         @ExpectedResponses({ 200 })
@@ -130,7 +130,7 @@ public final class SharedAccessSignaturesImpl {
     }
 
     /**
-     * sign an HREF in the format of a URL and returns a SingedLink
+     * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
      * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
@@ -173,7 +173,7 @@ public final class SharedAccessSignaturesImpl {
     }
 
     /**
-     * sign an HREF in the format of a URL and returns a SingedLink
+     * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
      * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
@@ -305,7 +305,7 @@ public final class SharedAccessSignaturesImpl {
     }
 
     /**
-     * revoke a SAS Token for the given Azure Blob storage account
+     * Revoke SAS token for the managed storage account of this GeoCatalog.
      * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
@@ -334,7 +334,7 @@ public final class SharedAccessSignaturesImpl {
     }
 
     /**
-     * revoke a SAS Token for the given Azure Blob storage account
+     * Revoke SAS token for the managed storage account of this GeoCatalog.
      * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)

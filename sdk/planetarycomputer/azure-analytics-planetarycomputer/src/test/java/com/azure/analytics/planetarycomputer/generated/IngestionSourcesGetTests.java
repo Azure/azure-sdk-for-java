@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionSourcesGetTests extends PlanetaryComputerClientTestBase {
+public final class IngestionSourcesGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionSourcesGetTests() {
         // method invocation
-        IngestionSource response = ingestionManagementClient.getSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        IngestionSource response = ingestionClient.getSource("00000000-0000-0000-0000-000000000000");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "kind"
-        Assertions.assertEquals(IngestionSourceType.SHARED_ACCESS_SIGNATURE_TOKEN, response.getKind());
+        Assertions.assertEquals(IngestionSourceType.BLOB_MANAGED_IDENTITY, response.getKind());
         // verify property "id"
-        Assertions.assertEquals("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "created"
         Assertions.assertNotNull(response.getCreated());
     }

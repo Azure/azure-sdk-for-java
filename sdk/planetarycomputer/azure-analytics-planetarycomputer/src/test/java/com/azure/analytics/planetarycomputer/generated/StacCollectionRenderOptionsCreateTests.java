@@ -11,36 +11,27 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionRenderOptionsCreateTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionRenderOptionsCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionRenderOptionsCreateTests() {
         // method invocation
-        RenderOption response = stacClient.createRenderOption("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new RenderOption("atmospheric-penetration", "Atmospheric penetration").setDescription(
-                "False color rendering with non-visible bands to reduce effects of atmospheric particles (B12, B11, B8A).")
-                .setType(RenderOptionType.RASTER_TILE)
-                .setOptions(
-                    "nodata=0&assets=B12&assets=B11&assets=B8A&color_formula=Gamma RGB 3.7 Saturation 1.5 Sigmoidal RGB 15 0.35")
-                .setMinZoom(9));
+        RenderOption response = stacClient.createRenderOption("naip-atl",
+            new RenderOption("test-natural-color", "Test Natural color").setType(RenderOptionType.RASTER_TILE)
+                .setOptions("assets=image&asset_bidx=image|1,2,3")
+                .setMinZoom(6));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("atmospheric-penetration", response.getId());
+        Assertions.assertEquals("test-natural-color", response.getId());
         // verify property "name"
-        Assertions.assertEquals("Atmospheric penetration", response.getName());
-        // verify property "description"
-        Assertions.assertEquals(
-            "False color rendering with non-visible bands to reduce effects of atmospheric particles (B12, B11, B8A).",
-            response.getDescription());
+        Assertions.assertEquals("Test Natural color", response.getName());
         // verify property "type"
         Assertions.assertEquals(RenderOptionType.RASTER_TILE, response.getType());
         // verify property "options"
-        Assertions.assertEquals(
-            "nodata=0&assets=B12&assets=B11&assets=B8A&color_formula=Gamma RGB 3.7 Saturation 1.5 Sigmoidal RGB 15 0.35",
-            response.getOptions());
+        Assertions.assertEquals("assets=image&asset_bidx=image|1,2,3", response.getOptions());
         // verify property "minZoom"
-        Assertions.assertEquals(9, response.getMinZoom());
+        Assertions.assertEquals(6, response.getMinZoom());
     }
 }

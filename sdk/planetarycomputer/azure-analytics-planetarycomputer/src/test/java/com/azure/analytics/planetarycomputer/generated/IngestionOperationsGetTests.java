@@ -13,38 +13,30 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionOperationsGetTests extends PlanetaryComputerClientTestBase {
+public final class IngestionOperationsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionOperationsGetTests() {
         // method invocation
-        Operation response = ingestionManagementClient.getOperation("59c757bb-01fc-4196-8036-11e3ee0c08b8");
+        Operation response = ingestionClient.getOperation("00000000-0000-0000-0000-000000000000");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("59c757bb-01fc-4196-8036-11e3ee0c08b8", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "status"
-        Assertions.assertEquals(OperationStatus.FAILED, response.getStatus());
+        Assertions.assertEquals(OperationStatus.PENDING, response.getStatus());
         // verify property "type"
-        Assertions.assertEquals("DeleteItem", response.getType());
+        Assertions.assertEquals("AddCollection", response.getType());
         // verify property "creationTime"
         Assertions.assertNotNull(response.getCreationTime());
         // verify property "collectionId"
-        Assertions.assertEquals("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", response.getCollectionId());
+        Assertions.assertEquals("test-partition-type-collection", response.getCollectionId());
         // verify property "statusHistory"
         List<OperationStatusHistoryItem> responseStatusHistory = response.getStatusHistory();
         OperationStatusHistoryItem responseStatusHistoryFirstItem = responseStatusHistory.iterator().next();
         Assertions.assertNotNull(responseStatusHistoryFirstItem);
         Assertions.assertNotNull(responseStatusHistoryFirstItem.getTimestamp());
         Assertions.assertEquals(OperationStatus.PENDING, responseStatusHistoryFirstItem.getStatus());
-        // verify property "startTime"
-        Assertions.assertNotNull(response.getStartTime());
-        // verify property "finishTime"
-        Assertions.assertNotNull(response.getFinishTime());
-        // verify property "additionalInformation"
-        Assertions.assertNotNull(response.getAdditionalInformation());
-        // verify property "error"
-        Assertions.assertNotNull(response.getError());
     }
 }

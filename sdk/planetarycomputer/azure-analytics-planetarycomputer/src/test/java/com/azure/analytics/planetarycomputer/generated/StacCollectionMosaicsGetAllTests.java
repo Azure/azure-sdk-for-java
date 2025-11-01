@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionMosaicsGetAllTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionMosaicsGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionMosaicsGetAllTests() {
         // method invocation
-        List<StacMosaic> response = stacClient.listMosaics("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        List<StacMosaic> response = stacClient.listMosaics("naip-atl");
     }
 }

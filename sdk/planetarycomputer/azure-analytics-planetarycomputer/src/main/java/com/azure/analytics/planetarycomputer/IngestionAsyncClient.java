@@ -4,8 +4,8 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.IngestionManagementsImpl;
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.implementation.IngestionsImpl;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.analytics.planetarycomputer.models.IngestionSource;
 import com.azure.analytics.planetarycomputer.models.IngestionSourceSummary;
@@ -20,27 +20,33 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the synchronous PlanetaryComputerClient type.
+ * Initializes a new instance of the asynchronous PlanetaryComputerProClient type.
  */
-@ServiceClient(builder = PlanetaryComputerClientBuilder.class)
-public final class IngestionManagementClient {
+@ServiceClient(builder = PlanetaryComputerProClientBuilder.class, isAsync = true)
+public final class IngestionAsyncClient {
     @Generated
-    private final IngestionManagementsImpl serviceClient;
+    private final IngestionsImpl serviceClient;
 
     /**
-     * Initializes an instance of IngestionManagementClient class.
+     * Initializes an instance of IngestionAsyncClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    IngestionManagementClient(IngestionManagementsImpl serviceClient) {
+    IngestionAsyncClient(IngestionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -53,12 +59,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelOperationWithResponse(operationId, requestOptions);
+    public Mono<Response<Void>> cancelOperationWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelOperationWithResponseAsync(operationId, requestOptions);
     }
 
     /**
@@ -69,12 +75,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelAllOperationsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.cancelAllOperationsWithResponse(requestOptions);
+    public Mono<Response<Void>> cancelAllOperationsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.cancelAllOperationsWithResponseAsync(requestOptions);
     }
 
     /**
@@ -103,7 +109,9 @@ public final class IngestionManagementClient {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -115,12 +123,13 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an operation of a geo-catalog collection along with {@link Response}.
+     * @return an operation of a geo-catalog collection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponse(operationId, requestOptions);
+    public Mono<Response<BinaryData>> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationWithResponseAsync(operationId, requestOptions);
     }
 
     /**
@@ -160,7 +169,9 @@ public final class IngestionManagementClient {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -171,12 +182,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return operations of a geo-catalog collection as paginated response with {@link PagedIterable}.
+     * @return operations of a geo-catalog collection as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperations(requestOptions);
+    public PagedFlux<BinaryData> listOperations(RequestOptions requestOptions) {
+        return this.serviceClient.listOperationsAsync(requestOptions);
     }
 
     /**
@@ -222,13 +233,14 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return microsoft Planetary Computer Pro geo-catalog ingestion run along with {@link Response}.
+     * @return microsoft Planetary Computer Pro geo-catalog ingestion run along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createRunWithResponse(String collectionId, String ingestionId,
+    public Mono<Response<BinaryData>> createRunWithResponse(String collectionId, String ingestionId,
         RequestOptions requestOptions) {
-        return this.serviceClient.createRunWithResponse(collectionId, ingestionId, requestOptions);
+        return this.serviceClient.createRunWithResponseAsync(collectionId, ingestionId, requestOptions);
     }
 
     /**
@@ -275,13 +287,13 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a run of an ingestion along with {@link Response}.
+     * @return a run of an ingestion along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRunWithResponse(String collectionId, String ingestionId, String runId,
+    public Mono<Response<BinaryData>> getRunWithResponse(String collectionId, String ingestionId, String runId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getRunWithResponse(collectionId, ingestionId, runId, requestOptions);
+        return this.serviceClient.getRunWithResponseAsync(collectionId, ingestionId, runId, requestOptions);
     }
 
     /**
@@ -335,12 +347,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the runs of an ingestion as paginated response with {@link PagedIterable}.
+     * @return the runs of an ingestion as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listRuns(String collectionId, String ingestionId, RequestOptions requestOptions) {
-        return this.serviceClient.listRuns(collectionId, ingestionId, requestOptions);
+    public PagedFlux<BinaryData> listRuns(String collectionId, String ingestionId, RequestOptions requestOptions) {
+        return this.serviceClient.listRunsAsync(collectionId, ingestionId, requestOptions);
     }
 
     /**
@@ -380,19 +392,20 @@ public final class IngestionManagementClient {
      * </pre>
      * 
      * @param collectionId Catalog collection id.
-     * @param definition Definition of the ingestion.
+     * @param body Definition of the ingestion.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model along with {@link Response}.
+     * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(String collectionId, BinaryData definition,
+    public Mono<Response<BinaryData>> createWithResponse(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(collectionId, definition, requestOptions);
+        return this.serviceClient.createWithResponseAsync(collectionId, body, requestOptions);
     }
 
     /**
@@ -422,7 +435,9 @@ public final class IngestionManagementClient {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -435,13 +450,13 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of microsoft Planetary Computer Pro geo-catalog operation.
+     * @return the {@link PollerFlux} for polling of microsoft Planetary Computer Pro geo-catalog operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDelete(String collectionId, String ingestionId,
+    public PollerFlux<BinaryData, Void> beginDelete(String collectionId, String ingestionId,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginDelete(collectionId, ingestionId, requestOptions);
+        return this.serviceClient.beginDeleteAsync(collectionId, ingestionId, requestOptions);
     }
 
     /**
@@ -470,13 +485,13 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the definition of an ingestion along with {@link Response}.
+     * @return the definition of an ingestion along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String collectionId, String ingestionId,
+    public Mono<Response<BinaryData>> getWithResponse(String collectionId, String ingestionId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(collectionId, ingestionId, requestOptions);
+        return this.serviceClient.getWithResponseAsync(collectionId, ingestionId, requestOptions);
     }
 
     /**
@@ -512,12 +527,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return ingestions of a catalog as paginated response with {@link PagedIterable}.
+     * @return ingestions of a catalog as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> lists(String collectionId, RequestOptions requestOptions) {
-        return this.serviceClient.lists(collectionId, requestOptions);
+    public PagedFlux<BinaryData> list(String collectionId, RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(collectionId, requestOptions);
     }
 
     /**
@@ -558,19 +573,20 @@ public final class IngestionManagementClient {
      * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
-     * @param definition Ingestion properties to update.
+     * @param body Ingestion properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model along with {@link Response}.
+     * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String collectionId, String ingestionId, BinaryData definition,
+    public Mono<Response<BinaryData>> updateWithResponse(String collectionId, String ingestionId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(collectionId, ingestionId, definition, requestOptions);
+        return this.serviceClient.updateWithResponseAsync(collectionId, ingestionId, body, requestOptions);
     }
 
     /**
@@ -582,7 +598,7 @@ public final class IngestionManagementClient {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -594,23 +610,23 @@ public final class IngestionManagementClient {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return ingestion Source along with {@link Response}.
+     * @return ingestion Source along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSourceWithResponse(BinaryData ingestionSource, RequestOptions requestOptions) {
-        return this.serviceClient.createSourceWithResponse(ingestionSource, requestOptions);
+    public Mono<Response<BinaryData>> createSourceWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createSourceWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -622,7 +638,7 @@ public final class IngestionManagementClient {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -634,25 +650,25 @@ public final class IngestionManagementClient {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
      * 
      * @param id Ingestion source id.
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return ingestion Source along with {@link Response}.
+     * @return ingestion Source along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceSourceWithResponse(String id, BinaryData ingestionSource,
+    public Mono<Response<BinaryData>> replaceSourceWithResponse(String id, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceSourceWithResponse(id, ingestionSource, requestOptions);
+        return this.serviceClient.replaceSourceWithResponseAsync(id, body, requestOptions);
     }
 
     /**
@@ -664,12 +680,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSourceWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.deleteSourceWithResponse(id, requestOptions);
+    public Mono<Response<Void>> deleteSourceWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.deleteSourceWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -681,7 +697,7 @@ public final class IngestionManagementClient {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -692,12 +708,13 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an ingestion source in a geo-catalog along with {@link Response}.
+     * @return an ingestion source in a geo-catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSourceWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getSourceWithResponse(id, requestOptions);
+    public Mono<Response<BinaryData>> getSourceWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getSourceWithResponseAsync(id, requestOptions);
     }
 
     /**
@@ -717,7 +734,7 @@ public final class IngestionManagementClient {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -727,12 +744,12 @@ public final class IngestionManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return ingestion sources in a geo-catalog as paginated response with {@link PagedIterable}.
+     * @return ingestion sources in a geo-catalog as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSources(RequestOptions requestOptions) {
-        return this.serviceClient.listSources(requestOptions);
+    public PagedFlux<BinaryData> listSources(RequestOptions requestOptions) {
+        return this.serviceClient.listSourcesAsync(requestOptions);
     }
 
     /**
@@ -754,12 +771,12 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all managed identities with access to storage accounts configured for a geo-catalog as paginated response
-     * with {@link PagedIterable}.
+     * with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listManagedIdentities(RequestOptions requestOptions) {
-        return this.serviceClient.listManagedIdentities(requestOptions);
+    public PagedFlux<BinaryData> listManagedIdentities(RequestOptions requestOptions) {
+        return this.serviceClient.listManagedIdentitiesAsync(requestOptions);
     }
 
     /**
@@ -772,13 +789,14 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelOperation(String operationId) {
+    public Mono<Void> cancelOperation(String operationId) {
         // Generated convenience method for cancelOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        cancelOperationWithResponse(operationId, requestOptions).getValue();
+        return cancelOperationWithResponse(operationId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -789,13 +807,14 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelAllOperations() {
+    public Mono<Void> cancelAllOperations() {
         // Generated convenience method for cancelAllOperationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        cancelAllOperationsWithResponse(requestOptions).getValue();
+        return cancelAllOperationsWithResponse(requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -808,14 +827,15 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an operation of a geo-catalog collection.
+     * @return an operation of a geo-catalog collection on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Operation getOperation(String operationId) {
+    public Mono<Operation> getOperation(String operationId) {
         // Generated convenience method for getOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(operationId, requestOptions).getValue().toObject(Operation.class);
+        return getOperationWithResponse(operationId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Operation.class));
     }
 
     /**
@@ -831,12 +851,11 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operations of a geo-catalog collection as paginated response with {@link PagedIterable}.
+     * @return operations of a geo-catalog collection as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Operation> listOperations(Integer top, Integer skip, String collectionId,
-        OperationStatus status) {
+    public PagedFlux<Operation> listOperations(Integer top, Integer skip, String collectionId, OperationStatus status) {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
@@ -851,8 +870,19 @@ public final class IngestionManagementClient {
         if (status != null) {
             requestOptions.addQueryParam("status", status.toString(), false);
         }
-        return serviceClient.listOperations(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Operation.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Operation>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Operation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -863,15 +893,26 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operations of a geo-catalog collection as paginated response with {@link PagedIterable}.
+     * @return operations of a geo-catalog collection as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Operation> listOperations() {
+    public PagedFlux<Operation> listOperations() {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listOperations(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Operation.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Operation>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Operation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -885,14 +926,15 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Planetary Computer Pro geo-catalog ingestion run.
+     * @return microsoft Planetary Computer Pro geo-catalog ingestion run on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionRun createRun(String collectionId, String ingestionId) {
+    public Mono<IngestionRun> createRun(String collectionId, String ingestionId) {
         // Generated convenience method for createRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createRunWithResponse(collectionId, ingestionId, requestOptions).getValue().toObject(IngestionRun.class);
+        return createRunWithResponse(collectionId, ingestionId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionRun.class));
     }
 
     /**
@@ -907,15 +949,15 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a run of an ingestion.
+     * @return a run of an ingestion on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionRun getRun(String collectionId, String ingestionId, String runId) {
+    public Mono<IngestionRun> getRun(String collectionId, String ingestionId, String runId) {
         // Generated convenience method for getRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRunWithResponse(collectionId, ingestionId, runId, requestOptions).getValue()
-            .toObject(IngestionRun.class);
+        return getRunWithResponse(collectionId, ingestionId, runId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionRun.class));
     }
 
     /**
@@ -931,11 +973,11 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the runs of an ingestion as paginated response with {@link PagedIterable}.
+     * @return the runs of an ingestion as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IngestionRun> listRuns(String collectionId, String ingestionId, Integer top, Integer skip) {
+    public PagedFlux<IngestionRun> listRuns(String collectionId, String ingestionId, Integer top, Integer skip) {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
@@ -944,8 +986,19 @@ public final class IngestionManagementClient {
         if (skip != null) {
             requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
         }
-        return serviceClient.listRuns(collectionId, ingestionId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(IngestionRun.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listRuns(collectionId, ingestionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, IngestionRun>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(IngestionRun.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -959,37 +1012,49 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the runs of an ingestion as paginated response with {@link PagedIterable}.
+     * @return the runs of an ingestion as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IngestionRun> listRuns(String collectionId, String ingestionId) {
+    public PagedFlux<IngestionRun> listRuns(String collectionId, String ingestionId) {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listRuns(collectionId, ingestionId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(IngestionRun.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listRuns(collectionId, ingestionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, IngestionRun>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(IngestionRun.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Create a new ingestion.
      * 
      * @param collectionId Catalog collection id.
-     * @param definition Definition of the ingestion.
+     * @param body Definition of the ingestion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model.
+     * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Ingestion create(String collectionId, Ingestion definition) {
+    public Mono<IngestionDefinition> create(String collectionId, IngestionDefinition body) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(collectionId, BinaryData.fromObject(definition), requestOptions).getValue()
-            .toObject(Ingestion.class);
+        return createWithResponse(collectionId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionDefinition.class));
     }
 
     /**
@@ -1004,14 +1069,14 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of microsoft Planetary Computer Pro geo-catalog operation.
+     * @return the {@link PollerFlux} for polling of microsoft Planetary Computer Pro geo-catalog operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Operation, Void> beginDelete(String collectionId, String ingestionId) {
+    public PollerFlux<Operation, Void> beginDelete(String collectionId, String ingestionId) {
         // Generated convenience method for beginDeleteWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginDeleteWithModel(collectionId, ingestionId, requestOptions);
+        return serviceClient.beginDeleteWithModelAsync(collectionId, ingestionId, requestOptions);
     }
 
     /**
@@ -1025,14 +1090,15 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition of an ingestion.
+     * @return the definition of an ingestion on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Ingestion get(String collectionId, String ingestionId) {
+    public Mono<IngestionDefinition> get(String collectionId, String ingestionId) {
         // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(collectionId, ingestionId, requestOptions).getValue().toObject(Ingestion.class);
+        return getWithResponse(collectionId, ingestionId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionDefinition.class));
     }
 
     /**
@@ -1047,12 +1113,12 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ingestions of a catalog as paginated response with {@link PagedIterable}.
+     * @return ingestions of a catalog as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Ingestion> lists(String collectionId, Integer top, Integer skip) {
-        // Generated convenience method for lists
+    public PagedFlux<IngestionDefinition> list(String collectionId, Integer top, Integer skip) {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
             requestOptions.addQueryParam("$top", String.valueOf(top), false);
@@ -1060,8 +1126,20 @@ public final class IngestionManagementClient {
         if (skip != null) {
             requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
         }
-        return serviceClient.lists(collectionId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Ingestion.class));
+        PagedFlux<BinaryData> pagedFluxResponse = list(collectionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, IngestionDefinition>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(IngestionDefinition.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1074,58 +1152,70 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ingestions of a catalog as paginated response with {@link PagedIterable}.
+     * @return ingestions of a catalog as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Ingestion> lists(String collectionId) {
-        // Generated convenience method for lists
+    public PagedFlux<IngestionDefinition> list(String collectionId) {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.lists(collectionId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Ingestion.class));
+        PagedFlux<BinaryData> pagedFluxResponse = list(collectionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, IngestionDefinition>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(IngestionDefinition.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Create a new ingestion source in a geo-catalog.
      * 
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ingestion Source.
+     * @return ingestion Source on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionSource createSource(IngestionSource ingestionSource) {
+    public Mono<IngestionSource> createSource(IngestionSource body) {
         // Generated convenience method for createSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSourceWithResponse(BinaryData.fromObject(ingestionSource), requestOptions).getValue()
-            .toObject(IngestionSource.class);
+        return createSourceWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionSource.class));
     }
 
     /**
      * Update an existing ingestion source in a geo-catalog.
      * 
      * @param id Ingestion source id.
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ingestion Source.
+     * @return ingestion Source on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionSource createOrReplaceSource(String id, IngestionSource ingestionSource) {
-        // Generated convenience method for createOrReplaceSourceWithResponse
+    public Mono<IngestionSource> replaceSource(String id, IngestionSource body) {
+        // Generated convenience method for replaceSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceSourceWithResponse(id, BinaryData.fromObject(ingestionSource), requestOptions).getValue()
-            .toObject(IngestionSource.class);
+        return replaceSourceWithResponse(id, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionSource.class));
     }
 
     /**
@@ -1138,13 +1228,14 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSource(String id) {
+    public Mono<Void> deleteSource(String id) {
         // Generated convenience method for deleteSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteSourceWithResponse(id, requestOptions).getValue();
+        return deleteSourceWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1157,14 +1248,15 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ingestion source in a geo-catalog.
+     * @return an ingestion source in a geo-catalog on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IngestionSource getSource(String id) {
+    public Mono<IngestionSource> getSource(String id) {
         // Generated convenience method for getSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSourceWithResponse(id, requestOptions).getValue().toObject(IngestionSource.class);
+        return getSourceWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IngestionSource.class));
     }
 
     /**
@@ -1178,11 +1270,11 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ingestion sources in a geo-catalog as paginated response with {@link PagedIterable}.
+     * @return ingestion sources in a geo-catalog as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IngestionSourceSummary> listSources(Integer top, Integer skip) {
+    public PagedFlux<IngestionSourceSummary> listSources(Integer top, Integer skip) {
         // Generated convenience method for listSources
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
@@ -1191,8 +1283,20 @@ public final class IngestionManagementClient {
         if (skip != null) {
             requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
         }
-        return serviceClient.listSources(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(IngestionSourceSummary.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listSources(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, IngestionSourceSummary>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(IngestionSourceSummary.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1203,15 +1307,27 @@ public final class IngestionManagementClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ingestion sources in a geo-catalog as paginated response with {@link PagedIterable}.
+     * @return ingestion sources in a geo-catalog as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IngestionSourceSummary> listSources() {
+    public PagedFlux<IngestionSourceSummary> listSources() {
         // Generated convenience method for listSources
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSources(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(IngestionSourceSummary.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listSources(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, IngestionSourceSummary>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(IngestionSourceSummary.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1223,14 +1339,26 @@ public final class IngestionManagementClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all managed identities with access to storage accounts configured for a geo-catalog as paginated response
-     * with {@link PagedIterable}.
+     * with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedIdentityMetadata> listManagedIdentities() {
+    public PagedFlux<ManagedIdentityMetadata> listManagedIdentities() {
         // Generated convenience method for listManagedIdentities
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listManagedIdentities(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ManagedIdentityMetadata.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listManagedIdentities(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, ManagedIdentityMetadata>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(ManagedIdentityMetadata.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 }

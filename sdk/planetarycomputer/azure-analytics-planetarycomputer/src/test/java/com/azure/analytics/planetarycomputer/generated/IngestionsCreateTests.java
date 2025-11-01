@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.IngestionStatus;
 import com.azure.analytics.planetarycomputer.models.IngestionType;
 import org.junit.jupiter.api.Assertions;
@@ -12,29 +12,35 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionsCreateTests extends PlanetaryComputerClientTestBase {
+public final class IngestionsCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionsCreateTests() {
         // method invocation
-        Ingestion response = ingestionManagementClient.create("collectionId",
-            new Ingestion().setImportType(IngestionType.STATIC_CATALOG)
-                .setSourceCatalogUrl("https://sample.blob.core.windows.net/sample.json")
-                .setSkipExistingItems(false)
-                .setKeepOriginalAssets(false));
+        IngestionDefinition response = ingestionClient.create("naip-atl", new IngestionDefinition()
+            .setImportType(IngestionType.STATIC_CATALOG)
+            .setDisplayName("Ingestion")
+            .setSourceCatalogUrl(
+                "https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json")
+            .setSkipExistingItems(true)
+            .setKeepOriginalAssets(true));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("e1b1b8aa-0b32-4b0a-a25c-d0f806a9133a", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "importType"
         Assertions.assertEquals(IngestionType.STATIC_CATALOG, response.getImportType());
+        // verify property "displayName"
+        Assertions.assertEquals("Ingestion", response.getDisplayName());
         // verify property "sourceCatalogUrl"
-        Assertions.assertEquals("https://sample.blob.core.windows.net/sample.json", response.getSourceCatalogUrl());
+        Assertions.assertEquals(
+            "https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json",
+            response.getSourceCatalogUrl());
         // verify property "skipExistingItems"
-        Assertions.assertEquals(false, response.isSkipExistingItems());
+        Assertions.assertEquals(true, response.isSkipExistingItems());
         // verify property "keepOriginalAssets"
-        Assertions.assertEquals(false, response.isKeepOriginalAssets());
+        Assertions.assertEquals(true, response.isKeepOriginalAssets());
         // verify property "creationTime"
         Assertions.assertNotNull(response.getCreationTime());
         // verify property "status"

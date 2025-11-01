@@ -10,18 +10,18 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class SasGetTokenTests extends PlanetaryComputerClientTestBase {
+public final class SasGetTokenTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testSasGetTokenTests() {
         // method invocation
-        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("weather-sample", null);
+        SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("naip-atl", null);
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "expiresOn"
         Assertions.assertNotNull(response.getExpiresOn());
         // verify property "token"
-        Assertions.assertEquals("sastoken", response.getToken());
+        Assertions.assertEquals("Sanitized", response.getToken());
     }
 }

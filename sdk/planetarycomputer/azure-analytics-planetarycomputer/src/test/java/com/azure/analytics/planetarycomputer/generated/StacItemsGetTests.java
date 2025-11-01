@@ -15,13 +15,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacItemsGetTests extends PlanetaryComputerClientTestBase {
+public final class StacItemsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacItemsGetTests() {
         // method invocation
-        StacItem response
-            = stacClient.getItem("example-collection", "S2A_MSIL2A_20231017T013651_R117_T53SPA_20231017T053413");
+        StacItem response = stacClient.getItem("naip-atl", "ga_m_3308421_se_16_060_20211114_test");
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -32,21 +31,22 @@ public final class StacItemsGetTests extends PlanetaryComputerClientTestBase {
         Assertions.assertNotNull(responseGeometry);
         Assertions.assertEquals(GeometryType.POLYGON, responseGeometry.getType());
         // verify property "id"
-        Assertions.assertEquals("S2A_MSIL2A_20231017T013651_R117_T53SPA_20231017T053413", response.getId());
+        Assertions.assertEquals("ga_m_3308421_se_16_060_20211114_test", response.getId());
         // verify property "collection"
-        Assertions.assertEquals("example-collection", response.getCollection());
+        Assertions.assertEquals("naip-atl", response.getCollection());
         // verify property "boundingBox"
         List<Double> responseBoundingBox = response.getBoundingBox();
-        Assertions.assertEquals(136.11023969131566, responseBoundingBox.iterator().next());
+        Assertions.assertEquals(-84.44157, responseBoundingBox.iterator().next());
         // verify property "properties"
         StacItemProperties responseProperties = response.getProperties();
         Assertions.assertNotNull(responseProperties);
-        Assertions.assertEquals("2023-10-17T01:36:51.024000Z", responseProperties.getDatetime());
+        Assertions.assertEquals(0.6D, responseProperties.getGsd());
+        Assertions.assertEquals("2021-11-14T16:00:00Z", responseProperties.getDatetime());
         // verify property "assets"
         Assertions.assertNotNull(response.getAssets());
         // verify property "timestamp"
-        Assertions.assertEquals("2024-09-26T17:46:10.688245Z", response.getTimestamp());
+        Assertions.assertEquals("2025-10-28T17:52:49.659975Z", response.getTimestamp());
         // verify property "eTag"
-        Assertions.assertEquals("e99a9415-f26f-48ad-9553-3a5dd7260cde", response.getETag());
+        Assertions.assertEquals("73fab31c-2e93-422b-b30a-7d259590992f", response.getETag());
     }
 }

@@ -38,6 +38,16 @@ Various documentation is available to help you get started
 
 ## Examples
 
+### Building the package
+
+To compile the package into a standalone jar, use the following command from the root of the repository:
+
+```bash
+mvn clean package -f sdk/planetarycomputer/azure-analytics-planetarycomputer/pom.xml
+```
+
+### Code samples
+
 ```java com.azure.analytics.planetarycomputer.readme
 ```
 

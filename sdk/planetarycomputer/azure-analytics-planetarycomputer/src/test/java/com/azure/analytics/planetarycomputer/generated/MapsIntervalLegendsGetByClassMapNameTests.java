@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MapsIntervalLegendsGetByClassMapNameTests extends PlanetaryComputerClientTestBase {
+public final class MapsIntervalLegendsGetByClassMapNameTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMapsIntervalLegendsGetByClassMapNameTests() {
         // method invocation
-        List<List<BinaryData>> response = tilerClient.getIntervalLegend("modis-64A1", null, null);
+        List<List<BinaryData>> response = dataClient.getIntervalLegend("modis-64A1", null, null);
     }
 }

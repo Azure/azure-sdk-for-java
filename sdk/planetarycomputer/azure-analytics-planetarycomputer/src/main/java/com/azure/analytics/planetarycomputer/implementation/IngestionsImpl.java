@@ -49,27 +49,27 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in IngestionManagements.
+ * An instance of this class provides access to all the operations defined in Ingestions.
  */
-public final class IngestionManagementsImpl {
+public final class IngestionsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final IngestionManagementsService service;
+    private final IngestionsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private final PlanetaryComputerClientImpl client;
+    private final PlanetaryComputerProClientImpl client;
 
     /**
-     * Initializes an instance of IngestionManagementsImpl.
+     * Initializes an instance of IngestionsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    IngestionManagementsImpl(PlanetaryComputerClientImpl client) {
-        this.service = RestProxy.create(IngestionManagementsService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+    IngestionsImpl(PlanetaryComputerProClientImpl client) {
+        this.service
+            = RestProxy.create(IngestionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -83,12 +83,12 @@ public final class IngestionManagementsImpl {
     }
 
     /**
-     * The interface defining all the services for PlanetaryComputerClientIngestionManagements to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PlanetaryComputerProClientIngestions to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlanetaryComputerClientIngestionManagements")
-    public interface IngestionManagementsService {
+    @ServiceInterface(name = "PlanetaryComputerProClientIngestions")
+    public interface IngestionsService {
         @Delete("/inma/operations/{operationId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -242,7 +242,7 @@ public final class IngestionManagementsImpl {
         Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData definition, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/inma/collections/{collectionId}/ingestions")
         @ExpectedResponses({ 201 })
@@ -253,7 +253,7 @@ public final class IngestionManagementsImpl {
         Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData definition, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/inma/collections/{collectionId}/ingestions/{ingestionId}")
         @ExpectedResponses({ 202 })
@@ -305,7 +305,7 @@ public final class IngestionManagementsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> lists(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -315,7 +315,7 @@ public final class IngestionManagementsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -328,7 +328,7 @@ public final class IngestionManagementsImpl {
         Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
             @HeaderParam("content-type") String contentType, @QueryParam("api-version") String apiVersion,
             @PathParam("collectionId") String collectionId, @PathParam("ingestionId") String ingestionId,
-            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData definition,
+            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Patch("/inma/collections/{collectionId}/ingestions/{ingestionId}")
@@ -340,7 +340,7 @@ public final class IngestionManagementsImpl {
         Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("content-type") String contentType, @QueryParam("api-version") String apiVersion,
             @PathParam("collectionId") String collectionId, @PathParam("ingestionId") String ingestionId,
-            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData definition,
+            @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/inma/ingestion-sources")
@@ -351,7 +351,7 @@ public final class IngestionManagementsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSource(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData ingestionSource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/inma/ingestion-sources")
@@ -362,30 +362,30 @@ public final class IngestionManagementsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSourceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData ingestionSource,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/inma/ingestion-sources/{id}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceSource(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceSource(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData ingestionSource, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/inma/ingestion-sources/{id}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceSourceSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceSourceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData ingestionSource, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/inma/ingestion-sources/{id}")
         @ExpectedResponses({ 204 })
@@ -513,7 +513,7 @@ public final class IngestionManagementsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -523,7 +523,7 @@ public final class IngestionManagementsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -660,7 +660,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -708,7 +710,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -766,7 +770,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -827,7 +833,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -886,7 +894,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -945,7 +955,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1473,7 +1485,7 @@ public final class IngestionManagementsImpl {
      * </pre>
      * 
      * @param collectionId Catalog collection id.
-     * @param definition Definition of the ingestion.
+     * @param body Definition of the ingestion.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1483,13 +1495,13 @@ public final class IngestionManagementsImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponseAsync(String collectionId, BinaryData definition,
+    public Mono<Response<BinaryData>> createWithResponseAsync(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.create(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                collectionId, contentType, accept, definition, requestOptions, context));
+                collectionId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1529,7 +1541,7 @@ public final class IngestionManagementsImpl {
      * </pre>
      * 
      * @param collectionId Catalog collection id.
-     * @param definition Definition of the ingestion.
+     * @param body Definition of the ingestion.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1538,12 +1550,12 @@ public final class IngestionManagementsImpl {
      * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(String collectionId, BinaryData definition,
+    public Response<BinaryData> createWithResponse(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), collectionId,
-            contentType, accept, definition, requestOptions, Context.NONE);
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1573,7 +1585,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1624,7 +1638,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1674,7 +1690,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1730,7 +1748,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1786,7 +1806,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1842,7 +1864,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -1979,10 +2003,10 @@ public final class IngestionManagementsImpl {
      * @return ingestions of a catalog along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listsSinglePageAsync(String collectionId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(String collectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.lists(this.client.getEndpoint(),
+            .withContext(context -> service.list(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -2024,12 +2048,12 @@ public final class IngestionManagementsImpl {
      * @return ingestions of a catalog as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listsAsync(String collectionId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAsync(String collectionId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listsSinglePageAsync(collectionId, requestOptions),
-            nextLink -> listsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSinglePageAsync(collectionId, requestOptions),
+            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2068,9 +2092,9 @@ public final class IngestionManagementsImpl {
      * @return ingestions of a catalog along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listsSinglePage(String collectionId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSinglePage(String collectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listsSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -2112,12 +2136,12 @@ public final class IngestionManagementsImpl {
      * @return ingestions of a catalog as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> lists(String collectionId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> list(String collectionId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listsSinglePage(collectionId, requestOptions),
-            nextLink -> listsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSinglePage(collectionId, requestOptions),
+            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2158,7 +2182,7 @@ public final class IngestionManagementsImpl {
      * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
-     * @param definition Ingestion properties to update.
+     * @param body Ingestion properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2168,12 +2192,12 @@ public final class IngestionManagementsImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(String collectionId, String ingestionId,
-        BinaryData definition, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateWithResponseAsync(String collectionId, String ingestionId, BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), contentType,
-            this.client.getServiceVersion().getVersion(), collectionId, ingestionId, accept, definition, requestOptions,
+            this.client.getServiceVersion().getVersion(), collectionId, ingestionId, accept, body, requestOptions,
             context));
     }
 
@@ -2215,7 +2239,7 @@ public final class IngestionManagementsImpl {
      * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
-     * @param definition Ingestion properties to update.
+     * @param body Ingestion properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2224,12 +2248,12 @@ public final class IngestionManagementsImpl {
      * @return microsoft Planetary Computer Pro geo-catalog ingestion creation model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String collectionId, String ingestionId, BinaryData definition,
+    public Response<BinaryData> updateWithResponse(String collectionId, String ingestionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), contentType, this.client.getServiceVersion().getVersion(),
-            collectionId, ingestionId, accept, definition, requestOptions, Context.NONE);
+            collectionId, ingestionId, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2241,7 +2265,7 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2253,12 +2277,12 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2267,13 +2291,11 @@ public final class IngestionManagementsImpl {
      * @return ingestion Source along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSourceWithResponseAsync(BinaryData ingestionSource,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createSourceWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createSource(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                contentType, accept, ingestionSource, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createSource(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -2285,7 +2307,7 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2297,12 +2319,12 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2311,11 +2333,11 @@ public final class IngestionManagementsImpl {
      * @return ingestion Source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSourceWithResponse(BinaryData ingestionSource, RequestOptions requestOptions) {
+    public Response<BinaryData> createSourceWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSourceSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, ingestionSource, requestOptions, Context.NONE);
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2327,7 +2349,7 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2339,13 +2361,13 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
      * 
      * @param id Ingestion source id.
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2354,13 +2376,12 @@ public final class IngestionManagementsImpl {
      * @return ingestion Source along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceSourceWithResponseAsync(String id, BinaryData ingestionSource,
+    public Mono<Response<BinaryData>> replaceSourceWithResponseAsync(String id, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceSource(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, contentType, accept, ingestionSource, requestOptions,
-            context));
+        return FluxUtil.withContext(context -> service.replaceSource(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -2372,7 +2393,7 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2384,13 +2405,13 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
      * 
      * @param id Ingestion source id.
-     * @param ingestionSource Definition of the ingestion source.
+     * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2399,13 +2420,11 @@ public final class IngestionManagementsImpl {
      * @return ingestion Source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceSourceWithResponse(String id, BinaryData ingestionSource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> replaceSourceWithResponse(String id, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrReplaceSourceSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, contentType, accept, ingestionSource, requestOptions,
-            Context.NONE);
+        return service.replaceSourceSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2451,7 +2470,7 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2481,7 +2500,7 @@ public final class IngestionManagementsImpl {
      * {
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
      *     id: String (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2518,7 +2537,7 @@ public final class IngestionManagementsImpl {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2558,7 +2577,7 @@ public final class IngestionManagementsImpl {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2596,7 +2615,7 @@ public final class IngestionManagementsImpl {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2634,7 +2653,7 @@ public final class IngestionManagementsImpl {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -2802,7 +2821,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -2853,7 +2874,9 @@ public final class IngestionManagementsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -3012,11 +3035,11 @@ public final class IngestionManagementsImpl {
      * @return ingestions of a catalog along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listsNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -3049,10 +3072,10 @@ public final class IngestionManagementsImpl {
      * @return ingestions of a catalog along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -3066,7 +3089,7 @@ public final class IngestionManagementsImpl {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>
@@ -3099,7 +3122,7 @@ public final class IngestionManagementsImpl {
      * {
      *     id: String (Required)
      *     kind: String(SasToken/BlobManagedIdentity) (Required)
-     *     created: OffsetDateTime (Required)
+     *     created: OffsetDateTime (Optional)
      * }
      * }
      * </pre>

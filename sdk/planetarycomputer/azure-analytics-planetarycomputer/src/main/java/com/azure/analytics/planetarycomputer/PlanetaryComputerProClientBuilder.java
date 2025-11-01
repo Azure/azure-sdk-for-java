@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.PlanetaryComputerClientImpl;
+import com.azure.analytics.planetarycomputer.implementation.PlanetaryComputerProClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -41,21 +41,21 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the PlanetaryComputerClient type.
+ * A builder for creating a new instance of the PlanetaryComputerProClient type.
  */
 @ServiceClientBuilder(
     serviceClients = {
-        IngestionManagementClient.class,
+        IngestionClient.class,
         StacClient.class,
-        TilerClient.class,
+        DataClient.class,
         SharedAccessSignatureClient.class,
-        IngestionManagementAsyncClient.class,
+        IngestionAsyncClient.class,
         StacAsyncClient.class,
-        TilerAsyncClient.class,
+        DataAsyncClient.class,
         SharedAccessSignatureAsyncClient.class })
-public final class PlanetaryComputerClientBuilder
-    implements HttpTrait<PlanetaryComputerClientBuilder>, ConfigurationTrait<PlanetaryComputerClientBuilder>,
-    TokenCredentialTrait<PlanetaryComputerClientBuilder>, EndpointTrait<PlanetaryComputerClientBuilder> {
+public final class PlanetaryComputerProClientBuilder
+    implements HttpTrait<PlanetaryComputerProClientBuilder>, ConfigurationTrait<PlanetaryComputerProClientBuilder>,
+    TokenCredentialTrait<PlanetaryComputerProClientBuilder>, EndpointTrait<PlanetaryComputerProClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -73,10 +73,10 @@ public final class PlanetaryComputerClientBuilder
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the PlanetaryComputerClientBuilder.
+     * Create an instance of the PlanetaryComputerProClientBuilder.
      */
     @Generated
-    public PlanetaryComputerClientBuilder() {
+    public PlanetaryComputerProClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -91,7 +91,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder httpClient(HttpClient httpClient) {
+    public PlanetaryComputerProClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -107,7 +107,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder pipeline(HttpPipeline pipeline) {
+    public PlanetaryComputerProClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -126,7 +126,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public PlanetaryComputerProClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -142,7 +142,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder clientOptions(ClientOptions clientOptions) {
+    public PlanetaryComputerProClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -158,7 +158,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder retryOptions(RetryOptions retryOptions) {
+    public PlanetaryComputerProClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -168,7 +168,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public PlanetaryComputerProClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -185,7 +185,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder configuration(Configuration configuration) {
+    public PlanetaryComputerProClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -201,7 +201,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder credential(TokenCredential tokenCredential) {
+    public PlanetaryComputerProClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -217,7 +217,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     @Override
-    public PlanetaryComputerClientBuilder endpoint(String endpoint) {
+    public PlanetaryComputerProClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -232,10 +232,10 @@ public final class PlanetaryComputerClientBuilder
      * Sets Service version.
      * 
      * @param serviceVersion the serviceVersion value.
-     * @return the PlanetaryComputerClientBuilder.
+     * @return the PlanetaryComputerProClientBuilder.
      */
     @Generated
-    public PlanetaryComputerClientBuilder serviceVersion(PlanetaryComputerServiceVersion serviceVersion) {
+    public PlanetaryComputerProClientBuilder serviceVersion(PlanetaryComputerServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -250,26 +250,26 @@ public final class PlanetaryComputerClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * 
      * @param retryPolicy the retryPolicy value.
-     * @return the PlanetaryComputerClientBuilder.
+     * @return the PlanetaryComputerProClientBuilder.
      */
     @Generated
-    public PlanetaryComputerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public PlanetaryComputerProClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of PlanetaryComputerClientImpl with the provided parameters.
+     * Builds an instance of PlanetaryComputerProClientImpl with the provided parameters.
      * 
-     * @return an instance of PlanetaryComputerClientImpl.
+     * @return an instance of PlanetaryComputerProClientImpl.
      */
     @Generated
-    private PlanetaryComputerClientImpl buildInnerClient() {
+    private PlanetaryComputerProClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         PlanetaryComputerServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : PlanetaryComputerServiceVersion.getLatest();
-        PlanetaryComputerClientImpl client = new PlanetaryComputerClientImpl(localPipeline,
+        PlanetaryComputerProClientImpl client = new PlanetaryComputerProClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
@@ -320,13 +320,13 @@ public final class PlanetaryComputerClientBuilder
     }
 
     /**
-     * Builds an instance of IngestionManagementAsyncClient class.
+     * Builds an instance of IngestionAsyncClient class.
      * 
-     * @return an instance of IngestionManagementAsyncClient.
+     * @return an instance of IngestionAsyncClient.
      */
     @Generated
-    public IngestionManagementAsyncClient buildIngestionManagementAsyncClient() {
-        return new IngestionManagementAsyncClient(buildInnerClient().getIngestionManagements());
+    public IngestionAsyncClient buildIngestionAsyncClient() {
+        return new IngestionAsyncClient(buildInnerClient().getIngestions());
     }
 
     /**
@@ -340,13 +340,13 @@ public final class PlanetaryComputerClientBuilder
     }
 
     /**
-     * Builds an instance of TilerAsyncClient class.
+     * Builds an instance of DataAsyncClient class.
      * 
-     * @return an instance of TilerAsyncClient.
+     * @return an instance of DataAsyncClient.
      */
     @Generated
-    public TilerAsyncClient buildTilerAsyncClient() {
-        return new TilerAsyncClient(buildInnerClient().getTilers());
+    public DataAsyncClient buildDataAsyncClient() {
+        return new DataAsyncClient(buildInnerClient().getDatas());
     }
 
     /**
@@ -360,13 +360,13 @@ public final class PlanetaryComputerClientBuilder
     }
 
     /**
-     * Builds an instance of IngestionManagementClient class.
+     * Builds an instance of IngestionClient class.
      * 
-     * @return an instance of IngestionManagementClient.
+     * @return an instance of IngestionClient.
      */
     @Generated
-    public IngestionManagementClient buildIngestionManagementClient() {
-        return new IngestionManagementClient(buildInnerClient().getIngestionManagements());
+    public IngestionClient buildIngestionClient() {
+        return new IngestionClient(buildInnerClient().getIngestions());
     }
 
     /**
@@ -380,13 +380,13 @@ public final class PlanetaryComputerClientBuilder
     }
 
     /**
-     * Builds an instance of TilerClient class.
+     * Builds an instance of DataClient class.
      * 
-     * @return an instance of TilerClient.
+     * @return an instance of DataClient.
      */
     @Generated
-    public TilerClient buildTilerClient() {
-        return new TilerClient(buildInnerClient().getTilers());
+    public DataClient buildDataClient() {
+        return new DataClient(buildInnerClient().getDatas());
     }
 
     /**
@@ -399,5 +399,5 @@ public final class PlanetaryComputerClientBuilder
         return new SharedAccessSignatureClient(buildInnerClient().getSharedAccessSignatures());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(PlanetaryComputerClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PlanetaryComputerProClientBuilder.class);
 }

@@ -4,8 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.ManagedIdentityMetadata;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
@@ -13,12 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionSourcesListManagedIdentities {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-list-managed-identities.ingestion-sources-list-managed-identities
-        PagedIterable<ManagedIdentityMetadata> response = ingestionManagementClient.listManagedIdentities();
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-list-managed-identities.ingestion-sources-list-managed-identities
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-list-managed-identities.ingestion-sources-list-managed-identities
+        PagedIterable<ManagedIdentityMetadata> response = ingestionClient.listManagedIdentities();
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-list-managed-identities.ingestion-sources-list-managed-identities
     }
 }

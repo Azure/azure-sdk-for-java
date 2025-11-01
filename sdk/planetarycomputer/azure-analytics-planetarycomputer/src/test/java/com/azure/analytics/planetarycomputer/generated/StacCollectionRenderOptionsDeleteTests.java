@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionRenderOptionsDeleteTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionRenderOptionsDeleteTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionRenderOptionsDeleteTests() {
         // method invocation
-        stacClient.deleteRenderOption("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", "a1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        stacClient.deleteRenderOption("naip-atl", "test-natural-color");
     }
 }

@@ -12,15 +12,16 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerPreviewsGetTests extends PlanetaryComputerClientTestBase {
+public final class TilerPreviewsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerPreviewsGetTests() {
         // method invocation
-        BinaryData response = tilerClient.getPreview("ESP-collection", "18S-2022",
-            new GetPreviewOptions().setAssets(Arrays.asList("data"))
-                .setAssetBandIndices(Arrays.asList("image|1,2,3"))
-                .setMaxSize(400),
+        BinaryData response = dataClient.getPreview("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            new GetPreviewOptions().setAssets(Arrays.asList("image"))
+                .setAssetBandIndices("image|1,2,3")
+                .setHeight(512)
+                .setWidth(512),
             null);
 
         // response assertion

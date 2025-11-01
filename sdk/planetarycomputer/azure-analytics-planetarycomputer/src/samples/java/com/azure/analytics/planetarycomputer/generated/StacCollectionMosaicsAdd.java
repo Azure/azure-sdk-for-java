@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacMosaic;
 import com.azure.core.util.Configuration;
@@ -14,13 +14,12 @@ import java.util.Arrays;
 public class StacCollectionMosaicsAdd {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-add-mosaic.stac-collection-mosaics-add
-        StacMosaic response = stacClient.addMosaic("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new StacMosaic("mos1", "Most recent available", Arrays.asList())
-                .setDescription("Most recent available imagery in this collection"));
+        StacMosaic response = stacClient.addMosaic("naip-atl",
+            new StacMosaic("test-mosaic-1", "Test Most recent available", Arrays.asList()));
         // END:com.azure.analytics.planetarycomputer.generated.stac-add-mosaic.stac-collection-mosaics-add
     }
 }

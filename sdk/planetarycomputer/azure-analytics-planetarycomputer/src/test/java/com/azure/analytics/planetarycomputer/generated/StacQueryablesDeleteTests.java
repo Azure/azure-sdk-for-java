@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacQueryablesDeleteTests extends PlanetaryComputerClientTestBase {
+public final class StacQueryablesDeleteTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacQueryablesDeleteTests() {
         // method invocation
-        stacClient.deleteQueryable("36fcb8da-9b15-49e0-b400-0d2e751e2061", "queryableName");
+        stacClient.deleteQueryable("naip-atl", "test%3Aproperty");
     }
 }

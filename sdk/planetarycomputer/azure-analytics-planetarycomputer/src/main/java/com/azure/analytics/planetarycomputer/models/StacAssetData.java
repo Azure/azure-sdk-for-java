@@ -11,7 +11,7 @@ import com.azure.core.annotation.Immutable;
  * FormContent model for file upload.
  */
 @Immutable
-public final class FormContent {
+public final class StacAssetData {
     /*
      * Asset metadata
      */
@@ -25,13 +25,13 @@ public final class FormContent {
     private final FileDetails file;
 
     /**
-     * Creates an instance of FormContent class.
+     * Creates an instance of StacAssetData class.
      * 
      * @param data the data value to set.
      * @param file the file value to set.
      */
     @Generated
-    public FormContent(AssetMetadata data, FileDetails file) {
+    public StacAssetData(AssetMetadata data, FileDetails file) {
         this.data = data;
         this.file = file;
     }

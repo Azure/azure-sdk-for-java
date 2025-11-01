@@ -4,9 +4,9 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
-import com.azure.analytics.planetarycomputer.models.ImageRequest;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.ImageParameters;
 import com.azure.analytics.planetarycomputer.models.ImageResponse;
 import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.core.util.BinaryData;
@@ -19,25 +19,26 @@ import java.util.Map;
 
 public class TilerStaticImagesCreate {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-create-static-image.tiler-static-images-create
-        ImageResponse response = tilerClient.createStaticImage("collectionId-23",
-            new ImageRequest(
-                mapOf("filter-lang", BinaryData.fromBytes("cql2-json".getBytes(StandardCharsets.UTF_8)), "filter",
-                    BinaryData.fromBytes("{op=and, args=[{op==, args=[{property=collection}, naip]}]}"
-                        .getBytes(StandardCharsets.UTF_8))),
-                "assets=image&asset_bidx=image|1,2,3&collection=naip", 242, 1080)
-                    .setGeometry(new Polygon().setCoordinates(
-                        Arrays.asList(Arrays.asList(Arrays.asList(-79.09062791441062, 43.08554661560049),
-                            Arrays.asList(-79.0629876337021, 43.08554661560049),
-                            Arrays.asList(-79.0629876337021, 43.067969831431895),
-                            Arrays.asList(-79.09062791441062, 43.067969831431895),
-                            Arrays.asList(-79.09062791441062, 43.08554661560049)))))
-                    .setShowBranding(true));
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-create-static-image.tiler-static-images-create
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-create-static-image.tiler-static-images-create
+        ImageResponse response = dataClient.createStaticImage("naip-atl", new ImageParameters(
+            mapOf("op", BinaryData.fromBytes("and".getBytes(StandardCharsets.UTF_8)), "args", BinaryData.fromBytes(
+                "[{op==, args=[{property=collection}, naip-atl]}, {op=anyinteracts, args=[{property=datetime}, {interval=[2023-01-01T00:00:00Z, 2023-12-31T00:00:00Z]}]}]"
+                    .getBytes(StandardCharsets.UTF_8))),
+            "assets=image&asset_bidx=image|1,2,3&collection=naip-atl", 1080, 1080)
+                .setZoom(13.0D)
+                .setGeometry(new Polygon()
+                    .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.45378097481053, 33.6567321707079),
+                        Arrays.asList(-84.39805886744838, 33.6567321707079),
+                        Arrays.asList(-84.39805886744838, 33.61945681366625),
+                        Arrays.asList(-84.45378097481053, 33.61945681366625),
+                        Arrays.asList(-84.45378097481053, 33.6567321707079)))))
+                .setShowBranding(false)
+                .setImageSize("1080x1080"));
+        // END:com.azure.analytics.planetarycomputer.generated.data-create-static-image.tiler-static-images-create
     }
 
     // Use "Map.of" if available

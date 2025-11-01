@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TileMatrixListGetTests extends PlanetaryComputerClientTestBase {
+public final class TileMatrixListGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTileMatrixListGetTests() {
         // method invocation
-        List<String> response = tilerClient.listTileMatrices();
+        List<String> response = dataClient.listTileMatrices();
     }
 }

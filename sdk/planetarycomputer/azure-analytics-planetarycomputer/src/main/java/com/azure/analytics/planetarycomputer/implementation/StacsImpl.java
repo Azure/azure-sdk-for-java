@@ -53,14 +53,14 @@ public final class StacsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PlanetaryComputerClientImpl client;
+    private final PlanetaryComputerProClientImpl client;
 
     /**
      * Initializes an instance of StacsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StacsImpl(PlanetaryComputerClientImpl client) {
+    StacsImpl(PlanetaryComputerProClientImpl client) {
         this.service = RestProxy.create(StacsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -75,15 +75,15 @@ public final class StacsImpl {
     }
 
     /**
-     * The interface defining all the services for PlanetaryComputerClientStacs to be used by the proxy service to
+     * The interface defining all the services for PlanetaryComputerProClientStacs to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlanetaryComputerClientStacs")
+    @ServiceInterface(name = "PlanetaryComputerProClientStacs")
     public interface StacsService {
         // @Multipart not supported by RestProxy
         @Post("/stac/collections/{collectionId}/assets")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -95,7 +95,7 @@ public final class StacsImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/stac/collections/{collectionId}/assets")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -107,12 +107,12 @@ public final class StacsImpl {
 
         // @Multipart not supported by RestProxy
         @Put("/stac/collections/{collectionId}/assets/{assetId}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceCollectionAsset(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceCollectionAsset(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("assetId") String assetId, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
@@ -120,12 +120,12 @@ public final class StacsImpl {
 
         // @Multipart not supported by RestProxy
         @Put("/stac/collections/{collectionId}/assets/{assetId}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceCollectionAssetSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceCollectionAssetSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("assetId") String assetId, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
@@ -137,9 +137,10 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteCollectionAsset(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deleteCollectionAsset(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
-            @PathParam("assetId") String assetId, RequestOptions requestOptions, Context context);
+            @PathParam("assetId") String assetId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/stac/collections/{collectionId}/assets/{assetId}")
         @ExpectedResponses({ 200 })
@@ -147,9 +148,10 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteCollectionAssetSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deleteCollectionAssetSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
-            @PathParam("assetId") String assetId, RequestOptions requestOptions, Context context);
+            @PathParam("assetId") String assetId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/stac/collections/{collectionId}/configurations")
         @ExpectedResponses({ 200 })
@@ -172,7 +174,7 @@ public final class StacsImpl {
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/stac/collections/{collectionId}/configurations/mosaics")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -183,7 +185,7 @@ public final class StacsImpl {
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/stac/collections/{collectionId}/configurations/mosaics")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -194,24 +196,24 @@ public final class StacsImpl {
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/configurations/mosaics/{mosaicId}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceMosaic(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceMosaic(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("mosaicId") String mosaicId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/configurations/mosaics/{mosaicId}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceMosaicSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceMosaicSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("mosaicId") String mosaicId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -404,8 +406,9 @@ public final class StacsImpl {
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/configurations/partition-type")
-        @ExpectedResponses({ 200, 404 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> replacePartitionType(@HostParam("endpoint") String endpoint,
@@ -414,8 +417,9 @@ public final class StacsImpl {
             RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/configurations/partition-type")
-        @ExpectedResponses({ 200, 404 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> replacePartitionTypeSync(@HostParam("endpoint") String endpoint,
@@ -424,7 +428,7 @@ public final class StacsImpl {
             RequestOptions requestOptions, Context context);
 
         @Post("/stac/collections/{collectionId}/configurations/render-options")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -435,7 +439,7 @@ public final class StacsImpl {
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/stac/collections/{collectionId}/configurations/render-options")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -446,24 +450,24 @@ public final class StacsImpl {
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/configurations/render-options/{renderOptionId}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceRenderOption(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceRenderOption(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("renderOptionId") String renderOptionId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/configurations/render-options/{renderOptionId}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceRenderOptionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceRenderOptionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("renderOptionId") String renderOptionId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -613,6 +617,26 @@ public final class StacsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
+        @Get("/stac")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getLandingPage(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/stac")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLandingPageSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Post("/stac/collections/{collectionId}/items")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -709,7 +733,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listItems(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getItemCollection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -719,7 +743,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listItemsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getItemCollectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -747,26 +771,6 @@ public final class StacsImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Get("/stac")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getStacLandingPage(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/stac")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getStacLandingPageSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
         @Post("/stac/collections/{collectionId}/queryables")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -790,24 +794,24 @@ public final class StacsImpl {
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/queryables/{queryableName}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceQueryable(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceQueryable(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("queryableName") String queryableName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/stac/collections/{collectionId}/queryables/{queryableName}")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceQueryableSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceQueryableSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("queryableName") String queryableName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -859,7 +863,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCollectionQueryables(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionQueryables(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -869,7 +873,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCollectionQueryablesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionQueryablesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -968,6 +972,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -992,6 +1022,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -1091,6 +1124,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -1115,6 +1174,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -1213,6 +1275,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -1239,6 +1327,9 @@ public final class StacsImpl {
      *     summaries (Optional): {
      *         String: BinaryData (Required)
      *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -1256,11 +1347,11 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceCollectionAssetWithResponseAsync(String collectionId,
-        String assetId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> replaceCollectionAssetWithResponseAsync(String collectionId, String assetId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceCollectionAsset(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.replaceCollectionAsset(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, assetId, contentType, accept, body,
             requestOptions, context));
     }
@@ -1336,6 +1427,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -1362,6 +1479,9 @@ public final class StacsImpl {
      *     summaries (Optional): {
      *         String: BinaryData (Required)
      *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -1379,11 +1499,11 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceCollectionAssetWithResponse(String collectionId, String assetId,
-        BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> replaceCollectionAssetWithResponse(String collectionId, String assetId, BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.createOrReplaceCollectionAssetSync(this.client.getEndpoint(),
+        return service.replaceCollectionAssetSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, assetId, contentType, accept, body,
             requestOptions, Context.NONE);
     }
@@ -1392,6 +1512,131 @@ public final class StacsImpl {
      * Delete Collection Asset
      * 
      * Delete an asset from a given collection.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     msft:_created: String (Optional)
+     *     msft:_updated: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     stac_extensions (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Required)
+     *     description: String (Required)
+     *     stac_version: String (Optional)
+     *     links (Required): [
+     *          (Required){
+     *             rel: String (Optional)
+     *             title: String (Optional)
+     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
+     *             href: String (Optional, Required on create)
+     *             hreflang: String (Optional)
+     *             length: Integer (Optional)
+     *             method: String(GET/POST) (Optional)
+     *             headers (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             body (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             merge: Boolean (Optional)
+     *         }
+     *     ]
+     *     title: String (Optional)
+     *     type: String (Optional)
+     *     assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional, Required on create)
+     *                     description: String (Optional)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     url: String (Optional)
+     *                 }
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Optional)
+     *             description: String (Optional)
+     *             href: String (Optional, Required on create)
+     *             type: String (Optional)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
+     *     license: String (Required)
+     *     extent (Required): {
+     *         spatial (Required): {
+     *             bbox (Optional): [
+     *                  (Optional)[
+     *                     double (Optional)
+     *                 ]
+     *             ]
+     *         }
+     *         temporal (Required): {
+     *             interval (Required): [
+     *                  (Required)[
+     *                     OffsetDateTime (Required)
+     *                 ]
+     *             ]
+     *         }
+     *     }
+     *     keywords (Optional): [
+     *         String (Optional)
+     *     ]
+     *     providers (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      * 
      * @param collectionId STAC Collection ID.
      * @param assetId STAC Asset ID.
@@ -1400,19 +1645,147 @@ public final class StacsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md
+     * 
+     * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCollectionAssetWithResponseAsync(String collectionId, String assetId,
+    public Mono<Response<BinaryData>> deleteCollectionAssetWithResponseAsync(String collectionId, String assetId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteCollectionAsset(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, assetId, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), collectionId, assetId, accept, requestOptions, context));
     }
 
     /**
      * Delete Collection Asset
      * 
      * Delete an asset from a given collection.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     msft:_created: String (Optional)
+     *     msft:_updated: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     stac_extensions (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Required)
+     *     description: String (Required)
+     *     stac_version: String (Optional)
+     *     links (Required): [
+     *          (Required){
+     *             rel: String (Optional)
+     *             title: String (Optional)
+     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
+     *             href: String (Optional, Required on create)
+     *             hreflang: String (Optional)
+     *             length: Integer (Optional)
+     *             method: String(GET/POST) (Optional)
+     *             headers (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             body (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             merge: Boolean (Optional)
+     *         }
+     *     ]
+     *     title: String (Optional)
+     *     type: String (Optional)
+     *     assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional, Required on create)
+     *                     description: String (Optional)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     url: String (Optional)
+     *                 }
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Optional)
+     *             description: String (Optional)
+     *             href: String (Optional, Required on create)
+     *             type: String (Optional)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
+     *     license: String (Required)
+     *     extent (Required): {
+     *         spatial (Required): {
+     *             bbox (Optional): [
+     *                  (Optional)[
+     *                     double (Optional)
+     *                 ]
+     *             ]
+     *         }
+     *         temporal (Required): {
+     *             interval (Required): [
+     *                  (Required)[
+     *                     OffsetDateTime (Required)
+     *                 ]
+     *             ]
+     *         }
+     *     }
+     *     keywords (Optional): [
+     *         String (Optional)
+     *     ]
+     *     providers (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      * 
      * @param collectionId STAC Collection ID.
      * @param assetId STAC Asset ID.
@@ -1421,13 +1794,16 @@ public final class StacsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md
+     * 
+     * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCollectionAssetWithResponse(String collectionId, String assetId,
+    public Response<BinaryData> deleteCollectionAssetWithResponse(String collectionId, String assetId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteCollectionAssetSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, assetId, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), collectionId, assetId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1783,13 +2159,13 @@ public final class StacsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceMosaicWithResponseAsync(String collectionId, String mosaicId,
+    public Mono<Response<BinaryData>> replaceMosaicWithResponseAsync(String collectionId, String mosaicId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceMosaic(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, mosaicId, contentType, accept, body,
-            requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.replaceMosaic(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                collectionId, mosaicId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1841,13 +2217,12 @@ public final class StacsImpl {
      * @return defines a named mosaic with filtering criteria along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceMosaicWithResponse(String collectionId, String mosaicId, BinaryData body,
+    public Response<BinaryData> replaceMosaicWithResponse(String collectionId, String mosaicId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrReplaceMosaicSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, mosaicId, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.replaceMosaicSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            collectionId, mosaicId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2125,6 +2500,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -2149,6 +2550,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -2179,7 +2583,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -2274,6 +2680,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -2298,6 +2730,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -2328,7 +2763,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -2421,6 +2858,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -2445,6 +2908,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -2475,7 +2941,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -2574,6 +3042,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -2598,6 +3092,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -2628,7 +3125,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -2726,6 +3225,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -2750,6 +3275,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -2780,7 +3308,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -2879,6 +3409,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -2903,6 +3459,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -2933,7 +3492,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -3031,6 +3592,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -3057,6 +3644,9 @@ public final class StacsImpl {
      *     summaries (Optional): {
      *         String: BinaryData (Required)
      *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -3066,26 +3656,122 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
+     *     msft:_created: String (Optional)
+     *     msft:_updated: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     stac_extensions (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Required)
-     *     status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *     type: String (Required)
-     *     creationTime: OffsetDateTime (Required)
-     *     collectionId: String (Optional)
-     *     statusHistory (Required): [
+     *     description: String (Required)
+     *     stac_version: String (Optional)
+     *     links (Required): [
      *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *             errorCode: String (Optional)
-     *             errorMessage: String (Optional)
+     *             rel: String (Optional)
+     *             title: String (Optional)
+     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
+     *             href: String (Optional, Required on create)
+     *             hreflang: String (Optional)
+     *             length: Integer (Optional)
+     *             method: String(GET/POST) (Optional)
+     *             headers (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             body (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     startTime: OffsetDateTime (Optional)
-     *     finishTime: OffsetDateTime (Optional)
-     *     additionalInformation (Optional): {
-     *         String: String (Required)
+     *     title: String (Optional)
+     *     type: String (Optional)
+     *     assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional, Required on create)
+     *                     description: String (Optional)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     url: String (Optional)
+     *                 }
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Optional)
+     *             description: String (Optional)
+     *             href: String (Optional, Required on create)
+     *             type: String (Optional)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
-     *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
+     *     license: String (Required)
+     *     extent (Required): {
+     *         spatial (Required): {
+     *             bbox (Optional): [
+     *                  (Optional)[
+     *                     double (Optional)
+     *                 ]
+     *             ]
+     *         }
+     *         temporal (Required): {
+     *             interval (Required): [
+     *                  (Required)[
+     *                     OffsetDateTime (Required)
+     *                 ]
+     *             ]
+     *         }
+     *     }
+     *     keywords (Optional): [
+     *         String (Optional)
+     *     ]
+     *     providers (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3098,11 +3784,12 @@ public final class StacsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return microsoft Planetary Computer Pro geo-catalog operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md
+     * 
+     * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createOrReplaceCollectionWithResponseAsync(String collectionId, BinaryData body,
+    public Mono<Response<BinaryData>> createOrReplaceCollectionWithResponseAsync(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -3182,6 +3869,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -3208,6 +3921,9 @@ public final class StacsImpl {
      *     summaries (Optional): {
      *         String: BinaryData (Required)
      *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -3217,26 +3933,122 @@ public final class StacsImpl {
      * <pre>
      * {@code
      * {
+     *     msft:_created: String (Optional)
+     *     msft:_updated: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     stac_extensions (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Required)
-     *     status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *     type: String (Required)
-     *     creationTime: OffsetDateTime (Required)
-     *     collectionId: String (Optional)
-     *     statusHistory (Required): [
+     *     description: String (Required)
+     *     stac_version: String (Optional)
+     *     links (Required): [
      *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *             errorCode: String (Optional)
-     *             errorMessage: String (Optional)
+     *             rel: String (Optional)
+     *             title: String (Optional)
+     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
+     *             href: String (Optional, Required on create)
+     *             hreflang: String (Optional)
+     *             length: Integer (Optional)
+     *             method: String(GET/POST) (Optional)
+     *             headers (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             body (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             merge: Boolean (Optional)
      *         }
      *     ]
-     *     startTime: OffsetDateTime (Optional)
-     *     finishTime: OffsetDateTime (Optional)
-     *     additionalInformation (Optional): {
-     *         String: String (Required)
+     *     title: String (Optional)
+     *     type: String (Optional)
+     *     assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional, Required on create)
+     *                     description: String (Optional)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     url: String (Optional)
+     *                 }
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Optional)
+     *             description: String (Optional)
+     *             href: String (Optional, Required on create)
+     *             type: String (Optional)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
      *     }
-     *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
+     *     license: String (Required)
+     *     extent (Required): {
+     *         spatial (Required): {
+     *             bbox (Optional): [
+     *                  (Optional)[
+     *                     double (Optional)
+     *                 ]
+     *             ]
+     *         }
+     *         temporal (Required): {
+     *             interval (Required): [
+     *                  (Required)[
+     *                     OffsetDateTime (Required)
+     *                 ]
+     *             ]
+     *         }
+     *     }
+     *     keywords (Optional): [
+     *         String (Optional)
+     *     ]
+     *     providers (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3249,632 +4061,18 @@ public final class StacsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return microsoft Planetary Computer Pro geo-catalog operation along with {@link Response}.
+     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md
+     * 
+     * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createOrReplaceCollectionWithResponse(String collectionId, BinaryData body,
+    public Response<BinaryData> createOrReplaceCollectionWithResponse(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceCollectionSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, contentType, accept, body, requestOptions,
             Context.NONE);
-    }
-
-    /**
-     * Create or update Collection
-     * 
-     * Create or replace a collection in the GeoCatalog instance.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Required)
-     *     description: String (Required)
-     *     stac_version: String (Optional)
-     *     links (Required): [
-     *          (Required){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     title: String (Optional)
-     *     type: String (Optional)
-     *     assets (Optional): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional, Required on create)
-     *                     description: String (Optional)
-     *                     roles (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     url: String (Optional)
-     *                 }
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     license: String (Required)
-     *     extent (Required): {
-     *         spatial (Required): {
-     *             bbox (Optional): [
-     *                  (Optional)[
-     *                     double (Optional)
-     *                 ]
-     *             ]
-     *         }
-     *         temporal (Required): {
-     *             interval (Required): [
-     *                  (Required)[
-     *                     OffsetDateTime (Required)
-     *                 ]
-     *             ]
-     *         }
-     *     }
-     *     keywords (Optional): [
-     *         String (Optional)
-     *     ]
-     *     providers (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     summaries (Optional): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *     type: String (Required)
-     *     creationTime: OffsetDateTime (Required)
-     *     collectionId: String (Optional)
-     *     statusHistory (Required): [
-     *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *             errorCode: String (Optional)
-     *             errorMessage: String (Optional)
-     *         }
-     *     ]
-     *     startTime: OffsetDateTime (Optional)
-     *     finishTime: OffsetDateTime (Optional)
-     *     additionalInformation (Optional): {
-     *         String: String (Required)
-     *     }
-     *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param collectionId Catalog collection id.
-     * @param body Request collection body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of microsoft Planetary Computer Pro geo-catalog operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Operation, Void> beginCreateOrReplaceCollectionWithModelAsync(String collectionId,
-        BinaryData body, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createOrReplaceCollectionWithResponseAsync(collectionId, body, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
-            TypeReference.createInstance(Operation.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Create or update Collection
-     * 
-     * Create or replace a collection in the GeoCatalog instance.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Required)
-     *     description: String (Required)
-     *     stac_version: String (Optional)
-     *     links (Required): [
-     *          (Required){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     title: String (Optional)
-     *     type: String (Optional)
-     *     assets (Optional): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional, Required on create)
-     *                     description: String (Optional)
-     *                     roles (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     url: String (Optional)
-     *                 }
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     license: String (Required)
-     *     extent (Required): {
-     *         spatial (Required): {
-     *             bbox (Optional): [
-     *                  (Optional)[
-     *                     double (Optional)
-     *                 ]
-     *             ]
-     *         }
-     *         temporal (Required): {
-     *             interval (Required): [
-     *                  (Required)[
-     *                     OffsetDateTime (Required)
-     *                 ]
-     *             ]
-     *         }
-     *     }
-     *     keywords (Optional): [
-     *         String (Optional)
-     *     ]
-     *     providers (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     summaries (Optional): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *     type: String (Required)
-     *     creationTime: OffsetDateTime (Required)
-     *     collectionId: String (Optional)
-     *     statusHistory (Required): [
-     *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *             errorCode: String (Optional)
-     *             errorMessage: String (Optional)
-     *         }
-     *     ]
-     *     startTime: OffsetDateTime (Optional)
-     *     finishTime: OffsetDateTime (Optional)
-     *     additionalInformation (Optional): {
-     *         String: String (Required)
-     *     }
-     *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param collectionId Catalog collection id.
-     * @param body Request collection body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of microsoft Planetary Computer Pro geo-catalog operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Operation, Void> beginCreateOrReplaceCollectionWithModel(String collectionId, BinaryData body,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createOrReplaceCollectionWithResponse(collectionId, body, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
-            TypeReference.createInstance(Operation.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Create or update Collection
-     * 
-     * Create or replace a collection in the GeoCatalog instance.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Required)
-     *     description: String (Required)
-     *     stac_version: String (Optional)
-     *     links (Required): [
-     *          (Required){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     title: String (Optional)
-     *     type: String (Optional)
-     *     assets (Optional): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional, Required on create)
-     *                     description: String (Optional)
-     *                     roles (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     url: String (Optional)
-     *                 }
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     license: String (Required)
-     *     extent (Required): {
-     *         spatial (Required): {
-     *             bbox (Optional): [
-     *                  (Optional)[
-     *                     double (Optional)
-     *                 ]
-     *             ]
-     *         }
-     *         temporal (Required): {
-     *             interval (Required): [
-     *                  (Required)[
-     *                     OffsetDateTime (Required)
-     *                 ]
-     *             ]
-     *         }
-     *     }
-     *     keywords (Optional): [
-     *         String (Optional)
-     *     ]
-     *     providers (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     summaries (Optional): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *     type: String (Required)
-     *     creationTime: OffsetDateTime (Required)
-     *     collectionId: String (Optional)
-     *     statusHistory (Required): [
-     *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *             errorCode: String (Optional)
-     *             errorMessage: String (Optional)
-     *         }
-     *     ]
-     *     startTime: OffsetDateTime (Optional)
-     *     finishTime: OffsetDateTime (Optional)
-     *     additionalInformation (Optional): {
-     *         String: String (Required)
-     *     }
-     *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param collectionId Catalog collection id.
-     * @param body Request collection body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of microsoft Planetary Computer Pro geo-catalog operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceCollectionAsync(String collectionId, BinaryData body,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createOrReplaceCollectionWithResponseAsync(collectionId, body, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Create or update Collection
-     * 
-     * Create or replace a collection in the GeoCatalog instance.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Required)
-     *     description: String (Required)
-     *     stac_version: String (Optional)
-     *     links (Required): [
-     *          (Required){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     title: String (Optional)
-     *     type: String (Optional)
-     *     assets (Optional): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional, Required on create)
-     *                     description: String (Optional)
-     *                     roles (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     url: String (Optional)
-     *                 }
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     license: String (Required)
-     *     extent (Required): {
-     *         spatial (Required): {
-     *             bbox (Optional): [
-     *                  (Optional)[
-     *                     double (Optional)
-     *                 ]
-     *             ]
-     *         }
-     *         temporal (Required): {
-     *             interval (Required): [
-     *                  (Required)[
-     *                     OffsetDateTime (Required)
-     *                 ]
-     *             ]
-     *         }
-     *     }
-     *     keywords (Optional): [
-     *         String (Optional)
-     *     ]
-     *     providers (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     summaries (Optional): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *     type: String (Required)
-     *     creationTime: OffsetDateTime (Required)
-     *     collectionId: String (Optional)
-     *     statusHistory (Required): [
-     *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             status: String(Pending/Running/Succeeded/Canceled/Canceling/Failed) (Required)
-     *             errorCode: String (Optional)
-     *             errorMessage: String (Optional)
-     *         }
-     *     ]
-     *     startTime: OffsetDateTime (Optional)
-     *     finishTime: OffsetDateTime (Optional)
-     *     additionalInformation (Optional): {
-     *         String: String (Required)
-     *     }
-     *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param collectionId Catalog collection id.
-     * @param body Request collection body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of microsoft Planetary Computer Pro geo-catalog operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceCollection(String collectionId, BinaryData body,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createOrReplaceCollectionWithResponse(collectionId, body, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -3905,7 +4103,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -3956,7 +4156,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -4005,7 +4207,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -4061,7 +4265,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -4117,7 +4323,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -4172,7 +4380,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -4279,6 +4489,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -4303,6 +4539,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -4407,6 +4646,32 @@ public final class StacsImpl {
      *             }
      *         }
      *     }
+     *     item_assets (Optional): {
+     *         String (Required): {
+     *             platform: String (Optional)
+     *             instruments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             constellation: String (Optional)
+     *             mission: String (Optional)
+     *             providers (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             gsd: Double (Optional)
+     *             created: OffsetDateTime (Optional)
+     *             updated: OffsetDateTime (Optional)
+     *             title: String (Required)
+     *             description: String (Optional)
+     *             href: String (Optional)
+     *             type: String (Required)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *              (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *         }
+     *     }
      *     license: String (Required)
      *     extent (Required): {
      *         spatial (Required): {
@@ -4431,6 +4696,9 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
+     *         String: BinaryData (Required)
+     *     }
+     *      (Optional): {
      *         String: BinaryData (Required)
      *     }
      * }
@@ -4539,6 +4807,32 @@ public final class StacsImpl {
      *                     }
      *                 }
      *             }
+     *             item_assets (Optional): {
+     *                 String (Required): {
+     *                     platform: String (Optional)
+     *                     instruments (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     constellation: String (Optional)
+     *                     mission: String (Optional)
+     *                     providers (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     gsd: Double (Optional)
+     *                     created: OffsetDateTime (Optional)
+     *                     updated: OffsetDateTime (Optional)
+     *                     title: String (Required)
+     *                     description: String (Optional)
+     *                     href: String (Optional)
+     *                     type: String (Required)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                      (Optional): {
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 }
+     *             }
      *             license: String (Required)
      *             extent (Required): {
      *                 spatial (Required): {
@@ -4563,6 +4857,9 @@ public final class StacsImpl {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *              (Optional): {
      *                 String: BinaryData (Required)
      *             }
      *         }
@@ -4673,6 +4970,32 @@ public final class StacsImpl {
      *                     }
      *                 }
      *             }
+     *             item_assets (Optional): {
+     *                 String (Required): {
+     *                     platform: String (Optional)
+     *                     instruments (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     constellation: String (Optional)
+     *                     mission: String (Optional)
+     *                     providers (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     gsd: Double (Optional)
+     *                     created: OffsetDateTime (Optional)
+     *                     updated: OffsetDateTime (Optional)
+     *                     title: String (Required)
+     *                     description: String (Optional)
+     *                     href: String (Optional)
+     *                     type: String (Required)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                      (Optional): {
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 }
+     *             }
      *             license: String (Required)
      *             extent (Required): {
      *                 spatial (Required): {
@@ -4697,6 +5020,9 @@ public final class StacsImpl {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *              (Optional): {
      *                 String: BinaryData (Required)
      *             }
      *         }
@@ -4810,6 +5136,7 @@ public final class StacsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4846,6 +5173,7 @@ public final class StacsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
@@ -5159,11 +5487,11 @@ public final class StacsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceRenderOptionWithResponseAsync(String collectionId,
-        String renderOptionId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> replaceRenderOptionWithResponseAsync(String collectionId, String renderOptionId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceRenderOption(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.replaceRenderOption(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, renderOptionId, contentType, accept, body,
             requestOptions, context));
     }
@@ -5263,13 +5591,12 @@ public final class StacsImpl {
      * @return defines visualization parameters for rendering data on a map along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceRenderOptionWithResponse(String collectionId, String renderOptionId,
+    public Response<BinaryData> replaceRenderOptionWithResponse(String collectionId, String renderOptionId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrReplaceRenderOptionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, renderOptionId, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.replaceRenderOptionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            collectionId, renderOptionId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5887,6 +6214,129 @@ public final class StacsImpl {
     }
 
     /**
+     * Landing Page
+     * 
+     * Return the STAC landing page.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     msft:_created: String (Optional)
+     *     msft:_updated: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     stac_extensions (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Required)
+     *     description: String (Required)
+     *     title: String (Optional)
+     *     stac_version: String (Optional)
+     *     conformsTo (Required): [
+     *         String (Required)
+     *     ]
+     *     links (Required): [
+     *          (Required){
+     *             rel: String (Optional)
+     *             title: String (Optional)
+     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
+     *             href: String (Optional, Required on create)
+     *             hreflang: String (Optional)
+     *             length: Integer (Optional)
+     *             method: String(GET/POST) (Optional)
+     *             headers (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             body (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             merge: Boolean (Optional)
+     *         }
+     *     ]
+     *     type: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return https://github.com/radiantearth/stac-api-spec/blob/master/api-spec.md#ogc-api---features-endpoints
+     * 
+     * Represents the STAC API landing page with links to available resources along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLandingPageWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getLandingPage(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Landing Page
+     * 
+     * Return the STAC landing page.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     msft:_created: String (Optional)
+     *     msft:_updated: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     stac_extensions (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Required)
+     *     description: String (Required)
+     *     title: String (Optional)
+     *     stac_version: String (Optional)
+     *     conformsTo (Required): [
+     *         String (Required)
+     *     ]
+     *     links (Required): [
+     *          (Required){
+     *             rel: String (Optional)
+     *             title: String (Optional)
+     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
+     *             href: String (Optional, Required on create)
+     *             hreflang: String (Optional)
+     *             length: Integer (Optional)
+     *             method: String(GET/POST) (Optional)
+     *             headers (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             body (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             merge: Boolean (Optional)
+     *         }
+     *     ]
+     *     type: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return https://github.com/radiantearth/stac-api-spec/blob/master/api-spec.md#ogc-api---features-endpoints
+     * 
+     * Represents the STAC API landing page with links to available resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLandingPageWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getLandingPageSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Create a new STAC item or a set of items in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -5947,7 +6397,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6045,7 +6497,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6141,7 +6595,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6242,7 +6698,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6343,7 +6801,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6444,7 +6904,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6613,7 +7075,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6769,7 +7233,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -6923,7 +7389,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7082,7 +7550,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7241,7 +7711,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7400,7 +7872,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7456,7 +7930,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7506,7 +7982,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7555,7 +8033,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7610,7 +8090,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7665,7 +8147,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -7720,7 +8204,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -8195,9 +8681,10 @@ public final class StacsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listItemsWithResponseAsync(String collectionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getItemCollectionWithResponseAsync(String collectionId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listItems(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getItemCollection(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, context));
     }
 
@@ -8402,9 +8889,9 @@ public final class StacsImpl {
      * Represents a collection of STAC Items as a GeoJSON FeatureCollection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listItemsWithResponse(String collectionId, RequestOptions requestOptions) {
+    public Response<BinaryData> getItemCollectionWithResponse(String collectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listItemsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getItemCollectionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, accept, requestOptions, Context.NONE);
     }
 
@@ -8537,7 +9024,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -8692,7 +9181,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -8847,7 +9338,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -9006,7 +9499,9 @@ public final class StacsImpl {
      *         String: String (Required)
      *     }
      *     error (Optional): {
-     *         error (Required): (recursive schema, see error above)
+     *         error (Required): {
+     *             error (Required): (recursive schema, see error above)
+     *         }
      *     }
      * }
      * }
@@ -9034,129 +9529,6 @@ public final class StacsImpl {
                     : Context.NONE)
                 .setServiceVersion(this.client.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Landing Page
-     * 
-     * Return the STAC landing page.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Required)
-     *     description: String (Required)
-     *     title: String (Optional)
-     *     stac_version: String (Optional)
-     *     conformsTo (Required): [
-     *         String (Required)
-     *     ]
-     *     links (Required): [
-     *          (Required){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     type: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return https://github.com/radiantearth/stac-api-spec/blob/master/api-spec.md#ogc-api---features-endpoints
-     * 
-     * Represents the STAC API landing page with links to available resources along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStacLandingPageWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getStacLandingPage(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Landing Page
-     * 
-     * Return the STAC landing page.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Required)
-     *     description: String (Required)
-     *     title: String (Optional)
-     *     stac_version: String (Optional)
-     *     conformsTo (Required): [
-     *         String (Required)
-     *     ]
-     *     links (Required): [
-     *          (Required){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     type: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return https://github.com/radiantearth/stac-api-spec/blob/master/api-spec.md#ogc-api---features-endpoints
-     * 
-     * Represents the STAC API landing page with links to available resources along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStacLandingPageWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getStacLandingPageSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -9319,13 +9691,13 @@ public final class StacsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceQueryableWithResponseAsync(String collectionId,
-        String queryableName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> replaceQueryableWithResponseAsync(String collectionId, String queryableName,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceQueryable(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, queryableName, contentType, accept, body,
-            requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.replaceQueryable(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                collectionId, queryableName, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -9374,13 +9746,12 @@ public final class StacsImpl {
      * @return definition of a queryable field for STAC API filtering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceQueryableWithResponse(String collectionId, String queryableName,
-        BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> replaceQueryableWithResponse(String collectionId, String queryableName, BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrReplaceQueryableSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, queryableName, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.replaceQueryableSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            collectionId, queryableName, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -9504,10 +9875,10 @@ public final class StacsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCollectionQueryablesWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionQueryablesWithResponseAsync(String collectionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listCollectionQueryables(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionQueryables(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, context));
     }
 
@@ -9534,10 +9905,10 @@ public final class StacsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCollectionQueryablesWithResponse(String collectionId,
+    public Response<BinaryData> getCollectionQueryablesWithResponse(String collectionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listCollectionQueryablesSync(this.client.getEndpoint(),
+        return service.getCollectionQueryablesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, Context.NONE);
     }
 

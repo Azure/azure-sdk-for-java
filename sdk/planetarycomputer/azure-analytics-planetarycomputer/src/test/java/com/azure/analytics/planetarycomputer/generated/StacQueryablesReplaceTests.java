@@ -5,6 +5,7 @@
 package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.StacQueryable;
+import com.azure.analytics.planetarycomputer.models.StacQueryableDefinitionDataType;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -14,22 +15,22 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacQueryablesCreateOrReplaceTests extends PlanetaryComputerClientTestBase {
+public final class StacQueryablesReplaceTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
-    public void testStacQueryablesCreateOrReplaceTests() {
+    public void testStacQueryablesReplaceTests() {
         // method invocation
-        StacQueryable response
-            = stacClient.createOrReplaceQueryable("36fcb8da-9b15-49e0-b400-0d2e751e2061", "naip:state",
-                new StacQueryable("naip:state",
-                    mapOf("data_type", BinaryData.fromBytes("string".getBytes(StandardCharsets.UTF_8)), "description",
-                        BinaryData.fromBytes("State of the NAIP image".getBytes(StandardCharsets.UTF_8)),
-                        "create_index", BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8)))));
+        StacQueryable response = stacClient.replaceQueryable("naip-atl", "test%3Aproperty",
+            new StacQueryable("test:property",
+                mapOf("data_type", BinaryData.fromBytes("number".getBytes(StandardCharsets.UTF_8)), "description",
+                    BinaryData.fromBytes("Test property - updated".getBytes(StandardCharsets.UTF_8))))
+                        .setCreateIndex(false)
+                        .setDataType(StacQueryableDefinitionDataType.NUMBER));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "name"
-        Assertions.assertEquals("naip:state", response.getName());
+        Assertions.assertEquals("test:property", response.getName());
         // verify property "definition"
         Assertions.assertNotNull(response.getDefinition());
         // verify property "createIndex"

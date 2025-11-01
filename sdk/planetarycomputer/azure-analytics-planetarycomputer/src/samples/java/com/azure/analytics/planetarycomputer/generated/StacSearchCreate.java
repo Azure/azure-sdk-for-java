@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
@@ -18,14 +18,17 @@ import java.util.Arrays;
 public class StacSearchCreate {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-search.stac-search-create
-        StacItemCollection response = stacClient.search(new StacSearchParameters().setLimit(1)
+        StacItemCollection response = stacClient.search(new StacSearchParameters()
+            .setCollections(Arrays.asList("naip-atl"))
+            .setDatetime("2021-01-01T00:00:00Z/2022-12-31T00:00:00Z")
+            .setLimit(50)
             .setSortBy(Arrays.asList(new StacSortExtension("datetime", StacSearchSortingDirection.DESC)))
             .setFilter(
-                "{op=and, args=[{op==, args=[{property=collection}, landsat-c2-l2]}, {op=s_intersects, args=[{property=geometry}, {type=Polygon, coordinates=[[[-64.40921305524132, -46.66887954721563], [124.52640055523665, -46.66887954721563], [124.52640055523665, 74.90964316425496], [-64.40921305524132, 74.90964316425496], [-64.40921305524132, -46.66887954721563]]]}]}, {op=anyinteracts, args=[{property=datetime}, {interval=[1982-08-22T00:00:00Z, 2025-07-23T23:59:59Z]}]}, {op=<=, args=[{property=eo:cloud_cover}, 20]}]}")
+                "{op=s_intersects, args=[{property=geometry}, {type=Polygon, coordinates=[[[-84.46416308610219, 33.6033686729869], [-84.38815071170247, 33.6033686729869], [-84.38815071170247, 33.6713179813099], [-84.46416308610219, 33.6713179813099], [-84.46416308610219, 33.6033686729869]]]}]}")
             .setFilterLang(FilterLanguage.CQL2_JSON));
         // END:com.azure.analytics.planetarycomputer.generated.stac-search.stac-search-create
     }

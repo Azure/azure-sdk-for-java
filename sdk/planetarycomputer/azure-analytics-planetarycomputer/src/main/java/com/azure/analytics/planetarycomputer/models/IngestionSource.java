@@ -142,26 +142,26 @@ public class IngestionSource implements JsonSerializable<IngestionSource> {
     static IngestionSource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            OffsetDateTime created = null;
             IngestionSourceType kind = null;
+            OffsetDateTime created = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    kind = IngestionSourceType.fromString(reader.getString());
                 } else if ("created".equals(fieldName)) {
                     created = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("kind".equals(fieldName)) {
-                    kind = IngestionSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             IngestionSource deserializedIngestionSource = new IngestionSource(id);
-            deserializedIngestionSource.created = created;
             deserializedIngestionSource.kind = kind;
+            deserializedIngestionSource.created = created;
 
             return deserializedIngestionSource;
         });

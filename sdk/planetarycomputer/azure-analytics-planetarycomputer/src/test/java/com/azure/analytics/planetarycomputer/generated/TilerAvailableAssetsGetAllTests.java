@@ -9,12 +9,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerAvailableAssetsGetAllTests extends PlanetaryComputerClientTestBase {
+public final class TilerAvailableAssetsGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerAvailableAssetsGetAllTests() {
         // method invocation
-        List<String> response = tilerClient.listAvailableAssets("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92",
-            "c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        List<String> response = dataClient.listAvailableAssets("naip-atl", "ga_m_3308421_se_16_060_20211114");
     }
 }

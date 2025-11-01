@@ -4,22 +4,29 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileJsonOptions;
-import com.azure.analytics.planetarycomputer.models.TileJsonMetaData;
+import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class MosaicsTileMatrixSetsTileJsonGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-tile-json.mosaics-tile-matrix-sets-tile-json-get
-        TileJsonMetaData response
-            = tilerClient.getMosaicsTileJson("search-0df36a74d7ed", "WebMercatorQuad", new GetMosaicTileJsonOptions());
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-tile-json.mosaics-tile-matrix-sets-tile-json-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-tile-json.mosaics-tile-matrix-sets-tile-json-get
+        TileJsonMetadata response = dataClient.getMosaicsTileJson("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad",
+            new GetMosaicTileJsonOptions().setAssets(Arrays.asList("image"))
+                .setAssetBandIndices("image|1,2,3")
+                .setMinZoom(9)
+                .setTileFormat(TilerImageFormat.PNG)
+                .setTileScale(1)
+                .setCollection("naip-atl"));
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-tile-json.mosaics-tile-matrix-sets-tile-json-get
     }
 }

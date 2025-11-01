@@ -4,20 +4,22 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.TilerInfoGeoJsonFeature;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerInfoGeoJsonOperationsGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-info-geo-json.tiler-info-geo-json-operations-get
-        TilerInfoGeoJsonFeature response = tilerClient.getInfoGeoJson("{{collectionId}}", "{{itemId}}", null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-info-geo-json.tiler-info-geo-json-operations-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-info-geo-json.tiler-info-geo-json-operations-get
+        TilerInfoGeoJsonFeature response
+            = dataClient.getInfoGeoJson("naip-atl", "ga_m_3308421_se_16_060_20211114", Arrays.asList("image"));
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-info-geo-json.tiler-info-geo-json-operations-get
     }
 }

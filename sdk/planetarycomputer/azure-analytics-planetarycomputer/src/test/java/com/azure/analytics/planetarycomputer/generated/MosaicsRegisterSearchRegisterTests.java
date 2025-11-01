@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MosaicsRegisterSearchRegisterTests extends PlanetaryComputerClientTestBase {
+public final class MosaicsRegisterSearchRegisterTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMosaicsRegisterSearchRegisterTests() {
         // method invocation
-        TilerMosaicSearchRegistrationResponse response = tilerClient.registerMosaicsSearch(null);
+        TilerMosaicSearchRegistrationResponse response = dataClient.registerMosaicsSearch(null);
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "searchId"
-        Assertions.assertEquals("e32e0b12176246816953d75e3356d613", response.getSearchId());
+        Assertions.assertEquals("ba13fc7947b9b585690d84ee61aaa653", response.getSearchId());
         // verify property "links"
         List<StacLink> responseLinks = response.getLinks();
         StacLink responseLinksFirstItem = responseLinks.iterator().next();
@@ -32,7 +32,7 @@ public final class MosaicsRegisterSearchRegisterTests extends PlanetaryComputerC
         Assertions.assertEquals("Mosaic metadata", responseLinksFirstItem.getTitle());
         Assertions.assertEquals(StacLinkType.APPLICATION_JSON, responseLinksFirstItem.getType());
         Assertions.assertEquals(
-            "https://stacforge.axarcnccdbcsduc4.eastus.geocatalog.spatio.azure.com/data/mosaic/e32e0b12176246816953d75e3356d613/info",
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/data/mosaic/ba13fc7947b9b585690d84ee61aaa653/info",
             responseLinksFirstItem.getHref());
     }
 }

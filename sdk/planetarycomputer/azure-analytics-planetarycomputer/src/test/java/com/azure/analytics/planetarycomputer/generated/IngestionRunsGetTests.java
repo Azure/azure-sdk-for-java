@@ -14,23 +14,23 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionRunsGetTests extends PlanetaryComputerClientTestBase {
+public final class IngestionRunsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionRunsGetTests() {
         // method invocation
-        IngestionRun response = ingestionManagementClient.getRun("weather-sample",
-            "94659cc0-538e-4688-9d01-8c7f464b885b", "23e710f1-d004-4dbc-84b0-259398ef7bab");
+        IngestionRun response = ingestionClient.getRun("naip-atl", "00000000-0000-0000-0000-000000000000",
+            "00000000-0000-0000-0000-000000000000");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("23e710f1-d004-4dbc-84b0-259398ef7bab", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "operation"
         IngestionRunOperation responseOperation = response.getOperation();
         Assertions.assertNotNull(responseOperation);
-        Assertions.assertEquals("5623987f-8ccd-457e-81d1-41b430510b8a", responseOperation.getId());
-        Assertions.assertEquals(OperationStatus.fromString("Success"), responseOperation.getStatus());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", responseOperation.getId());
+        Assertions.assertEquals(OperationStatus.PENDING, responseOperation.getStatus());
         Assertions.assertNotNull(responseOperation.getCreationTime());
         List<OperationStatusHistoryItem> responseOperationStatusHistory = responseOperation.getStatusHistory();
         OperationStatusHistoryItem responseOperationStatusHistoryFirstItem
@@ -38,20 +38,19 @@ public final class IngestionRunsGetTests extends PlanetaryComputerClientTestBase
         Assertions.assertNotNull(responseOperationStatusHistoryFirstItem);
         Assertions.assertNotNull(responseOperationStatusHistoryFirstItem.getTimestamp());
         Assertions.assertEquals(OperationStatus.PENDING, responseOperationStatusHistoryFirstItem.getStatus());
-        Assertions.assertNotNull(responseOperation.getStartTime());
-        Assertions.assertNotNull(responseOperation.getFinishTime());
-        Assertions.assertEquals(10, responseOperation.getTotalItems());
+        Assertions.assertEquals(0, responseOperation.getTotalItems());
         Assertions.assertEquals(0, responseOperation.getTotalPendingItems());
-        Assertions.assertEquals(10, responseOperation.getTotalSuccessfulItems());
+        Assertions.assertEquals(0, responseOperation.getTotalSuccessfulItems());
         Assertions.assertEquals(0, responseOperation.getTotalFailedItems());
         // verify property "creationTime"
         Assertions.assertNotNull(response.getCreationTime());
         // verify property "sourceCatalogUrl"
-        Assertions.assertEquals("https://sample.blob.core.windows.net/observatory/purple-tiger_predict_clean_10.json",
+        Assertions.assertEquals(
+            "https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json",
             response.getSourceCatalogUrl());
         // verify property "skipExistingItems"
-        Assertions.assertEquals(false, response.isSkipExistingItems());
+        Assertions.assertEquals(true, response.isSkipExistingItems());
         // verify property "keepOriginalAssets"
-        Assertions.assertEquals(false, response.isKeepOriginalAssets());
+        Assertions.assertEquals(true, response.isKeepOriginalAssets());
     }
 }

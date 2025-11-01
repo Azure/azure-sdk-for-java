@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.core.util.Configuration;
@@ -13,11 +13,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class StacCollectionsGet {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-collection.stac-collections-get
-        StacCollection response = stacClient.getCollection("test-collection-568725878606", null, null);
+        StacCollection response = stacClient.getCollection("naip-atl", null, null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-collection.stac-collections-get
     }
 }

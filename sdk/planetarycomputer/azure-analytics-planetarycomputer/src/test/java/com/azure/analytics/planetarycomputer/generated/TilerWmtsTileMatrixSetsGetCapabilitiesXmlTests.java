@@ -5,18 +5,26 @@
 package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.GetWmtsCapabilitiesOptions;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerWmtsTileMatrixSetsGetCapabilitiesXmlTests extends PlanetaryComputerClientTestBase {
+public final class TilerWmtsTileMatrixSetsGetCapabilitiesXmlTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerWmtsTileMatrixSetsGetCapabilitiesXmlTests() {
         // method invocation
-        byte[] response = tilerClient.getWmtsCapabilities("collectionId-0df36a74d7ed", "item-0df36a74d7ed",
-            "WebMercatorQuad", new GetWmtsCapabilitiesOptions());
+        byte[] response
+            = dataClient.getWmtsCapabilities("naip-atl", "ga_m_3308421_se_16_060_20211114", "WebMercatorQuad",
+                new GetWmtsCapabilitiesOptions().setAssets(Arrays.asList("image"))
+                    .setAssetBandIndices("image|1,2,3")
+                    .setTileFormat(TilerImageFormat.PNG)
+                    .setTileScale(1)
+                    .setMinZoom(7)
+                    .setMaxZoom(14));
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -10,16 +10,22 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class SasGetSignTests extends PlanetaryComputerClientTestBase {
+public final class SasGetSignTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testSasGetSignTests() {
         // method invocation
-        SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getSign("https://contoso.com", null);
+        SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getSign(
+            "https://SANITIZED.blob.core.windows.net/naip-atl-00000000/collection-assets/thumbnail/thumbnail.png",
+            null);
 
         // response assertion
         Assertions.assertNotNull(response);
+        // verify property "expiresOn"
+        Assertions.assertNotNull(response.getExpiresOn());
         // verify property "href"
-        Assertions.assertEquals("https://contoso.com", response.getHref());
+        Assertions.assertEquals(
+            "https://SANITIZED.blob.core.windows.net/naip-atl-bde3e846/collection-assets/thumbnail/thumbnail.png?st=Sanitized&se=Sanitized&sp=rl&sv=Sanitized&sr=c&skoid=f3267c15-016e-4c75-af2c-24daf0bc92e4&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skt=2025-10-26T17%3A41%3A15Z&ske=2025-11-02T17%3A40%3A15Z&sks=b&skv=2025-01-05&sig=Sanitized",
+            response.getHref());
     }
 }

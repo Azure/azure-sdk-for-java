@@ -4,21 +4,22 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerPointsGetPoint {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-point.tiler-points-get-point
-        TilerCoreModelsResponsesPoint response = tilerClient.getPoint("{{collectionId}}", "{{itemId}}",
-            -65.75381224878205, 18.252615371961497, null, null, null, null, null, null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-point.tiler-points-get-point
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-point.tiler-points-get-point
+        TilerCoreModelsResponsesPoint response = dataClient.getPoint("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            -84.386, 33.676, Arrays.asList("image"), null, null, null, null, null, null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-point.tiler-points-get-point
     }
 }

@@ -8,17 +8,19 @@ import com.azure.analytics.planetarycomputer.models.FeatureType;
 import com.azure.analytics.planetarycomputer.models.Geometry;
 import com.azure.analytics.planetarycomputer.models.GeometryType;
 import com.azure.analytics.planetarycomputer.models.TilerInfoGeoJsonFeature;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerInfoGeoJsonOperationsGetTests extends PlanetaryComputerClientTestBase {
+public final class TilerInfoGeoJsonOperationsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerInfoGeoJsonOperationsGetTests() {
         // method invocation
-        TilerInfoGeoJsonFeature response = tilerClient.getInfoGeoJson("{{collectionId}}", "{{itemId}}", null);
+        TilerInfoGeoJsonFeature response
+            = dataClient.getInfoGeoJson("naip-atl", "ga_m_3308421_se_16_060_20211114", Arrays.asList("image"));
 
         // response assertion
         Assertions.assertNotNull(response);

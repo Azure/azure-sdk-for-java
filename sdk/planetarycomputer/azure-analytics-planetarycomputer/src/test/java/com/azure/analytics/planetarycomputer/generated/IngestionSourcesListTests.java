@@ -12,21 +12,21 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionSourcesListTests extends PlanetaryComputerClientTestBase {
+public final class IngestionSourcesListTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionSourcesListTests() {
         // method invocation
-        PagedIterable<IngestionSourceSummary> response = ingestionManagementClient.listSources(10, 0);
+        PagedIterable<IngestionSourceSummary> response = ingestionClient.listSources(null, null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         IngestionSourceSummary firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
         // verify property "id"
-        Assertions.assertEquals("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", firstItem.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", firstItem.getId());
         // verify property "kind"
-        Assertions.assertEquals(IngestionSourceType.SHARED_ACCESS_SIGNATURE_TOKEN, firstItem.getKind());
+        Assertions.assertEquals(IngestionSourceType.BLOB_MANAGED_IDENTITY, firstItem.getKind());
         // verify property "created"
         Assertions.assertNotNull(firstItem.getCreated());
     }

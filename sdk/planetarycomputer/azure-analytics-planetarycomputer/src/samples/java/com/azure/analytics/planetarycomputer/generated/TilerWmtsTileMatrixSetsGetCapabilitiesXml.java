@@ -4,21 +4,29 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetWmtsCapabilitiesOptions;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerWmtsTileMatrixSetsGetCapabilitiesXml {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-wmts-capabilities.tiler-wmts-tile-matrix-sets-get-capabilities-xml
-        byte[] response = tilerClient.getWmtsCapabilities("collectionId-0df36a74d7ed", "item-0df36a74d7ed",
-            "WebMercatorQuad", new GetWmtsCapabilitiesOptions());
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-wmts-capabilities.tiler-wmts-tile-matrix-sets-get-capabilities-xml
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-wmts-capabilities.tiler-wmts-tile-matrix-sets-get-capabilities-xml
+        byte[] response
+            = dataClient.getWmtsCapabilities("naip-atl", "ga_m_3308421_se_16_060_20211114", "WebMercatorQuad",
+                new GetWmtsCapabilitiesOptions().setAssets(Arrays.asList("image"))
+                    .setAssetBandIndices("image|1,2,3")
+                    .setTileFormat(TilerImageFormat.PNG)
+                    .setTileScale(1)
+                    .setMinZoom(7)
+                    .setMaxZoom(14));
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-wmts-capabilities.tiler-wmts-tile-matrix-sets-get-capabilities-xml
     }
 }

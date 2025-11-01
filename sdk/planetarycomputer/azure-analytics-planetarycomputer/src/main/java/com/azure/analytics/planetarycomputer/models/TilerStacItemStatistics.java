@@ -18,7 +18,7 @@ import java.util.Map;
  * Return dataset's statistics.
  */
 @Immutable
-public final class StatisticsResponse implements JsonSerializable<StatisticsResponse> {
+public final class TilerStacItemStatistics implements JsonSerializable<TilerStacItemStatistics> {
     /*
      * Return dataset's statistics.
      */
@@ -26,10 +26,10 @@ public final class StatisticsResponse implements JsonSerializable<StatisticsResp
     private Map<String, BandStatistics> additionalProperties;
 
     /**
-     * Creates an instance of StatisticsResponse class.
+     * Creates an instance of TilerStacItemStatistics class.
      */
     @Generated
-    private StatisticsResponse() {
+    private TilerStacItemStatistics() {
     }
 
     /**
@@ -58,17 +58,17 @@ public final class StatisticsResponse implements JsonSerializable<StatisticsResp
     }
 
     /**
-     * Reads an instance of StatisticsResponse from the JsonReader.
+     * Reads an instance of TilerStacItemStatistics from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StatisticsResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StatisticsResponse.
+     * @return An instance of TilerStacItemStatistics if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TilerStacItemStatistics.
      */
     @Generated
-    public static StatisticsResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static TilerStacItemStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StatisticsResponse deserializedStatisticsResponse = new StatisticsResponse();
+            TilerStacItemStatistics deserializedTilerStacItemStatistics = new TilerStacItemStatistics();
             Map<String, BandStatistics> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -80,9 +80,9 @@ public final class StatisticsResponse implements JsonSerializable<StatisticsResp
 
                 additionalProperties.put(fieldName, BandStatistics.fromJson(reader));
             }
-            deserializedStatisticsResponse.additionalProperties = additionalProperties;
+            deserializedTilerStacItemStatistics.additionalProperties = additionalProperties;
 
-            return deserializedStatisticsResponse;
+            return deserializedTilerStacItemStatistics;
         });
     }
 }

@@ -14,39 +14,32 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionOperationsListTests extends PlanetaryComputerClientTestBase {
+public final class IngestionOperationsListTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionOperationsListTests() {
         // method invocation
-        PagedIterable<Operation> response
-            = ingestionManagementClient.listOperations(null, null, "c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", null);
+        PagedIterable<Operation> response = ingestionClient.listOperations(null, null, null, null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Operation firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
         // verify property "id"
-        Assertions.assertEquals("9bb31abd-91d6-4649-9c6f-beadbec7c622", firstItem.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", firstItem.getId());
         // verify property "status"
-        Assertions.assertEquals(OperationStatus.fromString("Suceeded"), firstItem.getStatus());
+        Assertions.assertEquals(OperationStatus.PENDING, firstItem.getStatus());
         // verify property "type"
         Assertions.assertEquals("IngestionStaticCatalog", firstItem.getType());
         // verify property "creationTime"
         Assertions.assertNotNull(firstItem.getCreationTime());
         // verify property "collectionId"
-        Assertions.assertEquals("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", firstItem.getCollectionId());
+        Assertions.assertEquals("naip-atl", firstItem.getCollectionId());
         // verify property "statusHistory"
         List<OperationStatusHistoryItem> firstItemStatusHistory = firstItem.getStatusHistory();
         OperationStatusHistoryItem firstItemStatusHistoryFirstItem = firstItemStatusHistory.iterator().next();
         Assertions.assertNotNull(firstItemStatusHistoryFirstItem);
         Assertions.assertNotNull(firstItemStatusHistoryFirstItem.getTimestamp());
         Assertions.assertEquals(OperationStatus.PENDING, firstItemStatusHistoryFirstItem.getStatus());
-        // verify property "startTime"
-        Assertions.assertNotNull(firstItem.getStartTime());
-        // verify property "finishTime"
-        Assertions.assertNotNull(firstItem.getFinishTime());
-        // verify property "additionalInformation"
-        Assertions.assertNotNull(firstItem.getAdditionalInformation());
     }
 }

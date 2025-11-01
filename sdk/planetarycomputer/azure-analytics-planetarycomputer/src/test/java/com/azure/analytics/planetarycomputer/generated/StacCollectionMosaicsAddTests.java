@@ -14,23 +14,20 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionMosaicsAddTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionMosaicsAddTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionMosaicsAddTests() {
         // method invocation
-        StacMosaic response = stacClient.addMosaic("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new StacMosaic("mos1", "Most recent available", Arrays.asList())
-                .setDescription("Most recent available imagery in this collection"));
+        StacMosaic response = stacClient.addMosaic("naip-atl",
+            new StacMosaic("test-mosaic-1", "Test Most recent available", Arrays.asList()));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("mos1", response.getId());
+        Assertions.assertEquals("test-mosaic-1", response.getId());
         // verify property "name"
-        Assertions.assertEquals("Most recent available", response.getName());
-        // verify property "description"
-        Assertions.assertEquals("Most recent available imagery in this collection", response.getDescription());
+        Assertions.assertEquals("Test Most recent available", response.getName());
         // verify property "cql"
         List<Map<String, BinaryData>> responseCql = response.getCql();
         Assertions.assertEquals(0, responseCql.size());

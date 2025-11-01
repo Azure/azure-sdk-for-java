@@ -6,18 +6,20 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.GetPartOptions;
 import com.azure.core.util.BinaryData;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerPartsGetCroppedToBoundingBoxTests extends PlanetaryComputerClientTestBase {
+public final class TilerPartsGetCroppedToBoundingBoxTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerPartsGetCroppedToBoundingBoxTests() {
         // method invocation
-        BinaryData response = tilerClient.getPart("naip", "naip_1m_2019_3857", -80.627296, 27.997976, -80.560208,
-            28.064522, "png", new GetPartOptions(), null);
+        BinaryData response
+            = dataClient.getPart("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.393, 33.6798, -84.367, 33.7058,
+                "png", new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
 
         // response assertion
         Assertions.assertNotNull(response);

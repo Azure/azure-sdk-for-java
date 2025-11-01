@@ -11,27 +11,25 @@ import com.azure.analytics.planetarycomputer.models.GeometryType;
 import com.azure.analytics.planetarycomputer.models.GetGeoJsonStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
+import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJsonProperties;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerGeoJsonStatisticsGetTests extends PlanetaryComputerClientTestBase {
+public final class TilerGeoJsonStatisticsGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerGeoJsonStatisticsGetTests() {
         // method invocation
-        StacItemStatisticsGeoJson response
-            = tilerClient.getGeoJsonStatistics("{{collectionId}}", "{{itemId}}", new GetGeoJsonStatisticsOptions(),
-                new Feature(new Polygon()
-                    .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-65.75386020444417, 18.252659831448764),
-                        Arrays.asList(-65.75385878091376, 18.252569552371305),
-                        Arrays.asList(-65.75376429311993, 18.252570912467043),
-                        Arrays.asList(-65.75376571660163, 18.252661191551685),
-                        Arrays.asList(-65.75386020444417, 18.252659831448764)))),
-                    FeatureType.FEATURE));
+        StacItemStatisticsGeoJson response = dataClient.getGeoJsonStatistics("naip-atl",
+            "ga_m_3308421_se_16_060_20211114", new GetGeoJsonStatisticsOptions().setAssets(Arrays.asList("image")),
+            new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
+                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
+                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -42,11 +40,20 @@ public final class TilerGeoJsonStatisticsGetTests extends PlanetaryComputerClien
         // verify property "type"
         Assertions.assertEquals(FeatureType.FEATURE, response.getType());
         // verify property "properties"
-        Assertions.assertNotNull(response.getProperties());
-        // verify property "id"
-        Assertions.assertEquals("test-item-0df36a74d7ed", response.getId());
-        // verify property "boundingBox"
-        List<Double> responseBoundingBox = response.getBoundingBox();
-        Assertions.assertEquals(-65.75386020444417, responseBoundingBox.iterator().next());
+        StacItemStatisticsGeoJsonProperties responseProperties = response.getProperties();
+        Assertions.assertNotNull(responseProperties);
+        Assertions.assertNotNull(responseProperties.getStatistics());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

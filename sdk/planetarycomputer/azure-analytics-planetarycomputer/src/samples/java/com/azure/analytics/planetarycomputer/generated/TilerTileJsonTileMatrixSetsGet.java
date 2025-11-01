@@ -4,22 +4,30 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetTileJsonOptions;
-import com.azure.analytics.planetarycomputer.models.TileJsonMetaData;
+import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerTileJsonTileMatrixSetsGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-tile-json.tiler-tile-json-tile-matrix-sets-get
-        TileJsonMetaData response = tilerClient.getTileJson("collectionId-0df36a74d7ed", "item-0df36a74d7ed",
-            "WebMercatorQuad", new GetTileJsonOptions());
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-tile-json.tiler-tile-json-tile-matrix-sets-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile-json.tiler-tile-json-tile-matrix-sets-get
+        TileJsonMetadata response
+            = dataClient.getTileJson("naip-atl", "ga_m_3308421_se_16_060_20211114", "WebMercatorQuad",
+                new GetTileJsonOptions().setAssets(Arrays.asList("image"))
+                    .setAssetBandIndices("image|1,2,3")
+                    .setTileFormat(TilerImageFormat.PNG)
+                    .setTileScale(1)
+                    .setMinZoom(7)
+                    .setMaxZoom(14));
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-tile-json.tiler-tile-json-tile-matrix-sets-get
     }
 }

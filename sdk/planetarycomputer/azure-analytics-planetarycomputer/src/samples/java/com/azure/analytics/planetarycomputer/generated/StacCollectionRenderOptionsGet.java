@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.RenderOption;
 import com.azure.core.util.Configuration;
@@ -13,11 +13,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class StacCollectionRenderOptionsGet {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-render-option.stac-collection-render-options-get
-        RenderOption response = stacClient.getRenderOption("sentinel-2-l2a-tutorial-7", "natural-color");
+        RenderOption response = stacClient.getRenderOption("naip-atl", "test-natural-color");
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-render-option.stac-collection-render-options-get
     }
 }

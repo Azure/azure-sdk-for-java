@@ -21,7 +21,7 @@ import java.util.Set;
  * Microsoft Planetary Computer Pro geo-catalog ingestion creation model.
  */
 @Fluent
-public final class Ingestion implements JsonSerializable<Ingestion> {
+public final class IngestionDefinition implements JsonSerializable<IngestionDefinition> {
     /*
      * Ingestion id
      */
@@ -85,25 +85,26 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
     }
 
     static {
-        JsonMergePatchHelper.setIngestionAccessor(new JsonMergePatchHelper.IngestionAccessor() {
+        JsonMergePatchHelper.setIngestionDefinitionAccessor(new JsonMergePatchHelper.IngestionDefinitionAccessor() {
             @Override
-            public Ingestion prepareModelForJsonMergePatch(Ingestion model, boolean jsonMergePatchEnabled) {
+            public IngestionDefinition prepareModelForJsonMergePatch(IngestionDefinition model,
+                boolean jsonMergePatchEnabled) {
                 model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                 return model;
             }
 
             @Override
-            public boolean isJsonMergePatch(Ingestion model) {
+            public boolean isJsonMergePatch(IngestionDefinition model) {
                 return model.jsonMergePatch;
             }
         });
     }
 
     /**
-     * Creates an instance of Ingestion class.
+     * Creates an instance of IngestionDefinition class.
      */
     @Generated
-    public Ingestion() {
+    public IngestionDefinition() {
     }
 
     /**
@@ -131,10 +132,10 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
      * <p>Required when create the resource.</p>
      * 
      * @param importType the importType value to set.
-     * @return the Ingestion object itself.
+     * @return the IngestionDefinition object itself.
      */
     @Generated
-    public Ingestion setImportType(IngestionType importType) {
+    public IngestionDefinition setImportType(IngestionType importType) {
         this.importType = importType;
         this.updatedProperties.add("importType");
         return this;
@@ -154,10 +155,10 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
      * Set the displayName property: Ingestion name.
      * 
      * @param displayName the displayName value to set.
-     * @return the Ingestion object itself.
+     * @return the IngestionDefinition object itself.
      */
     @Generated
-    public Ingestion setDisplayName(String displayName) {
+    public IngestionDefinition setDisplayName(String displayName) {
         this.displayName = displayName;
         this.updatedProperties.add("displayName");
         return this;
@@ -177,10 +178,10 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
      * Set the sourceCatalogUrl property: Source catalog URL. Required for StaticCatalog ingestion type.
      * 
      * @param sourceCatalogUrl the sourceCatalogUrl value to set.
-     * @return the Ingestion object itself.
+     * @return the IngestionDefinition object itself.
      */
     @Generated
-    public Ingestion setSourceCatalogUrl(String sourceCatalogUrl) {
+    public IngestionDefinition setSourceCatalogUrl(String sourceCatalogUrl) {
         this.sourceCatalogUrl = sourceCatalogUrl;
         this.updatedProperties.add("sourceCatalogUrl");
         return this;
@@ -200,10 +201,10 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
      * Set the skipExistingItems property: Skip processing existing items in the catalog.
      * 
      * @param skipExistingItems the skipExistingItems value to set.
-     * @return the Ingestion object itself.
+     * @return the IngestionDefinition object itself.
      */
     @Generated
-    public Ingestion setSkipExistingItems(Boolean skipExistingItems) {
+    public IngestionDefinition setSkipExistingItems(Boolean skipExistingItems) {
         this.skipExistingItems = skipExistingItems;
         this.updatedProperties.add("skipExistingItems");
         return this;
@@ -223,10 +224,10 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
      * Set the keepOriginalAssets property: Keep original source assets.
      * 
      * @param keepOriginalAssets the keepOriginalAssets value to set.
-     * @return the Ingestion object itself.
+     * @return the IngestionDefinition object itself.
      */
     @Generated
-    public Ingestion setKeepOriginalAssets(Boolean keepOriginalAssets) {
+    public IngestionDefinition setKeepOriginalAssets(Boolean keepOriginalAssets) {
         this.keepOriginalAssets = keepOriginalAssets;
         this.updatedProperties.add("keepOriginalAssets");
         return this;
@@ -313,45 +314,45 @@ public final class Ingestion implements JsonSerializable<Ingestion> {
     }
 
     /**
-     * Reads an instance of Ingestion from the JsonReader.
+     * Reads an instance of IngestionDefinition from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Ingestion if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     * @return An instance of IngestionDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Ingestion.
+     * @throws IOException If an error occurs while reading the IngestionDefinition.
      */
     @Generated
-    public static Ingestion fromJson(JsonReader jsonReader) throws IOException {
+    public static IngestionDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Ingestion deserializedIngestion = new Ingestion();
+            IngestionDefinition deserializedIngestionDefinition = new IngestionDefinition();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedIngestion.id = reader.getString();
+                    deserializedIngestionDefinition.id = reader.getString();
                 } else if ("creationTime".equals(fieldName)) {
-                    deserializedIngestion.creationTime = reader
+                    deserializedIngestionDefinition.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
-                    deserializedIngestion.status = IngestionStatus.fromString(reader.getString());
+                    deserializedIngestionDefinition.status = IngestionStatus.fromString(reader.getString());
                 } else if ("importType".equals(fieldName)) {
-                    deserializedIngestion.importType = IngestionType.fromString(reader.getString());
+                    deserializedIngestionDefinition.importType = IngestionType.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
-                    deserializedIngestion.displayName = reader.getString();
+                    deserializedIngestionDefinition.displayName = reader.getString();
                 } else if ("sourceCatalogUrl".equals(fieldName)) {
-                    deserializedIngestion.sourceCatalogUrl = reader.getString();
+                    deserializedIngestionDefinition.sourceCatalogUrl = reader.getString();
                 } else if ("skipExistingItems".equals(fieldName)) {
-                    deserializedIngestion.skipExistingItems = reader.getNullable(JsonReader::getBoolean);
+                    deserializedIngestionDefinition.skipExistingItems = reader.getNullable(JsonReader::getBoolean);
                 } else if ("keepOriginalAssets".equals(fieldName)) {
-                    deserializedIngestion.keepOriginalAssets = reader.getNullable(JsonReader::getBoolean);
+                    deserializedIngestionDefinition.keepOriginalAssets = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedIngestion;
+            return deserializedIngestionDefinition;
         });
     }
 }

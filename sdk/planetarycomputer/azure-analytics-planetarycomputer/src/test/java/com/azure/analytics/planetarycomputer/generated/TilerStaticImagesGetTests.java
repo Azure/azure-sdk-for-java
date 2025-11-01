@@ -10,12 +10,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerStaticImagesGetTests extends PlanetaryComputerClientTestBase {
+public final class TilerStaticImagesGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerStaticImagesGetTests() {
         // method invocation
-        BinaryData response = tilerClient.getStaticImage("collectionId-23", "id-23");
+        BinaryData response
+            = dataClient.getStaticImage("naip-atl", "geocatalog-naip-atl-000000008a4c45329aecf476d560e8d3.png");
 
         // response assertion
         Assertions.assertNotNull(response);

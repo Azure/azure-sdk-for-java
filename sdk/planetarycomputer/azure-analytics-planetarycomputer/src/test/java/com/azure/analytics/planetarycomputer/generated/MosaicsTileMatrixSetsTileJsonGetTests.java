@@ -6,25 +6,34 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.TileAddressingScheme;
-import com.azure.analytics.planetarycomputer.models.TileJsonMetaData;
+import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MosaicsTileMatrixSetsTileJsonGetTests extends PlanetaryComputerClientTestBase {
+public final class MosaicsTileMatrixSetsTileJsonGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMosaicsTileMatrixSetsTileJsonGetTests() {
         // method invocation
-        TileJsonMetaData response
-            = tilerClient.getMosaicsTileJson("search-0df36a74d7ed", "WebMercatorQuad", new GetMosaicTileJsonOptions());
+        TileJsonMetadata response = dataClient.getMosaicsTileJson("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad",
+            new GetMosaicTileJsonOptions().setAssets(Arrays.asList("image"))
+                .setAssetBandIndices("image|1,2,3")
+                .setMinZoom(9)
+                .setTileFormat(TilerImageFormat.PNG)
+                .setTileScale(1)
+                .setCollection("naip-atl"));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "tileJson"
         Assertions.assertEquals("2.2.0", response.getTileJson());
+        // verify property "name"
+        Assertions.assertEquals("ba13fc7947b9b585690d84ee61aaa653", response.getName());
         // verify property "version"
         Assertions.assertEquals("1.0.0", response.getVersion());
         // verify property "scheme"
@@ -32,17 +41,17 @@ public final class MosaicsTileMatrixSetsTileJsonGetTests extends PlanetaryComput
         // verify property "tiles"
         List<String> responseTiles = response.getTiles();
         Assertions.assertEquals(
-            "https://sample.cmbtazhseqhgeudd.uksouth.geocatalog.spatio.azure.com/data/collections/test-collection-0df36a74d7ed/items/test-item-0df36a74d7ed/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=data",
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/data/mosaic/ba13fc7947b9b585690d84ee61aaa653/tiles/WebMercatorQuad/{z}/{x}/{y}?api-version=2025-04-30-preview&assets=image&asset_bidx=image%7C1%2C2%2C3&collection=naip-atl",
             responseTiles.iterator().next());
         // verify property "minZoom"
-        Assertions.assertEquals(0, response.getMinZoom());
+        Assertions.assertEquals(9, response.getMinZoom());
         // verify property "maxZoom"
         Assertions.assertEquals(24, response.getMaxZoom());
         // verify property "bounds"
         List<Double> responseBounds = response.getBounds();
-        Assertions.assertEquals(-65.75386020444417, responseBounds.iterator().next());
+        Assertions.assertEquals(-180.0, responseBounds.iterator().next());
         // verify property "center"
         List<Double> responseCenter = response.getCenter();
-        Assertions.assertEquals(-65.75381224878205, responseCenter.iterator().next());
+        Assertions.assertEquals(4.263256414560601E-14, responseCenter.iterator().next());
     }
 }

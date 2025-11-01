@@ -4,8 +4,9 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.TilersImpl;
+import com.azure.analytics.planetarycomputer.implementation.DatasImpl;
 import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosaicsSearchRequest;
+import com.azure.analytics.planetarycomputer.models.BandStatistics;
 import com.azure.analytics.planetarycomputer.models.ColorMapNames;
 import com.azure.analytics.planetarycomputer.models.CropGeoJsonOptions;
 import com.azure.analytics.planetarycomputer.models.Feature;
@@ -20,24 +21,23 @@ import com.azure.analytics.planetarycomputer.models.GetStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.GetTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetTileOptions;
 import com.azure.analytics.planetarycomputer.models.GetWmtsCapabilitiesOptions;
-import com.azure.analytics.planetarycomputer.models.ImageRequest;
+import com.azure.analytics.planetarycomputer.models.ImageParameters;
 import com.azure.analytics.planetarycomputer.models.ImageResponse;
-import com.azure.analytics.planetarycomputer.models.InfoOperationResponse;
 import com.azure.analytics.planetarycomputer.models.PixelSelection;
 import com.azure.analytics.planetarycomputer.models.RegisterMosaicsSearchOptions;
 import com.azure.analytics.planetarycomputer.models.Resampling;
-import com.azure.analytics.planetarycomputer.models.StacAsset;
-import com.azure.analytics.planetarycomputer.models.StacAssetStatistics;
 import com.azure.analytics.planetarycomputer.models.StacItemBounds;
+import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
-import com.azure.analytics.planetarycomputer.models.StatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
-import com.azure.analytics.planetarycomputer.models.TileJsonMetaData;
+import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import com.azure.analytics.planetarycomputer.models.TilerInfo;
 import com.azure.analytics.planetarycomputer.models.TilerInfoGeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
+import com.azure.analytics.planetarycomputer.models.TilerStacItemStatistics;
 import com.azure.analytics.planetarycomputer.models.TilerStacSearchRegistration;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -61,20 +61,20 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PlanetaryComputerClient type.
+ * Initializes a new instance of the asynchronous PlanetaryComputerProClient type.
  */
-@ServiceClient(builder = PlanetaryComputerClientBuilder.class, isAsync = true)
-public final class TilerAsyncClient {
+@ServiceClient(builder = PlanetaryComputerProClientBuilder.class, isAsync = true)
+public final class DataAsyncClient {
     @Generated
-    private final TilersImpl serviceClient;
+    private final DatasImpl serviceClient;
 
     /**
-     * Initializes an instance of TilerAsyncClient class.
+     * Initializes an instance of DataAsyncClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    TilerAsyncClient(TilersImpl serviceClient) {
+    DataAsyncClient(DatasImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -202,8 +202,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -241,7 +241,7 @@ public final class TilerAsyncClient {
      * <pre>
      * {@code
      * {
-     *     data (Required): {
+     *     String (Required): {
      *         String (Required): {
      *             min: double (Required)
      *             max: double (Required)
@@ -276,7 +276,7 @@ public final class TilerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return return dataset's statistics along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -343,9 +343,9 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listBoundsWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getBoundsWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
-        return this.serviceClient.listBoundsWithResponseAsync(collectionId, itemId, requestOptions);
+        return this.serviceClient.getBoundsWithResponseAsync(collectionId, itemId, requestOptions);
     }
 
     /**
@@ -359,8 +359,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -467,8 +467,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -559,7 +559,7 @@ public final class TilerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cropGeoJsonWithDimensionsWithResponse(String collectionId, String itemId,
-        double width, double height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+        int width, int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.cropGeoJsonWithDimensionsWithResponseAsync(collectionId, itemId, width, height,
             format, accept, body, requestOptions);
     }
@@ -575,8 +575,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -643,22 +643,34 @@ public final class TilerAsyncClient {
      *     }
      *     type: String(Feature) (Required)
      *     properties (Optional): {
-     *         String: BinaryData (Required)
+     *         statistics (Required): {
+     *             String (Required): {
+     *                 min: double (Required)
+     *                 max: double (Required)
+     *                 mean: double (Required)
+     *                 count: double (Required)
+     *                 sum: double (Required)
+     *                 std: double (Required)
+     *                 median: double (Required)
+     *                 majority: double (Required)
+     *                 minority: double (Required)
+     *                 unique: double (Required)
+     *                 histogram (Required): [
+     *                      (Required)[
+     *                         double (Required)
+     *                     ]
+     *                 ]
+     *                 valid_percent: double (Required)
+     *                 masked_pixels: double (Required)
+     *                 valid_pixels: double (Required)
+     *                 percentile_2: double (Required)
+     *                 percentile_98: double (Required)
+     *             }
+     *         }
+     *          (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     id: String (Required)
-     *     bbox (Required): [
-     *         double (Required)
-     *     ]
-     *     stac_version: String (Optional)
-     *     collection: String (Optional)
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
      * }
      * }
      * </pre>
@@ -730,7 +742,7 @@ public final class TilerAsyncClient {
      *             width: Integer (Optional)
      *             height: Integer (Optional)
      *             overviews (Optional): [
-     *                 String (Optional)
+     *                 int (Optional)
      *             ]
      *             scales (Optional): [
      *                 int (Optional)
@@ -745,6 +757,7 @@ public final class TilerAsyncClient {
      *             }
      *             minzoom: Integer (Optional)
      *             maxzoom: Integer (Optional)
+     *             crs: String (Optional)
      *         }
      *     }
      *     id: String (Optional)
@@ -787,7 +800,7 @@ public final class TilerAsyncClient {
      * <pre>
      * {@code
      * {
-     *     data (Required): {
+     *     String (Required): {
      *         bounds (Required): [
      *             double (Required)
      *         ]
@@ -811,7 +824,7 @@ public final class TilerAsyncClient {
      *         width: Integer (Optional)
      *         height: Integer (Optional)
      *         overviews (Optional): [
-     *             String (Optional)
+     *             int (Optional)
      *         ]
      *         scales (Optional): [
      *             int (Optional)
@@ -826,6 +839,7 @@ public final class TilerAsyncClient {
      *         }
      *         minzoom: Integer (Optional)
      *         maxzoom: Integer (Optional)
+     *         crs: String (Optional)
      *     }
      * }
      * }
@@ -838,14 +852,13 @@ public final class TilerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return return dataset's basic info or the list of available assets along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAssetsInfoWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getItemAssetDetailsWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getAssetsInfoWithResponseAsync(collectionId, itemId, requestOptions);
+        return this.serviceClient.getItemAssetDetailsWithResponseAsync(collectionId, itemId, requestOptions);
     }
 
     /**
@@ -859,8 +872,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -952,8 +965,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1029,7 +1042,7 @@ public final class TilerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPartWithDimensionsWithResponse(String collectionId, String itemId, double minx,
-        double miny, double maxx, double maxy, double width, double height, String format, String accept,
+        double miny, double maxx, double maxy, int width, int height, String format, String accept,
         RequestOptions requestOptions) {
         return this.serviceClient.getPartWithDimensionsWithResponseAsync(collectionId, itemId, minx, miny, maxx, maxy,
             width, height, format, accept, requestOptions);
@@ -1046,8 +1059,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1084,10 +1097,8 @@ public final class TilerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return point model.
-     * 
-     * response model for `/point` endpointsResponse model for point query operations providing values at a specific
-     * location along with {@link Response} on successful completion of {@link Mono}.
+     * @return response model for point query operations providing values at a specific location along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1107,8 +1118,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1194,8 +1205,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1365,8 +1376,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1459,8 +1470,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1556,10 +1567,10 @@ public final class TilerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification along with {@link Response} on successful completion of {@link Mono}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1579,8 +1590,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1676,8 +1687,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -1916,35 +1927,44 @@ public final class TilerAsyncClient {
      * {@code
      * [
      *      (Required){
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
+     *         id: String (Required)
+     *         bbox (Required): [
+     *             double (Required)
      *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
+     *         assets (Required): {
+     *             String (Required): {
+     *                 platform: String (Optional)
+     *                 instruments (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 constellation: String (Optional)
+     *                 mission: String (Optional)
+     *                 providers (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional, Required on create)
+     *                         description: String (Optional)
+     *                         roles (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         url: String (Optional)
+     *                     }
+     *                 ]
+     *                 gsd: Double (Optional)
+     *                 created: OffsetDateTime (Optional)
+     *                 updated: OffsetDateTime (Optional)
+     *                 title: String (Optional)
      *                 description: String (Optional)
+     *                 href: String (Optional, Required on create)
+     *                 type: String (Optional)
      *                 roles (Optional): [
      *                     String (Optional)
      *                 ]
-     *                 url: String (Optional)
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
      *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         href: String (Optional, Required on create)
-     *         type: String (Optional)
-     *         roles (Optional): [
-     *             String (Optional)
-     *         ]
-     *          (Optional): {
-     *             String: BinaryData (Required)
      *         }
+     *         collection: String (Required)
      *     }
      * ]
      * }
@@ -2198,8 +2218,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2308,10 +2328,10 @@ public final class TilerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification along with {@link Response} on successful completion of {@link Mono}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2331,8 +2351,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2438,8 +2458,8 @@ public final class TilerAsyncClient {
      * <tr><td>assets</td><td>List&lt;String&gt;</td><td>No</td><td>Asset's names. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>expression</td><td>String</td><td>No</td><td>Band math expression between assets</td></tr>
-     * <tr><td>asset_bidx</td><td>List&lt;String&gt;</td><td>No</td><td>Per asset band indexes (coma separated indexes).
-     * In the form of "," separated string.</td></tr>
+     * <tr><td>asset_bidx</td><td>String</td><td>No</td><td>Per asset band indexes (coma separated indexes, e.g.
+     * "image|1,2,3" means use the bands 1, 2, and 3 from the asset named "image")</td></tr>
      * <tr><td>asset_as_band</td><td>Boolean</td><td>No</td><td>Asset as Band</td></tr>
      * <tr><td>nodata</td><td>Double</td><td>No</td><td>Overwrite internal Nodata value</td></tr>
      * <tr><td>unscale</td><td>Boolean</td><td>No</td><td>Apply internal Scale or Offset</td></tr>
@@ -2581,17 +2601,17 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return return dataset's statistics on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StacAssetStatistics> getAssetStatistics(String collectionId, String itemId,
+    public Mono<Map<String, Map<String, BandStatistics>>> getAssetStatistics(String collectionId, String itemId,
         GetAssetStatisticsOptions options) {
         // Generated convenience method for getAssetStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -2613,11 +2633,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -2656,7 +2672,8 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("histogram_range", histogramRange, false);
         }
         return getAssetStatisticsWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(StacAssetStatistics.class));
+            .map(protocolMethodData -> protocolMethodData
+                .toObject(TYPE_REFERENCE_MAP_STRING_MAP_STRING_BAND_STATISTICS));
     }
 
     /**
@@ -2700,10 +2717,10 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StacItemBounds> listBounds(String collectionId, String itemId) {
-        // Generated convenience method for listBoundsWithResponse
+    public Mono<StacItemBounds> getBounds(String collectionId, String itemId) {
+        // Generated convenience method for getBoundsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listBoundsWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
+        return getBoundsWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(StacItemBounds.class));
     }
 
@@ -2734,7 +2751,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -2759,11 +2776,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -2835,13 +2848,13 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropGeoJsonWithDimensions(String collectionId, String itemId, double width, double height,
+    public Mono<BinaryData> cropGeoJsonWithDimensions(String collectionId, String itemId, int width, int height,
         String format, CropGeoJsonOptions options, Feature body, String accept) {
         // Generated convenience method for cropGeoJsonWithDimensionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -2866,11 +2879,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -2945,7 +2954,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -2967,11 +2976,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3084,12 +3089,12 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return return dataset's basic info or the list of available assets on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InfoOperationResponse> getAssetsInfo(String collectionId, String itemId, List<String> assets) {
-        // Generated convenience method for getAssetsInfoWithResponse
+    public Mono<Map<String, TilerInfo>> getItemAssetDetails(String collectionId, String itemId, List<String> assets) {
+        // Generated convenience method for getItemAssetDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (assets != null) {
             for (String paramItemValue : assets) {
@@ -3098,8 +3103,8 @@ public final class TilerAsyncClient {
                 }
             }
         }
-        return getAssetsInfoWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(InfoOperationResponse.class));
+        return getItemAssetDetailsWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_TILER_INFO));
     }
 
     /**
@@ -3115,15 +3120,15 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return return dataset's basic info or the list of available assets on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InfoOperationResponse> getAssetsInfo(String collectionId, String itemId) {
-        // Generated convenience method for getAssetsInfoWithResponse
+    public Mono<Map<String, TilerInfo>> getItemAssetDetails(String collectionId, String itemId) {
+        // Generated convenience method for getItemAssetDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAssetsInfoWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(InfoOperationResponse.class));
+        return getItemAssetDetailsWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_MAP_STRING_TILER_INFO));
     }
 
     /**
@@ -3156,7 +3161,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3182,11 +3187,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3265,12 +3266,12 @@ public final class TilerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getPartWithDimensions(String collectionId, String itemId, double minx, double miny,
-        double maxx, double maxy, double width, double height, String format, GetPartOptions options, String accept) {
+        double maxx, double maxy, int width, int height, String format, GetPartOptions options, String accept) {
         // Generated convenience method for getPartWithDimensionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3296,11 +3297,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3363,7 +3360,8 @@ public final class TilerAsyncClient {
      * @param latitude Latitude.
      * @param assets Asset's names.
      * @param expression Band math expression between assets.
-     * @param assetBandIndices Per asset band indexes (coma separated indexes).
+     * @param assetBandIndices Per asset band indexes (coma separated indexes, e.g. "image|1,2,3" means use the bands 1,
+     * 2, and 3 from the asset named "image").
      * @param assetAsBand Asset as Band.
      * @param noData Overwrite internal Nodata value.
      * @param unscale Apply internal Scale or Offset.
@@ -3375,15 +3373,13 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return point model.
-     * 
-     * response model for `/point` endpointsResponse model for point query operations providing values at a specific
-     * location on successful completion of {@link Mono}.
+     * @return response model for point query operations providing values at a specific location on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TilerCoreModelsResponsesPoint> getPoint(String collectionId, String itemId, double longitude,
-        double latitude, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
+        double latitude, List<String> assets, String expression, String assetBandIndices, Boolean assetAsBand,
         Double noData, Boolean unscale, String coordinateReferenceSystem, Resampling resampling) {
         // Generated convenience method for getPointWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -3398,11 +3394,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3438,10 +3430,8 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return point model.
-     * 
-     * response model for `/point` endpointsResponse model for point query operations providing values at a specific
-     * location on successful completion of {@link Mono}.
+     * @return response model for point query operations providing values at a specific location on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3478,7 +3468,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3505,11 +3495,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3590,7 +3576,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3617,11 +3603,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3693,7 +3675,7 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageResponse> createStaticImage(String collectionId, ImageRequest body) {
+    public Mono<ImageResponse> createStaticImage(String collectionId, ImageParameters body) {
         // Generated convenience method for createStaticImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createStaticImageWithResponse(collectionId, BinaryData.fromObject(body), requestOptions)
@@ -3744,12 +3726,13 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StatisticsResponse> listStatistics(String collectionId, String itemId, GetStatisticsOptions options) {
+    public Mono<TilerStacItemStatistics> listStatistics(String collectionId, String itemId,
+        GetStatisticsOptions options) {
         // Generated convenience method for listStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3771,11 +3754,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3814,7 +3793,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("histogram_range", histogramRange, false);
         }
         return listStatisticsWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(StatisticsResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(TilerStacItemStatistics.class));
     }
 
     /**
@@ -3833,20 +3812,19 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification on successful completion of {@link Mono}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetaData> getTileJson(String collectionId, String itemId, String tileMatrixSetId,
+    public Mono<TileJsonMetadata> getTileJson(String collectionId, String itemId, String tileMatrixSetId,
         GetTileJsonOptions options) {
         // Generated convenience method for getTileJsonWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3874,11 +3852,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -3933,7 +3907,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
         return getTileJsonWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetaData.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
 
     /**
@@ -3970,7 +3944,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -3996,11 +3970,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -4081,7 +4051,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -4109,11 +4079,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -4396,7 +4362,7 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<StacAsset>> getMosaicsAssetsForPoint(String searchId, double longitude, double latitude,
+    public Mono<List<StacItemPointAsset>> getMosaicsAssetsForPoint(String searchId, double longitude, double latitude,
         Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered,
         String coordinateReferenceSystem) {
         // Generated convenience method for getMosaicsAssetsForPointWithResponse
@@ -4421,7 +4387,7 @@ public final class TilerAsyncClient {
         }
         return getMosaicsAssetsForPointWithResponse(searchId, longitude, latitude, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STAC_ASSET));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STAC_ITEM_POINT_ASSET));
     }
 
     /**
@@ -4442,12 +4408,12 @@ public final class TilerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<StacAsset>> getMosaicsAssetsForPoint(String searchId, double longitude, double latitude) {
+    public Mono<List<StacItemPointAsset>> getMosaicsAssetsForPoint(String searchId, double longitude, double latitude) {
         // Generated convenience method for getMosaicsAssetsForPointWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMosaicsAssetsForPointWithResponse(searchId, longitude, latitude, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STAC_ASSET));
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STAC_ITEM_POINT_ASSET));
     }
 
     /**
@@ -4612,20 +4578,19 @@ public final class TilerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tileJSON model.
+     * @return tileJSON metadata describing a tile set according to the TileJSON specification
      * 
-     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0TileJSON metadata describing a tile set
-     * according to the TileJSON specification on successful completion of {@link Mono}.
+     * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetaData> getMosaicsTileJson(String searchId, String tileMatrixSetId,
+    public Mono<TileJsonMetadata> getMosaicsTileJson(String searchId, String tileMatrixSetId,
         GetMosaicTileJsonOptions options) {
         // Generated convenience method for getMosaicsTileJsonWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -4660,11 +4625,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -4740,7 +4701,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
         return getMosaicsTileJsonWithResponse(searchId, tileMatrixSetId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetaData.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
 
     /**
@@ -4777,7 +4738,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -4808,11 +4769,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -4904,7 +4861,7 @@ public final class TilerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
         String expression = options.getExpression();
-        List<String> assetBandIndices = options.getAssetBandIndices();
+        String assetBandIndices = options.getAssetBandIndices();
         Boolean assetAsBand = options.isAssetAsBand();
         Double noData = options.getNoData();
         Boolean unscale = options.isUnscale();
@@ -4932,11 +4889,7 @@ public final class TilerAsyncClient {
             requestOptions.addQueryParam("expression", expression, false);
         }
         if (assetBandIndices != null) {
-            requestOptions.addQueryParam("asset_bidx",
-                assetBandIndices.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("asset_bidx", assetBandIndices, false);
         }
         if (assetAsBand != null) {
             requestOptions.addQueryParam("asset_as_band", String.valueOf(assetAsBand), false);
@@ -5000,8 +4953,18 @@ public final class TilerAsyncClient {
     };
 
     @Generated
+    private static final TypeReference<List<StacItemPointAsset>> TYPE_REFERENCE_LIST_STAC_ITEM_POINT_ASSET
+        = new TypeReference<List<StacItemPointAsset>>() {
+        };
+
+    @Generated
     private static final TypeReference<Map<String, BinaryData>> TYPE_REFERENCE_MAP_STRING_BINARY_DATA
         = new TypeReference<Map<String, BinaryData>>() {
+        };
+
+    @Generated
+    private static final TypeReference<Map<String, Map<String, BandStatistics>>> TYPE_REFERENCE_MAP_STRING_MAP_STRING_BAND_STATISTICS
+        = new TypeReference<Map<String, Map<String, BandStatistics>>>() {
         };
 
     @Generated
@@ -5010,8 +4973,8 @@ public final class TilerAsyncClient {
         };
 
     @Generated
-    private static final TypeReference<List<StacAsset>> TYPE_REFERENCE_LIST_STAC_ASSET
-        = new TypeReference<List<StacAsset>>() {
+    private static final TypeReference<Map<String, TilerInfo>> TYPE_REFERENCE_MAP_STRING_TILER_INFO
+        = new TypeReference<Map<String, TilerInfo>>() {
         };
 
     @Generated

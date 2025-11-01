@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.core.util.Configuration;
@@ -13,11 +13,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class StacItemsGetFeatures {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-items.stac-items-get-features
-        StacItemCollection response = stacClient.listItems("example-collection", null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.stac-list-items.stac-items-get-features
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-item-collection.stac-items-get-features
+        StacItemCollection response = stacClient.getItemCollection("naip-atl", 10, null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.stac-get-item-collection.stac-items-get-features
     }
 }

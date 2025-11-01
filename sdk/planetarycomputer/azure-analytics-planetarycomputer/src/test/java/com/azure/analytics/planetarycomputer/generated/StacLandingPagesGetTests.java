@@ -13,12 +13,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacLandingPagesGetTests extends PlanetaryComputerClientTestBase {
+public final class StacLandingPagesGetTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacLandingPagesGetTests() {
         // method invocation
-        StacLandingPage response = stacClient.getStacLandingPage();
+        StacLandingPage response = stacClient.getLandingPage();
 
         // response assertion
         Assertions.assertNotNull(response);

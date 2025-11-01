@@ -4,22 +4,24 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetTileOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerTileMatrixSetsGetZxyScaleByFormat {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-tile.tiler-tile-matrix-sets-get-zxy-scale-by-format
-        BinaryData response = tilerClient.getTile("collectionId-0df36a74d7ed", "item-0df36a74d7ed", "WebMercatorQuad",
-            12.0, 47.6062, 17.0, 1.0, "png", new GetTileOptions(), null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-tile.tiler-tile-matrix-sets-get-zxy-scale-by-format
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile.tiler-tile-matrix-sets-get-zxy-scale-by-format
+        BinaryData response = dataClient.getTile("naip-atl", "ga_m_3308421_se_16_060_20211114", "WebMercatorQuad", 14.0,
+            4349.0, 6564.0, 1.0, "png",
+            new GetTileOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-tile.tiler-tile-matrix-sets-get-zxy-scale-by-format
     }
 }

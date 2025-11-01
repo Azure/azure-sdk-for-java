@@ -10,8 +10,10 @@ import java.util.Collection;
 
 /**
  * Identifier selecting one of the TileMatrixSetId supported (default:
- * 'WebMercatorQuad')Identifier selecting one of the TileMatrixSetId supported (default:
- * 'WebMercatorQuad')Method used to select or compute pixels when creating composites from multiple sources.
+ * 'WebMercatorQuad')
+ * 
+ * Represents the method used to select or compute pixels when creating
+ * composites from multiple sources.
  */
 public final class PixelSelection extends ExpandableStringEnum<PixelSelection> {
     /**

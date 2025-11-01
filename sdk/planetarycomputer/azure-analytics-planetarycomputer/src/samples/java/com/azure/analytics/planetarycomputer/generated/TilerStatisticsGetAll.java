@@ -4,22 +4,23 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetStatisticsOptions;
-import com.azure.analytics.planetarycomputer.models.StatisticsResponse;
+import com.azure.analytics.planetarycomputer.models.TilerStacItemStatistics;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerStatisticsGetAll {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-list-statistics.tiler-statistics-get-all
-        StatisticsResponse response
-            = tilerClient.listStatistics("{{collectionId}}", "{{itemId}}", new GetStatisticsOptions());
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-list-statistics.tiler-statistics-get-all
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-list-statistics.tiler-statistics-get-all
+        TilerStacItemStatistics response = dataClient.listStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
+            new GetStatisticsOptions().setAssets(Arrays.asList("image")));
+        // END:com.azure.analytics.planetarycomputer.generated.data-list-statistics.tiler-statistics-get-all
     }
 }

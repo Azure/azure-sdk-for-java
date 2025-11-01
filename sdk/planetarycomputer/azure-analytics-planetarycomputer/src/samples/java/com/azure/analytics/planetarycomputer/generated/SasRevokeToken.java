@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.SharedAccessSignatureClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -12,7 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class SasRevokeToken {
     public static void main(String[] args) {
         SharedAccessSignatureClient sharedAccessSignatureClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-revoke-token.sas-revoke-token

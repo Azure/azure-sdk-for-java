@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.ImageRequest;
+import com.azure.analytics.planetarycomputer.models.ImageParameters;
 import com.azure.analytics.planetarycomputer.models.ImageResponse;
 import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.core.util.BinaryData;
@@ -17,30 +17,31 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class TilerStaticImagesCreateTests extends PlanetaryComputerClientTestBase {
+public final class TilerStaticImagesCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testTilerStaticImagesCreateTests() {
         // method invocation
-        ImageResponse response = tilerClient.createStaticImage("collectionId-23",
-            new ImageRequest(
-                mapOf("filter-lang", BinaryData.fromBytes("cql2-json".getBytes(StandardCharsets.UTF_8)), "filter",
-                    BinaryData.fromBytes("{op=and, args=[{op==, args=[{property=collection}, naip]}]}"
-                        .getBytes(StandardCharsets.UTF_8))),
-                "assets=image&asset_bidx=image|1,2,3&collection=naip", 242, 1080)
-                    .setGeometry(new Polygon().setCoordinates(
-                        Arrays.asList(Arrays.asList(Arrays.asList(-79.09062791441062, 43.08554661560049),
-                            Arrays.asList(-79.0629876337021, 43.08554661560049),
-                            Arrays.asList(-79.0629876337021, 43.067969831431895),
-                            Arrays.asList(-79.09062791441062, 43.067969831431895),
-                            Arrays.asList(-79.09062791441062, 43.08554661560049)))))
-                    .setShowBranding(true));
+        ImageResponse response = dataClient.createStaticImage("naip-atl", new ImageParameters(
+            mapOf("op", BinaryData.fromBytes("and".getBytes(StandardCharsets.UTF_8)), "args", BinaryData.fromBytes(
+                "[{op==, args=[{property=collection}, naip-atl]}, {op=anyinteracts, args=[{property=datetime}, {interval=[2023-01-01T00:00:00Z, 2023-12-31T00:00:00Z]}]}]"
+                    .getBytes(StandardCharsets.UTF_8))),
+            "assets=image&asset_bidx=image|1,2,3&collection=naip-atl", 1080, 1080)
+                .setZoom(13.0D)
+                .setGeometry(new Polygon()
+                    .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.45378097481053, 33.6567321707079),
+                        Arrays.asList(-84.39805886744838, 33.6567321707079),
+                        Arrays.asList(-84.39805886744838, 33.61945681366625),
+                        Arrays.asList(-84.45378097481053, 33.61945681366625),
+                        Arrays.asList(-84.45378097481053, 33.6567321707079)))))
+                .setShowBranding(false)
+                .setImageSize("1080x1080"));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "url"
         Assertions.assertEquals(
-            "https://sample.cmbtazhseqhgeudd.uksouth.geocatalog.spatio.azure.com/data/collections/python-sdk-sentinel-2/image/static/geocatalog-python-sdk-sentinel-2-153d9a7df3794b5e9d66250edfa4711a.png?api-version=2025-04-30-preview",
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/data/collections/naip-atl/image/static/geocatalog-naip-atl-585c9f63a6324cb1acf42007258d9fc9.png?api-version=2025-04-30-preview",
             response.getUrl());
     }
 

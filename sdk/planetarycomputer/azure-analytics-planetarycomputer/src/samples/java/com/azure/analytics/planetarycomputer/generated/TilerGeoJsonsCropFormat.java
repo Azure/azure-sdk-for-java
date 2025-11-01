@@ -4,8 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.CropGeoJsonOptions;
 import com.azure.analytics.planetarycomputer.models.Feature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
@@ -14,24 +14,34 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TilerGeoJsonsCropFormat {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-crop-geo-json.tiler-geo-jsons-crop-format
-        BinaryData response
-            = tilerClient.cropGeoJson("collectionId-0df36a74d7ed", "item-0df36a74d7ed", "png", new CropGeoJsonOptions(),
-                new Feature(new Polygon()
-                    .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-65.75386020444417, 18.252659831448764),
-                        Arrays.asList(-65.75385878091376, 18.252569552371305),
-                        Arrays.asList(-65.75376429311993, 18.252570912467043),
-                        Arrays.asList(-65.75376571660163, 18.252661191551685),
-                        Arrays.asList(-65.75386020444417, 18.252659831448764)))),
-                    FeatureType.FEATURE),
-                null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-crop-geo-json.tiler-geo-jsons-crop-format
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-crop-geo-json.tiler-geo-jsons-crop-format
+        BinaryData response = dataClient.cropGeoJson("naip-atl", "ga_m_3308421_se_16_060_20211114", "crop.png",
+            new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"),
+            new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
+                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
+                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()),
+            null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-crop-geo-json.tiler-geo-jsons-crop-format
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

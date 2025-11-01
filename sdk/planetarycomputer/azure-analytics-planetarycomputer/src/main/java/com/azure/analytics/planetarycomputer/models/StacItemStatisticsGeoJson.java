@@ -6,14 +6,11 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * STAC Item representing a spatiotemporal asset with statistical information.
@@ -36,82 +33,18 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
      * Feature properties
      */
     @Generated
-    private Map<String, BinaryData> properties;
-
-    /*
-     * MSFT Created
-     */
-    @Generated
-    private String createdOn;
-
-    /*
-     * MSFT Updated
-     */
-    @Generated
-    private String updatedOn;
-
-    /*
-     * MSFT Short Description
-     */
-    @Generated
-    private String shortDescription;
-
-    /*
-     * Unique identifier for the feature
-     */
-    @Generated
-    private final String id;
-
-    /*
-     * Bounding box coordinates for the feature
-     */
-    @Generated
-    private final List<Double> boundingBox;
-
-    /*
-     * Stac Version
-     */
-    @Generated
-    private String stacVersion;
-
-    /*
-     * ID of the STAC collection this item belongs to
-     */
-    @Generated
-    private String collection;
-
-    /*
-     * MSFT Timestamp
-     */
-    @Generated
-    private String timestamp;
-
-    /*
-     * MSFT ETag
-     */
-    @Generated
-    private String eTag;
-
-    /*
-     * List of STAC extension URLs used by this item
-     */
-    @Generated
-    private List<String> stacExtensions;
+    private StacItemStatisticsGeoJsonProperties properties;
 
     /**
      * Creates an instance of StacItemStatisticsGeoJson class.
      * 
      * @param geometry the geometry value to set.
      * @param type the type value to set.
-     * @param id the id value to set.
-     * @param boundingBox the boundingBox value to set.
      */
     @Generated
-    private StacItemStatisticsGeoJson(Geometry geometry, FeatureType type, String id, List<Double> boundingBox) {
+    private StacItemStatisticsGeoJson(Geometry geometry, FeatureType type) {
         this.geometry = geometry;
         this.type = type;
-        this.id = id;
-        this.boundingBox = boundingBox;
     }
 
     /**
@@ -140,108 +73,8 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
      * @return the properties value.
      */
     @Generated
-    public Map<String, BinaryData> getProperties() {
+    public StacItemStatisticsGeoJsonProperties getProperties() {
         return this.properties;
-    }
-
-    /**
-     * Get the createdOn property: MSFT Created.
-     * 
-     * @return the createdOn value.
-     */
-    @Generated
-    public String getCreatedOn() {
-        return this.createdOn;
-    }
-
-    /**
-     * Get the updatedOn property: MSFT Updated.
-     * 
-     * @return the updatedOn value.
-     */
-    @Generated
-    public String getUpdatedOn() {
-        return this.updatedOn;
-    }
-
-    /**
-     * Get the shortDescription property: MSFT Short Description.
-     * 
-     * @return the shortDescription value.
-     */
-    @Generated
-    public String getShortDescription() {
-        return this.shortDescription;
-    }
-
-    /**
-     * Get the id property: Unique identifier for the feature.
-     * 
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the boundingBox property: Bounding box coordinates for the feature.
-     * 
-     * @return the boundingBox value.
-     */
-    @Generated
-    public List<Double> getBoundingBox() {
-        return this.boundingBox;
-    }
-
-    /**
-     * Get the stacVersion property: Stac Version.
-     * 
-     * @return the stacVersion value.
-     */
-    @Generated
-    public String getStacVersion() {
-        return this.stacVersion;
-    }
-
-    /**
-     * Get the collection property: ID of the STAC collection this item belongs to.
-     * 
-     * @return the collection value.
-     */
-    @Generated
-    public String getCollection() {
-        return this.collection;
-    }
-
-    /**
-     * Get the timestamp property: MSFT Timestamp.
-     * 
-     * @return the timestamp value.
-     */
-    @Generated
-    public String getTimestamp() {
-        return this.timestamp;
-    }
-
-    /**
-     * Get the eTag property: MSFT ETag.
-     * 
-     * @return the eTag value.
-     */
-    @Generated
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Get the stacExtensions property: List of STAC extension URLs used by this item.
-     * 
-     * @return the stacExtensions value.
-     */
-    @Generated
-    public List<String> getStacExtensions() {
-        return this.stacExtensions;
     }
 
     /**
@@ -253,19 +86,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("geometry", this.geometry);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeStringField("msft:_created", this.createdOn);
-        jsonWriter.writeStringField("msft:_updated", this.updatedOn);
-        jsonWriter.writeStringField("msft:short_description", this.shortDescription);
-        jsonWriter.writeStringField("stac_version", this.stacVersion);
-        jsonWriter.writeStringField("collection", this.collection);
-        jsonWriter.writeStringField("_msft:ts", this.timestamp);
-        jsonWriter.writeStringField("_msft:etag", this.eTag);
-        jsonWriter.writeArrayField("stac_extensions", this.stacExtensions,
-            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -283,17 +104,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
         return jsonReader.readObject(reader -> {
             Geometry geometry = null;
             FeatureType type = null;
-            String id = null;
-            List<Double> boundingBox = null;
-            Map<String, BinaryData> properties = null;
-            String createdOn = null;
-            String updatedOn = null;
-            String shortDescription = null;
-            String stacVersion = null;
-            String collection = null;
-            String timestamp = null;
-            String eTag = null;
-            List<String> stacExtensions = null;
+            StacItemStatisticsGeoJsonProperties properties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -302,44 +113,15 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
                     geometry = Geometry.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = FeatureType.fromString(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("bbox".equals(fieldName)) {
-                    boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("msft:_created".equals(fieldName)) {
-                    createdOn = reader.getString();
-                } else if ("msft:_updated".equals(fieldName)) {
-                    updatedOn = reader.getString();
-                } else if ("msft:short_description".equals(fieldName)) {
-                    shortDescription = reader.getString();
-                } else if ("stac_version".equals(fieldName)) {
-                    stacVersion = reader.getString();
-                } else if ("collection".equals(fieldName)) {
-                    collection = reader.getString();
-                } else if ("_msft:ts".equals(fieldName)) {
-                    timestamp = reader.getString();
-                } else if ("_msft:etag".equals(fieldName)) {
-                    eTag = reader.getString();
-                } else if ("stac_extensions".equals(fieldName)) {
-                    stacExtensions = reader.readArray(reader1 -> reader1.getString());
+                    properties = StacItemStatisticsGeoJsonProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             StacItemStatisticsGeoJson deserializedStacItemStatisticsGeoJson
-                = new StacItemStatisticsGeoJson(geometry, type, id, boundingBox);
+                = new StacItemStatisticsGeoJson(geometry, type);
             deserializedStacItemStatisticsGeoJson.properties = properties;
-            deserializedStacItemStatisticsGeoJson.createdOn = createdOn;
-            deserializedStacItemStatisticsGeoJson.updatedOn = updatedOn;
-            deserializedStacItemStatisticsGeoJson.shortDescription = shortDescription;
-            deserializedStacItemStatisticsGeoJson.stacVersion = stacVersion;
-            deserializedStacItemStatisticsGeoJson.collection = collection;
-            deserializedStacItemStatisticsGeoJson.timestamp = timestamp;
-            deserializedStacItemStatisticsGeoJson.eTag = eTag;
-            deserializedStacItemStatisticsGeoJson.stacExtensions = stacExtensions;
 
             return deserializedStacItemStatisticsGeoJson;
         });

@@ -8,11 +8,11 @@ package com.azure.analytics.planetarycomputer.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.SharedAccessSignatureClient;
 import com.azure.analytics.planetarycomputer.StacClient;
-import com.azure.analytics.planetarycomputer.TilerClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -21,32 +21,32 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-class PlanetaryComputerClientTestBase extends TestProxyTestBase {
-    protected IngestionManagementClient ingestionManagementClient;
+class PlanetaryComputerProClientTestBase extends TestProxyTestBase {
+    protected IngestionClient ingestionClient;
 
     protected StacClient stacClient;
 
-    protected TilerClient tilerClient;
+    protected DataClient dataClient;
 
     protected SharedAccessSignatureClient sharedAccessSignatureClient;
 
     @Override
     protected void beforeTest() {
-        PlanetaryComputerClientBuilder ingestionManagementClientbuilder = new PlanetaryComputerClientBuilder()
+        PlanetaryComputerProClientBuilder ingestionClientbuilder = new PlanetaryComputerProClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            ingestionManagementClientbuilder.credential(new MockTokenCredential());
+            ingestionClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            ingestionManagementClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+            ingestionClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            ingestionManagementClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            ingestionClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        ingestionManagementClient = ingestionManagementClientbuilder.buildIngestionManagementClient();
+        ingestionClient = ingestionClientbuilder.buildIngestionClient();
 
-        PlanetaryComputerClientBuilder stacClientbuilder = new PlanetaryComputerClientBuilder()
+        PlanetaryComputerProClientBuilder stacClientbuilder = new PlanetaryComputerProClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -60,21 +60,21 @@ class PlanetaryComputerClientTestBase extends TestProxyTestBase {
         }
         stacClient = stacClientbuilder.buildStacClient();
 
-        PlanetaryComputerClientBuilder tilerClientbuilder = new PlanetaryComputerClientBuilder()
+        PlanetaryComputerProClientBuilder dataClientbuilder = new PlanetaryComputerProClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            tilerClientbuilder.credential(new MockTokenCredential());
+            dataClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            tilerClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+            dataClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            tilerClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            dataClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        tilerClient = tilerClientbuilder.buildTilerClient();
+        dataClient = dataClientbuilder.buildDataClient();
 
-        PlanetaryComputerClientBuilder sharedAccessSignatureClientbuilder = new PlanetaryComputerClientBuilder()
+        PlanetaryComputerProClientBuilder sharedAccessSignatureClientbuilder = new PlanetaryComputerProClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));

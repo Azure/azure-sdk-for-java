@@ -4,18 +4,18 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.StacAsset;
+import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MosaicsAssetsForPointsGetPointAssetsTests extends PlanetaryComputerClientTestBase {
+public final class MosaicsAssetsForPointsGetPointAssetsTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMosaicsAssetsForPointsGetPointAssetsTests() {
         // method invocation
-        List<StacAsset> response = tilerClient.getMosaicsAssetsForPoint("e32e0b12176246816953d75e3356d613", -122.3321,
-            47.6062, null, null, null, null, null, null);
+        List<StacItemPointAsset> response = dataClient.getMosaicsAssetsForPoint("ba13fc7947b9b585690d84ee61aaa653",
+            -84.43202751899601, 33.63964763972227, 100, 100, 30, true, true, "EPSG:4326");
     }
 }

@@ -10,18 +10,19 @@ import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
 import com.azure.analytics.planetarycomputer.models.StacModelType;
+import com.azure.analytics.planetarycomputer.models.StacProvider;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacItemsGetFeaturesTests extends PlanetaryComputerClientTestBase {
+public final class StacItemsGetFeaturesTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacItemsGetFeaturesTests() {
         // method invocation
-        StacItemCollection response = stacClient.listItems("example-collection", null, null, null);
+        StacItemCollection response = stacClient.getItemCollection("naip-atl", 10, null, null);
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -35,16 +36,30 @@ public final class StacItemsGetFeaturesTests extends PlanetaryComputerClientTest
         Geometry responseFeaturesFirstItemGeometry = responseFeaturesFirstItem.getGeometry();
         Assertions.assertNotNull(responseFeaturesFirstItemGeometry);
         Assertions.assertEquals(GeometryType.POLYGON, responseFeaturesFirstItemGeometry.getType());
-        Assertions.assertEquals("S2A_MSIL2A_20231017T013651_R117_T53SPA_20231017T053413",
-            responseFeaturesFirstItem.getId());
-        Assertions.assertEquals("example-collection", responseFeaturesFirstItem.getCollection());
+        Assertions.assertEquals("ga_m_3308429_nw_16_060_20231008_20240103", responseFeaturesFirstItem.getId());
+        Assertions.assertEquals("naip-atl", responseFeaturesFirstItem.getCollection());
         List<Double> responseFeaturesFirstItemBoundingBox = responseFeaturesFirstItem.getBoundingBox();
-        Assertions.assertEquals(136.11023969131566, responseFeaturesFirstItemBoundingBox.iterator().next());
+        Assertions.assertEquals(-84.504026, responseFeaturesFirstItemBoundingBox.iterator().next());
         StacItemProperties responseFeaturesFirstItemProperties = responseFeaturesFirstItem.getProperties();
         Assertions.assertNotNull(responseFeaturesFirstItemProperties);
-        Assertions.assertEquals("2023-10-17T01:36:51.024000Z", responseFeaturesFirstItemProperties.getDatetime());
+        List<StacProvider> responseFeaturesFirstItemPropertiesProviders
+            = responseFeaturesFirstItemProperties.getProviders();
+        StacProvider responseFeaturesFirstItemPropertiesProvidersFirstItem
+            = responseFeaturesFirstItemPropertiesProviders.iterator().next();
+        Assertions.assertNotNull(responseFeaturesFirstItemPropertiesProvidersFirstItem);
+        Assertions.assertEquals("USDA Farm Service Agency",
+            responseFeaturesFirstItemPropertiesProvidersFirstItem.getName());
+        List<String> responseFeaturesFirstItemPropertiesProvidersFirstItemRoles
+            = responseFeaturesFirstItemPropertiesProvidersFirstItem.getRoles();
+        Assertions.assertEquals("producer",
+            responseFeaturesFirstItemPropertiesProvidersFirstItemRoles.iterator().next());
+        Assertions.assertEquals(
+            "https://www.fsa.usda.gov/programs-and-services/aerial-photography/imagery-programs/naip-imagery/",
+            responseFeaturesFirstItemPropertiesProvidersFirstItem.getUrl());
+        Assertions.assertEquals(0.6D, responseFeaturesFirstItemProperties.getGsd());
+        Assertions.assertEquals("2023-10-08T16:00:00Z", responseFeaturesFirstItemProperties.getDatetime());
         Assertions.assertNotNull(responseFeaturesFirstItem.getAssets());
-        Assertions.assertEquals("2024-09-26T17:46:10.688245Z", responseFeaturesFirstItem.getTimestamp());
-        Assertions.assertEquals("e99a9415-f26f-48ad-9553-3a5dd7260cde", responseFeaturesFirstItem.getETag());
+        Assertions.assertEquals("2025-10-22T11:16:46.001506Z", responseFeaturesFirstItem.getTimestamp());
+        Assertions.assertEquals("3f8c4060-fbac-4595-bb2c-bb5d51fbd193", responseFeaturesFirstItem.getETag());
     }
 }

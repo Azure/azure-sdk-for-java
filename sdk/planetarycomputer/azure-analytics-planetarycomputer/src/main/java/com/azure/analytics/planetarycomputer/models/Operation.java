@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -81,7 +80,7 @@ public final class Operation implements JsonSerializable<Operation> {
      * Error information
      */
     @Generated
-    private ResponseError error;
+    private ErrorInfo error;
 
     /**
      * Creates an instance of Operation class.
@@ -198,7 +197,7 @@ public final class Operation implements JsonSerializable<Operation> {
      * @return the error value.
      */
     @Generated
-    public ResponseError getError() {
+    public ErrorInfo getError() {
         return this.error;
     }
 
@@ -247,7 +246,7 @@ public final class Operation implements JsonSerializable<Operation> {
             OffsetDateTime startTime = null;
             OffsetDateTime finishTime = null;
             Map<String, String> additionalInformation = null;
-            ResponseError error = null;
+            ErrorInfo error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -274,7 +273,7 @@ public final class Operation implements JsonSerializable<Operation> {
                 } else if ("additionalInformation".equals(fieldName)) {
                     additionalInformation = reader.readMap(reader1 -> reader1.getString());
                 } else if ("error".equals(fieldName)) {
-                    error = ResponseError.fromJson(reader);
+                    error = ErrorInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

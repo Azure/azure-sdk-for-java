@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionSourcesCreateTests extends PlanetaryComputerClientTestBase {
+public final class IngestionSourcesCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionSourcesCreateTests() {
         // method invocation
-        IngestionSource response = ingestionManagementClient
-            .createSource(new SharedAccessSignatureTokenIngestionSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-                new SharedAccessSignatureTokenConnection("https://sample.blob.core.windows.net/sample")
+        IngestionSource response = ingestionClient
+            .createSource(new SharedAccessSignatureTokenIngestionSource("00000000-0000-0000-0000-000000000000",
+                new SharedAccessSignatureTokenConnection("https://SANITIZED.blob.core.windows.net/sample-container")
                     .setSharedAccessSignatureToken("fakeTokenPlaceholder")));
 
         // response assertion
@@ -28,7 +28,7 @@ public final class IngestionSourcesCreateTests extends PlanetaryComputerClientTe
         // verify property "kind"
         Assertions.assertEquals(IngestionSourceType.SHARED_ACCESS_SIGNATURE_TOKEN, response.getKind());
         // verify property "id"
-        Assertions.assertEquals("36fcb8da-9b15-49e0-b400-0d2e751e2061", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "created"
         Assertions.assertNotNull(response.getCreated());
     }

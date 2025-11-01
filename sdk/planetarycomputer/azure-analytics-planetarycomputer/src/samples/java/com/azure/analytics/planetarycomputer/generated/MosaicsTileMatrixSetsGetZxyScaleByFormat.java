@@ -4,22 +4,27 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class MosaicsTileMatrixSetsGetZxyScaleByFormat {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-tile.mosaics-tile-matrix-sets-get-zxy-scale-by-format
-        BinaryData response = tilerClient.getMosaicsTile("search-0df36a74d7ed", "WebMercatorQuad", 12.0, 47.6062, 17.0,
-            1.0, "png", new GetMosaicTileOptions(), null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-tile.mosaics-tile-matrix-sets-get-zxy-scale-by-format
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-tile.mosaics-tile-matrix-sets-get-zxy-scale-by-format
+        BinaryData response = dataClient.getMosaicsTile("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad", 13.0,
+            2174.0, 3282.0, 1.0, "png",
+            new GetMosaicTileOptions().setAssets(Arrays.asList("image"))
+                .setAssetBandIndices("image|1,2,3")
+                .setCollection("naip-atl"),
+            null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-tile.mosaics-tile-matrix-sets-get-zxy-scale-by-format
     }
 }

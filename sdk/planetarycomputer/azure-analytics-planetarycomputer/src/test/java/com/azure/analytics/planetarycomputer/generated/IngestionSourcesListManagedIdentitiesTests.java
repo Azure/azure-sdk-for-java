@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionSourcesListManagedIdentitiesTests extends PlanetaryComputerClientTestBase {
+public final class IngestionSourcesListManagedIdentitiesTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionSourcesListManagedIdentitiesTests() {
         // method invocation
-        PagedIterable<ManagedIdentityMetadata> response = ingestionManagementClient.listManagedIdentities();
+        PagedIterable<ManagedIdentityMetadata> response = ingestionClient.listManagedIdentities();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         ManagedIdentityMetadata firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
         // verify property "objectId"
-        Assertions.assertEquals("eaea70e8-94af-4201-99d3-8e6fa2c34c76", firstItem.getObjectId());
+        Assertions.assertEquals("ebad594e-84af-49da-89db-7bffc9c39f3a", firstItem.getObjectId());
         // verify property "resourceId"
         Assertions.assertEquals(
-            "/subscriptions/c7661b33-24a9-4e24-a2f4-cf1cc2c5d6b3/resourcegroups/KunStorage1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/GeoCatalog_Demo_Identity",
+            "/subscriptions/fcdfe1b7-8458-44e1-be61-1422e03cb202/resourcegroups/devasingh-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/devasingh-test-identity",
             firstItem.getResourceId());
     }
 }

@@ -14,22 +14,21 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionRunsCreateTests extends PlanetaryComputerClientTestBase {
+public final class IngestionRunsCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionRunsCreateTests() {
         // method invocation
-        IngestionRun response
-            = ingestionManagementClient.createRun("collectionId", "64224dad-2778-409e-95b1-0675522bbaa4");
+        IngestionRun response = ingestionClient.createRun("naip-atl", "00000000-0000-0000-0000-000000000000");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "id"
-        Assertions.assertEquals("728f4dad-2778-409e-95b1-0675522bbaa4", response.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", response.getId());
         // verify property "operation"
         IngestionRunOperation responseOperation = response.getOperation();
         Assertions.assertNotNull(responseOperation);
-        Assertions.assertEquals("728f4dad-2778-409e-95b1-0675522bbaa4", responseOperation.getId());
+        Assertions.assertEquals("00000000-0000-0000-0000-000000000000", responseOperation.getId());
         Assertions.assertEquals(OperationStatus.PENDING, responseOperation.getStatus());
         Assertions.assertNotNull(responseOperation.getCreationTime());
         List<OperationStatusHistoryItem> responseOperationStatusHistory = responseOperation.getStatusHistory();
@@ -45,11 +44,12 @@ public final class IngestionRunsCreateTests extends PlanetaryComputerClientTestB
         // verify property "creationTime"
         Assertions.assertNotNull(response.getCreationTime());
         // verify property "sourceCatalogUrl"
-        Assertions.assertEquals("https://sample.blob.core.windows.net/observatory/purple-tiger_predict_clean_10.json",
+        Assertions.assertEquals(
+            "https://raw.githubusercontent.com/aloverro/mpcpro-sample-datasets/main/datasets/planetary_computer/naip/catalog.json",
             response.getSourceCatalogUrl());
         // verify property "skipExistingItems"
-        Assertions.assertEquals(false, response.isSkipExistingItems());
+        Assertions.assertEquals(true, response.isSkipExistingItems());
         // verify property "keepOriginalAssets"
-        Assertions.assertEquals(false, response.isKeepOriginalAssets());
+        Assertions.assertEquals(true, response.isKeepOriginalAssets());
     }
 }

@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionsGetAllTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionsGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionsGetAllTests() {
@@ -33,14 +33,15 @@ public final class StacCollectionsGetAllTests extends PlanetaryComputerClientTes
         Assertions.assertNotNull(responseLinksFirstItem);
         Assertions.assertEquals("root", responseLinksFirstItem.getRel());
         Assertions.assertEquals(StacLinkType.APPLICATION_JSON, responseLinksFirstItem.getType());
-        Assertions.assertEquals("https://sample.cmbtazhseqhgeudd.uksouth.geocatalog.spatio.azure.com/stac/",
+        Assertions.assertEquals(
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/",
             responseLinksFirstItem.getHref());
         // verify property "collections"
         List<StacCollection> responseCollections = response.getCollections();
         StacCollection responseCollectionsFirstItem = responseCollections.iterator().next();
         Assertions.assertNotNull(responseCollectionsFirstItem);
-        Assertions.assertEquals("2024-11-06T14:43:20.028837Z", responseCollectionsFirstItem.getCreatedOn());
-        Assertions.assertEquals("2024-11-06T14:43:20.028837Z", responseCollectionsFirstItem.getUpdatedOn());
+        Assertions.assertEquals("2025-03-11T19:54:50.067546Z", responseCollectionsFirstItem.getCreatedOn());
+        Assertions.assertEquals("2025-03-11T19:54:50.067546Z", responseCollectionsFirstItem.getUpdatedOn());
         Assertions.assertEquals("An example collection", responseCollectionsFirstItem.getShortDescription());
         Assertions.assertEquals("example-collection", responseCollectionsFirstItem.getId());
         Assertions.assertEquals("An example collection", responseCollectionsFirstItem.getDescription());
@@ -52,7 +53,7 @@ public final class StacCollectionsGetAllTests extends PlanetaryComputerClientTes
         Assertions.assertEquals(StacLinkType.APPLICATION_GEO_JSON,
             responseCollectionsFirstItemLinksFirstItem.getType());
         Assertions.assertEquals(
-            "https://sample.cmbtazhseqhgeudd.uksouth.geocatalog.spatio.azure.com/stac/collections/example-collection/items",
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/example-collection/items",
             responseCollectionsFirstItemLinksFirstItem.getHref());
         Assertions.assertEquals("Example Collection", responseCollectionsFirstItem.getTitle());
         Assertions.assertEquals("Collection", responseCollectionsFirstItem.getType());

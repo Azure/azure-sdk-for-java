@@ -4,22 +4,24 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.GetPartOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class TilerPartsGetCroppedToBoundingBoxWidthByHeight {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-part-with-dimensions.tiler-parts-get-cropped-to-bounding-box-width-by-height
-        BinaryData response = tilerClient.getPartWithDimensions("naip", "naip_1m_2019_3857", -80.627296, 27.997976,
-            -80.560208, 28.064522, 4.1, 0.08, "png", new GetPartOptions(), null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-part-with-dimensions.tiler-parts-get-cropped-to-bounding-box-width-by-height
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-part-with-dimensions.tiler-parts-get-cropped-to-bounding-box-width-by-height
+        BinaryData response = dataClient.getPartWithDimensions("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.393,
+            33.6798, -84.367, 33.7058, 256.0, 256.0, "png",
+            new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-part-with-dimensions.tiler-parts-get-cropped-to-bounding-box-width-by-height
     }
 }

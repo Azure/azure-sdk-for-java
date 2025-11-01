@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class IngestionOperationsDeleteAllTests extends PlanetaryComputerClientTestBase {
+public final class IngestionOperationsDeleteAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testIngestionOperationsDeleteAllTests() {
         // method invocation
-        ingestionManagementClient.cancelAllOperations();
+        ingestionClient.cancelAllOperations();
     }
 }

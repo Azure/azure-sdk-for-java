@@ -18,11 +18,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
- * PgSTAC Search entry.
+ * Stored search query
  * 
- * ref:
- * https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915Stored
- * search query in the PgSTAC database.
+ * See:
+ * https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915.
  */
 @Immutable
 public final class TilerStacSearchDefinition implements JsonSerializable<TilerStacSearchDefinition> {

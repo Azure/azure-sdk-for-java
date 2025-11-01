@@ -4,8 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,16 +14,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionsUpdate {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-update.ingestions-update
-        BinaryData definition = BinaryData.fromString(
-            "{\"displayName\":\"test-ingestion1\",\"keepOriginalAssets\":false,\"skipExistingItems\":false,\"sourceCatalogUrl\":\"https://uksouthdatazoo.blob.core.windows.net/impactobservatory\"}");
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-update.ingestions-update
+        BinaryData body
+            = BinaryData.fromString("{\"importType\":\"StaticCatalog\",\"displayName\":\"Updated Ingestion Name\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = ingestionManagementClient.updateWithResponse("potsdam-stacforge",
-            "5e961a4c-7c3e-40ca-b151-2e574bae1635", definition, requestOptions);
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-update.ingestions-update
+        Response<BinaryData> response = ingestionClient.updateWithResponse("naip-atl",
+            "00000000-0000-0000-0000-000000000000", body, requestOptions);
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-update.ingestions-update
     }
 }

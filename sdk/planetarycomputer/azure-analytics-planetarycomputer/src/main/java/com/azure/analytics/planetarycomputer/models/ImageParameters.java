@@ -18,7 +18,7 @@ import java.util.Map;
  * Parameters for requesting a rendered image from a collection.
  */
 @Fluent
-public final class ImageRequest implements JsonSerializable<ImageRequest> {
+public final class ImageParameters implements JsonSerializable<ImageParameters> {
     /*
      * Cql
      */
@@ -68,7 +68,7 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
     private String imageSize;
 
     /**
-     * Creates an instance of ImageRequest class.
+     * Creates an instance of ImageParameters class.
      * 
      * @param cql the cql value to set.
      * @param renderParameters the renderParameters value to set.
@@ -76,7 +76,7 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
      * @param rows the rows value to set.
      */
     @Generated
-    public ImageRequest(Map<String, BinaryData> cql, String renderParameters, int columns, int rows) {
+    public ImageParameters(Map<String, BinaryData> cql, String renderParameters, int columns, int rows) {
         this.cql = cql;
         this.renderParameters = renderParameters;
         this.columns = columns;
@@ -107,10 +107,10 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
      * Set the zoom property: Zoom.
      * 
      * @param zoom the zoom value to set.
-     * @return the ImageRequest object itself.
+     * @return the ImageParameters object itself.
      */
     @Generated
-    public ImageRequest setZoom(Double zoom) {
+    public ImageParameters setZoom(Double zoom) {
         this.zoom = zoom;
         return this;
     }
@@ -129,10 +129,10 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
      * Set the geometry property: Geometry.
      * 
      * @param geometry the geometry value to set.
-     * @return the ImageRequest object itself.
+     * @return the ImageParameters object itself.
      */
     @Generated
-    public ImageRequest setGeometry(Geometry geometry) {
+    public ImageParameters setGeometry(Geometry geometry) {
         this.geometry = geometry;
         return this;
     }
@@ -181,10 +181,10 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
      * Set the showBranding property: Whether to include branding on the output image.
      * 
      * @param showBranding the showBranding value to set.
-     * @return the ImageRequest object itself.
+     * @return the ImageParameters object itself.
      */
     @Generated
-    public ImageRequest setShowBranding(Boolean showBranding) {
+    public ImageParameters setShowBranding(Boolean showBranding) {
         this.showBranding = showBranding;
         return this;
     }
@@ -203,10 +203,10 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
      * Set the imageSize property: Image size.
      * 
      * @param imageSize the imageSize value to set.
-     * @return the ImageRequest object itself.
+     * @return the ImageParameters object itself.
      */
     @Generated
-    public ImageRequest setImageSize(String imageSize) {
+    public ImageParameters setImageSize(String imageSize) {
         this.imageSize = imageSize;
         return this;
     }
@@ -231,16 +231,16 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
     }
 
     /**
-     * Reads an instance of ImageRequest from the JsonReader.
+     * Reads an instance of ImageParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ImageRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ImageParameters if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ImageRequest.
+     * @throws IOException If an error occurs while reading the ImageParameters.
      */
     @Generated
-    public static ImageRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static ImageParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Map<String, BinaryData> cql = null;
             String renderParameters = null;
@@ -275,13 +275,13 @@ public final class ImageRequest implements JsonSerializable<ImageRequest> {
                     reader.skipChildren();
                 }
             }
-            ImageRequest deserializedImageRequest = new ImageRequest(cql, renderParameters, columns, rows);
-            deserializedImageRequest.zoom = zoom;
-            deserializedImageRequest.geometry = geometry;
-            deserializedImageRequest.showBranding = showBranding;
-            deserializedImageRequest.imageSize = imageSize;
+            ImageParameters deserializedImageParameters = new ImageParameters(cql, renderParameters, columns, rows);
+            deserializedImageParameters.zoom = zoom;
+            deserializedImageParameters.geometry = geometry;
+            deserializedImageParameters.showBranding = showBranding;
+            deserializedImageParameters.imageSize = imageSize;
 
-            return deserializedImageRequest;
+            return deserializedImageParameters;
         });
     }
 }

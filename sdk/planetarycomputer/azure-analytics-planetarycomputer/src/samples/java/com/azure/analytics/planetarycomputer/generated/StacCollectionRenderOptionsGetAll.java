@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.RenderOption;
 import com.azure.core.util.Configuration;
@@ -14,11 +14,11 @@ import java.util.List;
 public class StacCollectionRenderOptionsGetAll {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-render-options.stac-collection-render-options-get-all
-        List<RenderOption> response = stacClient.listRenderOptions("sentinel-2-l2a-tutorial-7");
+        List<RenderOption> response = stacClient.listRenderOptions("naip-atl");
         // END:com.azure.analytics.planetarycomputer.generated.stac-list-render-options.stac-collection-render-options-get-all
     }
 }

@@ -10,6 +10,7 @@ import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
 import com.azure.analytics.planetarycomputer.models.StacLink;
 import com.azure.analytics.planetarycomputer.models.StacLinkType;
+import com.azure.analytics.planetarycomputer.models.StacProvider;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -17,23 +18,29 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacCollectionAssetsCreateTests extends PlanetaryComputerClientTestBase {
+public final class StacCollectionAssetsCreateTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacCollectionAssetsCreateTests() {
         // method invocation
-        StacCollection response = stacClient.createCollectionAsset("test-collection-d45537668d06", null);
+        StacCollection response = stacClient.createCollectionAsset("naip-atl", null);
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "createdOn"
-        Assertions.assertEquals("2024-11-06T22:41:26.982611Z", response.getCreatedOn());
+        Assertions.assertEquals("2025-10-22T11:14:31.811918Z", response.getCreatedOn());
         // verify property "updatedOn"
-        Assertions.assertEquals("2024-11-06T22:41:27.735413Z", response.getUpdatedOn());
+        Assertions.assertEquals("2025-10-28T18:49:28.953860Z", response.getUpdatedOn());
+        // verify property "stacExtensions"
+        List<String> responseStacExtensions = response.getStacExtensions();
+        Assertions.assertEquals("https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+            responseStacExtensions.iterator().next());
         // verify property "id"
-        Assertions.assertEquals("test-collection-b07e7de4387b", response.getId());
+        Assertions.assertEquals("naip-atl", response.getId());
         // verify property "description"
-        Assertions.assertEquals("A collection for integration tests purposes", response.getDescription());
+        Assertions.assertEquals(
+            "A Subset of NAIP imagery for sample MPC Pro GeoCatalog deployments. Includes multiple city and national park focus areas, useful for quick product evaluation. - Updated for testing",
+            response.getDescription());
         // verify property "stacVersion"
         Assertions.assertEquals("1.0.0", response.getStacVersion());
         // verify property "links"
@@ -43,16 +50,18 @@ public final class StacCollectionAssetsCreateTests extends PlanetaryComputerClie
         Assertions.assertEquals("items", responseLinksFirstItem.getRel());
         Assertions.assertEquals(StacLinkType.APPLICATION_GEO_JSON, responseLinksFirstItem.getType());
         Assertions.assertEquals(
-            "https://sample.cmbtazhseqhgeudd.uksouth.geocatalog.spatio.azure.com/stac/collections/test-collection-b07e7de4387b/items",
+            "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com/stac/collections/naip-atl/items",
             responseLinksFirstItem.getHref());
         // verify property "title"
-        Assertions.assertEquals("Test Collection b07e7de4387b", response.getTitle());
+        Assertions.assertEquals("NAIP Atlanta (MPC Pro Sample Datasets)", response.getTitle());
         // verify property "type"
         Assertions.assertEquals("Collection", response.getType());
         // verify property "assets"
         Assertions.assertNotNull(response.getAssets());
+        // verify property "itemAssets"
+        Assertions.assertNotNull(response.getItemAssets());
         // verify property "license"
-        Assertions.assertEquals("CC-BY-4.0", response.getLicense());
+        Assertions.assertEquals("proprietary", response.getLicense());
         // verify property "extent"
         StacExtensionExtent responseExtent = response.getExtent();
         Assertions.assertNotNull(responseExtent);
@@ -60,11 +69,23 @@ public final class StacCollectionAssetsCreateTests extends PlanetaryComputerClie
         Assertions.assertNotNull(responseExtentSpatial);
         List<List<Double>> responseExtentSpatialBoundingBox = responseExtentSpatial.getBoundingBox();
         List<Double> responseExtentSpatialBoundingBoxFirstItem = responseExtentSpatialBoundingBox.iterator().next();
-        Assertions.assertEquals(-180.0, responseExtentSpatialBoundingBoxFirstItem.iterator().next());
+        Assertions.assertEquals(-85.605165, responseExtentSpatialBoundingBoxFirstItem.iterator().next());
         StacCollectionTemporalExtent responseExtentTemporal = responseExtent.getTemporal();
         Assertions.assertNotNull(responseExtentTemporal);
         List<List<OffsetDateTime>> responseExtentTemporalInterval = responseExtentTemporal.getInterval();
         List<OffsetDateTime> responseExtentTemporalIntervalFirstItem = responseExtentTemporalInterval.iterator().next();
         Assertions.assertNotNull(responseExtentTemporalIntervalFirstItem.iterator().next());
+        // verify property "providers"
+        List<StacProvider> responseProviders = response.getProviders();
+        StacProvider responseProvidersFirstItem = responseProviders.iterator().next();
+        Assertions.assertNotNull(responseProvidersFirstItem);
+        Assertions.assertEquals("USDA Farm Service Agency", responseProvidersFirstItem.getName());
+        List<String> responseProvidersFirstItemRoles = responseProvidersFirstItem.getRoles();
+        Assertions.assertEquals("producer", responseProvidersFirstItemRoles.iterator().next());
+        Assertions.assertEquals(
+            "https://www.fsa.usda.gov/programs-and-services/aerial-photography/imagery-programs/naip-imagery/",
+            responseProvidersFirstItem.getUrl());
+        // verify property "summaries"
+        Assertions.assertNotNull(response.getSummaries());
     }
 }

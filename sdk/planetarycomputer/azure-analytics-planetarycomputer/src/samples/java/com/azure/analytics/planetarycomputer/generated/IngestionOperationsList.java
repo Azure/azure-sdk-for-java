@@ -4,8 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionManagementClient;
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
@@ -13,13 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionOperationsList {
     public static void main(String[] args) {
-        IngestionManagementClient ingestionManagementClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        IngestionClient ingestionClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionManagementClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-list-operations.ingestion-operations-list
-        PagedIterable<Operation> response
-            = ingestionManagementClient.listOperations(null, null, "c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", null);
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-list-operations.ingestion-operations-list
+                .buildIngestionClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-list-operations.ingestion-operations-list
+        PagedIterable<Operation> response = ingestionClient.listOperations(null, null, null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-list-operations.ingestion-operations-list
     }
 }

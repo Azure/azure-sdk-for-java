@@ -57,12 +57,10 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
     private NoDataType noDataType;
 
     /*
-     * Colorinterp
-     * 
      * Color interpretation
      */
     @Generated
-    private List<String> colorinterp;
+    private List<String> colorInterpretation;
 
     /*
      * Driver
@@ -92,7 +90,7 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
      * Overviews
      */
     @Generated
-    private List<String> overviews;
+    private List<Integer> overviews;
 
     /*
      * Scales
@@ -123,6 +121,12 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
      */
     @Generated
     private Integer maxZoom;
+
+    /*
+     * Coordinate Reference System
+     */
+    @Generated
+    private String coordinateReferenceSystem;
 
     /**
      * Creates an instance of TilerInfo class.
@@ -191,15 +195,13 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
     }
 
     /**
-     * Get the colorinterp property: Colorinterp
+     * Get the colorInterpretation property: Color interpretation.
      * 
-     * Color interpretation.
-     * 
-     * @return the colorinterp value.
+     * @return the colorInterpretation value.
      */
     @Generated
-    public List<String> getColorinterp() {
-        return this.colorinterp;
+    public List<String> getColorInterpretation() {
+        return this.colorInterpretation;
     }
 
     /**
@@ -248,7 +250,7 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
      * @return the overviews value.
      */
     @Generated
-    public List<String> getOverviews() {
+    public List<Integer> getOverviews() {
         return this.overviews;
     }
 
@@ -303,6 +305,16 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
     }
 
     /**
+     * Get the coordinateReferenceSystem property: Coordinate Reference System.
+     * 
+     * @return the coordinateReferenceSystem value.
+     */
+    @Generated
+    public String getCoordinateReferenceSystem() {
+        return this.coordinateReferenceSystem;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -316,18 +328,20 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
         jsonWriter.writeArrayField("band_descriptions", this.bandDescriptions,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
         jsonWriter.writeStringField("nodata_type", this.noDataType == null ? null : this.noDataType.toString());
-        jsonWriter.writeArrayField("colorinterp", this.colorinterp, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("colorinterp", this.colorInterpretation,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("driver", this.driver);
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeNumberField("width", this.width);
         jsonWriter.writeNumberField("height", this.height);
-        jsonWriter.writeArrayField("overviews", this.overviews, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("overviews", this.overviews, (writer, element) -> writer.writeInt(element));
         jsonWriter.writeArrayField("scales", this.scales, (writer, element) -> writer.writeInt(element));
         jsonWriter.writeArrayField("offsets", this.offsets, (writer, element) -> writer.writeInt(element));
         jsonWriter.writeMapField("colormap", this.colormap,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
         jsonWriter.writeNumberField("minzoom", this.minZoom);
         jsonWriter.writeNumberField("maxzoom", this.maxZoom);
+        jsonWriter.writeStringField("crs", this.coordinateReferenceSystem);
         return jsonWriter.writeEndObject();
     }
 
@@ -348,17 +362,18 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
             List<List<BinaryData>> bandMetadata = null;
             List<List<String>> bandDescriptions = null;
             NoDataType noDataType = null;
-            List<String> colorinterp = null;
+            List<String> colorInterpretation = null;
             String driver = null;
             Integer count = null;
             Integer width = null;
             Integer height = null;
-            List<String> overviews = null;
+            List<Integer> overviews = null;
             List<Integer> scales = null;
             List<Integer> offsets = null;
             Map<String, List<String>> colormap = null;
             Integer minZoom = null;
             Integer maxZoom = null;
+            String coordinateReferenceSystem = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -375,7 +390,7 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
                 } else if ("nodata_type".equals(fieldName)) {
                     noDataType = NoDataType.fromString(reader.getString());
                 } else if ("colorinterp".equals(fieldName)) {
-                    colorinterp = reader.readArray(reader1 -> reader1.getString());
+                    colorInterpretation = reader.readArray(reader1 -> reader1.getString());
                 } else if ("driver".equals(fieldName)) {
                     driver = reader.getString();
                 } else if ("count".equals(fieldName)) {
@@ -385,7 +400,7 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
                 } else if ("height".equals(fieldName)) {
                     height = reader.getNullable(JsonReader::getInt);
                 } else if ("overviews".equals(fieldName)) {
-                    overviews = reader.readArray(reader1 -> reader1.getString());
+                    overviews = reader.readArray(reader1 -> reader1.getInt());
                 } else if ("scales".equals(fieldName)) {
                     scales = reader.readArray(reader1 -> reader1.getInt());
                 } else if ("offsets".equals(fieldName)) {
@@ -396,6 +411,8 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
                     minZoom = reader.getNullable(JsonReader::getInt);
                 } else if ("maxzoom".equals(fieldName)) {
                     maxZoom = reader.getNullable(JsonReader::getInt);
+                } else if ("crs".equals(fieldName)) {
+                    coordinateReferenceSystem = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -404,7 +421,7 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
             deserializedTilerInfo.bandMetadata = bandMetadata;
             deserializedTilerInfo.bandDescriptions = bandDescriptions;
             deserializedTilerInfo.noDataType = noDataType;
-            deserializedTilerInfo.colorinterp = colorinterp;
+            deserializedTilerInfo.colorInterpretation = colorInterpretation;
             deserializedTilerInfo.driver = driver;
             deserializedTilerInfo.count = count;
             deserializedTilerInfo.width = width;
@@ -415,6 +432,7 @@ public final class TilerInfo implements JsonSerializable<TilerInfo> {
             deserializedTilerInfo.colormap = colormap;
             deserializedTilerInfo.minZoom = minZoom;
             deserializedTilerInfo.maxZoom = maxZoom;
+            deserializedTilerInfo.coordinateReferenceSystem = coordinateReferenceSystem;
 
             return deserializedTilerInfo;
         });

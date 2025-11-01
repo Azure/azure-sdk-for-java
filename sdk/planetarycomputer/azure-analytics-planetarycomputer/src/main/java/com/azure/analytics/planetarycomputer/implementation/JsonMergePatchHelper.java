@@ -5,7 +5,7 @@
 package com.azure.analytics.planetarycomputer.implementation;
 
 import com.azure.analytics.planetarycomputer.models.Geometry;
-import com.azure.analytics.planetarycomputer.models.Ingestion;
+import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.StacAsset;
 import com.azure.analytics.planetarycomputer.models.StacContextExtension;
 import com.azure.analytics.planetarycomputer.models.StacItemOrStacItemCollection;
@@ -18,20 +18,21 @@ import java.util.List;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
-    private static IngestionAccessor ingestionAccessor;
+    private static IngestionDefinitionAccessor ingestionDefinitionAccessor;
 
-    public interface IngestionAccessor {
-        Ingestion prepareModelForJsonMergePatch(Ingestion ingestion, boolean jsonMergePatchEnabled);
+    public interface IngestionDefinitionAccessor {
+        IngestionDefinition prepareModelForJsonMergePatch(IngestionDefinition ingestionDefinition,
+            boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(Ingestion ingestion);
+        boolean isJsonMergePatch(IngestionDefinition ingestionDefinition);
     }
 
-    public static void setIngestionAccessor(IngestionAccessor accessor) {
-        ingestionAccessor = accessor;
+    public static void setIngestionDefinitionAccessor(IngestionDefinitionAccessor accessor) {
+        ingestionDefinitionAccessor = accessor;
     }
 
-    public static IngestionAccessor getIngestionAccessor() {
-        return ingestionAccessor;
+    public static IngestionDefinitionAccessor getIngestionDefinitionAccessor() {
+        return ingestionDefinitionAccessor;
     }
 
     private static StacLinkAccessor stacLinkAccessor;

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.StacMosaic;
 import com.azure.core.util.Configuration;
@@ -14,11 +14,11 @@ import java.util.List;
 public class StacCollectionMosaicsGetAll {
     public static void main(String[] args) {
         StacClient stacClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-mosaics.stac-collection-mosaics-get-all
-        List<StacMosaic> response = stacClient.listMosaics("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        List<StacMosaic> response = stacClient.listMosaics("naip-atl");
         // END:com.azure.analytics.planetarycomputer.generated.stac-list-mosaics.stac-collection-mosaics-get-all
     }
 }

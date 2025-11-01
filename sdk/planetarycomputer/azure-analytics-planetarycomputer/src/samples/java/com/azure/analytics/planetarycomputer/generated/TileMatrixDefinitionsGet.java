@@ -4,20 +4,20 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.TileMatrixSet;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TileMatrixDefinitionsGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-tile-matrix-definitions.tile-matrix-definitions-get
-        TileMatrixSet response = tilerClient.getTileMatrixDefinitions("WebMercatorQuad");
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-tile-matrix-definitions.tile-matrix-definitions-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile-matrix-definitions.tile-matrix-definitions-get
+        TileMatrixSet response = dataClient.getTileMatrixDefinitions("WebMercatorQuad");
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-tile-matrix-definitions.tile-matrix-definitions-get
     }
 }

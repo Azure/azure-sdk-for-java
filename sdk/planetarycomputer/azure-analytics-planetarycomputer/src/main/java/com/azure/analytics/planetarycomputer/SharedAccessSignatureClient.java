@@ -20,9 +20,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous PlanetaryComputerClient type.
+ * Initializes a new instance of the synchronous PlanetaryComputerProClient type.
  */
-@ServiceClient(builder = PlanetaryComputerClientBuilder.class)
+@ServiceClient(builder = PlanetaryComputerProClientBuilder.class)
 public final class SharedAccessSignatureClient {
     @Generated
     private final SharedAccessSignaturesImpl serviceClient;
@@ -38,7 +38,7 @@ public final class SharedAccessSignatureClient {
     }
 
     /**
-     * sign an HREF in the format of a URL and returns a SingedLink
+     * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
      * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
@@ -123,7 +123,7 @@ public final class SharedAccessSignatureClient {
     }
 
     /**
-     * revoke a SAS Token for the given Azure Blob storage account
+     * Revoke SAS token for the managed storage account of this GeoCatalog.
      * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
@@ -152,7 +152,7 @@ public final class SharedAccessSignatureClient {
     }
 
     /**
-     * sign an HREF in the format of a URL and returns a SingedLink
+     * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
      * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
@@ -184,7 +184,7 @@ public final class SharedAccessSignatureClient {
     }
 
     /**
-     * sign an HREF in the format of a URL and returns a SingedLink
+     * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
      * 
      * Signs a HREF (a link URL) by appending a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
@@ -270,7 +270,7 @@ public final class SharedAccessSignatureClient {
     }
 
     /**
-     * revoke a SAS Token for the given Azure Blob storage account
+     * Revoke SAS token for the managed storage account of this GeoCatalog.
      * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
@@ -298,7 +298,7 @@ public final class SharedAccessSignatureClient {
     }
 
     /**
-     * revoke a SAS Token for the given Azure Blob storage account
+     * Revoke SAS token for the managed storage account of this GeoCatalog.
      * 
      * Revoke a [SAS
      * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)

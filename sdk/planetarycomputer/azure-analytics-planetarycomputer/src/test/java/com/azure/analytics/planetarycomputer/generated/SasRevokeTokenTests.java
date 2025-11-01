@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class SasRevokeTokenTests extends PlanetaryComputerClientTestBase {
+public final class SasRevokeTokenTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testSasRevokeTokenTests() {

@@ -6,18 +6,23 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileOptions;
 import com.azure.core.util.BinaryData;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class MosaicsTileMatrixSetsGetZxyScaleByFormatTests extends PlanetaryComputerClientTestBase {
+public final class MosaicsTileMatrixSetsGetZxyScaleByFormatTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testMosaicsTileMatrixSetsGetZxyScaleByFormatTests() {
         // method invocation
-        BinaryData response = tilerClient.getMosaicsTile("search-0df36a74d7ed", "WebMercatorQuad", 12.0, 47.6062, 17.0,
-            1.0, "png", new GetMosaicTileOptions(), null);
+        BinaryData response = dataClient.getMosaicsTile("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad", 13.0,
+            2174.0, 3282.0, 1.0, "png",
+            new GetMosaicTileOptions().setAssets(Arrays.asList("image"))
+                .setAssetBandIndices("image|1,2,3")
+                .setCollection("naip-atl"),
+            null);
 
         // response assertion
         Assertions.assertNotNull(response);

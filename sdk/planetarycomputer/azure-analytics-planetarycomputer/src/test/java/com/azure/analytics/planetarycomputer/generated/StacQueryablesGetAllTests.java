@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StacQueryablesGetAllTests extends PlanetaryComputerClientTestBase {
+public final class StacQueryablesGetAllTests extends PlanetaryComputerProClientTestBase {
     @Test
     @Disabled
     public void testStacQueryablesGetAllTests() {

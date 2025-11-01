@@ -4,22 +4,24 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.BandStatistics;
 import com.azure.analytics.planetarycomputer.models.GetAssetStatisticsOptions;
-import com.azure.analytics.planetarycomputer.models.StacAssetStatistics;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
+import java.util.Map;
 
 public class TilerAssetStatisticsGetAll {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-asset-statistics.tiler-asset-statistics-get-all
-        StacAssetStatistics response
-            = tilerClient.getAssetStatistics("{{collectionId}}", "{{itemId}}", new GetAssetStatisticsOptions());
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-asset-statistics.tiler-asset-statistics-get-all
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-asset-statistics.tiler-asset-statistics-get-all
+        Map<String, Map<String, BandStatistics>> response = dataClient.getAssetStatistics("naip-atl",
+            "ga_m_3308421_se_16_060_20211114", new GetAssetStatisticsOptions().setAssets(Arrays.asList("image")));
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-asset-statistics.tiler-asset-statistics-get-all
     }
 }

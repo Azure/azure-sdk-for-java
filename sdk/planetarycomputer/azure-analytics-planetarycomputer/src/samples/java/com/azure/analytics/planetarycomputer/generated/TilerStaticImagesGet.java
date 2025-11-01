@@ -4,20 +4,21 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
-import com.azure.analytics.planetarycomputer.TilerClient;
+import com.azure.analytics.planetarycomputer.DataClient;
+import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TilerStaticImagesGet {
     public static void main(String[] args) {
-        TilerClient tilerClient
-            = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+        DataClient dataClient
+            = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-static-image.tiler-static-images-get
-        BinaryData response = tilerClient.getStaticImage("collectionId-23", "id-23");
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-static-image.tiler-static-images-get
+                .buildDataClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-static-image.tiler-static-images-get
+        BinaryData response
+            = dataClient.getStaticImage("naip-atl", "geocatalog-naip-atl-000000008a4c45329aecf476d560e8d3.png");
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-static-image.tiler-static-images-get
     }
 }
