@@ -269,7 +269,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;6.0.0;6.1.0-be
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;6.0.0;6.1.0-beta.1
 com.azure.spring:spring-cloud-azure-testcontainers;6.0.0;6.1.0-beta.1
 com.azure:azure-spring-data-cosmos;6.0.0;6.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager;2.54.0;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager;2.56.0;2.57.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.53.5;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.4;2.54.0-beta.1
@@ -460,7 +460,7 @@ com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-standbypool;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0-beta.1
