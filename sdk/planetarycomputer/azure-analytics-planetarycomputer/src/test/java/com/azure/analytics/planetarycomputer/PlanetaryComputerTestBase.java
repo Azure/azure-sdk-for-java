@@ -48,6 +48,7 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
     protected DataClient dataClient;
     protected SharedAccessSignatureClient sharedAccessSignatureClient;
     protected PlanetaryComputerTestEnvironment testEnvironment;
+    private boolean sanitizersApplied = false;
 
     @Override
     protected void beforeTest() {
@@ -87,20 +88,24 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
 
         configureClientAuthentication(sasClientBuilder);
         sharedAccessSignatureClient = sasClientBuilder.buildSharedAccessSignatureClient();
-
-        // Apply sanitizers and matchers
-        applySanitizers();
-        applyMatchers();
     }
 
     private void configureClientAuthentication(PlanetaryComputerProClientBuilder builder) {
         TestMode mode = getTestMode();
 
+        // Apply sanitizers BEFORE configuring playback/record (matching OpenAI SDK pattern)
+        if (mode != TestMode.LIVE && !sanitizersApplied) {
+            applySanitizers();
+            applyMatchers();
+            sanitizersApplied = true;
+        }
+
         if (mode == TestMode.PLAYBACK) {
             builder.credential(new MockTokenCredential());
+            builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (mode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         } else if (mode == TestMode.LIVE) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
@@ -108,21 +113,46 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
 
     /**
      * Apply all sanitizers for test recordings.
-     * This centralizes all sanitization patterns to match Python test patterns.
+     * This centralizes all sanitization patterns to match C# test patterns.
      */
     private void applySanitizers() {
+        // Remove default AZSDK sanitizers that are too aggressive for public data
+        // These sanitizers remove "name" and "id" fields which are public collection/item identifiers
+        // Note: Apply unconditionally like C# implementation - the interceptorManager will only apply them
+        // when recording/playback is active (not in live mode)
+
+        // AZSDK3493 removes "name" fields from JSON bodies
+        interceptorManager.removeSanitizers("AZSDK3493");
+        // AZSDK3430 removes "id" fields from JSON bodies
+        interceptorManager.removeSanitizers("AZSDK3430");
+        // AZSDK2003 is the default hostname sanitizer that reduces URLs to "Sanitized.com"
+        interceptorManager.removeSanitizers("AZSDK2003");
+        // AZSDK2030 is related to operation-location and other headers
+        interceptorManager.removeSanitizers("AZSDK2030");
+        // AZSDK4001 replaces entire host name in URL
+        interceptorManager.removeSanitizers("AZSDK4001");
+        // AZSDK3447 sanitizes path segments - collection IDs are public
+        interceptorManager.removeSanitizers("AZSDK3447");
+        // AZSDK3492 sanitizes "url" body key - THIS IS THE KEY ONE for provider URLs!
+        interceptorManager.removeSanitizers("AZSDK3492");
+        // AZSDK3491 might sanitize "host" body key
+        interceptorManager.removeSanitizers("AZSDK3491");
+        // Try removing all common body key sanitizers
+        interceptorManager.removeSanitizers("AZSDK3494", "AZSDK3495", "AZSDK3496", "AZSDK3497", "AZSDK3498");
+
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
 
-        // Header sanitizers
-        customSanitizers.add(new TestProxySanitizer("Set-Cookie", SANITIZED_SET_COOKIE, TestProxySanitizerType.HEADER));
-        customSanitizers.add(new TestProxySanitizer("Cookie", SANITIZED_COOKIE, TestProxySanitizerType.HEADER));
+        // Header sanitizers - when no regex, use 4-param constructor with null regex to replace entire header value
         customSanitizers
-            .add(new TestProxySanitizer("X-Request-ID", SANITIZED_ZERO_UUID_32, TestProxySanitizerType.HEADER));
-        customSanitizers.add(new TestProxySanitizer("Date", SANITIZED_DATE, TestProxySanitizerType.HEADER));
+            .add(new TestProxySanitizer("Set-Cookie", null, SANITIZED_SET_COOKIE, TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("Cookie", null, SANITIZED_COOKIE, TestProxySanitizerType.HEADER));
         customSanitizers
-            .add(new TestProxySanitizer("Server-Timing", SANITIZED_SERVER_TIMING, TestProxySanitizerType.HEADER));
+            .add(new TestProxySanitizer("X-Request-ID", null, SANITIZED_ZERO_UUID_32, TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("Date", null, SANITIZED_DATE, TestProxySanitizerType.HEADER));
         customSanitizers
-            .add(new TestProxySanitizer("traceparent", SANITIZED_TRACEPARENT, TestProxySanitizerType.HEADER));
+            .add(new TestProxySanitizer("Server-Timing", null, SANITIZED_SERVER_TIMING, TestProxySanitizerType.HEADER));
+        customSanitizers
+            .add(new TestProxySanitizer("traceparent", null, SANITIZED_TRACEPARENT, TestProxySanitizerType.HEADER));
 
         // UUID-based headers with regex
         customSanitizers.add(new TestProxySanitizer("apim-request-id", UUID_PATTERN, SANITIZED_ZERO_UUID,
@@ -131,6 +161,25 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
             TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("Authorization", "Bearer\\s+.+", "Bearer " + REDACTED,
             TestProxySanitizerType.HEADER));
+
+        // Additional Azure-specific headers
+        customSanitizers.add(new TestProxySanitizer("x-azure-ref", null, "Sanitized", TestProxySanitizerType.HEADER));
+        customSanitizers.add(
+            new TestProxySanitizer("mise-correlation-id", null, SANITIZED_ZERO_UUID, TestProxySanitizerType.HEADER));
+
+        // JSON Body Key sanitizers for credentials (using JSONPath)
+        customSanitizers
+            .add(new TestProxySanitizer("$..access_token", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers
+            .add(new TestProxySanitizer("$..refresh_token", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(
+            new TestProxySanitizer("$..subscription_id", null, SANITIZED_ZERO_UUID, TestProxySanitizerType.BODY_KEY));
+        customSanitizers
+            .add(new TestProxySanitizer("$..tenant_id", null, SANITIZED_ZERO_UUID, TestProxySanitizerType.BODY_KEY));
+        customSanitizers
+            .add(new TestProxySanitizer("$..client_id", null, SANITIZED_ZERO_UUID, TestProxySanitizerType.BODY_KEY));
+        customSanitizers
+            .add(new TestProxySanitizer("$..client_secret", null, REDACTED, TestProxySanitizerType.BODY_KEY));
 
         // Operation location header sanitizers
         customSanitizers.add(new TestProxySanitizer("operation-location",
@@ -236,10 +285,8 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("\"([a-z0-9]+-[a-z]+-[a-z0-9]+)-[0-9a-f]{8}\"", "\"$1-00000000\"",
             TestProxySanitizerType.BODY_REGEX));
 
-        // Add all sanitizers
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(customSanitizers);
-        }
+        // Add all sanitizers (unconditional like C#)
+        interceptorManager.addSanitizers(customSanitizers);
     }
 
     /**
@@ -304,19 +351,9 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
     protected StacClient getStacClient() {
         PlanetaryComputerProClientBuilder builder
             = new PlanetaryComputerProClientBuilder().endpoint(testEnvironment.getEndpoint())
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : null)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (interceptorManager.isLiveMode() || interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        } else {
-            builder.credential(new MockTokenCredential());
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
+        configureClientAuthentication(builder);
         return builder.buildStacClient();
     }
 
@@ -326,19 +363,9 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
     protected IngestionClient getIngestionClient() {
         PlanetaryComputerProClientBuilder builder
             = new PlanetaryComputerProClientBuilder().endpoint(testEnvironment.getEndpoint())
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : null)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (interceptorManager.isLiveMode() || interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        } else {
-            builder.credential(new MockTokenCredential());
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
+        configureClientAuthentication(builder);
         return builder.buildIngestionClient();
     }
 
@@ -348,19 +375,9 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
     protected DataClient getDataClient() {
         PlanetaryComputerProClientBuilder builder
             = new PlanetaryComputerProClientBuilder().endpoint(testEnvironment.getEndpoint())
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : null)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (interceptorManager.isLiveMode() || interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        } else {
-            builder.credential(new MockTokenCredential());
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
+        configureClientAuthentication(builder);
         return builder.buildDataClient();
     }
 
@@ -370,19 +387,9 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
     protected SharedAccessSignatureClient getSasClient() {
         PlanetaryComputerProClientBuilder builder
             = new PlanetaryComputerProClientBuilder().endpoint(testEnvironment.getEndpoint())
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : null)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (interceptorManager.isLiveMode() || interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        } else {
-            builder.credential(new MockTokenCredential());
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
+        configureClientAuthentication(builder);
         return builder.buildSharedAccessSignatureClient();
     }
 }
