@@ -31,7 +31,7 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * Initializes an instance of SharedAccessSignatureAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -41,21 +41,21 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
-     * 
+     *
      * Signs a HREF (a link URL) by appending a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
      * If the HREF is not a Azure Blob Storage HREF, then pass back the HREF unsigned.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     * 
+     *
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -64,9 +64,9 @@ public final class SharedAccessSignatureAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param href Href
-     * 
+     *
      * HREF (URL) to sign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -83,9 +83,9 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * generate a SAS Token for the given Azure Blob storage account and container.
-     * 
+     *
      * Generate a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for the given storage account and container. The storage account and container
      * must be associated with a Planetary Computer dataset indexed by the STAC API.
      * <p><strong>Query Parameters</strong></p>
@@ -93,12 +93,12 @@ public final class SharedAccessSignatureAsyncClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     * 
+     *
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -107,9 +107,9 @@ public final class SharedAccessSignatureAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param collectionId Collection Id
-     * 
+     *
      * The name of the Collection that the SAS token will be issued for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -127,20 +127,20 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * Revoke SAS token for the managed storage account of this GeoCatalog.
-     * 
+     *
      * Revoke a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for managed storage account of this GeoCatalog.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>duration</td><td>Integer</td><td>No</td><td>Duration
-     * 
+     *
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -156,16 +156,16 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
-     * 
+     *
      * Signs a HREF (a link URL) by appending a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
      * If the HREF is not a Azure Blob Storage HREF, then pass back the HREF unsigned.
-     * 
+     *
      * @param href Href
-     * 
+     *
      * HREF (URL) to sign.
      * @param durationInMinutes Duration
-     * 
+     *
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -189,13 +189,13 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * sign an HREF in the format of a URL and returns a SharedAccessSignatureSignedHrefResponse
-     * 
+     *
      * Signs a HREF (a link URL) by appending a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works).
      * If the HREF is not a Azure Blob Storage HREF, then pass back the HREF unsigned.
-     * 
+     *
      * @param href Href
-     * 
+     *
      * HREF (URL) to sign.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -216,17 +216,17 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * generate a SAS Token for the given Azure Blob storage account and container.
-     * 
+     *
      * Generate a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for the given storage account and container. The storage account and container
      * must be associated with a Planetary Computer dataset indexed by the STAC API.
-     * 
+     *
      * @param collectionId Collection Id
-     * 
+     *
      * The name of the Collection that the SAS token will be issued for.
      * @param durationInMinutes Duration
-     * 
+     *
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -250,14 +250,14 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * generate a SAS Token for the given Azure Blob storage account and container.
-     * 
+     *
      * Generate a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for the given storage account and container. The storage account and container
      * must be associated with a Planetary Computer dataset indexed by the STAC API.
-     * 
+     *
      * @param collectionId Collection Id
-     * 
+     *
      * The name of the Collection that the SAS token will be issued for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -278,13 +278,13 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * Revoke SAS token for the managed storage account of this GeoCatalog.
-     * 
+     *
      * Revoke a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for managed storage account of this GeoCatalog.
-     * 
+     *
      * @param durationInMinutes Duration
-     * 
+     *
      * The duration, in minutes, that the SAS token will be valid. Only valid for approved users.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -307,11 +307,11 @@ public final class SharedAccessSignatureAsyncClient {
 
     /**
      * Revoke SAS token for the managed storage account of this GeoCatalog.
-     * 
+     *
      * Revoke a [SAS
-     * Token](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
+     * Token](https://docs.microsoft.com//azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works)
      * for managed storage account of this GeoCatalog.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
