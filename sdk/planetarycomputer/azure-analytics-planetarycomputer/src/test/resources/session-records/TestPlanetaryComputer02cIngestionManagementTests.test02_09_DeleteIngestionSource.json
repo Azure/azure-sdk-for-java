@@ -1,0 +1,51 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources?api-version=2025-04-30-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "109",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:22:03 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "connectionInfo": {
+          "containerUrl": "Sanitized"
+        },
+        "kind": "SasToken"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:22:06 GMT",
+        "mise-correlation-id": "b318a032-beb2-42c5-a218-885c606a53c0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "x-ms-error-code": "ValidationError",
+        "X-Request-ID": "3a55c4e56a69637c95ed0467f5907567"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ValidationError",
+          "message": "ConnectionInfo must contain sasToken"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

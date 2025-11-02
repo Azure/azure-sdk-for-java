@@ -1,0 +1,155 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/stac/collections/naip-atl/configurations/render-options?api-version=2025-04-30-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "154",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:19:35 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "id": "test-render-opt-delete",
+        "name": "Test Render Option To Be Deleted",
+        "type": "raster-tile",
+        "options": "assets=image&asset_bidx=image|1,2,3",
+        "minZoom": 6
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "Connection": "keep-alive",
+        "Content-Length": "154",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:19:39 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "9672a7e8ee884373a8579abc8f68fa8e"
+      },
+      "ResponseBody": {
+        "id": "test-render-opt-delete",
+        "name": "Test Render Option To Be Deleted",
+        "type": "raster-tile",
+        "options": "assets=image&asset_bidx=image|1,2,3",
+        "minZoom": 6
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/stac/collections/naip-atl/configurations/render-options/test-render-opt-delete?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:19:38 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "Connection": "keep-alive",
+        "Content-Length": "154",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:19:39 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "e98b9d9afed54816a2944bf36fba3992"
+      },
+      "ResponseBody": {
+        "id": "test-render-opt-delete",
+        "name": "Test Render Option To Be Deleted",
+        "type": "raster-tile",
+        "options": "assets=image&asset_bidx=image|1,2,3",
+        "minZoom": 6
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/stac/collections/naip-atl/configurations/render-options/test-render-opt-delete?api-version=2025-04-30-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:19:38 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:19:39 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "c1dc43722392422aa7a20d6adc542034"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/stac/collections/naip-atl/configurations/render-options/test-render-opt-delete?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:19:38 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "Connection": "keep-alive",
+        "Content-Length": "124",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:19:39 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "x-ms-error-code": "ResourceNotFound",
+        "X-Request-ID": "09803ed9fc5042b7a0363a70d8deaf73"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ResourceNotFound",
+          "message": "Render Option 'test-render-opt-delete' not found for collection 'naip-atl'"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

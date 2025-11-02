@@ -1,0 +1,208 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources/managed-identities?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:20:18 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:20:21 GMT",
+        "mise-correlation-id": "d1d1e32e-440b-446f-891b-35c896ea03ca",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "33e7538b833e01e4ae86b5dc672e12ab"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "objectId": "ebad594e-84af-49da-89db-7bffc9c39f3a",
+            "resourceId": "/subscriptions/fcdfe1b7-8458-44e1-be61-1422e03cb202/resourcegroups/devasingh-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/devasingh-test-identity"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:20:20 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:20:21 GMT",
+        "mise-correlation-id": "8ca3d6f2-d789-4793-834a-afafc35b527a",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "7806b0a562d19bb131589e296b1459dd"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "f1e9b523-f0b3-4733-aabc-d6b5d43c08e0",
+            "kind": "BlobManagedIdentity",
+            "created": "2025-11-01T23:37:25.0348365Z"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources/f1e9b523-f0b3-4733-aabc-d6b5d43c08e0?api-version=2025-04-30-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:20:20 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Date": "Sun, 02 Nov 2025 00:20:21 GMT",
+        "mise-correlation-id": "7fb8b91d-cd32-4fdc-ac95-4c110ca1e709",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "8ec93e630dacc4176268f35d9b4d6bd6"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources?api-version=2025-04-30-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "170",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:20:20 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "id": "df5934f0-a0f0-4513-9191-e548030c97d9",
+        "connectionInfo": {
+          "containerUrl": "Sanitized",
+          "objectId": "ebad594e-84af-49da-89db-7bffc9c39f3a"
+        },
+        "kind": "BlobManagedIdentity"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:20:21 GMT",
+        "Location": "https://REDACTED.h5d5a9crhnc8deaz.uksouth.geocatalog.spatio.azure.com/inma/ingestion-sources/b9571b32-3462-4329-b8cf-5a65ed25ea77?api-version=2025-04-30-preview",
+        "mise-correlation-id": "42cb0d65-965d-4f0c-974e-fa6524cda1c3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "7e98d0e38fed250eee873a08d75cec6e"
+      },
+      "ResponseBody": {
+        "id": "b9571b32-3462-4329-b8cf-5a65ed25ea77",
+        "kind": "BlobManagedIdentity",
+        "created": "2025-11-02T00:20:21.9122536Z",
+        "connectionInfo": {
+          "containerUrl": "Sanitized",
+          "objectId": "ebad594e-84af-49da-89db-7bffc9c39f3a"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:20:20 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:20:21 GMT",
+        "mise-correlation-id": "20f1fde5-d42a-4818-aec3-f99bf660a961",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "751c627cb675ab1826a01762e06ce55b"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "b9571b32-3462-4329-b8cf-5a65ed25ea77",
+            "kind": "BlobManagedIdentity",
+            "created": "2025-11-02T00:20:21.9122536Z"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}

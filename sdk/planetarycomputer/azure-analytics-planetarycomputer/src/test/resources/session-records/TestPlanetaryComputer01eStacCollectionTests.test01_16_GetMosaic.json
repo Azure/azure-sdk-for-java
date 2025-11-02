@@ -1,0 +1,42 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/stac/collections/naip-atl/configurations/mosaics/test-mosaic-1?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:19:58 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "Connection": "keep-alive",
+        "Content-Length": "79",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:20:01 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "849f480b473743a9a9eb144c44a6eaae"
+      },
+      "ResponseBody": {
+        "id": "test-mosaic-1",
+        "name": "Test Mosaic Updated",
+        "description": null,
+        "cql": []
+      }
+    }
+  ],
+  "Variables": {}
+}

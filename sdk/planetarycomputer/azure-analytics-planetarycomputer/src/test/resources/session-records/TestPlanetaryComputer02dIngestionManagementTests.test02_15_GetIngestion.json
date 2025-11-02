@@ -1,0 +1,97 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/inma/collections/naip-atl/ingestions?api-version=2025-04-30-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "278",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:22:28 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "importType": "StaticCatalog",
+        "displayName": "Test Ingestion for Retrieval",
+        "sourceCatalogUrl": "https://raw.githubusercontent.com/chahibi/mpcpro-sample-datasets/refs/heads/main/datasets/planetary_computer/naip/atl/catalog.json",
+        "skipExistingItems": true,
+        "keepOriginalAssets": true
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:22:32 GMT",
+        "Location": "https://REDACTED.h5d5a9crhnc8deaz.uksouth.geocatalog.spatio.azure.com/inma/collections/naip-atl/ingestions/15beb18a-c84c-4f67-b119-8d526eb0fa65?api-version=2025-04-30-preview",
+        "mise-correlation-id": "2e816fe7-7c2c-4795-907f-7e6aae9165f9",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "fb91e8f1fac7bb074677ede7fb8858f5"
+      },
+      "ResponseBody": {
+        "id": "15beb18a-c84c-4f67-b119-8d526eb0fa65",
+        "creationTime": "2025-11-02T00:22:32.7701944Z",
+        "importType": "StaticCatalog",
+        "displayName": "Test Ingestion for Retrieval",
+        "sourceCatalogUrl": "https://raw.githubusercontent.com/chahibi/mpcpro-sample-datasets/refs/heads/main/datasets/planetary_computer/naip/atl/catalog.json",
+        "skipExistingItems": true,
+        "keepOriginalAssets": true,
+        "status": "Ready"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/inma/collections/naip-atl/ingestions/15beb18a-c84c-4f67-b119-8d526eb0fa65?api-version=2025-04-30-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:22:31 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:22:32 GMT",
+        "mise-correlation-id": "582db714-99c2-4c25-bce9-e40b062529c7",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "b333d1652b7e898042d0d9008d3f5331"
+      },
+      "ResponseBody": {
+        "id": "15beb18a-c84c-4f67-b119-8d526eb0fa65",
+        "creationTime": "2025-11-02T00:22:32.7701944Z",
+        "importType": "StaticCatalog",
+        "displayName": "Test Ingestion for Retrieval",
+        "sourceCatalogUrl": "https://raw.githubusercontent.com/chahibi/mpcpro-sample-datasets/refs/heads/main/datasets/planetary_computer/naip/atl/catalog.json",
+        "skipExistingItems": true,
+        "keepOriginalAssets": true,
+        "status": "Ready"
+      }
+    }
+  ],
+  "Variables": {}
+}

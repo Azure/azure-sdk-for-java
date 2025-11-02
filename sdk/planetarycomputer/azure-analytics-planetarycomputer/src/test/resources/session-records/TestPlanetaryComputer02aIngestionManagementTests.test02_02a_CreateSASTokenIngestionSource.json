@@ -1,0 +1,86 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources?api-version=2025-04-30-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "209",
+        "Content-Type": "application/json",
+        "Date": "Sun, 02 Nov 2025 00:20:23 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "id": "60c0f655-60e4-4838-a70d-f77486d533fc",
+        "connectionInfo": {
+          "containerUrl": "Sanitized",
+          "sasToken": "sv=2021-01-01&st=2020-01-01T00:00:00Z&se=2099-12-31T23:59:59Z&sr=c&sp=rl&sig=Sanitized"
+        },
+        "kind": "SasToken"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sun, 02 Nov 2025 00:20:26 GMT",
+        "Location": "https://REDACTED.h5d5a9crhnc8deaz.uksouth.geocatalog.spatio.azure.com/inma/ingestion-sources/f0cceb3c-cfda-42f3-ab51-f8286848ed43?api-version=2025-04-30-preview",
+        "mise-correlation-id": "b2efc3f3-fed0-4a87-a066-a12e725d2c5a",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "b2eadfa409b2ae3fa2463668ca38d190"
+      },
+      "ResponseBody": {
+        "id": "f0cceb3c-cfda-42f3-ab51-f8286848ed43",
+        "kind": "SasToken",
+        "created": "2025-11-02T00:20:26.6016995Z",
+        "connectionInfo": {
+          "containerUrl": "Sanitized",
+          "expiration": "2099-12-31T23:59:59.0000000Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/inma/ingestion-sources/f0cceb3c-cfda-42f3-ab51-f8286848ed43?api-version=2025-04-30-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Sun, 02 Nov 2025 00:20:25 GMT",
+        "User-Agent": "azsdk-java-azure-analytics-planetarycomputer/1.0.0-beta.1 (17.0.14; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "X-PC-Request-Entity,DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Location",
+        "Access-Control-Allow-Methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Location",
+        "Access-Control-Max-Age": "1728000",
+        "api-supported-versions": "2024-01-31-preview, 2025-04-30-preview",
+        "Connection": "keep-alive",
+        "Date": "Sun, 02 Nov 2025 00:20:26 GMT",
+        "mise-correlation-id": "17b2e752-1855-4da8-8ac9-e9b2e81c58af",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Request-ID": "7325fa642d8a404d08f102cc4a1422d3"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}
