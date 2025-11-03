@@ -442,6 +442,114 @@ public class QueryParamPolicyTest {
             () -> sendRequest(pipeline, originalUrl));
     }
 
+    /**
+     * Test key and label filters with ampersand (&) character
+     */
+    @SyncAsyncTest
+    public void keyAndLabelFiltersWithAmpersandCharacter() {
+        final String originalUrl
+            = BASE_URL + ENDPOINT_PATH + "?key=app%26config&label=prod%26test&api-version=2023-11-01";
+        final String expectedUrl
+            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=app%26config&label=prod%26test";
+
+        QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
+
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String actualUrl = context.getHttpRequest().getUrl().toString();
+            assertEquals(expectedUrl, actualUrl,
+                "Key and label filters with ampersand character should be preserved and sorted");
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(queryParamPolicy, auditorPolicy)
+            .build();
+
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, originalUrl),
+            () -> sendRequest(pipeline, originalUrl));
+    }
+
+    /**
+     * Test key and label filters with space character
+     */
+    @SyncAsyncTest
+    public void keyAndLabelFiltersWithSpaceCharacter() {
+        final String originalUrl
+            = BASE_URL + ENDPOINT_PATH + "?key=app%20config&label=dev%20environment&api-version=2023-11-01";
+        final String expectedUrl
+            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=app%20config&label=dev%20environment";
+
+        QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
+
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String actualUrl = context.getHttpRequest().getUrl().toString();
+            assertEquals(expectedUrl, actualUrl,
+                "Key and label filters with space character should be preserved and sorted");
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(queryParamPolicy, auditorPolicy)
+            .build();
+
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, originalUrl),
+            () -> sendRequest(pipeline, originalUrl));
+    }
+
+    /**
+     * Test key and label filters with hash (#) character
+     */
+    @SyncAsyncTest
+    public void keyAndLabelFiltersWithHashCharacter() {
+        final String originalUrl
+            = BASE_URL + ENDPOINT_PATH + "?key=app%23config&label=version%23v1&api-version=2023-11-01";
+        final String expectedUrl
+            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=app%23config&label=version%23v1";
+
+        QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
+
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String actualUrl = context.getHttpRequest().getUrl().toString();
+            assertEquals(expectedUrl, actualUrl,
+                "Key and label filters with hash character should be preserved and sorted");
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(queryParamPolicy, auditorPolicy)
+            .build();
+
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, originalUrl),
+            () -> sendRequest(pipeline, originalUrl));
+    }
+
+    /**
+     * Test key and label filters with multiple special characters combined
+     */
+    @SyncAsyncTest
+    public void keyAndLabelFiltersWithMixedSpecialCharacters() {
+        final String originalUrl = BASE_URL + ENDPOINT_PATH
+            + "?key=app%26config%20test%23v1&label=prod%20%26%20test%23env&api-version=2023-11-01";
+        final String expectedUrl = BASE_URL + ENDPOINT_PATH
+            + "?api-version=2023-11-01&key=app%26config%20test%23v1&label=prod%20%26%20test%23env";
+
+        QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
+
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String actualUrl = context.getHttpRequest().getUrl().toString();
+            assertEquals(expectedUrl, actualUrl,
+                "Key and label filters with mixed special characters should be preserved and sorted");
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(queryParamPolicy, auditorPolicy)
+            .build();
+
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, originalUrl),
+            () -> sendRequest(pipeline, originalUrl));
+    }
+
     private Mono<HttpResponse> sendRequest(HttpPipeline pipeline, String url) {
         return pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE);
     }
