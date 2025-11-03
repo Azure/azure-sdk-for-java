@@ -1,6 +1,19 @@
-## API-version upgrade and SDK release
+# API-version upgrade and SDK release
 
-### Generate SDK PR
+## Table of Contents
+
+- [Generate SDK PR](#generate-sdk-pr)
+  - [Swagger](#swagger)
+  - [TypeSpec](#typespec)
+- [Dev on SDK PR](#dev-on-sdk-pr)
+  - [Review breaking changes (if any)](#review-breaking-changes-if-any)
+  - [Record test](#record-test)
+  - [Local verification](#local-verification)
+  - [PR review](#pr-review)
+- [Release](#release)
+- [Post Release](#post-release)
+
+## Generate SDK PR
 For releases from Swagger and TypeSpec, run code generation pipelines accordingly. 
 If run failed, do check reason.
 
