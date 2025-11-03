@@ -16,7 +16,7 @@ import java.util.List;
  * The Docker build step.
  */
 @Fluent
-public final class DockerTaskStep extends TaskStepProperties {
+public final class DockerBuildStep extends TaskStepProperties {
     /*
      * The type of the step.
      */
@@ -53,9 +53,9 @@ public final class DockerTaskStep extends TaskStepProperties {
     private List<Argument> arguments;
 
     /**
-     * Creates an instance of DockerTaskStep class.
+     * Creates an instance of DockerBuildStep class.
      */
-    public DockerTaskStep() {
+    public DockerBuildStep() {
     }
 
     /**
@@ -81,9 +81,9 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the imageNames property: The fully qualified image names including the repository and tag.
      * 
      * @param imageNames the imageNames value to set.
-     * @return the DockerTaskStep object itself.
+     * @return the DockerBuildStep object itself.
      */
-    public DockerTaskStep withImageNames(List<String> imageNames) {
+    public DockerBuildStep withImageNames(List<String> imageNames) {
         this.imageNames = imageNames;
         return this;
     }
@@ -103,9 +103,9 @@ public final class DockerTaskStep extends TaskStepProperties {
      * the registry or not.
      * 
      * @param isPushEnabled the isPushEnabled value to set.
-     * @return the DockerTaskStep object itself.
+     * @return the DockerBuildStep object itself.
      */
-    public DockerTaskStep withIsPushEnabled(Boolean isPushEnabled) {
+    public DockerBuildStep withIsPushEnabled(Boolean isPushEnabled) {
         this.isPushEnabled = isPushEnabled;
         return this;
     }
@@ -123,9 +123,9 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the noCache property: The value of this property indicates whether the image cache is enabled or not.
      * 
      * @param noCache the noCache value to set.
-     * @return the DockerTaskStep object itself.
+     * @return the DockerBuildStep object itself.
      */
-    public DockerTaskStep withNoCache(Boolean noCache) {
+    public DockerBuildStep withNoCache(Boolean noCache) {
         this.noCache = noCache;
         return this;
     }
@@ -143,9 +143,9 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the dockerFilePath property: The Docker file path relative to the source context.
      * 
      * @param dockerFilePath the dockerFilePath value to set.
-     * @return the DockerTaskStep object itself.
+     * @return the DockerBuildStep object itself.
      */
-    public DockerTaskStep withDockerFilePath(String dockerFilePath) {
+    public DockerBuildStep withDockerFilePath(String dockerFilePath) {
         this.dockerFilePath = dockerFilePath;
         return this;
     }
@@ -163,9 +163,9 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the target property: The name of the target build stage for the docker build.
      * 
      * @param target the target value to set.
-     * @return the DockerTaskStep object itself.
+     * @return the DockerBuildStep object itself.
      */
-    public DockerTaskStep withTarget(String target) {
+    public DockerBuildStep withTarget(String target) {
         this.target = target;
         return this;
     }
@@ -183,9 +183,9 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the arguments property: The collection of override arguments to be used when executing this build step.
      * 
      * @param arguments the arguments value to set.
-     * @return the DockerTaskStep object itself.
+     * @return the DockerBuildStep object itself.
      */
-    public DockerTaskStep withArguments(List<Argument> arguments) {
+    public DockerBuildStep withArguments(List<Argument> arguments) {
         this.arguments = arguments;
         return this;
     }
@@ -194,7 +194,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * {@inheritDoc}
      */
     @Override
-    public DockerTaskStep withContextPath(String contextPath) {
+    public DockerBuildStep withContextPath(String contextPath) {
         super.withContextPath(contextPath);
         return this;
     }
@@ -203,7 +203,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * {@inheritDoc}
      */
     @Override
-    public DockerTaskStep withContextAccessToken(String contextAccessToken) {
+    public DockerBuildStep withContextAccessToken(String contextAccessToken) {
         super.withContextAccessToken(contextAccessToken);
         return this;
     }
@@ -217,7 +217,7 @@ public final class DockerTaskStep extends TaskStepProperties {
     public void validate() {
         if (dockerFilePath() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
+                .log(new IllegalArgumentException("Missing required property dockerFilePath in model DockerBuildStep"));
         }
         if (arguments() != null) {
             arguments().forEach(e -> e.validate());
@@ -227,7 +227,7 @@ public final class DockerTaskStep extends TaskStepProperties {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DockerTaskStep.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DockerBuildStep.class);
 
     /**
      * {@inheritDoc}
@@ -248,17 +248,17 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Reads an instance of DockerTaskStep from the JsonReader.
+     * Reads an instance of DockerBuildStep from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DockerTaskStep if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of DockerBuildStep if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DockerTaskStep.
+     * @throws IOException If an error occurs while reading the DockerBuildStep.
      */
-    public static DockerTaskStep fromJson(JsonReader jsonReader) throws IOException {
+    public static DockerBuildStep fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DockerTaskStep deserializedDockerTaskStep = new DockerTaskStep();
+            DockerBuildStep deserializedDockerBuildStep = new DockerBuildStep();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -266,33 +266,33 @@ public final class DockerTaskStep extends TaskStepProperties {
                 if ("baseImageDependencies".equals(fieldName)) {
                     List<BaseImageDependency> baseImageDependencies
                         = reader.readArray(reader1 -> BaseImageDependency.fromJson(reader1));
-                    deserializedDockerTaskStep.withBaseImageDependencies(baseImageDependencies);
+                    deserializedDockerBuildStep.withBaseImageDependencies(baseImageDependencies);
                 } else if ("contextPath".equals(fieldName)) {
-                    deserializedDockerTaskStep.withContextPath(reader.getString());
+                    deserializedDockerBuildStep.withContextPath(reader.getString());
                 } else if ("contextAccessToken".equals(fieldName)) {
-                    deserializedDockerTaskStep.withContextAccessToken(reader.getString());
+                    deserializedDockerBuildStep.withContextAccessToken(reader.getString());
                 } else if ("dockerFilePath".equals(fieldName)) {
-                    deserializedDockerTaskStep.dockerFilePath = reader.getString();
+                    deserializedDockerBuildStep.dockerFilePath = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedDockerTaskStep.type = StepType.fromString(reader.getString());
+                    deserializedDockerBuildStep.type = StepType.fromString(reader.getString());
                 } else if ("imageNames".equals(fieldName)) {
                     List<String> imageNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDockerTaskStep.imageNames = imageNames;
+                    deserializedDockerBuildStep.imageNames = imageNames;
                 } else if ("isPushEnabled".equals(fieldName)) {
-                    deserializedDockerTaskStep.isPushEnabled = reader.getNullable(JsonReader::getBoolean);
+                    deserializedDockerBuildStep.isPushEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("noCache".equals(fieldName)) {
-                    deserializedDockerTaskStep.noCache = reader.getNullable(JsonReader::getBoolean);
+                    deserializedDockerBuildStep.noCache = reader.getNullable(JsonReader::getBoolean);
                 } else if ("target".equals(fieldName)) {
-                    deserializedDockerTaskStep.target = reader.getString();
+                    deserializedDockerBuildStep.target = reader.getString();
                 } else if ("arguments".equals(fieldName)) {
                     List<Argument> arguments = reader.readArray(reader1 -> Argument.fromJson(reader1));
-                    deserializedDockerTaskStep.arguments = arguments;
+                    deserializedDockerBuildStep.arguments = arguments;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedDockerTaskStep;
+            return deserializedDockerBuildStep;
         });
     }
 }
