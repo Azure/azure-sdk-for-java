@@ -217,7 +217,6 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
              */
             WithCreate withRegistryNameAsAdminUser();
 
-
             /**
              * Disable admin user.
              *
