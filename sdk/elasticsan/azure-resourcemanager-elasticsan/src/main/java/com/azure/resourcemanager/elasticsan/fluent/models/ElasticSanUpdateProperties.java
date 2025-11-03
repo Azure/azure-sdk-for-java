@@ -128,6 +128,17 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (autoScaleProperties() != null) {
+            autoScaleProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

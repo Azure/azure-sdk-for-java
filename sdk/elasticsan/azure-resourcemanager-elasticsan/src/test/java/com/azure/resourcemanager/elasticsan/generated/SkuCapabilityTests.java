@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.elasticsan.models.SKUCapability;
+import com.azure.resourcemanager.elasticsan.models.SkuCapability;
 
-public final class SKUCapabilityTests {
+public final class SkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SKUCapability model = BinaryData.fromString("{\"name\":\"knalaulppg\",\"value\":\"tpnapnyiropuhpig\"}")
-            .toObject(SKUCapability.class);
+        SkuCapability model = BinaryData.fromString("{\"name\":\"knalaulppg\",\"value\":\"tpnapnyiropuhpig\"}")
+            .toObject(SkuCapability.class);
     }
 }

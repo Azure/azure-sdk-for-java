@@ -15,7 +15,7 @@ import java.io.IOException;
  * The capability information in the specified SKU.
  */
 @Immutable
-public final class SKUCapability implements JsonSerializable<SKUCapability> {
+public final class SkuCapability implements JsonSerializable<SkuCapability> {
     /*
      * The name of capability.
      */
@@ -27,9 +27,9 @@ public final class SKUCapability implements JsonSerializable<SKUCapability> {
     private String value;
 
     /**
-     * Creates an instance of SKUCapability class.
+     * Creates an instance of SkuCapability class.
      */
-    private SKUCapability() {
+    private SkuCapability() {
     }
 
     /**
@@ -51,6 +51,14 @@ public final class SKUCapability implements JsonSerializable<SKUCapability> {
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -60,30 +68,30 @@ public final class SKUCapability implements JsonSerializable<SKUCapability> {
     }
 
     /**
-     * Reads an instance of SKUCapability from the JsonReader.
+     * Reads an instance of SkuCapability from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SKUCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SkuCapability if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SKUCapability.
+     * @throws IOException If an error occurs while reading the SkuCapability.
      */
-    public static SKUCapability fromJson(JsonReader jsonReader) throws IOException {
+    public static SkuCapability fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SKUCapability deserializedSKUCapability = new SKUCapability();
+            SkuCapability deserializedSkuCapability = new SkuCapability();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedSKUCapability.name = reader.getString();
+                    deserializedSkuCapability.name = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    deserializedSKUCapability.value = reader.getString();
+                    deserializedSkuCapability.value = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSKUCapability;
+            return deserializedSkuCapability;
         });
     }
 }

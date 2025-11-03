@@ -74,6 +74,17 @@ public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpda
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (managedBy() != null) {
+            managedBy().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

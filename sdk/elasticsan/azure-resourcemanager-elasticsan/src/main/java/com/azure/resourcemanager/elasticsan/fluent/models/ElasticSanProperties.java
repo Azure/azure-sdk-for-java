@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -277,6 +278,28 @@ public final class ElasticSanProperties implements JsonSerializable<ElasticSanPr
         this.autoScaleProperties = autoScaleProperties;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
+        } else {
+            sku().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (autoScaleProperties() != null) {
+            autoScaleProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ElasticSanProperties.class);
 
     /**
      * {@inheritDoc}

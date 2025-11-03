@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.elasticsan.models.SKUCapability;
+import com.azure.resourcemanager.elasticsan.models.SkuCapability;
 import com.azure.resourcemanager.elasticsan.models.SkuLocationInfo;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -50,7 +51,7 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
     /*
      * The capability information in the specified SKU.
      */
-    private List<SKUCapability> capabilities;
+    private List<SkuCapability> capabilities;
 
     /**
      * Creates an instance of SkuInformationInner class.
@@ -109,9 +110,29 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
      * 
      * @return the capabilities value.
      */
-    public List<SKUCapability> capabilities() {
+    public List<SkuCapability> capabilities() {
         return this.capabilities;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
+        }
+        if (locationInfo() != null) {
+            locationInfo().forEach(e -> e.validate());
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SkuInformationInner.class);
 
     /**
      * {@inheritDoc}
@@ -153,7 +174,7 @@ public final class SkuInformationInner implements JsonSerializable<SkuInformatio
                     List<SkuLocationInfo> locationInfo = reader.readArray(reader1 -> SkuLocationInfo.fromJson(reader1));
                     deserializedSkuInformationInner.locationInfo = locationInfo;
                 } else if ("capabilities".equals(fieldName)) {
-                    List<SKUCapability> capabilities = reader.readArray(reader1 -> SKUCapability.fromJson(reader1));
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
                     deserializedSkuInformationInner.capabilities = capabilities;
                 } else {
                     reader.skipChildren();

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.elasticsan.implementation;
 
 import com.azure.resourcemanager.elasticsan.fluent.models.SkuInformationInner;
-import com.azure.resourcemanager.elasticsan.models.SKUCapability;
+import com.azure.resourcemanager.elasticsan.models.SkuCapability;
 import com.azure.resourcemanager.elasticsan.models.SkuInformation;
 import com.azure.resourcemanager.elasticsan.models.SkuLocationInfo;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
@@ -54,8 +54,8 @@ public final class SkuInformationImpl implements SkuInformation {
         }
     }
 
-    public List<SKUCapability> capabilities() {
-        List<SKUCapability> inner = this.innerModel().capabilities();
+    public List<SkuCapability> capabilities() {
+        List<SkuCapability> inner = this.innerModel().capabilities();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

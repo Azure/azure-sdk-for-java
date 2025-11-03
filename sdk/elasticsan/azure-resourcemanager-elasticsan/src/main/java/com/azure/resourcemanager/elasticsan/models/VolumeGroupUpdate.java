@@ -180,6 +180,20 @@ public final class VolumeGroupUpdate implements JsonSerializable<VolumeGroupUpda
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

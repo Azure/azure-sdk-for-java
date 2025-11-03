@@ -144,6 +144,23 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (creationData() != null) {
+            creationData().validate();
+        }
+        if (storageTarget() != null) {
+            storageTarget().validate();
+        }
+        if (managedBy() != null) {
+            managedBy().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

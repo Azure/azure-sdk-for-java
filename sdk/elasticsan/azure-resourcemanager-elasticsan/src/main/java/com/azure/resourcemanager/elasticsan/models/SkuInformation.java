@@ -52,7 +52,7 @@ public interface SkuInformation {
      * 
      * @return the capabilities value.
      */
-    List<SKUCapability> capabilities();
+    List<SkuCapability> capabilities();
 
     /**
      * Gets the inner com.azure.resourcemanager.elasticsan.fluent.models.SkuInformationInner object.

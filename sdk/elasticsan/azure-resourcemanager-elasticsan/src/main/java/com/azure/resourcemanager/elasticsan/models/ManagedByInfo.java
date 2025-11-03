@@ -50,6 +50,14 @@ public final class ManagedByInfo implements JsonSerializable<ManagedByInfo> {
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
