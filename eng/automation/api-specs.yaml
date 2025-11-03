@@ -7,8 +7,6 @@ app:
   service: appcontainers
 app/Microsoft.App/ContainerApps:
   service: appcontainers
-appplatform:
-  suffix: generated
 authorization:
   suffix: generated
 azure-kusto:
@@ -17,25 +15,12 @@ azurelargeinstance:
   service: largeinstance
 azurestackhci/Microsoft.AzureStackHCI/StackHCI:
   service: azurestackhci
-cdn:
-  suffix: generated
 certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
   service: certificateregistration
-compute:
-  suffix: generated
-containerinstance:
-  suffix: generated
-containerregistry:
-  suffix: generated
-containerservice:
-  suffix: generated
-containerservice/Microsoft.ContainerService/aks:
-  suffix: generated
 containerservice/Microsoft.ContainerService/fleet:
   service: containerservicefleet
 cosmos-db:
   service: cosmos
-  suffix: generated
 cost-management:
   service: costmanagement
 cpim:
@@ -52,13 +37,10 @@ developerhub:
   service: devhub
 dnc:
   service: delegatednetwork
-dns:
-  suffix: generated
 domainregistration/Microsoft.DomainRegistration/DomainRegistration:
   service: domainregistration
 eventhub:
   service: eventhubs
-  suffix: generated
 fist:
   service: iotfirmwaredefense
 graphservicesprod:
@@ -72,8 +54,6 @@ hybridaks:
   service: hybridcontainerservice
 informatica:
   service: informaticadatamanagement
-keyvault:
-  suffix: generated
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
   service: kubernetesconfiguration
   suffix: extensiontypes
@@ -97,14 +77,8 @@ machinelearningservices:
 migrate/Microsoft.Migrate/AssessmentProjects:
   service: migration
   suffix: assessment
-monitor:
-  suffix: generated
-msi:
-  suffix: generated
 mysql:
   service: mysqlflexibleserver
-network:
-  suffix: generated
 newrelic:
   service: newrelicobservability
 offazurespringboot:
@@ -119,12 +93,8 @@ postgresql:
   service: postgresqlflexibleserver
 postgresqlhsc:
   service: cosmosdbforpostgresql
-privatedns:
-  suffix: generated
 redhatopenshift/Microsoft.RedHatOpenShift/openshiftclusters:
   service: redhatopenshift
-redis:
-  suffix: generated
 redisenterprise/Microsoft.Cache/RedisEnterprise:
   service: redisenterprise
 resources:
@@ -145,21 +115,12 @@ riskiq:
   service: defendereasm
 service-map:
   service: servicemap
-servicebus:
-  suffix: generated
 solutions:
   service: managedapplications
-sql:
-  suffix: generated
-storage:
-  suffix: generated
-trafficmanager:
-  suffix: generated
 vmware:
   service: avs
 web:
   service: appservice
-  suffix: generated
 workloads/Microsoft.Workloads/SAPDiscoverySites:
   service: migrationdiscoverysap
 workloads/Microsoft.Workloads/SAPVirtualInstance:
