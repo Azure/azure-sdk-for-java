@@ -1,14 +1,63 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.1 (2025-11-03)
 
 ### Features Added
 
-### Breaking Changes
+* `models.FleetListResult` was added
 
-### Bugs Fixed
+* `models.FleetspaceAccountPropertiesGlobalDatabaseAccountProperties` was added
 
-### Other Changes
+* `models.FleetResourceUpdate` was added
+
+* `models.FleetspacePropertiesThroughputPoolConfiguration` was added
+
+* `models.FleetspacePropertiesServiceTier` was added
+
+* `models.FleetspaceAccountListResult` was added
+
+* `models.FleetspaceUpdate` was added
+
+* `models.FullTextIndexPath` was added
+
+* `models.FleetspaceListResult` was added
+
+* `models.DefaultPriorityLevel` was added
+
+* `models.FleetspacePropertiesFleetspaceApiKind` was added
+
+#### `models.DatabaseAccountUpdateParameters` was modified
+
+* `defaultPriorityLevel()` was added
+* `enablePriorityBasedExecution()` was added
+* `withDefaultPriorityLevel(models.DefaultPriorityLevel)` was added
+* `withEnablePriorityBasedExecution(java.lang.Boolean)` was added
+
+#### `models.VectorIndex` was modified
+
+* `quantizationByteSize()` was added
+* `withVectorIndexShardKey(java.util.List)` was added
+* `withQuantizationByteSize(java.lang.Long)` was added
+* `withIndexingSearchListSize(java.lang.Long)` was added
+* `indexingSearchListSize()` was added
+* `vectorIndexShardKey()` was added
+
+#### `models.DatabaseAccountCreateUpdateParameters` was modified
+
+* `withDefaultPriorityLevel(models.DefaultPriorityLevel)` was added
+* `defaultPriorityLevel()` was added
+* `withEnablePriorityBasedExecution(java.lang.Boolean)` was added
+* `enablePriorityBasedExecution()` was added
+
+#### `models.IndexingPolicy` was modified
+
+* `fullTextIndexes()` was added
+* `withFullTextIndexes(java.util.List)` was added
+
+#### `models.RestoreParameters` was modified
+
+* `withSourceBackupLocation(java.lang.String)` was added
+* `sourceBackupLocation()` was added
 
 ## 2.53.4 (2025-10-27)
 
