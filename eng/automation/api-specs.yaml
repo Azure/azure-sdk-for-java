@@ -21,6 +21,8 @@ containerservice/Microsoft.ContainerService/fleet:
   service: containerservicefleet
 cosmos-db:
   service: cosmos
+cosmos-db/Microsoft.DocumentDB/DocumentDB:
+  service: cosmos
 cost-management:
   service: costmanagement
 cpim:
