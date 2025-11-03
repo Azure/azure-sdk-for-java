@@ -92,9 +92,9 @@ public class WorkloadIdentityCredential implements TokenCredential {
         ClientAssertionCredential tempClientAssertionCredential = null;
         String tempClientId = null;
 
-        if (identityClientOptions.isKubernetesTokenProxyEnabled()) {
-            if (CustomTokenProxyConfiguration.isConfigured(configuration)) {
-                ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
+        if (identityClientOptions.isAzureTokenProxyEnabled()) {
+            ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
+            if (proxyConfig != null) {
                 identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
             }
         }

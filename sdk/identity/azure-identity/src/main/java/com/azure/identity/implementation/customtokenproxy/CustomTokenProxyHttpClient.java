@@ -31,6 +31,7 @@ import javax.net.ssl.TrustManagerFactory;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -56,6 +57,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         this.sniName = proxyConfig.getSniName();
         this.caData = proxyConfig.getCaData();
         this.caFile = proxyConfig.getCaFile();
+        this.cachedSSLContext = getSSLContext();
     }
 
     @Override
@@ -94,21 +96,16 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         connection.setInstanceFollowRedirects(false);
         connection.setConnectTimeout(10_000);
         connection.setReadTimeout(20_000);
+        connection.setDoOutput(true);
 
-        boolean hasBody = request.getBodyAsBinaryData() != null && request.getBodyAsBinaryData().toBytes() != null;
-
-        if (hasBody && ("POST".equals(method) || "PUT".equals(method) || "PATCH".equals(method))) {
-            connection.setDoOutput(true);
-        } else {
-            connection.setDoOutput(false);
-        }
+        BinaryData bodyData = request.getBodyAsBinaryData();
 
         request.getHeaders().forEach(header -> {
             connection.addRequestProperty(header.getName(), header.getValue());
         });
 
-        if (request.getBodyAsBinaryData() != null) {
-            byte[] bytes = request.getBodyAsBinaryData().toBytes();
+        if (bodyData != null) {
+            byte[] bytes = bodyData.toBytes();
             if (bytes != null && bytes.length > 0) {
                 try (OutputStream os = connection.getOutputStream()) {
                     os.write(bytes);
@@ -137,7 +134,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                 combinedStr += "?" + originalQuery;
             }
 
-            return new URL(combinedStr);
+            return URI.create(combinedStr).toURL();
 
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to rewrite token request for proxy", e));
@@ -176,7 +173,11 @@ public class CustomTokenProxyHttpClient implements HttpClient {
 
             synchronized (this) {
                 if (currentContent.length == 0) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("CA file " + caFile + " is empty"));
+                    if (cachedSSLContext == null) {
+                        throw LOGGER.logExceptionAsError(new RuntimeException("CA file " + caFile + " is empty"));
+                    }
+                    LOGGER.warning("CA file " + caFile + " is empty, using cached SSL context from previous load");
+                    return cachedSSLContext;
                 }
 
                 if (cachedSSLContext == null || !Arrays.equals(currentContent, cachedFileContent)) {
@@ -207,7 +208,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             }
 
             if (certificates.isEmpty()) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("No valid certificates found"));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("No valid certificates found"));
             }
             return createSslContext(certificates);
         } catch (Exception e) {
@@ -215,7 +216,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         }
     }
 
-    // Create SSLContext from a single X509Certificate
     private SSLContext createSslContext(List<X509Certificate> certificates) {
         try {
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());

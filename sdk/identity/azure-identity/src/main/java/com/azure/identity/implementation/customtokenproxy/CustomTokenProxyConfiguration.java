@@ -25,11 +25,6 @@ public final class CustomTokenProxyConfiguration {
     private CustomTokenProxyConfiguration() {
     }
 
-    public static boolean isConfigured(Configuration configuration) {
-        String tokenProxyUrl = configuration.get(AZURE_KUBERNETES_TOKEN_PROXY);
-        return !CoreUtils.isNullOrEmpty(tokenProxyUrl);
-    }
-
     public static ProxyConfig parseAndValidate(Configuration configuration) {
         String tokenProxyUrl = configuration.get(AZURE_KUBERNETES_TOKEN_PROXY);
         String caFile = configuration.get(AZURE_KUBERNETES_CA_FILE);

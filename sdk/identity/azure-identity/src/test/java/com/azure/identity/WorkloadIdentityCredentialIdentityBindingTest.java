@@ -149,7 +149,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -177,7 +178,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -203,7 +205,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -232,7 +235,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(nonExistentTokenFile.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -263,7 +267,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 .clientId(TEST_CLIENT_ID)
                 .tokenFilePath(tokenFilePath.toString())
                 .configuration(configuration)
-                .enableKubernetesTokenProxy()
+                .authorityHost(serverBaseUrl)
+                .enableAzureTokenProxy()
                 .disableInstanceDiscovery()
                 .build();
 
@@ -292,7 +297,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 .clientId(TEST_CLIENT_ID)
                 .tokenFilePath(tokenFilePath.toString())
                 .configuration(configuration)
-                .enableKubernetesTokenProxy()
+                .authorityHost(httpProxyUrl)
+                .enableAzureTokenProxy()
                 .disableInstanceDiscovery()
                 .build();
 
@@ -321,7 +327,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 .clientId(TEST_CLIENT_ID)
                 .tokenFilePath(tokenFilePath.toString())
                 .configuration(configuration)
-                .enableKubernetesTokenProxy()
+                .authorityHost(malformedUrl)
+                .enableAzureTokenProxy()
                 .disableInstanceDiscovery()
                 .build();
 
@@ -349,7 +356,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(unreachableProxyUrl)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -378,7 +386,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(emptyTokenFile.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -407,7 +416,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .clientId(TEST_CLIENT_ID)
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
-            .enableKubernetesTokenProxy()
+            .authorityHost(proxyUrlWithEncoding)
+            .enableAzureTokenProxy()
             .disableInstanceDiscovery()
             .build();
 

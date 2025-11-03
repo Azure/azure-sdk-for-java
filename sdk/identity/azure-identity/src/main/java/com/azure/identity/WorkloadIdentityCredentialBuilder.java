@@ -47,7 +47,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
 public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
     private String tokenFilePath;
-    private boolean enableTokenProxy = false;
+    private boolean enableTokenProxy;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
@@ -68,14 +68,14 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
-     * Enables the Kubernetes token proxy feature for AKS workload identity scenarios.
+     * Enables the custom token proxy feature for clusters running in Azure.
      * When enabled, the credential will attempt to use a custom token proxy configured through
      * environment variables (AZURE_KUBERNETES_TOKEN_PROXY, AZURE_KUBERNETES_CA_FILE,
      * AZURE_KUBERNETES_CA_DATA, AZURE_KUBERNETES_SNI_NAME).
      *
-     * @return An updated instance of this builder with Kubernetes token proxy enabled.
+     * @return An updated instance of this builder with Azure token proxy enabled.
      */
-    public WorkloadIdentityCredentialBuilder enableKubernetesTokenProxy() {
+    public WorkloadIdentityCredentialBuilder enableAzureTokenProxy() {
         this.enableTokenProxy = true;
         return this;
     }
@@ -102,7 +102,7 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
-        identityClientOptions.setEnableKubernetesTokenProxy(this.enableTokenProxy);
+        identityClientOptions.setEnableAzureTokenProxy(this.enableTokenProxy);
 
         return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
             identityClientOptions.clone());

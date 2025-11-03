@@ -44,7 +44,7 @@ public final class CustomTokenProxyHttpResponse extends HttpResponse {
             String headerName = entry.getKey();
             if (headerName != null) {
                 for (String headerValue : entry.getValue()) {
-                    headers.add(headerName, headerValue);
+                    headers.add(HttpHeaderName.fromString(headerName), headerValue);
                 }
             }
         }
