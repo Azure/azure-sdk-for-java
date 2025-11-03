@@ -53,7 +53,7 @@ public final class DockerTaskStep extends TaskStepProperties {
     private List<Argument> arguments;
 
     /**
-     * Creates an instance of DockerBuildStep class.
+     * Creates an instance of DockerTaskStep class.
      */
     public DockerTaskStep() {
     }
@@ -81,7 +81,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the imageNames property: The fully qualified image names including the repository and tag.
      * 
      * @param imageNames the imageNames value to set.
-     * @return the DockerBuildStep object itself.
+     * @return the DockerTaskStep object itself.
      */
     public DockerTaskStep withImageNames(List<String> imageNames) {
         this.imageNames = imageNames;
@@ -103,7 +103,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * the registry or not.
      * 
      * @param isPushEnabled the isPushEnabled value to set.
-     * @return the DockerBuildStep object itself.
+     * @return the DockerTaskStep object itself.
      */
     public DockerTaskStep withIsPushEnabled(Boolean isPushEnabled) {
         this.isPushEnabled = isPushEnabled;
@@ -123,7 +123,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the noCache property: The value of this property indicates whether the image cache is enabled or not.
      * 
      * @param noCache the noCache value to set.
-     * @return the DockerBuildStep object itself.
+     * @return the DockerTaskStep object itself.
      */
     public DockerTaskStep withNoCache(Boolean noCache) {
         this.noCache = noCache;
@@ -143,7 +143,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the dockerFilePath property: The Docker file path relative to the source context.
      * 
      * @param dockerFilePath the dockerFilePath value to set.
-     * @return the DockerBuildStep object itself.
+     * @return the DockerTaskStep object itself.
      */
     public DockerTaskStep withDockerFilePath(String dockerFilePath) {
         this.dockerFilePath = dockerFilePath;
@@ -163,7 +163,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the target property: The name of the target build stage for the docker build.
      * 
      * @param target the target value to set.
-     * @return the DockerBuildStep object itself.
+     * @return the DockerTaskStep object itself.
      */
     public DockerTaskStep withTarget(String target) {
         this.target = target;
@@ -183,7 +183,7 @@ public final class DockerTaskStep extends TaskStepProperties {
      * Set the arguments property: The collection of override arguments to be used when executing this build step.
      * 
      * @param arguments the arguments value to set.
-     * @return the DockerBuildStep object itself.
+     * @return the DockerTaskStep object itself.
      */
     public DockerTaskStep withArguments(List<Argument> arguments) {
         this.arguments = arguments;
@@ -217,7 +217,7 @@ public final class DockerTaskStep extends TaskStepProperties {
     public void validate() {
         if (dockerFilePath() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property dockerFilePath in model DockerBuildStep"));
+                .log(new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
         }
         if (arguments() != null) {
             arguments().forEach(e -> e.validate());
@@ -248,13 +248,13 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Reads an instance of DockerBuildStep from the JsonReader.
+     * Reads an instance of DockerTaskStep from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DockerBuildStep if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of DockerTaskStep if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DockerBuildStep.
+     * @throws IOException If an error occurs while reading the DockerTaskStep.
      */
     public static DockerTaskStep fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

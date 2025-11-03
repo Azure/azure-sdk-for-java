@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerregistry.models.Argument;
 import com.azure.resourcemanager.containerregistry.models.AuthInfo;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTrigger;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerType;
-import com.azure.resourcemanager.containerregistry.models.DockerBuildStep;
+import com.azure.resourcemanager.containerregistry.models.DockerTaskStep;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
@@ -57,7 +57,7 @@ public final class TasksCreateSamples {
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                     .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withStep(new DockerBuildStep().withContextPath("src")
+                    .withStep(new DockerTaskStep().withContextPath("src")
                         .withImageNames(Arrays.asList("azurerest:testtag"))
                         .withIsPushEnabled(true)
                         .withNoCache(false)
@@ -109,7 +109,7 @@ public final class TasksCreateSamples {
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                     .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withStep(new DockerBuildStep().withContextPath("src")
+                    .withStep(new DockerTaskStep().withContextPath("src")
                         .withImageNames(Arrays.asList("azurerest:testtag"))
                         .withIsPushEnabled(true)
                         .withNoCache(false)
@@ -159,15 +159,14 @@ public final class TasksCreateSamples {
             .getTasks()
             .create("myResourceGroup", "myRegistry", "mytTask", new TaskInner().withLocation("eastus")
                 .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
-                .withIdentity(new IdentityProperties()
-                    .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
                         "/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourcegroups/myResourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity2",
                         new UserIdentityProperties())))
                 .withStatus(TaskStatus.ENABLED)
                 .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                 .withAgentConfiguration(new AgentProperties().withCpu(2))
-                .withStep(new DockerBuildStep().withContextPath("src")
+                .withStep(new DockerTaskStep().withContextPath("src")
                     .withImageNames(Arrays.asList("azurerest:testtag"))
                     .withIsPushEnabled(true)
                     .withNoCache(false)
@@ -225,7 +224,7 @@ public final class TasksCreateSamples {
                 .withStatus(TaskStatus.ENABLED)
                 .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                 .withAgentConfiguration(new AgentProperties().withCpu(2))
-                .withStep(new DockerBuildStep().withContextPath("src")
+                .withStep(new DockerTaskStep().withContextPath("src")
                     .withImageNames(Arrays.asList("azurerest:testtag"))
                     .withIsPushEnabled(true)
                     .withNoCache(false)
