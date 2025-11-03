@@ -39,7 +39,7 @@ public class WorkloadIdentityCredentialTest {
     private static final String ENV_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
     private static final String ENV_CA_DATA = "AZURE_KUBERNETES_CA_DATA";
     private static final String ENV_SNI_NAME = "AZURE_KUBERNETES_SNI_NAME";
-    private static final String caData
+    private static final String CA_DATA
         = "-----BEGIN CERTIFICATE-----\n" + "MIICMzCCAZygAwIBAgIJALiPnVsvq8dsMA0GCSqGSIb3DQEBBQUAMFMxCzAJBgNV\n"
             + "BAYTAlVTMQwwCgYDVQQIEwNmb28xDDAKBgNVBAcTA2ZvbzEMMAoGA1UEChMDZm9v\n"
             + "MQwwCgYDVQQLEwNmb28xDDAKBgNVBAMTA2ZvbzAeFw0xMzAzMTkxNTQwMTlaFw0x\n"
@@ -441,7 +441,7 @@ public class WorkloadIdentityCredentialTest {
         Configuration configuration = TestUtils.createTestConfiguration(
             new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
                 .put(ENV_PROXY_URL, "https://token-proxy.example.com")
-                .put(ENV_CA_DATA, caData));
+                .put(ENV_CA_DATA, CA_DATA));
 
         try (MockedConstruction<IdentityClient> mocked
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
@@ -476,7 +476,7 @@ public class WorkloadIdentityCredentialTest {
         Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
         Path caFile = tempDir.resolve("ca.crt");
 
-        Files.write(caFile, caData.getBytes(StandardCharsets.UTF_8));
+        Files.write(caFile, CA_DATA.getBytes(StandardCharsets.UTF_8));
 
         Configuration configuration = TestUtils.createTestConfiguration(
             new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
@@ -543,6 +543,57 @@ public class WorkloadIdentityCredentialTest {
 
             assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testProxyWithInvalidCaDataThrowsAtConstruction(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        String proxyUrl = "https://token-proxy.example.com";
+        String invalidCaData = "-----BEGIN CERTIFICATE-----\nINVALID_BASE64_DATA_HERE\n-----END CERTIFICATE-----";
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, proxyUrl)
+                .put(ENV_CA_DATA, invalidCaData));
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableAzureTokenProxy()
+                .build();
+        });
+    }
+
+    @Test
+    public void testProxyWithInvalidCaFileThrowsAtConstruction(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        String proxyUrl = "https://token-proxy.example.com";
+        String invalidCaData = "-----BEGIN CERTIFICATE-----\nINVALID_BASE64_DATA_HERE\n-----END CERTIFICATE-----";
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Path caFile = tempDir.resolve("invalid-ca.crt");
+        Files.write(caFile, invalidCaData.getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, proxyUrl)
+                .put(ENV_CA_FILE, caFile.toString()));
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableAzureTokenProxy()
+                .build();
+        });
     }
 
 }
