@@ -162,7 +162,7 @@ public class TaskStepProperties implements JsonSerializable<TaskStepProperties> 
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("Docker".equals(discriminatorValue)) {
-                    return DockerBuildStep.fromJson(readerToUse.reset());
+                    return DockerTaskStep.fromJson(readerToUse.reset());
                 } else if ("FileTask".equals(discriminatorValue)) {
                     return FileTaskStep.fromJson(readerToUse.reset());
                 } else if ("EncodedTask".equals(discriminatorValue)) {
