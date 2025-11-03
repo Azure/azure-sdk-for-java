@@ -1,14 +1,100 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.54.0-beta.1 (2025-11-03)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SBNamespaceListResult` was removed
 
-### Other Changes
+#### `models.SBTopicListResult` was removed
+
+#### `models.ArmDisasterRecoveryListResult` was removed
+
+#### `models.SBSubscriptionListResult` was removed
+
+#### `models.SBAuthorizationRuleListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.RuleListResult` was removed
+
+#### `models.SqlRuleAction` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.MigrationConfigListResult` was removed
+
+#### `models.NetworkRuleSetListResult` was removed
+
+#### `models.SBQueueListResult` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+
+#### `models.MessageCountDetails` was modified
+
+* `MessageCountDetails()` was changed to private access
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withRequiredMembers(java.util.List)` was removed
+* `withType(java.lang.String)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+
+### Features Added
+
+* `models.NspAccessRuleDirection` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.NamespaceReplicaLocation` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.GeoDRRoleType` was added
+
+* `models.NspAccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurationPropertiesProfile` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.FailOver` was added
+
+* `models.Mode` was added
+
+* `models.NspAccessRulePropertiesSubscriptionsItem` was added
+
+* `models.ConfidentialCompute` was added
+
+* `models.TlsVersion` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.NspAccessRuleProperties` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` was added
+
+* `models.PlatformCapabilities` was added
+
+* `models.GeoDataReplicationProperties` was added
+
+#### `models.SBNamespaceUpdateParameters` was modified
+
+* `systemData()` was added
+
+#### `models.ResourceNamespacePatch` was modified
+
+* `systemData()` was added
 
 ## 2.53.4 (2025-10-27)
 
