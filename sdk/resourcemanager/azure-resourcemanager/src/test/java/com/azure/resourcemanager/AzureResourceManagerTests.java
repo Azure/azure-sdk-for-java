@@ -1233,6 +1233,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertFalse(containerGroupOperations.isEmpty());
     }
 
+    @Disabled("Re-enable after container registry release")
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(),
