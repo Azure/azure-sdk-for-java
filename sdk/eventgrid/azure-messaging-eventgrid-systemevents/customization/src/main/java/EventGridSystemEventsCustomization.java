@@ -9,8 +9,15 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.SuperExpr;
+import com.github.javaparser.ast.expr.ThisExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
 import java.time.Duration;
@@ -161,6 +168,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsMessageEventDataAndInheritingClasses(systemEvent);
         customizeIothubEventData(systemEvent);
         customizeEventGridMQTTClientEventData(systemEvent);
+        restoreConstructorsForReadonlyDictionaries(systemEvent);
     }
 
     public void customizeEventGridMQTTClientEventData(PackageCustomization customization) {
@@ -247,6 +255,136 @@ public class EventGridSystemEventsCustomization extends Customization {
                             .addBlockTag("return", "the error value."))));
             });
         }
+    }
+
+    /**
+     * Restores constructor accessibility for classes affected by readonly dictionary changes in TypeSpec.
+     * The changes in PR #36490 marked dictionaries as readonly, which removed labels/tags parameters 
+     * from constructors and changed accessibility. This customization restores the original constructor 
+     * signatures for backward compatibility as requested in issue #46316.
+     */
+    public void restoreConstructorsForReadonlyDictionaries(PackageCustomization customization) {
+        // Restore the base class AcsRouterJobEventData constructor to accept labels and tags
+        customization.getClass("AcsRouterJobEventData").customizeAst(ast -> {
+            ast.addImport("java.util.Map");
+            ast.getClassByName("AcsRouterJobEventData").ifPresent(clazz -> {
+                // Create constructor body using AST nodes
+                BlockStmt body = new BlockStmt();
+                
+                // Add super(jobId) call
+                body.addStatement(new ExpressionStmt(
+                    new MethodCallExpr("super").addArgument(new NameExpr("jobId"))
+                ));
+                
+                // Add this.labels = labels assignment
+                body.addStatement(new ExpressionStmt(
+                    new AssignExpr(
+                        new FieldAccessExpr(new ThisExpr(), "labels"),
+                        new NameExpr("labels"),
+                        AssignExpr.Operator.ASSIGN
+                    )
+                ));
+                
+                // Add this.tags = tags assignment
+                body.addStatement(new ExpressionStmt(
+                    new AssignExpr(
+                        new FieldAccessExpr(new ThisExpr(), "tags"),
+                        new NameExpr("tags"),
+                        AssignExpr.Operator.ASSIGN
+                    )
+                ));
+                
+                // Add a new protected constructor with labels and tags parameters
+                clazz.addConstructor(Modifier.Keyword.PROTECTED)
+                    .addParameter("String", "jobId")
+                    .addParameter("Map<String, String>", "labels") 
+                    .addParameter("Map<String, String>", "tags")
+                    .setBody(body)
+                    .setJavadocComment(new Javadoc(parseText("Creates an instance of AcsRouterJobEventData class."))
+                        .addBlockTag("param", "jobId the jobId value to set.")
+                        .addBlockTag("param", "labels the labels value to set.")
+                        .addBlockTag("param", "tags the tags value to set."));
+            });
+        });
+
+        // Restore constructor for DeviceTelemetryEventProperties (base class)
+        // This had constructor parameters removed but kept protected visibility
+        customization.getClass("DeviceTelemetryEventProperties").customizeAst(ast -> {
+            ast.addImport("java.util.Map");
+            ast.addImport("com.azure.core.util.BinaryData");
+            ast.getClassByName("DeviceTelemetryEventProperties").ifPresent(clazz -> {
+                // Create constructor body using AST nodes
+                BlockStmt body = new BlockStmt();
+                
+                // Add this.body = body assignment
+               body.addStatement(new ExpressionStmt(
+                    new AssignExpr(
+                        new FieldAccessExpr(new ThisExpr(), "body"),
+                        new NameExpr("body"),
+                        AssignExpr.Operator.ASSIGN
+                    )
+                ));
+
+                // Add this.properties = properties assignment
+                body.addStatement(new ExpressionStmt(
+                    new AssignExpr(
+                        new FieldAccessExpr(new ThisExpr(), "properties"),
+                        new NameExpr("properties"),
+                        AssignExpr.Operator.ASSIGN
+                    )
+                ));
+                
+                // Add this.systemProperties = systemProperties assignment
+                body.addStatement(new ExpressionStmt(
+                    new AssignExpr(
+                        new FieldAccessExpr(new ThisExpr(), "systemProperties"),
+                        new NameExpr("systemProperties"),
+                        AssignExpr.Operator.ASSIGN
+                    )
+                ));
+                
+                // Add the original constructor with properties and systemProperties parameters
+                clazz.addConstructor(Modifier.Keyword.PROTECTED)
+                    .addParameter("Map<String, BinaryData>", "body")
+                    .addParameter("Map<String, String>", "properties") 
+                    .addParameter("Map<String, String>", "systemProperties")
+                    .setBody(body)
+                    .setJavadocComment(new Javadoc(parseText("Creates an instance of DeviceTelemetryEventProperties class."))
+                        .addBlockTag("param", "body the body value to set.")
+                        .addBlockTag("param", "properties the properties value to set.")
+                        .addBlockTag("param", "systemProperties the systemProperties value to set."));
+            });
+        });
+
+        // Restore constructor for IotHubDeviceTelemetryEventData
+        // This had constructor parameters removed and made private
+        customization.getClass("IotHubDeviceTelemetryEventData").customizeAst(ast -> {
+            ast.addImport("java.util.Map");
+            ast.addImport("com.azure.core.util.BinaryData");
+            ast.getClassByName("IotHubDeviceTelemetryEventData").ifPresent(clazz -> {
+                // Create constructor body using AST nodes
+                BlockStmt body = new BlockStmt();
+                
+                // Add super(body, properties, systemProperties) call
+                body.addStatement(new ExpressionStmt(
+                    new MethodCallExpr("super")
+                        .addArgument(new NameExpr("body"))
+                        .addArgument(new NameExpr("properties"))
+                        .addArgument(new NameExpr("systemProperties"))
+                ));
+                
+                // Add the original constructor with properties and systemProperties parameters
+                clazz.addConstructor(Modifier.Keyword.PUBLIC)
+                    .addParameter("Map<String, BinaryData>", "body")
+                    .addParameter("Map<String, String>", "properties") 
+                    .addParameter("Map<String, String>", "systemProperties")
+                    .setBody(body)
+                    .setJavadocComment(new Javadoc(parseText("Creates an instance of IotHubDeviceTelemetryEventData class."))
+                        .addBlockTag("param", "body the body value to set.")
+                        .addBlockTag("param", "properties the properties value to set.")
+                        .addBlockTag("param", "systemProperties the systemProperties value to set."));
+            });
+        });
     }
 
     public static String getConstantName(String name) {
