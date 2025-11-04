@@ -1339,10 +1339,8 @@ public class BlobAsyncClientBase {
 
         // Add structured message decoding context if enabled
         final Context firstRangeContext;
-        if (contentValidationOptions != null
-            && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-            firstRangeContext = initialContext
-                .addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+        if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+            firstRangeContext = initialContext.addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
                 .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions);
         } else {
             firstRangeContext = initialContext;
@@ -1393,20 +1391,22 @@ public class BlobAsyncClientBase {
                     try {
                         // For retry context, preserve decoder state if structured message validation is enabled
                         Context retryContext = firstRangeContext;
-                        
+
                         // If structured message decoding is enabled, we need to include the decoder state
                         // so the retry can continue from where we left off
-                        if (contentValidationOptions != null 
+                        if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
                             // The decoder state will be set by the policy during processing
                             // We preserve it in the context for the retry request
-                            Object decoderState = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-                                .orElse(null);
+                            Object decoderState
+                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+                                    .orElse(null);
                             if (decoderState != null) {
-                                retryContext = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                                retryContext = retryContext
+                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
                             }
                         }
-                        
+
                         return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
                             eTag, finalGetMD5, retryContext);
                     } catch (Exception e) {
@@ -1415,8 +1415,7 @@ public class BlobAsyncClientBase {
                 };
 
                 // Structured message decoding is now handled by StructuredMessageDecoderPolicy
-                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume,
-                    finalOptions);
+                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
     }
 

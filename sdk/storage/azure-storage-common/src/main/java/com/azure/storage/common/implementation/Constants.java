@@ -102,14 +102,14 @@ public final class Constants {
     /**
      * Context key used to pass DownloadContentValidationOptions to the policy.
      */
-    public static final String STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY =
-        "azure-storage-structured-message-validation-options";
+    public static final String STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY
+        = "azure-storage-structured-message-validation-options";
 
     /**
      * Context key used to pass stateful decoder state across retry requests.
      */
-    public static final String STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY =
-        "azure-storage-structured-message-decoder-state";
+    public static final String STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY
+        = "azure-storage-structured-message-decoder-state";
 
     private Constants() {
     }

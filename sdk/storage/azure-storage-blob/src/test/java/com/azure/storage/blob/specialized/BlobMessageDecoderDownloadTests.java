@@ -15,6 +15,7 @@ import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -243,9 +244,11 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         // Upload the encoded data using the regular client
         bc.upload(input, null, true).block();
 
-        // Create a download client with the mock policy to simulate interruptions
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), mockPolicy);
+        // Create a download client with both the mock policy AND the decoder policy
+        // The decoder policy is needed to actually decode structured messages and validate checksums
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
 
         DownloadContentValidationOptions validationOptions
             = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
@@ -298,9 +301,11 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         // Upload the encoded data
         bc.upload(input, null, true).block();
 
-        // Create a download client with the mock policy
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), mockPolicy);
+        // Create a download client with both the mock policy AND the decoder policy
+        // The decoder policy is needed to actually decode structured messages and validate checksums
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
 
         DownloadContentValidationOptions validationOptions
             = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
@@ -343,9 +348,11 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         // Upload the encoded data
         bc.upload(input, null, true).block();
 
-        // Create a download client with the mock policy
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), mockPolicy);
+        // Create a download client with both the mock policy AND the decoder policy
+        // The decoder policy is needed to actually decode structured messages and validate checksums
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
 
         DownloadContentValidationOptions validationOptions
             = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);

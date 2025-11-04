@@ -62,13 +62,13 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             if (contentLength != null && contentLength > 0 && validationOptions != null) {
                 // Get or create decoder with state tracking
                 DecoderState decoderState = getOrCreateDecoderState(context, contentLength);
-                
+
                 // Decode using the stateful decoder
                 Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoderState);
-                
+
                 // Update context with decoder state for potential retries
                 context.setData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                
+
                 return new DecodedResponse(httpResponse, decodedStream, decoderState);
             }
 
@@ -88,7 +88,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             try {
                 // Combine with pending data if any
                 ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
-                
+
                 // Track encoded bytes
                 int encodedBytesInBuffer = encodedBuffer.remaining();
                 state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
@@ -96,7 +96,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 // Try to decode what we have - decoder handles partial data
                 int availableSize = dataToProcess.remaining();
                 ByteBuffer decodedData = state.decoder.decode(dataToProcess.duplicate(), availableSize);
-                
+
                 // Track decoded bytes
                 int decodedBytes = decodedData.remaining();
                 state.totalBytesDecoded.addAndGet(decodedBytes);
