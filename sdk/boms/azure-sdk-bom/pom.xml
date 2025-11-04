@@ -307,6 +307,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
+        <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
+        <version>1.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
         <artifactId>azure-monitor-query-logs</artifactId>
         <version>1.0.3</version>
       </dependency>
