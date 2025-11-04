@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 
@@ -81,6 +82,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private String instrumentationId;
     private final boolean isAutoComplete;
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
+    private RetryTemplate retryTemplate;
 
     /**
      * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusMessageListenerContainer}.
@@ -156,6 +158,15 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     }
 
+    /**
+     * Set retry template for message processing retries.
+     *
+     * @param retryTemplate the retry template
+     */
+    public void setRetryTemplate(RetryTemplate retryTemplate) {
+        this.retryTemplate = retryTemplate;
+    }
+
     private class IntegrationErrorHandler implements ServiceBusErrorHandler {
 
         @Override
@@ -199,7 +210,15 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
             Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
                 payloadType);
-            sendMessage(message);
+            
+            if (retryTemplate != null) {
+                retryTemplate.execute(context -> {
+                    sendMessage(message);
+                    return null;
+                });
+            } else {
+                sendMessage(message);
+            }
         }
 
     }
