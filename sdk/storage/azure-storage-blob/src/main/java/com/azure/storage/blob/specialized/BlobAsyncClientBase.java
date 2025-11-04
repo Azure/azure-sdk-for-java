@@ -1389,26 +1389,26 @@ public class BlobAsyncClientBase {
                     }
 
                     try {
-                        // For retry context, preserve decoder state if structured message validation is enabled
+                        // For retry context, determine the retry behavior based on validation options
                         Context retryContext = firstRangeContext;
+                        BlobRange retryRange;
 
-                        // If structured message decoding is enabled, we need to include the decoder state
-                        // so the retry can continue from where we left off
+                        // If structured message decoding is enabled, we must restart from the beginning
+                        // because structured messages cannot be decoded from arbitrary offsets
                         if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            // The decoder state will be set by the policy during processing
-                            // We preserve it in the context for the retry request
-                            Object decoderState
-                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-                                    .orElse(null);
-                            if (decoderState != null) {
-                                retryContext = retryContext
-                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                            }
+                            // Structured messages require sequential decoding from the start.
+                            // We cannot resume from middle, so restart the entire download.
+                            // Clear the decoder state to start fresh.
+                            retryContext
+                                = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, null);
+                            retryRange = new BlobRange(initialOffset, finalCount);
+                        } else {
+                            // For non-structured downloads, use smart retry from the interrupted offset
+                            retryRange = new BlobRange(initialOffset + offset, newCount);
                         }
 
-                        return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, finalGetMD5, retryContext);
+                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, retryContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }

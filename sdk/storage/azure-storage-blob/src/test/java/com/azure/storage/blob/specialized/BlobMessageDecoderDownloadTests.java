@@ -227,9 +227,10 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     public void downloadStreamWithResponseContentValidationSmartRetry() throws IOException {
         // Test smart retry functionality with structured message validation
         // This test simulates network interruptions and verifies that:
-        // 1. The decoder validates checksums for all received data before retry
-        // 2. The decoder state is preserved across retries
-        // 3. The SDK continues from the correct offset after interruption
+        // 1. The decoder validates checksums for all received data
+        // 2. Retries restart from the beginning (offset 0) since structured messages
+        //    cannot be decoded from arbitrary offsets
+        // 3. The download eventually succeeds despite multiple interruptions
 
         byte[] randomData = getRandomByteArray(Constants.KB);
         StructuredMessageEncoder encoder
@@ -272,21 +273,20 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         List<String> rangeHeaders = mockPolicy.getRangeHeaders();
         assertTrue(rangeHeaders.size() > 0, "Expected range headers for retries");
 
-        // The first request should be for the entire blob
-        assertTrue(rangeHeaders.get(0).startsWith("bytes=0-"), "First request should start from offset 0");
-
-        // Subsequent requests should continue from where we left off (after the first byte)
-        for (int i = 1; i < rangeHeaders.size(); i++) {
+        // With structured message validation, all requests (including retries) must start from offset 0
+        // because structured messages cannot be decoded from arbitrary offsets
+        for (int i = 0; i < rangeHeaders.size(); i++) {
             String rangeHeader = rangeHeaders.get(i);
-            assertTrue(rangeHeader.startsWith("bytes=" + i + "-"),
-                "Retry request " + i + " should start from offset " + i + " but was: " + rangeHeader);
+            assertTrue(rangeHeader.startsWith("bytes=0-"), "Request " + i
+                + " should start from offset 0 for structured message validation, but was: " + rangeHeader);
         }
     }
 
     @Test
     public void downloadStreamWithResponseContentValidationSmartRetryMultipleSegments() throws IOException {
         // Test smart retry with multiple segments to ensure checksum validation
-        // works correctly across segment boundaries during network interruptions
+        // works correctly across segment boundaries. Retries restart from the beginning
+        // to properly validate all segments sequentially.
 
         byte[] randomData = getRandomByteArray(2 * Constants.KB);
         StructuredMessageEncoder encoder
@@ -328,12 +328,19 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         List<String> rangeHeaders = mockPolicy.getRangeHeaders();
         assertTrue(rangeHeaders.size() >= 4,
             "Expected at least 4 range headers for retries, got: " + rangeHeaders.size());
+
+        // With structured message validation, all requests must start from offset 0
+        for (int i = 0; i < rangeHeaders.size(); i++) {
+            String rangeHeader = rangeHeaders.get(i);
+            assertTrue(rangeHeader.startsWith("bytes=0-"), "Request " + i
+                + " should start from offset 0 for structured message validation, but was: " + rangeHeader);
+        }
     }
 
     @Test
     public void downloadStreamWithResponseContentValidationSmartRetryLargeBlob() throws IOException {
-        // Test smart retry with a larger blob to ensure decoder state
-        // is correctly maintained across retries with more data
+        // Test smart retry with a larger blob to ensure retries restart from
+        // the beginning and successfully validate all data
 
         byte[] randomData = getRandomByteArray(5 * Constants.KB);
         StructuredMessageEncoder encoder
@@ -370,5 +377,13 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         // Verify that retries occurred
         assertEquals(0, mockPolicy.getTriesRemaining());
+
+        // Verify that all requests start from offset 0 with structured message validation
+        List<String> rangeHeaders = mockPolicy.getRangeHeaders();
+        for (int i = 0; i < rangeHeaders.size(); i++) {
+            String rangeHeader = rangeHeaders.get(i);
+            assertTrue(rangeHeader.startsWith("bytes=0-"), "Request " + i
+                + " should start from offset 0 for structured message validation, but was: " + rangeHeader);
+        }
     }
 }
