@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredAsset.

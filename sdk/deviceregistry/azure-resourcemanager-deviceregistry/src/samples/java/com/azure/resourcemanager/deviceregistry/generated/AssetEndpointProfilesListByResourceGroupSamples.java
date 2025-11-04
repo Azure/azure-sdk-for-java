@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetEndpointProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_AssetEndpointProfiles_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_ByResourceGroup.
