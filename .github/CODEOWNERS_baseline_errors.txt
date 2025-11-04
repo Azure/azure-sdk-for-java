@@ -11,7 +11,6 @@ taiwu is an invalid user. Ensure the user exists, is public member of Azure and 
 minghan is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 miaojiang is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 shenmuxiaosen is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-'Application Insights' is not a valid label for this repository.
 azmonapplicationinsights is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 antcp is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 AzureAppServiceCLI is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
@@ -155,7 +154,6 @@ minamnmik is an invalid user. Ensure the user exists, is public member of Azure 
 varunkch is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 azureml-github is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 aashishb is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-'Managed Services' is not a valid label for this repository.
 Lighthouse-Azure is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 ambhatna is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 savjani is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
@@ -238,4 +236,3 @@ Shipra1Mishra is an invalid user. Ensure the user exists, is public member of Az
 zhusijia26 is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 XiaofeiCao is not a public member of Azure.
 Path entry, /eng/versioning/version_client.txt, is missing owners
-Path entry, /eng/versioning/version_data.txt, is missing owners

@@ -56,6 +56,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * or Service Bus.
      */
     private final String connectHostnameAndPort;
+    private final ProxyImpl proxy;
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
@@ -97,6 +98,12 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             final Proxy proxy = proxies.get(0);
             this.proxyHostAddress = (InetSocketAddress) proxy.address();
         }
+
+        if (proxyOptions == ProxyOptions.SYSTEM_DEFAULTS) {
+            this.proxy = new ProxyImpl();
+        } else {
+            this.proxy = new ProxyImpl(getProtonConfiguration());
+        }
     }
 
     /**
@@ -118,6 +125,16 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final List<Proxy> proxies = proxySelector.select(uri);
         return isProxyAddressLegal(proxies);
+    }
+
+    @Override
+    public void transferState(ConnectionHandler fromHandler) {
+        if (fromHandler instanceof WebSocketsProxyConnectionHandler) {
+            final WebSocketsProxyConnectionHandler wsHandler = (WebSocketsProxyConnectionHandler) fromHandler;
+            final ProxyImpl fromProxy = wsHandler.proxy;
+            this.proxy.transferState(fromProxy);
+        }
+        super.transferState(fromHandler);
     }
 
     /**
@@ -204,11 +221,6 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     @Override
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         super.addTransportLayers(event, transport);
-
-        // Checking that the proxy configuration is not null and not equal to the system defaults option.
-        final ProxyImpl proxy = proxyOptions != null && !(proxyOptions == ProxyOptions.SYSTEM_DEFAULTS)
-            ? new ProxyImpl(getProtonConfiguration())
-            : new ProxyImpl();
 
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
         proxy.configure(connectHostnameAndPort, null, proxyHandler, transport);

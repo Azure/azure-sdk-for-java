@@ -24,7 +24,7 @@ import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
-import com.azure.messaging.webpubsub.models.WebPubSubGroupMember;
+import com.azure.messaging.webpubsub.models.WebPubSubGroupConnection;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 
 import java.util.List;
@@ -690,8 +690,8 @@ public final class WebPubSubServiceClient {
      * @return represents a page of elements as a LIST REST API result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WebPubSubGroupMember> listConnectionsInGroup(String group, RequestOptions requestOptions) {
+    public PagedIterable<WebPubSubGroupConnection> listConnectionsInGroup(String group, RequestOptions requestOptions) {
         return this.serviceClient.listConnectionsInGroup(hub, group, requestOptions)
-            .mapPage(binaryData -> binaryData.toObject(WebPubSubGroupMember.class));
+            .mapPage(binaryData -> binaryData.toObject(WebPubSubGroupConnection.class));
     }
 }

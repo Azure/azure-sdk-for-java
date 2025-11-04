@@ -1,0 +1,38 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/msi/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/msi/
+
+parameters:
+- name: release_azureresourcemanagermsi
+  displayName: 'azure-resourcemanager-msi'
+  type: boolean
+  default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: msi
+    Artifacts:
+      - name: azure-resourcemanager-msi
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermsi
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermsi }}

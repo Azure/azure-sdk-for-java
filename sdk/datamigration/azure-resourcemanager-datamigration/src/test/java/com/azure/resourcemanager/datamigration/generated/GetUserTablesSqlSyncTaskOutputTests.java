@@ -11,7 +11,7 @@ public final class GetUserTablesSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetUserTablesSqlSyncTaskOutput model = BinaryData.fromString(
-            "{\"databasesToSourceTables\":\"lkfg\",\"databasesToTargetTables\":\"dneu\",\"tableValidationErrors\":\"fphsdyhtozfikdow\",\"validationErrors\":[{\"message\":\"v\",\"actionableMessage\":\"xclvit\",\"filePath\":\"qzonosggbhcohf\",\"lineNumber\":\"sjnkal\",\"hResult\":391766197,\"stackTrace\":\"iswac\"},{\"message\":\"gdkz\",\"actionableMessage\":\"wkfvhqcrailvp\",\"filePath\":\"pfuflrw\",\"lineNumber\":\"hdlxyjrxsagafcn\",\"hResult\":781571507,\"stackTrace\":\"qapnedgfbcv\"}]}")
+            "{\"databasesToSourceTables\":\"elvidizozsdbccx\",\"databasesToTargetTables\":\"on\",\"tableValidationErrors\":\"gnwncypuuwwlt\",\"validationErrors\":[{\"message\":\"ctzenkeifzzhmkd\",\"actionableMessage\":\"vflyhbxcu\",\"filePath\":\"hxgsrboldfor\",\"lineNumber\":\"wjlvizbfhfov\",\"hResult\":1713123413,\"stackTrace\":\"pbt\"},{\"message\":\"dxe\",\"actionableMessage\":\"abbelawumuaslzk\",\"filePath\":\"rwoycqucwyh\",\"lineNumber\":\"nomdrkywuhpsv\",\"hResult\":888405116,\"stackTrace\":\"utlwexxwla\"},{\"message\":\"iexzsrzpge\",\"actionableMessage\":\"tybbwwpgda\",\"filePath\":\"hzyvlixqnrkcx\",\"lineNumber\":\"ibn\",\"hResult\":866421840,\"stackTrace\":\"uxswqrntvl\"}]}")
             .toObject(GetUserTablesSqlSyncTaskOutput.class);
     }
 

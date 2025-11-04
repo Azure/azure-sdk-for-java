@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Delete a private endpoint connection on a Mongo Cluster resource.

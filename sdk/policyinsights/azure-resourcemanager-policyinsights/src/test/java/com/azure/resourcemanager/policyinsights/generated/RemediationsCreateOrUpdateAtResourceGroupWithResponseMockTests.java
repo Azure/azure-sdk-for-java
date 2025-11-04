@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.Remediation;
@@ -25,33 +25,35 @@ public final class RemediationsCreateOrUpdateAtResourceGroupWithResponseMockTest
     @Test
     public void testCreateOrUpdateAtResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"nsntrpcaqki\",\"policyDefinitionReferenceId\":\"kb\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"kl\",\"createdOn\":\"2021-05-12T04:44:19Z\",\"lastUpdatedOn\":\"2021-03-27T21:42:59Z\",\"filters\":{\"locations\":[\"h\"]},\"deploymentStatus\":{\"totalDeployments\":395818123,\"successfulDeployments\":60684605,\"failedDeployments\":601819316},\"statusMessage\":\"qxutrpbrruyuua\",\"correlationId\":\"lmbjwcolbmxlbnw\",\"resourceCount\":894228771,\"parallelDeployments\":2038103191,\"failureThreshold\":{\"percentage\":21.169222}},\"id\":\"rvxhmtfhocnxzcm\",\"name\":\"hngxnoqrxtd\",\"type\":\"sn\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"mkmfdjxyxgbkkq\",\"policyDefinitionReferenceId\":\"cteoedlrslsk\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"vjnzdpvocojhpcna\",\"createdOn\":\"2021-02-18T09:54:57Z\",\"lastUpdatedOn\":\"2021-08-22T03:29:14Z\",\"filters\":{\"locations\":[\"texvzilmhivzk\",\"ww\",\"cknrzda\",\"lskzptjxul\"],\"resourceIds\":[\"cyrthxqlehm\",\"gcj\"]},\"deploymentStatus\":{\"totalDeployments\":460712227,\"successfulDeployments\":115643513,\"failedDeployments\":1413570369},\"statusMessage\":\"mvfejvqnttmbqd\",\"correlationId\":\"zfivfokpysthhzag\",\"resourceCount\":694414147,\"parallelDeployments\":772769189,\"failureThreshold\":{\"percentage\":83.670296}},\"id\":\"enuzejg\",\"name\":\"kvebaqszll\",\"type\":\"zlsmmdqgmihzpim\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Remediation response = manager.remediations()
-            .define("evadrmmwiu")
-            .withExistingResourceGroup("grmtqjk")
-            .withPolicyAssignmentId("c")
-            .withPolicyDefinitionReferenceId("z")
-            .withResourceDiscoveryMode(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE)
-            .withFilters(new RemediationFilters().withLocations(Arrays.asList("gamxzkrrcoiis")))
-            .withResourceCount(353211040)
-            .withParallelDeployments(1432224999)
-            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(81.5987F))
+            .define("zbcyksiv")
+            .withExistingResourceGroup("pcbbprtugav")
+            .withPolicyAssignmentId("gd")
+            .withPolicyDefinitionReferenceId("bfcmkrfts")
+            .withResourceDiscoveryMode(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT)
+            .withFilters(new RemediationFilters().withLocations(Arrays.asList("wkloozr", "txvcm"))
+                .withResourceIds(Arrays.asList("nlcpxxviry", "yngjgvrquvpygglp")))
+            .withResourceCount(1967742981)
+            .withParallelDeployments(1746265132)
+            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(47.12043F))
             .create();
 
-        Assertions.assertEquals("nsntrpcaqki", response.policyAssignmentId());
-        Assertions.assertEquals("kb", response.policyDefinitionReferenceId());
+        Assertions.assertEquals("mkmfdjxyxgbkkq", response.policyAssignmentId());
+        Assertions.assertEquals("cteoedlrslsk", response.policyDefinitionReferenceId());
         Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, response.resourceDiscoveryMode());
-        Assertions.assertEquals("h", response.filters().locations().get(0));
-        Assertions.assertEquals(894228771, response.resourceCount());
-        Assertions.assertEquals(2038103191, response.parallelDeployments());
-        Assertions.assertEquals(21.169222F, response.failureThreshold().percentage());
+        Assertions.assertEquals("texvzilmhivzk", response.filters().locations().get(0));
+        Assertions.assertEquals("cyrthxqlehm", response.filters().resourceIds().get(0));
+        Assertions.assertEquals(694414147, response.resourceCount());
+        Assertions.assertEquals(772769189, response.parallelDeployments());
+        Assertions.assertEquals(83.670296F, response.failureThreshold().percentage());
     }
 }

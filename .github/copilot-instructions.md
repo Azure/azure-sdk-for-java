@@ -22,6 +22,10 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 - **Management Libraries**: Libraries with Maven group `com.azure.resourcemanager`
 - **Spring Libraries**: Libraries with Maven group `com.azure.spring`
 
+### Prerequisites
+
+- To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
+
 ## Behavior
 
 - Always ensure your solutions prioritize clarity, maintainability, and testability.
@@ -64,7 +68,7 @@ Always cite the specific sections of documentation you've referenced in your res
 ### Java Version Compatibility
 
 - Code should be compatible with Java 8 as the baseline
-- Testing and forward support should work up to the latest Java LTS release (currently Java 21)
+- Testing and forward support should work up to the latest Java LTS release
 
 ### Documentation Requirements
 
@@ -113,11 +117,11 @@ When possible, refer to the Azure SDK for Java Design Guidelines for specific ex
 - Include tests that cover your changes
 - Update CHANGELOG.md with your changes
 - Provide a proper description of the pull request to document the changes in the PR. The description should include:
-  - A summary of the changes made.
-  - The reason for the changes.
-  - Any relevant issue numbers.
-  - Instructions on how to verify the changes.
-  - Any additional context or information that reviewers should be aware of.
+    - A summary of the changes made.
+    - The reason for the changes.
+    - Any relevant issue numbers.
+    - Instructions on how to verify the changes.
+    - Any additional context or information that reviewers should be aware of.
 
 ## Release Process
 
@@ -144,3 +148,7 @@ When facing issues, direct users to:
 - [Support for Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md)
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 - [Stack Overflow with azure-java-sdk tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
+
+## SDK release
+
+For detailed workflow instructions, see [SDK Release](../eng/common/instructions/copilot/sdk-release.instructions.md).

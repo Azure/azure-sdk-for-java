@@ -223,8 +223,9 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
      */
-    void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName);
+    Volume splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
      * Split clone from parent volume
@@ -239,8 +240,9 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
      */
-    void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
+    Volume splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
 
     /**

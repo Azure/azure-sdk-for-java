@@ -23,7 +23,7 @@ public final class NamespaceTopicsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1566722268},\"id\":\"iwdhdmncgbfzu\",\"name\":\"cstu\",\"type\":\"mlhxdfbklcii\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":191717432},\"id\":\"ayqmarxneibpgbrh\",\"name\":\"jdqknhqn\",\"type\":\"otpu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class NamespaceTopicsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NamespaceTopic response = manager.namespaceTopics()
-            .getWithResponse("kgd", "hjkrukizyhgs", "tnqsktx", com.azure.core.util.Context.NONE)
+            .getWithResponse("qbdqnasttuxvz", "q", "yopbtsixhgvb", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PublisherType.CUSTOM, response.publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, response.inputSchema());
-        Assertions.assertEquals(1566722268, response.eventRetentionInDays());
+        Assertions.assertEquals(191717432, response.eventRetentionInDays());
     }
 }

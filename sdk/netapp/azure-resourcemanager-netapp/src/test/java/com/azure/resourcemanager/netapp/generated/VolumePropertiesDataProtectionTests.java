@@ -18,7 +18,7 @@ public final class VolumePropertiesDataProtectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePropertiesDataProtection model = BinaryData.fromString(
-            "{\"backup\":{\"backupPolicyId\":\"vgqzcjrvxd\",\"policyEnforced\":true,\"backupVaultId\":\"wlxkvugfhzovaw\"},\"replication\":{\"replicationId\":\"u\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"n\",\"remotePath\":{\"externalHostName\":\"nxipeil\",\"serverName\":\"jzuaejxdultskzbb\",\"volumeName\":\"dzumveekg\"},\"remoteVolumeRegion\":\"ozuhkfp\",\"destinationReplications\":[{\"resourceId\":\"ofd\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"sd\",\"zone\":\"ouwaboekqvkeln\"},{\"resourceId\":\"vbxwyjsflhh\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"n\",\"zone\":\"xisxyawjoyaqcsl\"},{\"resourceId\":\"pkii\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"xznelixhnrztf\",\"zone\":\"hb\"},{\"resourceId\":\"knalaulppg\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"napnyiropuhpigv\",\"zone\":\"ylgqgitxmedjvcsl\"}],\"externalReplicationSetupStatus\":\"ClusterPeerRequired\",\"externalReplicationSetupInfo\":\"wncwzzhxgktrmg\"},\"snapshot\":{\"snapshotPolicyId\":\"apkteoellwptfdyg\"},\"volumeRelocation\":{\"relocationRequested\":false,\"readyToBeFinalized\":false}}")
+            "{\"backup\":{\"backupPolicyId\":\"vgqzcjrvxd\",\"policyEnforced\":true,\"backupVaultId\":\"wlxkvugfhzovaw\"},\"replication\":{\"replicationId\":\"u\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"n\",\"remotePath\":{\"externalHostName\":\"nxipeil\",\"serverName\":\"jzuaejxdultskzbb\",\"volumeName\":\"dzumveekg\"},\"remoteVolumeRegion\":\"ozuhkfp\",\"destinationReplications\":[{\"resourceId\":\"ofd\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"sd\",\"zone\":\"ouwaboekqvkeln\"},{\"resourceId\":\"vbxwyjsflhh\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"n\",\"zone\":\"xisxyawjoyaqcsl\"},{\"resourceId\":\"pkii\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"xznelixhnrztf\",\"zone\":\"hb\"},{\"resourceId\":\"knalaulppg\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"napnyiropuhpigv\",\"zone\":\"ylgqgitxmedjvcsl\"}],\"externalReplicationSetupStatus\":\"ClusterPeerRequired\",\"externalReplicationSetupInfo\":\"wncwzzhxgktrmg\",\"mirrorState\":\"Broken\",\"relationshipStatus\":\"Idle\"},\"snapshot\":{\"snapshotPolicyId\":\"eoellwptfdygp\"},\"volumeRelocation\":{\"relocationRequested\":true,\"readyToBeFinalized\":true}}")
             .toObject(VolumePropertiesDataProtection.class);
         Assertions.assertEquals("vgqzcjrvxd", model.backup().backupPolicyId());
         Assertions.assertTrue(model.backup().policyEnforced());
@@ -29,8 +29,8 @@ public final class VolumePropertiesDataProtectionTests {
         Assertions.assertEquals("jzuaejxdultskzbb", model.replication().remotePath().serverName());
         Assertions.assertEquals("dzumveekg", model.replication().remotePath().volumeName());
         Assertions.assertEquals("ozuhkfp", model.replication().remoteVolumeRegion());
-        Assertions.assertEquals("apkteoellwptfdyg", model.snapshot().snapshotPolicyId());
-        Assertions.assertFalse(model.volumeRelocation().relocationRequested());
+        Assertions.assertEquals("eoellwptfdygp", model.snapshot().snapshotPolicyId());
+        Assertions.assertTrue(model.volumeRelocation().relocationRequested());
     }
 
     @org.junit.jupiter.api.Test
@@ -45,8 +45,8 @@ public final class VolumePropertiesDataProtectionTests {
                     .withServerName("jzuaejxdultskzbb")
                     .withVolumeName("dzumveekg"))
                 .withRemoteVolumeRegion("ozuhkfp"))
-            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("apkteoellwptfdyg"))
-            .withVolumeRelocation(new VolumeRelocationProperties().withRelocationRequested(false));
+            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("eoellwptfdygp"))
+            .withVolumeRelocation(new VolumeRelocationProperties().withRelocationRequested(true));
         model = BinaryData.fromObject(model).toObject(VolumePropertiesDataProtection.class);
         Assertions.assertEquals("vgqzcjrvxd", model.backup().backupPolicyId());
         Assertions.assertTrue(model.backup().policyEnforced());
@@ -57,7 +57,7 @@ public final class VolumePropertiesDataProtectionTests {
         Assertions.assertEquals("jzuaejxdultskzbb", model.replication().remotePath().serverName());
         Assertions.assertEquals("dzumveekg", model.replication().remotePath().volumeName());
         Assertions.assertEquals("ozuhkfp", model.replication().remoteVolumeRegion());
-        Assertions.assertEquals("apkteoellwptfdyg", model.snapshot().snapshotPolicyId());
-        Assertions.assertFalse(model.volumeRelocation().relocationRequested());
+        Assertions.assertEquals("eoellwptfdygp", model.snapshot().snapshotPolicyId());
+        Assertions.assertTrue(model.volumeRelocation().relocationRequested());
     }
 }

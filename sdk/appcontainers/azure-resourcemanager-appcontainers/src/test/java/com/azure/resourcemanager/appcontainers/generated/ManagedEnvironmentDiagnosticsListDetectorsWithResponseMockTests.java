@@ -21,7 +21,7 @@ public final class ManagedEnvironmentDiagnosticsListDetectorsWithResponseMockTes
     @Test
     public void testListDetectorsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"zcmjhngxnoqrxt\",\"name\":\"sn\",\"description\":\"vhdl\",\"author\":\"did\",\"category\":\"epfwwt\",\"supportTopicList\":[{},{},{}],\"analysisTypes\":[\"sxxh\",\"wcdbckyoik\",\"kxhnegknj\",\"rbhtmeplvukaobr\"],\"type\":\"pgsn\",\"score\":16.630627},\"dataset\":[{},{},{}],\"status\":{\"message\":\"hg\",\"statusId\":1680532748},\"dataProviderMetadata\":{\"providerName\":\"akywalhjymxcgqta\",\"propertyBag\":[{},{}]}},\"id\":\"lss\",\"name\":\"ljomevt\",\"type\":\"ycnlbvgjcodk\"},{\"properties\":{\"metadata\":{\"id\":\"iytssikizbc\",\"name\":\"q\",\"description\":\"ntnrgmqsorh\",\"author\":\"kxgnlykmxcpwzvmd\",\"category\":\"sqdtiwlwxlbon\",\"supportTopicList\":[{},{},{},{}],\"analysisTypes\":[\"qicqchygt\",\"xbyja\",\"epubdp\",\"xyqvg\"],\"type\":\"aodetv\",\"score\":82.464134},\"dataset\":[{},{},{}],\"status\":{\"message\":\"wsaifmcwno\",\"statusId\":2130400407},\"dataProviderMetadata\":{\"providerName\":\"hg\",\"propertyBag\":[{}]}},\"id\":\"cknjolgj\",\"name\":\"yxpvelszerqze\",\"type\":\"xoqeintxwalj\"}],\"nextLink\":\"zoblq\"}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"zxrrfc\",\"name\":\"r\",\"description\":\"hgsnxuwwkpph\",\"author\":\"sbzxl\",\"category\":\"xomeikjclwzacn\",\"supportTopicList\":[{},{},{}],\"analysisTypes\":[\"uqtaazyqbxyxoyf\",\"uqqiqezxlhd\",\"zq\"],\"type\":\"a\",\"score\":70.80547},\"dataset\":[{},{}],\"status\":{\"message\":\"j\",\"statusId\":1471030356},\"dataProviderMetadata\":{\"providerName\":\"iybmrzoep\",\"propertyBag\":[{},{},{},{}]}},\"id\":\"v\",\"name\":\"njkgvfnmx\",\"type\":\"ursqf\"},{\"properties\":{\"metadata\":{\"id\":\"yibuyvpirfqjpnqn\",\"name\":\"w\",\"description\":\"edenrexkxbhxv\",\"author\":\"nul\",\"category\":\"nhj\",\"supportTopicList\":[{},{},{}],\"analysisTypes\":[\"nfa\",\"svkskmqoz\"],\"type\":\"ivyhjrliizjixlqf\",\"score\":19.982082},\"dataset\":[{}],\"status\":{\"message\":\"solronqqlm\",\"statusId\":561135071},\"dataProviderMetadata\":{\"providerName\":\"sjxtel\",\"propertyBag\":[{},{}]}},\"id\":\"uqbo\",\"name\":\"oolzqocarkuzl\",\"type\":\"cnn\"},{\"properties\":{\"metadata\":{\"id\":\"xawqy\",\"name\":\"lhdyzmyckzex\",\"description\":\"akckywym\",\"author\":\"aabjkdtfohfao\",\"category\":\"vkiwrsiwdyjqu\",\"supportTopicList\":[{}],\"analysisTypes\":[\"raueekcsueh\"],\"type\":\"ddacbcbgydlqidy\",\"score\":74.43678},\"dataset\":[{},{},{},{}],\"status\":{\"message\":\"ril\",\"statusId\":1093314726},\"dataProviderMetadata\":{\"providerName\":\"qqxvztpbn\",\"propertyBag\":[{},{},{},{}]}},\"id\":\"xjtomalswbn\",\"name\":\"ddepldwqjns\",\"type\":\"zygleexahvm\"}],\"nextLink\":\"hsbrcary\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class ManagedEnvironmentDiagnosticsListDetectorsWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiagnosticsCollection response = manager.managedEnvironmentDiagnostics()
-            .listDetectorsWithResponse("w", "pcpahprzrvxhmtf", com.azure.core.util.Context.NONE)
+            .listDetectorsWithResponse("tbjczjnciui", "qvldaswvppisqqzl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sxxh", response.value().get(0).properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("hg", response.value().get(0).properties().status().message());
-        Assertions.assertEquals(1680532748, response.value().get(0).properties().status().statusId());
-        Assertions.assertEquals("akywalhjymxcgqta",
+        Assertions.assertEquals("uqtaazyqbxyxoyf",
+            response.value().get(0).properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("j", response.value().get(0).properties().status().message());
+        Assertions.assertEquals(1471030356, response.value().get(0).properties().status().statusId());
+        Assertions.assertEquals("iybmrzoep",
             response.value().get(0).properties().dataProviderMetadata().providerName());
     }
 }

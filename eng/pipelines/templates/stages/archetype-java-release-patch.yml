@@ -1,8 +1,6 @@
 parameters:
   - name: DependsOn
     type: object
-  - name: SDKType
-    type: string
   - name: Artifacts
     type: object
     default: []
@@ -213,19 +211,19 @@ stages:
                 versionSpec: $(PythonVersion)
 
             # Apply the version increment to each library, which only updates the version_client.txt file,
-            # and then call to update_versions will then apply all of the updates.
+            # and then call to update_versions will then apply all the updates.
             - pwsh: |
                 $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{ parameters.SDKType }} --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
+                  python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
                 }
               displayName: Increment package versions
 
             - script: |
                 python --version
-                python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
+                python eng/versioning/update_versions.py --auto-version-increment --skip-readme
               displayName: Update pom files for incremented versions
 
             - template: /eng/common/pipelines/templates/steps/create-pull-request.yml

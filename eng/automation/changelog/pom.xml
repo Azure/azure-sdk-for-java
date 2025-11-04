@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.9</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -90,7 +90,7 @@
           <systemProperties>
             <systemProperty>
               <key>PACKAGE_IGNORE</key>
-              <value>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*;com\.azure\.resourcemanager(\.[^.]+)+\.implementation</value>
+              <value>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*;com\.azure\.resourcemanager(\.[^.]+)+\.implementation(\.[^.]+)*</value>
             </systemProperty>
             <systemProperty>
               <key>OLD_JAR</key>

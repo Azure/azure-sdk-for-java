@@ -12,20 +12,20 @@ public final class RemotePathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemotePath model = BinaryData
-            .fromString("{\"externalHostName\":\"mpew\",\"serverName\":\"wfbkrvrns\",\"volumeName\":\"shqjohxcrsbf\"}")
+            .fromString("{\"externalHostName\":\"wwwfbkr\",\"serverName\":\"rn\",\"volumeName\":\"vshqjohxcr\"}")
             .toObject(RemotePath.class);
-        Assertions.assertEquals("mpew", model.externalHostname());
-        Assertions.assertEquals("wfbkrvrns", model.serverName());
-        Assertions.assertEquals("shqjohxcrsbf", model.volumeName());
+        Assertions.assertEquals("wwwfbkr", model.externalHostname());
+        Assertions.assertEquals("rn", model.serverName());
+        Assertions.assertEquals("vshqjohxcr", model.volumeName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemotePath model
-            = new RemotePath().withExternalHostname("mpew").withServerName("wfbkrvrns").withVolumeName("shqjohxcrsbf");
+            = new RemotePath().withExternalHostname("wwwfbkr").withServerName("rn").withVolumeName("vshqjohxcr");
         model = BinaryData.fromObject(model).toObject(RemotePath.class);
-        Assertions.assertEquals("mpew", model.externalHostname());
-        Assertions.assertEquals("wfbkrvrns", model.serverName());
-        Assertions.assertEquals("shqjohxcrsbf", model.volumeName());
+        Assertions.assertEquals("wwwfbkr", model.externalHostname());
+        Assertions.assertEquals("rn", model.serverName());
+        Assertions.assertEquals("vshqjohxcr", model.volumeName());
     }
 }

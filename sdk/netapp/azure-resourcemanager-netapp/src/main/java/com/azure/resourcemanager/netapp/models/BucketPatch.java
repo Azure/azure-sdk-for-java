@@ -152,7 +152,7 @@ public final class BucketPatch extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
-    public NetappProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -176,6 +176,29 @@ public final class BucketPatch extends ProxyResource {
             this.innerProperties = new BucketPatchProperties();
         }
         this.innerProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite.
+     * 
+     * @return the permissions value.
+     */
+    public BucketPatchPermissions permissions() {
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
+    }
+
+    /**
+     * Set the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite.
+     * 
+     * @param permissions the permissions value to set.
+     * @return the BucketPatch object itself.
+     */
+    public BucketPatch withPermissions(BucketPatchPermissions permissions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BucketPatchProperties();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 

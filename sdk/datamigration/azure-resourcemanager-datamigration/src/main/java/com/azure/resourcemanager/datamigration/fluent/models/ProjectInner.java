@@ -6,9 +6,11 @@ package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.models.AzureActiveDirectoryApp;
 import com.azure.resourcemanager.datamigration.models.ConnectionInfo;
 import com.azure.resourcemanager.datamigration.models.DatabaseInfo;
 import com.azure.resourcemanager.datamigration.models.ProjectProvisioningState;
@@ -28,6 +30,16 @@ public final class ProjectInner extends Resource {
      * Project properties
      */
     private ProjectProperties innerProperties;
+
+    /*
+     * HTTP strong entity tag value. This is ignored if submitted.
+     */
+    private String etag;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -57,6 +69,35 @@ public final class ProjectInner extends Resource {
      */
     private ProjectProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the etag property: HTTP strong entity tag value. This is ignored if submitted.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: HTTP strong entity tag value. This is ignored if submitted.
+     * 
+     * @param etag the etag value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -127,6 +168,31 @@ public final class ProjectInner extends Resource {
             this.innerProperties = new ProjectProperties();
         }
         this.innerProperties().withSourcePlatform(sourcePlatform);
+        return this;
+    }
+
+    /**
+     * Get the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used to
+     * connect to the target Azure resource.
+     * 
+     * @return the azureAuthenticationInfo value.
+     */
+    public AzureActiveDirectoryApp azureAuthenticationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureAuthenticationInfo();
+    }
+
+    /**
+     * Set the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used to
+     * connect to the target Azure resource.
+     * 
+     * @param azureAuthenticationInfo the azureAuthenticationInfo value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withAzureAuthenticationInfo(AzureActiveDirectoryApp azureAuthenticationInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withAzureAuthenticationInfo(azureAuthenticationInfo);
         return this;
     }
 
@@ -260,6 +326,7 @@ public final class ProjectInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
         return jsonWriter.writeEndObject();
     }
 
@@ -292,6 +359,10 @@ public final class ProjectInner extends Resource {
                     deserializedProjectInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedProjectInner.innerProperties = ProjectProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedProjectInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedProjectInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

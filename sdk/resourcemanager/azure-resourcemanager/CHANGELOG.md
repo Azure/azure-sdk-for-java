@@ -1,5 +1,101 @@
 # Release History
 
+## 2.57.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.56.0 (2025-10-31)
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-08-01`.
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed a bug that `ApplicationGateway.availabilityZones()` throws exception.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-10-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.55.0 (2025-09-30)
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed a bug that `NetworkSecurityGroup.listAssociatedSubnets` returns a list of `null`.
+
+### azure-resourcemanager-storage
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-01-01`.
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-07-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-08-27)
+
+### azure-resourcemanager-search
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.1 (2025-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.0 (2025-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.52.0 (2025-06-27)
 
 ### Other Changes

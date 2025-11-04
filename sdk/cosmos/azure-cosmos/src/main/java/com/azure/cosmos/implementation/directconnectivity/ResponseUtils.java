@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 class ResponseUtils {
     private static final byte[] EMPTY_BYTE_ARRAY = {};
 
-    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse) {
+    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse, String endpoint) {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
@@ -25,6 +25,7 @@ class ResponseUtils {
             int size = 0;
             if (byteBufContent == null || (size = byteBufContent.readableBytes()) == 0) {
                 return new StoreResponse(
+                    endpoint,
                     httpClientResponse.statusCode(),
                     HttpUtils.unescape(httpResponseHeaders.toMap()),
                     null,
@@ -32,6 +33,7 @@ class ResponseUtils {
             }
 
             return new StoreResponse(
+                endpoint,
                 httpClientResponse.statusCode(),
                 HttpUtils.unescape(httpResponseHeaders.toMap()),
                 new ByteBufInputStream(byteBufContent, true),

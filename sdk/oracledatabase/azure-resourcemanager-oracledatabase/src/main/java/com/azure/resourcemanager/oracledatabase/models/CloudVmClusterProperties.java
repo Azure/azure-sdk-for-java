@@ -6,7 +6,6 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -285,6 +284,16 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
      * The compute model of the VM Cluster.
      */
     private ComputeModel computeModel;
+
+    /*
+     * Exadata Database Storage Vault ID
+     */
+    private String exascaleDbStorageVaultId;
+
+    /*
+     * Specifies whether the type of storage management for the VM cluster is ASM or Exascale.
+     */
+    private ExadataVmClusterStorageManagementType storageManagementType;
 
     /**
      * Creates an instance of CloudVmClusterProperties class.
@@ -1114,61 +1123,34 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
-     * Validates the instance.
+     * Get the exascaleDbStorageVaultId property: Exadata Database Storage Vault ID.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the exascaleDbStorageVaultId value.
      */
-    public void validate() {
-        if (fileSystemConfigurationDetails() != null) {
-            fileSystemConfigurationDetails().forEach(e -> e.validate());
-        }
-        if (hostname() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property hostname in model CloudVmClusterProperties"));
-        }
-        if (cloudExadataInfrastructureId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property cloudExadataInfrastructureId in model CloudVmClusterProperties"));
-        }
-        if (sshPublicKeys() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sshPublicKeys in model CloudVmClusterProperties"));
-        }
-        if (vnetId() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property vnetId in model CloudVmClusterProperties"));
-        }
-        if (giVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property giVersion in model CloudVmClusterProperties"));
-        }
-        if (subnetId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subnetId in model CloudVmClusterProperties"));
-        }
-        if (nsgCidrs() != null) {
-            nsgCidrs().forEach(e -> e.validate());
-        }
-        if (dataCollectionOptions() != null) {
-            dataCollectionOptions().validate();
-        }
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property displayName in model CloudVmClusterProperties"));
-        }
-        if (iormConfigCache() != null) {
-            iormConfigCache().validate();
-        }
+    public String exascaleDbStorageVaultId() {
+        return this.exascaleDbStorageVaultId;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(CloudVmClusterProperties.class);
+    /**
+     * Set the exascaleDbStorageVaultId property: Exadata Database Storage Vault ID.
+     * 
+     * @param exascaleDbStorageVaultId the exascaleDbStorageVaultId value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withExascaleDbStorageVaultId(String exascaleDbStorageVaultId) {
+        this.exascaleDbStorageVaultId = exascaleDbStorageVaultId;
+        return this;
+    }
+
+    /**
+     * Get the storageManagementType property: Specifies whether the type of storage management for the VM cluster is
+     * ASM or Exascale.
+     * 
+     * @return the storageManagementType value.
+     */
+    public ExadataVmClusterStorageManagementType storageManagementType() {
+        return this.storageManagementType;
+    }
 
     /**
      * {@inheritDoc}
@@ -1208,6 +1190,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
         jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
         jsonWriter.writeArrayField("computeNodes", this.computeNodes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dbServers", this.dbServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("exascaleDbStorageVaultId", this.exascaleDbStorageVaultId);
         return jsonWriter.writeEndObject();
     }
 
@@ -1344,6 +1327,11 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                     deserializedCloudVmClusterProperties.subnetOcid = reader.getString();
                 } else if ("computeModel".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.computeModel = ComputeModel.fromString(reader.getString());
+                } else if ("exascaleDbStorageVaultId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.exascaleDbStorageVaultId = reader.getString();
+                } else if ("storageManagementType".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.storageManagementType
+                        = ExadataVmClusterStorageManagementType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,10 +24,18 @@ public class EventDataBatchTest {
         = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     @Mock
     private ErrorContextProvider errorContextProvider;
+    private AutoCloseable closeable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void teardown() throws Exception {
+        if (closeable != null) {
+            closeable.close();
+        }
     }
 
     @Test

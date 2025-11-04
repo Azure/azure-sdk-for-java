@@ -13,19 +13,34 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Parameters for updating a HealthBot.
+ * Parameters for updating a Azure Health Bot.
  */
 @Fluent
 public final class HealthBotUpdateParameters implements JsonSerializable<HealthBotUpdateParameters> {
     /*
-     * Tags for a HealthBot.
+     * Properties of Azure Health Bot.
+     */
+    private HealthBotProperties properties;
+
+    /*
+     * Tags for a Azure Health Bot.
      */
     private Map<String, String> tags;
 
     /*
-     * SKU of the HealthBot.
+     * SKU of the Azure Health Bot.
      */
     private Sku sku;
+
+    /*
+     * The identity of the Azure Health Bot.
+     */
+    private Identity identity;
+
+    /*
+     * The location property.
+     */
+    private String location;
 
     /**
      * Creates an instance of HealthBotUpdateParameters class.
@@ -34,7 +49,27 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
     }
 
     /**
-     * Get the tags property: Tags for a HealthBot.
+     * Get the properties property: Properties of Azure Health Bot.
+     * 
+     * @return the properties value.
+     */
+    public HealthBotProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of Azure Health Bot.
+     * 
+     * @param properties the properties value to set.
+     * @return the HealthBotUpdateParameters object itself.
+     */
+    public HealthBotUpdateParameters withProperties(HealthBotProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Tags for a Azure Health Bot.
      * 
      * @return the tags value.
      */
@@ -43,7 +78,7 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
     }
 
     /**
-     * Set the tags property: Tags for a HealthBot.
+     * Set the tags property: Tags for a Azure Health Bot.
      * 
      * @param tags the tags value to set.
      * @return the HealthBotUpdateParameters object itself.
@@ -54,7 +89,7 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
     }
 
     /**
-     * Get the sku property: SKU of the HealthBot.
+     * Get the sku property: SKU of the Azure Health Bot.
      * 
      * @return the sku value.
      */
@@ -63,7 +98,7 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
     }
 
     /**
-     * Set the sku property: SKU of the HealthBot.
+     * Set the sku property: SKU of the Azure Health Bot.
      * 
      * @param sku the sku value to set.
      * @return the HealthBotUpdateParameters object itself.
@@ -74,13 +109,59 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
     }
 
     /**
+     * Get the identity property: The identity of the Azure Health Bot.
+     * 
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the Azure Health Bot.
+     * 
+     * @param identity the identity value to set.
+     * @return the HealthBotUpdateParameters object itself.
+     */
+    public HealthBotUpdateParameters withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the location property: The location property.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location property.
+     * 
+     * @param location the location value to set.
+     * @return the HealthBotUpdateParameters object itself.
+     */
+    public HealthBotUpdateParameters withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -90,8 +171,11 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
 
@@ -110,11 +194,17 @@ public final class HealthBotUpdateParameters implements JsonSerializable<HealthB
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tags".equals(fieldName)) {
+                if ("properties".equals(fieldName)) {
+                    deserializedHealthBotUpdateParameters.properties = HealthBotProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedHealthBotUpdateParameters.tags = tags;
                 } else if ("sku".equals(fieldName)) {
                     deserializedHealthBotUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedHealthBotUpdateParameters.identity = Identity.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedHealthBotUpdateParameters.location = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

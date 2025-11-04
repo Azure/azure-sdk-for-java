@@ -9,9 +9,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.BucketPatchPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerPatchProperties;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
-import com.azure.resourcemanager.netapp.models.NetappProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 import java.io.IOException;
 
 /**
@@ -34,12 +35,17 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
     /*
      * Provisioning state of the resource
      */
-    private NetappProvisioningState provisioningState;
+    private NetAppProvisioningState provisioningState;
 
     /*
      * Properties of the server managing the lifecycle of volume buckets
      */
     private BucketServerPatchProperties server;
+
+    /*
+     * Access permissions for the bucket. Either ReadOnly or ReadWrite.
+     */
+    private BucketPatchPermissions permissions;
 
     /**
      * Creates an instance of BucketPatchProperties class.
@@ -96,7 +102,7 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
      * 
      * @return the provisioningState value.
      */
-    public NetappProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -117,6 +123,26 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
      */
     public BucketPatchProperties withServer(BucketServerPatchProperties server) {
         this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite.
+     * 
+     * @return the permissions value.
+     */
+    public BucketPatchPermissions permissions() {
+        return this.permissions;
+    }
+
+    /**
+     * Set the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite.
+     * 
+     * @param permissions the permissions value to set.
+     * @return the BucketPatchProperties object itself.
+     */
+    public BucketPatchProperties withPermissions(BucketPatchPermissions permissions) {
+        this.permissions = permissions;
         return this;
     }
 
@@ -143,6 +169,7 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeJsonField("fileSystemUser", this.fileSystemUser);
         jsonWriter.writeJsonField("server", this.server);
+        jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -167,9 +194,12 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
                     deserializedBucketPatchProperties.fileSystemUser = FileSystemUser.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBucketPatchProperties.provisioningState
-                        = NetappProvisioningState.fromString(reader.getString());
+                        = NetAppProvisioningState.fromString(reader.getString());
                 } else if ("server".equals(fieldName)) {
                     deserializedBucketPatchProperties.server = BucketServerPatchProperties.fromJson(reader);
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedBucketPatchProperties.permissions
+                        = BucketPatchPermissions.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class EventSubscriptionsGetDeliveryAttributesWithResponseMockTests {
     @Test
     public void testGetDeliveryAttributesWithResponse() throws Exception {
-        String responseStr = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vpaklozkxbz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"skw\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"sdetjygowifcqpol\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"gysdgzyyb\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"xlvocptvdx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +31,9 @@ public final class EventSubscriptionsGetDeliveryAttributesWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeliveryAttributeListResult response = manager.eventSubscriptions()
-            .getDeliveryAttributesWithResponse("uwdxvqzxoebwgj", "bibanbau", com.azure.core.util.Context.NONE)
+            .getDeliveryAttributesWithResponse("yrqsdbpokszanm", "wgpterdiuw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vpaklozkxbz", response.value().get(0).name());
+        Assertions.assertEquals("skw", response.value().get(0).name());
     }
 }

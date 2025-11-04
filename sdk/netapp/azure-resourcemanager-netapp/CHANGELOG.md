@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.10.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,205 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.0-beta.1 (2025-10-15)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-preview-2025-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ProvisioningState` was removed
+
+#### `models.SubscriptionQuotaItem` was removed
+
+#### `models.SubscriptionQuotaItemList` was removed
+
+#### `models.VolumeQuotaRule` was modified
+
+* `models.ProvisioningState provisioningState()` -> `models.NetAppProvisioningState provisioningState()`
+
+#### `models.VolumeQuotaRulePatch` was modified
+
+* `models.ProvisioningState provisioningState()` -> `models.NetAppProvisioningState provisioningState()`
+
+#### `models.NetAppResourceQuotaLimits` was modified
+
+* `models.SubscriptionQuotaItem get(java.lang.String,java.lang.String)` -> `models.QuotaItem get(java.lang.String,java.lang.String)`
+
+### Features Added
+
+* `models.BucketPatch` was added
+
+* `models.QuotaItemList` was added
+
+* `models.LdapConfiguration` was added
+
+* `models.Bucket$DefinitionStages` was added
+
+* `models.ListQuotaReportResponse` was added
+
+* `models.BucketServerProperties` was added
+
+* `models.LdapServerType` was added
+
+* `models.VolumeLanguage` was added
+
+* `models.BucketPermissions` was added
+
+* `models.BucketPatchPermissions` was added
+
+* `models.Bucket$Definition` was added
+
+* `models.Bucket` was added
+
+* `models.NfsUser` was added
+
+* `models.BucketGenerateCredentials` was added
+
+* `models.BucketCredentialsExpiry` was added
+
+* `models.NetAppProvisioningState` was added
+
+* `models.NetAppResourceQuotaLimitsAccounts` was added
+
+* `models.Bucket$Update` was added
+
+* `models.CifsUser` was added
+
+* `models.QuotaReport` was added
+
+* `models.BucketServerPatchProperties` was added
+
+* `models.CredentialsStatus` was added
+
+* `models.BucketList` was added
+
+* `models.QuotaItem` was added
+
+* `models.ExternalReplicationSetupStatus` was added
+
+* `models.Bucket$UpdateStages` was added
+
+* `models.Buckets` was added
+
+* `models.FileSystemUser` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withLanguage(models.VolumeLanguage)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+
+#### `models.ReplicationObject` was modified
+
+* `externalReplicationSetupStatus()` was added
+* `externalReplicationSetupInfo()` was added
+* `mirrorState()` was added
+* `relationshipStatus()` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `ldapConfiguration()` was added
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withLdapServerType(models.LdapServerType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `language()` was added
+* `ldapServerType()` was added
+
+#### `models.Volume` was modified
+
+* `ldapServerType()` was added
+* `language()` was added
+* `listQuotaReport()` was added
+* `listQuotaReport(com.azure.core.util.Context)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `netAppResourceQuotaLimitsAccounts()` was added
+* `buckets()` was added
+
+#### `models.Volumes` was modified
+
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `ldapConfiguration()` was added
+
+## 1.9.0 (2025-08-19)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AcceptGrowCapacityPoolForShortTermCloneSplit` was added
+
+#### `models.Volume` was modified
+
+* `splitCloneFromParent(com.azure.core.util.Context)` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `splitCloneFromParent()` was added
+* `inheritedSizeInBytes()` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.CapacityPool` was modified
+
+* `customThroughputMibps()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+
+#### `models.Volumes` was modified
+
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CapacityPoolPatch` was modified
+
+* `customThroughputMibps()` was added
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `inheritedSizeInBytes()` was added
+
+## 1.8.0 (2025-07-21)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ReplicationObject` was modified
+
+* `withEndpointType(models.EndpointType)` was removed
+
+### Features Added
+
+#### `models.SubscriptionQuotaItemList` was modified
+
+* `nextLink()` was added
+* `withNextLink(java.lang.String)` was added
 
 ## 1.8.0-beta.1 (2025-05-07)
 

@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -78,12 +79,14 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -560,6 +563,14 @@ public class CosmosTracerTest extends TestSuiteBase {
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
 
+        if (useLegacyTracing) {
+            throw new SkipException("useLegacyTracing");
+        }
+
+        if (showQueryMode == ShowQueryMode.NONE) {
+            throw new SkipException("queryMode");
+        }
+
         ITEM_ID =  "tracerDoc_" + testCaseCount.incrementAndGet();
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
@@ -948,7 +959,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
 
-        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteEndpoints().size() > 1) {
+        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteRoutingContexts().size() > 1) {
 
             throw new SkipException("Tests would take too long to run on multi master account because " +
                 "scrips etc. creation can take several seconds for replication.");
@@ -1386,22 +1397,24 @@ public class CosmosTracerTest extends TestSuiteBase {
             ShowQueryMode.NONE,
             null,
             customOperationId,
-            samplingRate);
+            samplingRate,
+            AttributeNamingScheme.parse("All"));
     }
 
-    private void verifyTracerAttributes(TracerUnderTest mockTracer,
-            String methodName,
-            String databaseName,
-            String containerName,
-            CosmosDiagnostics cosmosDiagnostics,
-            CosmosException error,
-            boolean useLegacyTracing,
-            boolean enableRequestLevelTracing,
-            ShowQueryMode showQueryMode,
-            String queryStatement,
-            boolean forceThresholdViolation,
-            String customOperationId,
-            double samplingRate) throws JsonProcessingException {
+    private void verifyTracerAttributes(
+        TracerUnderTest mockTracer,
+        String methodName,
+        String databaseName,
+        String containerName,
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosException error,
+        boolean useLegacyTracing,
+        boolean enableRequestLevelTracing,
+        ShowQueryMode showQueryMode,
+        String queryStatement,
+        boolean forceThresholdViolation,
+        String customOperationId,
+        double samplingRate) throws JsonProcessingException {
 
             if (useLegacyTracing) {
                 verifyLegacyTracerAttributes(
@@ -1426,10 +1439,277 @@ public class CosmosTracerTest extends TestSuiteBase {
                 showQueryMode,
                 queryStatement,
                 customOperationId,
-                samplingRate);
+                samplingRate,
+                AttributeNamingScheme.parse("All"));
     }
 
     private void verifyOTelTracerAttributes(
+        TracerUnderTest mockTracer,
+        String methodName,
+        String databaseName,
+        String containerName,
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosException error,
+        boolean enableRequestLevelTracing,
+        ShowQueryMode showQueryMode,
+        String queryStatement,
+        String customOperationId,
+        double samplingRate,
+        EnumSet<AttributeNamingScheme> attributeNamingSchemes) {
+
+        if (attributeNamingSchemes.contains(AttributeNamingScheme.V1)) {
+            verifyOTelV1TracerAttributes(
+                mockTracer,
+                methodName,
+                databaseName,
+                containerName,
+                cosmosDiagnostics,
+                error,
+                enableRequestLevelTracing,
+                showQueryMode,
+                queryStatement,
+                customOperationId,
+                samplingRate
+            );
+        }
+
+        if (attributeNamingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+            verifyOTelPreV1TracerAttributes(
+                mockTracer,
+                methodName,
+                databaseName,
+                containerName,
+                cosmosDiagnostics,
+                error,
+                enableRequestLevelTracing,
+                showQueryMode,
+                queryStatement,
+                customOperationId,
+                samplingRate
+            );
+        }
+    }
+
+    private void validateContactedRegions(CosmosDiagnosticsContext ctx, Map<String, Object> attributes) {
+        Set<String> regionsContacted = ctx.getContactedRegionNames();
+        if (!regionsContacted.isEmpty()) {
+            if (attributes.get("azure.cosmosdb.operation.contacted_regions") == null) {
+                logger.error("What happened?");
+            };
+            assertThat(attributes.get("azure.cosmosdb.operation.contacted_regions")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.operation.contacted_regions")).isInstanceOf(String.class);
+
+            for (String regionName : regionsContacted) {
+                assertThat(
+                    ((String)attributes.get("azure.cosmosdb.operation.contacted_regions")).contains(regionName)
+                ).isEqualTo(true);
+            }
+        } else {
+            assertThat(attributes.get("azure.cosmosdb.operation.contacted_regions")).isNull();
+        }
+    }
+
+    private void validateActualItemCount(CosmosDiagnosticsContext ctx, Map<String, Object> attributes) {
+        if (ctx.getActualItemCount() != null) {
+            assertThat(attributes.get("azure.cosmosdb.operation.batch.size")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.operation.batch.size")).isInstanceOf(Integer.class);
+            assertThat(attributes.get("azure.cosmosdb.operation.batch.size")).isEqualTo(ctx.getActualItemCount());
+
+            assertThat(attributes.get("db.operation.batch.size")).isNotNull();
+            assertThat(attributes.get("db.operation.batch.size")).isInstanceOf(Integer.class);
+            assertThat(attributes.get("db.operation.batch.size")).isEqualTo(ctx.getActualItemCount());
+        }
+    }
+
+    private void validateBodySizes(CosmosDiagnosticsContext ctx, Map<String, Object> attributes) {
+        assertThat(attributes.get("azure.cosmosdb.request.body.size")).isNotNull();
+        assertThat(attributes.get("azure.cosmosdb.request.body.size")).isInstanceOf(Integer.class);
+        assertThat(attributes.get("azure.cosmosdb.request.body.size")).isEqualTo(ctx.getMaxRequestPayloadSizeInBytes());
+
+        assertThat(attributes.get("azure.cosmosdb.response.body.size")).isNotNull();
+        assertThat(attributes.get("azure.cosmosdb.response.body.size")).isInstanceOf(Integer.class);
+        assertThat(attributes.get("azure.cosmosdb.response.body.size")).isEqualTo(ctx.getMaxResponsePayloadSizeInBytes());
+
+    }
+
+    private void validateQueryStatement(
+        CosmosDiagnosticsContext ctx,
+        Map<String, Object> attributes,
+        ShowQueryMode showQueryMode,
+        String queryStatement) {
+
+        String dbStatement = (String) attributes.get("azure.cosmosdb.query.text");
+
+        boolean isReadMany = "readMany".equals(ctx.getOperationId());
+        if (!isReadMany && ShowQueryMode.ALL.equals(showQueryMode)) {
+            assertThat(dbStatement).isNotNull();
+            assertThat(dbStatement).isEqualTo(queryStatement);
+        } else if (!isReadMany && ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode)
+            && null != dbStatement && dbStatement.contains("@")) {
+            assertThat(dbStatement).isNotNull();
+            assertThat(dbStatement).isEqualTo(queryStatement);
+        } else {
+            assertThat(dbStatement).isNull();
+        }
+        assertThat(attributes.get("db.query.text")).isEqualTo(dbStatement);
+    }
+
+    private void verifyOTelV1TracerAttributes(
+        TracerUnderTest mockTracer,
+        String methodName,
+        String databaseName,
+        String containerName,
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosException error,
+        boolean enableRequestLevelTracing,
+        ShowQueryMode showQueryMode,
+        String queryStatement,
+        String customOperationId,
+        double samplingRate) {
+
+        assertThat(mockTracer).isNotNull();
+        assertThat(cosmosDiagnostics).isNotNull();
+        assertThat(cosmosDiagnostics.getSamplingRateSnapshot()).isEqualTo(samplingRate);
+        assertThat(
+            cosmosDiagnostics.toString().contains("\"samplingRateSnapshot\":" + String.valueOf(samplingRate)))
+            .isEqualTo(true);
+
+        TracerUnderTest.SpanRecord currentSpan = mockTracer.getCurrentSpan();
+
+        if (samplingRate == 0) {
+            return;
+        }
+
+        assertThat(currentSpan).isNotNull();
+        assertThat(currentSpan.getContext()).isNotNull();
+
+        assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+        CosmosDiagnosticsContext ctx = cosmosDiagnostics.getDiagnosticsContext();
+
+        Map<String, Object> attributes = currentSpan.getAttributes();
+
+        assertThat(attributes.get("db.system.name")).isEqualTo("azure.cosmosdb");
+
+        if (databaseName != null) {
+            assertThat(attributes.get("db.namespace")).isEqualTo(databaseName);
+            assertThat(attributes.get("azure.cosmosdb.namespace")).isEqualTo(databaseName);
+            assertThat(ctx.getDatabaseName()).isEqualTo(databaseName);
+        }
+
+        if (containerName != null) {
+            assertThat(attributes.get("db.collection.name")).isEqualTo(containerName);
+            assertThat(attributes.get("azure.cosmosdb.collection.name")).isEqualTo(containerName);
+            assertThat(ctx.getContainerName()).isEqualTo(containerName);
+        }
+
+        assertThat(attributes.get("db.system")).isEqualTo("cosmosdb");
+        assertThat(attributes.get("db.operation.name")).isEqualTo(methodName);
+        assertThat(attributes.get("server.address")).isNotNull();
+        assertThat(attributes.get("azure.client.id")).isNotNull();
+        if (attributes.get("azure.cosmosdb.is_empty_completion") == null) {
+
+            if (ctx.getEffectiveConsistencyLevel() != null) {
+                assertThat(attributes.get("azure.cosmosdb.consistency.level")).isNotNull();
+                assertThat(attributes.get("azure.cosmosdb.consistency.level")).isInstanceOf(String.class);
+                assertThat(attributes.get("azure.cosmosdb.consistency.level"))
+                    .isEqualTo(ctx.getEffectiveConsistencyLevel().toString());
+            }
+
+            if (ImplementationBridgeHelpers
+                .CosmosDiagnosticsContextHelper
+                .getCosmosDiagnosticsContextAccessor()
+                .getOperationType(ctx)
+                .isReadOnlyOperation()
+                && ctx.getEffectiveReadConsistencyStrategy() != null) {
+
+                assertThat(attributes.get("azure.cosmosdb.read_consistency.strategy")).isNotNull();
+                assertThat(attributes.get("azure.cosmosdb.read_consistency.strategy")).isInstanceOf(String.class);
+                assertThat(attributes.get("azure.cosmosdb.read_consistency.strategy"))
+                    .isEqualTo(ctx.getEffectiveReadConsistencyStrategy().toString());
+            } else {
+                assertThat(attributes.get("azure.cosmosdb.read_consistency.strategy")).isNull();
+            }
+
+            validateQueryStatement(ctx, attributes, showQueryMode, queryStatement);
+
+            assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
+
+            boolean isMismatchDueToQueryBlockFirst =
+                (double) attributes.get("azure.cosmosdb.operation.request_charge") != 0d
+                    || Double.valueOf(ctx.getTotalRequestCharge()) == 0d;
+
+            if (isMismatchDueToQueryBlockFirst) {
+                assertThat(attributes.get("azure.cosmosdb.operation.request_charge"))
+                    .isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
+
+                validateContactedRegions(ctx, attributes);
+                validateActualItemCount(ctx, attributes);
+                validateBodySizes(ctx, attributes);
+            } else {
+                // in the tests we usually use Flux.blockFirst() - which also cancels the Flux.
+                // Flux cancellation is also evident as an OTel event (which would have 0 request charge)
+                // to validate that previously the correct event - with right RU charge - had been traced we use the
+                // last (most recently) collected sibling Spans for the assertion.
+                assertThat(mockTracer.getAllCollectedSiblingSpans()).isNotNull();
+                TracerUnderTest.SpanRecord[] siblingSpans = mockTracer.getAllCollectedSiblingSpans();
+                assertThat(siblingSpans).hasAtLeastOneElementOfType(TracerUnderTest.SpanRecord.class);
+                TracerUnderTest.SpanRecord lastSiblingSpan = siblingSpans[siblingSpans.length - 1];
+                assertThat(lastSiblingSpan.getAttributes().get("azure.cosmosdb.operation.request_charge"))
+                    .isEqualTo(Double.valueOf(ctx.getTotalRequestCharge()));
+
+                validateContactedRegions(ctx, lastSiblingSpan.getAttributes());
+                validateActualItemCount(ctx, lastSiblingSpan.getAttributes());
+                validateBodySizes(ctx, lastSiblingSpan.getAttributes());
+            }
+
+            assertThat(attributes.get("azure.cosmosdb.response.status_code")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.response.status_code")).isInstanceOf(Integer.class);
+            assertThat(attributes.get("azure.cosmosdb.response.status_code")).isEqualTo(Integer.valueOf(ctx.getStatusCode()));
+
+            assertThat(attributes.get("db.response.status_code")).isNotNull();
+            assertThat(attributes.get("db.response.status_code")).isInstanceOf(String.class);
+            assertThat(attributes.get("db.response.status_code")).isEqualTo(String.valueOf(ctx.getStatusCode()));
+
+            assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isNotNull();
+            assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isInstanceOf(Integer.class);
+            assertThat(attributes.get("azure.cosmosdb.response.sub_status_code")).isEqualTo(Integer.valueOf(ctx.getSubStatusCode()));
+
+            String expectedOperation = ctx.getResourceType() + "_" + ctx.getOperationType();
+            if (ctx.getOperationId() != null && !ctx.getOperationId().isEmpty()) {
+                expectedOperation += "(" + ctx.getOperationId() + ")";
+            }
+
+            assertThat(attributes.get("azure.cosmosdb.operation")).isEqualTo(expectedOperation);
+            assertThat(attributes.get("azure.cosmosdb.connection.mode"))
+                .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
+            assertThat(attributes.get("user_agent.original")).isEqualTo(client.getUserAgent());
+            assertThat(attributes.get("db.cosmosdb.client_id")).isEqualTo(client.getClientCorrelationTag().getValue());
+
+            verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
+
+            verifyOTelTracerTransport(
+                cosmosDiagnostics, error, mockTracer, enableRequestLevelTracing);
+
+
+
+            if (error != null) {
+                assertThat(attributes.get("error.type")).isEqualTo("com.azure.cosmos.CosmosException");
+                assertThat(attributes.get("azure.cosmosdb.error.message")).isEqualTo(error.getShortMessage());
+
+                StringWriter stackWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stackWriter);
+                error.printStackTrace(printWriter);
+                printWriter.flush();
+                stackWriter.flush();
+                assertThat(stackWriter.toString().contains((String) attributes.get("azure.cosmosdb.error.stacktrace")))
+                    .isEqualTo(true);
+                printWriter.close();
+            }
+        }
+    }
+
+    private void verifyOTelPreV1TracerAttributes(
         TracerUnderTest mockTracer,
         String methodName,
         String databaseName,
@@ -1482,7 +1762,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
 
-            boolean isRequestChargeMismatch = 
+            boolean isRequestChargeMismatch =
                 (double)attributes.get("azure.cosmosdb.operation.request_charge") != 0d
                 || Double.valueOf(ctx.getTotalRequestCharge()) == 0d;
 
@@ -1529,14 +1809,14 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             boolean isReadMany = "readMany".equals(cosmosDiagnostics.getDiagnosticsContext().getOperationId());
             if (!isReadMany && ShowQueryMode.ALL.equals(showQueryMode)) {
-                assertThat(attributes.get("db.statement")).isNotNull();
-                assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
+                assertThat(dbStatement).isNotNull();
+                assertThat(dbStatement).isEqualTo(queryStatement);
             } else if (!isReadMany && ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode)
                     && null != dbStatement && dbStatement.contains("@")) {
-                assertThat(attributes.get("db.statement")).isNotNull();
-                assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
+                assertThat(dbStatement).isNotNull();
+                assertThat(dbStatement).isEqualTo(queryStatement);
             } else {
-                assertThat(attributes.get("db.statement")).isNull();
+                assertThat(dbStatement).isNull();
             }
 
             if (error != null) {

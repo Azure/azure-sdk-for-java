@@ -12,6 +12,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Bucket;
+import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public final class BucketsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"path\":\"mp\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":8509605857029832760,\"groupId\":3653005464283088293},\"cifsUser\":{\"username\":\"tuiaclkiexhajlfn\"}},\"provisioningState\":\"Updating\",\"status\":\"NoCredentialsSet\",\"server\":{\"fqdn\":\"t\",\"certificateCommonName\":\"iygbpvn\",\"certificateExpiryDate\":\"2021-04-05T20:55:30Z\",\"ipAddress\":\"txkyctwwgzwxjlm\",\"certificateObject\":\"vogygzyvneez\"}},\"id\":\"fg\",\"name\":\"tmoqqtlffhzb\",\"type\":\"rkjjjavfqnvhnq\"}]}";
+            = "{\"value\":[{\"properties\":{\"path\":\"mp\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":8509605857029832760,\"groupId\":3653005464283088293},\"cifsUser\":{\"username\":\"tuiaclkiexhajlfn\"}},\"provisioningState\":\"Moving\",\"status\":\"NoCredentialsSet\",\"server\":{\"fqdn\":\"t\",\"certificateCommonName\":\"iygbpvn\",\"certificateExpiryDate\":\"2021-04-05T20:55:30Z\",\"ipAddress\":\"txkyctwwgzwxjlm\",\"certificateObject\":\"vogygzyvneez\"},\"permissions\":\"ReadOnly\"},\"id\":\"htmoqqtlffhzbkr\",\"name\":\"jjjavfqnvhnq\",\"type\":\"ewdogiyetesy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,5 +41,6 @@ public final class BucketsListMockTests {
         Assertions.assertEquals("tuiaclkiexhajlfn", response.iterator().next().fileSystemUser().cifsUser().username());
         Assertions.assertEquals("t", response.iterator().next().server().fqdn());
         Assertions.assertEquals("vogygzyvneez", response.iterator().next().server().certificateObject());
+        Assertions.assertEquals(BucketPermissions.READ_ONLY, response.iterator().next().permissions());
     }
 }

@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlMITaskOutputLoginLevel model = BinaryData.fromString(
-            "{\"resultType\":\"LoginLevelOutput\",\"loginName\":\"ls\",\"state\":\"Stopped\",\"stage\":\"EstablishObjectPermissions\",\"startedOn\":\"2021-09-18T17:37:15Z\",\"endedOn\":\"2021-11-18T22:21:07Z\",\"message\":\"aumweoohguufu\",\"exceptionsAndWarnings\":[{\"message\":\"jathwtzo\",\"actionableMessage\":\"a\",\"filePath\":\"wm\",\"lineNumber\":\"mebwjscjpah\",\"hResult\":1860405842,\"stackTrace\":\"a\"},{\"message\":\"qxnmwmqt\",\"actionableMessage\":\"xyi\",\"filePath\":\"dt\",\"lineNumber\":\"cttadi\",\"hResult\":1122809689,\"stackTrace\":\"kmr\"},{\"message\":\"eekpndz\",\"actionableMessage\":\"pmudqmeqwig\",\"filePath\":\"bu\",\"lineNumber\":\"wyxebeybpmzz\",\"hResult\":1945693134,\"stackTrace\":\"fyaqitm\"}],\"id\":\"eioqaqhvse\"}")
+            "{\"resultType\":\"LoginLevelOutput\",\"loginName\":\"nniyopetxi\",\"state\":\"Completed\",\"stage\":\"EstablishUserMapping\",\"startedOn\":\"2021-06-10T00:54:20Z\",\"endedOn\":\"2021-08-21T00:11:15Z\",\"message\":\"aephblkw\",\"exceptionsAndWarnings\":[{\"message\":\"vbqsdt\",\"actionableMessage\":\"bctvivuzqym\",\"filePath\":\"owog\",\"lineNumber\":\"it\",\"hResult\":944852252,\"stackTrace\":\"vbrzcdb\"}],\"id\":\"fzndscxmxeatkd\"}")
             .toObject(MigrateSqlServerSqlMITaskOutputLoginLevel.class);
     }
 

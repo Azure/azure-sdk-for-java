@@ -30,10 +30,6 @@ public final class ListQuotaReportResponseImpl implements ListQuotaReportRespons
         }
     }
 
-    public String nextLink() {
-        return this.innerModel().nextLink();
-    }
-
     public ListQuotaReportResponseInner innerModel() {
         return this.innerObject;
     }

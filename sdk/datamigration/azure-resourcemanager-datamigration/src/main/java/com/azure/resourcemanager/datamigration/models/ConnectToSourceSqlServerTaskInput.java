@@ -28,6 +28,11 @@ public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable
     private ServerLevelPermissionsGroup checkPermissionsGroup;
 
     /*
+     * Flag for whether to collect databases from source server.
+     */
+    private Boolean collectDatabases;
+
+    /*
      * Flag for whether to collect logins from source server.
      */
     private Boolean collectLogins;
@@ -36,6 +41,21 @@ public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable
      * Flag for whether to collect agent jobs from source server.
      */
     private Boolean collectAgentJobs;
+
+    /*
+     * Flag for whether to collect TDE Certificate names from source server.
+     */
+    private Boolean collectTdeCertificateInfo;
+
+    /*
+     * Flag for whether to validate SSIS catalog is reachable on the source server.
+     */
+    private Boolean validateSsisCatalogOnly;
+
+    /*
+     * encrypted key for secure fields
+     */
+    private String encryptedKeyForSecureFields;
 
     /**
      * Creates an instance of ConnectToSourceSqlServerTaskInput class.
@@ -85,6 +105,26 @@ public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable
     }
 
     /**
+     * Get the collectDatabases property: Flag for whether to collect databases from source server.
+     * 
+     * @return the collectDatabases value.
+     */
+    public Boolean collectDatabases() {
+        return this.collectDatabases;
+    }
+
+    /**
+     * Set the collectDatabases property: Flag for whether to collect databases from source server.
+     * 
+     * @param collectDatabases the collectDatabases value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withCollectDatabases(Boolean collectDatabases) {
+        this.collectDatabases = collectDatabases;
+        return this;
+    }
+
+    /**
      * Get the collectLogins property: Flag for whether to collect logins from source server.
      * 
      * @return the collectLogins value.
@@ -125,6 +165,68 @@ public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable
     }
 
     /**
+     * Get the collectTdeCertificateInfo property: Flag for whether to collect TDE Certificate names from source server.
+     * 
+     * @return the collectTdeCertificateInfo value.
+     */
+    public Boolean collectTdeCertificateInfo() {
+        return this.collectTdeCertificateInfo;
+    }
+
+    /**
+     * Set the collectTdeCertificateInfo property: Flag for whether to collect TDE Certificate names from source server.
+     * 
+     * @param collectTdeCertificateInfo the collectTdeCertificateInfo value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withCollectTdeCertificateInfo(Boolean collectTdeCertificateInfo) {
+        this.collectTdeCertificateInfo = collectTdeCertificateInfo;
+        return this;
+    }
+
+    /**
+     * Get the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the source
+     * server.
+     * 
+     * @return the validateSsisCatalogOnly value.
+     */
+    public Boolean validateSsisCatalogOnly() {
+        return this.validateSsisCatalogOnly;
+    }
+
+    /**
+     * Set the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the source
+     * server.
+     * 
+     * @param validateSsisCatalogOnly the validateSsisCatalogOnly value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withValidateSsisCatalogOnly(Boolean validateSsisCatalogOnly) {
+        this.validateSsisCatalogOnly = validateSsisCatalogOnly;
+        return this;
+    }
+
+    /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,8 +252,12 @@ public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable
         jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
         jsonWriter.writeStringField("checkPermissionsGroup",
             this.checkPermissionsGroup == null ? null : this.checkPermissionsGroup.toString());
+        jsonWriter.writeBooleanField("collectDatabases", this.collectDatabases);
         jsonWriter.writeBooleanField("collectLogins", this.collectLogins);
         jsonWriter.writeBooleanField("collectAgentJobs", this.collectAgentJobs);
+        jsonWriter.writeBooleanField("collectTdeCertificateInfo", this.collectTdeCertificateInfo);
+        jsonWriter.writeBooleanField("validateSsisCatalogOnly", this.validateSsisCatalogOnly);
+        jsonWriter.writeStringField("encryptedKeyForSecureFields", this.encryptedKeyForSecureFields);
         return jsonWriter.writeEndObject();
     }
 
@@ -178,12 +284,23 @@ public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable
                 } else if ("checkPermissionsGroup".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskInput.checkPermissionsGroup
                         = ServerLevelPermissionsGroup.fromString(reader.getString());
+                } else if ("collectDatabases".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.collectDatabases
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("collectLogins".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskInput.collectLogins
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("collectAgentJobs".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskInput.collectAgentJobs
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("collectTdeCertificateInfo".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.collectTdeCertificateInfo
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validateSsisCatalogOnly".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.validateSsisCatalogOnly
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encryptedKeyForSecureFields".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.encryptedKeyForSecureFields = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

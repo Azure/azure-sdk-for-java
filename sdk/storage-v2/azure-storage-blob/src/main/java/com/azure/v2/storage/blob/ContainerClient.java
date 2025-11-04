@@ -22,6 +22,7 @@ import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
@@ -36,14 +37,18 @@ public final class ContainerClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final ContainersImpl serviceClient;
 
+    private final Instrumentation instrumentation;
+
     /**
      * Initializes an instance of ContainerClient class.
      * 
      * @param serviceClient the service client implementation.
+     * @param instrumentation the instrumentation instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    ContainerClient(ContainersImpl serviceClient) {
+    ContainerClient(ContainersImpl serviceClient, Instrumentation instrumentation) {
         this.serviceClient = serviceClient;
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -75,8 +80,9 @@ public final class ContainerClient {
     public Response<Void> createWithResponse(String containerName, Integer timeout, Map<String, String> metadata,
         PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope,
         RequestContext requestContext) {
-        return this.serviceClient.createWithResponse(containerName, timeout, metadata, access, requestId,
-            blobContainerEncryptionScope, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> this.serviceClient.createWithResponse(containerName, timeout, metadata, access, requestId,
+                blobContainerEncryptionScope, updatedContext));
     }
 
     /**
@@ -105,7 +111,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access,
         String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        this.serviceClient.create(containerName, timeout, metadata, access, requestId, blobContainerEncryptionScope);
+        createWithResponse(containerName, timeout, metadata, access, requestId, blobContainerEncryptionScope,
+            RequestContext.none());
     }
 
     /**
@@ -129,7 +136,9 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesWithResponse(String containerName, Integer timeout, String leaseId,
         String requestId, RequestContext requestContext) {
-        return this.serviceClient.getPropertiesWithResponse(containerName, timeout, leaseId, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetProperties", requestContext,
+            updatedContext -> this.serviceClient.getPropertiesWithResponse(containerName, timeout, leaseId, requestId,
+                updatedContext));
     }
 
     /**
@@ -150,7 +159,7 @@ public final class ContainerClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getProperties(String containerName, Integer timeout, String leaseId, String requestId) {
-        this.serviceClient.getProperties(containerName, timeout, leaseId, requestId);
+        getPropertiesWithResponse(containerName, timeout, leaseId, requestId, RequestContext.none());
     }
 
     /**
@@ -179,8 +188,9 @@ public final class ContainerClient {
     public Response<Void> deleteWithResponse(String containerName, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.deleteWithResponse(containerName, timeout, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Delete", requestContext,
+            updatedContext -> this.serviceClient.deleteWithResponse(containerName, timeout, leaseId, ifModifiedSince,
+                ifUnmodifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -206,7 +216,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String containerName, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.delete(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId);
+        deleteWithResponse(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -237,8 +248,9 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(String containerName, Integer timeout, String leaseId,
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, RequestContext requestContext) {
-        return this.serviceClient.setMetadataWithResponse(containerName, timeout, leaseId, metadata, ifModifiedSince,
-            requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetMetadata", requestContext,
+            updatedContext -> this.serviceClient.setMetadataWithResponse(containerName, timeout, leaseId, metadata,
+                ifModifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -267,7 +279,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setMetadata(String containerName, Integer timeout, String leaseId, Map<String, String> metadata,
         OffsetDateTime ifModifiedSince, String requestId) {
-        this.serviceClient.setMetadata(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId);
+        setMetadataWithResponse(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -291,8 +304,9 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobSignedIdentifierWrapper> getAccessPolicyWithResponse(String containerName, Integer timeout,
         String leaseId, String requestId, RequestContext requestContext) {
-        return this.serviceClient.getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccessPolicy", requestContext,
+            updatedContext -> this.serviceClient.getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId,
+                updatedContext));
     }
 
     /**
@@ -315,7 +329,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobSignedIdentifierWrapper getAccessPolicy(String containerName, Integer timeout, String leaseId,
         String requestId) {
-        return this.serviceClient.getAccessPolicy(containerName, timeout, leaseId, requestId);
+        return getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId, RequestContext.none())
+            .getValue();
     }
 
     /**
@@ -346,8 +361,9 @@ public final class ContainerClient {
     public Response<Void> setAccessPolicyWithResponse(String containerName, Integer timeout, String leaseId,
         PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         List<BlobSignedIdentifier> containerAcl, RequestContext requestContext) {
-        return this.serviceClient.setAccessPolicyWithResponse(containerName, timeout, leaseId, access, ifModifiedSince,
-            ifUnmodifiedSince, requestId, containerAcl, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetAccessPolicy", requestContext,
+            updatedContext -> this.serviceClient.setAccessPolicyWithResponse(containerName, timeout, leaseId, access,
+                ifModifiedSince, ifUnmodifiedSince, requestId, containerAcl, updatedContext));
     }
 
     /**
@@ -376,8 +392,8 @@ public final class ContainerClient {
     public void setAccessPolicy(String containerName, Integer timeout, String leaseId, PublicAccessType access,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         List<BlobSignedIdentifier> containerAcl) {
-        this.serviceClient.setAccessPolicy(containerName, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince,
-            requestId, containerAcl);
+        setAccessPolicyWithResponse(containerName, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince,
+            requestId, containerAcl, RequestContext.none());
     }
 
     /**
@@ -403,8 +419,9 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreWithResponse(String containerName, Integer timeout, String requestId,
         String deletedContainerName, String deletedContainerVersion, RequestContext requestContext) {
-        return this.serviceClient.restoreWithResponse(containerName, timeout, requestId, deletedContainerName,
-            deletedContainerVersion, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Restore", requestContext,
+            updatedContext -> this.serviceClient.restoreWithResponse(containerName, timeout, requestId,
+                deletedContainerName, deletedContainerVersion, updatedContext));
     }
 
     /**
@@ -428,7 +445,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restore(String containerName, Integer timeout, String requestId, String deletedContainerName,
         String deletedContainerVersion) {
-        this.serviceClient.restore(containerName, timeout, requestId, deletedContainerName, deletedContainerVersion);
+        restoreWithResponse(containerName, timeout, requestId, deletedContainerName, deletedContainerVersion,
+            RequestContext.none());
     }
 
     /**
@@ -453,8 +471,9 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameWithResponse(String containerName, String sourceContainerName, Integer timeout,
         String requestId, String sourceLeaseId, RequestContext requestContext) {
-        return this.serviceClient.renameWithResponse(containerName, sourceContainerName, timeout, requestId,
-            sourceLeaseId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Rename", requestContext,
+            updatedContext -> this.serviceClient.renameWithResponse(containerName, sourceContainerName, timeout,
+                requestId, sourceLeaseId, updatedContext));
     }
 
     /**
@@ -477,7 +496,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rename(String containerName, String sourceContainerName, Integer timeout, String requestId,
         String sourceLeaseId) {
-        this.serviceClient.rename(containerName, sourceContainerName, timeout, requestId, sourceLeaseId);
+        renameWithResponse(containerName, sourceContainerName, timeout, requestId, sourceLeaseId,
+            RequestContext.none());
     }
 
     /**
@@ -504,8 +524,9 @@ public final class ContainerClient {
     public Response<InputStream> submitBatchWithResponse(String containerName, long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.submitBatchWithResponse(containerName, contentLength, multipartContentType, body,
-            timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SubmitBatch", requestContext,
+            updatedContext -> this.serviceClient.submitBatchWithResponse(containerName, contentLength,
+                multipartContentType, body, timeout, requestId, updatedContext));
     }
 
     /**
@@ -530,8 +551,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream submitBatch(String containerName, long contentLength, String multipartContentType,
         BinaryData body, Integer timeout, String requestId) {
-        return this.serviceClient.submitBatch(containerName, contentLength, multipartContentType, body, timeout,
-            requestId);
+        return submitBatchWithResponse(containerName, contentLength, multipartContentType, body, timeout, requestId,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -567,8 +588,9 @@ public final class ContainerClient {
     public Response<FilterBlobSegment> filterBlobsWithResponse(String containerName, Integer timeout, String requestId,
         String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include,
         RequestContext requestContext) {
-        return this.serviceClient.filterBlobsWithResponse(containerName, timeout, requestId, where, marker, maxresults,
-            include, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.FilterBlobs", requestContext,
+            updatedContext -> this.serviceClient.filterBlobsWithResponse(containerName, timeout, requestId, where,
+                marker, maxresults, include, updatedContext));
     }
 
     /**
@@ -602,7 +624,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FilterBlobSegment filterBlobs(String containerName, Integer timeout, String requestId, String where,
         String marker, Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return this.serviceClient.filterBlobs(containerName, timeout, requestId, where, marker, maxresults, include);
+        return filterBlobsWithResponse(containerName, timeout, requestId, where, marker, maxresults, include,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -636,8 +659,9 @@ public final class ContainerClient {
     public Response<Void> acquireLeaseWithResponse(String containerName, Integer timeout, Integer duration,
         String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.acquireLeaseWithResponse(containerName, timeout, duration, proposedLeaseId,
-            ifModifiedSince, ifUnmodifiedSince, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AcquireLease", requestContext,
+            updatedContext -> this.serviceClient.acquireLeaseWithResponse(containerName, timeout, duration,
+                proposedLeaseId, ifModifiedSince, ifUnmodifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -668,8 +692,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void acquireLease(String containerName, Integer timeout, Integer duration, String proposedLeaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.acquireLease(containerName, timeout, duration, proposedLeaseId, ifModifiedSince,
-            ifUnmodifiedSince, requestId);
+        acquireLeaseWithResponse(containerName, timeout, duration, proposedLeaseId, ifModifiedSince, ifUnmodifiedSince,
+            requestId, RequestContext.none());
     }
 
     /**
@@ -698,8 +722,9 @@ public final class ContainerClient {
     public Response<Void> releaseLeaseWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.releaseLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince,
-            ifUnmodifiedSince, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ReleaseLease", requestContext,
+            updatedContext -> this.serviceClient.releaseLeaseWithResponse(containerName, leaseId, timeout,
+                ifModifiedSince, ifUnmodifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -725,7 +750,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease(String containerName, String leaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.releaseLease(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId);
+        releaseLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -754,8 +780,9 @@ public final class ContainerClient {
     public Response<Void> renewLeaseWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.renewLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince,
-            ifUnmodifiedSince, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.RenewLease", requestContext,
+            updatedContext -> this.serviceClient.renewLeaseWithResponse(containerName, leaseId, timeout,
+                ifModifiedSince, ifUnmodifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -781,7 +808,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renewLease(String containerName, String leaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.renewLease(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId);
+        renewLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -815,8 +843,9 @@ public final class ContainerClient {
     public Response<Void> breakLeaseWithResponse(String containerName, Integer timeout, Integer breakPeriod,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.breakLeaseWithResponse(containerName, timeout, breakPeriod, ifModifiedSince,
-            ifUnmodifiedSince, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.BreakLease", requestContext,
+            updatedContext -> this.serviceClient.breakLeaseWithResponse(containerName, timeout, breakPeriod,
+                ifModifiedSince, ifUnmodifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -847,8 +876,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakLease(String containerName, Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.breakLease(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince,
-            requestId);
+        breakLeaseWithResponse(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -880,8 +909,9 @@ public final class ContainerClient {
     public Response<Void> changeLeaseWithResponse(String containerName, String leaseId, String proposedLeaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.changeLeaseWithResponse(containerName, leaseId, proposedLeaseId, timeout,
-            ifModifiedSince, ifUnmodifiedSince, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ChangeLease", requestContext,
+            updatedContext -> this.serviceClient.changeLeaseWithResponse(containerName, leaseId, proposedLeaseId,
+                timeout, ifModifiedSince, ifUnmodifiedSince, requestId, updatedContext));
     }
 
     /**
@@ -910,8 +940,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void changeLease(String containerName, String leaseId, String proposedLeaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        this.serviceClient.changeLease(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince,
-            ifUnmodifiedSince, requestId);
+        changeLeaseWithResponse(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
+            requestId, RequestContext.none());
     }
 
     /**
@@ -946,8 +976,9 @@ public final class ContainerClient {
     public Response<ListBlobsFlatSegmentResponse> listBlobFlatSegmentWithResponse(String containerName, String prefix,
         String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include,
-            timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobFlatSegment", requestContext,
+            updatedContext -> this.serviceClient.listBlobFlatSegmentWithResponse(containerName, prefix, marker,
+                maxresults, include, timeout, requestId, updatedContext));
     }
 
     /**
@@ -980,8 +1011,8 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsFlatSegmentResponse listBlobFlatSegment(String containerName, String prefix, String marker,
         Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return this.serviceClient.listBlobFlatSegment(containerName, prefix, marker, maxresults, include, timeout,
-            requestId);
+        return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout, requestId,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -1019,8 +1050,9 @@ public final class ContainerClient {
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentWithResponse(String containerName,
         String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
         Integer timeout, String requestId, RequestContext requestContext) {
-        return this.serviceClient.listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker,
-            maxresults, include, timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobHierarchySegment", requestContext,
+            updatedContext -> this.serviceClient.listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix,
+                marker, maxresults, include, timeout, requestId, updatedContext));
     }
 
     /**
@@ -1057,8 +1089,8 @@ public final class ContainerClient {
     public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(String containerName, String delimiter,
         String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
         String requestId) {
-        return this.serviceClient.listBlobHierarchySegment(containerName, delimiter, prefix, marker, maxresults,
-            include, timeout, requestId);
+        return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
+            timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -1080,7 +1112,9 @@ public final class ContainerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponse(String containerName, Integer timeout, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.getAccountInfoWithResponse(containerName, timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccountInfo", requestContext,
+            updatedContext -> this.serviceClient.getAccountInfoWithResponse(containerName, timeout, requestId,
+                updatedContext));
     }
 
     /**
@@ -1099,6 +1133,6 @@ public final class ContainerClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getAccountInfo(String containerName, Integer timeout, String requestId) {
-        this.serviceClient.getAccountInfo(containerName, timeout, requestId);
+        getAccountInfoWithResponse(containerName, timeout, requestId, RequestContext.none());
     }
 }

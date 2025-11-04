@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -247,41 +246,6 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
         this.highAvailabilityType = highAvailabilityType;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (appLocation() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property appLocation in model SapSizingRecommendationRequest"));
-        }
-        if (environment() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property environment in model SapSizingRecommendationRequest"));
-        }
-        if (sapProduct() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sapProduct in model SapSizingRecommendationRequest"));
-        }
-        if (deploymentType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property deploymentType in model SapSizingRecommendationRequest"));
-        }
-        if (databaseType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property databaseType in model SapSizingRecommendationRequest"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SapSizingRecommendationRequest.class);
 
     /**
      * {@inheritDoc}

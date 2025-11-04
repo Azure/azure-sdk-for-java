@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 public final class VolumesListGetGroupIdListForLdapUserSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/GroupIdListForLDAPUser
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/GroupIdListForLDAPUser
      * .json
      */
     /**

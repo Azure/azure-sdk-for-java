@@ -7,8 +7,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.Remediation;
@@ -23,25 +23,26 @@ public final class RemediationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"fwwvuatbwbqam\",\"policyDefinitionReferenceId\":\"uliyslpkcv\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"uxx\",\"createdOn\":\"2021-09-24T22:24:31Z\",\"lastUpdatedOn\":\"2021-03-24T05:24:04Z\",\"filters\":{\"locations\":[\"mcqmiciijqp\",\"zfboj\",\"jmcsmyqwixvcpwn\",\"wy\"]},\"deploymentStatus\":{\"totalDeployments\":1634731041,\"successfulDeployments\":47513011,\"failedDeployments\":318109218},\"statusMessage\":\"kduoiqtamtyvs\",\"correlationId\":\"xrwzawnvsbcf\",\"resourceCount\":1134702687,\"parallelDeployments\":268521669,\"failureThreshold\":{\"percentage\":71.2697}},\"id\":\"cvd\",\"name\":\"mwrzregzgyufutrw\",\"type\":\"weryekzk\"}]}";
+            = "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"tygxhqfgq\",\"policyDefinitionReferenceId\":\"yejsxtlg\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"gziiucijjcea\",\"createdOn\":\"2021-04-09T05:32:43Z\",\"lastUpdatedOn\":\"2021-07-09T05:11:07Z\",\"filters\":{\"locations\":[\"va\",\"caszk\",\"xk\"],\"resourceIds\":[\"xetyvku\",\"mignohikkg\",\"ogjwpindedvabbxb\",\"medeil\"]},\"deploymentStatus\":{\"totalDeployments\":277548984,\"successfulDeployments\":356284746,\"failedDeployments\":64090530},\"statusMessage\":\"irz\",\"correlationId\":\"hvwyp\",\"resourceCount\":176885524,\"parallelDeployments\":688700290,\"failureThreshold\":{\"percentage\":95.99493}},\"id\":\"wci\",\"name\":\"djsllfr\",\"type\":\"vdmvxadqa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Remediation> response = manager.remediations()
-            .listByResourceGroup("jb", 1116337002, "jeaoqaqbz", com.azure.core.util.Context.NONE);
+        PagedIterable<Remediation> response
+            = manager.remediations().listByResourceGroup("lmf", 952584421, "doqey", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fwwvuatbwbqam", response.iterator().next().policyAssignmentId());
-        Assertions.assertEquals("uliyslpkcv", response.iterator().next().policyDefinitionReferenceId());
+        Assertions.assertEquals("tygxhqfgq", response.iterator().next().policyAssignmentId());
+        Assertions.assertEquals("yejsxtlg", response.iterator().next().policyDefinitionReferenceId());
         Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT,
             response.iterator().next().resourceDiscoveryMode());
-        Assertions.assertEquals("mcqmiciijqp", response.iterator().next().filters().locations().get(0));
-        Assertions.assertEquals(1134702687, response.iterator().next().resourceCount());
-        Assertions.assertEquals(268521669, response.iterator().next().parallelDeployments());
-        Assertions.assertEquals(71.2697F, response.iterator().next().failureThreshold().percentage());
+        Assertions.assertEquals("va", response.iterator().next().filters().locations().get(0));
+        Assertions.assertEquals("xetyvku", response.iterator().next().filters().resourceIds().get(0));
+        Assertions.assertEquals(176885524, response.iterator().next().resourceCount());
+        Assertions.assertEquals(688700290, response.iterator().next().parallelDeployments());
+        Assertions.assertEquals(95.99493F, response.iterator().next().failureThreshold().percentage());
     }
 }

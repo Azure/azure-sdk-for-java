@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public final class PartnerRegistrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * PartnerRegistrations_Update.json
      */
     /**
@@ -26,7 +27,7 @@ public final class PartnerRegistrationsUpdateSamples {
             .getByResourceGroupWithResponse("examplerg", "examplePartnerRegistrationName1",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+        resource.update().withTags(mapOf("NewKey", "fakeTokenPlaceholder")).apply();
     }
 
     // Use "Map.of" if available

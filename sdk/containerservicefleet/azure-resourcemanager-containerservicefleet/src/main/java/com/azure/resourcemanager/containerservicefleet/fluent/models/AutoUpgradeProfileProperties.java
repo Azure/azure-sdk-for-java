@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -54,6 +53,25 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * The status of the auto upgrade profile.
      */
     private AutoUpgradeProfileStatus autoUpgradeProfileStatus;
+
+    /*
+     * This is the target Kubernetes version for auto-upgrade. The format must be `{major version}.{minor version}`. For
+     * example, "1.30".
+     * By default, this is empty.
+     * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     */
+    private String targetKubernetesVersion;
+
+    /*
+     * If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
+     * N-2
+     * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+     * By default, this is set to False.
+     * For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support
+     */
+    private Boolean longTermSupport;
 
     /**
      * Creates an instance of AutoUpgradeProfileProperties class.
@@ -182,25 +200,62 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Validates the instance.
+     * Get the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format must
+     * be `{major version}.{minor version}`. For example, "1.30".
+     * By default, this is empty.
+     * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the targetKubernetesVersion value.
      */
-    public void validate() {
-        if (channel() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property channel in model AutoUpgradeProfileProperties"));
-        }
-        if (nodeImageSelection() != null) {
-            nodeImageSelection().validate();
-        }
-        if (autoUpgradeProfileStatus() != null) {
-            autoUpgradeProfileStatus().validate();
-        }
+    public String targetKubernetesVersion() {
+        return this.targetKubernetesVersion;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AutoUpgradeProfileProperties.class);
+    /**
+     * Set the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format must
+     * be `{major version}.{minor version}`. For example, "1.30".
+     * By default, this is empty.
+     * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     * 
+     * @param targetKubernetesVersion the targetKubernetesVersion value to set.
+     * @return the AutoUpgradeProfileProperties object itself.
+     */
+    public AutoUpgradeProfileProperties withTargetKubernetesVersion(String targetKubernetesVersion) {
+        this.targetKubernetesVersion = targetKubernetesVersion;
+        return this;
+    }
+
+    /**
+     * Get the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
+     * N-2
+     * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+     * By default, this is set to False.
+     * For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+     * 
+     * @return the longTermSupport value.
+     */
+    public Boolean longTermSupport() {
+        return this.longTermSupport;
+    }
+
+    /**
+     * Set the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
+     * N-2
+     * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+     * By default, this is set to False.
+     * For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+     * 
+     * @param longTermSupport the longTermSupport value to set.
+     * @return the AutoUpgradeProfileProperties object itself.
+     */
+    public AutoUpgradeProfileProperties withLongTermSupport(Boolean longTermSupport) {
+        this.longTermSupport = longTermSupport;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -213,6 +268,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
         jsonWriter.writeJsonField("nodeImageSelection", this.nodeImageSelection);
         jsonWriter.writeBooleanField("disabled", this.disabled);
         jsonWriter.writeJsonField("autoUpgradeProfileStatus", this.autoUpgradeProfileStatus);
+        jsonWriter.writeStringField("targetKubernetesVersion", this.targetKubernetesVersion);
+        jsonWriter.writeBooleanField("longTermSupport", this.longTermSupport);
         return jsonWriter.writeEndObject();
     }
 
@@ -247,6 +304,11 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
                 } else if ("autoUpgradeProfileStatus".equals(fieldName)) {
                     deserializedAutoUpgradeProfileProperties.autoUpgradeProfileStatus
                         = AutoUpgradeProfileStatus.fromJson(reader);
+                } else if ("targetKubernetesVersion".equals(fieldName)) {
+                    deserializedAutoUpgradeProfileProperties.targetKubernetesVersion = reader.getString();
+                } else if ("longTermSupport".equals(fieldName)) {
+                    deserializedAutoUpgradeProfileProperties.longTermSupport
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

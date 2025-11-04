@@ -7,6 +7,7 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.fluent.models.BucketInner;
 import com.azure.resourcemanager.netapp.models.BucketList;
+import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
 import com.azure.resourcemanager.netapp.models.CifsUser;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
@@ -18,15 +19,16 @@ public final class BucketListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BucketList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"path\":\"kuvscxkdm\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":8680354358067705951,\"groupId\":6633389496653532566},\"cifsUser\":{\"username\":\"mloazuru\"}},\"provisioningState\":\"Deleting\",\"status\":\"CredentialsExpired\",\"server\":{\"fqdn\":\"bteoybf\",\"certificateCommonName\":\"xakvvjgslor\",\"certificateExpiryDate\":\"2021-01-13T10:59:26Z\",\"ipAddress\":\"yw\",\"certificateObject\":\"kgkxn\"}},\"id\":\"dabg\",\"name\":\"vudtjuewbcihx\",\"type\":\"uwhcjyxccybv\"},{\"properties\":{\"path\":\"akkud\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":5992172880278428165,\"groupId\":3050128385247515263},\"cifsUser\":{\"username\":\"stcyohpfkyrkdbd\"}},\"provisioningState\":\"Succeeded\",\"status\":\"NoCredentialsSet\",\"server\":{\"fqdn\":\"mnwqj\",\"certificateCommonName\":\"baiyhddviaceg\",\"certificateExpiryDate\":\"2021-04-14T23:17:33Z\",\"ipAddress\":\"tfpmvmemfnczdw\",\"certificateObject\":\"b\"}},\"id\":\"xlllchp\",\"name\":\"db\",\"type\":\"evwrdnhfuk\"}],\"nextLink\":\"sjcswsmystuluqyp\"}")
+            "{\"value\":[{\"properties\":{\"path\":\"vwrdnhfukuvsj\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":4555995825543462077,\"groupId\":5004966782756902203},\"cifsUser\":{\"username\":\"qypfcv\"}},\"provisioningState\":\"Accepted\",\"status\":\"NoCredentialsSet\",\"server\":{\"fqdn\":\"bm\",\"certificateCommonName\":\"jbabwidf\",\"certificateExpiryDate\":\"2021-05-31T20:33:23Z\",\"ipAddress\":\"puunnoxyhkxgqd\",\"certificateObject\":\"i\"},\"permissions\":\"ReadOnly\"},\"id\":\"oqcaaewdaomdj\",\"name\":\"l\",\"type\":\"jxxkzbrmsgei\"},{\"properties\":{\"path\":\"ykzkdncjdxo\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":5953743800911269792,\"groupId\":63941224599650233},\"cifsUser\":{\"username\":\"z\"}},\"provisioningState\":\"Moving\",\"status\":\"Active\",\"server\":{\"fqdn\":\"tqxepn\",\"certificateCommonName\":\"b\",\"certificateExpiryDate\":\"2021-09-26T03:21:12Z\",\"ipAddress\":\"lyjt\",\"certificateObject\":\"of\"},\"permissions\":\"ReadWrite\"},\"id\":\"fcibyfmowuxrkj\",\"name\":\"vdwxfzwi\",\"type\":\"vwzjbhyz\"}],\"nextLink\":\"jrkambtrnegvmnv\"}")
             .toObject(BucketList.class);
-        Assertions.assertEquals("kuvscxkdm", model.value().get(0).path());
-        Assertions.assertEquals(8680354358067705951L, model.value().get(0).fileSystemUser().nfsUser().userId());
-        Assertions.assertEquals(6633389496653532566L, model.value().get(0).fileSystemUser().nfsUser().groupId());
-        Assertions.assertEquals("mloazuru", model.value().get(0).fileSystemUser().cifsUser().username());
-        Assertions.assertEquals("bteoybf", model.value().get(0).server().fqdn());
-        Assertions.assertEquals("kgkxn", model.value().get(0).server().certificateObject());
-        Assertions.assertEquals("sjcswsmystuluqyp", model.nextLink());
+        Assertions.assertEquals("vwrdnhfukuvsj", model.value().get(0).path());
+        Assertions.assertEquals(4555995825543462077L, model.value().get(0).fileSystemUser().nfsUser().userId());
+        Assertions.assertEquals(5004966782756902203L, model.value().get(0).fileSystemUser().nfsUser().groupId());
+        Assertions.assertEquals("qypfcv", model.value().get(0).fileSystemUser().cifsUser().username());
+        Assertions.assertEquals("bm", model.value().get(0).server().fqdn());
+        Assertions.assertEquals("i", model.value().get(0).server().certificateObject());
+        Assertions.assertEquals(BucketPermissions.READ_ONLY, model.value().get(0).permissions());
+        Assertions.assertEquals("jrkambtrnegvmnv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,27 +38,29 @@ public final class BucketListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new BucketInner().withPath("kuvscxkdm")
+                            new BucketInner().withPath("vwrdnhfukuvsj")
                                 .withFileSystemUser(new FileSystemUser()
-                                    .withNfsUser(new NfsUser().withUserId(8680354358067705951L)
-                                        .withGroupId(6633389496653532566L))
-                                    .withCifsUser(new CifsUser().withUsername("mloazuru")))
-                                .withServer(
-                                    new BucketServerProperties().withFqdn("bteoybf").withCertificateObject("kgkxn")),
-                            new BucketInner().withPath("akkud")
+                                    .withNfsUser(new NfsUser().withUserId(4555995825543462077L)
+                                        .withGroupId(5004966782756902203L))
+                                    .withCifsUser(new CifsUser().withUsername("qypfcv")))
+                                .withServer(new BucketServerProperties().withFqdn("bm").withCertificateObject("i"))
+                                .withPermissions(BucketPermissions.READ_ONLY),
+                            new BucketInner().withPath("ykzkdncjdxo")
                                 .withFileSystemUser(new FileSystemUser()
-                                    .withNfsUser(new NfsUser().withUserId(5992172880278428165L)
-                                        .withGroupId(3050128385247515263L))
-                                    .withCifsUser(new CifsUser().withUsername("stcyohpfkyrkdbd")))
-                                .withServer(new BucketServerProperties().withFqdn("mnwqj").withCertificateObject("b"))))
-                .withNextLink("sjcswsmystuluqyp");
+                                    .withNfsUser(
+                                        new NfsUser().withUserId(5953743800911269792L).withGroupId(63941224599650233L))
+                                    .withCifsUser(new CifsUser().withUsername("z")))
+                                .withServer(new BucketServerProperties().withFqdn("tqxepn").withCertificateObject("of"))
+                                .withPermissions(BucketPermissions.READ_WRITE)))
+                .withNextLink("jrkambtrnegvmnv");
         model = BinaryData.fromObject(model).toObject(BucketList.class);
-        Assertions.assertEquals("kuvscxkdm", model.value().get(0).path());
-        Assertions.assertEquals(8680354358067705951L, model.value().get(0).fileSystemUser().nfsUser().userId());
-        Assertions.assertEquals(6633389496653532566L, model.value().get(0).fileSystemUser().nfsUser().groupId());
-        Assertions.assertEquals("mloazuru", model.value().get(0).fileSystemUser().cifsUser().username());
-        Assertions.assertEquals("bteoybf", model.value().get(0).server().fqdn());
-        Assertions.assertEquals("kgkxn", model.value().get(0).server().certificateObject());
-        Assertions.assertEquals("sjcswsmystuluqyp", model.nextLink());
+        Assertions.assertEquals("vwrdnhfukuvsj", model.value().get(0).path());
+        Assertions.assertEquals(4555995825543462077L, model.value().get(0).fileSystemUser().nfsUser().userId());
+        Assertions.assertEquals(5004966782756902203L, model.value().get(0).fileSystemUser().nfsUser().groupId());
+        Assertions.assertEquals("qypfcv", model.value().get(0).fileSystemUser().cifsUser().username());
+        Assertions.assertEquals("bm", model.value().get(0).server().fqdn());
+        Assertions.assertEquals("i", model.value().get(0).server().certificateObject());
+        Assertions.assertEquals(BucketPermissions.READ_ONLY, model.value().get(0).permissions());
+        Assertions.assertEquals("jrkambtrnegvmnv", model.nextLink());
     }
 }

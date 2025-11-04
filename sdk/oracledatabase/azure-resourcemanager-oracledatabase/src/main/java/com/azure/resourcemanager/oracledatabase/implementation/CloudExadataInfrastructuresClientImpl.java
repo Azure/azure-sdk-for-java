@@ -32,13 +32,13 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.oracledatabase.fluent.CloudExadataInfrastructuresClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.CloudExadataInfrastructureInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.CloudExadataInfrastructureListResult;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureUpdate;
+import com.azure.resourcemanager.oracledatabase.models.ConfigureExascaleCloudExadataInfrastructureDetails;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -151,25 +151,23 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CloudExadataInfrastructureUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures")
@@ -208,6 +206,26 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/configureExascale")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> configureExascale(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigureExascaleCloudExadataInfrastructureDetails body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/configureExascale")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> configureExascaleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigureExascaleCloudExadataInfrastructureDetails body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -252,14 +270,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudExadataInfrastructureInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -291,16 +301,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -319,16 +319,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -380,27 +370,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -424,31 +393,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -471,31 +415,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -634,22 +553,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CloudExadataInfrastructureInner>>
         getByResourceGroupWithResponseAsync(String resourceGroupName, String cloudexadatainfrastructurename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -688,25 +591,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudExadataInfrastructureInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context);
@@ -744,27 +628,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -788,31 +651,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudexadatainfrastructurename,
         CloudExadataInfrastructureUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -835,31 +673,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudexadatainfrastructurename,
         CloudExadataInfrastructureUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -996,26 +809,9 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1031,28 +827,8 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudexadatainfrastructurename) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     /**
@@ -1069,28 +845,8 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudexadatainfrastructurename,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, context);
     }
 
     /**
@@ -1205,18 +961,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudExadataInfrastructureInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1252,20 +996,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -1286,20 +1016,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -1354,22 +1070,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> addStorageCapacityWithResponseAsync(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.addStorageCapacity(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1390,25 +1090,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addStorageCapacityWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.addStorageCapacitySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, Context.NONE);
@@ -1428,25 +1109,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addStorageCapacityWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter cloudexadatainfrastructurename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.addStorageCapacitySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context);
@@ -1562,6 +1224,193 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     }
 
     /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> configureExascaleWithResponseAsync(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.configureExascale(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> configureExascaleWithResponse(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.configureExascaleSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
+            body, Context.NONE);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> configureExascaleWithResponse(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body,
+        Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.configureExascaleSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
+            body, context);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
+        beginConfigureExascaleAsync(String resourceGroupName, String cloudexadatainfrastructurename,
+            ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = configureExascaleWithResponseAsync(resourceGroupName, cloudexadatainfrastructurename, body);
+        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
+        beginConfigureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
+            ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        Response<BinaryData> response
+            = configureExascaleWithResponse(resourceGroupName, cloudexadatainfrastructurename, body);
+        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
+            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, Context.NONE);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
+        beginConfigureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
+            ConfigureExascaleCloudExadataInfrastructureDetails body, Context context) {
+        Response<BinaryData> response
+            = configureExascaleWithResponse(resourceGroupName, cloudexadatainfrastructurename, body, context);
+        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
+            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, context);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CloudExadataInfrastructureInner> configureExascaleAsync(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        return beginConfigureExascaleAsync(resourceGroupName, cloudexadatainfrastructurename, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CloudExadataInfrastructureInner configureExascale(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body).getFinalResult();
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CloudExadataInfrastructureInner configureExascale(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body,
+        Context context) {
+        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body, context)
+            .getFinalResult();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1574,13 +1423,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudExadataInfrastructureInner>>
         listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1601,15 +1443,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1630,15 +1463,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listBySubscriptionNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -1659,13 +1483,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudExadataInfrastructureInner>>
         listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1686,15 +1503,6 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1715,21 +1523,10 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listByResourceGroupNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudExadataInfrastructureListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CloudExadataInfrastructuresClientImpl.class);
 }

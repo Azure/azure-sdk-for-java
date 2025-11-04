@@ -117,6 +117,11 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      */
     private AuthConfigProperties authConfig;
 
+    /*
+     * The encryption configuration for the cluster. Depends on identity being configured.
+     */
+    private EncryptionProperties encryption;
+
     /**
      * Creates an instance of MongoClusterProperties class.
      */
@@ -460,47 +465,23 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Validates the instance.
+     * Get the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the encryption value.
      */
-    public void validate() {
-        if (restoreParameters() != null) {
-            restoreParameters().validate();
-        }
-        if (replicaParameters() != null) {
-            replicaParameters().validate();
-        }
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (dataApi() != null) {
-            dataApi().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (replica() != null) {
-            replica().validate();
-        }
-        if (authConfig() != null) {
-            authConfig().validate();
-        }
+    public EncryptionProperties encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withEncryption(EncryptionProperties encryption) {
+        this.encryption = encryption;
+        return this;
     }
 
     /**
@@ -525,6 +506,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -592,6 +574,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     deserializedMongoClusterProperties.infrastructureVersion = reader.getString();
                 } else if ("authConfig".equals(fieldName)) {
                     deserializedMongoClusterProperties.authConfig = AuthConfigProperties.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMongoClusterProperties.encryption = EncryptionProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

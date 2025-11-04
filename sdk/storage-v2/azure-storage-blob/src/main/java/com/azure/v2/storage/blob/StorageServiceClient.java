@@ -21,6 +21,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.InputStream;
 import java.util.List;
@@ -34,14 +35,18 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final ServicesImpl serviceClient;
 
+    private final Instrumentation instrumentation;
+
     /**
      * Initializes an instance of ServiceClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param instrumentation the instrumentation instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    StorageServiceClient(ServicesImpl serviceClient) {
+    StorageServiceClient(ServicesImpl serviceClient, Instrumentation instrumentation) {
         this.serviceClient = serviceClient;
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -64,7 +69,9 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(BlobServiceProperties blobServiceProperties, Integer timeout,
         String requestId, RequestContext requestContext) {
-        return this.serviceClient.setPropertiesWithResponse(blobServiceProperties, timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetProperties", requestContext,
+            updatedContext -> this.serviceClient.setPropertiesWithResponse(blobServiceProperties, timeout, requestId,
+                updatedContext));
     }
 
     /**
@@ -84,7 +91,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(BlobServiceProperties blobServiceProperties, Integer timeout, String requestId) {
-        this.serviceClient.setProperties(blobServiceProperties, timeout, requestId);
+        setPropertiesWithResponse(blobServiceProperties, timeout, requestId, RequestContext.none());
     }
 
     /**
@@ -107,7 +114,8 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobServiceProperties> getPropertiesWithResponse(Integer timeout, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.getPropertiesWithResponse(timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetProperties", requestContext,
+            updatedContext -> this.serviceClient.getPropertiesWithResponse(timeout, requestId, updatedContext));
     }
 
     /**
@@ -128,7 +136,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobServiceProperties getProperties(Integer timeout, String requestId) {
-        return this.serviceClient.getProperties(timeout, requestId);
+        return getPropertiesWithResponse(timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -150,7 +158,8 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobServiceStatistics> getStatisticsWithResponse(Integer timeout, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.getStatisticsWithResponse(timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetStatistics", requestContext,
+            updatedContext -> this.serviceClient.getStatisticsWithResponse(timeout, requestId, updatedContext));
     }
 
     /**
@@ -170,7 +179,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobServiceStatistics getStatistics(Integer timeout, String requestId) {
-        return this.serviceClient.getStatistics(timeout, requestId);
+        return getStatisticsWithResponse(timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -203,8 +212,8 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
         List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId) {
-        return this.serviceClient.listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType,
-            timeout, requestId);
+        return listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType, timeout, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -263,7 +272,9 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout,
         String requestId, RequestContext requestContext) {
-        return this.serviceClient.getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetUserDelegationKey", requestContext,
+            updatedContext -> this.serviceClient.getUserDelegationKeyWithResponse(keyInfo, timeout, requestId,
+                updatedContext));
     }
 
     /**
@@ -284,7 +295,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout, String requestId) {
-        return this.serviceClient.getUserDelegationKey(keyInfo, timeout, requestId);
+        return getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -304,7 +315,8 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponse(Integer timeout, String requestId, RequestContext requestContext) {
-        return this.serviceClient.getAccountInfoWithResponse(timeout, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccountInfo", requestContext,
+            updatedContext -> this.serviceClient.getAccountInfoWithResponse(timeout, requestId, updatedContext));
     }
 
     /**
@@ -322,7 +334,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getAccountInfo(Integer timeout, String requestId) {
-        this.serviceClient.getAccountInfo(timeout, requestId);
+        getAccountInfoWithResponse(timeout, requestId, RequestContext.none());
     }
 
     /**
@@ -347,8 +359,9 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> submitBatchWithResponse(long contentLength, String multipartContentType,
         BinaryData body, Integer timeout, String requestId, RequestContext requestContext) {
-        return this.serviceClient.submitBatchWithResponse(contentLength, multipartContentType, body, timeout, requestId,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SubmitBatch", requestContext,
+            updatedContext -> this.serviceClient.submitBatchWithResponse(contentLength, multipartContentType, body,
+                timeout, requestId, updatedContext));
     }
 
     /**
@@ -372,7 +385,8 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream submitBatch(long contentLength, String multipartContentType, BinaryData body, Integer timeout,
         String requestId) {
-        return this.serviceClient.submitBatch(contentLength, multipartContentType, body, timeout, requestId);
+        return submitBatchWithResponse(contentLength, multipartContentType, body, timeout, requestId,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -407,8 +421,9 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FilterBlobSegment> filterBlobsWithResponse(Integer timeout, String requestId, String where,
         String marker, Integer maxresults, List<FilterBlobsIncludeItem> include, RequestContext requestContext) {
-        return this.serviceClient.filterBlobsWithResponse(timeout, requestId, where, marker, maxresults, include,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.FilterBlobs", requestContext,
+            updatedContext -> this.serviceClient.filterBlobsWithResponse(timeout, requestId, where, marker, maxresults,
+                include, updatedContext));
     }
 
     /**
@@ -442,6 +457,7 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FilterBlobSegment filterBlobs(Integer timeout, String requestId, String where, String marker,
         Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return this.serviceClient.filterBlobs(timeout, requestId, where, marker, maxresults, include);
+        return filterBlobsWithResponse(timeout, requestId, where, marker, maxresults, include, RequestContext.none())
+            .getValue();
     }
 }

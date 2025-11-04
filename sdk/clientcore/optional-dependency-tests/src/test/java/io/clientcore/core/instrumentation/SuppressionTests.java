@@ -33,7 +33,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.stream.Stream;
 
@@ -58,6 +57,8 @@ public class SuppressionTests {
     private TestClock testClock;
 
     private InstrumentationOptions otelOptions;
+    private final InstrumentationOptions otelOptionsWithExperimentalFeatures
+        = new InstrumentationOptions().setExperimentalFeaturesEnabled(true);
     private Tracer tracer;
     private final SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("test-library");
 
@@ -73,6 +74,7 @@ public class SuppressionTests {
         OpenTelemetry openTelemetry
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).setMeterProvider(meterProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
+        otelOptionsWithExperimentalFeatures.setTelemetryProvider(openTelemetry);
         tracer = Instrumentation.create(otelOptions, sdkOptions).getTracer();
     }
 
@@ -111,7 +113,7 @@ public class SuppressionTests {
     }
 
     @Test
-    public void testNestedInternalScopeSuppression() throws IOException {
+    public void testNestedInternalScopeSuppression() {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
             .build();
@@ -119,8 +121,8 @@ public class SuppressionTests {
         SdkInstrumentationOptions sdkInstrumentationOptions
             = new SdkInstrumentationOptions("test-library").setEndpoint("https://localhost");
 
-        SampleClientCallInstrumentation client
-            = new SampleClientCallInstrumentation(pipeline, otelOptions, sdkInstrumentationOptions);
+        SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline,
+            otelOptionsWithExperimentalFeatures, sdkInstrumentationOptions);
 
         client.convenienceMethod(RequestContext.none());
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -135,13 +137,14 @@ public class SuppressionTests {
     }
 
     @Test
-    public void testNestedInternalScopeDisabledSuppression() throws IOException {
+    public void testNestedInternalScopeDisabledSuppression() {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.empty()))
             .build();
         SdkInstrumentationOptions sdkOptions
             = new SdkInstrumentationOptions("test-library").disableSpanSuppression(true);
-        SampleClientCallInstrumentation client = new SampleClientCallInstrumentation(pipeline, otelOptions, sdkOptions);
+        SampleClientCallInstrumentation client
+            = new SampleClientCallInstrumentation(pipeline, otelOptionsWithExperimentalFeatures, sdkOptions);
 
         client.convenienceMethod(RequestContext.none());
         assertEquals(2, exporter.getFinishedSpanItems().size());

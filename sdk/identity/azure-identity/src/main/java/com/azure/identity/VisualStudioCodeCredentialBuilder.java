@@ -13,20 +13,23 @@ import java.util.List;
 /**
  * Fluent credential builder for instantiating a {@link VisualStudioCodeCredential}.
  *
- * <p>It's a <a href="https://github.com/Azure/azure-sdk-for-java/issues/27364">known issue</a> that this credential
- * doesn't work with <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">Azure
- * Account extension</a> versions newer than <strong>0.9.11</strong>. A long-term fix to this problem is in progress.
- * In the meantime, consider authenticating with {@link AzureCliCredential}.</p>
+ * Enables authentication to Microsoft Entra ID using the user account signed in through the
+ * <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups">
+ * Azure Resources</a> extension in Visual Studio Code.
+ *
+ * <p><b>Prerequisites:</b></p>
+ * <ol>
+ *   <li>Install the
+ *     <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups">
+ *     Azure Resources</a> extension in Visual Studio Code and sign in using the <b>Azure: Sign In</b> command.</li>
+ *   <li>Add the
+ *     <a href="https://central.sonatype.com/artifact/com.azure/azure-identity-broker">
+ *     azure-identity-broker</a> dependency to your project's build configuration.</li>
+ * </ol>
  *
  * @see VisualStudioCodeCredential
  *
- * @deprecated This credential is deprecated because the VS Code Azure Account extension on which this credential
- * relies has been deprecated. Users should use other dev-time credentials, such as {@link AzureCliCredential},
- * {@link AzureDeveloperCliCredential}, {@link AzurePowerShellCredential} or {@link IntelliJCredential} for their
- * local development needs. See <a href="https://github.com/microsoft/vscode-azure-account/issues/964">this issue</a>
- * for Azure Account extension deprecation notice.
  */
-@Deprecated
 public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<VisualStudioCodeCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredentialBuilder.class);
 

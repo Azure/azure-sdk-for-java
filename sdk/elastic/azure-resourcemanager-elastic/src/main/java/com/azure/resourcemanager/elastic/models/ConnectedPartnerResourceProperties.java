@@ -17,24 +17,29 @@ import java.io.IOException;
 @Fluent
 public final class ConnectedPartnerResourceProperties implements JsonSerializable<ConnectedPartnerResourceProperties> {
     /*
-     * Elastic deployment name
+     * Elastic resource name
      */
     private String partnerDeploymentName;
 
     /*
-     * Deployment URL of the elasticsearch in Elastic cloud deployment.
+     * URL of the resource in Elastic cloud.
      */
     private String partnerDeploymentUri;
 
     /*
-     * The azure resource Id of the deployment.
+     * The azure resource Id of the resource.
      */
     private String azureResourceId;
 
     /*
-     * The location of the deployment.
+     * The location of the resource.
      */
     private String location;
+
+    /*
+     * The hosting type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ConnectedPartnerResourceProperties class.
@@ -43,7 +48,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Get the partnerDeploymentName property: Elastic deployment name.
+     * Get the partnerDeploymentName property: Elastic resource name.
      * 
      * @return the partnerDeploymentName value.
      */
@@ -52,7 +57,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Set the partnerDeploymentName property: Elastic deployment name.
+     * Set the partnerDeploymentName property: Elastic resource name.
      * 
      * @param partnerDeploymentName the partnerDeploymentName value to set.
      * @return the ConnectedPartnerResourceProperties object itself.
@@ -63,7 +68,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Get the partnerDeploymentUri property: Deployment URL of the elasticsearch in Elastic cloud deployment.
+     * Get the partnerDeploymentUri property: URL of the resource in Elastic cloud.
      * 
      * @return the partnerDeploymentUri value.
      */
@@ -72,7 +77,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Set the partnerDeploymentUri property: Deployment URL of the elasticsearch in Elastic cloud deployment.
+     * Set the partnerDeploymentUri property: URL of the resource in Elastic cloud.
      * 
      * @param partnerDeploymentUri the partnerDeploymentUri value to set.
      * @return the ConnectedPartnerResourceProperties object itself.
@@ -83,7 +88,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Get the azureResourceId property: The azure resource Id of the deployment.
+     * Get the azureResourceId property: The azure resource Id of the resource.
      * 
      * @return the azureResourceId value.
      */
@@ -92,7 +97,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Set the azureResourceId property: The azure resource Id of the deployment.
+     * Set the azureResourceId property: The azure resource Id of the resource.
      * 
      * @param azureResourceId the azureResourceId value to set.
      * @return the ConnectedPartnerResourceProperties object itself.
@@ -103,7 +108,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Get the location property: The location of the deployment.
+     * Get the location property: The location of the resource.
      * 
      * @return the location value.
      */
@@ -112,13 +117,33 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
     }
 
     /**
-     * Set the location property: The location of the deployment.
+     * Set the location property: The location of the resource.
      * 
      * @param location the location value to set.
      * @return the ConnectedPartnerResourceProperties object itself.
      */
     public ConnectedPartnerResourceProperties withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the type property: The hosting type of the resource.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The hosting type of the resource.
+     * 
+     * @param type the type value to set.
+     * @return the ConnectedPartnerResourceProperties object itself.
+     */
+    public ConnectedPartnerResourceProperties withType(String type) {
+        this.type = type;
         return this;
     }
 
@@ -140,6 +165,7 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
         jsonWriter.writeStringField("partnerDeploymentUri", this.partnerDeploymentUri);
         jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +193,8 @@ public final class ConnectedPartnerResourceProperties implements JsonSerializabl
                     deserializedConnectedPartnerResourceProperties.azureResourceId = reader.getString();
                 } else if ("location".equals(fieldName)) {
                     deserializedConnectedPartnerResourceProperties.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectedPartnerResourceProperties.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 public final class SnapshotsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Snapshots_Update.json
      */
     /**
      * Sample code: Snapshots_Update.

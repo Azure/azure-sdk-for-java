@@ -394,7 +394,15 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges) {
+            public CollectionRoutingMap tryCombine(
+                List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
+                String changeFeedIfNoneMatch,
+                String collectionRid) {
+                return null;
+            }
+
+            @Override
+            public String getChangeFeedNextIfNoneMatch() {
                 return null;
             }
         };
@@ -436,6 +444,7 @@ public class RxDocumentClientImplTest {
     private static RxDocumentServiceResponse mockRxDocumentServiceResponse(String content, Map<String, String> headers) {
         byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
+            null,
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),

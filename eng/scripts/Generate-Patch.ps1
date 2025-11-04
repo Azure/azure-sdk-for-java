@@ -100,11 +100,10 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   }
 
   $TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
-  $EngDir = Join-Path $RepoRoot "eng"
-  $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
-  $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
-  $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
-  $SpotBugsFilePath = Join-Path $CodeQualityReports "spotbugs" "spotbugs-exclude.xml"
+  $LintingConfigs = Join-Path $RepoRoot "eng" "lintingconfigs"
+  $CheckStyleSuppressionFilePath = Join-Path $LintingConfigs "checkstyle" "track2" "checkstyle-suppressions.xml"
+  $CheckStyleFilePath = Join-Path $LintingConfigs "checkstyle" "track2" "checkstyle.xml"
+  $SpotBugsFilePath = Join-Path $LintingConfigs "spotbugs" "track2" "spotbugs-exclude.xml"
 
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag
@@ -176,13 +175,13 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $oldDependenciesToVersion
 
   ## Create the patch release
-  $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
+  $cmdOutput = python $SetVersionFilePath --new-version $PatchVersion --artifact-id $ArtifactName --group-id $GroupId
   if($LASTEXITCODE -ne 0) {
     LogError "Could not set the patch version."
     exit 1
   }
 
-  $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $UpdateVersionFilePath --skip-readme
     if($LASTEXITCODE -ne 0) {
     LogError "Could not update the versions in the pom files.. Exiting..."
     exit 1

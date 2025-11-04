@@ -15,6 +15,7 @@ import reactor.netty.transport.ProxyProvider;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -37,8 +38,11 @@ public class NettyAsyncHttpClientProviderTests {
         } else {
             assertTrue(httpClient.nettyClient.configuration().hasProxy());
 
-            ProxyProvider proxyProvider = httpClient.nettyClient.configuration().proxyProvider();
-            assertEquals(environmentProxy.getAddress(), proxyProvider.getAddress().get());
+            // If hasProxy is true, the configuration either has a proxyProvider or a proxyProviderSupplier.
+            ProxyProvider proxyProvider = Optional.ofNullable(httpClient.nettyClient.configuration().proxyProvider())
+                .orElseGet(httpClient.nettyClient.configuration().proxyProviderSupplier()::get);
+
+            assertEquals(environmentProxy.getAddress(), proxyProvider.getSocketAddress().get());
         }
     }
 
@@ -53,8 +57,11 @@ public class NettyAsyncHttpClientProviderTests {
         } else {
             assertTrue(httpClient.nettyClient.configuration().hasProxy());
 
-            ProxyProvider proxyProvider = httpClient.nettyClient.configuration().proxyProvider();
-            assertEquals(environmentProxy.getAddress(), proxyProvider.getAddress().get());
+            // If hasProxy is true, the configuration either has a proxyProvider or a proxyProviderSupplier.
+            ProxyProvider proxyProvider = Optional.ofNullable(httpClient.nettyClient.configuration().proxyProvider())
+                .orElseGet(httpClient.nettyClient.configuration().proxyProviderSupplier()::get);
+
+            assertEquals(environmentProxy.getAddress(), proxyProvider.getSocketAddress().get());
         }
     }
 
@@ -68,8 +75,11 @@ public class NettyAsyncHttpClientProviderTests {
 
         assertTrue(httpClient.nettyClient.configuration().hasProxy());
 
-        ProxyProvider proxyProvider = httpClient.nettyClient.configuration().proxyProvider();
-        assertEquals(proxyOptions.getAddress(), proxyProvider.getAddress().get());
+        // If hasProxy is true, the configuration either has a proxyProvider or a proxyProviderSupplier.
+        ProxyProvider proxyProvider = Optional.ofNullable(httpClient.nettyClient.configuration().proxyProvider())
+            .orElseGet(httpClient.nettyClient.configuration().proxyProviderSupplier()::get);
+
+        assertEquals(proxyOptions.getAddress(), proxyProvider.getSocketAddress().get());
     }
 
     @Test
@@ -121,7 +131,7 @@ public class NettyAsyncHttpClientProviderTests {
         assertThrows(IllegalStateException.class, () -> HttpClient.createDefault(options));
     }
 
-    class AnotherHttpClientProvider implements HttpClientProvider {
+    static class AnotherHttpClientProvider implements HttpClientProvider {
         @Override
         public HttpClient createInstance() {
             throw new IllegalStateException("should never be called");

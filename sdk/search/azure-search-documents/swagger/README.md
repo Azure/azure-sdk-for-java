@@ -22,8 +22,8 @@ npm install -g autorest
 
 ### Generation
 
-There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
-`--tag=searchindex` and `--tag=searchservice`.
+There are three swaggers for Azure Search, `searchindex`, `searchservice`, and `knowledgeagent`. They always under same
+package version, e.g. `--tag=searchindex`, `--tag=searchservice`, and `--tag=knowledgeagent`.
 
 ```ps
 cd <swagger-folder>
@@ -35,6 +35,7 @@ e.g.
 cd <swagger-folder>
 autorest --tag=searchindex
 autorest --tag=searchservice
+autorest --tag=knowledgeagent
 ```
 
 ## Manual Changes
@@ -87,7 +88,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
@@ -105,10 +106,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeAgentsResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -162,7 +163,7 @@ These settings apply only when `--tag=knowledgeagent` is specified on the comman
 ``` yaml $(tag) == 'knowledgeagent'
 namespace: com.azure.search.documents.agents
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/knowledgeagent.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/knowledgeagent.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: ErrorResponse,ErrorDetail,ErrorAdditionalInfo,ErrorResponseException,RequestOptions
@@ -279,6 +280,7 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
+      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -478,53 +480,67 @@ directive:
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
 ```
 
-### Fix `SearchResult["@search.documentDebugInfo"]`
-``` yaml $(tag) == 'searchindex'
+### Make `SearchIndexerStatus.name` optional
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SearchIndexerStatus
+  transform: >
+    $.required = $.required.filter((required) => required !== "name");
+```
+
+### Remove `KnowledgeAgentOutputOptimization`
+```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
-    where: $.definitions.SearchResult.properties
+    where: $.definitions
     transform: >
-      $["@search.documentDebugInfo"]["$ref"] = $["@search.documentDebugInfo"].items["$ref"];
-      delete $["@search.documentDebugInfo"].type;
-      delete $["@search.documentDebugInfo"].items;
+      delete $.KnowledgeAgentOutputOptimization;
 ```
 
-### Rename `AI Studio` to `AI Foundry`
-```yaml
+### Retain `rerankWithOriginalVectors` and `defaultOversampling` in `VectorSearchCompressionConfiguration`
+
+```yaml $(tag) == 'searchservice'
 directive:
-  - from: swagger-document
-    where: $.definitions.AIStudioModelCatalogName
-    transform: $["x-ms-enum"].name = "AIFoundryModelCatalogName";
+- from: swagger-document
+  where: $.definitions.VectorSearchCompressionConfiguration
+  transform: >
+    $.properties.rerankWithOriginalVectors = {
+      "type": "boolean",
+      "description": "If set to true, once the ordered set of results calculated using compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of latency.\nFor use with only service version 2024-07-01. If using 2025-09-01 or later, use RescoringOptions.rescoringEnabled.",
+      "x-nullable": true
+    };
+    $.properties.defaultOversampling = {
+      "type": "number",
+      "format": "double",
+      "description": "Default oversampling factor. Oversampling will internally request more documents (specified by this multiplier) in the initial search. This increases the set of results that will be reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.\nFor use with only service version 2024-07-01. If using 2025-09-01 or later, use RescoringOptions.defaultOversampling.",
+      "x-nullable": true
+    };
 ```
 
-```yaml
+### Archboard feedback for 2025-09-01
+
+#### `RE_RANKER_SCORE` -> `RERANKER_SCORE`
+
+```yaml $(tag) == 'searchservice'
 directive:
-  - from: swagger-document
-    where: $.definitions.AMLVectorizer
-    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+- from: swagger-document
+  where: $.definitions.RankingOrder
+  transform: >
+    $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
+      value: v.value,
+      name: v.name === "ReRankerScore" ? "RerankerScore" : v.name,
+      description: v.description
+    }));
 ```
 
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AMLParameters.properties.modelName
-    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
-```
+#### `RescoringOptions.isEnableRescoring` -> `RescoringOptions.isRescoringEnabled`
 
-```yaml
+```yaml $(tag) == 'searchservice'
 directive:
-  - from: swagger-document
-    where: $.definitions.AIStudioModelCatalogName
-    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
-```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.VectorSearchVectorizerKind
-    transform: >
-      $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
-        ...v,
-        description: v.description.replace("Azure AI Studio", "Azure AI Foundry"),
-      }));
+- from: swagger-document
+  where: $.definitions.RescoringOptions
+  transform: >
+    $.properties["enableRescoring"]["x-ms-client-name"] = "rescoringEnabled";
 ```

@@ -180,9 +180,6 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<BlobContainerItem> getBlobContainerItems() {
-        if (this.blobContainerItems == null) {
-            this.blobContainerItems = new ArrayList<>();
-        }
         return this.blobContainerItems;
     }
 

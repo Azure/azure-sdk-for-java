@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.io.IOException;
@@ -58,6 +59,16 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
      * Names of container apps that can use this Dapr component
      */
     private List<String> scopes;
+
+    /*
+     * Provisioning state of the Dapr Component.
+     */
+    private DaprComponentProvisioningState provisioningState;
+
+    /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
 
     /**
      * Creates an instance of DaprComponentProperties class.
@@ -226,6 +237,24 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Dapr Component.
+     * 
+     * @return the provisioningState value.
+     */
+    public DaprComponentProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.deploymentErrors;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -290,6 +319,11 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
                 } else if ("scopes".equals(fieldName)) {
                     List<String> scopes = reader.readArray(reader1 -> reader1.getString());
                     deserializedDaprComponentProperties.scopes = scopes;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDaprComponentProperties.provisioningState
+                        = DaprComponentProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedDaprComponentProperties.deploymentErrors = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

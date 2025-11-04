@@ -63,6 +63,18 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
      */
     private String externalReplicationSetupInfo;
 
+    /*
+     * The mirror state property describes the current status of data replication for a replication. It provides insight
+     * into whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to
+     * be initialized.
+     */
+    private MirrorState mirrorState;
+
+    /*
+     * The status of the Volume Replication
+     */
+    private RelationshipStatus relationshipStatus;
+
     /**
      * Creates an instance of ReplicationObject class.
      */
@@ -202,6 +214,26 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
+     * Get the mirrorState property: The mirror state property describes the current status of data replication for a
+     * replication. It provides insight into whether the data is actively being mirrored, if the replication process has
+     * been paused, or if it has yet to be initialized.
+     * 
+     * @return the mirrorState value.
+     */
+    public MirrorState mirrorState() {
+        return this.mirrorState;
+    }
+
+    /**
+     * Get the relationshipStatus property: The status of the Volume Replication.
+     * 
+     * @return the relationshipStatus value.
+     */
+    public RelationshipStatus relationshipStatus() {
+        return this.relationshipStatus;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -266,6 +298,11 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
                         = ExternalReplicationSetupStatus.fromString(reader.getString());
                 } else if ("externalReplicationSetupInfo".equals(fieldName)) {
                     deserializedReplicationObject.externalReplicationSetupInfo = reader.getString();
+                } else if ("mirrorState".equals(fieldName)) {
+                    deserializedReplicationObject.mirrorState = MirrorState.fromString(reader.getString());
+                } else if ("relationshipStatus".equals(fieldName)) {
+                    deserializedReplicationObject.relationshipStatus
+                        = RelationshipStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

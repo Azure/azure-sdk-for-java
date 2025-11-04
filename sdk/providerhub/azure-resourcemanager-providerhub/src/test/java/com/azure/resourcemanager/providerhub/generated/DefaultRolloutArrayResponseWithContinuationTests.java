@@ -11,16 +11,19 @@ import com.azure.resourcemanager.providerhub.models.DefaultRolloutArrayResponseW
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutPropertiesStatus;
+import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationAutoProvisionConfig;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationCanary;
+import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationExpeditedRollout;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationHighTraffic;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationLowTraffic;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationMediumTraffic;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationProviderRegistration;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationRestOfTheWorldGroupOne;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationRestOfTheWorldGroupTwo;
+import com.azure.resourcemanager.providerhub.models.DefaultRolloutStatusManifestCheckinStatus;
 import com.azure.resourcemanager.providerhub.models.ExtendedErrorInfo;
+import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
-import com.azure.resourcemanager.providerhub.models.ProvisioningState;
 import com.azure.resourcemanager.providerhub.models.SubscriptionReregistrationResult;
 import com.azure.resourcemanager.providerhub.models.TrafficRegionCategory;
 import java.time.Duration;
@@ -34,39 +37,49 @@ public final class DefaultRolloutArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"specification\":{\"canary\":{\"skipRegions\":[\"xbjhwuaanozjosph\",\"oulpjrv\",\"ag\",\"rvimjwosytxitcsk\"],\"regions\":[\"tq\"]},\"lowTraffic\":{\"waitDuration\":\"PT212H22M22S\",\"regions\":[\"ez\"]},\"mediumTraffic\":{\"waitDuration\":\"PT153H38M58S\",\"regions\":[\"fjhdg\"]},\"highTraffic\":{\"waitDuration\":\"PT78H22M\",\"regions\":[\"unygaeqid\",\"qfatpxllrxcyjm\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT230H27M35S\",\"regions\":[\"arm\",\"wdmjsjqbjhhyx\",\"rw\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT104H50M40S\",\"regions\":[\"hp\",\"xkgymareqnajxqu\",\"jhkycub\"]},\"providerRegistration\":{\"properties\":{},\"id\":\"gssofwq\",\"name\":\"zqalkrmnjijpx\",\"type\":\"cqqudf\"},\"resourceTypeRegistrations\":[{\"id\":\"xbaaabjyv\",\"name\":\"yffimrzrtuzqogs\",\"type\":\"xnevfdnwn\"},{\"id\":\"mewzsyyc\",\"name\":\"uzsoi\",\"type\":\"judpfrxt\"},{\"id\":\"thzvaytdwkqbrqu\",\"name\":\"paxh\",\"type\":\"xiilivpdtiirqt\"},{\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"}]},\"status\":{\"nextTrafficRegion\":\"None\",\"nextTrafficRegionScheduledTime\":\"2021-09-16T02:47:22Z\",\"subscriptionReregistrationResult\":\"ForcedUpdate\",\"completedRegions\":[\"dy\"],\"failedOrSkippedRegions\":{\"dooaojkniodko\":{},\"ebwnujhe\":{}}}},\"id\":\"msbvdkcrodtjinf\",\"name\":\"jlfltkacjvefkdlf\",\"type\":\"akggkfpag\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"specification\":{\"canary\":{\"skipRegions\":[\"blylsyxkqjnsj\",\"r\",\"tiagx\"],\"regions\":[\"zuempsbzkf\"]},\"lowTraffic\":{\"waitDuration\":\"PT209H9M36S\",\"regions\":[\"nqicvinvkjjxdxrb\"]},\"mediumTraffic\":{\"waitDuration\":\"PT118H49M34S\",\"regions\":[\"ewyhml\",\"paztzpofncck\",\"yfzqwhxxbu\"]},\"highTraffic\":{\"waitDuration\":\"PT173H18M2S\",\"regions\":[\"eqz\",\"ppriol\",\"or\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT225H53M1S\",\"regions\":[\"mncwsobqwcsdb\",\"wdcfhucqdpfuv\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT60H51M6S\",\"regions\":[\"ca\",\"vxb\",\"t\",\"udutnco\"]},\"providerRegistration\":{\"properties\":{},\"id\":\"lxqtvcofudfl\",\"name\":\"kgjubgdknnqvsazn\",\"type\":\"n\"},\"resourceTypeRegistrations\":[{\"id\":\"udsgs\",\"name\":\"hmk\",\"type\":\"c\"},{\"id\":\"rauwjuetaebu\",\"name\":\"u\",\"type\":\"dmovsm\"}]},\"status\":{\"nextTrafficRegion\":\"Canary\",\"nextTrafficRegionScheduledTime\":\"2021-09-08T15:53:42Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"completedRegions\":[\"fkifr\",\"tpuqujmq\"],\"failedOrSkippedRegions\":{\"fbtndoaong\":{},\"jcntuj\":{},\"tcje\":{},\"ftwwaezkojvdc\":{}}}},\"id\":\"zfoqouicybxar\",\"name\":\"gszufoxciqopid\",\"type\":\"amcio\"},{\"properties\":{\"provisioningState\":\"MovingResources\",\"specification\":{\"canary\":{\"skipRegions\":[\"hnzbonl\",\"ntoe\",\"okdwb\"],\"regions\":[\"szzcmrvexztv\",\"t\",\"gsfraoyzkoow\",\"lmnguxaw\"]},\"lowTraffic\":{\"waitDuration\":\"PT141H48M11S\",\"regions\":[\"uuximerq\",\"obwyznkb\",\"kutwpf\",\"pagmhrskdsnf\"]},\"mediumTraffic\":{\"waitDuration\":\"PT219H58M49S\",\"regions\":[\"gtdlmk\",\"zev\",\"l\"]},\"highTraffic\":{\"waitDuration\":\"PT219H51M54S\",\"regions\":[\"dsttwvo\",\"vbbejdcng\",\"qmoa\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT139H45M43S\",\"regions\":[\"zr\",\"rdgrtw\",\"enuuzkopbm\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT153H11M53S\",\"regions\":[\"oyuhhziui\",\"fozbhdmsmlmzqhof\",\"rmaequ\"]},\"providerRegistration\":{\"properties\":{},\"id\":\"xicslfao\",\"name\":\"z\",\"type\":\"iyylhalnswhccsp\"},\"resourceTypeRegistrations\":[{\"id\":\"ivwitqscywugg\",\"name\":\"oluhczbwemh\",\"type\":\"i\"},{\"id\":\"sbrgz\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"},{\"id\":\"mkttlstvlzywem\",\"name\":\"zrncsdt\",\"type\":\"lusiy\"}]},\"status\":{\"nextTrafficRegion\":\"RestOfTheWorldGroupTwo\",\"nextTrafficRegionScheduledTime\":\"2021-03-20T23:23:02Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"completedRegions\":[\"lfeadcygq\"],\"failedOrSkippedRegions\":{\"hejhzisx\":{},\"fpel\":{},\"lppvksrpq\":{}}}},\"id\":\"ujzra\",\"name\":\"htwdwrftswibyrcd\",\"type\":\"bhshfwpracstwity\"},{\"properties\":{\"provisioningState\":\"Created\",\"specification\":{\"canary\":{\"skipRegions\":[\"dcpnmdyodnw\",\"xltjcvnhltiu\",\"cxnavv\",\"xqi\"],\"regions\":[\"unyowxwl\",\"djrkvfgbvfvpd\",\"odacizs\",\"q\"]},\"lowTraffic\":{\"waitDuration\":\"PT1H38M26S\",\"regions\":[\"bdeibqipqk\",\"hvxndzwmkrefajpj\"]},\"mediumTraffic\":{\"waitDuration\":\"PT217H8M26S\",\"regions\":[\"yhgbijtjivfx\",\"sjabibs\",\"stawfsdjpvkv\"]},\"highTraffic\":{\"waitDuration\":\"PT39H47S\",\"regions\":[\"zbzkdvncjabudurg\",\"akmokzhjjklf\",\"hmouwqlgzrfze\",\"yebizikayuh\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT141H57M59S\",\"regions\":[\"ybbqwrv\",\"ldgmfpgvmpip\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT194H53M31S\",\"regions\":[\"qfxssmwutw\",\"dsrezpdrhneuyow\"]},\"providerRegistration\":{\"properties\":{},\"id\":\"wyt\",\"name\":\"sibircgpi\",\"type\":\"pzimejzanlfzxi\"},\"resourceTypeRegistrations\":[{\"id\":\"mbzonokix\",\"name\":\"jq\",\"type\":\"irgzp\"},{\"id\":\"rlazszrnw\",\"name\":\"iin\",\"type\":\"fpwpjylwbt\"}]},\"status\":{\"nextTrafficRegion\":\"Canary\",\"nextTrafficRegionScheduledTime\":\"2021-08-09T06:27:36Z\",\"subscriptionReregistrationResult\":\"ConditionalUpdate\",\"completedRegions\":[\"zfjvfbgofe\",\"jagrqmqhldvr\",\"iiojnal\",\"hfkvtvsexsowuel\"],\"failedOrSkippedRegions\":{\"hahhxvrhmzkwpj\":{},\"wws\":{},\"ughftqsx\":{},\"qxujxukndxd\":{}}}},\"id\":\"grjguufzd\",\"name\":\"syqtfi\",\"type\":\"whbotzingamv\"}],\"nextLink\":\"ho\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"specification\":{\"expeditedRollout\":{\"enabled\":true},\"canary\":{\"skipRegions\":[\"ooaojkniodkooebw\",\"ujhemmsbvdkcrodt\",\"infwjlfltkacjve\",\"kdlfoa\"],\"regions\":[\"kfpagao\",\"pulpqblylsyxk\"]},\"lowTraffic\":{\"waitDuration\":\"PT102H52M35S\",\"regions\":[\"r\",\"tiagx\",\"dszue\"]},\"mediumTraffic\":{\"waitDuration\":\"PT26H50M50S\",\"regions\":[\"f\",\"beyvpnqicvinvkjj\",\"dxrbuukzcle\",\"yhmlwpaztzp\"]},\"highTraffic\":{\"waitDuration\":\"PT222H47M41S\",\"regions\":[\"wyfzqwhxxbuyqa\",\"zfeqztppri\",\"lxorjaltolmncws\",\"bqwcsdbnwdcf\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT145H44M40S\",\"regions\":[\"fuvglsbjjca\",\"vxb\",\"t\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT148H6M35S\",\"regions\":[\"cormr\",\"xqtvcofu\",\"f\",\"vkg\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Direct\",\"id\":\"nnqvsa\",\"name\":\"nqntorudsgsahm\",\"type\":\"yc\"},\"resourceTypeRegistrations\":[{\"id\":\"uwjuetaeburuvdmo\",\"name\":\"s\",\"type\":\"zlxwabmqoefkifr\"},{\"id\":\"tpuqujmq\",\"name\":\"gkfbtndoaong\",\"type\":\"jcntuj\"},{\"id\":\"tcje\",\"name\":\"ftwwaezkojvdc\",\"type\":\"zfoqouicybxar\"}],\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":false}},\"status\":{\"nextTrafficRegion\":\"HighTraffic\",\"nextTrafficRegionScheduledTime\":\"2021-07-04T02:33:20Z\",\"subscriptionReregistrationResult\":\"NotApplicable\",\"manifestCheckinStatus\":{\"isCheckedIn\":true,\"statusMessage\":\"oamciodh\",\"pullRequest\":\"azxkhnzbonlwnto\",\"commitId\":\"okdwb\"},\"completedRegions\":[\"szzcmrvexztv\",\"t\",\"gsfraoyzkoow\",\"lmnguxaw\"],\"failedOrSkippedRegions\":{\"dsyuuximerqfob\":{},\"yznkby\":{},\"utwpfhp\":{},\"gmhrskdsnfdsdoak\":{}}}},\"id\":\"dlmkkzevdl\",\"name\":\"ewpusdsttwvogvb\",\"type\":\"ejdcngqqmoakuf\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"specification\":{\"expeditedRollout\":{\"enabled\":true},\"canary\":{\"skipRegions\":[\"wae\",\"u\",\"zkopb\"],\"regions\":[\"rfdwoyu\",\"hziuiefozbhdms\"]},\"lowTraffic\":{\"waitDuration\":\"PT85H19M36S\",\"regions\":[\"oftrmaequia\",\"xicslfao\"]},\"mediumTraffic\":{\"waitDuration\":\"PT229H19M25S\",\"regions\":[\"lhalnswh\",\"csphkaiv\",\"itqscywuggwoluhc\"]},\"highTraffic\":{\"waitDuration\":\"PT226H33M2S\",\"regions\":[\"ai\",\"sbrgz\",\"wmsweypqwd\",\"ggicccnxqhue\"]},\"restOfTheWorldGroupOne\":{\"waitDuration\":\"PT83H7M16S\",\"regions\":[\"stvlzywemhzrnc\",\"dtclusiypb\",\"fgytguslfeadcyg\"]},\"restOfTheWorldGroupTwo\":{\"waitDuration\":\"PT176H30M12S\",\"regions\":[\"jhzi\",\"xgfpelolppv\"]},\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"ujzra\",\"name\":\"htwdwrftswibyrcd\",\"type\":\"bhshfwpracstwity\"},\"resourceTypeRegistrations\":[{\"id\":\"vxccedcp\",\"name\":\"md\",\"type\":\"odn\"},{\"id\":\"zxltjcvn\",\"name\":\"ltiugcxnavv\",\"type\":\"xqi\"},{\"id\":\"y\",\"name\":\"unyowxwl\",\"type\":\"djrkvfgbvfvpd\"}],\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":true}},\"status\":{\"nextTrafficRegion\":\"NotSpecified\",\"nextTrafficRegionScheduledTime\":\"2021-04-19T06:09:38Z\",\"subscriptionReregistrationResult\":\"ForcedUpdate\",\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"ibdeibq\",\"pullRequest\":\"qkgh\",\"commitId\":\"ndzwmkrefa\"},\"completedRegions\":[\"orwkqnyh\",\"b\",\"j\",\"jivfxzsjabib\"],\"failedOrSkippedRegions\":{\"tawfsdjpvkvp\":{},\"jxbkzbzkdvn\":{},\"jabudurgkakmo\":{}}}},\"id\":\"hjjklff\",\"name\":\"mouwqlgzrfzeey\",\"type\":\"bizikayuhq\"}],\"nextLink\":\"jbsybbqw\"}")
             .toObject(DefaultRolloutArrayResponseWithContinuation.class);
-        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("xbjhwuaanozjosph",
+        Assertions.assertTrue(model.value().get(0).properties().specification().expeditedRollout().enabled());
+        Assertions.assertEquals("ooaojkniodkooebw",
             model.value().get(0).properties().specification().canary().skipRegions().get(0));
-        Assertions.assertEquals("tq", model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("ez", model.value().get(0).properties().specification().lowTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT212H22M22S"),
+        Assertions.assertEquals("kfpagao", model.value().get(0).properties().specification().canary().regions().get(0));
+        Assertions.assertEquals("r", model.value().get(0).properties().specification().lowTraffic().regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT102H52M35S"),
             model.value().get(0).properties().specification().lowTraffic().waitDuration());
-        Assertions.assertEquals("fjhdg",
+        Assertions.assertEquals("f",
             model.value().get(0).properties().specification().mediumTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT153H38M58S"),
+        Assertions.assertEquals(Duration.parse("PT26H50M50S"),
             model.value().get(0).properties().specification().mediumTraffic().waitDuration());
-        Assertions.assertEquals("unygaeqid",
+        Assertions.assertEquals("wyfzqwhxxbuyqa",
             model.value().get(0).properties().specification().highTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT78H22M"),
+        Assertions.assertEquals(Duration.parse("PT222H47M41S"),
             model.value().get(0).properties().specification().highTraffic().waitDuration());
-        Assertions.assertEquals("arm",
+        Assertions.assertEquals("fuvglsbjjca",
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT230H27M35S"),
+        Assertions.assertEquals(Duration.parse("PT145H44M40S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().waitDuration());
-        Assertions.assertEquals("hp",
+        Assertions.assertEquals("cormr",
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT104H50M40S"),
+        Assertions.assertEquals(Duration.parse("PT148H6M35S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().waitDuration());
-        Assertions.assertEquals("dy", model.value().get(0).properties().status().completedRegions().get(0));
-        Assertions.assertEquals(TrafficRegionCategory.NONE,
+        Assertions.assertEquals(ProviderRegistrationKind.DIRECT,
+            model.value().get(0).properties().specification().providerRegistration().kind());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().storage());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
+        Assertions.assertEquals("szzcmrvexztv", model.value().get(0).properties().status().completedRegions().get(0));
+        Assertions.assertEquals(TrafficRegionCategory.HIGH_TRAFFIC,
             model.value().get(0).properties().status().nextTrafficRegion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T02:47:22Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T02:33:20Z"),
             model.value().get(0).properties().status().nextTrafficRegionScheduledTime());
-        Assertions.assertEquals(SubscriptionReregistrationResult.FORCED_UPDATE,
+        Assertions.assertEquals(SubscriptionReregistrationResult.NOT_APPLICABLE,
             model.value().get(0).properties().status().subscriptionReregistrationResult());
-        Assertions.assertEquals("ho", model.nextLink());
+        Assertions.assertTrue(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
+        Assertions.assertEquals("oamciodh",
+            model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
+        Assertions.assertEquals("azxkhnzbonlwnto",
+            model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
+        Assertions.assertEquals("okdwb", model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("jbsybbqw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -74,196 +87,138 @@ public final class DefaultRolloutArrayResponseWithContinuationTests {
         DefaultRolloutArrayResponseWithContinuation model
             = new DefaultRolloutArrayResponseWithContinuation()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new DefaultRolloutInner()
-                                .withProperties(
-                                    new DefaultRolloutProperties()
-                                        .withProvisioningState(ProvisioningState.NOT_SPECIFIED)
-                                        .withSpecification(new DefaultRolloutPropertiesSpecification()
-                                            .withCanary(new DefaultRolloutSpecificationCanary()
-                                                .withSkipRegions(Arrays.asList("xbjhwuaanozjosph", "oulpjrv", "ag",
-                                                    "rvimjwosytxitcsk"))
-                                                .withRegions(Arrays.asList("tq")))
-                                            .withLowTraffic(new DefaultRolloutSpecificationLowTraffic()
-                                                .withRegions(Arrays.asList("ez"))
-                                                .withWaitDuration(Duration.parse("PT212H22M22S")))
-                                            .withMediumTraffic(new DefaultRolloutSpecificationMediumTraffic()
-                                                .withRegions(Arrays.asList("fjhdg"))
-                                                .withWaitDuration(Duration.parse("PT153H38M58S")))
-                                            .withHighTraffic(new DefaultRolloutSpecificationHighTraffic()
-                                                .withRegions(Arrays.asList("unygaeqid", "qfatpxllrxcyjm"))
-                                                .withWaitDuration(Duration.parse("PT78H22M")))
-                                            .withRestOfTheWorldGroupOne(
-                                                new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                                                    .withRegions(Arrays.asList("arm", "wdmjsjqbjhhyx", "rw"))
-                                                    .withWaitDuration(Duration.parse("PT230H27M35S")))
-                                            .withRestOfTheWorldGroupTwo(
-                                                new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                                                    .withRegions(Arrays.asList("hp", "xkgymareqnajxqu", "jhkycub"))
-                                                    .withWaitDuration(Duration.parse("PT104H50M40S")))
-                                            .withProviderRegistration(
-                                                new DefaultRolloutSpecificationProviderRegistration()
-                                                    .withProperties(new ProviderRegistrationProperties()))
-                                            .withResourceTypeRegistrations(
-                                                Arrays.asList(new ResourceTypeRegistrationInner(),
-                                                    new ResourceTypeRegistrationInner(),
-                                                    new ResourceTypeRegistrationInner(),
-                                                    new ResourceTypeRegistrationInner())))
-                                        .withStatus(new DefaultRolloutPropertiesStatus()
-                                            .withCompletedRegions(Arrays.asList("dy"))
-                                            .withFailedOrSkippedRegions(mapOf("dooaojkniodko", new ExtendedErrorInfo(),
-                                                "ebwnujhe", new ExtendedErrorInfo()))
-                                            .withNextTrafficRegion(TrafficRegionCategory.NONE)
-                                            .withNextTrafficRegionScheduledTime(
-                                                OffsetDateTime.parse("2021-09-16T02:47:22Z"))
-                                            .withSubscriptionReregistrationResult(
-                                                SubscriptionReregistrationResult.FORCED_UPDATE))),
-                            new DefaultRolloutInner().withProperties(
-                                new DefaultRolloutProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
-                                    .withSpecification(new DefaultRolloutPropertiesSpecification()
-                                        .withCanary(new DefaultRolloutSpecificationCanary()
-                                            .withSkipRegions(Arrays.asList("blylsyxkqjnsj", "r", "tiagx"))
-                                            .withRegions(Arrays.asList("zuempsbzkf")))
-                                        .withLowTraffic(new DefaultRolloutSpecificationLowTraffic()
-                                            .withRegions(Arrays.asList("nqicvinvkjjxdxrb"))
-                                            .withWaitDuration(Duration.parse("PT209H9M36S")))
-                                        .withMediumTraffic(new DefaultRolloutSpecificationMediumTraffic()
-                                            .withRegions(Arrays.asList("ewyhml", "paztzpofncck", "yfzqwhxxbu"))
-                                            .withWaitDuration(Duration.parse("PT118H49M34S")))
-                                        .withHighTraffic(new DefaultRolloutSpecificationHighTraffic()
-                                            .withRegions(Arrays.asList("eqz", "ppriol", "or"))
-                                            .withWaitDuration(Duration.parse("PT173H18M2S")))
-                                        .withRestOfTheWorldGroupOne(
-                                            new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                                                .withRegions(Arrays.asList("mncwsobqwcsdb", "wdcfhucqdpfuv"))
-                                                .withWaitDuration(Duration.parse("PT225H53M1S")))
-                                        .withRestOfTheWorldGroupTwo(
-                                            new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                                                .withRegions(Arrays.asList("ca", "vxb", "t", "udutnco"))
-                                                .withWaitDuration(Duration.parse("PT60H51M6S")))
-                                        .withProviderRegistration(new DefaultRolloutSpecificationProviderRegistration()
-                                            .withProperties(new ProviderRegistrationProperties()))
-                                        .withResourceTypeRegistrations(Arrays.asList(
-                                            new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner())))
-                                    .withStatus(new DefaultRolloutPropertiesStatus()
-                                        .withCompletedRegions(Arrays.asList("fkifr", "tpuqujmq"))
-                                        .withFailedOrSkippedRegions(mapOf("fbtndoaong", new ExtendedErrorInfo(),
-                                            "jcntuj", new ExtendedErrorInfo(), "tcje", new ExtendedErrorInfo(),
-                                            "ftwwaezkojvdc", new ExtendedErrorInfo()))
-                                        .withNextTrafficRegion(TrafficRegionCategory.CANARY)
-                                        .withNextTrafficRegionScheduledTime(
-                                            OffsetDateTime.parse("2021-09-08T15:53:42Z"))
-                                        .withSubscriptionReregistrationResult(
-                                            SubscriptionReregistrationResult.NOT_APPLICABLE))),
-                            new DefaultRolloutInner().withProperties(new DefaultRolloutProperties()
-                                .withProvisioningState(ProvisioningState.MOVING_RESOURCES)
-                                .withSpecification(new DefaultRolloutPropertiesSpecification()
-                                    .withCanary(new DefaultRolloutSpecificationCanary()
-                                        .withSkipRegions(Arrays.asList("hnzbonl", "ntoe", "okdwb"))
-                                        .withRegions(Arrays.asList("szzcmrvexztv", "t", "gsfraoyzkoow", "lmnguxaw")))
-                                    .withLowTraffic(new DefaultRolloutSpecificationLowTraffic()
-                                        .withRegions(Arrays.asList("uuximerq", "obwyznkb", "kutwpf", "pagmhrskdsnf"))
-                                        .withWaitDuration(Duration.parse("PT141H48M11S")))
-                                    .withMediumTraffic(new DefaultRolloutSpecificationMediumTraffic()
-                                        .withRegions(Arrays.asList("gtdlmk", "zev", "l"))
-                                        .withWaitDuration(Duration.parse("PT219H58M49S")))
-                                    .withHighTraffic(new DefaultRolloutSpecificationHighTraffic()
-                                        .withRegions(Arrays.asList("dsttwvo", "vbbejdcng", "qmoa"))
-                                        .withWaitDuration(Duration.parse("PT219H51M54S")))
-                                    .withRestOfTheWorldGroupOne(new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                                        .withRegions(Arrays.asList("zr", "rdgrtw", "enuuzkopbm"))
-                                        .withWaitDuration(Duration.parse("PT139H45M43S")))
-                                    .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                                        .withRegions(Arrays.asList("oyuhhziui", "fozbhdmsmlmzqhof", "rmaequ"))
-                                        .withWaitDuration(Duration.parse("PT153H11M53S")))
-                                    .withProviderRegistration(new DefaultRolloutSpecificationProviderRegistration()
-                                        .withProperties(new ProviderRegistrationProperties()))
-                                    .withResourceTypeRegistrations(Arrays.asList(new ResourceTypeRegistrationInner(),
-                                        new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner())))
-                                .withStatus(new DefaultRolloutPropertiesStatus()
-                                    .withCompletedRegions(Arrays.asList("lfeadcygq"))
-                                    .withFailedOrSkippedRegions(mapOf("hejhzisx", new ExtendedErrorInfo(), "fpel",
-                                        new ExtendedErrorInfo(), "lppvksrpq", new ExtendedErrorInfo()))
-                                    .withNextTrafficRegion(TrafficRegionCategory.REST_OF_THE_WORLD_GROUP_TWO)
-                                    .withNextTrafficRegionScheduledTime(OffsetDateTime.parse("2021-03-20T23:23:02Z"))
-                                    .withSubscriptionReregistrationResult(
-                                        SubscriptionReregistrationResult.NOT_APPLICABLE))),
-                            new DefaultRolloutInner().withProperties(
-                                new DefaultRolloutProperties().withProvisioningState(ProvisioningState.CREATED)
-                                    .withSpecification(new DefaultRolloutPropertiesSpecification()
-                                        .withCanary(new DefaultRolloutSpecificationCanary()
-                                            .withSkipRegions(
-                                                Arrays.asList("dcpnmdyodnw", "xltjcvnhltiu", "cxnavv", "xqi"))
-                                            .withRegions(Arrays.asList("unyowxwl", "djrkvfgbvfvpd", "odacizs", "q")))
-                                        .withLowTraffic(new DefaultRolloutSpecificationLowTraffic()
-                                            .withRegions(Arrays.asList("bdeibqipqk", "hvxndzwmkrefajpj"))
-                                            .withWaitDuration(Duration.parse("PT1H38M26S")))
-                                        .withMediumTraffic(new DefaultRolloutSpecificationMediumTraffic()
-                                            .withRegions(Arrays.asList("yhgbijtjivfx", "sjabibs", "stawfsdjpvkv"))
-                                            .withWaitDuration(Duration.parse("PT217H8M26S")))
-                                        .withHighTraffic(new DefaultRolloutSpecificationHighTraffic()
-                                            .withRegions(Arrays.asList("zbzkdvncjabudurg", "akmokzhjjklf",
-                                                "hmouwqlgzrfze", "yebizikayuh"))
-                                            .withWaitDuration(Duration.parse("PT39H47S")))
-                                        .withRestOfTheWorldGroupOne(
-                                            new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                                                .withRegions(Arrays.asList("ybbqwrv", "ldgmfpgvmpip"))
-                                                .withWaitDuration(Duration.parse("PT141H57M59S")))
-                                        .withRestOfTheWorldGroupTwo(
-                                            new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                                                .withRegions(Arrays.asList("qfxssmwutw", "dsrezpdrhneuyow"))
-                                                .withWaitDuration(Duration.parse("PT194H53M31S")))
-                                        .withProviderRegistration(new DefaultRolloutSpecificationProviderRegistration()
-                                            .withProperties(new ProviderRegistrationProperties()))
-                                        .withResourceTypeRegistrations(
-                                            Arrays.asList(
-                                                new ResourceTypeRegistrationInner(),
-                                                new ResourceTypeRegistrationInner())))
-                                    .withStatus(new DefaultRolloutPropertiesStatus()
-                                        .withCompletedRegions(
-                                            Arrays.asList("zfjvfbgofe", "jagrqmqhldvr", "iiojnal", "hfkvtvsexsowuel"))
-                                        .withFailedOrSkippedRegions(mapOf("hahhxvrhmzkwpj", new ExtendedErrorInfo(),
-                                            "wws", new ExtendedErrorInfo(), "ughftqsx", new ExtendedErrorInfo(),
-                                            "qxujxukndxd", new ExtendedErrorInfo()))
-                                        .withNextTrafficRegion(TrafficRegionCategory.CANARY)
-                                        .withNextTrafficRegionScheduledTime(
-                                            OffsetDateTime.parse("2021-08-09T06:27:36Z"))
-                                        .withSubscriptionReregistrationResult(
-                                            SubscriptionReregistrationResult.CONDITIONAL_UPDATE)))))
-                .withNextLink("ho");
+                    Arrays.asList(
+                        new DefaultRolloutInner().withProperties(new DefaultRolloutProperties()
+                            .withSpecification(new DefaultRolloutPropertiesSpecification()
+                                .withExpeditedRollout(
+                                    new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
+                                .withCanary(new DefaultRolloutSpecificationCanary()
+                                    .withSkipRegions(Arrays.asList("ooaojkniodkooebw", "ujhemmsbvdkcrodt",
+                                        "infwjlfltkacjve", "kdlfoa"))
+                                    .withRegions(Arrays.asList("kfpagao", "pulpqblylsyxk")))
+                                .withLowTraffic(new DefaultRolloutSpecificationLowTraffic()
+                                    .withRegions(Arrays.asList("r", "tiagx", "dszue"))
+                                    .withWaitDuration(Duration.parse("PT102H52M35S")))
+                                .withMediumTraffic(new DefaultRolloutSpecificationMediumTraffic()
+                                    .withRegions(Arrays.asList("f", "beyvpnqicvinvkjj", "dxrbuukzcle", "yhmlwpaztzp"))
+                                    .withWaitDuration(Duration.parse("PT26H50M50S")))
+                                .withHighTraffic(new DefaultRolloutSpecificationHighTraffic()
+                                    .withRegions(Arrays.asList("wyfzqwhxxbuyqa", "zfeqztppri", "lxorjaltolmncws",
+                                        "bqwcsdbnwdcf"))
+                                    .withWaitDuration(Duration.parse("PT222H47M41S")))
+                                .withRestOfTheWorldGroupOne(new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
+                                    .withRegions(Arrays.asList("fuvglsbjjca", "vxb", "t"))
+                                    .withWaitDuration(Duration.parse("PT145H44M40S")))
+                                .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
+                                    .withRegions(Arrays.asList("cormr", "xqtvcofu", "f", "vkg"))
+                                    .withWaitDuration(Duration.parse("PT148H6M35S")))
+                                .withProviderRegistration(new DefaultRolloutSpecificationProviderRegistration()
+                                    .withProperties(new ProviderRegistrationProperties())
+                                    .withKind(ProviderRegistrationKind.DIRECT))
+                                .withResourceTypeRegistrations(Arrays.asList(new ResourceTypeRegistrationInner(),
+                                    new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner()))
+                                .withAutoProvisionConfig(
+                                    new DefaultRolloutSpecificationAutoProvisionConfig().withStorage(false)
+                                        .withResourceGraph(false)))
+                            .withStatus(new DefaultRolloutPropertiesStatus()
+                                .withCompletedRegions(Arrays.asList("szzcmrvexztv", "t", "gsfraoyzkoow", "lmnguxaw"))
+                                .withFailedOrSkippedRegions(mapOf("dsyuuximerqfob", new ExtendedErrorInfo(), "yznkby",
+                                    new ExtendedErrorInfo(), "utwpfhp", new ExtendedErrorInfo(), "gmhrskdsnfdsdoak",
+                                    new ExtendedErrorInfo()))
+                                .withNextTrafficRegion(TrafficRegionCategory.HIGH_TRAFFIC)
+                                .withNextTrafficRegionScheduledTime(OffsetDateTime.parse("2021-07-04T02:33:20Z"))
+                                .withSubscriptionReregistrationResult(SubscriptionReregistrationResult.NOT_APPLICABLE)
+                                .withManifestCheckinStatus(
+                                    new DefaultRolloutStatusManifestCheckinStatus()
+                                        .withIsCheckedIn(true)
+                                        .withStatusMessage("oamciodh")
+                                        .withPullRequest("azxkhnzbonlwnto")
+                                        .withCommitId("okdwb")))),
+                        new DefaultRolloutInner().withProperties(new DefaultRolloutProperties()
+                            .withSpecification(new DefaultRolloutPropertiesSpecification()
+                                .withExpeditedRollout(
+                                    new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
+                                .withCanary(new DefaultRolloutSpecificationCanary()
+                                    .withSkipRegions(Arrays.asList("wae", "u", "zkopb"))
+                                    .withRegions(Arrays.asList("rfdwoyu", "hziuiefozbhdms")))
+                                .withLowTraffic(new DefaultRolloutSpecificationLowTraffic()
+                                    .withRegions(Arrays.asList("oftrmaequia", "xicslfao"))
+                                    .withWaitDuration(Duration.parse("PT85H19M36S")))
+                                .withMediumTraffic(new DefaultRolloutSpecificationMediumTraffic()
+                                    .withRegions(Arrays.asList("lhalnswh", "csphkaiv", "itqscywuggwoluhc"))
+                                    .withWaitDuration(Duration.parse("PT229H19M25S")))
+                                .withHighTraffic(new DefaultRolloutSpecificationHighTraffic()
+                                    .withRegions(Arrays.asList("ai", "sbrgz", "wmsweypqwd", "ggicccnxqhue"))
+                                    .withWaitDuration(Duration.parse("PT226H33M2S")))
+                                .withRestOfTheWorldGroupOne(new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
+                                    .withRegions(Arrays.asList("stvlzywemhzrnc", "dtclusiypb", "fgytguslfeadcyg"))
+                                    .withWaitDuration(Duration.parse("PT83H7M16S")))
+                                .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
+                                    .withRegions(Arrays.asList("jhzi", "xgfpelolppv"))
+                                    .withWaitDuration(Duration.parse("PT176H30M12S")))
+                                .withProviderRegistration(new DefaultRolloutSpecificationProviderRegistration()
+                                    .withProperties(new ProviderRegistrationProperties())
+                                    .withKind(ProviderRegistrationKind.HYBRID))
+                                .withResourceTypeRegistrations(Arrays.asList(new ResourceTypeRegistrationInner(),
+                                    new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner()))
+                                .withAutoProvisionConfig(
+                                    new DefaultRolloutSpecificationAutoProvisionConfig().withStorage(true)
+                                        .withResourceGraph(true)))
+                            .withStatus(new DefaultRolloutPropertiesStatus()
+                                .withCompletedRegions(Arrays.asList("orwkqnyh", "b", "j", "jivfxzsjabib"))
+                                .withFailedOrSkippedRegions(mapOf("tawfsdjpvkvp", new ExtendedErrorInfo(),
+                                    "jxbkzbzkdvn", new ExtendedErrorInfo(), "jabudurgkakmo", new ExtendedErrorInfo()))
+                                .withNextTrafficRegion(TrafficRegionCategory.NOT_SPECIFIED)
+                                .withNextTrafficRegionScheduledTime(OffsetDateTime.parse("2021-04-19T06:09:38Z"))
+                                .withSubscriptionReregistrationResult(SubscriptionReregistrationResult.FORCED_UPDATE)
+                                .withManifestCheckinStatus(
+                                    new DefaultRolloutStatusManifestCheckinStatus().withIsCheckedIn(false)
+                                        .withStatusMessage("ibdeibq")
+                                        .withPullRequest("qkgh")
+                                        .withCommitId("ndzwmkrefa"))))))
+                .withNextLink("jbsybbqw");
         model = BinaryData.fromObject(model).toObject(DefaultRolloutArrayResponseWithContinuation.class);
-        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("xbjhwuaanozjosph",
+        Assertions.assertTrue(model.value().get(0).properties().specification().expeditedRollout().enabled());
+        Assertions.assertEquals("ooaojkniodkooebw",
             model.value().get(0).properties().specification().canary().skipRegions().get(0));
-        Assertions.assertEquals("tq", model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("ez", model.value().get(0).properties().specification().lowTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT212H22M22S"),
+        Assertions.assertEquals("kfpagao", model.value().get(0).properties().specification().canary().regions().get(0));
+        Assertions.assertEquals("r", model.value().get(0).properties().specification().lowTraffic().regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT102H52M35S"),
             model.value().get(0).properties().specification().lowTraffic().waitDuration());
-        Assertions.assertEquals("fjhdg",
+        Assertions.assertEquals("f",
             model.value().get(0).properties().specification().mediumTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT153H38M58S"),
+        Assertions.assertEquals(Duration.parse("PT26H50M50S"),
             model.value().get(0).properties().specification().mediumTraffic().waitDuration());
-        Assertions.assertEquals("unygaeqid",
+        Assertions.assertEquals("wyfzqwhxxbuyqa",
             model.value().get(0).properties().specification().highTraffic().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT78H22M"),
+        Assertions.assertEquals(Duration.parse("PT222H47M41S"),
             model.value().get(0).properties().specification().highTraffic().waitDuration());
-        Assertions.assertEquals("arm",
+        Assertions.assertEquals("fuvglsbjjca",
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT230H27M35S"),
+        Assertions.assertEquals(Duration.parse("PT145H44M40S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupOne().waitDuration());
-        Assertions.assertEquals("hp",
+        Assertions.assertEquals("cormr",
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT104H50M40S"),
+        Assertions.assertEquals(Duration.parse("PT148H6M35S"),
             model.value().get(0).properties().specification().restOfTheWorldGroupTwo().waitDuration());
-        Assertions.assertEquals("dy", model.value().get(0).properties().status().completedRegions().get(0));
-        Assertions.assertEquals(TrafficRegionCategory.NONE,
+        Assertions.assertEquals(ProviderRegistrationKind.DIRECT,
+            model.value().get(0).properties().specification().providerRegistration().kind());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().storage());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
+        Assertions.assertEquals("szzcmrvexztv", model.value().get(0).properties().status().completedRegions().get(0));
+        Assertions.assertEquals(TrafficRegionCategory.HIGH_TRAFFIC,
             model.value().get(0).properties().status().nextTrafficRegion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T02:47:22Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T02:33:20Z"),
             model.value().get(0).properties().status().nextTrafficRegionScheduledTime());
-        Assertions.assertEquals(SubscriptionReregistrationResult.FORCED_UPDATE,
+        Assertions.assertEquals(SubscriptionReregistrationResult.NOT_APPLICABLE,
             model.value().get(0).properties().status().subscriptionReregistrationResult());
-        Assertions.assertEquals("ho", model.nextLink());
+        Assertions.assertTrue(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
+        Assertions.assertEquals("oamciodh",
+            model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
+        Assertions.assertEquals("azxkhnzbonlwnto",
+            model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
+        Assertions.assertEquals("okdwb", model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("jbsybbqw", model.nextLink());
     }
 
     // Use "Map.of" if available

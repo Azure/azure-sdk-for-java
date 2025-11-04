@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class VolumesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_Delete.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Volumes_Delete.json
      */
     /**
      * Sample code: Volumes_Delete.

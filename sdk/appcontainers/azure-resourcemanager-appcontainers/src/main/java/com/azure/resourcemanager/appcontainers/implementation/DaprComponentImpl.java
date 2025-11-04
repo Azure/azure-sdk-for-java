@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponent;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Secret;
@@ -83,6 +84,14 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         }
     }
 
+    public DaprComponentProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String deploymentErrors() {
+        return this.innerModel().deploymentErrors();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -111,18 +120,15 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     public DaprComponent create() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public DaprComponent create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), context);
         return this;
     }
 
@@ -139,18 +145,15 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     public DaprComponent apply() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public DaprComponent apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsDaprComponents()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), context);
         return this;
     }
 

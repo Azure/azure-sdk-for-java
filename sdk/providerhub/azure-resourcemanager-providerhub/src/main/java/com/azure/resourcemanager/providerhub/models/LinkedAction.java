@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for LinkedAction.
+ * The linked action.
  */
 public final class LinkedAction extends ExpandableStringEnum<LinkedAction> {
     /**

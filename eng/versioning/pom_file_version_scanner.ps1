@@ -530,14 +530,6 @@ if ($script:FoundError)
     Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
     exit 1
 }
-$verDataFile = Join-Path $Path "eng/versioning/version_data.txt"
-Build-Dependency-Hash-From-File $libHash $verDataFile $false
-if ($script:FoundError)
-{
-    Write-Error-With-Color "There were errors encountered building the dependency hash from version_data.txt. Please fix errors and run the script again."
-    Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
-    exit 1
-}
 
 $extDepHash = @{}
 $extDepFile = Join-Path $Path "eng/versioning/external_dependencies.txt"

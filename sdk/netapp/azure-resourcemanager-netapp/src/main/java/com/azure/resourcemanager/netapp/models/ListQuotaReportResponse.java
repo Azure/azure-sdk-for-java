@@ -19,13 +19,6 @@ public interface ListQuotaReportResponse {
     List<QuotaReport> value();
 
     /**
-     * Gets the nextLink property: URL to get the next set of results.
-     * 
-     * @return the nextLink value.
-     */
-    String nextLink();
-
-    /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner object.
      * 
      * @return the inner object.

@@ -253,7 +253,7 @@ class AadOAuth2ClientConfigurationTests {
             });
     }
 
-    @SuppressWarnings({"deprecation", "unchecked"})
+    @SuppressWarnings({"deprecation", "removal", "unchecked"})
     private MultiValueMap<String, String> convertParameters(JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
                                                             ClientRegistrationRepository clientRepository) {
         OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> client =

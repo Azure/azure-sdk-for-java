@@ -30,7 +30,7 @@ public final class VolumesAuthorizeExternalReplicationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SvmPeerCommandResponse response = manager.volumes()
-            .authorizeExternalReplication("iofrzgbzjedmstk", "nlvxbcuii", "nktwfansnvpdibmi", "ostbzbkiwb",
+            .authorizeExternalReplication("bzjedmstk", "nlvxbcuii", "nktwfansnvpdibmi", "ostbzbkiwb",
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("n", response.svmPeeringCommand());

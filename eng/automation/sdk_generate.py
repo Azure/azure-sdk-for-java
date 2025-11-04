@@ -111,13 +111,13 @@ def codegen_sdk_automation(config: dict) -> List[dict]:
 
     readme_file_path = config["relatedReadmeMdFile"]
     match = re.search(
-        r"(specification)?/?([^/]+)/data-plane(/.*)*/readme.md",
+        r"(specification)?/?([^/]+)/data-plane((?:/[^/]+)*)/readme.md",
         readme_file_path,
         re.IGNORECASE,
     )
     if not match:
         logging.info(
-            "[Skip] readme path:%s does not format as specification/([^/]+)/data-plane(/.*)*/readme.md",
+            "[Skip] readme path:%s does not format as specification/([^/]+)/data-plane((?:/[^/]+)*)/readme.md",
             readme_file_path,
         )
         return packages
@@ -162,7 +162,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     readme = config["relatedReadmeMdFile"]
     match = re.search(
-        "(specification)?/?([^/]+)/resource-manager(/.*)*/readme.md",
+        r"(specification)?/?([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
         readme,
         re.IGNORECASE,
     )

@@ -13,7 +13,7 @@ public final class NonceTests {
     public void testDeserialize() throws Exception {
         Nonce model = BinaryData.fromString("{\"validateNonce\":false,\"nonceExpirationInterval\":\"ewmdw\"}")
             .toObject(Nonce.class);
-        Assertions.assertEquals(false, model.validateNonce());
+        Assertions.assertFalse(model.validateNonce());
         Assertions.assertEquals("ewmdw", model.nonceExpirationInterval());
     }
 
@@ -21,7 +21,7 @@ public final class NonceTests {
     public void testSerialize() throws Exception {
         Nonce model = new Nonce().withValidateNonce(false).withNonceExpirationInterval("ewmdw");
         model = BinaryData.fromObject(model).toObject(Nonce.class);
-        Assertions.assertEquals(false, model.validateNonce());
+        Assertions.assertFalse(model.validateNonce());
         Assertions.assertEquals("ewmdw", model.nonceExpirationInterval());
     }
 }

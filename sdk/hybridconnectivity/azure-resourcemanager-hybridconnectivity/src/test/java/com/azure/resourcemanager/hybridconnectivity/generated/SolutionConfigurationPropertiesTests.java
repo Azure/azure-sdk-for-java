@@ -15,17 +15,21 @@ public final class SolutionConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionConfigurationProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"solutionType\":\"vdcsitynn\",\"solutionSettings\":{\"\":{\"qsc\":\"ectehf\",\"hcjrefovgmk\":\"eypvhezrkg\",\"yvxyqjp\":\"sle\"}},\"status\":\"Failed\",\"statusDetails\":\"tpngjcrcczsqpjh\",\"lastSyncTime\":\"2021-11-23T05:20:04Z\"}")
+            "{\"provisioningState\":\"Canceled\",\"solutionType\":\"gdtjixhbkuofqwey\",\"solutionSettings\":{\"vfyexfw\":\"n\",\"nnaamdectehfiqsc\":\"ybcibvyvdcsit\",\"hcjrefovgmk\":\"eypvhezrkg\",\"yvxyqjp\":\"sle\"},\"status\":\"Failed\",\"statusDetails\":\"tpngjcrcczsqpjh\",\"lastSyncTime\":\"2021-11-23T05:20:04Z\"}")
             .toObject(SolutionConfigurationProperties.class);
-        Assertions.assertEquals("vdcsitynn", model.solutionType());
+        Assertions.assertEquals("gdtjixhbkuofqwey", model.solutionType());
+        Assertions.assertEquals("eypvhezrkg", model.solutionSettings().additionalProperties().get("hcjrefovgmk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionConfigurationProperties model = new SolutionConfigurationProperties().withSolutionType("vdcsitynn")
-            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf()));
+        SolutionConfigurationProperties model
+            = new SolutionConfigurationProperties().withSolutionType("gdtjixhbkuofqwey")
+                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf("hcjrefovgmk", "eypvhezrkg",
+                    "yvxyqjp", "sle", "vfyexfw", "n", "nnaamdectehfiqsc", "ybcibvyvdcsit")));
         model = BinaryData.fromObject(model).toObject(SolutionConfigurationProperties.class);
-        Assertions.assertEquals("vdcsitynn", model.solutionType());
+        Assertions.assertEquals("gdtjixhbkuofqwey", model.solutionType());
+        Assertions.assertEquals("eypvhezrkg", model.solutionSettings().additionalProperties().get("hcjrefovgmk"));
     }
 
     // Use "Map.of" if available

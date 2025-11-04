@@ -31,6 +31,27 @@
 ### Operations_List
 
 ```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/Operations_List.json
+     */
+    /**
+     * Sample code: Operations_List.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void operationsList(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RetentionPolicies_CreateOrReplace
+
+```java
 import com.azure.resourcemanager.durabletask.fluent.models.RetentionPolicyInner;
 import com.azure.resourcemanager.durabletask.models.PurgeableOrchestrationState;
 import com.azure.resourcemanager.durabletask.models.RetentionPolicyDetails;
@@ -42,7 +63,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_CreateOrReplace_MaximumSet.
@@ -62,7 +83,73 @@ public final class RetentionPoliciesCreateOrReplaceSamples {
 }
 ```
 
-### RetentionPolicies_CreateOrReplace
+### RetentionPolicies_Delete
+
+```java
+/**
+ * Samples for RetentionPolicies Delete.
+ */
+public final class RetentionPoliciesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RetentionPolicies_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        retentionPoliciesDeleteMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.retentionPolicies().delete("rgdurabletask", "testcheduler", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RetentionPolicies_Get
+
+```java
+/**
+ * Samples for RetentionPolicies Get.
+ */
+public final class RetentionPoliciesGetSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RetentionPolicies_Get_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        retentionPoliciesGetMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.retentionPolicies().getWithResponse("rgdurabletask", "testscheduler", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RetentionPolicies_ListByScheduler
+
+```java
+/**
+ * Samples for RetentionPolicies ListByScheduler.
+ */
+public final class RetentionPoliciesListBySchedulerSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RetentionPolicies_ListByScheduler_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        retentionPoliciesListBySchedulerMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.retentionPolicies().listByScheduler("rgdurabletask", "myscheduler", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RetentionPolicies_Update
 
 ```java
 import com.azure.resourcemanager.durabletask.fluent.models.RetentionPolicyInner;
@@ -76,7 +163,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Update_MaximumSet.
@@ -98,7 +185,75 @@ public final class RetentionPoliciesUpdateSamples {
 }
 ```
 
-### RetentionPolicies_Delete
+### Schedulers_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
+import com.azure.resourcemanager.durabletask.models.SchedulerSku;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Schedulers CreateOrUpdate.
+ */
+public final class SchedulersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/Schedulers_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Schedulers_CreateOrUpdate.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void schedulersCreateOrUpdate(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers()
+            .define("testscheduler")
+            .withRegion("northcentralus")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("department", "research", "development", "true"))
+            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED)))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Schedulers_Delete
+
+```java
+/**
+ * Samples for Schedulers Delete.
+ */
+public final class SchedulersDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/Schedulers_Delete.json
+     */
+    /**
+     * Sample code: Schedulers_Delete.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void schedulersDelete(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers().delete("rgopenapi", "testscheduler", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Schedulers_GetByResourceGroup
 
 ```java
 /**
@@ -106,7 +261,7 @@ public final class RetentionPoliciesUpdateSamples {
  */
 public final class SchedulersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Get.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Get.json
      */
     /**
      * Sample code: Schedulers_Get.
@@ -120,50 +275,28 @@ public final class SchedulersGetByResourceGroupSamples {
 }
 ```
 
-### RetentionPolicies_Get
+### Schedulers_List
 
 ```java
 /**
- * Samples for Operations List.
+ * Samples for Schedulers List.
  */
-public final class OperationsListSamples {
+public final class SchedulersListSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-11-01/Schedulers_ListBySubscription.json
      */
     /**
-     * Sample code: Operations_List.
+     * Sample code: Schedulers_ListBySubscription.
      * 
      * @param manager Entry point to DurableTaskManager.
      */
-    public static void operationsList(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
+    public static void schedulersListBySubscription(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### RetentionPolicies_ListByScheduler
-
-```java
-/**
- * Samples for RetentionPolicies Delete.
- */
-public final class RetentionPoliciesDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: RetentionPolicies_Delete_MaximumSet.
-     * 
-     * @param manager Entry point to DurableTaskManager.
-     */
-    public static void
-        retentionPoliciesDeleteMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.retentionPolicies().delete("rgdurabletask", "testcheduler", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### RetentionPolicies_Update
+### Schedulers_ListByResourceGroup
 
 ```java
 /**
@@ -171,7 +304,7 @@ public final class RetentionPoliciesDeleteSamples {
  */
 public final class SchedulersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_ListByResourceGroup.json
+     * x-ms-original-file: 2025-11-01/Schedulers_ListByResourceGroup.json
      */
     /**
      * Sample code: Schedulers_ListByResourceGroup.
@@ -184,59 +317,12 @@ public final class SchedulersListByResourceGroupSamples {
 }
 ```
 
-### Schedulers_CreateOrUpdate
-
-```java
-/**
- * Samples for TaskHubs ListByScheduler.
- */
-public final class TaskHubsListBySchedulerSamples {
-    /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_ListByScheduler.json
-     */
-    /**
-     * Sample code: TaskHubs_ListByScheduler.
-     * 
-     * @param manager Entry point to DurableTaskManager.
-     */
-    public static void taskHubsListByScheduler(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.taskHubs().listByScheduler("rgopenapi", "testscheduler", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Schedulers_Delete
-
-```java
-import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
-
-/**
- * Samples for TaskHubs CreateOrUpdate.
- */
-public final class TaskHubsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: TaskHubs_CreateOrUpdate.
-     * 
-     * @param manager Entry point to DurableTaskManager.
-     */
-    public static void taskHubsCreateOrUpdate(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.taskHubs()
-            .define("testtaskhub")
-            .withExistingScheduler("rgopenapi", "testscheduler")
-            .withProperties(new TaskHubProperties())
-            .create();
-    }
-}
-```
-
-### Schedulers_GetByResourceGroup
+### Schedulers_Update
 
 ```java
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -247,7 +333,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Update.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.
@@ -261,7 +347,7 @@ public final class SchedulersUpdateSamples {
         resource.update()
             .withTags(mapOf("hello", "world"))
             .withProperties(new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSkuUpdate().withName("Dedicated").withCapacity(3)))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(3)))
             .apply();
     }
 
@@ -279,50 +365,34 @@ public final class SchedulersUpdateSamples {
 }
 ```
 
-### Schedulers_List
+### TaskHubs_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
+
 /**
- * Samples for Schedulers Delete.
+ * Samples for TaskHubs CreateOrUpdate.
  */
-public final class SchedulersDeleteSamples {
+public final class TaskHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Delete.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_CreateOrUpdate.json
      */
     /**
-     * Sample code: Schedulers_Delete.
+     * Sample code: TaskHubs_CreateOrUpdate.
      * 
      * @param manager Entry point to DurableTaskManager.
      */
-    public static void schedulersDelete(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.schedulers().delete("rgopenapi", "testscheduler", com.azure.core.util.Context.NONE);
+    public static void taskHubsCreateOrUpdate(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.taskHubs()
+            .define("testtaskhub")
+            .withExistingScheduler("rgopenapi", "testscheduler")
+            .withProperties(new TaskHubProperties())
+            .create();
     }
 }
 ```
 
-### Schedulers_ListByResourceGroup
-
-```java
-/**
- * Samples for RetentionPolicies ListByScheduler.
- */
-public final class RetentionPoliciesListBySchedulerSamples {
-    /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: RetentionPolicies_ListByScheduler_MaximumSet.
-     * 
-     * @param manager Entry point to DurableTaskManager.
-     */
-    public static void
-        retentionPoliciesListBySchedulerMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.retentionPolicies().listByScheduler("rgdurabletask", "myscheduler", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Schedulers_Update
+### TaskHubs_Delete
 
 ```java
 /**
@@ -330,7 +400,7 @@ public final class RetentionPoliciesListBySchedulerSamples {
  */
 public final class TaskHubsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_Delete.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_Delete.json
      */
     /**
      * Sample code: TaskHubs_Delete.
@@ -343,74 +413,6 @@ public final class TaskHubsDeleteSamples {
 }
 ```
 
-### TaskHubs_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
-import com.azure.resourcemanager.durabletask.models.SchedulerSku;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for Schedulers CreateOrUpdate.
- */
-public final class SchedulersCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Schedulers_CreateOrUpdate.
-     * 
-     * @param manager Entry point to DurableTaskManager.
-     */
-    public static void schedulersCreateOrUpdate(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.schedulers()
-            .define("testscheduler")
-            .withRegion("northcentralus")
-            .withExistingResourceGroup("rgopenapi")
-            .withTags(mapOf("department", "research", "development", "true"))
-            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSku().withName("Dedicated")))
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### TaskHubs_Delete
-
-```java
-/**
- * Samples for RetentionPolicies Get.
- */
-public final class RetentionPoliciesGetSamples {
-    /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: RetentionPolicies_Get_MaximumSet.
-     * 
-     * @param manager Entry point to DurableTaskManager.
-     */
-    public static void
-        retentionPoliciesGetMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.retentionPolicies().getWithResponse("rgdurabletask", "testscheduler", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### TaskHubs_Get
 
 ```java
@@ -419,7 +421,7 @@ public final class RetentionPoliciesGetSamples {
  */
 public final class TaskHubsGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_Get.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_Get.json
      */
     /**
      * Sample code: TaskHubs_Get.
@@ -437,19 +439,19 @@ public final class TaskHubsGetSamples {
 
 ```java
 /**
- * Samples for Schedulers List.
+ * Samples for TaskHubs ListByScheduler.
  */
-public final class SchedulersListSamples {
+public final class TaskHubsListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_ListBySubscription.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_ListByScheduler.json
      */
     /**
-     * Sample code: Schedulers_ListBySubscription.
+     * Sample code: TaskHubs_ListByScheduler.
      * 
      * @param manager Entry point to DurableTaskManager.
      */
-    public static void schedulersListBySubscription(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.schedulers().list(com.azure.core.util.Context.NONE);
+    public static void taskHubsListByScheduler(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.taskHubs().listByScheduler("rgopenapi", "testscheduler", com.azure.core.util.Context.NONE);
     }
 }
 ```

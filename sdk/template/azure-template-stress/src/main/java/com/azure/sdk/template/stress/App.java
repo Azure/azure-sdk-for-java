@@ -18,8 +18,7 @@ public class App {
     public static void main(String[] args) {
         TelemetryHelper.init();
 
-        PerfStressProgram.run(new Class<?>[]{
-            HttpGet.class,
+        PerfStressProgram.run(new Class<?>[] { HttpGet.class,
             // add other stress tests here
         }, args);
     }

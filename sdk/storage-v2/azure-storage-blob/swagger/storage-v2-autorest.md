@@ -1,10 +1,10 @@
 ### Code generation settings
 
 ``` yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.53'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/feature/storage/stg96base2/specification/storage/data-plane/Microsoft.BlobStorage/stable/2025-01-05/blob.json
 java: true
-output-folder: ./../storage-core-v2-current
+output-folder: ../.
 namespace: com.azure.v2.storage.blob
 service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
@@ -15,7 +15,7 @@ generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
 stream-style-serialization: true
-customization-class: StorageCustomization.java
+customization-class: src/main/java/StorageCustomization.java
 generate-sync-async-clients: true
 sync-methods: sync-only
 flavor: azurev2

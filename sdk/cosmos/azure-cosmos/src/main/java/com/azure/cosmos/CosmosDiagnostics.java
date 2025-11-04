@@ -461,7 +461,8 @@ public final class CosmosDiagnostics {
 
                     if (!cosmosDiagnostics.clientSideRequestStatistics.getResponseStatisticsList().isEmpty() ||
                         !cosmosDiagnostics.clientSideRequestStatistics.getAddressResolutionStatistics().isEmpty() ||
-                        !cosmosDiagnostics.clientSideRequestStatistics.getGatewayStatisticsList().isEmpty()) {
+                        !cosmosDiagnostics.clientSideRequestStatistics.getGatewayStatisticsList().isEmpty() ||
+                        !cosmosDiagnostics.clientSideRequestStatistics.getMetadataDiagnosticsContext().isEmpty()) {
 
                         return true;
                     }

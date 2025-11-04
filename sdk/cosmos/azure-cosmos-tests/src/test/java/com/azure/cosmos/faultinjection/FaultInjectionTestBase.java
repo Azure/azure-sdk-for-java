@@ -7,9 +7,11 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -17,6 +19,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class FaultInjectionTestBase extends TestSuiteBase {
@@ -27,13 +30,14 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
     protected CosmosDiagnostics performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem) {
+        TestObject createdItem,
+        boolean isReadMany) {
         try {
-            if (operationType == OperationType.Query) {
+            if (operationType == OperationType.Query && !isReadMany) {
                 CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
                 String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-                FeedResponse<TestItem> itemFeedResponse =
-                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+                FeedResponse<TestObject> itemFeedResponse =
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestObject.class).byPage().blockLast();
 
                 return itemFeedResponse.getCosmosDiagnostics();
             }
@@ -43,13 +47,14 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                 || operationType == OperationType.Replace
                 || operationType == OperationType.Create
                 || operationType == OperationType.Patch
-                || operationType == OperationType.Upsert) {
+                || operationType == OperationType.Upsert
+                || operationType == OperationType.Batch) {
 
                 if (operationType == OperationType.Read) {
                     return cosmosAsyncContainer.readItem(
                         createdItem.getId(),
                         new PartitionKey(createdItem.getId()),
-                        TestItem.class).block().getDiagnostics();
+                        TestObject.class).block().getDiagnostics();
                 }
 
                 if (operationType == OperationType.Replace) {
@@ -64,21 +69,30 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Create) {
-                    return cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getDiagnostics();
+                    return cosmosAsyncContainer.createItem(TestObject.create()).block().getDiagnostics();
                 }
 
                 if (operationType == OperationType.Upsert) {
-                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).block().getDiagnostics();
+                    return cosmosAsyncContainer.upsertItem(TestObject.create()).block().getDiagnostics();
                 }
 
                 if (operationType == OperationType.Patch) {
                     CosmosPatchOperations patchOperations =
                         CosmosPatchOperations
                             .create()
-                            .add("newPath", "newPath");
+                            .add("/newPath", "newPath");
                     return cosmosAsyncContainer
-                        .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
+                        .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestObject.class)
                         .block().getDiagnostics();
+                }
+
+                if (operationType == OperationType.Batch) {
+                    CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(createdItem.getId()));
+
+                    batch.upsertItemOperation(createdItem);
+                    batch.readItemOperation(createdItem.getId());
+
+                    return cosmosAsyncContainer.executeCosmosBatch(batch).block().getDiagnostics();
                 }
             }
 
@@ -87,11 +101,17 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
-                FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
-                    .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
+                    .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                     .byPage()
                     .blockFirst();
                 return firstPage.getCosmosDiagnostics();
+            }
+
+            if (operationType == OperationType.Query) {
+                return cosmosAsyncContainer.readMany(
+                    Arrays.asList(new CosmosItemIdentity(new PartitionKey(createdItem.getId()), createdItem.getId()), new CosmosItemIdentity(new PartitionKey(createdItem.getId()), createdItem.getId())),
+                    TestObject.class).block().getCosmosDiagnostics();
             }
 
             throw new IllegalArgumentException("The operation type is not supported");

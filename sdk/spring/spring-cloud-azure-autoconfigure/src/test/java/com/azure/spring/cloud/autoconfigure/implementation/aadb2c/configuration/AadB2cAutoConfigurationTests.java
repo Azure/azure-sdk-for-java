@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfigu
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -63,14 +64,15 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 assertTrue(authorizationClients.containsKey("test"));
                 assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
-                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
+                assertEquals(AuthorizationGrantType.CLIENT_CREDENTIALS,
+                    authorizationClients.get("test").getAuthorizationGrantType());
 
                 Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
-                assertEquals(authenticateAdditionalParameters.size(), 2);
+                assertEquals(2, authenticateAdditionalParameters.size());
                 assertTrue(authenticateAdditionalParameters.containsKey("login-hint"));
                 assertTrue(authenticateAdditionalParameters.containsKey("prompt"));
-                Assertions.assertEquals(authenticateAdditionalParameters.get("login-hint"), AadB2cConstants.TEST_LOGIN_HINT);
-                assertEquals(authenticateAdditionalParameters.get("prompt"), AadB2cConstants.TEST_PROMPT);
+                assertEquals(AadB2cConstants.TEST_LOGIN_HINT, authenticateAdditionalParameters.get("login-hint"));
+                assertEquals(AadB2cConstants.TEST_PROMPT, authenticateAdditionalParameters.get("prompt"));
             });
     }
 
@@ -142,12 +144,13 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
 
                 Assertions.assertNotNull(properties);
-                Assertions.assertEquals(properties.getCredential().getClientId(), AadB2cConstants.TEST_CLIENT_ID);
-                Assertions.assertEquals(properties.getCredential().getClientSecret(), AadB2cConstants.TEST_CLIENT_SECRET);
-                Assertions.assertEquals(properties.getUserNameAttributeName(), AadB2cConstants.TEST_ATTRIBUTE_NAME);
+                Assertions.assertEquals(AadB2cConstants.TEST_CLIENT_ID, properties.getCredential().getClientId());
+                Assertions.assertEquals(AadB2cConstants.TEST_CLIENT_SECRET,
+                    properties.getCredential().getClientSecret());
+                Assertions.assertEquals(AadB2cConstants.TEST_ATTRIBUTE_NAME, properties.getUserNameAttributeName());
 
                 Map<String, String> userFlows = properties.getUserFlows();
-                Assertions.assertTrue(userFlows.size() > 0);
+                Assertions.assertFalse(userFlows.isEmpty());
                 final Object prompt = properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.PROMPT);
                 final String loginHint =
                     String.valueOf(properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.LOGIN_HINT));
@@ -156,8 +159,8 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 for (String clientName : userFlows.keySet()) {
                     Assertions.assertTrue(clientNames.contains(userFlows.get(clientName)));
                 }
-                Assertions.assertEquals(prompt, AadB2cConstants.TEST_PROMPT);
-                Assertions.assertEquals(loginHint, AadB2cConstants.TEST_LOGIN_HINT);
+                Assertions.assertEquals(AadB2cConstants.TEST_PROMPT, prompt);
+                Assertions.assertEquals(AadB2cConstants.TEST_LOGIN_HINT, loginHint);
             });
     }
 
@@ -285,15 +288,12 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @EnableWebSecurity
     public static class AadB2cTestWebSecurityConfiguration {
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer configurer) throws Exception {
             // @formatter:off
             http
-                .authorizeHttpRequests()
-                .anyRequest().authenticated()
-                .and()
-                .apply(configurer);
+                .authorizeHttpRequests(req -> req.anyRequest().authenticated())
+                .with(configurer, Customizer.withDefaults());
             // @formatter:on
             return http.build();
         }

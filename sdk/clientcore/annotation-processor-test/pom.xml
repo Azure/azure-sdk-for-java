@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -67,38 +67,38 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -114,7 +114,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>run-annotation-processing</id>
@@ -132,7 +132,7 @@
                 <annotationProcessorPath>
                   <groupId>io.clientcore</groupId>
                   <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+                  <version>1.0.0-beta.4</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
                 </annotationProcessorPath>
               </annotationProcessorPaths>
               <annotationProcessors>
@@ -153,7 +153,7 @@
           <dependency>
             <groupId>io.clientcore</groupId>
             <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+            <version>1.0.0-beta.4</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
           </dependency>
         </dependencies>
       </plugin>
@@ -162,7 +162,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-clean-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-clean-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>custom-clean</id>

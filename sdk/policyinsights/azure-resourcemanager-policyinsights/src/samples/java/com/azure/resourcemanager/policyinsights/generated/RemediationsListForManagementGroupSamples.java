@@ -10,7 +10,7 @@ package com.azure.resourcemanager.policyinsights.generated;
 public final class RemediationsListForManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListManagementGroupScope.json
      */
     /**
@@ -25,7 +25,7 @@ public final class RemediationsListForManagementGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListManagementGroupScope_WithQuery.json
      */
     /**

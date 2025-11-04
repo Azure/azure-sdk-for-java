@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Used internally to represents a response from the store.
@@ -42,8 +43,10 @@ public class StoreResponse {
     private List<String> faultInjectionRuleEvaluationResults;
 
     private final JsonNodeStorePayload responsePayload;
+    private final String endpoint;
 
     public StoreResponse(
+            String endpoint,
             int status,
             Map<String, String> headerMap,
             ByteBufInputStream contentStream,
@@ -54,6 +57,7 @@ public class StoreResponse {
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerMap.size()];
         responseHeaderValues = new String[headerMap.size()];
+        this.endpoint = endpoint != null ? endpoint : "";
 
         int i = 0;
         for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
@@ -66,7 +70,7 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
             }
             finally {
                 try {
@@ -81,13 +85,17 @@ public class StoreResponse {
     }
 
     private StoreResponse(
+        String endpoint,
         int status,
         Map<String, String> headerMap,
         JsonNodeStorePayload responsePayload) {
 
+        checkNotNull(endpoint, "Parameter 'endpoint' must not be null.");
+
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerMap.size()];
         responseHeaderValues = new String[headerMap.size()];
+        this.endpoint = endpoint;
 
         int i = 0;
         for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
@@ -280,8 +288,13 @@ public class StoreResponse {
         }
 
         return new StoreResponse(
+            this.endpoint,
             newStatusCode,
             headers,
             this.responsePayload);
+    }
+
+    public String getEndpoint() {
+        return this.endpoint;
     }
 }

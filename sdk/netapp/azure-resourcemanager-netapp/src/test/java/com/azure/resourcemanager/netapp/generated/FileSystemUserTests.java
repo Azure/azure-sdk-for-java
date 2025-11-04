@@ -14,21 +14,21 @@ public final class FileSystemUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemUser model = BinaryData.fromString(
-            "{\"nfsUser\":{\"userId\":447209881782194832,\"groupId\":5809827743980288146},\"cifsUser\":{\"username\":\"pa\"}}")
+            "{\"nfsUser\":{\"userId\":4767053638441284929,\"groupId\":2638896199399411626},\"cifsUser\":{\"username\":\"fvjlboxqvkjlmx\"}}")
             .toObject(FileSystemUser.class);
-        Assertions.assertEquals(447209881782194832L, model.nfsUser().userId());
-        Assertions.assertEquals(5809827743980288146L, model.nfsUser().groupId());
-        Assertions.assertEquals("pa", model.cifsUser().username());
+        Assertions.assertEquals(4767053638441284929L, model.nfsUser().userId());
+        Assertions.assertEquals(2638896199399411626L, model.nfsUser().groupId());
+        Assertions.assertEquals("fvjlboxqvkjlmx", model.cifsUser().username());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileSystemUser model = new FileSystemUser()
-            .withNfsUser(new NfsUser().withUserId(447209881782194832L).withGroupId(5809827743980288146L))
-            .withCifsUser(new CifsUser().withUsername("pa"));
+            .withNfsUser(new NfsUser().withUserId(4767053638441284929L).withGroupId(2638896199399411626L))
+            .withCifsUser(new CifsUser().withUsername("fvjlboxqvkjlmx"));
         model = BinaryData.fromObject(model).toObject(FileSystemUser.class);
-        Assertions.assertEquals(447209881782194832L, model.nfsUser().userId());
-        Assertions.assertEquals(5809827743980288146L, model.nfsUser().groupId());
-        Assertions.assertEquals("pa", model.cifsUser().username());
+        Assertions.assertEquals(4767053638441284929L, model.nfsUser().userId());
+        Assertions.assertEquals(2638896199399411626L, model.nfsUser().groupId());
+        Assertions.assertEquals("fvjlboxqvkjlmx", model.cifsUser().username());
     }
 }

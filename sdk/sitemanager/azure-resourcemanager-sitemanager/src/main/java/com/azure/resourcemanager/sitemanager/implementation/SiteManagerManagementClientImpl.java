@@ -187,7 +187,7 @@ public final class SiteManagerManagementClientImpl implements SiteManagerManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01-preview";
+        this.apiVersion = "2025-06-01";
         this.sites = new SitesClientImpl(this);
         this.sitesBySubscriptions = new SitesBySubscriptionsClientImpl(this);
         this.sitesByServiceGroups = new SitesByServiceGroupsClientImpl(this);

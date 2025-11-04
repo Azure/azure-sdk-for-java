@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 import com.azure.resourcemanager.avs.implementation.models.ScriptCmdletsList;
@@ -139,26 +138,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptCmdletInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName, String scriptPackageName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptPackageName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptPackageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptPackageName, accept, context))
@@ -199,28 +178,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptCmdletInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String scriptPackageName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptPackageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptPackageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptCmdletsList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -244,28 +201,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptCmdletInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String scriptPackageName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptPackageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptPackageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptCmdletsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptPackageName, accept, context);
@@ -326,30 +261,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptCmdletInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName,
         String scriptPackageName, String scriptCmdletName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptPackageName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptPackageName is required and cannot be null."));
-        }
-        if (scriptCmdletName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptCmdletName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -393,32 +304,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptCmdletInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String scriptPackageName, String scriptCmdletName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptPackageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptPackageName is required and cannot be null."));
-        }
-        if (scriptCmdletName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptCmdletName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName, accept, context);
@@ -455,13 +340,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptCmdletInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ScriptCmdletInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -480,15 +358,6 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptCmdletInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptCmdletsList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -508,20 +377,9 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptCmdletInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptCmdletsList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ScriptCmdletsClientImpl.class);
 }

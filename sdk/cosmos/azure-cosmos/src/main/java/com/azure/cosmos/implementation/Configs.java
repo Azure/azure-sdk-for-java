@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
@@ -81,6 +83,10 @@ public class Configs {
 
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
+
+    public static final String AAD_SCOPE_OVERRIDE = "COSMOS.AAD_SCOPE_OVERRIDE";
+    public static final String AAD_SCOPE_OVERRIDE_VARIABLE = "COSMOS_AAD_SCOPE_OVERRIDE";
+    public static final String DEFAULT_AAD_SCOPE_OVERRIDE = "";
 
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY = "COSMOS.WRITE_RETRY_POLICY";
     public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE = "COSMOS_WRITE_RETRY_POLICY";
@@ -353,6 +359,20 @@ public class Configs {
     private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
+
+    private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE = "COSMOS_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+
+    // Config to indicate whether to emit Open Telemetry traces with attribute names following the
+    // original implementation (`PRE_V1_RELEASE`) or the official semantic convention (`V1`) or both (`ALL`)
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "COSMOS.OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE = "COSMOS_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+
+    public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
     public static int getCPUCnt() {
         return CPU_CNT;
@@ -922,14 +942,6 @@ public class Configs {
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
-    public static String isPerPartitionAutomaticFailoverEnabled() {
-        return System.getProperty(
-            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-            firstNonNull(
-                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
-                DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED));
-    }
-
     public static boolean isSessionTokenFalseProgressMergeEnabled() {
         String isSessionTokenFalseProgressMergeDisabledAsString =
             System.getProperty(
@@ -1186,6 +1198,14 @@ public class Configs {
         return Boolean.parseBoolean(isReadAvailabilityStrategyEnabledWithPpaf);
     }
 
+    public static String getAadScopeOverride() {
+        return System.getProperty(
+            AAD_SCOPE_OVERRIDE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(AAD_SCOPE_OVERRIDE_VARIABLE)),
+                DEFAULT_AAD_SCOPE_OVERRIDE));
+    }
+
     public static int getWarnLevelLoggingThresholdForPpaf() {
         String warnLevelLoggingThresholdForPpaf = System.getProperty(
             WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF,
@@ -1194,5 +1214,36 @@ public class Configs {
                 String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
 
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
+    }
+
+    public static String getAzureMonitorConnectionString() {
+        return System.getProperty(
+            APPLICATIONINSIGHTS_CONNECTION_STRING,
+            System.getenv(APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE)
+        );
+    }
+
+    public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
+        String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromEnvVariable);
+        }
+
+        return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+    }
+
+    public static boolean isNonParseableDocumentLoggingEnabled() {
+        String isNonParseableDocumentLoggingEnabledAsString = System.getProperty(
+            IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED)));
+
+        return Boolean.parseBoolean(isNonParseableDocumentLoggingEnabledAsString);
     }
 }

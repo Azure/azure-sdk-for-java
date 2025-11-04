@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class BucketsListSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Buckets_List.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Buckets_List.json
      */
     /**
      * Sample code: Buckets_List.

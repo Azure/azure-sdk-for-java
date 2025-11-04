@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.31.0-beta.1</version>
+    <version>12.32.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -251,7 +251,7 @@ BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
 
 or
 
-Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
+Create a `BlobClient` within a directory structure using `BlobContainerClient`. 
 
 ```java readme-sample-getBlobClient2
 BlobClient blobClient = new BlobClientBuilder()
@@ -264,8 +264,27 @@ BlobClient blobClient = new BlobClientBuilder()
 
 or
 
+Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
+
 ```java readme-sample-getBlobClient3
-// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
+BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob");
+```
+
+or
+
+```java readme-sample-getBlobClient4
+BlobClient blobClient = new BlobClientBuilder()
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .containerName("mycontainer")
+    .blobName("directory/myblob")
+    .buildClient();
+```
+
+or
+
+```java readme-sample-getBlobClient5
+// Only one "?" is needed here. If the SAS token starts with "?", please remove one "?".
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
     .buildClient();

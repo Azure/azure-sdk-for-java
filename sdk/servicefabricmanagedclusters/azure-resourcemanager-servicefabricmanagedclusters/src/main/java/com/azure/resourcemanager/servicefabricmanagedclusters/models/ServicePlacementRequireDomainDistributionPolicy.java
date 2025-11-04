@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -69,22 +68,6 @@ public final class ServicePlacementRequireDomainDistributionPolicy extends Servi
         this.domainName = domainName;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (domainName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property domainName in model ServicePlacementRequireDomainDistributionPolicy"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ServicePlacementRequireDomainDistributionPolicy.class);
 
     /**
      * {@inheritDoc}

@@ -21,7 +21,7 @@ public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests 
     @Test
     public void testGetReplicaWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdTime\":\"2021-02-06T05:22:05Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"g\",\"containers\":[{\"name\":\"ejjjkxybwfdb\",\"containerId\":\"bztensvkzykjtj\",\"ready\":true,\"started\":true,\"restartCount\":443205456,\"runningState\":\"Waiting\",\"runningStateDetails\":\"dpkupnqrmgjf\",\"logStreamEndpoint\":\"kuwxeoiojfizfavk\",\"execEndpoint\":\"wfbcyaykmmfzsbf\"},{\"name\":\"rzx\",\"containerId\":\"ewsrsxkrplbjaze\",\"ready\":false,\"started\":true,\"restartCount\":999732785,\"runningState\":\"Running\",\"runningStateDetails\":\"uhbrnnhjxsq\",\"logStreamEndpoint\":\"hqkb\",\"execEndpoint\":\"etpozycyqiq\"},{\"name\":\"gfsetzlexbsfled\",\"containerId\":\"ojpziuwfb\",\"ready\":true,\"started\":false,\"restartCount\":564052271,\"runningState\":\"Running\",\"runningStateDetails\":\"cljse\",\"logStreamEndpoint\":\"kpbafvafhl\",\"execEndpoint\":\"lc\"}],\"initContainers\":[{\"name\":\"xrhyzdfwrsofplt\",\"containerId\":\"mairrh\",\"ready\":false,\"started\":false,\"restartCount\":2131656049,\"runningState\":\"Running\",\"runningStateDetails\":\"qigtuujwouhdaws\",\"logStreamEndpoint\":\"rb\",\"execEndpoint\":\"xsjybvitvqk\"},{\"name\":\"az\",\"containerId\":\"mtggmu\",\"ready\":false,\"started\":true,\"restartCount\":1037948650,\"runningState\":\"Terminated\",\"runningStateDetails\":\"exlvxnoakiz\",\"logStreamEndpoint\":\"aikn\",\"execEndpoint\":\"lnuwiguy\"}]},\"id\":\"ykwphvxzcwxhmpe\",\"name\":\"tl\",\"type\":\"exaonwivkcq\"}";
+            = "{\"properties\":{\"createdTime\":\"2021-03-26T19:13:55Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"vhcs\",\"containers\":[{\"name\":\"wxaeaovure\",\"containerId\":\"ndsbdw\",\"ready\":true,\"started\":false,\"restartCount\":1679853059,\"runningState\":\"Waiting\",\"runningStateDetails\":\"opagttmvmmag\",\"logStreamEndpoint\":\"qylkjztjiu\",\"execEndpoint\":\"jcg\"},{\"name\":\"itpfinzcpdl\",\"containerId\":\"rlgjm\",\"ready\":true,\"started\":true,\"restartCount\":731731941,\"runningState\":\"Running\",\"runningStateDetails\":\"fzhompheq\",\"logStreamEndpoint\":\"relyujlfyoum\",\"execEndpoint\":\"kyeclcdigpta\"},{\"name\":\"rzmq\",\"containerId\":\"cycijoclxiut\",\"ready\":true,\"started\":false,\"restartCount\":776756497,\"runningState\":\"Running\",\"runningStateDetails\":\"r\",\"logStreamEndpoint\":\"btxjeaoqaqbzg\",\"execEndpoint\":\"fwwvuatbwbqam\"}],\"initContainers\":[{\"name\":\"iyslpkcvmwfaux\",\"containerId\":\"pmywbormcq\",\"ready\":true,\"started\":true,\"restartCount\":1772197279,\"runningState\":\"Running\",\"runningStateDetails\":\"fbojxjmcsmyqwix\",\"logStreamEndpoint\":\"pwnkwywzwo\",\"execEndpoint\":\"lickduoi\"},{\"name\":\"amt\",\"containerId\":\"sknxrwzawnvsbcf\",\"ready\":true,\"started\":false,\"restartCount\":2116581743,\"runningState\":\"Running\",\"runningStateDetails\":\"vdimwrzregzgy\",\"logStreamEndpoint\":\"utrwpweryekz\",\"execEndpoint\":\"hmeott\"},{\"name\":\"jyosxwwh\",\"containerId\":\"jtfvpndpmiljpn\",\"ready\":false,\"started\":true,\"restartCount\":1775688336,\"runningState\":\"Terminated\",\"runningStateDetails\":\"auzpjlx\",\"logStreamEndpoint\":\"huxiqhzlraymez\",\"execEndpoint\":\"skihmxrfd\"}]},\"id\":\"jrednwyysh\",\"name\":\"uwg\",\"type\":\"evuafpwzyifrk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,19 +31,18 @@ public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Replica response = manager.containerAppsRevisionReplicas()
-            .getReplicaWithResponse("ljnhvlqj", "ek", "eeksnbksdqhjvyk", "xeslkhhustcpoqm",
-                com.azure.core.util.Context.NONE)
+            .getReplicaWithResponse("yl", "ui", "vxva", "vcrk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ejjjkxybwfdb", response.containers().get(0).name());
-        Assertions.assertEquals("bztensvkzykjtj", response.containers().get(0).containerId());
-        Assertions.assertEquals(true, response.containers().get(0).ready());
-        Assertions.assertEquals(true, response.containers().get(0).started());
-        Assertions.assertEquals(443205456, response.containers().get(0).restartCount());
-        Assertions.assertEquals("xrhyzdfwrsofplt", response.initContainers().get(0).name());
-        Assertions.assertEquals("mairrh", response.initContainers().get(0).containerId());
-        Assertions.assertEquals(false, response.initContainers().get(0).ready());
-        Assertions.assertEquals(false, response.initContainers().get(0).started());
-        Assertions.assertEquals(2131656049, response.initContainers().get(0).restartCount());
+        Assertions.assertEquals("wxaeaovure", response.containers().get(0).name());
+        Assertions.assertEquals("ndsbdw", response.containers().get(0).containerId());
+        Assertions.assertTrue(response.containers().get(0).ready());
+        Assertions.assertFalse(response.containers().get(0).started());
+        Assertions.assertEquals(1679853059, response.containers().get(0).restartCount());
+        Assertions.assertEquals("iyslpkcvmwfaux", response.initContainers().get(0).name());
+        Assertions.assertEquals("pmywbormcq", response.initContainers().get(0).containerId());
+        Assertions.assertTrue(response.initContainers().get(0).ready());
+        Assertions.assertTrue(response.initContainers().get(0).started());
+        Assertions.assertEquals(1772197279, response.initContainers().get(0).restartCount());
     }
 }

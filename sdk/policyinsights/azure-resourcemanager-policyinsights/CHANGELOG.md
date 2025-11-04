@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2025-07-29)
+
+- Azure Resource Manager PolicyInsights client library for Java. This package contains Microsoft Azure SDK for PolicyInsights Management SDK. Query component policy states at varying resource scopes for Resource Provider mode policies. Package tag package-2024-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.PolicyEvaluationResult` was modified
+
+* `models.PolicyEvaluationDetails evaluationDetails()` -> `models.CheckRestrictionEvaluationDetails evaluationDetails()`
+
+### Features Added
+
+* `models.CheckRestrictionEvaluationDetails` was added
+
+* `models.PolicyEffectDetails` was added
+
+#### `models.CheckRestrictionsRequest` was modified
+
+* `withIncludeAuditEffect(java.lang.Boolean)` was added
+* `includeAuditEffect()` was added
+
+#### `models.PolicyEvaluationResult` was modified
+
+* `effectDetails()` was added
+
+#### `models.FieldRestriction` was modified
+
+* `reason()` was added
+* `policyEffect()` was added
+
+#### `models.RemediationFilters` was modified
+
+* `resourceIds()` was added
+* `withResourceIds(java.util.List)` was added
 
 ## 1.0.0 (2024-12-25)
 

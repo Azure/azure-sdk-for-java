@@ -72,6 +72,11 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      */
     private AuthConfigProperties authConfig;
 
+    /*
+     * The encryption configuration for the cluster. Depends on identity being configured.
+     */
+    private EncryptionProperties encryption;
+
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
      */
@@ -301,35 +306,23 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Validates the instance.
+     * Get the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the encryption value.
      */
-    public void validate() {
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (dataApi() != null) {
-            dataApi().validate();
-        }
-        if (authConfig() != null) {
-            authConfig().validate();
-        }
+    public EncryptionProperties encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withEncryption(EncryptionProperties encryption) {
+        this.encryption = encryption;
+        return this;
     }
 
     /**
@@ -351,6 +344,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -395,6 +389,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                     deserializedMongoClusterUpdateProperties.previewFeatures = previewFeatures;
                 } else if ("authConfig".equals(fieldName)) {
                     deserializedMongoClusterUpdateProperties.authConfig = AuthConfigProperties.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.encryption = EncryptionProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

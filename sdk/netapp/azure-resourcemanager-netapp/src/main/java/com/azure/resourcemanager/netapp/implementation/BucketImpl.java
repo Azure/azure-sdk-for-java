@@ -12,11 +12,13 @@ import com.azure.resourcemanager.netapp.models.Bucket;
 import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
 import com.azure.resourcemanager.netapp.models.BucketGenerateCredentials;
 import com.azure.resourcemanager.netapp.models.BucketPatch;
+import com.azure.resourcemanager.netapp.models.BucketPatchPermissions;
+import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerPatchProperties;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
 import com.azure.resourcemanager.netapp.models.CredentialsStatus;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
-import com.azure.resourcemanager.netapp.models.NetappProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 
 public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Update {
     private BucketInner innerObject;
@@ -47,7 +49,7 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
         return this.innerModel().fileSystemUser();
     }
 
-    public NetappProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -57,6 +59,10 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
 
     public BucketServerProperties server() {
         return this.innerModel().server();
+    }
+
+    public BucketPermissions permissions() {
+        return this.innerModel().permissions();
     }
 
     public String resourceGroupName() {
@@ -196,12 +202,22 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
         return this;
     }
 
+    public BucketImpl withPermissions(BucketPermissions permissions) {
+        this.innerModel().withPermissions(permissions);
+        return this;
+    }
+
     public BucketImpl withServer(BucketServerPatchProperties server) {
         this.updateBody.withServer(server);
         return this;
     }
 
+    public BucketImpl withPermissions(BucketPatchPermissions permissions) {
+        this.updateBody.withPermissions(permissions);
+        return this;
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

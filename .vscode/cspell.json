@@ -98,12 +98,15 @@
     "sdk/containerregistry/azure-containers-containerregistry/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
+    "sdk/cosmos/azure-cosmos-spark_3/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-5/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
+    "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -140,6 +143,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -280,6 +284,7 @@
     "endtoend",
     "entra",
     "Entra",
+    "ESRP",
     "Esto",
     "etag",
     "euap",
@@ -299,6 +304,7 @@
     "hdfs",
     "hdinsight",
     "healthdataaiservices",
+    "HKLM",
     "hudha",
     "hvac",
     "hybridkubernetes",
@@ -363,6 +369,7 @@
     "Onco",
     "onenote",
     "openai",
+    "ossrh",
     "passthrough",
     "Pnative",
     "premf",
@@ -418,6 +425,7 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
     "WINDOWSVMIMAGE",
@@ -873,12 +881,6 @@
       ]
     },
     {
-      "filename": "sdk/storage/CONTRIBUTING.md",
-      "words": [
-        "HKLM"
-      ]
-    },
-    {
       "filename": "sdk/storage/azure-storage-common/**",
       "words": [
         "alzimmer",
@@ -1143,6 +1145,7 @@
         "rabbitmq",
         "reactivex",
         "remoting",
+        "rocketmq",
         "rocksdb",
         "rsocket",
         "rxtx",
@@ -1185,6 +1188,7 @@
         "yasson",
         "yugabytedb",
         "zaxxer",
+        "zjsonpatch",
         "LINUXVMIMAGE",
         "LINUXPOOL",
         "OSVmImage"
@@ -1472,6 +1476,20 @@
         "momo",
         "RESOURCEID"
 
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
+      ]
+    },
+    {
+      "filename": "sdk/monitor/azure-monitor-query-metrics/**",
+      "words": [
+        "msdocs",
+        "Milli"
       ]
     }
   ],

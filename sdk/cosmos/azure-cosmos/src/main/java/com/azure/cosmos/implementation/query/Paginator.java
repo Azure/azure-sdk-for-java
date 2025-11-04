@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -99,7 +100,8 @@ public class Paginator {
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
         Long endLsn,
-        OperationContextAndListenerTuple operationContext) {
+        OperationContextAndListenerTuple operationContext,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ChangeFeedFetcher<>(
@@ -115,7 +117,8 @@ public class Paginator {
                 endLsn,
                 operationContext,
                 client.getGlobalEndpointManager(),
-                client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+                client.getGlobalPartitionEndpointManagerForCircuitBreaker(),
+                diagnosticsClientContext
             ),
             preFetchCount);
     }
@@ -143,6 +146,34 @@ public class Paginator {
                 1,
                 preFetchCount);
         });
+    }
+
+    public static <T> Flux<FeedResponse<T>> getPaginatedNonDocumentReadFeedResultAsObservable(
+        RxDocumentClientImpl client,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+        int maxPageSize,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+        boolean isChangeFeed) {
+
+        int preFetchCount = getPreFetchCount(cosmosQueryRequestOptions, -1, maxPageSize);
+
+        return getPaginatedQueryResultAsObservable(
+            () -> new ServerSideOnlyContinuationNonDocumentFetcherImpl<>(
+                client,
+                createRequestFunc,
+                executeFunc,
+                ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
+                isChangeFeed,
+                -1,
+                maxPageSize,
+                qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+                qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                globalEndpointManager,
+                globalPartitionEndpointManagerForPerPartitionCircuitBreaker),
+            preFetchCount);
     }
 
     private static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(

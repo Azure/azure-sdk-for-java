@@ -10,10 +10,11 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
 import com.azure.resourcemanager.netapp.models.CredentialsStatus;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
-import com.azure.resourcemanager.netapp.models.NetappProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 import java.io.IOException;
 
 /**
@@ -157,7 +158,7 @@ public final class BucketInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
-    public NetappProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -194,6 +195,31 @@ public final class BucketInner extends ProxyResource {
             this.innerProperties = new BucketProperties();
         }
         this.innerProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is
+     * ReadOnly if no value is provided during bucket creation.
+     * 
+     * @return the permissions value.
+     */
+    public BucketPermissions permissions() {
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
+    }
+
+    /**
+     * Set the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is
+     * ReadOnly if no value is provided during bucket creation.
+     * 
+     * @param permissions the permissions value to set.
+     * @return the BucketInner object itself.
+     */
+    public BucketInner withPermissions(BucketPermissions permissions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BucketProperties();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 

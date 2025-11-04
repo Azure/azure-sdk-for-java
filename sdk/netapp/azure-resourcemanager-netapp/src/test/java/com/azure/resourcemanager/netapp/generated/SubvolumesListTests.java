@@ -14,27 +14,25 @@ public final class SubvolumesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"path\":\"nasx\",\"size\":6179205416301149482,\"parentPath\":\"qyzhf\",\"provisioningState\":\"esgogc\"},\"id\":\"onnxkrlgnyhm\",\"name\":\"ssxkkgthr\",\"type\":\"gh\"},{\"properties\":{\"path\":\"dhqxvcx\",\"size\":5980541858152242986,\"parentPath\":\"sofbshrn\",\"provisioningState\":\"buswdvzyy\"},\"id\":\"cnunvjsr\",\"name\":\"kfawnopqgikyz\",\"type\":\"rtxdyuxzejnt\"},{\"properties\":{\"path\":\"wgioilqukry\",\"size\":6982114006443169318,\"parentPath\":\"ieoxorggufhyaomt\",\"provisioningState\":\"hhavgrvkffovjz\"},\"id\":\"jbibg\",\"name\":\"mfxumvfcluyovw\",\"type\":\"nbkfezzxscy\"}],\"nextLink\":\"zdgiruj\"}")
+            "{\"value\":[{\"properties\":{\"path\":\"sxiftozq\",\"size\":319144288054659459,\"parentPath\":\"wesgogczh\",\"provisioningState\":\"nxkrlgnyhmossxkk\"},\"id\":\"h\",\"name\":\"rghxjb\",\"type\":\"hqxvcxgfrpdsofbs\"},{\"properties\":{\"path\":\"svbuswdvzyy\",\"size\":9049331973830942528,\"parentPath\":\"nvjsrtkfa\",\"provisioningState\":\"opqgikyzirtxdyux\"},\"id\":\"jntpsewgioilqu\",\"name\":\"rydxtqm\",\"type\":\"eoxorggufhyao\"},{\"properties\":{\"path\":\"ghhavgrvkffo\",\"size\":1220387324863982995,\"parentPath\":\"jbibg\",\"provisioningState\":\"fxumv\"},\"id\":\"luyovwxnbkfezzx\",\"name\":\"cy\",\"type\":\"wzdgirujbzbo\"}],\"nextLink\":\"zzbtdcqvpniyujvi\"}")
             .toObject(SubvolumesList.class);
-        Assertions.assertEquals("nasx", model.value().get(0).path());
-        Assertions.assertEquals(6179205416301149482L, model.value().get(0).size());
-        Assertions.assertEquals("qyzhf", model.value().get(0).parentPath());
-        Assertions.assertEquals("zdgiruj", model.nextLink());
+        Assertions.assertEquals("sxiftozq", model.value().get(0).path());
+        Assertions.assertEquals(319144288054659459L, model.value().get(0).size());
+        Assertions.assertEquals("wesgogczh", model.value().get(0).parentPath());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubvolumesList model = new SubvolumesList().withValue(Arrays.asList(
-            new SubvolumeInfoInner().withPath("nasx").withSize(6179205416301149482L).withParentPath("qyzhf"),
-            new SubvolumeInfoInner().withPath("dhqxvcx").withSize(5980541858152242986L).withParentPath("sofbshrn"),
-            new SubvolumeInfoInner().withPath("wgioilqukry")
-                .withSize(6982114006443169318L)
-                .withParentPath("ieoxorggufhyaomt")))
-            .withNextLink("zdgiruj");
+            new SubvolumeInfoInner().withPath("sxiftozq").withSize(319144288054659459L).withParentPath("wesgogczh"),
+            new SubvolumeInfoInner().withPath("svbuswdvzyy").withSize(9049331973830942528L).withParentPath("nvjsrtkfa"),
+            new SubvolumeInfoInner().withPath("ghhavgrvkffo").withSize(1220387324863982995L).withParentPath("jbibg")))
+            .withNextLink("zzbtdcqvpniyujvi");
         model = BinaryData.fromObject(model).toObject(SubvolumesList.class);
-        Assertions.assertEquals("nasx", model.value().get(0).path());
-        Assertions.assertEquals(6179205416301149482L, model.value().get(0).size());
-        Assertions.assertEquals("qyzhf", model.value().get(0).parentPath());
-        Assertions.assertEquals("zdgiruj", model.nextLink());
+        Assertions.assertEquals("sxiftozq", model.value().get(0).path());
+        Assertions.assertEquals(319144288054659459L, model.value().get(0).size());
+        Assertions.assertEquals("wesgogczh", model.value().get(0).parentPath());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.nextLink());
     }
 }

@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the audio format used for encoding, including sample rate and channel type.
+ * The audio format used for encoding, including sample rate and channel type. The default is Pcm16KMono.
  */
 public final class AudioFormatInternal extends ExpandableStringEnum<AudioFormatInternal> {
 
     /**
-     * Pcm16KMono.
+     * Static value pcm16KMono for AudioFormatInternal.
      */
     @Generated
-    public static final AudioFormatInternal PCM_16K_MONO = fromString("Pcm16KMono");
+    public static final AudioFormatInternal PCM_16K_MONO = fromString("pcm16KMono");
 
     /**
-     * Pcm24KMono.
+     * Static value pcm24KMono for AudioFormatInternal.
      */
     @Generated
-    public static final AudioFormatInternal PCM_24K_MONO = fromString("Pcm24KMono");
+    public static final AudioFormatInternal PCM_24K_MONO = fromString("pcm24KMono");
 
     /**
      * Creates a new instance of AudioFormatInternal value.

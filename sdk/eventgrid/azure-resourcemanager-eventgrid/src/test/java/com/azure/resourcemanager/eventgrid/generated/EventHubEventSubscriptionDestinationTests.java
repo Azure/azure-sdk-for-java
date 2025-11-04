@@ -14,21 +14,22 @@ public final class EventHubEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"EventHub\",\"properties\":{\"resourceId\":\"ofpltdbm\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"hvhfnracw\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qigtuujwouhdaws\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"rb\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"xsjybvitvqk\"}]}}")
+            "{\"endpointType\":\"EventHub\",\"properties\":{\"resourceId\":\"xunrswgkpjhboy\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"huhkslgwlok\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"eoijyzcqypzqzufg\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"fejyvdwtfxptpqa\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mkncfgybmxsnxo\"}]}}")
             .toObject(EventHubEventSubscriptionDestination.class);
-        Assertions.assertEquals("ofpltdbm", model.resourceId());
-        Assertions.assertEquals("hvhfnracw", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("xunrswgkpjhboy", model.resourceId());
+        Assertions.assertEquals("huhkslgwlok", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubEventSubscriptionDestination model = new EventHubEventSubscriptionDestination()
-            .withResourceId("ofpltdbm")
-            .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("hvhfnracw"),
-                new DeliveryAttributeMapping().withName("qigtuujwouhdaws"),
-                new DeliveryAttributeMapping().withName("rb"), new DeliveryAttributeMapping().withName("xsjybvitvqk")));
+        EventHubEventSubscriptionDestination model
+            = new EventHubEventSubscriptionDestination().withResourceId("xunrswgkpjhboy")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("huhkslgwlok"),
+                    new DeliveryAttributeMapping().withName("eoijyzcqypzqzufg"),
+                    new DeliveryAttributeMapping().withName("fejyvdwtfxptpqa"),
+                    new DeliveryAttributeMapping().withName("mkncfgybmxsnxo")));
         model = BinaryData.fromObject(model).toObject(EventHubEventSubscriptionDestination.class);
-        Assertions.assertEquals("ofpltdbm", model.resourceId());
-        Assertions.assertEquals("hvhfnracw", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("xunrswgkpjhboy", model.resourceId());
+        Assertions.assertEquals("huhkslgwlok", model.deliveryAttributeMappings().get(0).name());
     }
 }

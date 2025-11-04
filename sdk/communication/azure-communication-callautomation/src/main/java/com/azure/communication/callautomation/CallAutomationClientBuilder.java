@@ -102,17 +102,6 @@ public final class CallAutomationClientBuilder
     }
 
     /**
-     * Set pma endpoint override of the service.
-     *
-     * @param pmaEndpoint url of the service.
-     * @return CallAutomationClientBuilder object.
-     */
-    public CallAutomationClientBuilder pmaEndpoint(String pmaEndpoint) {
-        this.pmaEndpoint = Objects.requireNonNull(pmaEndpoint, "'pmaEndpoint' cannot be null.");
-        return this;
-    }
-
-    /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
@@ -319,7 +308,7 @@ public final class CallAutomationClientBuilder
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
     }
 
     /**

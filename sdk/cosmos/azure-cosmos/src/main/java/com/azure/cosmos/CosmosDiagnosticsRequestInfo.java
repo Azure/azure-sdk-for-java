@@ -22,6 +22,7 @@ public final class CosmosDiagnosticsRequestInfo {
     private final Duration duration;
     private final Duration backendLatency;
     private final Collection<CosmosDiagnosticsRequestEvent> events;
+    private final String endpoint;
 
     CosmosDiagnosticsRequestInfo(
         String activityId,
@@ -35,7 +36,8 @@ public final class CosmosDiagnosticsRequestInfo {
         int responsePayloadSizeInBytes,
         int statusCode,
         int subStatusCode,
-        Collection<CosmosDiagnosticsRequestEvent> events) {
+        Collection<CosmosDiagnosticsRequestEvent> events,
+        String endpoint) {
 
         checkNotNull(activityId, "Argument 'activityId' must not be null.");
         checkNotNull(requestType, "Argument 'requestType' must not be null.");
@@ -50,6 +52,7 @@ public final class CosmosDiagnosticsRequestInfo {
         this.duration = duration;
         this.events = events;
         this.backendLatency = backendLatency;
+        this.endpoint = endpoint != null ? endpoint : "";
     }
 
     /**
@@ -118,5 +121,13 @@ public final class CosmosDiagnosticsRequestInfo {
      */
     public Collection<CosmosDiagnosticsRequestEvent> getRequestPipelineEvents() {
         return this.events;
+    }
+
+    /**
+     * Gets the endpoint targeted by this request
+     * @return the endpoint targeted by this request
+     */
+    public String getEndpoint() {
+        return this.endpoint;
     }
 }

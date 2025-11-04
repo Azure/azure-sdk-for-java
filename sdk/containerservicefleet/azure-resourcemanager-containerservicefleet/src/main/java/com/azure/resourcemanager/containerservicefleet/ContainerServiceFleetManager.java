@@ -31,6 +31,7 @@ import com.azure.resourcemanager.containerservicefleet.implementation.ContainerS
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.GatesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfileOperations;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfile
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
+import com.azure.resourcemanager.containerservicefleet.models.Gates;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
 import java.time.Duration;
@@ -58,6 +60,8 @@ public final class ContainerServiceFleetManager {
     private Fleets fleets;
 
     private FleetMembers fleetMembers;
+
+    private Gates gates;
 
     private UpdateRuns updateRuns;
 
@@ -317,6 +321,18 @@ public final class ContainerServiceFleetManager {
             this.fleetMembers = new FleetMembersImpl(clientObject.getFleetMembers(), this);
         }
         return fleetMembers;
+    }
+
+    /**
+     * Gets the resource collection API of Gates.
+     * 
+     * @return Resource collection API of Gates.
+     */
+    public Gates gates() {
+        if (this.gates == null) {
+            this.gates = new GatesImpl(clientObject.getGates(), this);
+        }
+        return gates;
     }
 
     /**

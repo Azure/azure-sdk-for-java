@@ -1739,8 +1739,9 @@ public interface Volume {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
      */
-    void splitCloneFromParent();
+    Volume splitCloneFromParent();
 
     /**
      * Split clone from parent volume
@@ -1751,8 +1752,9 @@ public interface Volume {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
      */
-    void splitCloneFromParent(Context context);
+    Volume splitCloneFromParent(Context context);
 
     /**
      * Break file locks

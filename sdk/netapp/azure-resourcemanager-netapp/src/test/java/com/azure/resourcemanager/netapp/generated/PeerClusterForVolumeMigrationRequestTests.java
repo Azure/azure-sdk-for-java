@@ -13,16 +13,16 @@ public final class PeerClusterForVolumeMigrationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PeerClusterForVolumeMigrationRequest model
-            = BinaryData.fromString("{\"peerIpAddresses\":[\"f\",\"ohqkvpuvksgpls\",\"kn\"]}")
+            = BinaryData.fromString("{\"peerIpAddresses\":[\"vljxywsu\",\"syrsndsytgadgvra\",\"aeneqnzarrwl\"]}")
                 .toObject(PeerClusterForVolumeMigrationRequest.class);
-        Assertions.assertEquals("f", model.peerIpAddresses().get(0));
+        Assertions.assertEquals("vljxywsu", model.peerIpAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PeerClusterForVolumeMigrationRequest model = new PeerClusterForVolumeMigrationRequest()
-            .withPeerIpAddresses(Arrays.asList("f", "ohqkvpuvksgpls", "kn"));
+            .withPeerIpAddresses(Arrays.asList("vljxywsu", "syrsndsytgadgvra", "aeneqnzarrwl"));
         model = BinaryData.fromObject(model).toObject(PeerClusterForVolumeMigrationRequest.class);
-        Assertions.assertEquals("f", model.peerIpAddresses().get(0));
+        Assertions.assertEquals("vljxywsu", model.peerIpAddresses().get(0));
     }
 }

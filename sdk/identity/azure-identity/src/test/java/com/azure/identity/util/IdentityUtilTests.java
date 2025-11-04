@@ -9,14 +9,19 @@ import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IdentityUtilTests {
@@ -178,6 +183,58 @@ public class IdentityUtilTests {
 
         Assertions.assertThrows(ClientAuthenticationException.class,
             () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
+    }
+
+    @Test
+    public void testShouldProbeImdsWhenChainedAndImdsAndNotConfiguredForDacReturnsTrue() {
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setChained(true);
+        try (
+            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
+            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+
+            boolean result = IdentityUtil.shouldProbeImds(options);
+            assertTrue(result);
+        }
+    }
+
+    @Test
+    public void testShouldProbeImdsWhenConfiguredForDacReturnsFalse() {
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "managedidentitycredential"));
+
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setConfiguration(configuration);
+        options.setChained(true);
+
+        try (
+            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
+            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+
+            boolean result = IdentityUtil.shouldProbeImds(options);
+            assertFalse(result);
+        }
+    }
+
+    @Test
+    public void testShouldProbeImdsWhenAllConditionsFalseReturnsFalse() {
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "Managedidentitycredential"));
+
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setConfiguration(configuration);
+        options.setChained(false);
+
+        try (
+            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
+            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.APP_SERVICE);
+
+            boolean result = IdentityUtil.shouldProbeImds(options);
+            assertFalse(result);
+        }
     }
 
 }

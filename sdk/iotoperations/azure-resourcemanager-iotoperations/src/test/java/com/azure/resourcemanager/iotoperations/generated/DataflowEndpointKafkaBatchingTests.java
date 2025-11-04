@@ -14,24 +14,24 @@ public final class DataflowEndpointKafkaBatchingTests {
     public void testDeserialize() throws Exception {
         DataflowEndpointKafkaBatching model = BinaryData
             .fromString(
-                "{\"mode\":\"Disabled\",\"latencyMs\":218306871,\"maxBytes\":850324011,\"maxMessages\":1536688095}")
+                "{\"mode\":\"Enabled\",\"latencyMs\":1063361933,\"maxBytes\":1941310787,\"maxMessages\":643963707}")
             .toObject(DataflowEndpointKafkaBatching.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(218306871, model.latencyMs());
-        Assertions.assertEquals(850324011, model.maxBytes());
-        Assertions.assertEquals(1536688095, model.maxMessages());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(1063361933, model.latencyMs());
+        Assertions.assertEquals(1941310787, model.maxBytes());
+        Assertions.assertEquals(643963707, model.maxMessages());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowEndpointKafkaBatching model = new DataflowEndpointKafkaBatching().withMode(OperationalMode.DISABLED)
-            .withLatencyMs(218306871)
-            .withMaxBytes(850324011)
-            .withMaxMessages(1536688095);
+        DataflowEndpointKafkaBatching model = new DataflowEndpointKafkaBatching().withMode(OperationalMode.ENABLED)
+            .withLatencyMs(1063361933)
+            .withMaxBytes(1941310787)
+            .withMaxMessages(643963707);
         model = BinaryData.fromObject(model).toObject(DataflowEndpointKafkaBatching.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(218306871, model.latencyMs());
-        Assertions.assertEquals(850324011, model.maxBytes());
-        Assertions.assertEquals(1536688095, model.maxMessages());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(1063361933, model.latencyMs());
+        Assertions.assertEquals(1941310787, model.maxBytes());
+        Assertions.assertEquals(643963707, model.maxMessages());
     }
 }

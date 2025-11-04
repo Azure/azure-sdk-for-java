@@ -14,18 +14,18 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseEr
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError model = BinaryData.fromString(
-            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"xnavvwxq\",\"events\":[{\"timestampString\":\"unyowxwl\",\"eventTypeString\":\"jrkvfgbvfvpdbo\",\"eventText\":\"cizsjqlhkrribdei\"}],\"id\":\"ipqkghvxndzwm\"}")
+            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"olvdnd\",\"events\":[{\"timestampString\":\"ogphuartvtiu\",\"eventTypeString\":\"efchn\",\"eventText\":\"ahmnxhkxjqirw\"}],\"id\":\"eooxffifh\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("xnavvwxq", model.errorMessage());
+        Assertions.assertEquals("olvdnd", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError model
-            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError().withErrorMessage("xnavvwxq")
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError().withErrorMessage("olvdnd")
                 .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent()));
         model = BinaryData.fromObject(model)
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("xnavvwxq", model.errorMessage());
+        Assertions.assertEquals("olvdnd", model.errorMessage());
     }
 }

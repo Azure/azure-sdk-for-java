@@ -17,8 +17,8 @@ public final class FleetHubProfileTests {
             "{\"dnsPrefix\":\"lsuuvmkjozkrwfnd\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false,\"enableVnetIntegration\":true,\"subnetId\":\"w\"},\"agentProfile\":{\"subnetId\":\"pvwryoqpsoacc\",\"vmSize\":\"zakljlahbc\"},\"fqdn\":\"ffdfdosygexpa\",\"kubernetesVersion\":\"akhmsbzjhcrz\",\"portalFqdn\":\"dphlxaolt\"}")
             .toObject(FleetHubProfile.class);
         Assertions.assertEquals("lsuuvmkjozkrwfnd", model.dnsPrefix());
-        Assertions.assertEquals(false, model.apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(true, model.apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertFalse(model.apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertTrue(model.apiServerAccessProfile().enableVnetIntegration());
         Assertions.assertEquals("w", model.apiServerAccessProfile().subnetId());
         Assertions.assertEquals("pvwryoqpsoacc", model.agentProfile().subnetId());
         Assertions.assertEquals("zakljlahbc", model.agentProfile().vmSize());
@@ -33,8 +33,8 @@ public final class FleetHubProfileTests {
             .withAgentProfile(new AgentProfile().withSubnetId("pvwryoqpsoacc").withVmSize("zakljlahbc"));
         model = BinaryData.fromObject(model).toObject(FleetHubProfile.class);
         Assertions.assertEquals("lsuuvmkjozkrwfnd", model.dnsPrefix());
-        Assertions.assertEquals(false, model.apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(true, model.apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertFalse(model.apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertTrue(model.apiServerAccessProfile().enableVnetIntegration());
         Assertions.assertEquals("w", model.apiServerAccessProfile().subnetId());
         Assertions.assertEquals("pvwryoqpsoacc", model.agentProfile().subnetId());
         Assertions.assertEquals("zakljlahbc", model.agentProfile().vmSize());

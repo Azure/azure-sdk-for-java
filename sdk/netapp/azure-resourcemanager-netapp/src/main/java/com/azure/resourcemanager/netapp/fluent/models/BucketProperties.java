@@ -9,10 +9,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
 import com.azure.resourcemanager.netapp.models.CredentialsStatus;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
-import com.azure.resourcemanager.netapp.models.NetappProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 import java.io.IOException;
 
 /**
@@ -36,7 +37,7 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
     /*
      * Provisioning state of the resource
      */
-    private NetappProvisioningState provisioningState;
+    private NetAppProvisioningState provisioningState;
 
     /*
      * The bucket credentials status. There states:
@@ -51,6 +52,12 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
      * Properties of the server managing the lifecycle of volume buckets
      */
     private BucketServerProperties server;
+
+    /*
+     * Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is ReadOnly if no value is provided
+     * during bucket creation.
+     */
+    private BucketPermissions permissions;
 
     /**
      * Creates an instance of BucketProperties class.
@@ -109,7 +116,7 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
      * 
      * @return the provisioningState value.
      */
-    public NetappProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -147,6 +154,28 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
     }
 
     /**
+     * Get the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is
+     * ReadOnly if no value is provided during bucket creation.
+     * 
+     * @return the permissions value.
+     */
+    public BucketPermissions permissions() {
+        return this.permissions;
+    }
+
+    /**
+     * Set the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is
+     * ReadOnly if no value is provided during bucket creation.
+     * 
+     * @param permissions the permissions value to set.
+     * @return the BucketProperties object itself.
+     */
+    public BucketProperties withPermissions(BucketPermissions permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -169,6 +198,7 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeJsonField("fileSystemUser", this.fileSystemUser);
         jsonWriter.writeJsonField("server", this.server);
+        jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -193,11 +223,13 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
                     deserializedBucketProperties.fileSystemUser = FileSystemUser.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBucketProperties.provisioningState
-                        = NetappProvisioningState.fromString(reader.getString());
+                        = NetAppProvisioningState.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedBucketProperties.status = CredentialsStatus.fromString(reader.getString());
                 } else if ("server".equals(fieldName)) {
                     deserializedBucketProperties.server = BucketServerProperties.fromJson(reader);
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedBucketProperties.permissions = BucketPermissions.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

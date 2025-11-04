@@ -57,11 +57,10 @@ extends:
                 NonSparseParameters: Agent
                 GenerateVMJobs: true
             MatrixFilters:
-              - TestFromSource=^$|false
               - ${{ parameters.MatrixFilters }}
             MatrixReplace:
               - AZURE_TEST.*=.*/
-              - .*Version=1.21/1.17
+              - .*Version=1.2(1|5)/1.17
             BuildParallelization: 1
             TestOptions: '-Punit'
 
@@ -94,6 +93,7 @@ extends:
               # Increased timeout to 120 because of cosmos emulator taking 25-30 mins to download emulator
               # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
               TimeoutInMinutes: 120
+              TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
               PreSteps:
               - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
                 parameters:
@@ -108,6 +108,10 @@ extends:
                   $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
                 displayName: 'Export Cosmos DB Emulator Certificate'
               - powershell: |
+                  $javaTestVersion = "$(JavaTestVersion)".Substring(2)
+                  $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
+                  [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $javaHomeValue)
+                  Write-Host "JAVA_HOME is set to $env:JAVA_HOME"
                   if (Test-Path $env:JAVA_HOME\jre\lib\security) {
                     cd $env:JAVA_HOME\jre\lib\security
                   } elseif (Test-Path $env:JAVA_HOME\lib\security) {
@@ -116,7 +120,9 @@ extends:
                     Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
                     exit 1
                   }
+                  pwd
                   cp $env:temp\CosmosDbEmulatorCert.cer .
+                  keytool -keystore cacerts -delete -noprompt -alias CosmosDbEmulatorCert -storepass changeit
                   keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
                 displayName: 'Create Java TrustStore'
 

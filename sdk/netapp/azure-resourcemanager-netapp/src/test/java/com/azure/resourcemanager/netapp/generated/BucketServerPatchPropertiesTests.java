@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class BucketServerPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BucketServerPatchProperties model
-            = BinaryData.fromString("{\"fqdn\":\"zysdzh\",\"certificateObject\":\"wwvaiqyuvvfonk\"}")
-                .toObject(BucketServerPatchProperties.class);
-        Assertions.assertEquals("zysdzh", model.fqdn());
-        Assertions.assertEquals("wwvaiqyuvvfonk", model.certificateObject());
+        BucketServerPatchProperties model = BinaryData.fromString("{\"fqdn\":\"mzzs\",\"certificateObject\":\"m\"}")
+            .toObject(BucketServerPatchProperties.class);
+        Assertions.assertEquals("mzzs", model.fqdn());
+        Assertions.assertEquals("m", model.certificateObject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BucketServerPatchProperties model
-            = new BucketServerPatchProperties().withFqdn("zysdzh").withCertificateObject("wwvaiqyuvvfonk");
+            = new BucketServerPatchProperties().withFqdn("mzzs").withCertificateObject("m");
         model = BinaryData.fromObject(model).toObject(BucketServerPatchProperties.class);
-        Assertions.assertEquals("zysdzh", model.fqdn());
-        Assertions.assertEquals("wwvaiqyuvvfonk", model.certificateObject());
+        Assertions.assertEquals("mzzs", model.fqdn());
+        Assertions.assertEquals("m", model.certificateObject());
     }
 }

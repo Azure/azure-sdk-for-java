@@ -22,6 +22,16 @@ public final class ConnectedEnvironmentStorageProperties
      */
     private AzureFileProperties azureFile;
 
+    /*
+     * Provisioning state of the storage.
+     */
+    private ConnectedEnvironmentStorageProvisioningState provisioningState;
+
+    /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
+
     /**
      * Creates an instance of ConnectedEnvironmentStorageProperties class.
      */
@@ -46,6 +56,24 @@ public final class ConnectedEnvironmentStorageProperties
     public ConnectedEnvironmentStorageProperties withAzureFile(AzureFileProperties azureFile) {
         this.azureFile = azureFile;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the storage.
+     * 
+     * @return the provisioningState value.
+     */
+    public ConnectedEnvironmentStorageProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -87,6 +115,11 @@ public final class ConnectedEnvironmentStorageProperties
 
                 if ("azureFile".equals(fieldName)) {
                     deserializedConnectedEnvironmentStorageProperties.azureFile = AzureFileProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.provisioningState
+                        = ConnectedEnvironmentStorageProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.deploymentErrors = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -63,7 +63,7 @@ public interface Bucket {
      * 
      * @return the provisioningState value.
      */
-    NetappProvisioningState provisioningState();
+    NetAppProvisioningState provisioningState();
 
     /**
      * Gets the status property: The bucket credentials status. There states:
@@ -82,6 +82,14 @@ public interface Bucket {
      * @return the server value.
      */
     BucketServerProperties server();
+
+    /**
+     * Gets the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is
+     * ReadOnly if no value is provided during bucket creation.
+     * 
+     * @return the permissions value.
+     */
+    BucketPermissions permissions();
 
     /**
      * Gets the name of the resource group.
@@ -135,8 +143,8 @@ public interface Bucket {
          * The stage of the Bucket definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPath, DefinitionStages.WithFileSystemUser, DefinitionStages.WithServer {
+        interface WithCreate extends DefinitionStages.WithPath, DefinitionStages.WithFileSystemUser,
+            DefinitionStages.WithServer, DefinitionStages.WithPermissions {
             /**
              * Executes the create request.
              * 
@@ -197,6 +205,21 @@ public interface Bucket {
              */
             WithCreate withServer(BucketServerProperties server);
         }
+
+        /**
+         * The stage of the Bucket definition allowing to specify permissions.
+         */
+        interface WithPermissions {
+            /**
+             * Specifies the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite. The
+             * default is ReadOnly if no value is provided during bucket creation..
+             * 
+             * @param permissions Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is
+             * ReadOnly if no value is provided during bucket creation.
+             * @return the next definition stage.
+             */
+            WithCreate withPermissions(BucketPermissions permissions);
+        }
     }
 
     /**
@@ -209,7 +232,8 @@ public interface Bucket {
     /**
      * The template for Bucket update.
      */
-    interface Update extends UpdateStages.WithPath, UpdateStages.WithFileSystemUser, UpdateStages.WithServer {
+    interface Update extends UpdateStages.WithPath, UpdateStages.WithFileSystemUser, UpdateStages.WithServer,
+        UpdateStages.WithPermissions {
         /**
          * Executes the update request.
          * 
@@ -271,6 +295,19 @@ public interface Bucket {
              * @return the next definition stage.
              */
             Update withServer(BucketServerPatchProperties server);
+        }
+
+        /**
+         * The stage of the Bucket update allowing to specify permissions.
+         */
+        interface WithPermissions {
+            /**
+             * Specifies the permissions property: Access permissions for the bucket. Either ReadOnly or ReadWrite..
+             * 
+             * @param permissions Access permissions for the bucket. Either ReadOnly or ReadWrite.
+             * @return the next definition stage.
+             */
+            Update withPermissions(BucketPatchPermissions permissions);
         }
     }
 

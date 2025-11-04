@@ -130,16 +130,22 @@ public class RxClientCollectionCache extends RxCollectionCache {
         }
 
         return responseObs.map(response -> {
+            DocumentCollection documentCollection =
+                BridgeInternal.toResourceResponse(response, DocumentCollection.class).getResource();
+
             if(metaDataDiagnosticsContext != null) {
                 Instant addressCallEndTime = Instant.now();
-                MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
-                    addressCallEndTime,
-                    MetadataDiagnosticsContext.MetadataType.CONTAINER_LOOK_UP);
+                MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic =
+                    new MetadataDiagnosticsContext.ContainerLookupMetadataDiagnostics(
+                        addressCallStartTime,
+                        addressCallEndTime,
+                        MetadataDiagnosticsContext.MetadataType.CONTAINER_LOOK_UP,
+                        request.getActivityId().toString(),
+                        documentCollection.getResourceId());
                 metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
             }
 
-            return BridgeInternal.toResourceResponse(response, DocumentCollection.class)
-                .getResource();
+            return documentCollection;
         }).single();
     }
 }

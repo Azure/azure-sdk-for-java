@@ -17,6 +17,7 @@ import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -29,14 +30,18 @@ public final class AppendBlobClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final AppendBlobsImpl serviceClient;
 
+    private final Instrumentation instrumentation;
+
     /**
      * Initializes an instance of AppendBlobClient class.
      * 
      * @param serviceClient the service client implementation.
+     * @param instrumentation the instrumentation instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    AppendBlobClient(AppendBlobsImpl serviceClient) {
+    AppendBlobClient(AppendBlobsImpl serviceClient, Instrumentation instrumentation) {
         this.serviceClient = serviceClient;
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -85,10 +90,11 @@ public final class AppendBlobClient {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        return this.serviceClient.createWithResponse(containerName, blob, contentLength, timeout, metadata, leaseId,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString,
-            immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> this.serviceClient.createWithResponse(containerName, blob, contentLength, timeout,
+                metadata, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
+                blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo,
+                encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -134,9 +140,9 @@ public final class AppendBlobClient {
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.create(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
+        createWithResponse(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
-            immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam);
+            immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -191,10 +197,11 @@ public final class AppendBlobClient {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        return this.serviceClient.appendBlockWithResponse(containerName, blob, contentLength, body, timeout,
-            transactionalContentMD5, transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength,
-            cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AppendBlock", requestContext,
+            updatedContext -> this.serviceClient.appendBlockWithResponse(containerName, blob, contentLength, body,
+                timeout, transactionalContentMD5, transactionalContentCrc64, leaseId, maxSize, appendPosition,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType,
+                structuredContentLength, cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -246,9 +253,10 @@ public final class AppendBlobClient {
         Long appendPosition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, String structuredBodyType, Long structuredContentLength,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.appendBlock(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
+        appendBlockWithResponse(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
-            ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam);
+            ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
+            RequestContext.none());
     }
 
     /**
@@ -311,11 +319,12 @@ public final class AppendBlobClient {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.appendBlockFromUrlWithResponse(containerName, blob, sourceUrl, contentLength,
-            sourceRange, sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize,
-            appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
-            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AppendBlockFromUrl", requestContext,
+            updatedContext -> this.serviceClient.appendBlockFromUrlWithResponse(containerName, blob, sourceUrl,
+                contentLength, sourceRange, sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5,
+                leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
+                sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
+                copySourceAuthorization, cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -376,11 +385,11 @@ public final class AppendBlobClient {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.appendBlockFromUrl(containerName, blob, sourceUrl, contentLength, sourceRange,
-            sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
-            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam);
+        appendBlockFromUrlWithResponse(containerName, blob, sourceUrl, contentLength, sourceRange, sourceContentMD5,
+            sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition, ifModifiedSince,
+            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
+            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
+            RequestContext.none());
     }
 
     /**
@@ -416,8 +425,9 @@ public final class AppendBlobClient {
     public Response<Void> sealWithResponse(String containerName, String blob, Integer timeout, String requestId,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, Long appendPosition, RequestContext requestContext) {
-        return this.serviceClient.sealWithResponse(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Seal", requestContext,
+            updatedContext -> this.serviceClient.sealWithResponse(containerName, blob, timeout, requestId, leaseId,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, updatedContext));
     }
 
     /**
@@ -451,7 +461,7 @@ public final class AppendBlobClient {
     public void seal(String containerName, String blob, Integer timeout, String requestId, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         Long appendPosition) {
-        this.serviceClient.seal(containerName, blob, timeout, requestId, leaseId, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, appendPosition);
+        sealWithResponse(containerName, blob, timeout, requestId, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+            ifNoneMatch, appendPosition, RequestContext.none());
     }
 }

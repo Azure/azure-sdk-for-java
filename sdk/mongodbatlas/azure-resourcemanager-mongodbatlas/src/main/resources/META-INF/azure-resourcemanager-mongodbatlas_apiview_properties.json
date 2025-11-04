@@ -28,6 +28,8 @@
     "com.azure.resourcemanager.mongodbatlas.models.OfferDetails": "LiftrBase.OfferDetails",
     "com.azure.resourcemanager.mongodbatlas.models.OperationDisplay": "Azure.ResourceManager.CommonTypes.OperationDisplay",
     "com.azure.resourcemanager.mongodbatlas.models.OrganizationProperties": "MongoDB.Atlas.OrganizationProperties",
+    "com.azure.resourcemanager.mongodbatlas.models.OrganizationResourceUpdate": "Azure.ResourceManager.Foundations.ResourceUpdateModel",
+    "com.azure.resourcemanager.mongodbatlas.models.OrganizationResourceUpdateProperties": "Azure.ResourceManager.Foundations.ResourceUpdateModelProperties",
     "com.azure.resourcemanager.mongodbatlas.models.Origin": "Azure.ResourceManager.CommonTypes.Origin",
     "com.azure.resourcemanager.mongodbatlas.models.PartnerProperties": "MongoDB.Atlas.PartnerProperties",
     "com.azure.resourcemanager.mongodbatlas.models.ResourceProvisioningState": "Azure.ResourceManager.ResourceProvisioningState",

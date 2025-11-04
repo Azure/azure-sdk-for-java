@@ -12,17 +12,17 @@ public final class ClientGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"cxtbzsg\",\"query\":\"c\",\"provisioningState\":\"Deleted\"},\"id\":\"wmdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"}")
+            "{\"properties\":{\"description\":\"eojnxqbzvddn\",\"query\":\"ndei\",\"provisioningState\":\"Creating\"},\"id\":\"npzaoq\",\"name\":\"uhrhcffcyddgl\",\"type\":\"jthjqkwpyei\"}")
             .toObject(ClientGroupInner.class);
-        Assertions.assertEquals("cxtbzsg", model.description());
-        Assertions.assertEquals("c", model.query());
+        Assertions.assertEquals("eojnxqbzvddn", model.description());
+        Assertions.assertEquals("ndei", model.query());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientGroupInner model = new ClientGroupInner().withDescription("cxtbzsg").withQuery("c");
+        ClientGroupInner model = new ClientGroupInner().withDescription("eojnxqbzvddn").withQuery("ndei");
         model = BinaryData.fromObject(model).toObject(ClientGroupInner.class);
-        Assertions.assertEquals("cxtbzsg", model.description());
-        Assertions.assertEquals("c", model.query());
+        Assertions.assertEquals("eojnxqbzvddn", model.description());
+        Assertions.assertEquals("ndei", model.query());
     }
 }

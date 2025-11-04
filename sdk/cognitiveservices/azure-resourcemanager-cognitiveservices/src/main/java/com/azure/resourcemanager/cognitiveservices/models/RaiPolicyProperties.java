@@ -24,7 +24,7 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
 
     /*
      * Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3.
-     * Please use 'Asynchronous_filter' after 2025-04-01-preview. It is the same as 'Deferred' in previous version.
+     * Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.
      */
     private RaiPolicyMode mode;
 
@@ -43,6 +43,11 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
      */
     private List<CustomBlocklistConfig> customBlocklists;
 
+    /*
+     * The list of custom rai topics.
+     */
+    private List<CustomTopicConfig> customTopics;
+
     /**
      * Creates an instance of RaiPolicyProperties class.
      */
@@ -60,8 +65,8 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
 
     /**
      * Get the mode property: Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2,
-     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2025-04-01-preview. It is the same as 'Deferred'
-     * in previous version.
+     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in
+     * previous version.
      * 
      * @return the mode value.
      */
@@ -71,8 +76,8 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
 
     /**
      * Set the mode property: Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2,
-     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2025-04-01-preview. It is the same as 'Deferred'
-     * in previous version.
+     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in
+     * previous version.
      * 
      * @param mode the mode value to set.
      * @return the RaiPolicyProperties object itself.
@@ -143,6 +148,26 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     }
 
     /**
+     * Get the customTopics property: The list of custom rai topics.
+     * 
+     * @return the customTopics value.
+     */
+    public List<CustomTopicConfig> customTopics() {
+        return this.customTopics;
+    }
+
+    /**
+     * Set the customTopics property: The list of custom rai topics.
+     * 
+     * @param customTopics the customTopics value to set.
+     * @return the RaiPolicyProperties object itself.
+     */
+    public RaiPolicyProperties withCustomTopics(List<CustomTopicConfig> customTopics) {
+        this.customTopics = customTopics;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -153,6 +178,9 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
         }
         if (customBlocklists() != null) {
             customBlocklists().forEach(e -> e.validate());
+        }
+        if (customTopics() != null) {
+            customTopics().forEach(e -> e.validate());
         }
     }
 
@@ -168,6 +196,7 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("customBlocklists", this.customBlocklists,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customTopics", this.customTopics, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -200,6 +229,10 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
                     List<CustomBlocklistConfig> customBlocklists
                         = reader.readArray(reader1 -> CustomBlocklistConfig.fromJson(reader1));
                     deserializedRaiPolicyProperties.customBlocklists = customBlocklists;
+                } else if ("customTopics".equals(fieldName)) {
+                    List<CustomTopicConfig> customTopics
+                        = reader.readArray(reader1 -> CustomTopicConfig.fromJson(reader1));
+                    deserializedRaiPolicyProperties.customTopics = customTopics;
                 } else {
                     reader.skipChildren();
                 }

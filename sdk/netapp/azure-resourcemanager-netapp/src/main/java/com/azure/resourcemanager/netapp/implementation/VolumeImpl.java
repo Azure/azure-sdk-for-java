@@ -483,12 +483,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void splitCloneFromParent() {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
+    public Volume splitCloneFromParent() {
+        return serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void splitCloneFromParent(Context context) {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
+    public Volume splitCloneFromParent(Context context) {
+        return serviceManager.volumes()
+            .splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakFileLocks() {
@@ -963,6 +964,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

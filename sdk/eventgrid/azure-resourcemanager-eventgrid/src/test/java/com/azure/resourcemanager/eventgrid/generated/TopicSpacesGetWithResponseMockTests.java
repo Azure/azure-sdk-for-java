@@ -21,7 +21,7 @@ public final class TopicSpacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ergaghpuzx\",\"topicTemplates\":[\"ehhf\",\"yldhgyed\",\"fzqiyuq\"],\"provisioningState\":\"Updating\"},\"id\":\"reunokak\",\"name\":\"whpjlw\",\"type\":\"xedzn\"}";
+            = "{\"properties\":{\"description\":\"vlutggmaacxauhv\",\"topicTemplates\":[\"xhklsqxt\",\"iyygktsrjyxxoxwf\"],\"provisioningState\":\"Updating\"},\"id\":\"ecnxfxp\",\"name\":\"sowbeb\",\"type\":\"nbwutlvuwmsu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class TopicSpacesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TopicSpace response = manager.topicSpaces()
-            .getWithResponse("ekwwnthropmdudsy", "urz", "vktjhffecqkoq", com.azure.core.util.Context.NONE)
+            .getWithResponse("rxbkitzmnhitax", "ucltjlxsgcemegdz", "vyljubvfjyzufldi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ergaghpuzx", response.description());
-        Assertions.assertEquals("ehhf", response.topicTemplates().get(0));
+        Assertions.assertEquals("vlutggmaacxauhv", response.description());
+        Assertions.assertEquals("xhklsqxt", response.topicTemplates().get(0));
     }
 }

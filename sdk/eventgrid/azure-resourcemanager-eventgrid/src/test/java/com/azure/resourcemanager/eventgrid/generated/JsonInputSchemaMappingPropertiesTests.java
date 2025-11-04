@@ -14,37 +14,38 @@ public final class JsonInputSchemaMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonInputSchemaMappingProperties model = BinaryData.fromString(
-            "{\"id\":{\"sourceField\":\"fqlwxldykalsy\"},\"topic\":{\"sourceField\":\"lnjpnnbmjksibjgs\"},\"eventTime\":{\"sourceField\":\"xahmrnadzyqegxy\"},\"eventType\":{\"sourceField\":\"inbmh\",\"defaultValue\":\"jijkgqxnhmbke\"},\"subject\":{\"sourceField\":\"aujvaa\",\"defaultValue\":\"ggiycwkdtaawxwf\"},\"dataVersion\":{\"sourceField\":\"umrrqmbzm\",\"defaultValue\":\"ratbnxwbjs\"}}")
+            "{\"id\":{\"sourceField\":\"wenawwam\"},\"topic\":{\"sourceField\":\"eq\"},\"eventTime\":{\"sourceField\":\"lndh\"},\"eventType\":{\"sourceField\":\"eojhtollhsvi\",\"defaultValue\":\"ytz\"},\"subject\":{\"sourceField\":\"lxpnovyoanf\",\"defaultValue\":\"swqagywvtxigvjrk\"},\"dataVersion\":{\"sourceField\":\"aeukyawohpm\",\"defaultValue\":\"qnucs\"}}")
             .toObject(JsonInputSchemaMappingProperties.class);
-        Assertions.assertEquals("fqlwxldykalsy", model.id().sourceField());
-        Assertions.assertEquals("lnjpnnbmjksibjgs", model.topic().sourceField());
-        Assertions.assertEquals("xahmrnadzyqegxy", model.eventTime().sourceField());
-        Assertions.assertEquals("inbmh", model.eventType().sourceField());
-        Assertions.assertEquals("jijkgqxnhmbke", model.eventType().defaultValue());
-        Assertions.assertEquals("aujvaa", model.subject().sourceField());
-        Assertions.assertEquals("ggiycwkdtaawxwf", model.subject().defaultValue());
-        Assertions.assertEquals("umrrqmbzm", model.dataVersion().sourceField());
-        Assertions.assertEquals("ratbnxwbjs", model.dataVersion().defaultValue());
+        Assertions.assertEquals("wenawwam", model.id().sourceField());
+        Assertions.assertEquals("eq", model.topic().sourceField());
+        Assertions.assertEquals("lndh", model.eventTime().sourceField());
+        Assertions.assertEquals("eojhtollhsvi", model.eventType().sourceField());
+        Assertions.assertEquals("ytz", model.eventType().defaultValue());
+        Assertions.assertEquals("lxpnovyoanf", model.subject().sourceField());
+        Assertions.assertEquals("swqagywvtxigvjrk", model.subject().defaultValue());
+        Assertions.assertEquals("aeukyawohpm", model.dataVersion().sourceField());
+        Assertions.assertEquals("qnucs", model.dataVersion().defaultValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonInputSchemaMappingProperties model = new JsonInputSchemaMappingProperties()
-            .withId(new JsonField().withSourceField("fqlwxldykalsy"))
-            .withTopic(new JsonField().withSourceField("lnjpnnbmjksibjgs"))
-            .withEventTime(new JsonField().withSourceField("xahmrnadzyqegxy"))
-            .withEventType(new JsonFieldWithDefault().withSourceField("inbmh").withDefaultValue("jijkgqxnhmbke"))
-            .withSubject(new JsonFieldWithDefault().withSourceField("aujvaa").withDefaultValue("ggiycwkdtaawxwf"))
-            .withDataVersion(new JsonFieldWithDefault().withSourceField("umrrqmbzm").withDefaultValue("ratbnxwbjs"));
+        JsonInputSchemaMappingProperties model
+            = new JsonInputSchemaMappingProperties().withId(new JsonField().withSourceField("wenawwam"))
+                .withTopic(new JsonField().withSourceField("eq"))
+                .withEventTime(new JsonField().withSourceField("lndh"))
+                .withEventType(new JsonFieldWithDefault().withSourceField("eojhtollhsvi").withDefaultValue("ytz"))
+                .withSubject(
+                    new JsonFieldWithDefault().withSourceField("lxpnovyoanf").withDefaultValue("swqagywvtxigvjrk"))
+                .withDataVersion(new JsonFieldWithDefault().withSourceField("aeukyawohpm").withDefaultValue("qnucs"));
         model = BinaryData.fromObject(model).toObject(JsonInputSchemaMappingProperties.class);
-        Assertions.assertEquals("fqlwxldykalsy", model.id().sourceField());
-        Assertions.assertEquals("lnjpnnbmjksibjgs", model.topic().sourceField());
-        Assertions.assertEquals("xahmrnadzyqegxy", model.eventTime().sourceField());
-        Assertions.assertEquals("inbmh", model.eventType().sourceField());
-        Assertions.assertEquals("jijkgqxnhmbke", model.eventType().defaultValue());
-        Assertions.assertEquals("aujvaa", model.subject().sourceField());
-        Assertions.assertEquals("ggiycwkdtaawxwf", model.subject().defaultValue());
-        Assertions.assertEquals("umrrqmbzm", model.dataVersion().sourceField());
-        Assertions.assertEquals("ratbnxwbjs", model.dataVersion().defaultValue());
+        Assertions.assertEquals("wenawwam", model.id().sourceField());
+        Assertions.assertEquals("eq", model.topic().sourceField());
+        Assertions.assertEquals("lndh", model.eventTime().sourceField());
+        Assertions.assertEquals("eojhtollhsvi", model.eventType().sourceField());
+        Assertions.assertEquals("ytz", model.eventType().defaultValue());
+        Assertions.assertEquals("lxpnovyoanf", model.subject().sourceField());
+        Assertions.assertEquals("swqagywvtxigvjrk", model.subject().defaultValue());
+        Assertions.assertEquals("aeukyawohpm", model.dataVersion().sourceField());
+        Assertions.assertEquals("qnucs", model.dataVersion().defaultValue());
     }
 }

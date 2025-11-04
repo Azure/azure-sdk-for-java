@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class SnapshotsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Snapshots_Create.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Snapshots_Create.json
      */
     /**
      * Sample code: Snapshots_Create.

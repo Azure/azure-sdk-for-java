@@ -21,7 +21,7 @@ public final class NetAppResourceQuotaLimitsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"current\":186835160,\"default\":847251167,\"usage\":1074409808},\"id\":\"fgsftufqob\",\"name\":\"jln\",\"type\":\"cgcckknhxkizvyt\"}]}";
+            = "{\"value\":[{\"properties\":{\"current\":1418439712,\"default\":2054437598,\"usage\":1020538162},\"id\":\"s\",\"name\":\"wprtu\",\"type\":\"wsawddjibabxvi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NetAppResourceQuotaLimitsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<QuotaItem> response
-            = manager.netAppResourceQuotaLimits().list("lc", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceQuotaLimits().list("vrefdeesv", com.azure.core.util.Context.NONE);
 
     }
 }

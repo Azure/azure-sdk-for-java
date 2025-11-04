@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 public final class VolumesPoolChangeSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Volumes_PoolChange.
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Volumes_PoolChange.
      * json
      */
     /**

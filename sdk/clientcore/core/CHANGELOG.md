@@ -1,14 +1,23 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+- Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
+  `Function<HttpRetryCondition, Duration>` instead of `Function<HttpHeaders, Duration>`. This allows richer inspection
+  of the reason the request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.11 (2025-07-21)
+
+### Features Added
+- Add HTTP2 support to JDK HTTP client (#[45758](https://github.com/Azure/azure-sdk-for-java/pull/45758))
+- Add support for no auth and scopes override in Client Core (#[45635](https://github.com/Azure/azure-sdk-for-java/pull/45635))
 
 ## 1.0.0-beta.10 (2025-06-02)
 

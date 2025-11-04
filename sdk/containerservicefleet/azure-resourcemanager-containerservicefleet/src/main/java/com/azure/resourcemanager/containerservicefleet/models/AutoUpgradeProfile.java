@@ -99,6 +99,29 @@ public interface AutoUpgradeProfile {
     AutoUpgradeProfileStatus autoUpgradeProfileStatus();
 
     /**
+     * Gets the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format
+     * must be `{major version}.{minor version}`. For example, "1.30".
+     * By default, this is empty.
+     * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     * 
+     * @return the targetKubernetesVersion value.
+     */
+    String targetKubernetesVersion();
+
+    /**
+     * Gets the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
+     * N-2
+     * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+     * By default, this is set to False.
+     * For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+     * 
+     * @return the longTermSupport value.
+     */
+    Boolean longTermSupport();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -149,8 +172,8 @@ public interface AutoUpgradeProfile {
          */
         interface WithCreate extends DefinitionStages.WithUpdateStrategyId, DefinitionStages.WithChannel,
             DefinitionStages.WithNodeImageSelection, DefinitionStages.WithDisabled,
-            DefinitionStages.WithAutoUpgradeProfileStatus, DefinitionStages.WithIfMatch,
-            DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithAutoUpgradeProfileStatus, DefinitionStages.WithTargetKubernetesVersion,
+            DefinitionStages.WithLongTermSupport, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -246,6 +269,53 @@ public interface AutoUpgradeProfile {
         }
 
         /**
+         * The stage of the AutoUpgradeProfile definition allowing to specify targetKubernetesVersion.
+         */
+        interface WithTargetKubernetesVersion {
+            /**
+             * Specifies the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade.
+             * The format must be `{major version}.{minor version}`. For example, "1.30".
+             * By default, this is empty.
+             * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+             * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty..
+             * 
+             * @param targetKubernetesVersion This is the target Kubernetes version for auto-upgrade. The format must be
+             * `{major version}.{minor version}`. For example, "1.30".
+             * By default, this is empty.
+             * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+             * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+             * @return the next definition stage.
+             */
+            WithCreate withTargetKubernetesVersion(String targetKubernetesVersion);
+        }
+
+        /**
+         * The stage of the AutoUpgradeProfile definition allowing to specify longTermSupport.
+         */
+        interface WithLongTermSupport {
+            /**
+             * Specifies the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field
+             * must be False.
+             * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions
+             * earlier than N-2
+             * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+             * By default, this is set to False.
+             * For more information on AKS LTS, please see
+             * https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+             * 
+             * @param longTermSupport If upgrade channel is not TargetKubernetesVersion, this field must be False.
+             * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions
+             * earlier than N-2
+             * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+             * By default, this is set to False.
+             * For more information on AKS LTS, please see
+             * https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+             * @return the next definition stage.
+             */
+            WithCreate withLongTermSupport(Boolean longTermSupport);
+        }
+
+        /**
          * The stage of the AutoUpgradeProfile definition allowing to specify ifMatch.
          */
         interface WithIfMatch {
@@ -283,7 +353,8 @@ public interface AutoUpgradeProfile {
      * The template for AutoUpgradeProfile update.
      */
     interface Update extends UpdateStages.WithChannel, UpdateStages.WithNodeImageSelection, UpdateStages.WithDisabled,
-        UpdateStages.WithAutoUpgradeProfileStatus, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
+        UpdateStages.WithAutoUpgradeProfileStatus, UpdateStages.WithTargetKubernetesVersion,
+        UpdateStages.WithLongTermSupport, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -365,6 +436,53 @@ public interface AutoUpgradeProfile {
              * @return the next definition stage.
              */
             Update withAutoUpgradeProfileStatus(AutoUpgradeProfileStatus autoUpgradeProfileStatus);
+        }
+
+        /**
+         * The stage of the AutoUpgradeProfile update allowing to specify targetKubernetesVersion.
+         */
+        interface WithTargetKubernetesVersion {
+            /**
+             * Specifies the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade.
+             * The format must be `{major version}.{minor version}`. For example, "1.30".
+             * By default, this is empty.
+             * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+             * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty..
+             * 
+             * @param targetKubernetesVersion This is the target Kubernetes version for auto-upgrade. The format must be
+             * `{major version}.{minor version}`. For example, "1.30".
+             * By default, this is empty.
+             * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+             * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+             * @return the next definition stage.
+             */
+            Update withTargetKubernetesVersion(String targetKubernetesVersion);
+        }
+
+        /**
+         * The stage of the AutoUpgradeProfile update allowing to specify longTermSupport.
+         */
+        interface WithLongTermSupport {
+            /**
+             * Specifies the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field
+             * must be False.
+             * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions
+             * earlier than N-2
+             * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+             * By default, this is set to False.
+             * For more information on AKS LTS, please see
+             * https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+             * 
+             * @param longTermSupport If upgrade channel is not TargetKubernetesVersion, this field must be False.
+             * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions
+             * earlier than N-2
+             * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+             * By default, this is set to False.
+             * For more information on AKS LTS, please see
+             * https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+             * @return the next definition stage.
+             */
+            Update withLongTermSupport(Boolean longTermSupport);
         }
 
         /**

@@ -3,15 +3,6 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
-    <Or>
-      <Class name="com.azure.jedis.ApiManager" />
-      <Class name="com.azure.redisson.sample.AuthenticateWithTokenCache" />
-      <Class name="com.azure.redisson.sample.HandleReauthentication" />
-      <Class name="com.azure.redisson.sample.HelloWorld" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Or>
       <Class name="com.azure.identity.AzurePipelinesCredential" />
@@ -20,17 +11,9 @@
     </Or>
   </Match>
   <Match>
-    <Bug pattern="DE_MIGHT_IGNORE" />
-    <Class name="com.azure.identity.implementation.IdentitySyncClient" />
-  </Match>
-  <Match>
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
       <Class name="com.azure.identity.credential.JavaDocCodeSnippets" />
-      <Class name="com.azure.lettuce.sample.HandleReauthentication" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.HandleReauthentication" />
-      <Class name="com.azure.redisson.sample.AuthenticateWithTokenCache" />
-      <Class name="com.azure.redisson.sample.HandleReauthentication" />
       <Class name="com.azure.redisson.sample.HelloWorld" />
     </Or>
   </Match>
@@ -50,69 +33,19 @@
     </Or>
   </Match>
   <Match>
-    <Bug pattern="DM_STRING_TOSTRING" />
-    <Class name="com.azure.redisson.sample.AuthenticateWithTokenCache" />
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.identity.implementation.IdentityClient" />
-      <Class name="com.azure.identity.implementation.IdentityClientOptions" />
-      <Class name="com.azure.identity.implementation.IdentitySyncClient" />
-      <Class name="com.azure.identity.implementation.MsalAuthenticationAccount" />
-      <Class name="com.azure.identity.util.EmptyEnvironmentConfigurationSource" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.identity.implementation.IdentityClientBuilder" />
-      <Class name="com.azure.identity.implementation.IdentityClientOptions" />
-      <Class name="com.azure.identity.implementation.MsalAuthenticationAccount" />
-      <Class name="com.azure.jedis.sample.AuthenticateWithTokenCache$TokenRefreshCache" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EQ_DOESNT_OVERRIDE_EQUALS" />
     <Class name="com.azure.identity.implementation.ValidationUtilTests$TestFile" />
   </Match>
   <Match>
-    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
-    <Or>
-      <Class name="com.azure.identity.DeviceCodeCredentialBuilder" />
-      <Class name="com.azure.identity.implementation.IdentityClient" />
-      <Class name="com.azure.identity.implementation.IdentitySyncClient" />
-      <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError" />
-      <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
-      <Class name="com.azure.identity.implementation.WindowsCredentialApi$PCREDENTIAL" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NM_FIELD_NAMING_CONVENTION" />
-    <Or>
-      <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
-      <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL_ATTRIBUTE" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH" />
-    <Or>
-      <Class name="com.azure.identity.implementation.IdentityClient" />
-      <Class name="com.azure.identity.implementation.ValidationUtilTests" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION" />
-    <Class name="com.azure.identity.implementation.IdentityClient" />
+    <Class name="com.azure.identity.implementation.ValidationUtilTests" />
   </Match>
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
     <Or>
-      <Class name="com.azure.identity.implementation.IdentityClientTests" />
       <Class name="com.azure.identity.implementation.SynchronizedAccessorTests" />
       <Class name="com.azure.identity.implementation.util.ValidationUtil" />
       <Class name="com.azure.jedis.Authenticator" />
-      <Class name="com.azure.lettuce.sample.HellloWorld" />
       <Class name="com.azure.lettuce.sample.withcredentialprovider.AuthenticateWithTokenCache$AzureRedisCredentials" />
       <Class name="com.azure.lettuce.sample.withcredentialprovider.HandleReauthentication$AzureRedisCredentials" />
       <Class name="com.azure.lettuce.sample.withcredentialprovider.HelloWorld$AzureRedisCredentials" />
@@ -128,48 +61,8 @@
     <Class name="com.azure.identity.credential.JavaDocCodeSnippets" />
   </Match>
   <Match>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
-    <Class name="com.azure.identity.implementation.IdentityClient" />
-  </Match>
-  <Match>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
-    <Class name="com.azure.identity.implementation.IdentityClient" />
-  </Match>
-  <Match>
-    <Bug pattern="REC_CATCH_EXCEPTION" />
-    <Or>
-      <Class name="com.azure.identity.DeviceCodeCredential" />
-      <Class name="com.azure.identity.InteractiveBrowserCredential" />
-      <Class name="com.azure.identity.UsernamePasswordCredential" />
-      <Class name="com.azure.identity.implementation.IdentitySyncClient" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="SE_NO_SERIALVERSIONID" />
-    <Class name="com.azure.identity.implementation.ValidationUtilTests$TestFile" />
-  </Match>
-  <Match>
-    <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED" />
-    <Class name="com.azure.identity.implementation.MsalAuthenticationAccount" />
-  </Match>
-  <Match>
-    <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE" />
-    <Class name="com.azure.identity.implementation.IdentityClientTests" />
-  </Match>
-  <Match>
     <Bug pattern="UL_UNRELEASED_LOCK_EXCEPTION_PATH" />
     <Class name="com.azure.jedis.Authenticator" />
-  </Match>
-  <Match>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
-    <Or>
-      <Class name="com.azure.identity.implementation.IdentityClient" />
-      <Class name="com.azure.jedis.implementation.authentication.AccessTokenCache" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UUF_UNUSED_FIELD" />
-    <Class name="com.azure.identity.implementation.IdentityClientOptions" />
   </Match>
   <Match>
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD" />
@@ -177,17 +70,6 @@
       <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
       <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL_ATTRIBUTE" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Or>
-      <Class name="com.azure.identity.implementation.PersistentTokenCacheImpl" />
-      <Class name="com.azure.jedis.AzureJedisClientBuilder" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-    <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError" />
   </Match>
   <Match>
     <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
@@ -199,5 +81,9 @@
   <Match>
     <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE" />
     <Class name="com.azure.identity.implementation.models.AzureCliTokenTests" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+    <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError" />
   </Match>
 </FindBugsFilter>

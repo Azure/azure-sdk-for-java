@@ -6,6 +6,7 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.fluent.models.BucketPatchProperties;
+import com.azure.resourcemanager.netapp.models.BucketPatchPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerPatchProperties;
 import com.azure.resourcemanager.netapp.models.CifsUser;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
@@ -16,29 +17,32 @@ public final class BucketPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BucketPatchProperties model = BinaryData.fromString(
-            "{\"path\":\"irclnpk\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":7574999034676246955,\"groupId\":8684828221595368208},\"cifsUser\":{\"username\":\"awfvjlboxqvkjl\"}},\"provisioningState\":\"Canceled\",\"server\":{\"fqdn\":\"dynhdwdigum\",\"certificateObject\":\"raauzzpt\"}}")
+            "{\"path\":\"pnvdxz\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":5184735928624525939,\"groupId\":107685473629648091},\"cifsUser\":{\"username\":\"qagt\"}},\"provisioningState\":\"Deleting\",\"server\":{\"fqdn\":\"fkqojpy\",\"certificateObject\":\"gtrd\"},\"permissions\":\"ReadOnly\"}")
             .toObject(BucketPatchProperties.class);
-        Assertions.assertEquals("irclnpk", model.path());
-        Assertions.assertEquals(7574999034676246955L, model.fileSystemUser().nfsUser().userId());
-        Assertions.assertEquals(8684828221595368208L, model.fileSystemUser().nfsUser().groupId());
-        Assertions.assertEquals("awfvjlboxqvkjl", model.fileSystemUser().cifsUser().username());
-        Assertions.assertEquals("dynhdwdigum", model.server().fqdn());
-        Assertions.assertEquals("raauzzpt", model.server().certificateObject());
+        Assertions.assertEquals("pnvdxz", model.path());
+        Assertions.assertEquals(5184735928624525939L, model.fileSystemUser().nfsUser().userId());
+        Assertions.assertEquals(107685473629648091L, model.fileSystemUser().nfsUser().groupId());
+        Assertions.assertEquals("qagt", model.fileSystemUser().cifsUser().username());
+        Assertions.assertEquals("fkqojpy", model.server().fqdn());
+        Assertions.assertEquals("gtrd", model.server().certificateObject());
+        Assertions.assertEquals(BucketPatchPermissions.READ_ONLY, model.permissions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BucketPatchProperties model = new BucketPatchProperties().withPath("irclnpk")
+        BucketPatchProperties model = new BucketPatchProperties().withPath("pnvdxz")
             .withFileSystemUser(new FileSystemUser()
-                .withNfsUser(new NfsUser().withUserId(7574999034676246955L).withGroupId(8684828221595368208L))
-                .withCifsUser(new CifsUser().withUsername("awfvjlboxqvkjl")))
-            .withServer(new BucketServerPatchProperties().withFqdn("dynhdwdigum").withCertificateObject("raauzzpt"));
+                .withNfsUser(new NfsUser().withUserId(5184735928624525939L).withGroupId(107685473629648091L))
+                .withCifsUser(new CifsUser().withUsername("qagt")))
+            .withServer(new BucketServerPatchProperties().withFqdn("fkqojpy").withCertificateObject("gtrd"))
+            .withPermissions(BucketPatchPermissions.READ_ONLY);
         model = BinaryData.fromObject(model).toObject(BucketPatchProperties.class);
-        Assertions.assertEquals("irclnpk", model.path());
-        Assertions.assertEquals(7574999034676246955L, model.fileSystemUser().nfsUser().userId());
-        Assertions.assertEquals(8684828221595368208L, model.fileSystemUser().nfsUser().groupId());
-        Assertions.assertEquals("awfvjlboxqvkjl", model.fileSystemUser().cifsUser().username());
-        Assertions.assertEquals("dynhdwdigum", model.server().fqdn());
-        Assertions.assertEquals("raauzzpt", model.server().certificateObject());
+        Assertions.assertEquals("pnvdxz", model.path());
+        Assertions.assertEquals(5184735928624525939L, model.fileSystemUser().nfsUser().userId());
+        Assertions.assertEquals(107685473629648091L, model.fileSystemUser().nfsUser().groupId());
+        Assertions.assertEquals("qagt", model.fileSystemUser().cifsUser().username());
+        Assertions.assertEquals("fkqojpy", model.server().fqdn());
+        Assertions.assertEquals("gtrd", model.server().certificateObject());
+        Assertions.assertEquals(BucketPatchPermissions.READ_ONLY, model.permissions());
     }
 }

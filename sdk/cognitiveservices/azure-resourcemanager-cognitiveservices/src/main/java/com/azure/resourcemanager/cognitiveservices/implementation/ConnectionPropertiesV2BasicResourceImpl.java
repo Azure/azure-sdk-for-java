@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2;
@@ -32,6 +33,10 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -50,7 +55,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
 
     private String connectionName;
 
-    private ConnectionUpdateContent updateBody;
+    private ConnectionUpdateContent updateConnection;
 
     public ConnectionPropertiesV2BasicResourceImpl withExistingAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
@@ -82,14 +87,14 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     }
 
     public ConnectionPropertiesV2BasicResourceImpl update() {
-        this.updateBody = new ConnectionUpdateContent();
+        this.updateConnection = new ConnectionUpdateContent();
         return this;
     }
 
     public ConnectionPropertiesV2BasicResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAccountConnections()
-            .updateWithResponse(resourceGroupName, accountName, connectionName, updateBody, Context.NONE)
+            .updateWithResponse(resourceGroupName, accountName, connectionName, updateConnection, Context.NONE)
             .getValue();
         return this;
     }
@@ -97,7 +102,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     public ConnectionPropertiesV2BasicResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAccountConnections()
-            .updateWithResponse(resourceGroupName, accountName, connectionName, updateBody, context)
+            .updateWithResponse(resourceGroupName, accountName, connectionName, updateConnection, context)
             .getValue();
         return this;
     }
@@ -132,12 +137,12 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
             this.innerModel().withProperties(properties);
             return this;
         } else {
-            this.updateBody.withProperties(properties);
+            this.updateConnection.withProperties(properties);
             return this;
         }
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

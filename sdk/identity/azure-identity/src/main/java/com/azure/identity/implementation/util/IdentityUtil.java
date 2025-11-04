@@ -9,23 +9,32 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public final class IdentityUtil {
+    public static final Path VSCODE_AUTH_RECORD_PATH = Paths.get(System.getProperty("user.home"), ".azure",
+        "ms-azuretools.vscode-azureresourcegroups", "authRecord.json");
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
     public static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
     public static final String ALL_TENANTS = "*";
@@ -171,4 +180,91 @@ public final class IdentityUtil {
     public static boolean isLinuxPlatform() {
         return System.getProperty("os.name").contains("Linux");
     }
+
+    public static boolean isVsCodeBrokerAuthAvailable() {
+        // Check if VS Code broker auth record file exists
+        File authRecordFile = VSCODE_AUTH_RECORD_PATH.toFile();
+        return isBrokerAvailable() && authRecordFile.exists() && authRecordFile.isFile();
+    }
+
+    public static boolean isBrokerAvailable() {
+        try {
+            // 1. Check if Broker dependency is available
+            Class.forName("com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false; // Broker not present
+        }
+    }
+
+    public static AuthenticationRecord loadVSCodeAuthRecord() throws IOException {
+        // Resolve the full path to authRecord.json
+        File file = VSCODE_AUTH_RECORD_PATH.toFile();
+        if (!file.exists()) {
+            return null;
+        }
+        // Read file content
+        InputStream json = Files.newInputStream(VSCODE_AUTH_RECORD_PATH);
+        // Deserialize to AuthenticationRecord
+        return AuthenticationRecord.deserialize(json);
+    }
+
+    /**
+     * Checks if the GNOME Keyring is accessible.
+     * @return true if accessible, false otherwise.
+     */
+    public static boolean isKeyRingAccessible() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("secret-tool", "lookup", "test", "test");
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                return true; // Keyring is accessible
+            } else {
+                LOGGER.verbose("GNOME Keyring is unavailable or inaccessible.");
+                return false;
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore interrupted state if InterruptedException occurs
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        } catch (IOException e) {
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Ensures the claims string is base64 encoded.
+     * 
+     * @param claims The claims string to encode if needed
+     * @return Base64 encoded claims string
+     */
+    public static String ensureBase64Encoded(String claims) {
+        if (claims == null || claims.trim().isEmpty()) {
+            return claims;
+        }
+        return java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Determines if IMDS probing should be performed for ManagedIdentityCredential.
+     * Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
+     *
+     * @param options the identity client options
+     * @return true if IMDS probing should be performed, false otherwise
+     */
+    public static boolean shouldProbeImds(IdentityClientOptions options) {
+        String dacEnvConfiguredCredential = options.getDACEnvConfiguredCredential();
+        boolean isManagedIdentityConfiguredForDac
+            = "managedidentitycredential".equalsIgnoreCase(dacEnvConfiguredCredential);
+
+        // Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
+        return options.isChained()
+            && !isManagedIdentityConfiguredForDac
+            && ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(ManagedIdentityApplication.getManagedIdentitySource());
+    }
+
 }

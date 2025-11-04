@@ -53,7 +53,7 @@ Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
 # Run the version update script
 Write-Host "Running the version update script"
 cd ../../../
-python eng/versioning/update_versions.py --bt client --ut external_dependency --sr
+python eng/versioning/update_versions.py --skip-readme
 
 # Navigate back to the sdk/openai directory
 cd .\sdk\openai

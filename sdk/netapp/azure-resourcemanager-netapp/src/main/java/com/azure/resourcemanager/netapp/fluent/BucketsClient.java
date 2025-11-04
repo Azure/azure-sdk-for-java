@@ -199,6 +199,8 @@ public interface BucketsClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param bucketName The name of the bucket.
+     * @param body The bucket details including user details, and the volume path that should be mounted inside the
+     * bucket.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,7 +208,7 @@ public interface BucketsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BucketInner>, BucketInner> beginUpdate(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String bucketName);
+        String poolName, String volumeName, String bucketName, BucketPatch body);
 
     /**
      * Updates a bucket for a volume
@@ -240,6 +242,8 @@ public interface BucketsClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param bucketName The name of the bucket.
+     * @param body The bucket details including user details, and the volume path that should be mounted inside the
+     * bucket.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -247,7 +251,7 @@ public interface BucketsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BucketInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
-        String bucketName);
+        String bucketName, BucketPatch body);
 
     /**
      * Updates a bucket for a volume

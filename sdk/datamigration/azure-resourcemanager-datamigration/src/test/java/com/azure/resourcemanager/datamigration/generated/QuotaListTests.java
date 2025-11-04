@@ -15,31 +15,43 @@ public final class QuotaListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaList model = BinaryData.fromString(
-            "{\"value\":[{\"currentValue\":0.0161532366757422,\"id\":\"gmbmbexppbh\",\"limit\":42.629804332769986,\"name\":{\"localizedValue\":\"fpfpsalgbquxigj\",\"value\":\"gzjaoyfhrtxilne\"},\"unit\":\"ujysvle\"}],\"nextLink\":\"vfqawrlyxwjkcpr\"}")
+            "{\"value\":[{\"currentValue\":11.852965496660705,\"id\":\"pn\",\"limit\":18.826914429041118,\"name\":{\"localizedValue\":\"joqkagfhsxt\",\"value\":\"ugzxnf\"},\"unit\":\"zpxdt\"},{\"currentValue\":11.7559035059133,\"id\":\"qjjlwuen\",\"limit\":93.53994112628307,\"name\":{\"localizedValue\":\"uaibrebqaaysj\",\"value\":\"xqtnq\"},\"unit\":\"ezl\"},{\"currentValue\":37.29574917004451,\"id\":\"akpjpqqmtedlt\",\"limit\":23.23506119623675,\"name\":{\"localizedValue\":\"eozphv\",\"value\":\"uyqncygupkvipmd\"},\"unit\":\"wx\"}],\"nextLink\":\"pevzhfst\"}")
             .toObject(QuotaList.class);
-        Assertions.assertEquals(0.0161532366757422D, model.value().get(0).currentValue());
-        Assertions.assertEquals("gmbmbexppbh", model.value().get(0).id());
-        Assertions.assertEquals(42.629804332769986D, model.value().get(0).limit());
-        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.value().get(0).name().value());
-        Assertions.assertEquals("ujysvle", model.value().get(0).unit());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.nextLink());
+        Assertions.assertEquals(11.852965496660705D, model.value().get(0).currentValue());
+        Assertions.assertEquals("pn", model.value().get(0).id());
+        Assertions.assertEquals(18.826914429041118D, model.value().get(0).limit());
+        Assertions.assertEquals("joqkagfhsxt", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ugzxnf", model.value().get(0).name().value());
+        Assertions.assertEquals("zpxdt", model.value().get(0).unit());
+        Assertions.assertEquals("pevzhfst", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaList model = new QuotaList().withValue(Arrays.asList(new QuotaInner().withCurrentValue(0.0161532366757422D)
-            .withId("gmbmbexppbh")
-            .withLimit(42.629804332769986D)
-            .withName(new QuotaName().withLocalizedValue("fpfpsalgbquxigj").withValue("gzjaoyfhrtxilne"))
-            .withUnit("ujysvle"))).withNextLink("vfqawrlyxwjkcpr");
+        QuotaList model = new QuotaList().withValue(Arrays.asList(
+            new QuotaInner().withCurrentValue(11.852965496660705D)
+                .withId("pn")
+                .withLimit(18.826914429041118D)
+                .withName(new QuotaName().withLocalizedValue("joqkagfhsxt").withValue("ugzxnf"))
+                .withUnit("zpxdt"),
+            new QuotaInner().withCurrentValue(11.7559035059133D)
+                .withId("qjjlwuen")
+                .withLimit(93.53994112628307D)
+                .withName(new QuotaName().withLocalizedValue("uaibrebqaaysj").withValue("xqtnq"))
+                .withUnit("ezl"),
+            new QuotaInner().withCurrentValue(37.29574917004451D)
+                .withId("akpjpqqmtedlt")
+                .withLimit(23.23506119623675D)
+                .withName(new QuotaName().withLocalizedValue("eozphv").withValue("uyqncygupkvipmd"))
+                .withUnit("wx")))
+            .withNextLink("pevzhfst");
         model = BinaryData.fromObject(model).toObject(QuotaList.class);
-        Assertions.assertEquals(0.0161532366757422D, model.value().get(0).currentValue());
-        Assertions.assertEquals("gmbmbexppbh", model.value().get(0).id());
-        Assertions.assertEquals(42.629804332769986D, model.value().get(0).limit());
-        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.value().get(0).name().value());
-        Assertions.assertEquals("ujysvle", model.value().get(0).unit());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.nextLink());
+        Assertions.assertEquals(11.852965496660705D, model.value().get(0).currentValue());
+        Assertions.assertEquals("pn", model.value().get(0).id());
+        Assertions.assertEquals(18.826914429041118D, model.value().get(0).limit());
+        Assertions.assertEquals("joqkagfhsxt", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ugzxnf", model.value().get(0).name().value());
+        Assertions.assertEquals("zpxdt", model.value().get(0).unit());
+        Assertions.assertEquals("pevzhfst", model.nextLink());
     }
 }

@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedCertificatesClient;
@@ -71,13 +73,24 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientManagedCertificates")
     public interface ManagedCertificatesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedCertificateInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("managedCertificateName") String managedCertificateName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedCertificateInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
@@ -99,10 +112,35 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 400 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("managedCertificateName") String managedCertificateName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedCertificateInner managedCertificateEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("managedCertificateName") String managedCertificateName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
@@ -123,6 +161,19 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedCertificateInner> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("managedCertificateName") String managedCertificateName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedCertificatePatch managedCertificateEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -133,10 +184,28 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedCertificateCollection> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedCertificateCollection>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedCertificateCollection> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -189,47 +258,6 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Certificate along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedCertificateInner>> getWithResponseAsync(String resourceGroupName,
-        String environmentName, String managedCertificateName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (managedCertificateName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, managedCertificateName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get the specified Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,7 +285,31 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedCertificateInner> getWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, managedCertificateName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (managedCertificateName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, managedCertificateName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -332,44 +384,92 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @param managedCertificateEnvelope Managed Certificate to be created or updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (managedCertificateName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
+        }
+        if (managedCertificateEnvelope != null) {
+            managedCertificateEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, managedCertificateName, this.client.getApiVersion(), managedCertificateEnvelope, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Create or Update a Managed Certificate.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param managedCertificateName Name of the Managed Certificate.
+     * @param managedCertificateEnvelope Managed Certificate to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String environmentName, String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (managedCertificateName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
         }
         if (managedCertificateEnvelope != null) {
             managedCertificateEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             environmentName, managedCertificateName, this.client.getApiVersion(), managedCertificateEnvelope, accept,
             context);
     }
@@ -430,23 +530,21 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @param managedCertificateEnvelope Managed Certificate to be created or updated.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of managed certificates used for Custom Domain bindings of Container
+     * @return the {@link SyncPoller} for polling of managed certificates used for Custom Domain bindings of Container
      * Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdateAsync(
+    public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String managedCertificateName,
-        ManagedCertificateInner managedCertificateEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, environmentName,
-            managedCertificateName, managedCertificateEnvelope, context);
-        return this.client.<ManagedCertificateInner, ManagedCertificateInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ManagedCertificateInner.class, ManagedCertificateInner.class, context);
+        ManagedCertificateInner managedCertificateEnvelope) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,
+            managedCertificateName, managedCertificateEnvelope);
+        return this.client.<ManagedCertificateInner, ManagedCertificateInner>getLroResult(response,
+            ManagedCertificateInner.class, ManagedCertificateInner.class, Context.NONE);
     }
 
     /**
@@ -466,10 +564,10 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner>
         beginCreateOrUpdate(String resourceGroupName, String environmentName, String managedCertificateName) {
         final ManagedCertificateInner managedCertificateEnvelope = null;
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, environmentName, managedCertificateName,
-                managedCertificateEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,
+            managedCertificateName, managedCertificateEnvelope);
+        return this.client.<ManagedCertificateInner, ManagedCertificateInner>getLroResult(response,
+            ManagedCertificateInner.class, ManagedCertificateInner.class, Context.NONE);
     }
 
     /**
@@ -491,10 +589,10 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String managedCertificateName,
         ManagedCertificateInner managedCertificateEnvelope, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, environmentName, managedCertificateName,
-                managedCertificateEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,
+            managedCertificateName, managedCertificateEnvelope, context);
+        return this.client.<ManagedCertificateInner, ManagedCertificateInner>getLroResult(response,
+            ManagedCertificateInner.class, ManagedCertificateInner.class, context);
     }
 
     /**
@@ -545,28 +643,6 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
-     * @param managedCertificateEnvelope Managed Certificate to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 400.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedCertificateInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
-        String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, managedCertificateName,
-            managedCertificateEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or Update a Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 400.
@@ -577,8 +653,8 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     public ManagedCertificateInner createOrUpdate(String resourceGroupName, String environmentName,
         String managedCertificateName) {
         final ManagedCertificateInner managedCertificateEnvelope = null;
-        return createOrUpdateAsync(resourceGroupName, environmentName, managedCertificateName,
-            managedCertificateEnvelope).block();
+        return beginCreateOrUpdate(resourceGroupName, environmentName, managedCertificateName,
+            managedCertificateEnvelope).getFinalResult();
     }
 
     /**
@@ -598,8 +674,8 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedCertificateInner createOrUpdate(String resourceGroupName, String environmentName,
         String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope, Context context) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, managedCertificateName,
-            managedCertificateEnvelope, context).block();
+        return beginCreateOrUpdate(resourceGroupName, environmentName, managedCertificateName,
+            managedCertificateEnvelope, context).getFinalResult();
     }
 
     /**
@@ -650,47 +726,6 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
-        String managedCertificateName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (managedCertificateName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, managedCertificateName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes the specified Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -717,7 +752,31 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, managedCertificateName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (managedCertificateName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, managedCertificateName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -796,59 +855,6 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @param managedCertificateEnvelope Properties of a managed certificate that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedCertificateInner>> updateWithResponseAsync(String resourceGroupName,
-        String environmentName, String managedCertificateName, ManagedCertificatePatch managedCertificateEnvelope,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (managedCertificateName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
-        }
-        if (managedCertificateEnvelope == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedCertificateEnvelope is required and cannot be null."));
-        } else {
-            managedCertificateEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, managedCertificateName, this.client.getApiVersion(), managedCertificateEnvelope, accept,
-            context);
-    }
-
-    /**
-     * Update tags of a managed certificate
-     * 
-     * Patches a managed certificate. Oly patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param managedCertificateEnvelope Properties of a managed certificate that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -881,8 +887,39 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedCertificateInner> updateWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, ManagedCertificatePatch managedCertificateEnvelope, Context context) {
-        return updateWithResponseAsync(resourceGroupName, environmentName, managedCertificateName,
-            managedCertificateEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (managedCertificateName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedCertificateName is required and cannot be null."));
+        }
+        if (managedCertificateEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedCertificateEnvelope is required and cannot be null."));
+        } else {
+            managedCertificateEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, managedCertificateName, this.client.getApiVersion(), managedCertificateEnvelope, accept,
+            context);
     }
 
     /**
@@ -950,46 +987,6 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Certificates in a given managed environment along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedCertificateInner>> listSinglePageAsync(String resourceGroupName,
-        String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, environmentName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get the Managed Certificates in a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1006,17 +1003,77 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Managed Certificates in a given managed environment along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ManagedCertificateInner> listSinglePage(String resourceGroupName, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ManagedCertificateCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                environmentName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the Managed Certificates in a given managed environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Certificates in a given managed environment as paginated response with {@link PagedFlux}.
+     * @return the Managed Certificates in a given managed environment along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedCertificateInner> listAsync(String resourceGroupName, String environmentName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ManagedCertificateInner> listSinglePage(String resourceGroupName, String environmentName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, environmentName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ManagedCertificateCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                environmentName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1031,7 +1088,8 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedCertificateInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, environmentName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -1048,18 +1106,21 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedCertificateInner> list(String resourceGroupName, String environmentName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, environmentName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
+     * Get the Managed Certificates in a given managed environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Managed Certificates along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the Managed Certificates in a given managed environment along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedCertificateInner>> listNextSinglePageAsync(String nextLink) {
@@ -1078,6 +1139,37 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     }
 
     /**
+     * Get the Managed Certificates in a given managed environment.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Managed Certificates in a given managed environment along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ManagedCertificateInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ManagedCertificateCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the Managed Certificates in a given managed environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1085,22 +1177,25 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Managed Certificates along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the Managed Certificates in a given managed environment along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedCertificateInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<ManagedCertificateInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ManagedCertificateCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedCertificatesClientImpl.class);
 }

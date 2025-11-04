@@ -12,7 +12,6 @@
   <modules>
     <module>azure-core</module>
     <module>azure-core-amqp</module>
-    <module>azure-core-amqp-experimental</module>
     <module>azure-core-experimental</module>
     <module>azure-core-http-jdk-httpclient</module>
     <module>azure-core-http-netty</module>

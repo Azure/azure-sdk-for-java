@@ -43,42 +43,42 @@ public class AzureEventGridAutoConfiguration extends AzureServiceConfigurationBa
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(value = EventGridPublisherClient.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "EVENT_GRID_EVENT", matchIfMissing = true)
     EventGridPublisherClient<EventGridEvent> eventGridEventPublisherClient(EventGridPublisherClientBuilder builder) {
         return builder.buildEventGridEventPublisherClient();
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(value = EventGridPublisherAsyncClient.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "EVENT_GRID_EVENT", matchIfMissing = true)
     EventGridPublisherAsyncClient<EventGridEvent> eventGridEventPublisherAsyncClient(EventGridPublisherClientBuilder builder) {
         return builder.buildEventGridEventPublisherAsyncClient();
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(value = EventGridPublisherClient.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "CLOUD_EVENT")
     EventGridPublisherClient<CloudEvent> eventGridCloudEventPublisherClient(EventGridPublisherClientBuilder builder) {
         return builder.buildCloudEventPublisherClient();
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(value = EventGridPublisherAsyncClient.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "CLOUD_EVENT")
     EventGridPublisherAsyncClient<CloudEvent> eventGridCloudEventPublisherAsyncClient(EventGridPublisherClientBuilder builder) {
         return builder.buildCloudEventPublisherAsyncClient();
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(value = EventGridPublisherClient.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "CUSTOM_EVENT")
     EventGridPublisherClient<BinaryData> eventGridCustomEventPublisherClient(EventGridPublisherClientBuilder builder) {
         return builder.buildCustomEventPublisherClient();
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(value = EventGridPublisherAsyncClient.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "CUSTOM_EVENT")
     EventGridPublisherAsyncClient<BinaryData> eventGridCustomEventPublisherAsyncClient(EventGridPublisherClientBuilder builder) {
         return builder.buildCustomEventPublisherAsyncClient();

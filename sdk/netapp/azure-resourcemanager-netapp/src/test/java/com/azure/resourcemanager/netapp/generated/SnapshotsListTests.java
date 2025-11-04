@@ -14,17 +14,17 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"ysuiizynkedya\",\"properties\":{\"snapshotId\":\"yhqmibzyhwi\",\"created\":\"2021-05-22T03:58:36Z\",\"provisioningState\":\"pyy\"},\"id\":\"cdpu\",\"name\":\"nzgmwznmabik\",\"type\":\"sorgj\"},{\"location\":\"xbldtlwwrlkdmtn\",\"properties\":{\"snapshotId\":\"kotl\",\"created\":\"2021-09-05T12:27:29Z\",\"provisioningState\":\"h\"},\"id\":\"y\",\"name\":\"cogjltdtbn\",\"type\":\"hadoocrk\"}]}")
+            "{\"value\":[{\"location\":\"plsaknynfsynljph\",\"properties\":{\"snapshotId\":\"xodlqiyntorzih\",\"created\":\"2021-04-08T02:51:20Z\",\"provisioningState\":\"jswsrmslyz\"},\"id\":\"zbchckqqzqioxiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"},{\"location\":\"q\",\"properties\":{\"snapshotId\":\"zyh\",\"created\":\"2021-05-20T17:58:30Z\",\"provisioningState\":\"mypyynpcdpu\"},\"id\":\"zgmwznmabikns\",\"name\":\"rgjhxb\",\"type\":\"dtlwwrlkd\"},{\"location\":\"tncvokot\",\"properties\":{\"snapshotId\":\"d\",\"created\":\"2021-07-23T09:43:53Z\",\"provisioningState\":\"y\"},\"id\":\"ogjltdtbnnhad\",\"name\":\"ocrkvcikh\",\"type\":\"vpa\"}]}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("ysuiizynkedya", model.value().get(0).location());
+        Assertions.assertEquals("plsaknynfsynljph", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotsList model
-            = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("ysuiizynkedya"),
-                new SnapshotInner().withLocation("xbldtlwwrlkdmtn")));
+            = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("plsaknynfsynljph"),
+                new SnapshotInner().withLocation("q"), new SnapshotInner().withLocation("tncvokot")));
         model = BinaryData.fromObject(model).toObject(SnapshotsList.class);
-        Assertions.assertEquals("ysuiizynkedya", model.value().get(0).location());
+        Assertions.assertEquals("plsaknynfsynljph", model.value().get(0).location());
     }
 }

@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * The ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications model.
+ * The subscription lifecycle notification specifications.
  */
 @Fluent
 public final class ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications

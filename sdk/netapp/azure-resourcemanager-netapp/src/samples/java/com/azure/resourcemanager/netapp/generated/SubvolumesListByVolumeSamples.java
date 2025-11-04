@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class SubvolumesListByVolumeSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Subvolumes_List.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Subvolumes_List.json
      */
     /**
      * Sample code: Subvolumes_List.

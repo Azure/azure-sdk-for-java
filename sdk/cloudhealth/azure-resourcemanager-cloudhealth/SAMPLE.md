@@ -51,6 +51,81 @@
 ### AuthenticationSettings_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.cloudhealth.models.ManagedIdentityAuthenticationSettingProperties;
+
+/**
+ * Samples for AuthenticationSettings CreateOrUpdate.
+ */
+public final class AuthenticationSettingsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: AuthenticationSettings_CreateOrUpdate.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void
+        authenticationSettingsCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.authenticationSettings()
+            .define("myAuthSetting")
+            .withExistingHealthmodel("myResourceGroup", "myHealthModel")
+            .withProperties(new ManagedIdentityAuthenticationSettingProperties().withDisplayName("myDisplayName")
+                .withManagedIdentityName("SystemAssigned"))
+            .create();
+    }
+}
+```
+
+### AuthenticationSettings_Delete
+
+```java
+/**
+ * Samples for AuthenticationSettings Delete.
+ */
+public final class AuthenticationSettingsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Delete.json
+     */
+    /**
+     * Sample code: AuthenticationSettings_Delete.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void authenticationSettingsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.authenticationSettings()
+            .deleteWithResponse("my-resource-group", "my-health-model", "my-auth-setting",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AuthenticationSettings_Get
+
+```java
+/**
+ * Samples for AuthenticationSettings Get.
+ */
+public final class AuthenticationSettingsGetSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Get.json
+     */
+    /**
+     * Sample code: AuthenticationSettings_Get.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void authenticationSettingsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.authenticationSettings()
+            .getWithResponse("my-resource-group", "my-health-model", "my-auth-setting",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AuthenticationSettings_ListByHealthModel
+
+```java
 /**
  * Samples for AuthenticationSettings ListByHealthModel.
  */
@@ -71,129 +146,86 @@ public final class AuthenticationSettingsListByHealthModelSamples {
 }
 ```
 
-### AuthenticationSettings_Delete
-
-```java
-/**
- * Samples for HealthModels ListByResourceGroup.
- */
-public final class HealthModelsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: HealthModels_ListByResourceGroup.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void
-        healthModelsListByResourceGroup(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.healthModels().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AuthenticationSettings_Get
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/Operations_List.json
-     */
-    /**
-     * Sample code: Operations_List.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void operationsList(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AuthenticationSettings_ListByHealthModel
-
-```java
-
-/**
- * Samples for Relationships ListByHealthModel.
- */
-public final class RelationshipsListByHealthModelSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_ListByHealthModel.json
-     */
-    /**
-     * Sample code: Relationships_ListByHealthModel.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void
-        relationshipsListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.relationships().listByHealthModel("rgopenapi", "model1", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### DiscoveryRules_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
-import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
-import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
-import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
 
 /**
- * Samples for HealthModels Create.
+ * Samples for DiscoveryRules CreateOrUpdate.
  */
-public final class HealthModelsCreateSamples {
+public final class DiscoveryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Create.json
+     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_CreateOrUpdate.json
      */
     /**
-     * Sample code: HealthModels_Create.
+     * Sample code: DiscoveryRules_CreateOrUpdate.
      * 
      * @param manager Entry point to CloudHealthManager.
      */
-    public static void healthModelsCreate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.healthModels()
-            .define("model1")
-            .withRegion("eastus2")
-            .withExistingResourceGroup("rgopenapi")
-            .withTags(mapOf("key2961", "fakeTokenPlaceholder"))
-            .withProperties(new HealthModelProperties().withDiscovery(
-                new ModelDiscoverySettings().withScope("/providers/Microsoft.Management/serviceGroups/myServiceGroup")
-                    .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
-                    .withIdentity("SystemAssigned")))
-            .withIdentity(new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1",
-                    new UserAssignedIdentity())))
+    public static void discoveryRulesCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.discoveryRules()
+            .define("myDiscoveryRule")
+            .withExistingHealthmodel("myResourceGroup", "myHealthModel")
+            .withProperties(new DiscoveryRuleProperties().withDisplayName("myDisplayName")
+                .withResourceGraphQuery(
+                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")
+                .withAuthenticationSetting("authSetting1")
+                .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
+                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED))
             .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
 ```
 
 ### DiscoveryRules_Delete
+
+```java
+/**
+ * Samples for DiscoveryRules Delete.
+ */
+public final class DiscoveryRulesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_Delete.json
+     */
+    /**
+     * Sample code: DiscoveryRules_Delete.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void discoveryRulesDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.discoveryRules()
+            .deleteWithResponse("my-resource-group", "my-health-model", "my-discovery-rule",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiscoveryRules_Get
+
+```java
+/**
+ * Samples for DiscoveryRules Get.
+ */
+public final class DiscoveryRulesGetSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_Get.json
+     */
+    /**
+     * Sample code: DiscoveryRules_Get.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void discoveryRulesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.discoveryRules()
+            .getWithResponse("myResourceGroup", "myHealthModel", "myDiscoveryRule", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiscoveryRules_ListByHealthModel
 
 ```java
 
@@ -217,166 +249,7 @@ public final class DiscoveryRulesListByHealthModelSamples {
 }
 ```
 
-### DiscoveryRules_Get
-
-```java
-
-/**
- * Samples for SignalDefinitions ListByHealthModel.
- */
-public final class SignalDefinitionsListByHealthModelSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_ListByHealthModel.json
-     */
-    /**
-     * Sample code: SignalDefinitions_ListByHealthModel.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void
-        signalDefinitionsListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.signalDefinitions()
-            .listByHealthModel("rgopenapi", "myHealthModel", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DiscoveryRules_ListByHealthModel
-
-```java
-
-/**
- * Samples for Entities ListByHealthModel.
- */
-public final class EntitiesListByHealthModelSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_ListByHealthModel.json
-     */
-    /**
-     * Sample code: Entities_ListByHealthModel.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void entitiesListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.entities()
-            .listByHealthModel("rgopenapi", "gPWT6GP85xRV248L7LhNRTD--2Yc73wu-5Qk-0tS", null,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Entities_CreateOrUpdate
-
-```java
-/**
- * Samples for Relationships Get.
- */
-public final class RelationshipsGetSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_Get.json
-     */
-    /**
-     * Sample code: Relationships_Get.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void relationshipsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.relationships()
-            .getWithResponse("rgopenapi", "myHealthModel", "Ue-21-F3M12V3w-13x18F8H-7HOk--kq6tP-HB",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Entities_Delete
-
-```java
-/**
- * Samples for DiscoveryRules Delete.
- */
-public final class DiscoveryRulesDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_Delete.json
-     */
-    /**
-     * Sample code: DiscoveryRules_Delete.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void discoveryRulesDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.discoveryRules()
-            .deleteWithResponse("my-resource-group", "my-health-model", "my-discovery-rule",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Entities_Get
-
-```java
-/**
- * Samples for DiscoveryRules Get.
- */
-public final class DiscoveryRulesGetSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_Get.json
-     */
-    /**
-     * Sample code: DiscoveryRules_Get.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void discoveryRulesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.discoveryRules()
-            .getWithResponse("myResourceGroup", "myHealthModel", "myDiscoveryRule", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Entities_ListByHealthModel
-
-```java
-/**
- * Samples for HealthModels Delete.
- */
-public final class HealthModelsDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Delete.json
-     */
-    /**
-     * Sample code: HealthModels_Delete.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void healthModelsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.healthModels().delete("rgopenapi", "model1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### HealthModels_Create
-
-```java
-/**
- * Samples for SignalDefinitions Get.
- */
-public final class SignalDefinitionsGetSamples {
-    /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_Get.json
-     */
-    /**
-     * Sample code: SignalDefinitions_Get.
-     * 
-     * @param manager Entry point to CloudHealthManager.
-     */
-    public static void signalDefinitionsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.signalDefinitions()
-            .getWithResponse("rgopenapi", "myHealthModel", "sig1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### HealthModels_Delete
 
 ```java
 import com.azure.resourcemanager.cloudhealth.models.AlertConfiguration;
@@ -465,7 +338,7 @@ public final class EntitiesCreateOrUpdateSamples {
 }
 ```
 
-### HealthModels_GetByResourceGroup
+### Entities_Delete
 
 ```java
 /**
@@ -488,41 +361,129 @@ public final class EntitiesDeleteSamples {
 }
 ```
 
-### HealthModels_List
+### Entities_Get
 
 ```java
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
-
 /**
- * Samples for DiscoveryRules CreateOrUpdate.
+ * Samples for Entities Get.
  */
-public final class DiscoveryRulesCreateOrUpdateSamples {
+public final class EntitiesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_CreateOrUpdate.json
+     * x-ms-original-file: 2025-05-01-preview/Entities_Get.json
      */
     /**
-     * Sample code: DiscoveryRules_CreateOrUpdate.
+     * Sample code: Entities_Get.
      * 
      * @param manager Entry point to CloudHealthManager.
      */
-    public static void discoveryRulesCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.discoveryRules()
-            .define("myDiscoveryRule")
-            .withExistingHealthmodel("myResourceGroup", "myHealthModel")
-            .withProperties(new DiscoveryRuleProperties().withDisplayName("myDisplayName")
-                .withResourceGraphQuery(
-                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")
-                .withAuthenticationSetting("authSetting1")
-                .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
-                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED))
-            .create();
+    public static void entitiesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.entities().getWithResponse("rgopenapi", "myHealthModel", "entity1", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### HealthModels_ListByResourceGroup
+### Entities_ListByHealthModel
+
+```java
+
+/**
+ * Samples for Entities ListByHealthModel.
+ */
+public final class EntitiesListByHealthModelSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Entities_ListByHealthModel.json
+     */
+    /**
+     * Sample code: Entities_ListByHealthModel.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void entitiesListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.entities()
+            .listByHealthModel("rgopenapi", "gPWT6GP85xRV248L7LhNRTD--2Yc73wu-5Qk-0tS", null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HealthModels_Create
+
+```java
+import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
+import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
+import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
+import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for HealthModels Create.
+ */
+public final class HealthModelsCreateSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/HealthModels_Create.json
+     */
+    /**
+     * Sample code: HealthModels_Create.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void healthModelsCreate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.healthModels()
+            .define("model1")
+            .withRegion("eastus2")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key2961", "fakeTokenPlaceholder"))
+            .withProperties(new HealthModelProperties().withDiscovery(
+                new ModelDiscoverySettings().withScope("/providers/Microsoft.Management/serviceGroups/myServiceGroup")
+                    .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
+                    .withIdentity("SystemAssigned")))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### HealthModels_Delete
+
+```java
+/**
+ * Samples for HealthModels Delete.
+ */
+public final class HealthModelsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/HealthModels_Delete.json
+     */
+    /**
+     * Sample code: HealthModels_Delete.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void healthModelsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.healthModels().delete("rgopenapi", "model1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HealthModels_GetByResourceGroup
 
 ```java
 /**
@@ -544,7 +505,7 @@ public final class HealthModelsGetByResourceGroupSamples {
 }
 ```
 
-### HealthModels_Update
+### HealthModels_List
 
 ```java
 /**
@@ -566,30 +527,29 @@ public final class HealthModelsListSamples {
 }
 ```
 
-### Operations_List
+### HealthModels_ListByResourceGroup
 
 ```java
 /**
- * Samples for AuthenticationSettings Get.
+ * Samples for HealthModels ListByResourceGroup.
  */
-public final class AuthenticationSettingsGetSamples {
+public final class HealthModelsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Get.json
+     * x-ms-original-file: 2025-05-01-preview/HealthModels_ListByResourceGroup.json
      */
     /**
-     * Sample code: AuthenticationSettings_Get.
+     * Sample code: HealthModels_ListByResourceGroup.
      * 
      * @param manager Entry point to CloudHealthManager.
      */
-    public static void authenticationSettingsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.authenticationSettings()
-            .getWithResponse("my-resource-group", "my-health-model", "my-auth-setting",
-                com.azure.core.util.Context.NONE);
+    public static void
+        healthModelsListByResourceGroup(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.healthModels().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Relationships_CreateOrUpdate
+### HealthModels_Update
 
 ```java
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
@@ -639,30 +599,28 @@ public final class HealthModelsUpdateSamples {
 }
 ```
 
-### Relationships_Delete
+### Operations_List
 
 ```java
 /**
- * Samples for AuthenticationSettings Delete.
+ * Samples for Operations List.
  */
-public final class AuthenticationSettingsDeleteSamples {
+public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Delete.json
+     * x-ms-original-file: 2025-05-01-preview/Operations_List.json
      */
     /**
-     * Sample code: AuthenticationSettings_Delete.
+     * Sample code: Operations_List.
      * 
      * @param manager Entry point to CloudHealthManager.
      */
-    public static void authenticationSettingsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.authenticationSettings()
-            .deleteWithResponse("my-resource-group", "my-health-model", "my-auth-setting",
-                com.azure.core.util.Context.NONE);
+    public static void operationsList(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Relationships_Get
+### Relationships_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.cloudhealth.models.RelationshipProperties;
@@ -706,7 +664,7 @@ public final class RelationshipsCreateOrUpdateSamples {
 }
 ```
 
-### Relationships_ListByHealthModel
+### Relationships_Delete
 
 ```java
 /**
@@ -727,36 +685,53 @@ public final class RelationshipsDeleteSamples {
 }
 ```
 
-### SignalDefinitions_CreateOrUpdate
+### Relationships_Get
 
 ```java
-import com.azure.resourcemanager.cloudhealth.models.ManagedIdentityAuthenticationSettingProperties;
-
 /**
- * Samples for AuthenticationSettings CreateOrUpdate.
+ * Samples for Relationships Get.
  */
-public final class AuthenticationSettingsCreateOrUpdateSamples {
+public final class RelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_CreateOrUpdate.json
+     * x-ms-original-file: 2025-05-01-preview/Relationships_Get.json
      */
     /**
-     * Sample code: AuthenticationSettings_CreateOrUpdate.
+     * Sample code: Relationships_Get.
      * 
      * @param manager Entry point to CloudHealthManager.
      */
-    public static void
-        authenticationSettingsCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.authenticationSettings()
-            .define("myAuthSetting")
-            .withExistingHealthmodel("myResourceGroup", "myHealthModel")
-            .withProperties(new ManagedIdentityAuthenticationSettingProperties().withDisplayName("myDisplayName")
-                .withManagedIdentityName("SystemAssigned"))
-            .create();
+    public static void relationshipsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.relationships()
+            .getWithResponse("rgopenapi", "myHealthModel", "Ue-21-F3M12V3w-13x18F8H-7HOk--kq6tP-HB",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### SignalDefinitions_Delete
+### Relationships_ListByHealthModel
+
+```java
+
+/**
+ * Samples for Relationships ListByHealthModel.
+ */
+public final class RelationshipsListByHealthModelSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Relationships_ListByHealthModel.json
+     */
+    /**
+     * Sample code: Relationships_ListByHealthModel.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void
+        relationshipsListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.relationships().listByHealthModel("rgopenapi", "model1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SignalDefinitions_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
@@ -815,7 +790,7 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
 }
 ```
 
-### SignalDefinitions_Get
+### SignalDefinitions_Delete
 
 ```java
 /**
@@ -836,23 +811,48 @@ public final class SignalDefinitionsDeleteSamples {
 }
 ```
 
-### SignalDefinitions_ListByHealthModel
+### SignalDefinitions_Get
 
 ```java
 /**
- * Samples for Entities Get.
+ * Samples for SignalDefinitions Get.
  */
-public final class EntitiesGetSamples {
+public final class SignalDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_Get.json
+     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_Get.json
      */
     /**
-     * Sample code: Entities_Get.
+     * Sample code: SignalDefinitions_Get.
      * 
      * @param manager Entry point to CloudHealthManager.
      */
-    public static void entitiesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.entities().getWithResponse("rgopenapi", "myHealthModel", "entity1", com.azure.core.util.Context.NONE);
+    public static void signalDefinitionsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.signalDefinitions()
+            .getWithResponse("rgopenapi", "myHealthModel", "sig1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SignalDefinitions_ListByHealthModel
+
+```java
+
+/**
+ * Samples for SignalDefinitions ListByHealthModel.
+ */
+public final class SignalDefinitionsListByHealthModelSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_ListByHealthModel.json
+     */
+    /**
+     * Sample code: SignalDefinitions_ListByHealthModel.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void
+        signalDefinitionsListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.signalDefinitions()
+            .listByHealthModel("rgopenapi", "myHealthModel", null, com.azure.core.util.Context.NONE);
     }
 }
 ```

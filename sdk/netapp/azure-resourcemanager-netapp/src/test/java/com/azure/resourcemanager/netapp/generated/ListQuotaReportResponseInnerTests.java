@@ -15,7 +15,7 @@ public final class ListQuotaReportResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListQuotaReportResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"pomgkopkwhojvp\",\"quotaLimitUsedInKiBs\":4279032137659144852,\"quotaLimitTotalInKiBs\":8997316824402958697,\"percentageUsed\":90.659065,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"qvmkcxo\",\"quotaLimitUsedInKiBs\":471020820536063690,\"quotaLimitTotalInKiBs\":5939290521556195540,\"percentageUsed\":34.474384,\"isDerivedQuota\":true},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"tddckcb\",\"quotaLimitUsedInKiBs\":5774593596555668768,\"quotaLimitTotalInKiBs\":1999500267063441667,\"percentageUsed\":58.71668,\"isDerivedQuota\":true},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"hos\",\"quotaLimitUsedInKiBs\":1466489575973148390,\"quotaLimitTotalInKiBs\":2817771375039124322,\"percentageUsed\":4.6601415,\"isDerivedQuota\":false}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"pomgkopkwhojvp\",\"quotaLimitUsedInKiBs\":4279032137659144852,\"quotaLimitTotalInKiBs\":8997316824402958697,\"percentageUsed\":90.659065,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"qvmkcxo\",\"quotaLimitUsedInKiBs\":471020820536063690,\"quotaLimitTotalInKiBs\":5939290521556195540,\"percentageUsed\":34.474384,\"isDerivedQuota\":true},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"tddckcb\",\"quotaLimitUsedInKiBs\":5774593596555668768,\"quotaLimitTotalInKiBs\":1999500267063441667,\"percentageUsed\":58.71668,\"isDerivedQuota\":true},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"hos\",\"quotaLimitUsedInKiBs\":1466489575973148390,\"quotaLimitTotalInKiBs\":2817771375039124322,\"percentageUsed\":4.6601415,\"isDerivedQuota\":false}]}")
             .toObject(ListQuotaReportResponseInner.class);
         Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.value().get(0).quotaType());
         Assertions.assertEquals("pomgkopkwhojvp", model.value().get(0).quotaTarget());
@@ -23,7 +23,6 @@ public final class ListQuotaReportResponseInnerTests {
         Assertions.assertEquals(8997316824402958697L, model.value().get(0).quotaLimitTotalInKiBs());
         Assertions.assertEquals(90.659065F, model.value().get(0).percentageUsed());
         Assertions.assertFalse(model.value().get(0).isDerivedQuota());
-        Assertions.assertEquals("m", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -52,8 +51,7 @@ public final class ListQuotaReportResponseInnerTests {
                 .withQuotaLimitUsedInKiBs(1466489575973148390L)
                 .withQuotaLimitTotalInKiBs(2817771375039124322L)
                 .withPercentageUsed(4.6601415F)
-                .withIsDerivedQuota(false)))
-            .withNextLink("m");
+                .withIsDerivedQuota(false)));
         model = BinaryData.fromObject(model).toObject(ListQuotaReportResponseInner.class);
         Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.value().get(0).quotaType());
         Assertions.assertEquals("pomgkopkwhojvp", model.value().get(0).quotaTarget());
@@ -61,6 +59,5 @@ public final class ListQuotaReportResponseInnerTests {
         Assertions.assertEquals(8997316824402958697L, model.value().get(0).quotaLimitTotalInKiBs());
         Assertions.assertEquals(90.659065F, model.value().get(0).percentageUsed());
         Assertions.assertFalse(model.value().get(0).isDerivedQuota());
-        Assertions.assertEquals("m", model.nextLink());
     }
 }

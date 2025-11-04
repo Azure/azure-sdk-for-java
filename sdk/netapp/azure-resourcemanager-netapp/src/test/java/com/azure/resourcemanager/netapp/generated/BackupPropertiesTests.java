@@ -12,24 +12,24 @@ public final class BackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupProperties model = BinaryData.fromString(
-            "{\"backupId\":\"kq\",\"creationDate\":\"2021-05-30T08:11:11Z\",\"snapshotCreationDate\":\"2021-11-18T10:38:36Z\",\"completionDate\":\"2021-08-16T02:48:50Z\",\"provisioningState\":\"sjc\",\"size\":9014783078965490836,\"label\":\"ntiew\",\"backupType\":\"Manual\",\"failureReason\":\"bquwrbehw\",\"volumeResourceId\":\"gohbuffkmrq\",\"useExistingSnapshot\":true,\"snapshotName\":\"hmxtdr\",\"backupPolicyResourceId\":\"utacoe\",\"isLargeVolume\":false}")
+            "{\"backupId\":\"wfscjfn\",\"creationDate\":\"2021-07-26T17:01:13Z\",\"snapshotCreationDate\":\"2021-06-16T16:28:25Z\",\"completionDate\":\"2021-11-10T04:53:36Z\",\"provisioningState\":\"zdvoqytibyowbb\",\"size\":6726059527948715904,\"label\":\"utp\",\"backupType\":\"Manual\",\"failureReason\":\"xoi\",\"volumeResourceId\":\"msksbp\",\"useExistingSnapshot\":false,\"snapshotName\":\"oljxkcgx\",\"backupPolicyResourceId\":\"xsffgcviz\",\"isLargeVolume\":false}")
             .toObject(BackupProperties.class);
-        Assertions.assertEquals("ntiew", model.label());
-        Assertions.assertEquals("gohbuffkmrq", model.volumeResourceId());
-        Assertions.assertTrue(model.useExistingSnapshot());
-        Assertions.assertEquals("hmxtdr", model.snapshotName());
+        Assertions.assertEquals("utp", model.label());
+        Assertions.assertEquals("msksbp", model.volumeResourceId());
+        Assertions.assertFalse(model.useExistingSnapshot());
+        Assertions.assertEquals("oljxkcgx", model.snapshotName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupProperties model = new BackupProperties().withLabel("ntiew")
-            .withVolumeResourceId("gohbuffkmrq")
-            .withUseExistingSnapshot(true)
-            .withSnapshotName("hmxtdr");
+        BackupProperties model = new BackupProperties().withLabel("utp")
+            .withVolumeResourceId("msksbp")
+            .withUseExistingSnapshot(false)
+            .withSnapshotName("oljxkcgx");
         model = BinaryData.fromObject(model).toObject(BackupProperties.class);
-        Assertions.assertEquals("ntiew", model.label());
-        Assertions.assertEquals("gohbuffkmrq", model.volumeResourceId());
-        Assertions.assertTrue(model.useExistingSnapshot());
-        Assertions.assertEquals("hmxtdr", model.snapshotName());
+        Assertions.assertEquals("utp", model.label());
+        Assertions.assertEquals("msksbp", model.volumeResourceId());
+        Assertions.assertFalse(model.useExistingSnapshot());
+        Assertions.assertEquals("oljxkcgx", model.snapshotName());
     }
 }

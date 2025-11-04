@@ -28,7 +28,7 @@ import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
-import com.azure.messaging.webpubsub.models.WebPubSubGroupMember;
+import com.azure.messaging.webpubsub.models.WebPubSubGroupConnection;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 
 import reactor.core.publisher.Flux;
@@ -441,7 +441,6 @@ public final class WebPubSubServiceAsyncClient {
      * }
      * </pre>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
      * @param group Target group name, whose length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -451,8 +450,7 @@ public final class WebPubSubServiceAsyncClient {
      * @return represents a page of elements as a LIST REST API result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WebPubSubGroupMember> listConnectionsInGroup(String hub, String group,
-        RequestOptions requestOptions) {
+    public PagedFlux<WebPubSubGroupConnection> listConnectionsInGroup(String group, RequestOptions requestOptions) {
         PagedFlux<BinaryData> binaryDataPagedFlux
             = this.serviceClient.listConnectionsInGroupAsync(hub, group, requestOptions);
 
@@ -464,7 +462,7 @@ public final class WebPubSubServiceAsyncClient {
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(bd -> bd.toObject(WebPubSubGroupMember.class))
+                    .map(bd -> bd.toObject(WebPubSubGroupConnection.class))
                     .collect(java.util.stream.Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });

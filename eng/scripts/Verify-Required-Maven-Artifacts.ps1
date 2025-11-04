@@ -16,7 +16,14 @@ param(
 
 Write-Host "BuildOutputDirectory=$($BuildOutputDirectory)"
 Write-Host "BuildOutputDirectory contents"
-Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name
+# Capture the names of the files in the $BuildOutputDirectory
+$files = Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name
+# Print the files to the console for debugging purposes
+$files | Out-Host
+# Filter the files to only include those that are relevant for Maven publishing
+# This file list will then be used further down to verify that all the required files
+# for either the passed $ArtifactsList or the PackageInfoDir are present.
+$files = $files | Where-Object { $_.EndsWith(".pom") -or $_.EndsWith(".jar") -or $_.EndsWith("-javadoc.jar") -or $_.EndsWith("-sources.jar") }
 
 if (-not $ArtifactsList) {
   $ArtifactsList = @()
@@ -56,19 +63,19 @@ class Dependency {
   Dependency(
       [string]$inputString
   ){
-      $split = $inputString.Split(";")
-      if (($split.Count -ne 3) -and ($split.Count -ne 2))
-      {
-          # throw and let the caller handle the error since it'll have access to the
-          # filename of the file with the malformed line for reporting
-          throw
-      }
-      $this.id = $split[0]
-      $this.depVer = $split[1]
-      if ($split.Count -eq 3)
-      {
-          $this.curVer = $split[2]
-      }
+    $split = $inputString.Split(";")
+    if (($split.Count -ne 3) -and ($split.Count -ne 2))
+    {
+        # throw and let the caller handle the error since it'll have access to the
+        # filename of the file with the malformed line for reporting
+        throw
+    }
+    $this.id = $split[0]
+    $this.depVer = $split[1]
+    if ($split.Count -eq 3)
+    {
+        $this.curVer = $split[2]
+    }
   }
 }
 
@@ -78,29 +85,28 @@ function Build-Dependency-Hash-From-File {
       [string]$depFile)
   foreach($line in Get-Content $depFile)
   {
-      if (!$line -or $line.Trim() -eq '' -or $line.StartsWith("#"))
+    if (!$line -or $line.Trim() -eq '' -or $line.StartsWith("#"))
+    {
+      continue
+    }
+    try {
+      [Dependency]$dep = [Dependency]::new($line)
+      if ($depHash.ContainsKey($dep.id))
       {
-          continue
+        Write-Host "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
+        continue
       }
-      try {
-          [Dependency]$dep = [Dependency]::new($line)
-          if ($depHash.ContainsKey($dep.id))
-          {
-            Write-Host "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
-            continue
-          }
-          $depHash.Add($dep.id, $dep)
-      }
-      catch {
-        Write-Host "Invalid dependency line='$($line) in file=$($depFile)"
-      }
+      $depHash.Add($dep.id, $dep)
+    }
+    catch {
+      Write-Host "Invalid dependency line='$($line) in file=$($depFile)"
+    }
   }
 }
 
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 $libHash = @{}
 Build-Dependency-Hash-From-File $libHash $Path\eng\versioning\version_client.txt
-Build-Dependency-Hash-From-File $libHash $Path\eng\versioning\version_data.txt
 $foundError = $false
 
 # Check for the existence of the files in the build directory. The resulting built artifacts
@@ -112,7 +118,11 @@ foreach($artifact in $ArtifactsList) {
   $libHashKey = "$($artifact.groupId):$($artifact.name)"
   foreach ($fileType in $requiredFileTypes) {
     $fileName = "$($artifact.name)-$($libHash[$libHashKey].curVer)$($fileType)"
-    $file = @(Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name $fileName)
+    # Only need to check for a file ending with the $fileName.
+    # A previous version of this script used Get-ChildItem with a check for $fileName.
+    # That was extremely inefficient as the $BuildOutputDirectory can contain thousands of files.
+    # Using Where-Object to filter the files is much more efficient.
+    $file = $files | Where-Object { $_.EndsWith($fileName) }
     if (!$file) {
       $foundError = $true
       LogError "Required file, $fileName, was not produced with the build."

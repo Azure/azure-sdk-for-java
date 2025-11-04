@@ -23,7 +23,7 @@ public final class UsersListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"hmdua\",\"role\":\"dbOwner\"},{\"db\":\"exq\",\"role\":\"dbOwner\"}]},\"id\":\"adm\",\"name\":\"sr\",\"type\":\"r\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"htxongmtsavjc\",\"role\":\"root\"},{\"db\":\"wxqpsrknftguvri\",\"role\":\"root\"},{\"db\":\"prwmdyvxqt\",\"role\":\"root\"},{\"db\":\"riwwroy\",\"role\":\"root\"}]},\"id\":\"xrmcqibycnojvk\",\"name\":\"mefqsgzvahapjyzh\",\"type\":\"vgqzcjrvxd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class UsersListByMongoClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<User> response
-            = manager.users().listByMongoCluster("melmqkrha", "vljua", com.azure.core.util.Context.NONE);
+            = manager.users().listByMongoCluster("iebwwaloayqcgwrt", "j", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hmdua", response.iterator().next().properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, response.iterator().next().properties().roles().get(0).role());
+        Assertions.assertEquals("htxongmtsavjc", response.iterator().next().properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.ROOT, response.iterator().next().properties().roles().get(0).role());
     }
 }
