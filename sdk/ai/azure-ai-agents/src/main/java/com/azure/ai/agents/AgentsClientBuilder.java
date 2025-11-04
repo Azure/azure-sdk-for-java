@@ -273,8 +273,8 @@ public final class AgentsClientBuilder
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         AgentsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
-        ProjectsClientImpl client = new ProjectsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, localServiceVersion);
+        ProjectsClientImpl client = new ProjectsClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
