@@ -155,7 +155,6 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      */
     public void setInstrumentationId(String instrumentationId) {
         this.instrumentationId = instrumentationId;
-
     }
 
     /**
