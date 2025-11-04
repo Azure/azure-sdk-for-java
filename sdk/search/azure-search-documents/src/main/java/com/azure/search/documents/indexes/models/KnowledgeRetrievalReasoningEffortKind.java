@@ -16,7 +16,7 @@ import java.util.Collection;
 public final class KnowledgeRetrievalReasoningEffortKind
     extends ExpandableStringEnum<KnowledgeRetrievalReasoningEffortKind> {
     /**
-     * Does not perform any source selections, any query planning, or any iterative search.
+     * Does not perform any source selections, query planning, or iterative search.
      */
     @Generated
     public static final KnowledgeRetrievalReasoningEffortKind MINIMAL = fromString("minimal");

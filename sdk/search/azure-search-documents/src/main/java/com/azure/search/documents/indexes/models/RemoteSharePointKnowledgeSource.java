@@ -12,8 +12,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Configuration for remote SharePoint knowledge source.
@@ -30,19 +28,16 @@ public final class RemoteSharePointKnowledgeSource extends KnowledgeSource {
      * The parameters for the knowledge source.
      */
     @Generated
-    private final RemoteSharePointKnowledgeSourceParameters remoteSharePointParameters;
+    private RemoteSharePointKnowledgeSourceParameters remoteSharePointParameters;
 
     /**
      * Creates an instance of RemoteSharePointKnowledgeSource class.
      * 
      * @param name the name value to set.
-     * @param remoteSharePointParameters the remoteSharePointParameters value to set.
      */
     @Generated
-    public RemoteSharePointKnowledgeSource(String name,
-        RemoteSharePointKnowledgeSourceParameters remoteSharePointParameters) {
+    public RemoteSharePointKnowledgeSource(String name) {
         super(name);
-        this.remoteSharePointParameters = remoteSharePointParameters;
     }
 
     /**
@@ -64,6 +59,19 @@ public final class RemoteSharePointKnowledgeSource extends KnowledgeSource {
     @Generated
     public RemoteSharePointKnowledgeSourceParameters getRemoteSharePointParameters() {
         return this.remoteSharePointParameters;
+    }
+
+    /**
+     * Set the remoteSharePointParameters property: The parameters for the knowledge source.
+     * 
+     * @param remoteSharePointParameters the remoteSharePointParameters value to set.
+     * @return the RemoteSharePointKnowledgeSource object itself.
+     */
+    @Generated
+    public RemoteSharePointKnowledgeSource
+        setRemoteSharePointParameters(RemoteSharePointKnowledgeSourceParameters remoteSharePointParameters) {
+        this.remoteSharePointParameters = remoteSharePointParameters;
+        return this;
     }
 
     /**
@@ -107,8 +115,8 @@ public final class RemoteSharePointKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
-        jsonWriter.writeJsonField("remoteSharePointParameters", this.remoteSharePointParameters);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("remoteSharePointParameters", this.remoteSharePointParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,9 +137,8 @@ public final class RemoteSharePointKnowledgeSource extends KnowledgeSource {
             String description = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
-            boolean remoteSharePointParametersFound = false;
-            RemoteSharePointKnowledgeSourceParameters remoteSharePointParameters = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.REMOTE_SHARE_POINT;
+            RemoteSharePointKnowledgeSourceParameters remoteSharePointParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -145,35 +152,26 @@ public final class RemoteSharePointKnowledgeSource extends KnowledgeSource {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else if ("remoteSharePointParameters".equals(fieldName)) {
-                    remoteSharePointParameters = RemoteSharePointKnowledgeSourceParameters.fromJson(reader);
-                    remoteSharePointParametersFound = true;
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
+                } else if ("remoteSharePointParameters".equals(fieldName)) {
+                    remoteSharePointParameters = RemoteSharePointKnowledgeSourceParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (nameFound && remoteSharePointParametersFound) {
+            if (nameFound) {
                 RemoteSharePointKnowledgeSource deserializedRemoteSharePointKnowledgeSource
-                    = new RemoteSharePointKnowledgeSource(name, remoteSharePointParameters);
+                    = new RemoteSharePointKnowledgeSource(name);
                 deserializedRemoteSharePointKnowledgeSource.setDescription(description);
                 deserializedRemoteSharePointKnowledgeSource.setETag(eTag);
                 deserializedRemoteSharePointKnowledgeSource.setEncryptionKey(encryptionKey);
                 deserializedRemoteSharePointKnowledgeSource.kind = kind;
+                deserializedRemoteSharePointKnowledgeSource.remoteSharePointParameters = remoteSharePointParameters;
 
                 return deserializedRemoteSharePointKnowledgeSource;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!remoteSharePointParametersFound) {
-                missingProperties.add("remoteSharePointParameters");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: name");
         });
     }
 }
