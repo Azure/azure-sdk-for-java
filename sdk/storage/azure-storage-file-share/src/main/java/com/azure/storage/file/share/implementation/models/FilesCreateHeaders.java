@@ -8,9 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.NfsFileType;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 
 /**
  * The FilesCreateHeaders model.
@@ -78,6 +80,12 @@ public final class FilesCreateHeaders {
     private String xMsMode;
 
     /*
+     * The Content-MD5 property.
+     */
+    @Generated
+    private byte[] contentMD5;
+
+    /*
      * The ETag property.
      */
     @Generated
@@ -100,6 +108,12 @@ public final class FilesCreateHeaders {
      */
     @Generated
     private String xMsFileParentId;
+
+    /*
+     * The Content-Length property.
+     */
+    @Generated
+    private Long contentLength;
 
     /*
      * The x-ms-request-id property.
@@ -190,6 +204,12 @@ public final class FilesCreateHeaders {
             this.date = null;
         }
         this.xMsMode = rawHeaders.getValue(X_MS_MODE);
+        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        if (contentMD5 != null) {
+            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        } else {
+            this.contentMD5 = null;
+        }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
@@ -199,6 +219,12 @@ public final class FilesCreateHeaders {
             this.xMsFileChangeTime = null;
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
+        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength != null) {
+            this.contentLength = Long.parseLong(contentLength);
+        } else {
+            this.contentLength = null;
+        }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
@@ -444,6 +470,28 @@ public final class FilesCreateHeaders {
     }
 
     /**
+     * Get the contentMD5 property: The Content-MD5 property.
+     * 
+     * @return the contentMD5 value.
+     */
+    @Generated
+    public byte[] getContentMD5() {
+        return CoreUtils.clone(this.contentMD5);
+    }
+
+    /**
+     * Set the contentMD5 property: The Content-MD5 property.
+     * 
+     * @param contentMD5 the contentMD5 value to set.
+     * @return the FilesCreateHeaders object itself.
+     */
+    @Generated
+    public FilesCreateHeaders setContentMD5(byte[] contentMD5) {
+        this.contentMD5 = CoreUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
      * Get the eTag property: The ETag property.
      * 
      * @return the eTag value.
@@ -528,6 +576,28 @@ public final class FilesCreateHeaders {
     @Generated
     public FilesCreateHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
+        return this;
+    }
+
+    /**
+     * Get the contentLength property: The Content-Length property.
+     * 
+     * @return the contentLength value.
+     */
+    @Generated
+    public Long getContentLength() {
+        return this.contentLength;
+    }
+
+    /**
+     * Set the contentLength property: The Content-Length property.
+     * 
+     * @param contentLength the contentLength value to set.
+     * @return the FilesCreateHeaders object itself.
+     */
+    @Generated
+    public FilesCreateHeaders setContentLength(Long contentLength) {
+        this.contentLength = contentLength;
         return this;
     }
 

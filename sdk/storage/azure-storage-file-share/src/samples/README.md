@@ -34,7 +34,7 @@ Following are examples for some common use-cases.
 More details about troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-Start using Storage Queue Java SDK in your solutions. Our SDK details could be found at [SDK README][SDK_README]. 
+Start using Storage Share Java SDK in your solutions. Our SDK details could be found at [SDK README][SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Storage files, see the [REST API documentation][storage_file_rest].
