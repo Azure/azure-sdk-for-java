@@ -23,6 +23,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -122,11 +123,9 @@ class ServiceBusRetryTest {
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
         bindingProperties.setConsumer(serviceBusConsumerProperties);
 
-        extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {
-            {
-                put(ENTITY_NAME, bindingProperties);
-            }
-        });
+        Map<String, ServiceBusBindingProperties> bindings = new HashMap<>();
+        bindings.put(ENTITY_NAME, bindingProperties);
+        extendedBindingProperties.setBindings(bindings);
         binder.setBindingProperties(extendedBindingProperties);
 
         consumerProperties = new ExtendedConsumerProperties<>(serviceBusConsumerProperties);
