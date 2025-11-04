@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
@@ -91,6 +92,8 @@ public class CosmosException extends AzureException {
      * RNTBD endpoint statistics
      */
     private RntbdChannelStatistics rntbdChannelStatistics;
+
+    private StoreResponse interceptedStoreResponse;
 
     /**
      * LSN
@@ -613,6 +616,14 @@ public class CosmosException extends AzureException {
 
     Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
+    }
+
+    public void setInterceptedStoreResponse(StoreResponse storeResponse) {
+        this.interceptedStoreResponse = storeResponse;
+    }
+
+    public StoreResponse getInterceptedStoreResponse() {
+        return this.interceptedStoreResponse;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
