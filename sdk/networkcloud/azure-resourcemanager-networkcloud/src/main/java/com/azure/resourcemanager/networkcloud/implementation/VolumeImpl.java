@@ -59,6 +59,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().systemData();
     }
 
+    public Long allocatedSizeMiB() {
+        return this.innerModel().allocatedSizeMiB();
+    }
+
     public List<String> attachedTo() {
         List<String> inner = this.innerModel().attachedTo();
         if (inner != null) {
@@ -86,6 +90,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public long sizeMiB() {
         return this.innerModel().sizeMiB();
+    }
+
+    public String storageApplianceId() {
+        return this.innerModel().storageApplianceId();
     }
 
     public Region region() {
@@ -227,6 +235,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
             this.updateVolumeUpdateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public VolumeImpl withStorageApplianceId(String storageApplianceId) {
+        this.innerModel().withStorageApplianceId(storageApplianceId);
+        return this;
     }
 
     public VolumeImpl withIfMatch(String ifMatch) {

@@ -160,6 +160,15 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the allocatedSizeMiB property: The allocated size of the volume in Mebibytes.
+     * 
+     * @return the allocatedSizeMiB value.
+     */
+    public Long allocatedSizeMiB() {
+        return this.innerProperties() == null ? null : this.innerProperties().allocatedSizeMiB();
+    }
+
+    /**
      * Get the attachedTo property: The list of resource IDs that attach the volume. It may include virtual machines and
      * Hybrid AKS clusters.
      * 
@@ -206,7 +215,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the sizeMiB property: The size of the allocation for this volume in Mebibytes.
+     * Get the sizeMiB property: The requested storage allocation for the volume in Mebibytes.
      * 
      * @return the sizeMiB value.
      */
@@ -215,7 +224,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the sizeMiB property: The size of the allocation for this volume in Mebibytes.
+     * Set the sizeMiB property: The requested storage allocation for the volume in Mebibytes.
      * 
      * @param sizeMiB the sizeMiB value to set.
      * @return the VolumeInner object itself.
@@ -225,6 +234,29 @@ public final class VolumeInner extends Resource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withSizeMiB(sizeMiB);
+        return this;
+    }
+
+    /**
+     * Get the storageApplianceId property: The resource ID of the storage appliance that hosts the volume.
+     * 
+     * @return the storageApplianceId value.
+     */
+    public String storageApplianceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageApplianceId();
+    }
+
+    /**
+     * Set the storageApplianceId property: The resource ID of the storage appliance that hosts the volume.
+     * 
+     * @param storageApplianceId the storageApplianceId value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withStorageApplianceId(String storageApplianceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withStorageApplianceId(storageApplianceId);
         return this;
     }
 
