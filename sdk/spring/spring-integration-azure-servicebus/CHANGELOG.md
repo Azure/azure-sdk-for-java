@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `setRetryTemplate` method to `ServiceBusInboundChannelAdapter` to support configurable retry logic for message processing.
+
 ### Breaking Changes
 
 ### Bugs Fixed
