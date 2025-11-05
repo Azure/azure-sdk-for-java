@@ -674,6 +674,35 @@
           "code": "java.method.removed",
           "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
           "justification": "Not a break, same method exists on its parent class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>()",
+          "new": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>(java.lang.Long)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AlertSeverity com.azure.resourcemanager.monitor.models.AlertSeverity::fromLong(long)",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "new": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "superClass": "com.azure.core.util.ExpandableStringEnum<com.azure.resourcemanager.monitor.models.AlertSeverity>",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(java.lang.String)",
+          "justification": "The property is a constant, and hence not settable."
         }
       ]
     }
