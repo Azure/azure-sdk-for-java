@@ -10,7 +10,8 @@ package com.azure.resourcemanager.monitor.generated;
 public final class MetricAlertsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/listMetricAlert.
+     * json
      */
     /**
      * Sample code: List metric alert rules.

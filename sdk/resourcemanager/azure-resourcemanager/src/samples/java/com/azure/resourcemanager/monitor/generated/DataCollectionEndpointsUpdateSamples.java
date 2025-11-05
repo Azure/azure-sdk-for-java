@@ -14,8 +14,8 @@ import java.util.Map;
 public final class DataCollectionEndpointsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
-     * DataCollectionEndpointsUpdate.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsPatch
+     * .json
      */
     /**
      * Sample code: Update data collection endpoint.
@@ -27,9 +27,8 @@ public final class DataCollectionEndpointsUpdateSamples {
             .manager()
             .serviceClient()
             .getDataCollectionEndpoints()
-            .updateWithResponse("myResourceGroup", "myCollectionEndpoint",
-                new ResourceForUpdate().withTags(mapOf("tag1", "A", "tag2", "B", "tag3", "C")),
-                com.azure.core.util.Context.NONE);
+            .updateWithResponse("myResourceGroup", "myDataCollectionEndpoint",
+                new ResourceForUpdate().withTags(mapOf("tag1", "A")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

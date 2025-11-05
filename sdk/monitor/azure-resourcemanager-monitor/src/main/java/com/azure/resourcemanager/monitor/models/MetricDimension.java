@@ -24,12 +24,12 @@ public final class MetricDimension implements JsonSerializable<MetricDimension> 
     private String name;
 
     /*
-     * the dimension operator. Only 'Include' and 'Exclude' are supported
+     * The dimension operator. Only 'Include' and 'Exclude' are supported
      */
     private String operator;
 
     /*
-     * list of dimension values.
+     * List of dimension values.
      */
     private List<String> values;
 
@@ -60,7 +60,7 @@ public final class MetricDimension implements JsonSerializable<MetricDimension> 
     }
 
     /**
-     * Get the operator property: the dimension operator. Only 'Include' and 'Exclude' are supported.
+     * Get the operator property: The dimension operator. Only 'Include' and 'Exclude' are supported.
      * 
      * @return the operator value.
      */
@@ -69,7 +69,7 @@ public final class MetricDimension implements JsonSerializable<MetricDimension> 
     }
 
     /**
-     * Set the operator property: the dimension operator. Only 'Include' and 'Exclude' are supported.
+     * Set the operator property: The dimension operator. Only 'Include' and 'Exclude' are supported.
      * 
      * @param operator the operator value to set.
      * @return the MetricDimension object itself.
@@ -80,7 +80,7 @@ public final class MetricDimension implements JsonSerializable<MetricDimension> 
     }
 
     /**
-     * Get the values property: list of dimension values.
+     * Get the values property: List of dimension values.
      * 
      * @return the values value.
      */
@@ -89,7 +89,7 @@ public final class MetricDimension implements JsonSerializable<MetricDimension> 
     }
 
     /**
-     * Set the values property: list of dimension values.
+     * Set the values property: List of dimension values.
      * 
      * @param values the values value to set.
      * @return the MetricDimension object itself.

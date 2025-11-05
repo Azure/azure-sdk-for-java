@@ -7,15 +7,23 @@ package com.azure.resourcemanager.monitor.generated;
 import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
 import com.azure.resourcemanager.monitor.models.AggregationTypeEnum;
 import com.azure.resourcemanager.monitor.models.DynamicMetricCriteria;
+import com.azure.resourcemanager.monitor.models.DynamicPromQLCriteria;
 import com.azure.resourcemanager.monitor.models.DynamicThresholdFailingPeriods;
 import com.azure.resourcemanager.monitor.models.DynamicThresholdOperator;
 import com.azure.resourcemanager.monitor.models.DynamicThresholdSensitivity;
+import com.azure.resourcemanager.monitor.models.Identity;
+import com.azure.resourcemanager.monitor.models.IdentityType;
 import com.azure.resourcemanager.monitor.models.MetricAlertAction;
 import com.azure.resourcemanager.monitor.models.MetricAlertMultipleResourceMultipleMetricCriteria;
 import com.azure.resourcemanager.monitor.models.MetricAlertSingleResourceMultipleMetricCriteria;
 import com.azure.resourcemanager.monitor.models.MetricCriteria;
 import com.azure.resourcemanager.monitor.models.MetricDimension;
 import com.azure.resourcemanager.monitor.models.Operator;
+import com.azure.resourcemanager.monitor.models.PromQLCriteria;
+import com.azure.resourcemanager.monitor.models.QueryFailingPeriods;
+import com.azure.resourcemanager.monitor.models.ResolveConfiguration;
+import com.azure.resourcemanager.monitor.models.StaticPromQLCriteria;
+import com.azure.resourcemanager.monitor.models.UserIdentityProperties;
 import com.azure.resourcemanager.monitor.models.WebtestLocationAvailabilityCriteria;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -28,7 +36,8 @@ import java.util.Map;
  */
 public final class MetricAlertsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateMetricAlertSubscription.json
      */
     /**
@@ -69,7 +78,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateMetricAlertResourceGroup.json
      */
     /**
@@ -110,7 +120,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateMetricAlertWithDimensions.json
      */
     /**
@@ -155,7 +166,48 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * createOrUpdateMetricAlertQuery.json
+     */
+    /**
+     * Sample code: Create or update a query based alert rule.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateAQueryBasedAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "chiricutin", new MetricAlertResourceInner().withLocation("eastus")
+                .withTags(mapOf())
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap",
+                        new UserIdentityProperties())))
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
+                .withScopes(Arrays.asList(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withCriteria(new PromQLCriteria()
+                    .withFailingPeriods(new QueryFailingPeriods().withForProperty(Duration.parse("PT5M")))
+                    .withAllOf(Arrays.asList(new StaticPromQLCriteria().withName("Metric1")
+                        .withQuery("avg({\"system.cpu.utilization\"}) > 90"))))
+                .withResolveConfiguration(
+                    new ResolveConfiguration().withAutoResolved(true).withTimeToResolve(Duration.parse("PT10M")))
+                .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")))
+                .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                .withActionProperties(mapOf("Email.Sujbect", "my custom email subject")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateWebTestMetricAlert.json
      */
     /**
@@ -192,7 +244,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateDynamicMetricAlertSingleResource.json
      */
     /**
@@ -234,7 +287,89 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * createOrUpdateMetricAlertQueryMultiResource.json
+     */
+    /**
+     * Sample code: Create or update a resource centric query based alert rule for Multiple Resources.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateAResourceCentricQueryBasedAlertRuleForMultipleResources(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "chiricutin", new MetricAlertResourceInner().withLocation("eastus")
+                .withTags(mapOf())
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap",
+                        new UserIdentityProperties())))
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
+                .withScopes(Arrays.asList("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withCriteria(new PromQLCriteria()
+                    .withFailingPeriods(new QueryFailingPeriods().withForProperty(Duration.parse("PT5M")))
+                    .withAllOf(Arrays.asList(new StaticPromQLCriteria().withName("Metric1")
+                        .withQuery("avg({\"system.cpu.utilization\"}) by (\"microsoft.resourceid\") > 90"))))
+                .withResolveConfiguration(
+                    new ResolveConfiguration().withAutoResolved(true).withTimeToResolve(Duration.parse("PT10M")))
+                .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")))
+                .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                .withActionProperties(mapOf("Email.Sujbect", "my custom email subject")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * createOrUpdateMetricAlertQueryResourceCentric.json
+     */
+    /**
+     * Sample code: Create or update a resource centric query based alert rule.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createOrUpdateAResourceCentricQueryBasedAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "chiricutin", new MetricAlertResourceInner().withLocation("eastus")
+                .withTags(mapOf())
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap",
+                        new UserIdentityProperties())))
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
+                .withScopes(Arrays.asList(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.compute/virtualMachines/myVmName"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withCriteria(new PromQLCriteria()
+                    .withFailingPeriods(new QueryFailingPeriods().withForProperty(Duration.parse("PT5M")))
+                    .withAllOf(Arrays.asList(new StaticPromQLCriteria().withName("Metric1")
+                        .withQuery("avg({\"system.cpu.utilization\"}) > 90"))))
+                .withResolveConfiguration(
+                    new ResolveConfiguration().withAutoResolved(true).withTimeToResolve(Duration.parse("PT10M")))
+                .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")))
+                .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                .withActionProperties(mapOf("Email.Sujbect", "my custom email subject")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateMetricAlertSingleResource.json
      */
     /**
@@ -255,8 +390,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"))
-                .withEvaluationFrequency(Duration.parse("Pt1m"))
-                .withWindowSize(Duration.parse("Pt15m"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withWindowSize(Duration.parse("PT15M"))
                 .withCriteria(new MetricAlertSingleResourceMultipleMetricCriteria()
                     .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
                         .withMetricName("\\Processor(_Total)\\% Processor Time")
@@ -272,7 +407,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateMetricAlertMultipleResource.json
      */
     /**
@@ -315,7 +451,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * createOrUpdateDynamicMetricAlertMultipleResource.json
      */
     /**
@@ -356,6 +493,50 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * createOrUpdateMetricAlertQueryDT.json
+     */
+    /**
+     * Sample code: Create or update a query based alert rule with dynamic threshold.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createOrUpdateAQueryBasedAlertRuleWithDynamicThreshold(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "chiricutin", new MetricAlertResourceInner().withLocation("eastus")
+                .withTags(mapOf())
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap",
+                        new UserIdentityProperties())))
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
+                .withScopes(Arrays.asList(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withCriteria(new PromQLCriteria()
+                    .withFailingPeriods(new QueryFailingPeriods().withForProperty(Duration.parse("PT5M")))
+                    .withAllOf(Arrays.asList(new DynamicPromQLCriteria().withName("Metric1")
+                        .withQuery("avg({\"system.cpu.utilization\"})")
+                        .withOperator(DynamicThresholdOperator.LESS_THAN)
+                        .withAlertSensitivity(DynamicThresholdSensitivity.MEDIUM)
+                        .withIgnoreDataBefore(OffsetDateTime.parse("2019-04-04T21:00:00.000Z")))))
+                .withResolveConfiguration(
+                    new ResolveConfiguration().withAutoResolved(true).withTimeToResolve(Duration.parse("PT10M")))
+                .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
+                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")))
+                .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                .withActionProperties(mapOf("Email.Sujbect", "my custom email subject")),
                 com.azure.core.util.Context.NONE);
     }
 

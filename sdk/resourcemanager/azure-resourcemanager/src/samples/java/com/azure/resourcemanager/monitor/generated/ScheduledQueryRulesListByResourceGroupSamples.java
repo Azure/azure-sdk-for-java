@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class ScheduledQueryRulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/
      * listScheduledQueryRulesByResourceGroup.json
      */
     /**

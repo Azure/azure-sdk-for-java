@@ -10,7 +10,7 @@ package com.azure.resourcemanager.monitor.generated;
 public final class ScheduledQueryRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/deleteScheduledQueryRule.
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/deleteScheduledQueryRule.
      * json
      */
     /**

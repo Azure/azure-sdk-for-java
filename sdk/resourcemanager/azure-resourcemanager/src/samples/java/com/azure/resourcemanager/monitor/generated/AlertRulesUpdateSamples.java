@@ -20,7 +20,8 @@ import java.util.Map;
 public final class AlertRulesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/patchAlertRule.json
+     * c0f92082a788895368a738a9200e24971157d7ca/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03
+     * -01/examples/patchAlertRule.json
      */
     /**
      * Sample code: Patch an alert rule.

@@ -10,8 +10,7 @@ package com.azure.resourcemanager.monitor.generated;
 public final class DataCollectionRulesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
-     * DataCollectionRulesGet.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionRulesGet.json
      */
     /**
      * Sample code: Get data collection rule.

@@ -10,8 +10,8 @@ package com.azure.resourcemanager.monitor.generated;
 public final class DataCollectionRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
-     * DataCollectionRulesDelete.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionRulesDelete.
+     * json
      */
     /**
      * Sample code: Delete data collection rule.
@@ -23,6 +23,6 @@ public final class DataCollectionRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getDataCollectionRules()
-            .deleteWithResponse("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("myResourceGroup", "myCollectionRule", null, com.azure.core.util.Context.NONE);
     }
 }

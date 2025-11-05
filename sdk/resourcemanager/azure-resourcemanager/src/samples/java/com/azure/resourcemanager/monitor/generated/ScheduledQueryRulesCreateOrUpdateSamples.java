@@ -12,6 +12,7 @@ import com.azure.resourcemanager.monitor.models.ConditionFailingPeriods;
 import com.azure.resourcemanager.monitor.models.ConditionOperator;
 import com.azure.resourcemanager.monitor.models.Dimension;
 import com.azure.resourcemanager.monitor.models.DimensionOperator;
+import com.azure.resourcemanager.monitor.models.RuleResolveConfiguration;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
 import com.azure.resourcemanager.monitor.models.TimeAggregation;
 import java.time.Duration;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 public final class ScheduledQueryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/
      * createOrUpdateScheduledQueryRuleSubscription.json
      */
     /**
@@ -66,15 +67,18 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
                     .withMuteActionsDuration(Duration.parse("PT30M"))
                     .withActions(new Actions().withActionGroups(Arrays.asList(
                         "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
-                        .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
+                        .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                        .withActionProperties(
+                            mapOf("Icm.Title", "Custom title in ICM", "Icm.TsgId", "https://tsg.url")))
                     .withCheckWorkspaceAlertsStorageConfigured(true)
                     .withSkipQueryValidation(true)
-                    .withAutoMitigate(true),
+                    .withResolveConfiguration(new RuleResolveConfiguration().withAutoResolved(true)
+                        .withTimeToResolve(Duration.parse("PT10M"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/
      * createOrUpdateScheduledQueryRuleResourceGroup.json
      */
     /**
@@ -109,14 +113,17 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
                 .withMuteActionsDuration(Duration.parse("PT30M"))
                 .withActions(new Actions().withActionGroups(Arrays.asList(
                     "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
-                    .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
+                    .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                    .withActionProperties(mapOf("Icm.Title", "Custom title in ICM", "Icm.TsgId", "https://tsg.url")))
                 .withCheckWorkspaceAlertsStorageConfigured(true)
                 .withSkipQueryValidation(true)
-                .withAutoMitigate(true), com.azure.core.util.Context.NONE);
+                .withResolveConfiguration(
+                    new RuleResolveConfiguration().withAutoResolved(true).withTimeToResolve(Duration.parse("PT10M"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/
      * createOrUpdateScheduledQueryRule.json
      */
     /**
@@ -158,10 +165,13 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
                 .withMuteActionsDuration(Duration.parse("PT30M"))
                 .withActions(new Actions().withActionGroups(Arrays.asList(
                     "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
-                    .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))
+                    .withCustomProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder"))
+                    .withActionProperties(mapOf("Icm.Title", "Custom title in ICM", "Icm.TsgId", "https://tsg.url")))
                 .withCheckWorkspaceAlertsStorageConfigured(true)
                 .withSkipQueryValidation(true)
-                .withAutoMitigate(true), com.azure.core.util.Context.NONE);
+                .withResolveConfiguration(
+                    new RuleResolveConfiguration().withAutoResolved(true).withTimeToResolve(Duration.parse("PT10M"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

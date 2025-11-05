@@ -10,8 +10,26 @@ package com.azure.resourcemanager.monitor.generated;
 public final class MetricAlertsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertResourceGroup.
-     * json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getMetricAlertQuery
+     * .json
+     */
+    /**
+     * Sample code: Get a query based alert rule.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAQueryBasedAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * getMetricAlertResourceGroup.json
      */
     /**
      * Sample code: Get an alert rule on resource group(s).
@@ -28,7 +46,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * getDynamicMetricAlertMultipleResource.json
      */
     /**
@@ -47,7 +66,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getWebTestMetricAlert.json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * getWebTestMetricAlert.json
      */
     /**
      * Sample code: Get a web test alert rule.
@@ -64,8 +84,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSingleResource
-     * .json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * getMetricAlertSingleResource.json
      */
     /**
      * Sample code: Get an alert rule for single resource.
@@ -82,8 +102,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSubscription.
-     * json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
+     * getMetricAlertSubscription.json
      */
     /**
      * Sample code: Get an alert rule on subscription.
@@ -100,7 +120,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * getDynamicMetricAlertSingleResource.json
      */
     /**
@@ -117,7 +138,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
      * getMetricAlertMultipleResource.json
      */
     /**

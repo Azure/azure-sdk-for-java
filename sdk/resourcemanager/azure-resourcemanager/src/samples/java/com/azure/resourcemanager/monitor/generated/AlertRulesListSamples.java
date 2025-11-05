@@ -10,8 +10,8 @@ package com.azure.resourcemanager.monitor.generated;
 public final class AlertRulesListSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRuleBySubscription.
-     * json
+     * c0f92082a788895368a738a9200e24971157d7ca/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03
+     * -01/examples/listAlertRuleBySubscription.json
      */
     /**
      * Sample code: List alert rules.

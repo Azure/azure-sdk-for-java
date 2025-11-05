@@ -7,30 +7,63 @@ package com.azure.resourcemanager.monitor.generated;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionEndpointResourceInner;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
 import com.azure.resourcemanager.monitor.models.KnownPublicNetworkAccessOptions;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for DataCollectionEndpoints Create.
  */
 public final class DataCollectionEndpointsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
      * DataCollectionEndpointsCreate.json
      */
     /**
-     * Sample code: Create or update data collection endpoint.
+     * Sample code: Create a data collection endpoint.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateDataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void createADataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getDataCollectionEndpoints()
-            .createWithResponse("myResourceGroup", "myCollectionEndpoint",
+            .createWithResponse("myResourceGroup", "myDataCollectionEndpoint",
                 new DataCollectionEndpointResourceInner().withLocation("eastus")
                     .withNetworkAcls(new DataCollectionEndpointNetworkAcls()
                         .withPublicNetworkAccess(KnownPublicNetworkAccessOptions.ENABLED)),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
+     * DataCollectionEndpointsUpdate.json
+     */
+    /**
+     * Sample code: Update a data collection endpoint.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateADataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionEndpoints()
+            .createWithResponse("myResourceGroup", "myDataCollectionEndpoint",
+                new DataCollectionEndpointResourceInner().withLocation("eastus")
+                    .withTags(mapOf("tag1", "A", "tag2", "B", "tag3", "C")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

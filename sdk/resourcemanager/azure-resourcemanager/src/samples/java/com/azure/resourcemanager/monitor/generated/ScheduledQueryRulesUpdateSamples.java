@@ -12,7 +12,7 @@ import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
 public final class ScheduledQueryRulesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/patchScheduledQueryRule.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/patchScheduledQueryRule.json
      */
     /**
      * Sample code: Create or update a scheduled query rule.

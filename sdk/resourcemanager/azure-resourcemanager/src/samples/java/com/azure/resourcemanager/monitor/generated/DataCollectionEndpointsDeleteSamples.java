@@ -9,8 +9,7 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class DataCollectionEndpointsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
      * DataCollectionEndpointsDelete.json
      */
     /**
@@ -23,6 +22,6 @@ public final class DataCollectionEndpointsDeleteSamples {
             .manager()
             .serviceClient()
             .getDataCollectionEndpoints()
-            .deleteWithResponse("myResourceGroup", "myCollectionEndpoint", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("myResourceGroup", "myDataCollectionEndpoint", com.azure.core.util.Context.NONE);
     }
 }
