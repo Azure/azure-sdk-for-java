@@ -5,7 +5,7 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.async.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -98,7 +98,7 @@ public class AsyncTranscriptionSample {
                 .setFilename(audioFilePath);
 
             TranscriptionOptions options = new TranscriptionOptions();
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -119,7 +119,7 @@ public class AsyncTranscriptionSample {
                     // onNext: Called when result is available
                     result -> {
                         System.out.println("\n✓ Transcription completed!");
-                        System.out.println("  Duration: " + result.getDurationMilliseconds() + " ms");
+                        System.out.println("  Duration: " + result.getDuration() + " ms");
                         if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
                             result.getCombinedPhrases().forEach(phrase ->
                                 System.out.println("  Text: " + phrase.getText())
@@ -171,7 +171,7 @@ public class AsyncTranscriptionSample {
                 .setFilename(audioFilePath);
 
             TranscriptionOptions options = new TranscriptionOptions();
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -185,7 +185,7 @@ public class AsyncTranscriptionSample {
 
             if (result != null) {
                 System.out.println("\n✓ Transcription completed!");
-                System.out.println("  Duration: " + result.getDurationMilliseconds() + " ms\n");
+                System.out.println("  Duration: " + result.getDuration() + " ms\n");
             }
 
         } catch (Exception e) {
@@ -218,7 +218,7 @@ public class AsyncTranscriptionSample {
                 .setFilename(audioFilePath);
 
             TranscriptionOptions options = new TranscriptionOptions();
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 

@@ -8,7 +8,7 @@ import com.azure.ai.speech.transcription.TranscriptionClient;
 import com.azure.ai.speech.transcription.TranscriptionClientBuilder;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
@@ -77,7 +77,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         TranscriptionOptions options = new TranscriptionOptions();
 
         // Create transcribe request
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -85,7 +85,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         TranscriptionResult result = client.transcribe(requestContent);
 
         // Process results
-        System.out.println("Duration: " + result.getDurationMilliseconds() + " ms");
+        System.out.println("Duration: " + result.getDuration() + " ms");
         result.getCombinedPhrases().forEach(phrase -> {
             System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
         });
@@ -115,7 +115,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
                 .setEnabled(true)
                 .setMaxSpeakers(5));
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -143,7 +143,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions();
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
         TranscriptionResult result = client.transcribe(requestContent);
@@ -161,8 +161,8 @@ public class TranscriptionClientJavaDocCodeSnippets {
         if (result.getPhrases() != null) {
             result.getPhrases().forEach(phrase -> {
                 System.out.printf("Phrase (%.2f-%.2fs): %s%n",
-                    phrase.getOffsetMilliseconds() / 1000.0,
-                    (phrase.getOffsetMilliseconds() + phrase.getDurationMilliseconds()) / 1000.0,
+                    phrase.getOffset() / 1000.0,
+                    (phrase.getOffset() + phrase.getDuration()) / 1000.0,
                     phrase.getText());
 
                 // Get word-level timing information
@@ -170,7 +170,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
                     phrase.getWords().forEach(word -> {
                         System.out.printf("  Word: \"%s\" at %.2fs%n",
                             word.getText(),
-                            word.getOffsetMilliseconds() / 1000.0);
+                            word.getOffset() / 1000.0);
                     });
                 }
             });

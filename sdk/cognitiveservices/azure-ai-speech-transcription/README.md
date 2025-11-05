@@ -142,7 +142,7 @@ try {
     TranscriptionOptions options = new TranscriptionOptions();
 
     // Create transcribe request content
-    TranscribeRequestContent requestContent = new TranscribeRequestContent()
+    TranscriptionContent requestContent = new TranscriptionContent()
         .setAudio(audioFileDetails)
         .setOptions(options);
 
@@ -150,7 +150,7 @@ try {
     TranscriptionResult result = client.transcribe(requestContent);
 
     // Process results
-    System.out.println("Duration: " + result.getDurationMilliseconds() + "ms");
+    System.out.println("Duration: " + result.getDuration() + "ms");
     result.getCombinedPhrases().forEach(phrase -> {
         System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
     });
@@ -172,14 +172,13 @@ AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(au
     .setFilename("audio.wav");
 
 // Enable enhanced mode for improved transcription quality
-EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-    .setEnabled(true);
+EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
 
 TranscriptionOptions options = new TranscriptionOptions()
     .setLocales(java.util.Arrays.asList("en-US"))
-    .setEnhancedMode(enhancedMode);
+    .setEnhancedModeOptions(enhancedMode);
 
-TranscribeRequestContent requestContent = new TranscribeRequestContent()
+TranscriptionContent requestContent = new TranscriptionContent()
     .setAudio(audioFileDetails)
     .setOptions(options);
 
@@ -197,9 +196,8 @@ AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(au
     .setFilename("audio.wav");
 
 // Use prompts to guide transcription with domain-specific terminology
-EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-    .setEnabled(true)
-    .setPrompt(java.util.Arrays.asList(
+EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+    .setPrompts(java.util.Arrays.asList(
         "Medical consultation discussing hypertension and diabetes",
         "Common medications: metformin, lisinopril, atorvastatin",
         "Patient symptoms and treatment plan"
@@ -207,9 +205,9 @@ EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
 
 TranscriptionOptions options = new TranscriptionOptions()
     .setLocales(java.util.Arrays.asList("en-US"))
-    .setEnhancedMode(enhancedMode);
+    .setEnhancedModeOptions(enhancedMode);
 
-TranscribeRequestContent requestContent = new TranscribeRequestContent()
+TranscriptionContent requestContent = new TranscriptionContent()
     .setAudio(audioFileDetails)
     .setOptions(options);
 
@@ -227,15 +225,14 @@ AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(au
     .setFilename("audio.wav");
 
 // Configure enhanced mode to transcribe Spanish audio and translate to English
-EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-    .setEnabled(true)
+EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
     .setTargetLanguage("en-US"); // Translate to English
 
 TranscriptionOptions options = new TranscriptionOptions()
     .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
-    .setEnhancedMode(enhancedMode);
+    .setEnhancedModeOptions(enhancedMode);
 
-TranscribeRequestContent requestContent = new TranscribeRequestContent()
+TranscriptionContent requestContent = new TranscriptionContent()
     .setAudio(audioFileDetails)
     .setOptions(options);
 

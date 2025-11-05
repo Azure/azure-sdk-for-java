@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class TranscriptionDiarizationOptions implements JsonSerializable<TranscriptionDiarizationOptions> {
 
     /*
-     * Gets or sets a value indicating whether speaker diarization is enabled.
+     * Enable speaker diarization. This is automatically set to true when maxSpeakers is specified.
      */
     @Generated
     private Boolean enabled;
@@ -37,25 +37,14 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     }
 
     /**
-     * Get the enabled property: Gets or sets a value indicating whether speaker diarization is enabled.
+     * Get the enabled property: Enable speaker diarization. This is automatically set to true when maxSpeakers is
+     * specified.
      *
      * @return the enabled value.
      */
     @Generated
     public Boolean isEnabled() {
         return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: Gets or sets a value indicating whether speaker diarization is enabled.
-     *
-     * @param enabled the enabled value to set.
-     * @return the TranscriptionDiarizationOptions object itself.
-     */
-    @Generated
-    public TranscriptionDiarizationOptions setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
     }
 
     /**
@@ -89,7 +78,6 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeNumberField("maxSpeakers", this.maxSpeakers);
         return jsonWriter.writeEndObject();
     }

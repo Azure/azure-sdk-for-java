@@ -7,7 +7,7 @@ package com.azure.ai.speech.transcription;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.ChannelCombinedPhrases;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscribedPhrase;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
@@ -143,7 +143,7 @@ public class AdvancedTranscriptionSample {
                     .setMaxSpeakers(5)); // Max number of speakers (2-36)
             // END: com.azure.ai.speech.transcription.advanced.transcription-options
 
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -156,7 +156,7 @@ public class AdvancedTranscriptionSample {
             TranscriptionResult result = client.transcribe(requestContent);
 
             System.out.println("\n✓ Transcription completed with advanced options");
-            System.out.println("  Duration: " + result.getDurationMilliseconds() + " ms\n");
+            System.out.println("  Duration: " + result.getDuration() + " ms\n");
 
         } catch (IOException e) {
             System.err.println("✗ Error reading audio file: " + e.getMessage() + "\n");
@@ -194,7 +194,7 @@ public class AdvancedTranscriptionSample {
             TranscriptionOptions options = new TranscriptionOptions()
                 .setDiarizationOptions(new TranscriptionDiarizationOptions().setEnabled(true));
 
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -217,8 +217,8 @@ public class AdvancedTranscriptionSample {
                 for (TranscribedPhrase phrase : result.getPhrases()) {
                     System.out.printf("  Speaker %d (%.2f-%.2fs): %s%n",
                         phrase.getSpeaker() != null ? phrase.getSpeaker() : 0,
-                        phrase.getOffsetMilliseconds() / 1000.0,
-                        (phrase.getOffsetMilliseconds() + phrase.getDurationMilliseconds()) / 1000.0,
+                        phrase.getOffset() / 1000.0,
+                        (phrase.getOffset() + phrase.getDuration()) / 1000.0,
                         phrase.getText());
 
                     // Show word-level timings
@@ -227,7 +227,7 @@ public class AdvancedTranscriptionSample {
                         phrase.getWords().forEach(word ->
                             System.out.printf("      - \"%s\" [%.2fs]%n",
                                 word.getText(),
-                                word.getOffsetMilliseconds() / 1000.0)
+                                word.getOffset() / 1000.0)
                         );
                     }
                 }

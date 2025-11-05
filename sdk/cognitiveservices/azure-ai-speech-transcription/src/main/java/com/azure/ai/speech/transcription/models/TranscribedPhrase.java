@@ -32,18 +32,6 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     private Integer speaker;
 
     /*
-     * The start offset of the phrase in milliseconds.
-     */
-    @Generated
-    private final int offsetMilliseconds;
-
-    /*
-     * The duration of the phrase in milliseconds.
-     */
-    @Generated
-    private final int durationMilliseconds;
-
-    /*
      * The transcribed text of the phrase.
      */
     @Generated
@@ -70,15 +58,15 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     /**
      * Creates an instance of TranscribedPhrase class.
      *
-     * @param offsetMilliseconds the offsetMilliseconds value to set.
-     * @param durationMilliseconds the durationMilliseconds value to set.
+     * @param offset the offset value to set.
+     * @param duration the duration value to set.
      * @param text the text value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
-    private TranscribedPhrase(int offsetMilliseconds, int durationMilliseconds, String text, double confidence) {
-        this.offsetMilliseconds = offsetMilliseconds;
-        this.durationMilliseconds = durationMilliseconds;
+    private TranscribedPhrase(int offset, int duration, String text, double confidence) {
+        this.offset = offset;
+        this.duration = duration;
         this.text = text;
         this.confidence = confidence;
     }
@@ -102,26 +90,6 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     @Generated
     public Integer getSpeaker() {
         return this.speaker;
-    }
-
-    /**
-     * Get the offsetMilliseconds property: The start offset of the phrase in milliseconds.
-     *
-     * @return the offsetMilliseconds value.
-     */
-    @Generated
-    public int getOffsetMilliseconds() {
-        return this.offsetMilliseconds;
-    }
-
-    /**
-     * Get the durationMilliseconds property: The duration of the phrase in milliseconds.
-     *
-     * @return the durationMilliseconds value.
-     */
-    @Generated
-    public int getDurationMilliseconds() {
-        return this.durationMilliseconds;
     }
 
     /**
@@ -171,8 +139,8 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("offsetMilliseconds", this.offsetMilliseconds);
-        jsonWriter.writeIntField("durationMilliseconds", this.durationMilliseconds);
+        jsonWriter.writeIntField("offsetMilliseconds", this.offset);
+        jsonWriter.writeIntField("durationMilliseconds", this.duration);
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeDoubleField("confidence", this.confidence);
         jsonWriter.writeNumberField("channel", this.channel);
@@ -194,8 +162,8 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     @Generated
     public static TranscribedPhrase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int offsetMilliseconds = 0;
-            int durationMilliseconds = 0;
+            int offset = 0;
+            int duration = 0;
             String text = null;
             double confidence = 0.0;
             Integer channel = null;
@@ -206,9 +174,9 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("offsetMilliseconds".equals(fieldName)) {
-                    offsetMilliseconds = reader.getInt();
+                    offset = reader.getInt();
                 } else if ("durationMilliseconds".equals(fieldName)) {
-                    durationMilliseconds = reader.getInt();
+                    duration = reader.getInt();
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("confidence".equals(fieldName)) {
@@ -225,13 +193,44 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
                     reader.skipChildren();
                 }
             }
-            TranscribedPhrase deserializedTranscribedPhrase
-                = new TranscribedPhrase(offsetMilliseconds, durationMilliseconds, text, confidence);
+            TranscribedPhrase deserializedTranscribedPhrase = new TranscribedPhrase(offset, duration, text, confidence);
             deserializedTranscribedPhrase.channel = channel;
             deserializedTranscribedPhrase.speaker = speaker;
             deserializedTranscribedPhrase.words = words;
             deserializedTranscribedPhrase.locale = locale;
             return deserializedTranscribedPhrase;
         });
+    }
+
+    /*
+     * The start offset of the phrase in milliseconds.
+     */
+    @Generated
+    private final int offset;
+
+    /*
+     * The duration of the phrase in milliseconds.
+     */
+    @Generated
+    private final int duration;
+
+    /**
+     * Get the offset property: The start offset of the phrase in milliseconds.
+     *
+     * @return the offset value.
+     */
+    @Generated
+    public int getOffset() {
+        return this.offset;
+    }
+
+    /**
+     * Get the duration property: The duration of the phrase in milliseconds.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public int getDuration() {
+        return this.duration;
     }
 }

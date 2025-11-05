@@ -23,30 +23,18 @@ public final class TranscribedWord implements JsonSerializable<TranscribedWord> 
     @Generated
     private final String text;
 
-    /*
-     * The start offset of the word in milliseconds.
-     */
-    @Generated
-    private final int offsetMilliseconds;
-
-    /*
-     * The duration of the word in milliseconds.
-     */
-    @Generated
-    private final int durationMilliseconds;
-
     /**
      * Creates an instance of TranscribedWord class.
      *
      * @param text the text value to set.
-     * @param offsetMilliseconds the offsetMilliseconds value to set.
-     * @param durationMilliseconds the durationMilliseconds value to set.
+     * @param offset the offset value to set.
+     * @param duration the duration value to set.
      */
     @Generated
-    private TranscribedWord(String text, int offsetMilliseconds, int durationMilliseconds) {
+    private TranscribedWord(String text, int offset, int duration) {
         this.text = text;
-        this.offsetMilliseconds = offsetMilliseconds;
-        this.durationMilliseconds = durationMilliseconds;
+        this.offset = offset;
+        this.duration = duration;
     }
 
     /**
@@ -60,26 +48,6 @@ public final class TranscribedWord implements JsonSerializable<TranscribedWord> 
     }
 
     /**
-     * Get the offsetMilliseconds property: The start offset of the word in milliseconds.
-     *
-     * @return the offsetMilliseconds value.
-     */
-    @Generated
-    public int getOffsetMilliseconds() {
-        return this.offsetMilliseconds;
-    }
-
-    /**
-     * Get the durationMilliseconds property: The duration of the word in milliseconds.
-     *
-     * @return the durationMilliseconds value.
-     */
-    @Generated
-    public int getDurationMilliseconds() {
-        return this.durationMilliseconds;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -87,8 +55,8 @@ public final class TranscribedWord implements JsonSerializable<TranscribedWord> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeIntField("offsetMilliseconds", this.offsetMilliseconds);
-        jsonWriter.writeIntField("durationMilliseconds", this.durationMilliseconds);
+        jsonWriter.writeIntField("offsetMilliseconds", this.offset);
+        jsonWriter.writeIntField("durationMilliseconds", this.duration);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,22 +73,54 @@ public final class TranscribedWord implements JsonSerializable<TranscribedWord> 
     public static TranscribedWord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
-            int offsetMilliseconds = 0;
-            int durationMilliseconds = 0;
+            int offset = 0;
+            int duration = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("offsetMilliseconds".equals(fieldName)) {
-                    offsetMilliseconds = reader.getInt();
+                    offset = reader.getInt();
                 } else if ("durationMilliseconds".equals(fieldName)) {
-                    durationMilliseconds = reader.getInt();
+                    duration = reader.getInt();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TranscribedWord(text, offsetMilliseconds, durationMilliseconds);
+            return new TranscribedWord(text, offset, duration);
         });
+    }
+
+    /*
+     * The start offset of the word in milliseconds.
+     */
+    @Generated
+    private final int offset;
+
+    /*
+     * The duration of the word in milliseconds.
+     */
+    @Generated
+    private final int duration;
+
+    /**
+     * Get the offset property: The start offset of the word in milliseconds.
+     *
+     * @return the offset value.
+     */
+    @Generated
+    public int getOffset() {
+        return this.offset;
+    }
+
+    /**
+     * Get the duration property: The duration of the word in milliseconds.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public int getDuration() {
+        return this.duration;
     }
 }

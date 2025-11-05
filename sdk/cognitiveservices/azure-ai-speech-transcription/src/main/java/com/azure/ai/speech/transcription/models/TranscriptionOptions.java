@@ -46,18 +46,6 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     private ProfanityFilterMode profanityFilterMode;
 
-    /*
-     * Enhanced mode properties.
-     */
-    @Generated
-    private EnhancedModeProperties enhancedMode;
-
-    /*
-     * Phrase list properties.
-     */
-    @Generated
-    private PhraseListProperties phraseList;
-
     /**
      * Creates an instance of TranscriptionOptions class.
      */
@@ -160,50 +148,6 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
-     * Get the enhancedMode property: Enhanced mode properties.
-     *
-     * @return the enhancedMode value.
-     */
-    @Generated
-    public EnhancedModeProperties getEnhancedMode() {
-        return this.enhancedMode;
-    }
-
-    /**
-     * Set the enhancedMode property: Enhanced mode properties.
-     *
-     * @param enhancedMode the enhancedMode value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setEnhancedMode(EnhancedModeProperties enhancedMode) {
-        this.enhancedMode = enhancedMode;
-        return this;
-    }
-
-    /**
-     * Get the phraseList property: Phrase list properties.
-     *
-     * @return the phraseList value.
-     */
-    @Generated
-    public PhraseListProperties getPhraseList() {
-        return this.phraseList;
-    }
-
-    /**
-     * Set the phraseList property: Phrase list properties.
-     *
-     * @param phraseList the phraseList value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setPhraseList(PhraseListProperties phraseList) {
-        this.phraseList = phraseList;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -217,8 +161,8 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
             this.profanityFilterMode == null ? null : this.profanityFilterMode.toString());
         jsonWriter.writeJsonField("diarization", this.diarizationOptions);
         jsonWriter.writeArrayField("channels", this.activeChannels, (writer, element) -> writer.writeInt(element));
-        jsonWriter.writeJsonField("enhancedMode", this.enhancedMode);
-        jsonWriter.writeJsonField("phraseList", this.phraseList);
+        jsonWriter.writeJsonField("enhancedMode", this.enhancedModeOptions);
+        jsonWriter.writeJsonField("phraseList", this.phraseListOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -255,9 +199,9 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
                     List<Integer> activeChannels = reader.readArray(reader1 -> reader1.getInt());
                     deserializedTranscriptionOptions.activeChannels = activeChannels;
                 } else if ("enhancedMode".equals(fieldName)) {
-                    deserializedTranscriptionOptions.enhancedMode = EnhancedModeProperties.fromJson(reader);
+                    deserializedTranscriptionOptions.enhancedModeOptions = EnhancedModeOptions.fromJson(reader);
                 } else if ("phraseList".equals(fieldName)) {
-                    deserializedTranscriptionOptions.phraseList = PhraseListProperties.fromJson(reader);
+                    deserializedTranscriptionOptions.phraseListOptions = PhraseListOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -322,6 +266,62 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     public TranscriptionOptions setActiveChannels(List<Integer> activeChannels) {
         this.activeChannels = activeChannels;
+        return this;
+    }
+
+    /*
+     * Enhanced mode properties.
+     */
+    @Generated
+    private EnhancedModeOptions enhancedModeOptions;
+
+    /*
+     * Phrase list properties.
+     */
+    @Generated
+    private PhraseListOptions phraseListOptions;
+
+    /**
+     * Get the enhancedModeOptions property: Enhanced mode properties.
+     *
+     * @return the enhancedModeOptions value.
+     */
+    @Generated
+    public EnhancedModeOptions getEnhancedModeOptions() {
+        return this.enhancedModeOptions;
+    }
+
+    /**
+     * Set the enhancedModeOptions property: Enhanced mode properties.
+     *
+     * @param enhancedModeOptions the enhancedModeOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setEnhancedModeOptions(EnhancedModeOptions enhancedModeOptions) {
+        this.enhancedModeOptions = enhancedModeOptions;
+        return this;
+    }
+
+    /**
+     * Get the phraseListOptions property: Phrase list properties.
+     *
+     * @return the phraseListOptions value.
+     */
+    @Generated
+    public PhraseListOptions getPhraseListOptions() {
+        return this.phraseListOptions;
+    }
+
+    /**
+     * Set the phraseListOptions property: Phrase list properties.
+     *
+     * @param phraseListOptions the phraseListOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setPhraseListOptions(PhraseListOptions phraseListOptions) {
+        this.phraseListOptions = phraseListOptions;
         return this;
     }
 }

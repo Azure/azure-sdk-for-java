@@ -5,7 +5,7 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.basic.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -115,7 +115,7 @@ public class BasicTranscriptionSample {
             TranscriptionOptions options = new TranscriptionOptions();
 
             // Create the transcribe request
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -129,7 +129,7 @@ public class BasicTranscriptionSample {
             // Display results
             System.out.println("\nTranscription Results:");
             System.out.println("----------------------");
-            System.out.println("Duration: " + result.getDurationMilliseconds() + " ms");
+            System.out.println("Duration: " + result.getDuration() + " ms");
 
             if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
                 System.out.println("\nTranscribed Text:");

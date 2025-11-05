@@ -5,10 +5,10 @@
 package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.EnhancedModeProperties;
+import com.azure.ai.speech.transcription.models.EnhancedModeOptions;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -44,7 +44,7 @@ public final class ReadmeSamples {
             TranscriptionOptions options = new TranscriptionOptions();
 
             // Create transcribe request content
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -52,7 +52,7 @@ public final class ReadmeSamples {
             TranscriptionResult result = client.transcribe(requestContent);
 
             // Process results
-            System.out.println("Duration: " + result.getDurationMilliseconds() + "ms");
+            System.out.println("Duration: " + result.getDuration() + "ms");
             result.getCombinedPhrases().forEach(phrase -> {
                 System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
             });
@@ -103,13 +103,13 @@ public final class ReadmeSamples {
 
         TranscriptionOptions options = new TranscriptionOptions();
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
 
-        System.out.println("Duration: " + result.getDurationMilliseconds() + "ms");
+        System.out.println("Duration: " + result.getDuration() + "ms");
         result.getCombinedPhrases().forEach(phrase -> {
             System.out.println("Transcription: " + phrase.getText());
         });
@@ -133,13 +133,13 @@ public final class ReadmeSamples {
 
         TranscriptionOptions options = new TranscriptionOptions();
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
         asyncClient.transcribe(requestContent)
             .subscribe(result -> {
-                System.out.println("Duration: " + result.getDurationMilliseconds() + "ms");
+                System.out.println("Duration: " + result.getDuration() + "ms");
                 result.getCombinedPhrases().forEach(phrase -> {
                     System.out.println("Transcription: " + phrase.getText());
                 });
@@ -170,7 +170,7 @@ public final class ReadmeSamples {
                 .setEnabled(true)
                 .setMaxSpeakers(5));
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -180,7 +180,7 @@ public final class ReadmeSamples {
         result.getPhrases().forEach(phrase -> {
             System.out.println("Speaker " + phrase.getSpeaker() + ": " + phrase.getText());
             System.out.println("Confidence: " + phrase.getConfidence());
-            System.out.println("Offset: " + phrase.getOffsetMilliseconds() + "ms");
+            System.out.println("Offset: " + phrase.getOffset() + "ms");
         });
         // END: com.azure.ai.speech.transcription.transcriptionoptions.advanced
     }
@@ -219,7 +219,7 @@ public final class ReadmeSamples {
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("audio.wav");
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(new TranscriptionOptions());
 
@@ -227,7 +227,7 @@ public final class ReadmeSamples {
         TranscriptionResult result = client.transcribe(requestContent);
 
         // Get overall duration
-        System.out.println("Total duration: " + result.getDurationMilliseconds() + "ms");
+        System.out.println("Total duration: " + result.getDuration() + "ms");
 
         // Process each phrase with detailed information
         result.getPhrases().forEach(phrase -> {
@@ -236,14 +236,14 @@ public final class ReadmeSamples {
             System.out.println("  Speaker: " + phrase.getSpeaker());
             System.out.println("  Locale: " + phrase.getLocale());
             System.out.println("  Confidence: " + phrase.getConfidence());
-            System.out.println("  Timing: " + phrase.getOffsetMilliseconds() + "ms - "
-                + (phrase.getOffsetMilliseconds() + phrase.getDurationMilliseconds()) + "ms");
+            System.out.println("  Timing: " + phrase.getOffset() + "ms - "
+                + (phrase.getOffset() + phrase.getDuration()) + "ms");
 
             // Process individual words with timestamps
             if (phrase.getWords() != null) {
                 phrase.getWords().forEach(word -> {
                     System.out.println("    Word: " + word.getText() + " @ "
-                        + word.getOffsetMilliseconds() + "ms");
+                        + word.getOffset() + "ms");
                 });
             }
         });
@@ -266,14 +266,13 @@ public final class ReadmeSamples {
             .setFilename("audio.wav");
 
         // Enable enhanced mode for improved transcription quality
-        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-            .setEnabled(true);
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
 
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(java.util.Arrays.asList("en-US"))
-            .setEnhancedMode(enhancedMode);
+            .setEnhancedModeOptions(enhancedMode);
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -297,9 +296,8 @@ public final class ReadmeSamples {
             .setFilename("audio.wav");
 
         // Use prompts to guide transcription with domain-specific terminology
-        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-            .setEnabled(true)
-            .setPrompt(java.util.Arrays.asList(
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setPrompts(java.util.Arrays.asList(
                 "Medical consultation discussing hypertension and diabetes",
                 "Common medications: metformin, lisinopril, atorvastatin",
                 "Patient symptoms and treatment plan"
@@ -307,9 +305,9 @@ public final class ReadmeSamples {
 
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(java.util.Arrays.asList("en-US"))
-            .setEnhancedMode(enhancedMode);
+            .setEnhancedModeOptions(enhancedMode);
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -333,15 +331,14 @@ public final class ReadmeSamples {
             .setFilename("audio.wav");
 
         // Configure enhanced mode to transcribe Spanish audio and translate to English
-        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-            .setEnabled(true)
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
             .setTargetLanguage("en-US"); // Translate to English
 
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
-            .setEnhancedMode(enhancedMode);
+            .setEnhancedModeOptions(enhancedMode);
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 

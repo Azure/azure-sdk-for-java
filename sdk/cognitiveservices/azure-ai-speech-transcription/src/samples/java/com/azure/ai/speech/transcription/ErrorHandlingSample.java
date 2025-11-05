@@ -5,7 +5,7 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.error.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -79,7 +79,7 @@ public class ErrorHandlingSample {
             // This will fail with authentication error
             byte[] dummyAudio = new byte[1024];
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(new TranscriptionOptions());
 
@@ -120,7 +120,7 @@ public class ErrorHandlingSample {
             // Attempt to transcribe (may fail if Azure AD not configured)
             byte[] dummyAudio = new byte[1024];
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(new TranscriptionOptions());
 
@@ -175,7 +175,7 @@ public class ErrorHandlingSample {
         try {
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(new TranscriptionOptions());
 
@@ -219,7 +219,7 @@ public class ErrorHandlingSample {
             byte[] invalidAudio = new byte[10]; // Too small to be valid audio
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(invalidAudio))
                 .setFilename("invalid.wav");
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(new TranscriptionOptions());
 
@@ -302,7 +302,7 @@ public class ErrorHandlingSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
             TranscriptionOptions options = new TranscriptionOptions();
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
             System.out.println("✓ Request prepared");
@@ -339,7 +339,7 @@ public class ErrorHandlingSample {
             // Step 6: Process results
             if (result != null) {
                 System.out.println("\n✓ Transcription completed successfully!");
-                System.out.println("  Duration: " + result.getDurationMilliseconds() + " ms");
+                System.out.println("  Duration: " + result.getDuration() + " ms");
                 if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
                     System.out.println("  Phrases: " + result.getCombinedPhrases().size());
                 }

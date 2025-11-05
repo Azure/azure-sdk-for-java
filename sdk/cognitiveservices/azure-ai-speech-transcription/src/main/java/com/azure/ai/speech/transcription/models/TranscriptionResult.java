@@ -19,12 +19,6 @@ import java.util.List;
 public final class TranscriptionResult implements JsonSerializable<TranscriptionResult> {
 
     /*
-     * The duration of the audio in milliseconds.
-     */
-    @Generated
-    private final int durationMilliseconds;
-
-    /*
      * The full transcript for each channel.
      */
     @Generated
@@ -39,26 +33,16 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
     /**
      * Creates an instance of TranscriptionResult class.
      *
-     * @param durationMilliseconds the durationMilliseconds value to set.
+     * @param duration the duration value to set.
      * @param combinedPhrases the combinedPhrases value to set.
      * @param phrases the phrases value to set.
      */
     @Generated
-    private TranscriptionResult(int durationMilliseconds, List<ChannelCombinedPhrases> combinedPhrases,
+    private TranscriptionResult(int duration, List<ChannelCombinedPhrases> combinedPhrases,
         List<TranscribedPhrase> phrases) {
-        this.durationMilliseconds = durationMilliseconds;
+        this.duration = duration;
         this.combinedPhrases = combinedPhrases;
         this.phrases = phrases;
-    }
-
-    /**
-     * Get the durationMilliseconds property: The duration of the audio in milliseconds.
-     *
-     * @return the durationMilliseconds value.
-     */
-    @Generated
-    public int getDurationMilliseconds() {
-        return this.durationMilliseconds;
     }
 
     /**
@@ -88,7 +72,7 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("durationMilliseconds", this.durationMilliseconds);
+        jsonWriter.writeIntField("durationMilliseconds", this.duration);
         jsonWriter.writeArrayField("combinedPhrases", this.combinedPhrases,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("phrases", this.phrases, (writer, element) -> writer.writeJson(element));
@@ -107,14 +91,14 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
     @Generated
     public static TranscriptionResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int durationMilliseconds = 0;
+            int duration = 0;
             List<ChannelCombinedPhrases> combinedPhrases = null;
             List<TranscribedPhrase> phrases = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("durationMilliseconds".equals(fieldName)) {
-                    durationMilliseconds = reader.getInt();
+                    duration = reader.getInt();
                 } else if ("combinedPhrases".equals(fieldName)) {
                     combinedPhrases = reader.readArray(reader1 -> ChannelCombinedPhrases.fromJson(reader1));
                 } else if ("phrases".equals(fieldName)) {
@@ -123,7 +107,23 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
                     reader.skipChildren();
                 }
             }
-            return new TranscriptionResult(durationMilliseconds, combinedPhrases, phrases);
+            return new TranscriptionResult(duration, combinedPhrases, phrases);
         });
+    }
+
+    /*
+     * The duration of the audio in milliseconds.
+     */
+    @Generated
+    private final int duration;
+
+    /**
+     * Get the duration property: The duration of the audio in milliseconds.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public int getDuration() {
+        return this.duration;
     }
 }

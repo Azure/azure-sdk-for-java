@@ -8,7 +8,7 @@ import com.azure.ai.speech.transcription.TranscriptionAsyncClient;
 import com.azure.ai.speech.transcription.TranscriptionClientBuilder;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
@@ -56,7 +56,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
         TranscriptionOptions options = new TranscriptionOptions();
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -67,7 +67,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
             .subscribe(
                 // onNext: Process result
                 result -> {
-                    System.out.println("Duration: " + result.getDurationMilliseconds() + " ms");
+                    System.out.println("Duration: " + result.getDuration() + " ms");
                     if (result.getCombinedPhrases() != null) {
                         result.getCombinedPhrases().forEach(phrase ->
                             System.out.println("Text: " + phrase.getText())
@@ -101,7 +101,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
         TranscriptionOptions options = new TranscriptionOptions();
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -110,7 +110,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         TranscriptionResult result = asyncClient.transcribe(requestContent).block();
 
         if (result != null) {
-            System.out.println("Duration: " + result.getDurationMilliseconds() + " ms");
+            System.out.println("Duration: " + result.getDuration() + " ms");
         }
         // END: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.block
     }
@@ -138,7 +138,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
                 .setEnabled(true)
                 .setMaxSpeakers(5));
 
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -170,7 +170,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
         TranscriptionOptions options = new TranscriptionOptions();
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -199,7 +199,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions();
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
@@ -218,15 +218,15 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
                 if (result.getPhrases() != null) {
                     result.getPhrases().forEach(phrase -> {
                         System.out.printf("Phrase (%.2f-%.2fs): %s%n",
-                            phrase.getOffsetMilliseconds() / 1000.0,
-                            (phrase.getOffsetMilliseconds() + phrase.getDurationMilliseconds()) / 1000.0,
+                            phrase.getOffset() / 1000.0,
+                            (phrase.getOffset() + phrase.getDuration()) / 1000.0,
                             phrase.getText());
 
                         if (phrase.getWords() != null) {
                             phrase.getWords().forEach(word ->
                                 System.out.printf("  \"%s\" at %.2fs%n",
                                     word.getText(),
-                                    word.getOffsetMilliseconds() / 1000.0)
+                                    word.getOffset() / 1000.0)
                             );
                         }
                     });

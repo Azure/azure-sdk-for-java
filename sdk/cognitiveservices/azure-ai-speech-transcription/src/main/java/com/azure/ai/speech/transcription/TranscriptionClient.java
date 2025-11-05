@@ -5,7 +5,7 @@ package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper;
 import com.azure.ai.speech.transcription.implementation.TranscriptionClientImpl;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -107,7 +107,7 @@ public final class TranscriptionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranscriptionResult transcribe(TranscribeRequestContent body) {
+    public TranscriptionResult transcribe(TranscriptionContent body) {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(

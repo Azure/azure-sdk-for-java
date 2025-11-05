@@ -4,7 +4,7 @@
 package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -150,8 +150,8 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             AudioFileDetails audioFileDetails
                 = new AudioFileDetails(BinaryData.fromBytes(audioData)).setFilename(new File(audioFilePath).getName());
 
-            TranscribeRequestContent requestContent
-                = new TranscribeRequestContent().setAudio(audioFileDetails).setOptions(options);
+            TranscriptionContent requestContent
+                = new TranscriptionContent().setAudio(audioFileDetails).setOptions(options);
 
             if (sync) {
                 TranscriptionResult result = null;
@@ -218,7 +218,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
     protected void validateTranscriptionResult(String testName, TranscriptionResult result) {
         if (printResults) {
             System.out.println("\n===== Test: " + testName + " =====");
-            System.out.println("Duration: " + result.getDurationMilliseconds() + "ms");
+            System.out.println("Duration: " + result.getDuration() + "ms");
             if (result.getCombinedPhrases() != null) {
                 result.getCombinedPhrases().forEach(phrase -> {
                     System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
@@ -233,8 +233,8 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
 
         // Basic validation
         assertNotNull(result, "Transcription result should not be null");
-        assertNotNull(result.getDurationMilliseconds(), "Duration should not be null");
-        assertTrue(result.getDurationMilliseconds() > 0, "Duration should be greater than 0");
+        assertNotNull(result.getDuration(), "Duration should not be null");
+        assertTrue(result.getDuration() > 0, "Duration should be greater than 0");
         assertNotNull(result.getCombinedPhrases(), "Combined phrases should not be null");
         assertFalse(result.getCombinedPhrases().isEmpty(), "Combined phrases should not be empty");
         assertNotNull(result.getPhrases(), "Phrases should not be null");
@@ -252,8 +252,8 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             assertFalse(phrase.getText().isEmpty(), "Phrase text should not be empty");
             assertTrue(phrase.getConfidence() >= 0 && phrase.getConfidence() <= 1,
                 "Confidence should be between 0 and 1");
-            assertTrue(phrase.getOffsetMilliseconds() >= 0, "Offset should be non-negative");
-            assertTrue(phrase.getDurationMilliseconds() > 0, "Phrase duration should be positive");
+            assertTrue(phrase.getOffset() >= 0, "Offset should be non-negative");
+            assertTrue(phrase.getDuration() > 0, "Phrase duration should be positive");
         });
     }
 

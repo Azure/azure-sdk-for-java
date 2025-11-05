@@ -5,8 +5,8 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.enhancedmode.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.EnhancedModeProperties;
-import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
+import com.azure.ai.speech.transcription.models.EnhancedModeOptions;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -19,9 +19,9 @@ import java.util.Arrays;
 // END: com.azure.ai.speech.transcription.enhancedmode.imports
 
 /**
- * Sample demonstrates how to use EnhancedModeProperties to improve transcription quality
+ * Sample demonstrates how to use EnhancedModeOptions to improve transcription quality
  * with features like custom prompts, translation, and task-specific configurations.
- * 
+ *
  * This sample shows:
  * - Enabling enhanced mode for improved transcription accuracy
  * - Using custom prompts to guide transcription with domain-specific terminology
@@ -88,15 +88,14 @@ public class EnhancedModeSample {
 
             // BEGIN: com.azure.ai.speech.transcription.enhancedmode.basic
             // Enable enhanced mode for improved transcription quality
-            EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-                .setEnabled(true);
+            EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
 
             TranscriptionOptions options = new TranscriptionOptions()
                 .setLocales(Arrays.asList("en-US"))
-                .setEnhancedMode(enhancedMode);
+                .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.basic
 
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -105,7 +104,7 @@ public class EnhancedModeSample {
             TranscriptionResult result = client.transcribe(requestContent);
 
             System.out.println("✓ Enhanced mode enabled");
-            System.out.println("Duration: " + result.getDurationMilliseconds() + " ms");
+            System.out.println("Duration: " + result.getDuration() + " ms");
             if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
                 System.out.println("Transcription: " + result.getCombinedPhrases().get(0).getText());
             }
@@ -145,9 +144,8 @@ public class EnhancedModeSample {
 
             // BEGIN: com.azure.ai.speech.transcription.enhancedmode.prompts
             // Use prompts to guide transcription with domain-specific terminology
-            EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-                .setEnabled(true)
-                .setPrompt(Arrays.asList(
+            EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+                .setPrompts(Arrays.asList(
                     "Medical consultation discussing hypertension and diabetes",
                     "Common medications: metformin, lisinopril, atorvastatin",
                     "Patient symptoms and treatment plan"
@@ -155,10 +153,10 @@ public class EnhancedModeSample {
 
             TranscriptionOptions options = new TranscriptionOptions()
                 .setLocales(Arrays.asList("en-US"))
-                .setEnhancedMode(enhancedMode);
+                .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.prompts
 
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -168,7 +166,7 @@ public class EnhancedModeSample {
 
             System.out.println("✓ Enhanced mode with custom prompts");
             System.out.println("Prompts used:");
-            for (String prompt : enhancedMode.getPrompt()) {
+            for (String prompt : enhancedMode.getPrompts()) {
                 System.out.println("  - " + prompt);
             }
             if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
@@ -210,16 +208,15 @@ public class EnhancedModeSample {
 
             // BEGIN: com.azure.ai.speech.transcription.enhancedmode.translation
             // Configure enhanced mode to transcribe Spanish audio and translate to English
-            EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-                .setEnabled(true)
+            EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
                 .setTargetLanguage("en-US"); // Translate to English
 
             TranscriptionOptions options = new TranscriptionOptions()
                 .setLocales(Arrays.asList("es-ES")) // Source language: Spanish
-                .setEnhancedMode(enhancedMode);
+                .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.translation
 
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -269,10 +266,9 @@ public class EnhancedModeSample {
 
             // BEGIN: com.azure.ai.speech.transcription.enhancedmode.taskspecific
             // Configure enhanced mode for a specific task type (e.g., meeting transcription)
-            EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-                .setEnabled(true)
+            EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
                 .setTask("meeting") // Task type: meeting, interview, presentation, etc.
-                .setPrompt(Arrays.asList(
+                .setPrompts(Arrays.asList(
                     "Business meeting about Q4 revenue projections",
                     "Participants: CEO, CFO, Sales Director",
                     "Topics: budget, forecasts, market trends"
@@ -280,10 +276,10 @@ public class EnhancedModeSample {
 
             TranscriptionOptions options = new TranscriptionOptions()
                 .setLocales(Arrays.asList("en-US"))
-                .setEnhancedMode(enhancedMode);
+                .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.taskspecific
 
-            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)
                 .setOptions(options);
 
@@ -296,8 +292,8 @@ public class EnhancedModeSample {
             System.out.println("Enabled: " + enhancedMode.isEnabled());
             if (result.getPhrases() != null && !result.getPhrases().isEmpty()) {
                 System.out.println("\nTranscription phrases:");
-                result.getPhrases().forEach(phrase -> 
-                    System.out.println("  [" + phrase.getOffsetMilliseconds() + "ms] " + phrase.getText())
+                result.getPhrases().forEach(phrase ->
+                    System.out.println("  [" + phrase.getOffset() + "ms] " + phrase.getText())
                 );
             }
             System.out.println();
@@ -323,11 +319,10 @@ public class EnhancedModeSample {
             .setFilename(filename);
 
         // Configure comprehensive enhanced mode settings
-        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
-            .setEnabled(true)
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
             .setTask("interview")
             .setTargetLanguage("en-US")
-            .setPrompt(Arrays.asList(
+            .setPrompts(Arrays.asList(
                 "Technical interview about cloud architecture",
                 "Topics: Azure, microservices, Kubernetes, DevOps",
                 "Key terms: containerization, scalability, CI/CD"
@@ -336,10 +331,10 @@ public class EnhancedModeSample {
         // Create transcription options with enhanced mode
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(Arrays.asList("en-US"))
-            .setEnhancedMode(enhancedMode);
+            .setEnhancedModeOptions(enhancedMode);
 
         // Create request and transcribe
-        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+        TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
             .setOptions(options);
 
