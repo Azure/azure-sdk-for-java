@@ -206,8 +206,9 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
 
     /**
      * Custom subclass of ServiceBusJmsConnectionFactory for testing.
+     * Public constructors are required for reflection-based instantiation.
      */
-    static class CustomServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
+    public static class CustomServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
         public CustomServiceBusJmsConnectionFactory() {
             super();
         }
