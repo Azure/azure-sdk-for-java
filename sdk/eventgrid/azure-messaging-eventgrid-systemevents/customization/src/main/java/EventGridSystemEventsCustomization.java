@@ -355,36 +355,6 @@ public class EventGridSystemEventsCustomization extends Customization {
                         .addBlockTag("param", "systemProperties the systemProperties value to set."));
             });
         });
-
-        // Restore constructor for IotHubDeviceTelemetryEventData
-        // This had constructor parameters removed and made private
-        customization.getClass("IotHubDeviceTelemetryEventData").customizeAst(ast -> {
-            ast.addImport("java.util.Map");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.getClassByName("IotHubDeviceTelemetryEventData").ifPresent(clazz -> {
-                // Create constructor body using AST nodes
-                BlockStmt body = new BlockStmt();
-                
-                // Add super(body, properties, systemProperties) call
-                body.addStatement(new ExpressionStmt(
-                    new MethodCallExpr("super")
-                        .addArgument(new NameExpr("body"))
-                        .addArgument(new NameExpr("properties"))
-                        .addArgument(new NameExpr("systemProperties"))
-                ));
-                
-                // Add the original constructor with properties and systemProperties parameters
-                clazz.addConstructor(Modifier.Keyword.PUBLIC)
-                    .addParameter("Map<String, BinaryData>", "body")
-                    .addParameter("Map<String, String>", "properties") 
-                    .addParameter("Map<String, String>", "systemProperties")
-                    .setBody(body)
-                    .setJavadocComment(new Javadoc(parseText("Creates an instance of IotHubDeviceTelemetryEventData class."))
-                        .addBlockTag("param", "body the body value to set.")
-                        .addBlockTag("param", "properties the properties value to set.")
-                        .addBlockTag("param", "systemProperties the systemProperties value to set."));
-            });
-        });
     }
 
     public static String getConstantName(String name) {

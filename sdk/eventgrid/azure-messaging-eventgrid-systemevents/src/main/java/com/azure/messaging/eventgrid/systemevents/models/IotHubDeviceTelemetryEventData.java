@@ -111,16 +111,4 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
             return deserializedIotHubDeviceTelemetryEventData;
         });
     }
-
-    /**
-     * Creates an instance of IotHubDeviceTelemetryEventData class.
-     *
-     * @param body the body value to set.
-     * @param properties the properties value to set.
-     * @param systemProperties the systemProperties value to set.
-     */
-    public IotHubDeviceTelemetryEventData(Map<String, BinaryData> body, Map<String, String> properties,
-        Map<String, String> systemProperties) {
-        super(body, properties, systemProperties);
-    }
 }
