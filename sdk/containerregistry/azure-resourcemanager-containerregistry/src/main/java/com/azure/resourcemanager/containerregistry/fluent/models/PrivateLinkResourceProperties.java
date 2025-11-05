@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The properties of a private link resource.
+ * Properties of a private link resource.
  */
 @Fluent
 public final class PrivateLinkResourceProperties implements JsonSerializable<PrivateLinkResourceProperties> {
@@ -28,7 +28,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     private List<String> requiredMembers;
 
     /*
-     * The private link resource Private link DNS zone name.
+     * The private link resource private link DNS zone name.
      */
     private List<String> requiredZoneNames;
 
@@ -48,17 +48,6 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     }
 
     /**
-     * Set the groupId property: The private link resource group id.
-     * 
-     * @param groupId the groupId value to set.
-     * @return the PrivateLinkResourceProperties object itself.
-     */
-    public PrivateLinkResourceProperties withGroupId(String groupId) {
-        this.groupId = groupId;
-        return this;
-    }
-
-    /**
      * Get the requiredMembers property: The private link resource required member names.
      * 
      * @return the requiredMembers value.
@@ -68,18 +57,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     }
 
     /**
-     * Set the requiredMembers property: The private link resource required member names.
-     * 
-     * @param requiredMembers the requiredMembers value to set.
-     * @return the PrivateLinkResourceProperties object itself.
-     */
-    public PrivateLinkResourceProperties withRequiredMembers(List<String> requiredMembers) {
-        this.requiredMembers = requiredMembers;
-        return this;
-    }
-
-    /**
-     * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
+     * Get the requiredZoneNames property: The private link resource private link DNS zone name.
      * 
      * @return the requiredZoneNames value.
      */
@@ -88,7 +66,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     }
 
     /**
-     * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
+     * Set the requiredZoneNames property: The private link resource private link DNS zone name.
      * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResourceProperties object itself.
@@ -112,9 +90,6 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("groupId", this.groupId);
-        jsonWriter.writeArrayField("requiredMembers", this.requiredMembers,
-            (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("requiredZoneNames", this.requiredZoneNames,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
