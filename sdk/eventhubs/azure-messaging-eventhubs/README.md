@@ -117,7 +117,7 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 
 The snippet below creates a synchronous Event Hub producer.
 
-```java com.azure.messaging.eventhubs.eventhubproducerclient.construct
+```java
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
