@@ -168,7 +168,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsMessageEventDataAndInheritingClasses(systemEvent);
         customizeIothubEventData(systemEvent);
         customizeEventGridMQTTClientEventData(systemEvent);
-        restoreConstructorsForReadonlyDictionaries(systemEvent);
+        restoreConstructorsForReadOnlyDictionaries(systemEvent);
     }
 
     public void customizeEventGridMQTTClientEventData(PackageCustomization customization) {
@@ -259,11 +259,12 @@ public class EventGridSystemEventsCustomization extends Customization {
 
     /**
      * Restores constructor accessibility for classes affected by readonly dictionary changes in TypeSpec.
-     * The changes in PR #36490 marked dictionaries as readonly, which removed labels/tags parameters 
-     * from constructors and changed accessibility. This customization restores the original constructor 
-     * signatures for backward compatibility as requested in issue #46316.
+     * The changes in <a href="https://github.com/Azure/azure-sdk-for-java/pull/36490">Azure/azure-sdk-for-java#36490</a>
+     * marked dictionaries as readonly, which removed labels/tags parameters from constructors and changed accessibility.
+     * This customization restores the original constructor signatures for backward compatibility as requested in
+     * <a href="https://github.com/Azure/azure-sdk-for-java/issues/46316">Azure/azure-sdk-for-java#46316</a>.
      */
-    public void restoreConstructorsForReadonlyDictionaries(PackageCustomization customization) {
+    public void restoreConstructorsForReadOnlyDictionaries(PackageCustomization customization) {
         // Restore the base class AcsRouterJobEventData constructor to accept labels and tags
         customization.getClass("AcsRouterJobEventData").customizeAst(ast -> {
             ast.addImport("java.util.Map");
@@ -317,7 +318,7 @@ public class EventGridSystemEventsCustomization extends Customization {
                 BlockStmt body = new BlockStmt();
                 
                 // Add this.body = body assignment
-               body.addStatement(new ExpressionStmt(
+                body.addStatement(new ExpressionStmt(
                     new AssignExpr(
                         new FieldAccessExpr(new ThisExpr(), "body"),
                         new NameExpr("body"),
