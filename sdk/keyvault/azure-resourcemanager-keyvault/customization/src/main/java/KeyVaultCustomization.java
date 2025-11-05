@@ -18,6 +18,9 @@ public class KeyVaultCustomization extends Customization {
         // change base class from `ProxyResource` to `Resource`, to avoid breaking changes and compilation errors
         customizeResourceBaseClass(fluentModelsPackage.getClass("VaultInner"));
         customizeResourceBaseClass(fluentModelsPackage.getClass("ManagedHsmInner"));
+        customizeResourceBaseClass(fluentModelsPackage.getClass("KeyInner"));
+        customizeResourceBaseClass(fluentModelsPackage.getClass("SecretInner"));
+        customizeResourceBaseClass(fluentModelsPackage.getClass("PrivateEndpointConnectionInner"));
     }
 
     /**
