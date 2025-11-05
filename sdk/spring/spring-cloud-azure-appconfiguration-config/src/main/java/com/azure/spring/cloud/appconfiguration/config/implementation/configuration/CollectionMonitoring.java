@@ -1,21 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.appconfiguration.config.implementation.feature;
+package com.azure.spring.cloud.appconfiguration.config.implementation.configuration;
 
 import java.util.List;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-public class FeatureFlags {
+public class CollectionMonitoring {
 
     private SettingSelector settingSelector;
 
-    private List<ConfigurationSetting> featureFlags;
+    private List<ConfigurationSetting> configurations;
 
-    public FeatureFlags(SettingSelector settingSelector, List<ConfigurationSetting> featureFlags) {
+    public CollectionMonitoring(SettingSelector settingSelector, List<ConfigurationSetting> configurations) {
         this.settingSelector = settingSelector;
-        this.featureFlags = featureFlags;
+        this.configurations = configurations;
     }
 
     /**
@@ -35,15 +35,15 @@ public class FeatureFlags {
     /**
      * @return the featureFlags
      */
-    public List<ConfigurationSetting> getFeatureFlags() {
-        return featureFlags;
+    public List<ConfigurationSetting> getConfigurations() {
+        return configurations;
     }
 
     /**
-     * @param featureFlags the featureFlags to set
+     * @param configurations the configurations to set
      */
-    public void setFeatureFlags(List<ConfigurationSetting> featureFlags) {
-        this.featureFlags = featureFlags;
+    public void setConfigurations(List<ConfigurationSetting> configurations) {
+        this.configurations = configurations;
     }
 
 }

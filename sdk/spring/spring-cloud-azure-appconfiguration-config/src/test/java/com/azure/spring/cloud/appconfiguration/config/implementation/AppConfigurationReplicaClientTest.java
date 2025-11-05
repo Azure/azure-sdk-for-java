@@ -170,7 +170,7 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenReturn(new PagedIterable<>(pagedFlux));
 
-        assertEquals(configurations, client.listFeatureFlags(new SettingSelector(), contextMock).getFeatureFlags());
+        assertEquals(configurations, client.listFeatureFlags(new SettingSelector(), contextMock).getConfigurations());
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);

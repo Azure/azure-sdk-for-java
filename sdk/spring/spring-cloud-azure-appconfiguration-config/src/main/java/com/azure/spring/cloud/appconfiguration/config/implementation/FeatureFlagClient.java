@@ -37,7 +37,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
@@ -78,9 +78,9 @@ class FeatureFlagClient {
      * </p>
      *
      */
-    List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    List<CollectionMonitoring> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter, Context context) {
-        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
+        List<CollectionMonitoring> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
@@ -95,18 +95,18 @@ class FeatureFlagClient {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
             context.addData("FeatureFlagTracing", tracing);
 
-            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, context);
+            CollectionMonitoring features = replicaClient.listFeatureFlags(settingSelector, context);
             loadedFeatureFlags.addAll(proccessFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }
 
-    List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
-        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
+    List<CollectionMonitoring> proccessFeatureFlags(CollectionMonitoring features, String endpoint) {
+        List<CollectionMonitoring> loadedFeatureFlags = new ArrayList<>();
         loadedFeatureFlags.add(features);
 
         // Reading In Features
-        for (ConfigurationSetting setting : features.getFeatureFlags()) {
+        for (ConfigurationSetting setting : features.getConfigurations()) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;

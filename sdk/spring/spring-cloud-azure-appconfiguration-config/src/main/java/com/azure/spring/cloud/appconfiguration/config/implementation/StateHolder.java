@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 
 final class StateHolder {
 
@@ -84,7 +84,7 @@ final class StateHolder {
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param duration refresh duration.
      */
-    void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys,
+    void setStateFeatureFlag(String originEndpoint, List<CollectionMonitoring> watchKeys,
         Duration duration) {
         featureFlagState.put(originEndpoint,
             new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));

@@ -17,8 +17,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
@@ -245,7 +245,7 @@ public class AppConfigurationRefreshUtil {
         if (date.isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
 
-            for (FeatureFlags featureFlags : state.getWatchKeys()) {
+            for (CollectionMonitoring featureFlags : state.getWatchKeys()) {
                 if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                     String eventDataInfo = ".appconfig.featureflag/*";
 
@@ -276,7 +276,7 @@ public class AppConfigurationRefreshUtil {
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState watchKeys,
         RefreshEventData eventData, Context context) throws AppConfigurationStatusException {
 
-        for (FeatureFlags featureFlags : watchKeys.getWatchKeys()) {
+        for (CollectionMonitoring featureFlags : watchKeys.getWatchKeys()) {
             if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                 String eventDataInfo = ".appconfig.featureflag/*";
 

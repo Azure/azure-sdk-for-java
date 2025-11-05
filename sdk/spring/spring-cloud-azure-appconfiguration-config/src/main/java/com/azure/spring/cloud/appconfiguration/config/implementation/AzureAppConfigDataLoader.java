@@ -22,7 +22,7 @@ import org.springframework.util.StringUtils;
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
@@ -152,7 +152,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
                     sourceList.addAll(createSettings(currentClient));
-                    List<FeatureFlags> featureFlags = createFeatureFlags(currentClient);
+                    List<CollectionMonitoring> featureFlags = createFeatureFlags(currentClient);
 
                     logger.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
@@ -259,16 +259,16 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * Creates a list of feature flags from Azure App Configuration.
      *
      * @param client client for connecting to App Configuration
-     * @return a list of FeatureFlags
+     * @return a list of CollectionMonitoring
      * @throws Exception creating feature flags failed
      */
-    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client)
+    private List<CollectionMonitoring> createFeatureFlags(AppConfigurationReplicaClient client)
         throws Exception {
-        List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
+        List<CollectionMonitoring> featureFlagWatchKeys = new ArrayList<>();
         List<String> profiles = resource.getProfiles().getActive();
 
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
-            List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
+            List<CollectionMonitoring> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
                 selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), requestContext);
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }

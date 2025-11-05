@@ -36,6 +36,8 @@ public final class AppConfigurationStoreMonitoring {
      */
     private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
 
+    private Boolean refreshAll = false;
+
     /**
      * Validation tokens for push notificaiton requests.
      */
@@ -115,11 +117,27 @@ public final class AppConfigurationStoreMonitoring {
     }
 
     /**
+     * @return the refreshAll
+     */
+    public Boolean getRefreshAll() {
+        return refreshAll;
+    }
+
+    /**
+     * @param refreshAll the refreshAll to set
+     */
+    public void setRefreshAll(Boolean refreshAll) {
+        this.refreshAll = refreshAll;
+    }
+
+    /**
      * Validates refreshIntervals are at least 1 second, and if enabled triggers are valid.
      */
     @PostConstruct
     void validateAndInit() {
         if (enabled) {
+           
+
             Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
             for (AppConfigurationStoreTrigger trigger : triggers) {
                 trigger.validateAndInit();

@@ -35,8 +35,8 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
@@ -143,7 +143,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         FeatureFlagState newState = new FeatureFlagState(
-            List.of(new FeatureFlags(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
+            List.of(new CollectionMonitoring(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
             Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
         // Config Store does return a watch key change.
@@ -191,7 +191,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         FeatureFlagState newState = new FeatureFlagState(
-            List.of(new FeatureFlags(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
+            List.of(new CollectionMonitoring(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
             Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
         // Config Store doesn't return a watch key change.
@@ -211,7 +211,7 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
-        FeatureFlags featureFlags = new FeatureFlags(new SettingSelector(), watchKeysFeatureFlags);
+        CollectionMonitoring featureFlags = new CollectionMonitoring(new SettingSelector(), watchKeysFeatureFlags);
         FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags),
             Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
@@ -507,7 +507,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientOriginMock.checkWatchKeys(Mockito.any(), Mockito.any(Context.class))).thenReturn(false);
 
         FeatureFlagState newState = new FeatureFlagState(
-            List.of(new FeatureFlags(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
+            List.of(new CollectionMonitoring(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
         // Config Store doesn't return a watch key change.
@@ -533,7 +533,7 @@ public class AppConfigurationRefreshUtilTest {
         setupFeatureFlagLoad();
         when(clientOriginMock.checkWatchKeys(Mockito.any(), Mockito.any(Context.class))).thenReturn(true);
 
-        FeatureFlags featureFlags = new FeatureFlags(new SettingSelector(), watchKeysFeatureFlags);
+        CollectionMonitoring featureFlags = new CollectionMonitoring(new SettingSelector(), watchKeysFeatureFlags);
 
         FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags),
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
