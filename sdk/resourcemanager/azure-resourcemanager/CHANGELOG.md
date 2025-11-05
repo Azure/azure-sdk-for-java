@@ -1,6 +1,14 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
+
+### azure-resourcemanager-containerregistry
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-11-01`.
+
+## 2.56.0 (2025-10-31)
 
 ### azure-resourcemanager-containerservice
 
