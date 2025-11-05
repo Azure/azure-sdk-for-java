@@ -1389,20 +1389,35 @@ public class BlobAsyncClientBase {
                     }
 
                     try {
-                        // For retry context, determine the retry behavior based on validation options
+                        // For retry context, preserve decoder state if structured message validation is enabled
                         Context retryContext = firstRangeContext;
                         BlobRange retryRange;
 
-                        // If structured message decoding is enabled, we must restart from the beginning
-                        // because structured messages cannot be decoded from arbitrary offsets
+                        // If structured message decoding is enabled, we need to calculate the retry offset
+                        // based on the encoded bytes processed, not the decoded bytes
                         if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            // Structured messages require sequential decoding from the start.
-                            // We cannot resume from middle, so restart the entire download.
-                            // Clear the decoder state to start fresh.
-                            retryContext
-                                = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, null);
-                            retryRange = new BlobRange(initialOffset, finalCount);
+                            // Get the decoder state to determine how many encoded bytes were processed
+                            Object decoderStateObj
+                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+                                    .orElse(null);
+
+                            if (decoderStateObj instanceof com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState) {
+                                com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState decoderState
+                                    = (com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+
+                                // Use the encoded offset for retry (number of encoded bytes processed)
+                                long encodedOffset = decoderState.getTotalEncodedBytesProcessed();
+                                long remainingCount = finalCount - encodedOffset;
+                                retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
+
+                                // Preserve the decoder state for the retry
+                                retryContext = retryContext
+                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                            } else {
+                                // No decoder state yet, use the normal retry logic
+                                retryRange = new BlobRange(initialOffset + offset, newCount);
+                            }
                         } else {
                             // For non-structured downloads, use smart retry from the interrupted offset
                             retryRange = new BlobRange(initialOffset + offset, newCount);
