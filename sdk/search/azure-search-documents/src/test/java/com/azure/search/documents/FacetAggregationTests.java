@@ -264,7 +264,7 @@ public class FacetAggregationTests extends SearchTestBase {
             .credential(TestHelpers.getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .indexName(HOTEL_INDEX_NAME)
-            .serviceVersion(SearchServiceVersion.V2025_08_01_PREVIEW)
+            .serviceVersion(SearchServiceVersion.V2025_09_01)
             .buildClient();
 
         SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min");
