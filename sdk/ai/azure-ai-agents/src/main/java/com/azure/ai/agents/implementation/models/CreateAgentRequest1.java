@@ -21,6 +21,9 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
 
     /*
      * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      */
     @Generated
     private final String name;
@@ -32,7 +35,12 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
     private String description;
 
     /*
-     * Arbitrary key-value metadata to associate with the agent.
+     * Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     * 
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
      */
     @Generated
     private Map<String, String> metadata;
@@ -58,6 +66,9 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
     /**
      * Get the name property: The unique name that identifies the agent. Name can be used to retrieve/update/delete the
      * agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      *
      * @return the name value.
      */
@@ -89,7 +100,12 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
     }
 
     /**
-     * Get the metadata property: Arbitrary key-value metadata to associate with the agent.
+     * Get the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
      *
      * @return the metadata value.
      */
@@ -99,7 +115,12 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
     }
 
     /**
-     * Set the metadata property: Arbitrary key-value metadata to associate with the agent.
+     * Set the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
      *
      * @param metadata the metadata value to set.
      * @return the CreateAgentRequest1 object itself.
@@ -130,8 +151,8 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("definition", this.definition);
-        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,8 +170,8 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
         return jsonReader.readObject(reader -> {
             String name = null;
             AgentDefinition definition = null;
-            String description = null;
             Map<String, String> metadata = null;
+            String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -158,17 +179,17 @@ public final class CreateAgentRequest1 implements JsonSerializable<CreateAgentRe
                     name = reader.getString();
                 } else if ("definition".equals(fieldName)) {
                     definition = AgentDefinition.fromJson(reader);
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             CreateAgentRequest1 deserializedCreateAgentRequest1 = new CreateAgentRequest1(name, definition);
-            deserializedCreateAgentRequest1.description = description;
             deserializedCreateAgentRequest1.metadata = metadata;
+            deserializedCreateAgentRequest1.description = description;
             return deserializedCreateAgentRequest1;
         });
     }

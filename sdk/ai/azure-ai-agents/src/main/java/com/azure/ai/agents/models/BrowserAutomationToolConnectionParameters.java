@@ -18,30 +18,14 @@ import java.io.IOException;
 public final class BrowserAutomationToolConnectionParameters
     implements JsonSerializable<BrowserAutomationToolConnectionParameters> {
 
-    /*
-     * The ID of the project connection to your Azure Playwright resource.
-     */
-    @Generated
-    private final String id;
-
     /**
      * Creates an instance of BrowserAutomationToolConnectionParameters class.
      *
-     * @param id the id value to set.
+     * @param projectConnectionId the projectConnectionId value to set.
      */
     @Generated
-    public BrowserAutomationToolConnectionParameters(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Get the id property: The ID of the project connection to your Azure Playwright resource.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
+    public BrowserAutomationToolConnectionParameters(String projectConnectionId) {
+        this.projectConnectionId = projectConnectionId;
     }
 
     /**
@@ -51,7 +35,7 @@ public final class BrowserAutomationToolConnectionParameters
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,17 +51,33 @@ public final class BrowserAutomationToolConnectionParameters
     @Generated
     public static BrowserAutomationToolConnectionParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String id = null;
+            String projectConnectionId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
+                if ("project_connection_id".equals(fieldName)) {
+                    projectConnectionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new BrowserAutomationToolConnectionParameters(id);
+            return new BrowserAutomationToolConnectionParameters(projectConnectionId);
         });
+    }
+
+    /*
+     * The ID of the project connection to your Azure Playwright resource.
+     */
+    @Generated
+    private final String projectConnectionId;
+
+    /**
+     * Get the projectConnectionId property: The ID of the project connection to your Azure Playwright resource.
+     *
+     * @return the projectConnectionId value.
+     */
+    @Generated
+    public String getProjectConnectionId() {
+        return this.projectConnectionId;
     }
 }

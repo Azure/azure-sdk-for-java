@@ -31,7 +31,7 @@ public class MultipleAgentsConversation {
             .credential(new DefaultAzureCredentialBuilder().build())
             .serviceVersion(AgentsServiceVersion.V2025_05_15_PREVIEW)
             .endpoint(endpoint);
-        AgentsClient agentsClient = builder.buildClient();
+        AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationsClient conversationsClient = builder.buildConversationsClient();
 

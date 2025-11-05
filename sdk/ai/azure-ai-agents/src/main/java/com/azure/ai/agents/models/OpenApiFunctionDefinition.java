@@ -156,18 +156,6 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     }
 
     /**
-     * Set the functions property: List of function definitions used by OpenApi tool.
-     *
-     * @param functions the functions value to set.
-     * @return the OpenApiFunctionDefinition object itself.
-     */
-    @Generated
-    public OpenApiFunctionDefinition setFunctions(List<OpenApiFunctionDefinitionFunction> functions) {
-        this.functions = functions;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -181,7 +169,6 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("default_params", this.defaultParams,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

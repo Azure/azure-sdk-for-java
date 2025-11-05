@@ -21,7 +21,7 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
      * An index connection ID in an IndexResource attached to this agent.
      */
     @Generated
-    private final String projectConnectionId;
+    private String projectConnectionId;
 
     /*
      * The name of an index in an IndexResource attached to this agent.
@@ -42,7 +42,7 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     private Integer topK;
 
     /*
-     * filter string for search resource. Learn more from here: https://learn.microsoft.com/azure/search/search-filters
+     * filter string for search resource. [Learn more here](https://learn.microsoft.com/azure/search/search-filters).
      */
     @Generated
     private String filter;
@@ -52,16 +52,6 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
      */
     @Generated
     private String indexAssetId;
-
-    /**
-     * Creates an instance of AISearchIndexResource class.
-     *
-     * @param projectConnectionId the projectConnectionId value to set.
-     */
-    @Generated
-    public AISearchIndexResource(String projectConnectionId) {
-        this.projectConnectionId = projectConnectionId;
-    }
 
     /**
      * Get the projectConnectionId property: An index connection ID in an IndexResource attached to this agent.
@@ -140,8 +130,8 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     }
 
     /**
-     * Get the filter property: filter string for search resource. Learn more from here:
-     * https://learn.microsoft.com/azure/search/search-filters.
+     * Get the filter property: filter string for search resource. [Learn more
+     * here](https://learn.microsoft.com/azure/search/search-filters).
      *
      * @return the filter value.
      */
@@ -151,8 +141,8 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     }
 
     /**
-     * Set the filter property: filter string for search resource. Learn more from here:
-     * https://learn.microsoft.com/azure/search/search-filters.
+     * Set the filter property: filter string for search resource. [Learn more
+     * here](https://learn.microsoft.com/azure/search/search-filters).
      *
      * @param filter the filter value to set.
      * @return the AISearchIndexResource object itself.
@@ -193,11 +183,11 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
-        jsonWriter.writeStringField("indexName", this.indexName);
-        jsonWriter.writeStringField("queryType", this.queryType == null ? null : this.queryType.toString());
-        jsonWriter.writeNumberField("topK", this.topK);
+        jsonWriter.writeStringField("index_name", this.indexName);
+        jsonWriter.writeStringField("query_type", this.queryType == null ? null : this.queryType.toString());
+        jsonWriter.writeNumberField("top_k", this.topK);
         jsonWriter.writeStringField("filter", this.filter);
-        jsonWriter.writeStringField("indexAssetId", this.indexAssetId);
+        jsonWriter.writeStringField("index_asset_id", this.indexAssetId);
         return jsonWriter.writeEndObject();
     }
 
@@ -207,44 +197,51 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
      * @param jsonReader The JsonReader being read.
      * @return An instance of AISearchIndexResource if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AISearchIndexResource.
      */
     @Generated
     public static AISearchIndexResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String projectConnectionId = null;
-            String indexName = null;
-            AzureAISearchQueryType queryType = null;
-            Integer topK = null;
-            String filter = null;
-            String indexAssetId = null;
+            AISearchIndexResource deserializedAISearchIndexResource = new AISearchIndexResource();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("project_connection_id".equals(fieldName)) {
-                    projectConnectionId = reader.getString();
-                } else if ("indexName".equals(fieldName)) {
-                    indexName = reader.getString();
-                } else if ("queryType".equals(fieldName)) {
-                    queryType = AzureAISearchQueryType.fromString(reader.getString());
-                } else if ("topK".equals(fieldName)) {
-                    topK = reader.getNullable(JsonReader::getInt);
+                    deserializedAISearchIndexResource.projectConnectionId = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    deserializedAISearchIndexResource.indexName = reader.getString();
+                } else if ("query_type".equals(fieldName)) {
+                    deserializedAISearchIndexResource.queryType = AzureAISearchQueryType.fromString(reader.getString());
+                } else if ("top_k".equals(fieldName)) {
+                    deserializedAISearchIndexResource.topK = reader.getNullable(JsonReader::getInt);
                 } else if ("filter".equals(fieldName)) {
-                    filter = reader.getString();
-                } else if ("indexAssetId".equals(fieldName)) {
-                    indexAssetId = reader.getString();
+                    deserializedAISearchIndexResource.filter = reader.getString();
+                } else if ("index_asset_id".equals(fieldName)) {
+                    deserializedAISearchIndexResource.indexAssetId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            AISearchIndexResource deserializedAISearchIndexResource = new AISearchIndexResource(projectConnectionId);
-            deserializedAISearchIndexResource.indexName = indexName;
-            deserializedAISearchIndexResource.queryType = queryType;
-            deserializedAISearchIndexResource.topK = topK;
-            deserializedAISearchIndexResource.filter = filter;
-            deserializedAISearchIndexResource.indexAssetId = indexAssetId;
             return deserializedAISearchIndexResource;
         });
+    }
+
+    /**
+     * Creates an instance of AISearchIndexResource class.
+     */
+    @Generated
+    public AISearchIndexResource() {
+    }
+
+    /**
+     * Set the projectConnectionId property: An index connection ID in an IndexResource attached to this agent.
+     *
+     * @param projectConnectionId the projectConnectionId value to set.
+     * @return the AISearchIndexResource object itself.
+     */
+    @Generated
+    public AISearchIndexResource setProjectConnectionId(String projectConnectionId) {
+        this.projectConnectionId = projectConnectionId;
+        return this;
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * A description of the chain of thought used by a reasoning model while generating
  * a response. Be sure to include these items in your `input` to the Responses API
  * for subsequent turns of a conversation if you are manually
- * [managing context](/docs/guides/conversation-state).
+ * [managing conversation state](https://platform.openai.com/docs/guides/conversation-state).
  */
 @Fluent
 public final class ReasoningItemParam extends ItemParam {

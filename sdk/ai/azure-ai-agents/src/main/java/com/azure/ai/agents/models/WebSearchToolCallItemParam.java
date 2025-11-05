@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * The results of a web search tool call. See the
- * [web search guide](/docs/guides/tools-web-search) for more information.
+ * [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for more information.
  */
 @Immutable
 public final class WebSearchToolCallItemParam extends ItemParam {

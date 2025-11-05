@@ -85,12 +85,6 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static final ToolType CAPTURE_STRUCTURED_OUTPUTS = fromString("capture_structured_outputs");
 
     /**
-     * Static value capture_semantic_events for ToolType.
-     */
-    @Generated
-    public static final ToolType CAPTURE_SEMANTIC_EVENTS = fromString("capture_semantic_events");
-
-    /**
      * Creates a new instance of ToolType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

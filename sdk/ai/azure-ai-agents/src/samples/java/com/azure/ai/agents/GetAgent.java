@@ -15,7 +15,7 @@ public class GetAgent {
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildClient();
+                .buildAgentsClient();
 
         AgentObject agent = agentsClient.getAgent(agentName);
 

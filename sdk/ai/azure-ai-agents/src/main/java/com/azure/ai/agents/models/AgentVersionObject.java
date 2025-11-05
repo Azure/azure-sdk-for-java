@@ -53,10 +53,15 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     private String description;
 
     /*
-     * Arbitrary key-value metadata to associate with the agent.
+     * Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     * 
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
      */
     @Generated
-    private Map<String, String> metadata;
+    private final Map<String, String> metadata;
 
     /*
      * The Unix timestamp (seconds) when the agent was created.
@@ -69,29 +74,6 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
      */
     @Generated
     private final AgentDefinition definition;
-
-    /**
-     * Creates an instance of AgentVersionObject class.
-     *
-     * @param id the id value to set.
-     * @param name the name value to set.
-     * @param version the version value to set.
-     * @param createdAt the createdAt value to set.
-     * @param definition the definition value to set.
-     */
-    @Generated
-    private AgentVersionObject(String id, String name, String version, OffsetDateTime createdAt,
-        AgentDefinition definition) {
-        this.id = id;
-        this.name = name;
-        this.version = version;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.definition = definition;
-    }
 
     /**
      * Get the object property: The object type, which is always 'agent.version'.
@@ -145,7 +127,12 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     }
 
     /**
-     * Get the metadata property: Arbitrary key-value metadata to associate with the agent.
+     * Get the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
      *
      * @return the metadata value.
      */
@@ -181,6 +168,7 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("object", this.object);
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
@@ -188,7 +176,6 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeJsonField("definition", this.definition);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -204,17 +191,19 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     @Generated
     public static AgentVersionObject fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            Map<String, String> metadata = null;
             String id = null;
             String name = null;
             String version = null;
             OffsetDateTime createdAt = null;
             AgentDefinition definition = null;
             String description = null;
-            Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
+                if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
@@ -226,17 +215,39 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
                     definition = AgentDefinition.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             AgentVersionObject deserializedAgentVersionObject
-                = new AgentVersionObject(id, name, version, createdAt, definition);
+                = new AgentVersionObject(metadata, id, name, version, createdAt, definition);
             deserializedAgentVersionObject.description = description;
-            deserializedAgentVersionObject.metadata = metadata;
             return deserializedAgentVersionObject;
         });
+    }
+
+    /**
+     * Creates an instance of AgentVersionObject class.
+     *
+     * @param metadata the metadata value to set.
+     * @param id the id value to set.
+     * @param name the name value to set.
+     * @param version the version value to set.
+     * @param createdAt the createdAt value to set.
+     * @param definition the definition value to set.
+     */
+    @Generated
+    private AgentVersionObject(Map<String, String> metadata, String id, String name, String version,
+        OffsetDateTime createdAt, AgentDefinition definition) {
+        this.metadata = metadata;
+        this.id = id;
+        this.name = name;
+        this.version = version;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.definition = definition;
     }
 }

@@ -15,7 +15,7 @@ public class DeleteAgent {
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildClient();
+                .buildAgentsClient();
 
         DeleteAgentResponse agent = agentsClient.deleteAgent(agentName);
 

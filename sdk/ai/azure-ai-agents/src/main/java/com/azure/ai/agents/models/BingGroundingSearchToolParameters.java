@@ -19,43 +19,11 @@ import java.util.List;
 public final class BingGroundingSearchToolParameters implements JsonSerializable<BingGroundingSearchToolParameters> {
 
     /*
-     * The project connections attached to this tool. There can be a maximum of 1 connection
-     * resource attached to the tool.
-     */
-    @Generated
-    private final ToolProjectConnectionList projectConnections;
-
-    /*
      * The search configurations attached to this tool. There can be a maximum of 1
      * search configuration resource attached to the tool.
      */
     @Generated
     private final List<BingGroundingSearchConfiguration> searchConfigurations;
-
-    /**
-     * Creates an instance of BingGroundingSearchToolParameters class.
-     *
-     * @param projectConnections the projectConnections value to set.
-     * @param searchConfigurations the searchConfigurations value to set.
-     */
-    @Generated
-    public BingGroundingSearchToolParameters(ToolProjectConnectionList projectConnections,
-        List<BingGroundingSearchConfiguration> searchConfigurations) {
-        this.projectConnections = projectConnections;
-        this.searchConfigurations = searchConfigurations;
-    }
-
-    /**
-     * Get the projectConnections property: The project connections attached to this tool. There can be a maximum of 1
-     * connection
-     * resource attached to the tool.
-     *
-     * @return the projectConnections value.
-     */
-    @Generated
-    public ToolProjectConnectionList getProjectConnections() {
-        return this.projectConnections;
-    }
 
     /**
      * Get the searchConfigurations property: The search configurations attached to this tool. There can be a maximum of
@@ -76,7 +44,6 @@ public final class BingGroundingSearchToolParameters implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("project_connections", this.projectConnections);
         jsonWriter.writeArrayField("search_configurations", this.searchConfigurations,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -94,21 +61,28 @@ public final class BingGroundingSearchToolParameters implements JsonSerializable
     @Generated
     public static BingGroundingSearchToolParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ToolProjectConnectionList projectConnections = null;
             List<BingGroundingSearchConfiguration> searchConfigurations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("project_connections".equals(fieldName)) {
-                    projectConnections = ToolProjectConnectionList.fromJson(reader);
-                } else if ("search_configurations".equals(fieldName)) {
+                if ("search_configurations".equals(fieldName)) {
                     searchConfigurations
                         = reader.readArray(reader1 -> BingGroundingSearchConfiguration.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new BingGroundingSearchToolParameters(projectConnections, searchConfigurations);
+            return new BingGroundingSearchToolParameters(searchConfigurations);
         });
+    }
+
+    /**
+     * Creates an instance of BingGroundingSearchToolParameters class.
+     *
+     * @param searchConfigurations the searchConfigurations value to set.
+     */
+    @Generated
+    public BingGroundingSearchToolParameters(List<BingGroundingSearchConfiguration> searchConfigurations) {
+        this.searchConfigurations = searchConfigurations;
     }
 }

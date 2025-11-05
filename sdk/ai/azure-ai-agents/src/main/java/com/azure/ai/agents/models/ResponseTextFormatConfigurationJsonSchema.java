@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * JSON Schema response format. Used to generate structured JSON responses.
- * Learn more about [Structured Outputs](/docs/guides/structured-outputs).
+ * Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
  */
 @Fluent
 public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTextFormatConfiguration {
@@ -48,7 +48,7 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
      * If set to true, the model will always follow the exact schema defined
      * in the `schema` field. Only a subset of JSON Schema is supported when
      * `strict` is `true`. To learn more, read the [Structured Outputs
-     * guide](/docs/guides/structured-outputs).
+     * guide](https://platform.openai.com/docs/guides/structured-outputs).
      */
     @Generated
     private Boolean strict;
@@ -126,7 +126,7 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
      * If set to true, the model will always follow the exact schema defined
      * in the `schema` field. Only a subset of JSON Schema is supported when
      * `strict` is `true`. To learn more, read the [Structured Outputs
-     * guide](/docs/guides/structured-outputs).
+     * guide](https://platform.openai.com/docs/guides/structured-outputs).
      *
      * @return the strict value.
      */
@@ -140,7 +140,7 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
      * If set to true, the model will always follow the exact schema defined
      * in the `schema` field. Only a subset of JSON Schema is supported when
      * `strict` is `true`. To learn more, read the [Structured Outputs
-     * guide](/docs/guides/structured-outputs).
+     * guide](https://platform.openai.com/docs/guides/structured-outputs).
      *
      * @param strict the strict value to set.
      * @return the ResponseTextFormatConfigurationJsonSchema object itself.

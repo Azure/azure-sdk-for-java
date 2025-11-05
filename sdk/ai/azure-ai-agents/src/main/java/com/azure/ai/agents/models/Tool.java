@@ -111,8 +111,6 @@ public class Tool implements JsonSerializable<Tool> {
                     return AzureFunctionAgentTool.fromJson(readerToUse.reset());
                 } else if ("capture_structured_outputs".equals(discriminatorValue)) {
                     return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
-                } else if ("capture_semantic_events".equals(discriminatorValue)) {
-                    return CaptureSemanticEventsTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
                     return A2ATool.fromJson(readerToUse.reset());
                 } else if ("memory_search".equals(discriminatorValue)) {

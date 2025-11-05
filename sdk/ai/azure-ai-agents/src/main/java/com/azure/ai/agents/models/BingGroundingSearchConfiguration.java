@@ -42,8 +42,8 @@ public final class BingGroundingSearchConfiguration implements JsonSerializable<
     private Long count;
 
     /*
-     * Filter search results by a specific time range. Accepted values:
-     * https://learn.microsoft.com/bing/search-apis/bing-web-search/reference/query-parameters
+     * Filter search results by a specific time range. See [accepted values
+     * here](https://learn.microsoft.com/bing/search-apis/bing-web-search/reference/query-parameters).
      */
     @Generated
     private String freshness;
@@ -135,8 +135,8 @@ public final class BingGroundingSearchConfiguration implements JsonSerializable<
     }
 
     /**
-     * Get the freshness property: Filter search results by a specific time range. Accepted values:
-     * https://learn.microsoft.com/bing/search-apis/bing-web-search/reference/query-parameters.
+     * Get the freshness property: Filter search results by a specific time range. See [accepted values
+     * here](https://learn.microsoft.com/bing/search-apis/bing-web-search/reference/query-parameters).
      *
      * @return the freshness value.
      */
@@ -146,8 +146,8 @@ public final class BingGroundingSearchConfiguration implements JsonSerializable<
     }
 
     /**
-     * Set the freshness property: Filter search results by a specific time range. Accepted values:
-     * https://learn.microsoft.com/bing/search-apis/bing-web-search/reference/query-parameters.
+     * Set the freshness property: Filter search results by a specific time range. See [accepted values
+     * here](https://learn.microsoft.com/bing/search-apis/bing-web-search/reference/query-parameters).
      *
      * @param freshness the freshness value to set.
      * @return the BingGroundingSearchConfiguration object itself.

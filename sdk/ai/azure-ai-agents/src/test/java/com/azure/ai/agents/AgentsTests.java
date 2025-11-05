@@ -186,50 +186,50 @@ public class AgentsTests extends ClientTestBase {
         // Deleting response causes a 500
         //        responsesClient.getOpenAIClient().delete(response.id());
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
-    public void liveWorkflowAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
-        ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
-
-        String agentName = "test_workflow_agent_java";
-
-        // Using the new utility function to get workflow data from test resources
-        WorkflowDefinition workflowAgentDefinition = new WorkflowDefinition();
-
-        workflowAgentDefinition.setTrigger(TestUtils.getBeginWorkflowMap("test_workflow.json"));
-
-        AgentVersionObject createdAgent = agentsClient.createAgentVersion(agentName, workflowAgentDefinition);
-
-        AgentReference agentReference = new AgentReference(createdAgent.getName());
-        agentReference.setVersion(createdAgent.getVersion());
-
-        Conversation conversation = conversationsClient.getOpenAIClient().create();
-        Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-            ResponseCreateParams.builder().input("Hello, agent!"));
-
-        assertNotNull(createdAgent);
-        assertNotNull(createdAgent.getId());
-        assertEquals(agentName, createdAgent.getName());
-
-        assertNotNull(response);
-        assertTrue(response.id().startsWith("wfresp"));
-        assertTrue(response.status().isPresent());
-        assertEquals(ResponseStatus.COMPLETED, response.status().get());
-
-        assertTrue(response._additionalProperties().containsKey("output_text"));
-
-        // this should be uncommented once I figure why the service hangs when attaching an input to the request
-        //        assertFalse(response.output().isEmpty());
-        //        AgentResponseItem agentResponseItem = response.OutputItems[0].AsAgentResponseItem();
-        //        Assert.That(agentResponseItem, Is.InstanceOf<AgentWorkflowActionResponseItem>());
-
-        // Clean up
-        agentsClient.deleteAgent(createdAgent.getId());
-        conversationsClient.getOpenAIClient().delete(conversation.id());
-        // Deleting response causes a 500
-        //        responsesClient.getOpenAIClient().delete(response.id());
-    }
+    //
+    //    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    //    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    //    public void liveWorkflowAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+    //        AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
+    //        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+    //        ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
+    //
+    //        String agentName = "test_workflow_agent_java";
+    //
+    //        // Using the new utility function to get workflow data from test resources
+    //        WorkflowDefinition workflowAgentDefinition = new WorkflowDefinition();
+    //
+    //        workflowAgentDefinition.setTrigger(TestUtils.getBeginWorkflowMap("test_workflow.json"));
+    //
+    //        AgentVersionObject createdAgent = agentsClient.createAgentVersion(agentName, workflowAgentDefinition);
+    //
+    //        AgentReference agentReference = new AgentReference(createdAgent.getName());
+    //        agentReference.setVersion(createdAgent.getVersion());
+    //
+    //        Conversation conversation = conversationsClient.getOpenAIClient().create();
+    //        Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
+    //            ResponseCreateParams.builder().input("Hello, agent!"));
+    //
+    //        assertNotNull(createdAgent);
+    //        assertNotNull(createdAgent.getId());
+    //        assertEquals(agentName, createdAgent.getName());
+    //
+    //        assertNotNull(response);
+    //        assertTrue(response.id().startsWith("wfresp"));
+    //        assertTrue(response.status().isPresent());
+    //        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+    //
+    //        assertTrue(response._additionalProperties().containsKey("output_text"));
+    //
+    //        // this should be uncommented once I figure why the service hangs when attaching an input to the request
+    //        //        assertFalse(response.output().isEmpty());
+    //        //        AgentResponseItem agentResponseItem = response.OutputItems[0].AsAgentResponseItem();
+    //        //        Assert.That(agentResponseItem, Is.InstanceOf<AgentWorkflowActionResponseItem>());
+    //
+    //        // Clean up
+    //        agentsClient.deleteAgent(createdAgent.getId());
+    //        conversationsClient.getOpenAIClient().delete(conversation.id());
+    //        // Deleting response causes a 500
+    //        //        responsesClient.getOpenAIClient().delete(response.id());
+    //    }
 }

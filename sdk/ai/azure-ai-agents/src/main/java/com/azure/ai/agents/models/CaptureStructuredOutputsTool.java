@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * A tool for capturing structured outputs.
@@ -24,20 +23,10 @@ public final class CaptureStructuredOutputsTool extends Tool {
     private ToolType type = ToolType.CAPTURE_STRUCTURED_OUTPUTS;
 
     /*
-     * Set of structured outputs to capture from the model.
+     * The structured outputs to capture from the model.
      */
     @Generated
-    private final Map<String, StructuredOutputDefinition> outputs;
-
-    /**
-     * Creates an instance of CaptureStructuredOutputsTool class.
-     *
-     * @param outputs the outputs value to set.
-     */
-    @Generated
-    public CaptureStructuredOutputsTool(Map<String, StructuredOutputDefinition> outputs) {
-        this.outputs = outputs;
-    }
+    private final StructuredOutputDefinition outputs;
 
     /**
      * Get the type property: The type property.
@@ -51,12 +40,12 @@ public final class CaptureStructuredOutputsTool extends Tool {
     }
 
     /**
-     * Get the outputs property: Set of structured outputs to capture from the model.
+     * Get the outputs property: The structured outputs to capture from the model.
      *
      * @return the outputs value.
      */
     @Generated
-    public Map<String, StructuredOutputDefinition> getOutputs() {
+    public StructuredOutputDefinition getOutputs() {
         return this.outputs;
     }
 
@@ -67,7 +56,7 @@ public final class CaptureStructuredOutputsTool extends Tool {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("outputs", this.outputs);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -84,13 +73,13 @@ public final class CaptureStructuredOutputsTool extends Tool {
     @Generated
     public static CaptureStructuredOutputsTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, StructuredOutputDefinition> outputs = null;
+            StructuredOutputDefinition outputs = null;
             ToolType type = ToolType.CAPTURE_STRUCTURED_OUTPUTS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("outputs".equals(fieldName)) {
-                    outputs = reader.readMap(reader1 -> StructuredOutputDefinition.fromJson(reader1));
+                    outputs = StructuredOutputDefinition.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {
@@ -102,5 +91,15 @@ public final class CaptureStructuredOutputsTool extends Tool {
             deserializedCaptureStructuredOutputsTool.type = type;
             return deserializedCaptureStructuredOutputsTool;
         });
+    }
+
+    /**
+     * Creates an instance of CaptureStructuredOutputsTool class.
+     *
+     * @param outputs the outputs value to set.
+     */
+    @Generated
+    public CaptureStructuredOutputsTool(StructuredOutputDefinition outputs) {
+        this.outputs = outputs;
     }
 }

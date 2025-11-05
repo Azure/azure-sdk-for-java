@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Initializes a new instance of the synchronous ProjectsClient type.
+ * Initializes a new instance of the synchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class MemoryStoresClient {
@@ -293,7 +293,7 @@ public final class MemoryStoresClient {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_search_id: String (Optional)
@@ -364,7 +364,7 @@ public final class MemoryStoresClient {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -410,11 +410,13 @@ public final class MemoryStoresClient {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -476,11 +478,13 @@ public final class MemoryStoresClient {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }

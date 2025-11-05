@@ -115,22 +115,10 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
     public static final ItemType MCP_CALL = fromString("mcp_call");
 
     /**
-     * Static value structured_inputs for ItemType.
-     */
-    @Generated
-    public static final ItemType STRUCTURED_INPUTS = fromString("structured_inputs");
-
-    /**
      * Static value structured_outputs for ItemType.
      */
     @Generated
     public static final ItemType STRUCTURED_OUTPUTS = fromString("structured_outputs");
-
-    /**
-     * Static value semantic_event for ItemType.
-     */
-    @Generated
-    public static final ItemType SEMANTIC_EVENT = fromString("semantic_event");
 
     /**
      * Static value workflow_action for ItemType.

@@ -16,7 +16,7 @@ public final class ReadmeSamples {
     public void readmeSamples() {
         AgentsClientBuilder builder = new AgentsClientBuilder();
 
-        AgentsClient agentsClient = builder.buildClient();
+        AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationsClient conversationsClient = builder.buildConversationsClient();
 

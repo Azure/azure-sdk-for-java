@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * The results of a file search tool call. See the
- * [file search guide](/docs/guides/tools-file-search) for more information.
+ * [file search guide](https://platform.openai.com/docs/guides/tools-file-search) for more information.
  */
 @Fluent
 public final class FileSearchToolCallItemParam extends ItemParam {

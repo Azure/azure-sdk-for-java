@@ -17,31 +17,14 @@ import java.io.IOException;
 @Immutable
 public final class BrowserAutomationToolParameters implements JsonSerializable<BrowserAutomationToolParameters> {
 
-    /*
-     * The project connection parameters associated with the Browser Automation Tool.
-     */
-    @Generated
-    private final BrowserAutomationToolConnectionParameters projectConnection;
-
     /**
      * Creates an instance of BrowserAutomationToolParameters class.
      *
-     * @param projectConnection the projectConnection value to set.
+     * @param connection the connection value to set.
      */
     @Generated
-    public BrowserAutomationToolParameters(BrowserAutomationToolConnectionParameters projectConnection) {
-        this.projectConnection = projectConnection;
-    }
-
-    /**
-     * Get the projectConnection property: The project connection parameters associated with the Browser Automation
-     * Tool.
-     *
-     * @return the projectConnection value.
-     */
-    @Generated
-    public BrowserAutomationToolConnectionParameters getProjectConnection() {
-        return this.projectConnection;
+    public BrowserAutomationToolParameters(BrowserAutomationToolConnectionParameters connection) {
+        this.connection = connection;
     }
 
     /**
@@ -51,7 +34,7 @@ public final class BrowserAutomationToolParameters implements JsonSerializable<B
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("project_connection", this.projectConnection);
+        jsonWriter.writeJsonField("connection", this.connection);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,17 +50,33 @@ public final class BrowserAutomationToolParameters implements JsonSerializable<B
     @Generated
     public static BrowserAutomationToolParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BrowserAutomationToolConnectionParameters projectConnection = null;
+            BrowserAutomationToolConnectionParameters connection = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("project_connection".equals(fieldName)) {
-                    projectConnection = BrowserAutomationToolConnectionParameters.fromJson(reader);
+                if ("connection".equals(fieldName)) {
+                    connection = BrowserAutomationToolConnectionParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new BrowserAutomationToolParameters(projectConnection);
+            return new BrowserAutomationToolParameters(connection);
         });
+    }
+
+    /*
+     * The project connection parameters associated with the Browser Automation Tool.
+     */
+    @Generated
+    private final BrowserAutomationToolConnectionParameters connection;
+
+    /**
+     * Get the connection property: The project connection parameters associated with the Browser Automation Tool.
+     *
+     * @return the connection value.
+     */
+    @Generated
+    public BrowserAutomationToolConnectionParameters getConnection() {
+        return this.connection;
     }
 }

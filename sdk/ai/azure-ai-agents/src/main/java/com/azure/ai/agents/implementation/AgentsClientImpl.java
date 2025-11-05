@@ -13,9 +13,9 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
- * Initializes a new instance of the ProjectsClient type.
+ * Initializes a new instance of the AgentsClient type.
  */
-public final class ProjectsClientImpl {
+public final class AgentsClientImpl {
     /**
      * Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
@@ -109,7 +109,7 @@ public final class ProjectsClientImpl {
     }
 
     /**
-     * Initializes an instance of ProjectsClient client.
+     * Initializes an instance of AgentsClient client.
      * 
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
@@ -118,13 +118,13 @@ public final class ProjectsClientImpl {
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public ProjectsClientImpl(String endpoint, AgentsServiceVersion serviceVersion) {
+    public AgentsClientImpl(String endpoint, AgentsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of ProjectsClient client.
+     * Initializes an instance of AgentsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Foundry Project endpoint in the form
@@ -134,12 +134,12 @@ public final class ProjectsClientImpl {
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public ProjectsClientImpl(HttpPipeline httpPipeline, String endpoint, AgentsServiceVersion serviceVersion) {
+    public AgentsClientImpl(HttpPipeline httpPipeline, String endpoint, AgentsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of ProjectsClient client.
+     * Initializes an instance of AgentsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -150,7 +150,7 @@ public final class ProjectsClientImpl {
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public ProjectsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+    public AgentsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
         AgentsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

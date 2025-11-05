@@ -42,7 +42,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous ProjectsClient type.
+ * Initializes a new instance of the asynchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class AgentsAsyncClient {
@@ -62,14 +62,14 @@ public final class AgentsAsyncClient {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -159,14 +159,14 @@ public final class AgentsAsyncClient {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -200,10 +200,10 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -219,14 +219,14 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -238,7 +238,10 @@ public final class AgentsAsyncClient {
      * }
      * </pre>
      *
-     * @param agentName The name of the agent to create/modify.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param createAgentVersionRequest1 The createAgentVersionRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -262,14 +265,14 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -355,14 +358,14 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1358,36 +1361,10 @@ public final class AgentsAsyncClient {
     /**
      * Create a new agent version.
      *
-     * @param agentName The name of the agent to create/modify.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param description A human-readable description of the agent.
-     * @param metadata Arbitrary key-value metadata to associate with the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionObject> createAgentVersion(String agentName, AgentDefinition definition, String description,
-        Map<String, String> metadata) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
-            = new CreateAgentVersionRequest1(definition).setDescription(description).setMetadata(metadata);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionObject.class));
-    }
-
-    /**
-     * Create a new agent version.
-     *
-     * @param agentName The name of the agent to create/modify.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1545,10 +1522,10 @@ public final class AgentsAsyncClient {
      * {@code
      * {
      *     name: String (Required)
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -1569,14 +1546,14 @@ public final class AgentsAsyncClient {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1613,10 +1590,10 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -1637,14 +1614,14 @@ public final class AgentsAsyncClient {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1678,34 +1655,9 @@ public final class AgentsAsyncClient {
      * Creates the agent.
      *
      * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param description A human-readable description of the agent.
-     * @param metadata Arbitrary key-value metadata to associate with the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentObject> createAgent(String name, AgentDefinition definition, String description,
-        Map<String, String> metadata) {
-        // Generated convenience method for createAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj
-            = new CreateAgentRequest1(name, definition).setDescription(description).setMetadata(metadata);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
-    }
-
-    /**
-     * Creates the agent.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1723,35 +1675,6 @@ public final class AgentsAsyncClient {
         CreateAgentRequest1 createAgentRequest1Obj = new CreateAgentRequest1(name, definition);
         BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
         return createAgentWithResponse(createAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
-    }
-
-    /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param description A human-readable description of the agent.
-     * @param metadata Arbitrary key-value metadata to associate with the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentObject> updateAgent(String agentName, AgentDefinition definition, String description,
-        Map<String, String> metadata) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest1 updateAgentRequest1Obj
-            = new UpdateAgentRequest1(definition).setDescription(description).setMetadata(metadata);
-        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
-        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
     }
 
@@ -1798,10 +1721,10 @@ public final class AgentsAsyncClient {
      * {@code
      * {
      *     name: String (Required)
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1820,14 +1743,14 @@ public final class AgentsAsyncClient {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1865,10 +1788,10 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1887,14 +1810,14 @@ public final class AgentsAsyncClient {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1932,10 +1855,10 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1949,14 +1872,14 @@ public final class AgentsAsyncClient {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1968,7 +1891,10 @@ public final class AgentsAsyncClient {
      * }
      * </pre>
      *
-     * @param agentName The name of the agent to create a version for.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param createAgentVersionFromManifestRequest1 The createAgentVersionFromManifestRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1989,37 +1915,9 @@ public final class AgentsAsyncClient {
      * Creates an agent from a manifest.
      *
      * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @param description A human-readable description of the agent.
-     * @param metadata Arbitrary key-value metadata to associate with the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentObject> createAgentFromManifest(String name, String manifestId,
-        Map<String, BinaryData> parameterValues, String description, Map<String, String> metadata) {
-        // Generated convenience method for createAgentFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setDescription(description)
-                .setMetadata(metadata);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
-    }
-
-    /**
-     * Creates an agent from a manifest.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param manifestId The manifest ID to import the agent version from.
      * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2040,38 +1938,6 @@ public final class AgentsAsyncClient {
             = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues);
         BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
         return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
-    }
-
-    /**
-     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to update.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @param description A human-readable description of the agent.
-     * @param metadata Arbitrary key-value metadata to associate with the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentObject> updateAgentFromManifest(String agentName, String manifestId,
-        Map<String, BinaryData> parameterValues, String description, Map<String, String> metadata) {
-        // Generated convenience method for updateAgentFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentFromManifestRequest1 updateAgentFromManifestRequest1Obj
-            = new UpdateAgentFromManifestRequest1(manifestId, parameterValues).setDescription(description)
-                .setMetadata(metadata);
-        BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
-        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
     }
@@ -2108,39 +1974,10 @@ public final class AgentsAsyncClient {
     /**
      * Create a new agent version from a manifest.
      *
-     * @param agentName The name of the agent to create a version for.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @param description A human-readable description of the agent.
-     * @param metadata Arbitrary key-value metadata to associate with the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionObject> createAgentVersionFromManifest(String agentName, String manifestId,
-        Map<String, BinaryData> parameterValues, String description, Map<String, String> metadata) {
-        // Generated convenience method for createAgentVersionFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
-            = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues).setDescription(description)
-                .setMetadata(metadata);
-        BinaryData createAgentVersionFromManifestRequest1
-            = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
-        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionObject.class));
-    }
-
-    /**
-     * Create a new agent version from a manifest.
-     *
-     * @param agentName The name of the agent to create a version for.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param manifestId The manifest ID to import the agent version from.
      * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2159,6 +1996,229 @@ public final class AgentsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
             = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues);
+        BinaryData createAgentVersionFromManifestRequest1
+            = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
+        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionObject.class));
+    }
+
+    /**
+     * Creates the agent.
+     *
+     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentObject> createAgent(String name, AgentDefinition definition, Map<String, String> metadata,
+        String description) {
+        // Generated convenience method for createAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentRequest1 createAgentRequest1Obj
+            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
+        return createAgentWithResponse(createAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
+    }
+
+    /**
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentObject> updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
+        String description) {
+        // Generated convenience method for updateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentRequest1 updateAgentRequest1Obj
+            = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
+        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
+        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
+    }
+
+    /**
+     * Creates an agent from a manifest.
+     *
+     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentObject> createAgentFromManifest(String name, String manifestId,
+        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
+            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
+        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
+    }
+
+    /**
+     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to update.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentObject> updateAgentFromManifest(String agentName, String manifestId,
+        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
+        // Generated convenience method for updateAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentFromManifestRequest1 updateAgentFromManifestRequest1Obj
+            = new UpdateAgentFromManifestRequest1(manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
+        BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
+        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentObject.class));
+    }
+
+    /**
+     * Create a new agent version.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentVersionObject> createAgentVersion(String agentName, AgentDefinition definition,
+        Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
+            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionObject.class));
+    }
+
+    /**
+     * Create a new agent version from a manifest.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentVersionObject> createAgentVersionFromManifest(String agentName, String manifestId,
+        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
+            = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
         BinaryData createAgentVersionFromManifestRequest1
             = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
         return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,

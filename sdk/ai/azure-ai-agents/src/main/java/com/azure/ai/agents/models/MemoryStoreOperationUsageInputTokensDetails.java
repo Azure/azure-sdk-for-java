@@ -20,7 +20,7 @@ public final class MemoryStoreOperationUsageInputTokensDetails
 
     /*
      * The number of tokens that were retrieved from the cache.
-     * [More on prompt caching](/docs/guides/prompt-caching).
+     * [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
      */
     @Generated
     private final int cachedTokens;
@@ -37,7 +37,7 @@ public final class MemoryStoreOperationUsageInputTokensDetails
 
     /**
      * Get the cachedTokens property: The number of tokens that were retrieved from the cache.
-     * [More on prompt caching](/docs/guides/prompt-caching).
+     * [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
      *
      * @return the cachedTokens value.
      */

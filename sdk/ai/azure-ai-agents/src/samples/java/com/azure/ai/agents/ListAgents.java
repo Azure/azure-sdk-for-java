@@ -14,7 +14,7 @@ public class ListAgents {
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildClient();
+                .buildAgentsClient();
 
         System.out.println("Listing all agents:");
         for (AgentObject agent : agentsClient.listAgents()) {

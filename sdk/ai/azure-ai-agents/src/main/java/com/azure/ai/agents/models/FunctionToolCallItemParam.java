@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * A tool call to run a function. See the
- * [function calling guide](/docs/guides/function-calling) for more information.
+ * [function calling guide](https://platform.openai.com/docs/guides/function-calling) for more information.
  */
 @Immutable
 public final class FunctionToolCallItemParam extends ItemParam {

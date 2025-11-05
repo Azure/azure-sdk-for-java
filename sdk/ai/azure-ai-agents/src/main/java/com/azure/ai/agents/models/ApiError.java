@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The ApiError model.
@@ -20,43 +19,25 @@ import java.util.Map;
 public final class ApiError implements JsonSerializable<ApiError> {
 
     /*
-     * The code property.
+     * The error code.
      */
     @Generated
     private final String code;
 
     /*
-     * The message property.
+     * A human-readable description of the error.
      */
     @Generated
     private final String message;
 
     /*
-     * The details property.
+     * Additional details about the error.
      */
     @Generated
-    private String details;
-
-    /*
-     * The errors property.
-     */
-    @Generated
-    private Map<String, List<String>> errors;
+    private final List<ApiError> details;
 
     /**
-     * Creates an instance of ApiError class.
-     *
-     * @param code the code value to set.
-     * @param message the message value to set.
-     */
-    @Generated
-    private ApiError(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    /**
-     * Get the code property: The code property.
+     * Get the code property: The error code.
      *
      * @return the code value.
      */
@@ -66,7 +47,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: A human-readable description of the error.
      *
      * @return the message value.
      */
@@ -76,23 +57,13 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
-     * Get the details property: The details property.
+     * Get the details property: Additional details about the error.
      *
      * @return the details value.
      */
     @Generated
-    public String getDetails() {
+    public List<ApiError> getDetails() {
         return this.details;
-    }
-
-    /**
-     * Get the errors property: The errors property.
-     *
-     * @return the errors value.
-     */
-    @Generated
-    public Map<String, List<String>> getErrors() {
-        return this.errors;
     }
 
     /**
@@ -104,9 +75,9 @@ public final class ApiError implements JsonSerializable<ApiError> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("details", this.details);
-        jsonWriter.writeMapField("errors", this.errors,
-            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeJsonField("innererror", this.innererror);
         return jsonWriter.writeEndObject();
     }
 
@@ -124,8 +95,9 @@ public final class ApiError implements JsonSerializable<ApiError> {
         return jsonReader.readObject(reader -> {
             String code = null;
             String message = null;
-            String details = null;
-            Map<String, List<String>> errors = null;
+            List<ApiError> details = null;
+            String target = null;
+            ApiInnerError innererror = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -134,17 +106,65 @@ public final class ApiError implements JsonSerializable<ApiError> {
                 } else if ("message".equals(fieldName)) {
                     message = reader.getString();
                 } else if ("details".equals(fieldName)) {
-                    details = reader.getString();
-                } else if ("errors".equals(fieldName)) {
-                    errors = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    details = reader.readArray(reader1 -> ApiError.fromJson(reader1));
+                } else if ("target".equals(fieldName)) {
+                    target = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    innererror = ApiInnerError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            ApiError deserializedApiError = new ApiError(code, message);
-            deserializedApiError.details = details;
-            deserializedApiError.errors = errors;
+            ApiError deserializedApiError = new ApiError(code, message, details);
+            deserializedApiError.target = target;
+            deserializedApiError.innererror = innererror;
             return deserializedApiError;
         });
+    }
+
+    /*
+     * The target of the error, if applicable.
+     */
+    @Generated
+    private String target;
+
+    /*
+     * The inner error, if any.
+     */
+    @Generated
+    private ApiInnerError innererror;
+
+    /**
+     * Creates an instance of ApiError class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     * @param details the details value to set.
+     */
+    @Generated
+    private ApiError(String code, String message, List<ApiError> details) {
+        this.code = code;
+        this.message = message;
+        this.details = details;
+    }
+
+    /**
+     * Get the target property: The target of the error, if applicable.
+     *
+     * @return the target value.
+     */
+    @Generated
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the innererror property: The inner error, if any.
+     *
+     * @return the innererror value.
+     */
+    @Generated
+    public ApiInnerError getInnererror() {
+        return this.innererror;
     }
 }

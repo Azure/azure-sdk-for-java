@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An image input to the model. Learn about [image inputs](/docs/guides/vision).
+ * An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
  */
 @Fluent
 public final class ItemContentInputImage extends ItemContent {

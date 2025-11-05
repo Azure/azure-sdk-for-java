@@ -55,11 +55,11 @@ public class ClientTestBase extends TestProxyTestBase {
     }
 
     protected AgentsClient getAgentsSyncClient(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildAgentsClient();
     }
 
     protected AgentsAsyncClient getAgentsAsyncClient(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildAsyncClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildAgentsAsyncClient();
     }
 
     protected ConversationsClient getConversationsSyncClient(HttpClient httpClient,

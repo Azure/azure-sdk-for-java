@@ -5,15 +5,13 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
- * The workflow specification in CPSDL format.
+ * The workflow specification in CSDL format.
  */
 @Fluent
 public final class WorkflowDefinition extends AgentDefinition {
@@ -23,12 +21,6 @@ public final class WorkflowDefinition extends AgentDefinition {
      */
     @Generated
     private AgentKind kind = AgentKind.WORKFLOW;
-
-    /*
-     * The trigger property.
-     */
-    @Generated
-    private Map<String, BinaryData> trigger;
 
     /**
      * Creates an instance of WorkflowDefinition class.
@@ -46,28 +38,6 @@ public final class WorkflowDefinition extends AgentDefinition {
     @Override
     public AgentKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Get the trigger property: The trigger property.
-     *
-     * @return the trigger value.
-     */
-    @Generated
-    public Map<String, BinaryData> getTrigger() {
-        return this.trigger;
-    }
-
-    /**
-     * Set the trigger property: The trigger property.
-     *
-     * @param trigger the trigger value to set.
-     * @return the WorkflowDefinition object itself.
-     */
-    @Generated
-    public WorkflowDefinition setTrigger(Map<String, BinaryData> trigger) {
-        this.trigger = trigger;
-        return this;
     }
 
     /**
@@ -89,8 +59,7 @@ public final class WorkflowDefinition extends AgentDefinition {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeMapField("trigger", this.trigger,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeStringField("workflow", this.workflow);
         return jsonWriter.writeEndObject();
     }
 
@@ -113,15 +82,41 @@ public final class WorkflowDefinition extends AgentDefinition {
                     deserializedWorkflowDefinition.setRaiConfig(RaiConfig.fromJson(reader));
                 } else if ("kind".equals(fieldName)) {
                     deserializedWorkflowDefinition.kind = AgentKind.fromString(reader.getString());
-                } else if ("trigger".equals(fieldName)) {
-                    Map<String, BinaryData> trigger = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedWorkflowDefinition.trigger = trigger;
+                } else if ("workflow".equals(fieldName)) {
+                    deserializedWorkflowDefinition.workflow = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedWorkflowDefinition;
         });
+    }
+
+    /*
+     * The CSDL YAML definition of the workflow.
+     */
+    @Generated
+    private String workflow;
+
+    /**
+     * Get the workflow property: The CSDL YAML definition of the workflow.
+     *
+     * @return the workflow value.
+     */
+    @Generated
+    public String getWorkflow() {
+        return this.workflow;
+    }
+
+    /**
+     * Set the workflow property: The CSDL YAML definition of the workflow.
+     *
+     * @param workflow the workflow value to set.
+     * @return the WorkflowDefinition object itself.
+     */
+    @Generated
+    public WorkflowDefinition setWorkflow(String workflow) {
+        this.workflow = workflow;
+        return this;
     }
 }

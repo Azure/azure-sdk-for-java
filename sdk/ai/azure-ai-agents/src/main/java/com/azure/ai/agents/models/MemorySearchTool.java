@@ -5,12 +5,10 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
 
 /**
  * A tool for integrating memories into the agent.
@@ -39,11 +37,10 @@ public final class MemorySearchTool extends Tool {
     private MemorySearchOptions searchOptions;
 
     /*
-     * The amount of time to wait after inactivity before updating memories with messages from the call (e.g., '0s',
-     * '5m'). Defaults to '60s'.
+     * Time to wait before updating memories after inactivity (seconds). Default 300.
      */
     @Generated
-    private Duration updateDelay;
+    private Integer updateDelay;
 
     /**
      * Creates an instance of MemorySearchTool class.
@@ -103,27 +100,13 @@ public final class MemorySearchTool extends Tool {
     }
 
     /**
-     * Get the updateDelay property: The amount of time to wait after inactivity before updating memories with messages
-     * from the call (e.g., '0s', '5m'). Defaults to '60s'.
+     * Get the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
      *
      * @return the updateDelay value.
      */
     @Generated
-    public Duration getUpdateDelay() {
+    public Integer getUpdateDelay() {
         return this.updateDelay;
-    }
-
-    /**
-     * Set the updateDelay property: The amount of time to wait after inactivity before updating memories with messages
-     * from the call (e.g., '0s', '5m'). Defaults to '60s'.
-     *
-     * @param updateDelay the updateDelay value to set.
-     * @return the MemorySearchTool object itself.
-     */
-    @Generated
-    public MemorySearchTool setUpdateDelay(Duration updateDelay) {
-        this.updateDelay = updateDelay;
-        return this;
     }
 
     /**
@@ -137,7 +120,7 @@ public final class MemorySearchTool extends Tool {
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("search_options", this.searchOptions);
-        jsonWriter.writeStringField("update_delay", CoreUtils.durationToStringWithDays(this.updateDelay));
+        jsonWriter.writeNumberField("update_delay", this.updateDelay);
         return jsonWriter.writeEndObject();
     }
 
@@ -157,7 +140,7 @@ public final class MemorySearchTool extends Tool {
             String scope = null;
             ToolType type = ToolType.MEMORY_SEARCH;
             MemorySearchOptions searchOptions = null;
-            Duration updateDelay = null;
+            Integer updateDelay = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -170,7 +153,7 @@ public final class MemorySearchTool extends Tool {
                 } else if ("search_options".equals(fieldName)) {
                     searchOptions = MemorySearchOptions.fromJson(reader);
                 } else if ("update_delay".equals(fieldName)) {
-                    updateDelay = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                    updateDelay = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -197,5 +180,17 @@ public final class MemorySearchTool extends Tool {
     @Generated
     public String getMemoryStoreName() {
         return this.memoryStoreName;
+    }
+
+    /**
+     * Set the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
+     *
+     * @param updateDelay the updateDelay value to set.
+     * @return the MemorySearchTool object itself.
+     */
+    @Generated
+    public MemorySearchTool setUpdateDelay(Integer updateDelay) {
+        this.updateDelay = updateDelay;
+        return this;
     }
 }

@@ -14,8 +14,7 @@ import java.io.IOException;
 /**
  * **o-series models only**
  *
- * Configuration options for
- * [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+ * Configuration options for [reasoning models](https://platform.openai.com/docs/guides/reasoning).
  */
 @Fluent
 public final class Reasoning implements JsonSerializable<Reasoning> {
@@ -35,11 +34,8 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     private ReasoningSummary summary;
 
     /*
-     * **Deprecated:** use `summary` instead.
-     * 
-     * A summary of the reasoning performed by the model. This can be
-     * useful for debugging and understanding the model's reasoning process.
-     * One of `auto`, `concise`, or `detailed`.
+     * **Deprecated**: use `summary` instead. A summary of the reasoning performed by the model. This can be useful for
+     * debugging and understanding the model's reasoning process. One of `auto`, `concise`, or `detailed`.
      */
     @Generated
     private ReasoningGenerateSummary generateSummary;
@@ -100,11 +96,9 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     }
 
     /**
-     * Get the generateSummary property: **Deprecated:** use `summary` instead.
-     *
-     * A summary of the reasoning performed by the model. This can be
-     * useful for debugging and understanding the model's reasoning process.
-     * One of `auto`, `concise`, or `detailed`.
+     * Get the generateSummary property: **Deprecated**: use `summary` instead. A summary of the reasoning performed by
+     * the model. This can be useful for debugging and understanding the model's reasoning process. One of `auto`,
+     * `concise`, or `detailed`.
      *
      * @return the generateSummary value.
      */
@@ -114,11 +108,9 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     }
 
     /**
-     * Set the generateSummary property: **Deprecated:** use `summary` instead.
-     *
-     * A summary of the reasoning performed by the model. This can be
-     * useful for debugging and understanding the model's reasoning process.
-     * One of `auto`, `concise`, or `detailed`.
+     * Set the generateSummary property: **Deprecated**: use `summary` instead. A summary of the reasoning performed by
+     * the model. This can be useful for debugging and understanding the model's reasoning process. One of `auto`,
+     * `concise`, or `detailed`.
      *
      * @param generateSummary the generateSummary value to set.
      * @return the Reasoning object itself.

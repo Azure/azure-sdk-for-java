@@ -19,13 +19,9 @@ import java.io.IOException;
 public final class ComparisonFilter implements JsonSerializable<ComparisonFilter> {
 
     /*
-     * Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
-     * - `eq`: equals
-     * - `ne`: not equal
-     * - `gt`: greater than
-     * - `gte`: greater than or equal
-     * - `lt`: less than
-     * - `lte`: less than or equal
+     * Specifies the comparison operator:
+     * `eq` (equal), `ne` (not equal), `gt` (greater than), `gte` (greater than or equal), `lt` (less than), `lte` (less
+     * than or equal).
      */
     @Generated
     private final ComparisonFilterType type;
@@ -57,13 +53,9 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
     }
 
     /**
-     * Get the type property: Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
-     * - `eq`: equals
-     * - `ne`: not equal
-     * - `gt`: greater than
-     * - `gte`: greater than or equal
-     * - `lt`: less than
-     * - `lte`: less than or equal.
+     * Get the type property: Specifies the comparison operator:
+     * `eq` (equal), `ne` (not equal), `gt` (greater than), `gte` (greater than or equal), `lt` (less than), `lte` (less
+     * than or equal).
      *
      * @return the type value.
      */

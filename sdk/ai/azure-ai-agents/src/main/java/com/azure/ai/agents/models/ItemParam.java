@@ -77,9 +77,7 @@ public class ItemParam implements JsonSerializable<ItemParam> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("structured_inputs".equals(discriminatorValue)) {
-                    return StructuredInputsItemParam.fromJson(readerToUse.reset());
-                } else if ("message".equals(discriminatorValue)) {
+                if ("message".equals(discriminatorValue)) {
                     return ResponsesMessageItemParam.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return FunctionToolCallOutputItemParam.fromJson(readerToUse.reset());

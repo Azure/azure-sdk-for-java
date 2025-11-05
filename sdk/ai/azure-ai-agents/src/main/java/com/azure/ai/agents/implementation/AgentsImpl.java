@@ -50,14 +50,14 @@ public final class AgentsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final ProjectsClientImpl client;
+    private final AgentsClientImpl client;
 
     /**
      * Initializes an instance of AgentsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AgentsImpl(ProjectsClientImpl client) {
+    AgentsImpl(AgentsClientImpl client) {
         this.service = RestProxy.create(AgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -72,11 +72,11 @@ public final class AgentsImpl {
     }
 
     /**
-     * The interface defining all the services for ProjectsClientAgents to be used by the proxy service to perform REST
+     * The interface defining all the services for AgentsClientAgents to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ProjectsClientAgents")
+    @ServiceInterface(name = "AgentsClientAgents")
     public interface AgentsService {
         @Get("/agents/{agent_name}")
         @ExpectedResponses({ 200 })
@@ -535,14 +535,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -583,14 +583,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -627,10 +627,10 @@ public final class AgentsImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -651,14 +651,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -698,10 +698,10 @@ public final class AgentsImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -722,14 +722,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -767,10 +767,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -791,14 +791,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -839,10 +839,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -863,14 +863,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -910,10 +910,10 @@ public final class AgentsImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -932,14 +932,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -979,10 +979,10 @@ public final class AgentsImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1001,14 +1001,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1048,10 +1048,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1070,14 +1070,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1118,10 +1118,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1140,14 +1140,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1272,14 +1272,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1345,14 +1345,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1412,14 +1412,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1483,14 +1483,14 @@ public final class AgentsImpl {
      *     name: String (Required)
      *     versions (Required): {
      *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *             object: String (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
-     *             metadata (Optional): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             definition (Required): {
      *                 kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1523,10 +1523,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -1542,14 +1542,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1561,7 +1561,10 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
-     * @param agentName The name of the agent to create/modify.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param createAgentVersionRequest1 The createAgentVersionRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1587,10 +1590,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
      *         rai_config (Optional): {
@@ -1606,14 +1609,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1625,7 +1628,10 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
-     * @param agentName The name of the agent to create/modify.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param createAgentVersionRequest1 The createAgentVersionRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1650,10 +1656,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1667,14 +1673,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1686,7 +1692,10 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
-     * @param agentName The name of the agent to create a version for.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param createAgentVersionFromManifestRequest1 The createAgentVersionFromManifestRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1712,10 +1721,10 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     manifest_id: String (Required)
      *     parameter_values (Required): {
      *         String: BinaryData (Required)
@@ -1729,14 +1738,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1748,7 +1757,10 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
-     * @param agentName The name of the agent to create a version for.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
      * @param createAgentVersionFromManifestRequest1 The createAgentVersionFromManifestRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1774,14 +1786,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1817,14 +1829,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -1944,14 +1956,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -2010,14 +2022,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -2069,14 +2081,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)
@@ -2132,14 +2144,14 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
      *     object: String (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     definition (Required): {
      *         kind: String(prompt/hosted/container_app/workflow) (Required)

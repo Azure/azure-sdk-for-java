@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * A tool call to a computer use tool. See the
- * [computer use guide](/docs/guides/tools-computer-use) for more information.
+ * [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use) for more information.
  */
 @Immutable
 public final class ComputerToolCallItemParam extends ItemParam {

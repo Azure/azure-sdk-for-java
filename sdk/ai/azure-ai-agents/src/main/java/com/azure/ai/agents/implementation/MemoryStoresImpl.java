@@ -57,14 +57,14 @@ public final class MemoryStoresImpl {
     /**
      * The service client containing this operation class.
      */
-    private final ProjectsClientImpl client;
+    private final AgentsClientImpl client;
 
     /**
      * Initializes an instance of MemoryStoresImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MemoryStoresImpl(ProjectsClientImpl client) {
+    MemoryStoresImpl(AgentsClientImpl client) {
         this.service
             = RestProxy.create(MemoryStoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -80,11 +80,11 @@ public final class MemoryStoresImpl {
     }
 
     /**
-     * The interface defining all the services for ProjectsClientMemoryStores to be used by the proxy service to perform
+     * The interface defining all the services for AgentsClientMemoryStores to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ProjectsClientMemoryStores")
+    @ServiceInterface(name = "AgentsClientMemoryStores")
     public interface MemoryStoresService {
         @Post("/memory_stores")
         @ExpectedResponses({ 200 })
@@ -889,7 +889,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_search_id: String (Optional)
@@ -963,7 +963,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_search_id: String (Optional)
@@ -1036,7 +1036,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -1082,11 +1082,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1124,7 +1126,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -1170,11 +1172,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1210,7 +1214,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -1256,11 +1260,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1281,14 +1287,12 @@ public final class MemoryStoresImpl {
         BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.updateMemoriesWithResponseAsync(name, updateMemoriesRequest, requestOptions),
-            new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.client.getHttpPipeline())
-                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
-                "result"),
+            new OperationLocationPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.client.getServiceVersion().getVersion()), "result"),
             TypeReference.createInstance(MemoryStoreUpdateResponse.class),
             TypeReference.createInstance(MemoryStoreUpdateResult.class));
     }
@@ -1304,7 +1308,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -1350,11 +1354,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1375,14 +1381,12 @@ public final class MemoryStoresImpl {
         BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.updateMemoriesWithResponse(name, updateMemoriesRequest, requestOptions),
-            new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.client.getHttpPipeline())
-                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
-                "result"),
+            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.client.getServiceVersion().getVersion()), "result"),
             TypeReference.createInstance(MemoryStoreUpdateResponse.class),
             TypeReference.createInstance(MemoryStoreUpdateResult.class));
     }
@@ -1398,7 +1402,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -1444,11 +1448,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1469,14 +1475,12 @@ public final class MemoryStoresImpl {
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.updateMemoriesWithResponseAsync(name, updateMemoriesRequest, requestOptions),
-            new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.client.getHttpPipeline())
-                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
-                "result"),
+            new OperationLocationPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.client.getServiceVersion().getVersion()), "result"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1491,7 +1495,7 @@ public final class MemoryStoresImpl {
      *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_inputs/structured_outputs/semantic_event/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -1537,11 +1541,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1562,14 +1568,12 @@ public final class MemoryStoresImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.updateMemoriesWithResponse(name, updateMemoriesRequest, requestOptions),
-            new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.client.getHttpPipeline())
-                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
-                "result"),
+            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.client.getServiceVersion().getVersion()), "result"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1612,11 +1616,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
@@ -1679,11 +1685,13 @@ public final class MemoryStoresImpl {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         details: String (Optional)
-     *         errors (Optional): {
-     *             String (Required): [
-     *                 String (Required)
-     *             ]
+     *         target: String (Optional)
+     *         details (Required): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             innererror (Optional): (recursive schema, see innererror above)
      *         }
      *     }
      * }
