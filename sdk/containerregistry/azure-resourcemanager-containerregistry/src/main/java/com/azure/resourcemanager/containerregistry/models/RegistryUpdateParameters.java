@@ -277,6 +277,31 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
     }
 
     /**
+     * Get the networkRuleBypassAllowedForTasks property: Whether to allow ACR Tasks service to access a network
+     * restricted registry.
+     * 
+     * @return the networkRuleBypassAllowedForTasks value.
+     */
+    public Boolean networkRuleBypassAllowedForTasks() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleBypassAllowedForTasks();
+    }
+
+    /**
+     * Set the networkRuleBypassAllowedForTasks property: Whether to allow ACR Tasks service to access a network
+     * restricted registry.
+     * 
+     * @param networkRuleBypassAllowedForTasks the networkRuleBypassAllowedForTasks value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withNetworkRuleBypassAllowedForTasks(Boolean networkRuleBypassAllowedForTasks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withNetworkRuleBypassAllowedForTasks(networkRuleBypassAllowedForTasks);
+        return this;
+    }
+
+    /**
      * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
      * 
      * @return the anonymousPullEnabled value.
@@ -296,6 +321,29 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
             this.innerProperties = new RegistryPropertiesUpdateParameters();
         }
         this.innerProperties().withAnonymousPullEnabled(anonymousPullEnabled);
+        return this;
+    }
+
+    /**
+     * Get the roleAssignmentMode property: Determines registry role assignment mode.
+     * 
+     * @return the roleAssignmentMode value.
+     */
+    public RoleAssignmentMode roleAssignmentMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().roleAssignmentMode();
+    }
+
+    /**
+     * Set the roleAssignmentMode property: Determines registry role assignment mode.
+     * 
+     * @param roleAssignmentMode the roleAssignmentMode value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withRoleAssignmentMode(RoleAssignmentMode roleAssignmentMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withRoleAssignmentMode(roleAssignmentMode);
         return this;
     }
 
