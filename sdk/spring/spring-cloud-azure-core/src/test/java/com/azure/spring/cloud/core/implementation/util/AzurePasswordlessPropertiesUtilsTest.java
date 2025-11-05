@@ -320,8 +320,7 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals(AZURE_CHINA, result.profile.getCloudType());
         
         // Result should use default scopes for AZURE_CHINA, not AZURE
-        String expectedChinaScope = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
-        assertEquals(expectedChinaScope, result.getScopes());
+        assertEquals(TestPasswordlessPropertiesWithDefaults.JDBC_SCOPE_AZURE_CHINA, result.getScopes());
     }
 
     @Test
@@ -443,9 +442,9 @@ class AzurePasswordlessPropertiesUtilsTest {
      * with default scopes based on cloud type
      */
     static class TestPasswordlessPropertiesWithDefaults implements PasswordlessProperties {
-        private static final String JDBC_SCOPE_AZURE = "https://ossrdbms-aad.database.windows.net/.default";
-        private static final String JDBC_SCOPE_AZURE_CHINA = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
-        private static final String JDBC_SCOPE_AZURE_US_GOVERNMENT = "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
+        public static final String JDBC_SCOPE_AZURE = "https://ossrdbms-aad.database.windows.net/.default";
+        public static final String JDBC_SCOPE_AZURE_CHINA = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+        public static final String JDBC_SCOPE_AZURE_US_GOVERNMENT = "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
 
         private final TokenCredentialProperties credential = new TokenCredentialProperties();
         private final AzureProfileProperties profile = new AzureProfileProperties();

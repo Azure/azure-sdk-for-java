@@ -64,7 +64,18 @@ public final class AzurePasswordlessPropertiesUtils {
 
     /**
      * Check if scopes are explicitly set in the source object (not using computed default).
+     * <p>
      * Uses reflection to access the scopes field directly since getScopes() may return computed defaults.
+     * This approach is necessary because different implementations of PasswordlessProperties have different
+     * behaviors for getScopes():
+     * <ul>
+     *   <li>AzureJdbcPasswordlessProperties and AzureRedisPasswordlessProperties compute defaults based on cloud type</li>
+     *   <li>AzurePasswordlessProperties returns the field value directly</li>
+     *   <li>AzureKafkaPasswordlessProperties always returns null</li>
+     * </ul>
+     * Adding a new method to the PasswordlessProperties interface would break existing implementations,
+     * so reflection provides a backward-compatible solution.
+     * </p>
      *
      * @param source The source PasswordlessProperties object
      * @return true if scopes are explicitly set, false otherwise
@@ -75,8 +86,13 @@ public final class AzurePasswordlessPropertiesUtils {
             scopesField.setAccessible(true);
             Object scopesValue = scopesField.get(source);
             return scopesValue != null;
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            // If reflection fails, fall back to always copying (maintains backward compatibility)
+        } catch (NoSuchFieldException e) {
+            // Implementation doesn't have a scopes field (unusual but possible)
+            // Fall back to assuming scopes are set if getScopes() returns non-null
+            return source.getScopes() != null;
+        } catch (IllegalAccessException | SecurityException e) {
+            // Reflection access denied - fall back to always copying (maintains backward compatibility)
+            // This ensures the method works even in restricted security contexts
             return true;
         }
     }
