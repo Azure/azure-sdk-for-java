@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.common.DownloadContentValidationOptions;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -17,11 +18,33 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private DownloadContentValidationOptions contentValidationOptions;
 
     /**
      * Creates a new instance of {@link BlobInputStreamOptions}.
      */
     public BlobInputStreamOptions() {
+    }
+
+    /**
+     * Gets the {@link DownloadContentValidationOptions}.
+     *
+     * @return {@link DownloadContentValidationOptions}
+     */
+    public DownloadContentValidationOptions getContentValidationOptions() {
+        return contentValidationOptions;
+    }
+
+    /**
+     * Sets the {@link DownloadContentValidationOptions}.
+     *
+     * @param contentValidationOptions {@link DownloadContentValidationOptions}
+     * @return The updated options.
+     */
+    public BlobInputStreamOptions
+        setContentValidationOptions(DownloadContentValidationOptions contentValidationOptions) {
+        this.contentValidationOptions = contentValidationOptions;
+        return this;
     }
 
     /**

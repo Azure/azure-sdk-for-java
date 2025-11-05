@@ -43,6 +43,7 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -415,6 +416,33 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.downloadStreamWithResponse(new ByteArrayOutputStream(), range, options, null, false,
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
+     * BlobRequestConditions, boolean, DownloadContentValidationOptions, Duration, Context)}
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadStreamWithResponse2CodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions-Duration-Context
+        BlobRange range = new BlobRange(1024, 2048L);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+        DownloadContentValidationOptions validationOptions =
+            new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+
+        int statusCode = client.downloadStreamWithResponse(
+            new ByteArrayOutputStream(),
+            range,
+            options,
+            null,
+            false,
+            validationOptions,
+            timeout,
+            new Context(key2, value2)
+        ).getStatusCode();
+
+        System.out.printf("Download completed with status %d%n", statusCode);
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions-Duration-Context
     }
 
     /**

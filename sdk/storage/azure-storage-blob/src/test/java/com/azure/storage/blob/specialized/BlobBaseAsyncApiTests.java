@@ -19,10 +19,15 @@ import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +44,7 @@ import reactor.util.function.Tuple2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -53,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseAsyncApiTests extends BlobTestBase {
@@ -556,6 +563,48 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
                 });
 
         StepVerifier.create(response).verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidation() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationRange() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+
+        BlobRange range = new BlobRange(0, 512L);
+
+        StepVerifier.create(bc.upload(input, null, true)
+            .then(bc.downloadStreamWithResponse(range, null, null, false, validationOptions))
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(r -> {
+                assertNotNull(r);
+                assertTrue(r.length > 0);
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
