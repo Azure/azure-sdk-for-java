@@ -50,14 +50,13 @@ public final class ManagedClusterApiServerAccessProfile
     private Boolean disableRunCommand;
 
     /*
-     * Whether to enable apiserver vnet integration for the cluster or not. See aka.ms/AksVnetIntegration for more
-     * details.
+     * Whether to enable apiserver vnet integration for the cluster or not.
      */
     private Boolean enableVnetIntegration;
 
     /*
-     * The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new cluster with
-     * BYO Vnet, or when updating an existing cluster to enable apiserver vnet integration.
+     * The subnet to be used when apiserver vnet integration is enabled. It is required when: 1. creating a new cluster
+     * with BYO Vnet; 2. updating an existing cluster to enable apiserver vnet integration.
      */
     private String subnetId;
 
@@ -185,8 +184,7 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Get the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not. See
-     * aka.ms/AksVnetIntegration for more details.
+     * Get the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not.
      * 
      * @return the enableVnetIntegration value.
      */
@@ -195,8 +193,7 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Set the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not. See
-     * aka.ms/AksVnetIntegration for more details.
+     * Set the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not.
      * 
      * @param enableVnetIntegration the enableVnetIntegration value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
@@ -207,8 +204,8 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Get the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when
-     * creating a new cluster with BYO Vnet, or when updating an existing cluster to enable apiserver vnet integration.
+     * Get the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when:
+     * 1. creating a new cluster with BYO Vnet; 2. updating an existing cluster to enable apiserver vnet integration.
      * 
      * @return the subnetId value.
      */
@@ -217,8 +214,8 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Set the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when
-     * creating a new cluster with BYO Vnet, or when updating an existing cluster to enable apiserver vnet integration.
+     * Set the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when:
+     * 1. creating a new cluster with BYO Vnet; 2. updating an existing cluster to enable apiserver vnet integration.
      * 
      * @param subnetId the subnetId value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.

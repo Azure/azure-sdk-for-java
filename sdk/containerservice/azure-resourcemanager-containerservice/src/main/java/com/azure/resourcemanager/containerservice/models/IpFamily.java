@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The IP version to use for cluster networking and IP assignment.
+ * To determine if address belongs IPv4 or IPv6 family.
  */
 public final class IpFamily extends ExpandableStringEnum<IpFamily> {
     /**

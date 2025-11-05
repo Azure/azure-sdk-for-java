@@ -8,11 +8,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -30,6 +32,13 @@ public class EmailTestBase extends TestProxyTestBase {
 
     protected static final String SENDER_ADDRESS
         = Configuration.getGlobalConfiguration().get("SENDER_ADDRESS", "sender@domain.com");
+
+    protected static BinaryData getRedPngImageData() {
+        String base64String
+            = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAEUlEQVR4nGP8z4ACmBgo4wMAUJEBCfBOwRcAAAAASUVORK5CYII=";
+        byte[] decodedBytes = Base64.getDecoder().decode(base64String);
+        return BinaryData.fromBytes(decodedBytes);
+    }
 
     protected EmailClient getEmailClient(HttpClient httpClient) {
         return getEmailClientBuilder(httpClient).buildClient();

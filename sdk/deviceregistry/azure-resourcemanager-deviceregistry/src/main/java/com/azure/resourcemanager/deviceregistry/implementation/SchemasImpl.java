@@ -48,13 +48,12 @@ public final class SchemasImpl implements Schemas {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String schemaRegistryName, String schemaName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, context);
-    }
-
     public void delete(String resourceGroupName, String schemaRegistryName, String schemaName) {
         this.serviceClient().delete(resourceGroupName, schemaRegistryName, schemaName);
+    }
+
+    public void delete(String resourceGroupName, String schemaRegistryName, String schemaName, Context context) {
+        this.serviceClient().delete(resourceGroupName, schemaRegistryName, schemaName, context);
     }
 
     public PagedIterable<Schema> listBySchemaRegistry(String resourceGroupName, String schemaRegistryName) {
@@ -124,10 +123,10 @@ public final class SchemasImpl implements Schemas {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, Context.NONE);
+        this.delete(resourceGroupName, schemaRegistryName, schemaName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -143,7 +142,7 @@ public final class SchemasImpl implements Schemas {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, context);
+        this.delete(resourceGroupName, schemaRegistryName, schemaName, context);
     }
 
     private SchemasClient serviceClient() {

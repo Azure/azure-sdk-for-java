@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.4 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,256 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0 (2025-10-15)
+
+- Azure Resource Manager RedisEnterprise client library for Java. This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package tag package-2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Database` was modified
+
+* `flush(models.FlushParameters)` was removed
+
+#### `models.Databases` was modified
+
+* `flush(java.lang.String,java.lang.String,java.lang.String,models.FlushParameters)` was removed
+
+### Features Added
+
+* `models.Kind` was added
+
+* `models.ForceLinkParametersGeoReplication` was added
+
+* `models.AccessKeysAuthentication` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.AccessPolicyAssignment$DefinitionStages` was added
+
+* `models.HighAvailability` was added
+
+* `models.AccessPolicyAssignments` was added
+
+* `models.AccessPolicyAssignment$Definition` was added
+
+* `models.AccessPolicyAssignmentPropertiesUser` was added
+
+* `models.AccessPolicyAssignment$UpdateStages` was added
+
+* `models.RedundancyMode` was added
+
+* `models.AccessPolicyAssignmentList` was added
+
+* `models.ClusterCommonProperties` was added
+
+* `models.AccessPolicyAssignment` was added
+
+* `models.ForceLinkParameters` was added
+
+* `models.SkuDetailsList` was added
+
+* `models.DatabaseCommonProperties` was added
+
+* `models.AccessPolicyAssignment$Update` was added
+
+* `models.SkuDetails` was added
+
+* `models.DeferUpgradeSetting` was added
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `highAvailability()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withHighAvailability(models.HighAvailability)` was added
+* `publicNetworkAccess()` was added
+* `redundancyMode()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ForceUnlinkParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RedisEnterprises` was modified
+
+* `listSkusForScalingWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listSkusForScaling(java.lang.String,java.lang.String)` was added
+
+#### `models.PrivateLinkResourceListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatabaseUpdate` was modified
+
+* `deferUpgrade()` was added
+* `accessKeysAuthentication()` was added
+* `redisVersion()` was added
+* `withDeferUpgrade(models.DeferUpgradeSetting)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withAccessKeysAuthentication(models.AccessKeysAuthentication)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Module` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withHighAvailability(models.HighAvailability)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.PrivateEndpoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Sku` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPropertiesEncryption` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatabasePropertiesGeoReplication` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LinkedDatabase` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `RedisEnterpriseManager` was modified
+
+* `accessPolicyAssignments()` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateEndpointConnectionListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Database$Definition` was modified
+
+* `withDeferUpgrade(models.DeferUpgradeSetting)` was added
+* `withAccessKeysAuthentication(models.AccessKeysAuthentication)` was added
+
+#### `models.ImportClusterParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withHighAvailability(models.HighAvailability)` was added
+
+#### `models.Database$Update` was modified
+
+* `withClusteringPolicy(models.ClusteringPolicy)` was added
+* `withAccessKeysAuthentication(models.AccessKeysAuthentication)` was added
+* `withDeferUpgrade(models.DeferUpgradeSetting)` was added
+
+#### `models.FlushParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Database` was modified
+
+* `upgradeDBRedisVersion(com.azure.core.util.Context)` was added
+* `flush()` was added
+* `upgradeDBRedisVersion()` was added
+* `deferUpgrade()` was added
+* `forceLinkToReplicationGroup(models.ForceLinkParameters,com.azure.core.util.Context)` was added
+* `accessKeysAuthentication()` was added
+* `forceLinkToReplicationGroup(models.ForceLinkParameters)` was added
+* `redisVersion()` was added
+* `systemData()` was added
+
+#### `models.ClusterList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ExportClusterParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Persistence` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatabaseList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Cluster` was modified
+
+* `listSkusForScalingWithResponse(com.azure.core.util.Context)` was added
+* `kind()` was added
+* `highAvailability()` was added
+* `redundancyMode()` was added
+* `listSkusForScaling()` was added
+* `publicNetworkAccess()` was added
+
+#### `models.Databases` was modified
+
+* `forceLinkToReplicationGroup(java.lang.String,java.lang.String,java.lang.String,models.ForceLinkParameters,com.azure.core.util.Context)` was added
+* `forceLinkToReplicationGroup(java.lang.String,java.lang.String,java.lang.String,models.ForceLinkParameters)` was added
+* `upgradeDBRedisVersion(java.lang.String,java.lang.String,java.lang.String)` was added
+* `flush(java.lang.String,java.lang.String,java.lang.String)` was added
+* `upgradeDBRedisVersion(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 2.1.0-beta.3 (2025-05-06)
 

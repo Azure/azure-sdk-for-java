@@ -22,99 +22,125 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"aimlnwiaaom\",\"provisioningIssues\":[{\"name\":\"azul\",\"properties\":{\"issueType\":\"thwwn\",\"severity\":\"hlf\",\"description\":\"wpchwahf\",\"suggestedResourceIds\":[\"snfepgfewetwlyx\",\"ncxykxhdjhlimm\",\"cxfhbcporxv\"],\"suggestedAccessRules\":[{\"name\":\"hqizxfpxtgqscj\",\"properties\":{}}]}},{\"name\":\"t\",\"properties\":{\"issueType\":\"dqazkmtgguwpijra\",\"severity\":\"ivmmghfcfiwrxgk\",\"description\":\"uvyinzqodfvpgs\",\"suggestedResourceIds\":[\"gsgbpfgzdjt\"],\"suggestedAccessRules\":[{\"name\":\"lbqvgaqvlgafcqu\",\"properties\":{}},{\"name\":\"vetnwsdtutn\",\"properties\":{}}]}}],\"networkSecurityPerimeter\":{\"id\":\"ycvuzhyrmewipmv\",\"perimeterGuid\":\"dxukuqgsjjxundxg\",\"location\":\"twzhhzjhfjmhv\"},\"resourceAssociation\":{\"name\":\"vgpmun\",\"accessMode\":\"sx\"},\"profile\":{\"name\":\"fbuzjyihs\",\"accessRulesVersion\":2380463031327749802,\"accessRules\":[{\"name\":\"pohyuemslynsqyr\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"lttymsjn\",\"gqdnfwqzd\",\"gtilax\",\"nfhqlyvijouwivk\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{}],\"fullyQualifiedDomainNames\":[\"ixxrtikvcpw\",\"gclrci\"]}}],\"diagnosticSettingsVersion\":9129949467012960809,\"enabledLogCategories\":[\"rkenx\",\"m\",\"yefrpmpdnqqska\",\"ao\"]}}")
+            "{\"provisioningState\":\"hsgz\",\"provisioningIssues\":[{\"name\":\"gomfgbeglq\",\"properties\":{\"issueType\":\"o\",\"severity\":\"betnluankrrfxee\",\"description\":\"tijv\",\"suggestedResourceIds\":[\"bmqzbqqxlajrnwx\",\"cevehjkuyxoafg\"],\"suggestedAccessRules\":[{\"name\":\"tfaeyl\",\"properties\":{}},{\"name\":\"fgvxirpghriypoqe\",\"properties\":{}}]}},{\"name\":\"qhykprlpyzn\",\"properties\":{\"issueType\":\"qdsmexiit\",\"severity\":\"uxtyasiibmi\",\"description\":\"nnust\",\"suggestedResourceIds\":[\"jh\",\"mgixhcmavmqfou\",\"or\",\"cgyypro\"],\"suggestedAccessRules\":[{\"name\":\"undmbx\",\"properties\":{}},{\"name\":\"cmjkavlgorbmftpm\",\"properties\":{}},{\"name\":\"fjltfvnzcyjtotp\",\"properties\":{}}]}},{\"name\":\"vpbdbzqgq\",\"properties\":{\"issueType\":\"edsvqwthmk\",\"severity\":\"bcysih\",\"description\":\"qcwdhoh\",\"suggestedResourceIds\":[\"mcdzsufcohdxbz\",\"mcmuapc\",\"hdbevwqqxeyskon\"],\"suggestedAccessRules\":[{\"name\":\"kfkbgbzbowxeqocl\",\"properties\":{}},{\"name\":\"gvkzqkjjeokbze\",\"properties\":{}},{\"name\":\"rx\",\"properties\":{}}]}}],\"networkSecurityPerimeter\":{\"id\":\"rtle\",\"perimeterGuid\":\"q\",\"location\":\"kwv\"},\"resourceAssociation\":{\"name\":\"zvd\",\"accessMode\":\"zdix\"},\"profile\":{\"name\":\"pnodawopqhe\",\"accessRulesVersion\":7022680732951740114,\"accessRules\":[{\"name\":\"sbostzel\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"tmzlbiojlv\",\"hrbbpneqvcwwyy\",\"r\",\"ochpprpr\"],\"subscriptions\":[{}],\"networkSecurityPerimeters\":[{}],\"fullyQualifiedDomainNames\":[\"zejnhl\",\"kpbz\",\"cpilj\"]}},{\"name\":\"hzvechndbnwieho\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"uubw\",\"fqsfa\",\"aqtferr\"],\"subscriptions\":[{}],\"networkSecurityPerimeters\":[{},{},{}],\"fullyQualifiedDomainNames\":[\"fxapjwogqqnobpu\",\"cdabtqwpwya\",\"bzasqbucljgkyexa\",\"guyaip\"]}}],\"diagnosticSettingsVersion\":767976804724612557,\"enabledLogCategories\":[\"ltxijjumfqwazln\",\"nm\",\"jng\"]}}")
             .toObject(NetworkSecurityPerimeterConfigurationProperties.class);
-        Assertions.assertEquals("azul", model.provisioningIssues().get(0).name());
-        Assertions.assertEquals("thwwn", model.provisioningIssues().get(0).properties().issueType());
-        Assertions.assertEquals("hlf", model.provisioningIssues().get(0).properties().severity());
-        Assertions.assertEquals("wpchwahf", model.provisioningIssues().get(0).properties().description());
-        Assertions.assertEquals("snfepgfewetwlyx",
+        Assertions.assertEquals("gomfgbeglq", model.provisioningIssues().get(0).name());
+        Assertions.assertEquals("o", model.provisioningIssues().get(0).properties().issueType());
+        Assertions.assertEquals("betnluankrrfxee", model.provisioningIssues().get(0).properties().severity());
+        Assertions.assertEquals("tijv", model.provisioningIssues().get(0).properties().description());
+        Assertions.assertEquals("bmqzbqqxlajrnwx",
             model.provisioningIssues().get(0).properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("hqizxfpxtgqscj",
+        Assertions.assertEquals("tfaeyl",
             model.provisioningIssues().get(0).properties().suggestedAccessRules().get(0).name());
-        Assertions.assertEquals("ycvuzhyrmewipmv", model.networkSecurityPerimeter().id());
-        Assertions.assertEquals("dxukuqgsjjxundxg", model.networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("twzhhzjhfjmhv", model.networkSecurityPerimeter().location());
-        Assertions.assertEquals("vgpmun", model.resourceAssociation().name());
-        Assertions.assertEquals("sx", model.resourceAssociation().accessMode());
-        Assertions.assertEquals("fbuzjyihs", model.profile().name());
-        Assertions.assertEquals(2380463031327749802L, model.profile().accessRulesVersion());
-        Assertions.assertEquals("pohyuemslynsqyr", model.profile().accessRules().get(0).name());
-        Assertions.assertEquals(NspAccessRuleDirection.INBOUND,
+        Assertions.assertEquals("rtle", model.networkSecurityPerimeter().id());
+        Assertions.assertEquals("q", model.networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("kwv", model.networkSecurityPerimeter().location());
+        Assertions.assertEquals("zvd", model.resourceAssociation().name());
+        Assertions.assertEquals("zdix", model.resourceAssociation().accessMode());
+        Assertions.assertEquals("pnodawopqhe", model.profile().name());
+        Assertions.assertEquals(7022680732951740114L, model.profile().accessRulesVersion());
+        Assertions.assertEquals("sbostzel", model.profile().accessRules().get(0).name());
+        Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND,
             model.profile().accessRules().get(0).properties().direction());
-        Assertions.assertEquals("lttymsjn", model.profile().accessRules().get(0).properties().addressPrefixes().get(0));
-        Assertions.assertEquals("ixxrtikvcpw",
+        Assertions.assertEquals("tmzlbiojlv",
+            model.profile().accessRules().get(0).properties().addressPrefixes().get(0));
+        Assertions.assertEquals("zejnhl",
             model.profile().accessRules().get(0).properties().fullyQualifiedDomainNames().get(0));
-        Assertions.assertEquals(9129949467012960809L, model.profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("rkenx", model.profile().enabledLogCategories().get(0));
+        Assertions.assertEquals(767976804724612557L, model.profile().diagnosticSettingsVersion());
+        Assertions.assertEquals("ltxijjumfqwazln", model.profile().enabledLogCategories().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityPerimeterConfigurationProperties model = new NetworkSecurityPerimeterConfigurationProperties()
             .withProvisioningIssues(Arrays.asList(
-                new ProvisioningIssue().withName("azul")
-                    .withProperties(new ProvisioningIssueProperties().withIssueType("thwwn")
-                        .withSeverity("hlf")
-                        .withDescription("wpchwahf")
-                        .withSuggestedResourceIds(Arrays.asList("snfepgfewetwlyx", "ncxykxhdjhlimm", "cxfhbcporxv"))
-                        .withSuggestedAccessRules(
-                            Arrays.asList(new NetworkSecurityPerimeterAccessRule().withName("hqizxfpxtgqscj")
-                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties())))),
-                new ProvisioningIssue().withName("t")
-                    .withProperties(new ProvisioningIssueProperties().withIssueType("dqazkmtgguwpijra")
-                        .withSeverity("ivmmghfcfiwrxgk")
-                        .withDescription("uvyinzqodfvpgs")
-                        .withSuggestedResourceIds(Arrays.asList("gsgbpfgzdjt"))
+                new ProvisioningIssue().withName("gomfgbeglq")
+                    .withProperties(new ProvisioningIssueProperties().withIssueType("o")
+                        .withSeverity("betnluankrrfxee")
+                        .withDescription("tijv")
+                        .withSuggestedResourceIds(Arrays.asList("bmqzbqqxlajrnwx", "cevehjkuyxoafg"))
                         .withSuggestedAccessRules(Arrays.asList(
-                            new NetworkSecurityPerimeterAccessRule().withName("lbqvgaqvlgafcqu")
+                            new NetworkSecurityPerimeterAccessRule().withName("tfaeyl")
                                 .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()),
-                            new NetworkSecurityPerimeterAccessRule().withName("vetnwsdtutn")
+                            new NetworkSecurityPerimeterAccessRule().withName("fgvxirpghriypoqe")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties())))),
+                new ProvisioningIssue().withName("qhykprlpyzn")
+                    .withProperties(new ProvisioningIssueProperties().withIssueType("qdsmexiit")
+                        .withSeverity("uxtyasiibmi")
+                        .withDescription("nnust")
+                        .withSuggestedResourceIds(Arrays.asList("jh", "mgixhcmavmqfou", "or", "cgyypro"))
+                        .withSuggestedAccessRules(Arrays.asList(
+                            new NetworkSecurityPerimeterAccessRule().withName("undmbx")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()),
+                            new NetworkSecurityPerimeterAccessRule().withName("cmjkavlgorbmftpm")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()),
+                            new NetworkSecurityPerimeterAccessRule().withName("fjltfvnzcyjtotp")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties())))),
+                new ProvisioningIssue().withName("vpbdbzqgq")
+                    .withProperties(new ProvisioningIssueProperties().withIssueType("edsvqwthmk")
+                        .withSeverity("bcysih")
+                        .withDescription("qcwdhoh")
+                        .withSuggestedResourceIds(Arrays.asList("mcdzsufcohdxbz", "mcmuapc", "hdbevwqqxeyskon"))
+                        .withSuggestedAccessRules(Arrays.asList(
+                            new NetworkSecurityPerimeterAccessRule().withName("kfkbgbzbowxeqocl")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()),
+                            new NetworkSecurityPerimeterAccessRule().withName("gvkzqkjjeokbze")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()),
+                            new NetworkSecurityPerimeterAccessRule().withName("rx")
                                 .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()))))))
-            .withNetworkSecurityPerimeter(new NetworkSecurityPerimeter().withId("ycvuzhyrmewipmv")
-                .withPerimeterGuid("dxukuqgsjjxundxg")
-                .withLocation("twzhhzjhfjmhv"))
+            .withNetworkSecurityPerimeter(
+                new NetworkSecurityPerimeter().withId("rtle").withPerimeterGuid("q").withLocation("kwv"))
             .withResourceAssociation(
-                new NetworkSecurityPerimeterConfigurationAssociationInfo().withName("vgpmun").withAccessMode("sx"))
+                new NetworkSecurityPerimeterConfigurationAssociationInfo().withName("zvd").withAccessMode("zdix"))
             .withProfile(
-                new NetworkSecurityPerimeterProfileInfo().withName("fbuzjyihs")
-                    .withAccessRulesVersion(2380463031327749802L)
-                    .withAccessRules(Arrays.asList(new NetworkSecurityPerimeterAccessRule().withName("pohyuemslynsqyr")
-                        .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()
-                            .withDirection(NspAccessRuleDirection.INBOUND)
-                            .withAddressPrefixes(Arrays.asList("lttymsjn", "gqdnfwqzd", "gtilax", "nfhqlyvijouwivk"))
-                            .withSubscriptions(
-                                Arrays.asList(new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
-                                    new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
-                                    new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem(),
-                                    new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()))
-                            .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeter()))
-                            .withFullyQualifiedDomainNames(Arrays.asList("ixxrtikvcpw", "gclrci")))))
-                    .withDiagnosticSettingsVersion(9129949467012960809L)
-                    .withEnabledLogCategories(Arrays.asList("rkenx", "m", "yefrpmpdnqqska", "ao")));
+                new NetworkSecurityPerimeterProfileInfo().withName("pnodawopqhe")
+                    .withAccessRulesVersion(7022680732951740114L)
+                    .withAccessRules(
+                        Arrays.asList(
+                            new NetworkSecurityPerimeterAccessRule().withName("sbostzel")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()
+                                    .withDirection(NspAccessRuleDirection.OUTBOUND)
+                                    .withAddressPrefixes(Arrays.asList("tmzlbiojlv", "hrbbpneqvcwwyy", "r", "ochpprpr"))
+                                    .withSubscriptions(Arrays
+                                        .asList(new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()))
+                                    .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeter()))
+                                    .withFullyQualifiedDomainNames(Arrays.asList("zejnhl", "kpbz", "cpilj"))),
+                            new NetworkSecurityPerimeterAccessRule().withName("hzvechndbnwieho")
+                                .withProperties(new NetworkSecurityPerimeterAccessRuleProperties()
+                                    .withDirection(NspAccessRuleDirection.OUTBOUND)
+                                    .withAddressPrefixes(Arrays.asList("uubw", "fqsfa", "aqtferr"))
+                                    .withSubscriptions(Arrays
+                                        .asList(new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()))
+                                    .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeter(),
+                                        new NetworkSecurityPerimeter(), new NetworkSecurityPerimeter()))
+                                    .withFullyQualifiedDomainNames(Arrays.asList("fxapjwogqqnobpu", "cdabtqwpwya",
+                                        "bzasqbucljgkyexa", "guyaip")))))
+                    .withDiagnosticSettingsVersion(767976804724612557L)
+                    .withEnabledLogCategories(Arrays.asList("ltxijjumfqwazln", "nm", "jng")));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationProperties.class);
-        Assertions.assertEquals("azul", model.provisioningIssues().get(0).name());
-        Assertions.assertEquals("thwwn", model.provisioningIssues().get(0).properties().issueType());
-        Assertions.assertEquals("hlf", model.provisioningIssues().get(0).properties().severity());
-        Assertions.assertEquals("wpchwahf", model.provisioningIssues().get(0).properties().description());
-        Assertions.assertEquals("snfepgfewetwlyx",
+        Assertions.assertEquals("gomfgbeglq", model.provisioningIssues().get(0).name());
+        Assertions.assertEquals("o", model.provisioningIssues().get(0).properties().issueType());
+        Assertions.assertEquals("betnluankrrfxee", model.provisioningIssues().get(0).properties().severity());
+        Assertions.assertEquals("tijv", model.provisioningIssues().get(0).properties().description());
+        Assertions.assertEquals("bmqzbqqxlajrnwx",
             model.provisioningIssues().get(0).properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("hqizxfpxtgqscj",
+        Assertions.assertEquals("tfaeyl",
             model.provisioningIssues().get(0).properties().suggestedAccessRules().get(0).name());
-        Assertions.assertEquals("ycvuzhyrmewipmv", model.networkSecurityPerimeter().id());
-        Assertions.assertEquals("dxukuqgsjjxundxg", model.networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("twzhhzjhfjmhv", model.networkSecurityPerimeter().location());
-        Assertions.assertEquals("vgpmun", model.resourceAssociation().name());
-        Assertions.assertEquals("sx", model.resourceAssociation().accessMode());
-        Assertions.assertEquals("fbuzjyihs", model.profile().name());
-        Assertions.assertEquals(2380463031327749802L, model.profile().accessRulesVersion());
-        Assertions.assertEquals("pohyuemslynsqyr", model.profile().accessRules().get(0).name());
-        Assertions.assertEquals(NspAccessRuleDirection.INBOUND,
+        Assertions.assertEquals("rtle", model.networkSecurityPerimeter().id());
+        Assertions.assertEquals("q", model.networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("kwv", model.networkSecurityPerimeter().location());
+        Assertions.assertEquals("zvd", model.resourceAssociation().name());
+        Assertions.assertEquals("zdix", model.resourceAssociation().accessMode());
+        Assertions.assertEquals("pnodawopqhe", model.profile().name());
+        Assertions.assertEquals(7022680732951740114L, model.profile().accessRulesVersion());
+        Assertions.assertEquals("sbostzel", model.profile().accessRules().get(0).name());
+        Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND,
             model.profile().accessRules().get(0).properties().direction());
-        Assertions.assertEquals("lttymsjn", model.profile().accessRules().get(0).properties().addressPrefixes().get(0));
-        Assertions.assertEquals("ixxrtikvcpw",
+        Assertions.assertEquals("tmzlbiojlv",
+            model.profile().accessRules().get(0).properties().addressPrefixes().get(0));
+        Assertions.assertEquals("zejnhl",
             model.profile().accessRules().get(0).properties().fullyQualifiedDomainNames().get(0));
-        Assertions.assertEquals(9129949467012960809L, model.profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("rkenx", model.profile().enabledLogCategories().get(0));
+        Assertions.assertEquals(767976804724612557L, model.profile().diagnosticSettingsVersion());
+        Assertions.assertEquals("ltxijjumfqwazln", model.profile().enabledLogCategories().get(0));
     }
 }

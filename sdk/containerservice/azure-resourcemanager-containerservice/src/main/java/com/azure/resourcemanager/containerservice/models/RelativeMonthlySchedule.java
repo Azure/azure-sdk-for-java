@@ -23,7 +23,7 @@ public final class RelativeMonthlySchedule implements JsonSerializable<RelativeM
     private int intervalMonths;
 
     /*
-     * The week index. Specifies on which week of the month the dayOfWeek applies.
+     * The week index. Specifies on which instance of the allowed days specified in daysOfWeek the maintenance occurs.
      */
     private Type weekIndex;
 
@@ -59,7 +59,8 @@ public final class RelativeMonthlySchedule implements JsonSerializable<RelativeM
     }
 
     /**
-     * Get the weekIndex property: The week index. Specifies on which week of the month the dayOfWeek applies.
+     * Get the weekIndex property: The week index. Specifies on which instance of the allowed days specified in
+     * daysOfWeek the maintenance occurs.
      * 
      * @return the weekIndex value.
      */
@@ -68,7 +69,8 @@ public final class RelativeMonthlySchedule implements JsonSerializable<RelativeM
     }
 
     /**
-     * Set the weekIndex property: The week index. Specifies on which week of the month the dayOfWeek applies.
+     * Set the weekIndex property: The week index. Specifies on which instance of the allowed days specified in
+     * daysOfWeek the maintenance occurs.
      * 
      * @param weekIndex the weekIndex value to set.
      * @return the RelativeMonthlySchedule object itself.

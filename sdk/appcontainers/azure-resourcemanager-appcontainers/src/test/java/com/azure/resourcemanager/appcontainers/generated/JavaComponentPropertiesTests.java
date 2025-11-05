@@ -16,33 +16,34 @@ public final class JavaComponentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentProperties model = BinaryData.fromString(
-            "{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"x\",\"value\":\"zdcgdzbenr\"},{\"propertyName\":\"cawetzqddt\",\"value\":\"fljhznamtua\"},{\"propertyName\":\"zwcjjncqtj\",\"value\":\"izvg\"},{\"propertyName\":\"atzuuv\",\"value\":\"ngrebwg\"}],\"scale\":{\"minReplicas\":1794399403,\"maxReplicas\":80766571},\"serviceBinds\":[{\"name\":\"v\",\"serviceId\":\"qfutlxjo\"},{\"name\":\"asunwqrjzfrgq\",\"serviceId\":\"ohcmbu\"}]}")
+            "{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"olbaemwmdx\",\"value\":\"bwjscjpahlxveab\"},{\"propertyName\":\"xnmwmqtibxyijddt\",\"value\":\"cttadi\"},{\"propertyName\":\"eukmr\",\"value\":\"eekpndz\"},{\"propertyName\":\"pmudqmeqwig\",\"value\":\"bu\"}],\"scale\":{\"minReplicas\":968271036,\"maxReplicas\":517735759},\"serviceBinds\":[{\"name\":\"bpmzzn\",\"serviceId\":\"ff\"}]}")
             .toObject(JavaComponentProperties.class);
-        Assertions.assertEquals("x", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("zdcgdzbenr", model.configurations().get(0).value());
-        Assertions.assertEquals(1794399403, model.scale().minReplicas());
-        Assertions.assertEquals(80766571, model.scale().maxReplicas());
-        Assertions.assertEquals("v", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("qfutlxjo", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("olbaemwmdx", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("bwjscjpahlxveab", model.configurations().get(0).value());
+        Assertions.assertEquals(968271036, model.scale().minReplicas());
+        Assertions.assertEquals(517735759, model.scale().maxReplicas());
+        Assertions.assertEquals("bpmzzn", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("ff", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaComponentProperties model = new JavaComponentProperties()
-            .withConfigurations(
-                Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("x").withValue("zdcgdzbenr"),
-                    new JavaComponentConfigurationProperty().withPropertyName("cawetzqddt").withValue("fljhznamtua"),
-                    new JavaComponentConfigurationProperty().withPropertyName("zwcjjncqtj").withValue("izvg"),
-                    new JavaComponentConfigurationProperty().withPropertyName("atzuuv").withValue("ngrebwg")))
-            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1794399403).withMaxReplicas(80766571))
-            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("v").withServiceId("qfutlxjo"),
-                new JavaComponentServiceBind().withName("asunwqrjzfrgq").withServiceId("ohcmbu")));
+        JavaComponentProperties model
+            = new JavaComponentProperties()
+                .withConfigurations(Arrays.asList(
+                    new JavaComponentConfigurationProperty().withPropertyName("olbaemwmdx")
+                        .withValue("bwjscjpahlxveab"),
+                    new JavaComponentConfigurationProperty().withPropertyName("xnmwmqtibxyijddt").withValue("cttadi"),
+                    new JavaComponentConfigurationProperty().withPropertyName("eukmr").withValue("eekpndz"),
+                    new JavaComponentConfigurationProperty().withPropertyName("pmudqmeqwig").withValue("bu")))
+                .withScale(new JavaComponentPropertiesScale().withMinReplicas(968271036).withMaxReplicas(517735759))
+                .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("bpmzzn").withServiceId("ff")));
         model = BinaryData.fromObject(model).toObject(JavaComponentProperties.class);
-        Assertions.assertEquals("x", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("zdcgdzbenr", model.configurations().get(0).value());
-        Assertions.assertEquals(1794399403, model.scale().minReplicas());
-        Assertions.assertEquals(80766571, model.scale().maxReplicas());
-        Assertions.assertEquals("v", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("qfutlxjo", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("olbaemwmdx", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("bwjscjpahlxveab", model.configurations().get(0).value());
+        Assertions.assertEquals(968271036, model.scale().minReplicas());
+        Assertions.assertEquals(517735759, model.scale().maxReplicas());
+        Assertions.assertEquals("bpmzzn", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("ff", model.serviceBinds().get(0).serviceId());
     }
 }

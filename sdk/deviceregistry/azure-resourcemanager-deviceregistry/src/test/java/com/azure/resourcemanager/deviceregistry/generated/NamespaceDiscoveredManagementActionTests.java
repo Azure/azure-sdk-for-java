@@ -14,36 +14,36 @@ public final class NamespaceDiscoveredManagementActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredManagementAction model = BinaryData.fromString(
-            "{\"name\":\"lazszrn\",\"actionConfiguration\":\"iin\",\"targetUri\":\"fpwpjylwbt\",\"typeRef\":\"flsjc\",\"topic\":\"szfjvfbgofelja\",\"actionType\":\"Write\",\"timeoutInSeconds\":720803172,\"lastUpdatedOn\":\"2021-05-17T18:51:39Z\"}")
+            "{\"name\":\"dvncjabudurgk\",\"actionConfiguration\":\"mokzhjjklf\",\"targetUri\":\"hmouwqlgzrfze\",\"typeRef\":\"ebizikayuh\",\"topic\":\"bjbsybb\",\"actionType\":\"Write\",\"timeoutInSeconds\":146564330,\"lastUpdatedOn\":\"2021-08-07T02:44:31Z\"}")
             .toObject(NamespaceDiscoveredManagementAction.class);
-        Assertions.assertEquals("lazszrn", model.name());
-        Assertions.assertEquals("iin", model.actionConfiguration());
-        Assertions.assertEquals("fpwpjylwbt", model.targetUri());
-        Assertions.assertEquals("flsjc", model.typeRef());
-        Assertions.assertEquals("szfjvfbgofelja", model.topic());
+        Assertions.assertEquals("dvncjabudurgk", model.name());
+        Assertions.assertEquals("mokzhjjklf", model.actionConfiguration());
+        Assertions.assertEquals("hmouwqlgzrfze", model.targetUri());
+        Assertions.assertEquals("ebizikayuh", model.typeRef());
+        Assertions.assertEquals("bjbsybb", model.topic());
         Assertions.assertEquals(NamespaceDiscoveredManagementActionType.WRITE, model.actionType());
-        Assertions.assertEquals(720803172, model.timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T18:51:39Z"), model.lastUpdatedOn());
+        Assertions.assertEquals(146564330, model.timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T02:44:31Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredManagementAction model = new NamespaceDiscoveredManagementAction().withName("lazszrn")
-            .withActionConfiguration("iin")
-            .withTargetUri("fpwpjylwbt")
-            .withTypeRef("flsjc")
-            .withTopic("szfjvfbgofelja")
+        NamespaceDiscoveredManagementAction model = new NamespaceDiscoveredManagementAction().withName("dvncjabudurgk")
+            .withActionConfiguration("mokzhjjklf")
+            .withTargetUri("hmouwqlgzrfze")
+            .withTypeRef("ebizikayuh")
+            .withTopic("bjbsybb")
             .withActionType(NamespaceDiscoveredManagementActionType.WRITE)
-            .withTimeoutInSeconds(720803172)
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-05-17T18:51:39Z"));
+            .withTimeoutInSeconds(146564330)
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-08-07T02:44:31Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredManagementAction.class);
-        Assertions.assertEquals("lazszrn", model.name());
-        Assertions.assertEquals("iin", model.actionConfiguration());
-        Assertions.assertEquals("fpwpjylwbt", model.targetUri());
-        Assertions.assertEquals("flsjc", model.typeRef());
-        Assertions.assertEquals("szfjvfbgofelja", model.topic());
+        Assertions.assertEquals("dvncjabudurgk", model.name());
+        Assertions.assertEquals("mokzhjjklf", model.actionConfiguration());
+        Assertions.assertEquals("hmouwqlgzrfze", model.targetUri());
+        Assertions.assertEquals("ebizikayuh", model.typeRef());
+        Assertions.assertEquals("bjbsybb", model.topic());
         Assertions.assertEquals(NamespaceDiscoveredManagementActionType.WRITE, model.actionType());
-        Assertions.assertEquals(720803172, model.timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T18:51:39Z"), model.lastUpdatedOn());
+        Assertions.assertEquals(146564330, model.timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T02:44:31Z"), model.lastUpdatedOn());
     }
 }

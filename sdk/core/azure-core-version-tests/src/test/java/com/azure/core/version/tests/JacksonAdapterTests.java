@@ -45,10 +45,9 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class JacksonAdapterTests {
     private static final JacksonAdapter ADAPTER = new JacksonAdapter();
@@ -221,15 +220,9 @@ public class JacksonAdapterTests {
 
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
-        try {
-            JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
-
-            fail("An exception should have been thrown.");
-        } catch (RuntimeException ex) {
-            assertTrue(ex.getCause() instanceof JsonProcessingException, "Exception cause type was "
-                + ex.getCause().getClass().getName() + " instead of the expected JsonProcessingException type.");
-        }
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class));
+        assertInstanceOf(JsonProcessingException.class, ex.getCause());
     }
 
     @ParameterizedTest

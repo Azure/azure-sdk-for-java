@@ -23,7 +23,7 @@ public final class SchemasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"znabaobns\",\"displayName\":\"jdjltymkmvgui\",\"description\":\"wartspphkixkykxd\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"i\":\"ucfx\",\"nc\":\"kflrmymy\",\"lmiiiovg\":\"lhrisw\"}},\"id\":\"gxuugqkctotio\",\"name\":\"l\",\"type\":\"teqdptj\"}";
+            = "{\"properties\":{\"uuid\":\"bfihw\",\"displayName\":\"vctafsrb\",\"description\":\"blml\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Deleting\",\"tags\":{\"xwqagnepzw\":\"p\",\"rxaomzisglrrcze\":\"klsbsbqqqagw\",\"hltnjadhqoawjq\":\"k\",\"byrrueqth\":\"yueayfbpcmsp\"}},\"id\":\"gnmbscbbxigdhx\",\"name\":\"idlopedbwdpy\",\"type\":\"yybxubmdnafcbqw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class SchemasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .getWithResponse("ewbidyvteowxv", "piudeugfsxzecpa", "wkufykhvuhxepm", com.azure.core.util.Context.NONE)
+            .getWithResponse("ldefxrdcoxn", "kkjanurnnqbnqbp", "zxqltgrdogypx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jdjltymkmvgui", response.properties().displayName());
-        Assertions.assertEquals("wartspphkixkykxd", response.properties().description());
+        Assertions.assertEquals("vctafsrb", response.properties().displayName());
+        Assertions.assertEquals("blml", response.properties().description());
         Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, response.properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.properties().schemaType());
-        Assertions.assertEquals("ucfx", response.properties().tags().get("i"));
+        Assertions.assertEquals("p", response.properties().tags().get("xwqagnepzw"));
     }
 }
