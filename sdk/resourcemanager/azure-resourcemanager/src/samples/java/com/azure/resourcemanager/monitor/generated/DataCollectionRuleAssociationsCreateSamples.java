@@ -11,30 +11,8 @@ import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleAssocia
  */
 public final class DataCollectionRuleAssociationsCreateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
-     * DataCollectionRuleAssociationsCreateEndpointAssoc.json
-     */
-    /**
-     * Sample code: Create or update association with a data collection endpoint.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createOrUpdateAssociationWithADataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getDataCollectionRuleAssociations()
-            .createWithResponse(
-                "subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
-                "configurationAccessEndpoint",
-                new DataCollectionRuleAssociationProxyOnlyResourceInner().withDataCollectionEndpointId(
-                    "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myCollectionEndpoint"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
      * DataCollectionRuleAssociationsCreate.json
      */
     /**

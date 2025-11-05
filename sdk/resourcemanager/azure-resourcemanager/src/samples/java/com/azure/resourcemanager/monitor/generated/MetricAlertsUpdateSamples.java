@@ -21,8 +21,7 @@ import java.util.Map;
 public final class MetricAlertsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/UpdateMetricAlert.
-     * json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/UpdateMetricAlert.json
      */
     /**
      * Sample code: Create or update an alert rule.
@@ -40,8 +39,8 @@ public final class MetricAlertsUpdateSamples {
                 .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"))
-                .withEvaluationFrequency(Duration.parse("PT1M"))
-                .withWindowSize(Duration.parse("PT15M"))
+                .withEvaluationFrequency(Duration.parse("Pt1m"))
+                .withWindowSize(Duration.parse("Pt15m"))
                 .withCriteria(new MetricAlertSingleResourceMultipleMetricCriteria()
                     .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
                         .withMetricName("\\Processor(_Total)\\% Processor Time")

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
+import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
 
 /**
@@ -12,7 +13,7 @@ import java.time.Duration;
 public final class MetricsListSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetric.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetric.json
      */
     /**
      * Sample code: Get Metric for data.
@@ -25,15 +26,15 @@ public final class MetricsListSamples {
             .serviceClient()
             .getMetrics()
             .listWithResponse(
-                "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default",
-                "2021-04-20T09:00:00.000Z/2021-04-20T14:00:00.000Z", Duration.parse("PT6H"), "BlobCount,BlobCapacity",
-                "average,minimum,maximum", 5, "average asc", "Tier eq '*'", null,
-                "Microsoft.Storage/storageAccounts/blobServices", true, false, com.azure.core.util.Context.NONE);
+                "subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
+                "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z", Duration.parse("PT1M"), null, "Average,count", 3,
+                "Average asc", "BlobType eq '*'", null, "Microsoft.Storage/storageAccounts/blobServices",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricMetadata.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricMetadata.json
      */
     /**
      * Sample code: Get Metric for metadata.
@@ -46,14 +47,15 @@ public final class MetricsListSamples {
             .serviceClient()
             .getMetrics()
             .listWithResponse(
-                "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default",
-                "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z", null, null, null, null, null, "Tier eq '*'", null,
-                "Microsoft.Storage/storageAccounts/blobServices", null, null, com.azure.core.util.Context.NONE);
+                "subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
+                "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z", Duration.parse("PT1M"), null, "Average,count", 3,
+                "Average asc", "BlobType eq '*'", ResultType.fromString("metadata"),
+                "Microsoft.Storage/storageAccounts/blobServices", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricError.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricError.json
      */
     /**
      * Sample code: Get Metric with error.
@@ -67,8 +69,8 @@ public final class MetricsListSamples {
             .getMetrics()
             .listWithResponse(
                 "subscriptions/ac41e21f-afd6-4a79-8070-f01eba278f97/resourceGroups/todking/providers/Microsoft.DocumentDb/databaseAccounts/tk-cosmos-mongo",
-                "2021-06-07T21:51:00Z/2021-06-08T01:51:00Z", Duration.parse("P1D"), "MongoRequestsCount,MongoRequests",
-                "average", null, null, null, null, "microsoft.documentdb/databaseaccounts", true, false,
+                "2021-06-07T21:51:00Z/2021-06-08T01:51:00Z", Duration.parse("FULL"), "MongoRequestsCount,MongoRequests",
+                "average", null, null, null, null, "microsoft.documentdb/databaseaccounts",
                 com.azure.core.util.Context.NONE);
     }
 }

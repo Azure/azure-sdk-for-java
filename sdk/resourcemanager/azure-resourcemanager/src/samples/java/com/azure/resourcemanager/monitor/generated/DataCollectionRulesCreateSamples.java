@@ -5,74 +5,29 @@
 package com.azure.resourcemanager.monitor.generated;
 
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleResourceInner;
-import com.azure.resourcemanager.monitor.models.AgentSetting;
-import com.azure.resourcemanager.monitor.models.ColumnDefinition;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleAgentSettings;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDataSources;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDestinations;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleReferences;
 import com.azure.resourcemanager.monitor.models.DataFlow;
-import com.azure.resourcemanager.monitor.models.KnownAgentSettingName;
-import com.azure.resourcemanager.monitor.models.KnownColumnDefinitionType;
-import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleResourceKind;
 import com.azure.resourcemanager.monitor.models.KnownDataFlowStreams;
-import com.azure.resourcemanager.monitor.models.KnownLogFileTextSettingsRecordStartTimestampFormat;
-import com.azure.resourcemanager.monitor.models.KnownLogFilesDataSourceFormat;
 import com.azure.resourcemanager.monitor.models.KnownPerfCounterDataSourceStreams;
-import com.azure.resourcemanager.monitor.models.KnownStorageBlobLookupType;
 import com.azure.resourcemanager.monitor.models.KnownSyslogDataSourceFacilityNames;
 import com.azure.resourcemanager.monitor.models.KnownSyslogDataSourceLogLevels;
 import com.azure.resourcemanager.monitor.models.KnownSyslogDataSourceStreams;
 import com.azure.resourcemanager.monitor.models.KnownWindowsEventLogDataSourceStreams;
 import com.azure.resourcemanager.monitor.models.LogAnalyticsDestination;
-import com.azure.resourcemanager.monitor.models.LogFileSettingsText;
-import com.azure.resourcemanager.monitor.models.LogFilesDataSource;
-import com.azure.resourcemanager.monitor.models.LogFilesDataSourceSettings;
 import com.azure.resourcemanager.monitor.models.PerfCounterDataSource;
-import com.azure.resourcemanager.monitor.models.ReferencesSpecEnrichmentData;
-import com.azure.resourcemanager.monitor.models.StorageBlob;
-import com.azure.resourcemanager.monitor.models.StreamDeclaration;
 import com.azure.resourcemanager.monitor.models.SyslogDataSource;
 import com.azure.resourcemanager.monitor.models.WindowsEventLogDataSource;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for DataCollectionRules Create.
  */
 public final class DataCollectionRulesCreateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
-     * DataCollectionRulesCreateAgentSettings.json
-     */
-    /**
-     * Sample code: Create or update an agent settings configuration.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createOrUpdateAnAgentSettingsConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getDataCollectionRules()
-            .createWithResponse("myResourceGroup", "myCollectionRule",
-                new DataCollectionRuleResourceInner().withLocation("eastus")
-                    .withKind(KnownDataCollectionRuleResourceKind.fromString("AgentSettings"))
-                    .withDescription("An agent settings configuration")
-                    .withAgentSettings(new DataCollectionRuleAgentSettings().withLogs(Arrays.asList(
-                        new AgentSetting().withName(KnownAgentSettingName.MAX_DISK_QUOTA_IN_MB).withValue("5000"),
-                        new AgentSetting().withName(KnownAgentSettingName.USE_TIME_RECEIVED_FOR_FORWARDED_EVENTS)
-                            .withValue("1"),
-                        new AgentSetting().withName(KnownAgentSettingName.TAGS).withValue("Azure, Monitoring")))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionRulesCreate.
-     * json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * DataCollectionRulesCreate.json
      */
     /**
      * Sample code: Create or update data collection rule.
@@ -134,108 +89,5 @@ public final class DataCollectionRulesCreateSamples {
                             KnownDataFlowStreams.MICROSOFT_SYSLOG, KnownDataFlowStreams.MICROSOFT_WINDOWS_EVENT))
                         .withDestinations(Arrays.asList("centralWorkspace")))),
                 com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
-     * DataCollectionRulesCreateEmbeddedDCE.json
-     */
-    /**
-     * Sample code: Create or update data collection rule with embedded ingestion endpoints.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createOrUpdateDataCollectionRuleWithEmbeddedIngestionEndpoints(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getDataCollectionRules()
-            .createWithResponse("myResourceGroup", "myCollectionRule", new DataCollectionRuleResourceInner()
-                .withLocation("eastus")
-                .withKind(KnownDataCollectionRuleResourceKind.fromString(" Direct"))
-                .withDescription("A Direct Ingestion Rule with builtin ingestion fqdns")
-                .withStreamDeclarations(mapOf("Custom-LOGS1_CL",
-                    new StreamDeclaration().withColumns(Arrays.asList(
-                        new ColumnDefinition().withName("Time").withType(KnownColumnDefinitionType.DATETIME),
-                        new ColumnDefinition().withName("Computer").withType(KnownColumnDefinitionType.STRING),
-                        new ColumnDefinition().withName("AdditionalContext").withType(KnownColumnDefinitionType.STRING),
-                        new ColumnDefinition().withName("CounterName").withType(KnownColumnDefinitionType.STRING),
-                        new ColumnDefinition().withName("CounterValue").withType(KnownColumnDefinitionType.REAL)))))
-                .withDestinations(new DataCollectionRuleDestinations()
-                    .withLogAnalytics(Arrays.asList(new LogAnalyticsDestination().withWorkspaceResourceId(
-                        "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/centralTeamWorkspace")
-                        .withName("centralWorkspace"))))
-                .withDataFlows(Arrays.asList(new DataFlow()
-                    .withStreams(Arrays.asList(KnownDataFlowStreams.fromString("Custom-LOGS1_CL")))
-                    .withDestinations(Arrays.asList("myworkspace"))
-                    .withTransformKql(
-                        "source | extend jsonContext = parse_json(AdditionalContext) | project TimeGenerated = Time, Computer, AdditionalContext = jsonContext, CounterName=tostring(jsonContext.CounterName), CounterValue=toreal(jsonContext.CounterValue)")
-                    .withOutputStream("Custom-LOGS1_CL"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
-     * DataCollectionRulesCreateEnrichment.json
-     */
-    /**
-     * Sample code: Create or update data collection rule with enrichment.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createOrUpdateDataCollectionRuleWithEnrichment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getDataCollectionRules()
-            .createWithResponse("myResourceGroup", "myCollectionRule", new DataCollectionRuleResourceInner()
-                .withLocation("eastus")
-                .withDescription("A rule showcasing ingestion time enrichment")
-                .withDataCollectionEndpointId(
-                    "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint")
-                .withReferences(new DataCollectionRuleReferences().withEnrichmentData(
-                    new ReferencesSpecEnrichmentData().withStorageBlobs(Arrays.asList(new StorageBlob().withResourceId(
-                        "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourcegroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myenrichmentstorage")
-                        .withBlobUrl("https://myenrichmentstorage.blob.core.windows.net/enrichment")
-                        .withLookupType(KnownStorageBlobLookupType.STRING)
-                        .withName("mytextdatastore")))))
-                .withStreamDeclarations(mapOf("Custom-TabularDataABC",
-                    new StreamDeclaration().withColumns(Arrays.asList(
-                        new ColumnDefinition().withName("TimeGenerated").withType(KnownColumnDefinitionType.DATETIME),
-                        new ColumnDefinition().withName("Message").withType(KnownColumnDefinitionType.STRING),
-                        new ColumnDefinition().withName("AdditionalContext")
-                            .withType(KnownColumnDefinitionType.STRING)))))
-                .withDataSources(new DataCollectionRuleDataSources().withLogFiles(Arrays.asList(new LogFilesDataSource()
-                    .withStreams(Arrays.asList("Custom-TabularDataABC"))
-                    .withFilePatterns(Arrays.asList("C:\\JavaLogs\\*\\*.log"))
-                    .withFormat(KnownLogFilesDataSourceFormat.TEXT)
-                    .withSettings(new LogFilesDataSourceSettings().withText(new LogFileSettingsText()
-                        .withRecordStartTimestampFormat(KnownLogFileTextSettingsRecordStartTimestampFormat.ISO_8601)))
-                    .withName("myTabularLogDataSource"))))
-                .withDestinations(new DataCollectionRuleDestinations()
-                    .withLogAnalytics(Arrays.asList(new LogAnalyticsDestination().withWorkspaceResourceId(
-                        "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/centralTeamWorkspace")
-                        .withName("centralWorkspace"))))
-                .withDataFlows(Arrays.asList(new DataFlow()
-                    .withStreams(Arrays.asList(KnownDataFlowStreams.fromString("Custom-TabularDataABC")))
-                    .withDestinations(Arrays.asList("centralWorkspace"))
-                    .withTransformKql(
-                        "source | extend LookupData = lookup_string_am('mytextdatastore', Message) | project TimeGenerated, Message, AdditionalContext = LookupData.Message")
-                    .withOutputStream("Custom-LOGS1_CL"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

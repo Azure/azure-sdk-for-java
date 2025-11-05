@@ -10,8 +10,8 @@ package com.azure.resourcemanager.monitor.generated;
 public final class MetricAlertsStatusListByNameSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/
-     * getMetricAlertStatusByName.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertStatusByName.
+     * json
      */
     /**
      * Sample code: Get an alert rule status.

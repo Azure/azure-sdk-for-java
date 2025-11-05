@@ -9,7 +9,8 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class DataCollectionRuleAssociationsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
      * DataCollectionRuleAssociationsListByResource.json
      */
     /**

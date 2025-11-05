@@ -10,7 +10,7 @@ package com.azure.resourcemanager.monitor.generated;
 public final class MetricDefinitionsListSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitions.json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricDefinitions.json
      */
     /**
      * Sample code: Get Metric Definitions without filter.
@@ -28,7 +28,7 @@ public final class MetricDefinitionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/
      * GetMetricDefinitionsApplicationInsights.json
      */
     /**
@@ -48,7 +48,7 @@ public final class MetricDefinitionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/
      * GetMetricDefinitionsMetricClass.json
      */
     /**

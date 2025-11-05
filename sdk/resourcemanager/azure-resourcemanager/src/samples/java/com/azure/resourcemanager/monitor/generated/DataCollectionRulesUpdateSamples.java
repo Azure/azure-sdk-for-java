@@ -14,8 +14,8 @@ import java.util.Map;
 public final class DataCollectionRulesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionRulesUpdate.
-     * json
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * DataCollectionRulesUpdate.json
      */
     /**
      * Sample code: Update data collection rule.

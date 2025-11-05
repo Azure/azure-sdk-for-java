@@ -10,8 +10,7 @@ package com.azure.resourcemanager.monitor.generated;
 public final class MetricAlertsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/deleteMetricAlert.
-     * json
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/deleteMetricAlert.json
      */
     /**
      * Sample code: Delete an alert rule.
