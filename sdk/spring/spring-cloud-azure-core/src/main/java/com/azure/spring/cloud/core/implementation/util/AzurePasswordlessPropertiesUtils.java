@@ -7,6 +7,8 @@ import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import org.springframework.beans.BeanUtils;
 
+import java.lang.reflect.Field;
+
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
@@ -51,8 +53,32 @@ public final class AzurePasswordlessPropertiesUtils {
         copyPropertiesIgnoreNull(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
-        target.setScopes(source.getScopes());
+        // Only copy scopes if explicitly set in source, not if using computed default
+        // This ensures that when cloud-type is set globally but scopes are not explicitly set,
+        // the target will use its own default scopes based on the correct cloud type
+        if (isScopesExplicitlySet(source)) {
+            target.setScopes(source.getScopes());
+        }
         target.setPasswordlessEnabled(source.isPasswordlessEnabled());
+    }
+
+    /**
+     * Check if scopes are explicitly set in the source object (not using computed default).
+     * Uses reflection to access the scopes field directly since getScopes() may return computed defaults.
+     *
+     * @param source The source PasswordlessProperties object
+     * @return true if scopes are explicitly set, false otherwise
+     */
+    private static boolean isScopesExplicitlySet(PasswordlessProperties source) {
+        try {
+            Field scopesField = source.getClass().getDeclaredField("scopes");
+            scopesField.setAccessible(true);
+            Object scopesValue = scopesField.get(source);
+            return scopesValue != null;
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            // If reflection fails, fall back to always copying (maintains backward compatibility)
+            return true;
+        }
     }
 
     /**

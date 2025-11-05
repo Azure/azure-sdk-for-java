@@ -11,6 +11,7 @@ import com.azure.spring.cloud.core.properties.client.ClientProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 
@@ -298,6 +299,52 @@ class AzurePasswordlessPropertiesUtilsTest {
     }
 
     @Test
+    void testMergePropertiesWithAzureChinaShouldUseCorrectDefaultScopes() {
+        // Simulate the scenario from the bug report:
+        // - Global properties have cloud-type set to AZURE_CHINA
+        // - Datasource-specific properties don't have scopes explicitly set
+        // - Expected: merged properties should use AZURE_CHINA default scopes
+
+        AzurePropertiesA globalProperties = new AzurePropertiesA();
+        globalProperties.profile.setCloudType(AZURE_CHINA);
+        globalProperties.credential.setClientId("global-client-id");
+
+        // Simulate properties bound from spring.datasource.azure.* (no explicit scopes)
+        TestPasswordlessPropertiesWithDefaults datasourceProperties = new TestPasswordlessPropertiesWithDefaults();
+        // Note: scopes are not explicitly set, will use default based on cloud type
+
+        TestPasswordlessPropertiesWithDefaults result = new TestPasswordlessPropertiesWithDefaults();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, datasourceProperties, result);
+
+        // Result should have cloud type from global properties
+        assertEquals(AZURE_CHINA, result.profile.getCloudType());
+        
+        // Result should use default scopes for AZURE_CHINA, not AZURE
+        String expectedChinaScope = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+        assertEquals(expectedChinaScope, result.getScopes());
+    }
+
+    @Test
+    void testMergePropertiesWithExplicitScopesShouldOverride() {
+        // Test that explicitly set scopes are preserved even with different cloud type
+
+        AzurePropertiesA globalProperties = new AzurePropertiesA();
+        globalProperties.profile.setCloudType(AZURE_CHINA);
+
+        TestPasswordlessPropertiesWithDefaults datasourceProperties = new TestPasswordlessPropertiesWithDefaults();
+        // Explicitly set custom scopes (not the default)
+        datasourceProperties.setScopes("https://custom-scope.example.com/.default");
+
+        TestPasswordlessPropertiesWithDefaults result = new TestPasswordlessPropertiesWithDefaults();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, datasourceProperties, result);
+
+        assertEquals(AZURE_CHINA, result.profile.getCloudType());
+        
+        // Explicitly set scopes should be preserved
+        assertEquals("https://custom-scope.example.com/.default", result.getScopes());
+    }
+
+    @Test
     void testCopyPropertiesSourceNotChanged() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
@@ -373,6 +420,66 @@ class AzurePasswordlessPropertiesUtilsTest {
         @Override
         public String getScopes() {
             return scopes;
+        }
+
+        @Override
+        public void setScopes(String scopes) {
+            this.scopes = scopes;
+        }
+
+        @Override
+        public boolean isPasswordlessEnabled() {
+            return passwordlessEnabled;
+        }
+
+        @Override
+        public void setPasswordlessEnabled(boolean passwordlessEnabled) {
+            this.passwordlessEnabled = passwordlessEnabled;
+        }
+    }
+
+    /**
+     * Test implementation that mimics AzureJdbcPasswordlessProperties behavior
+     * with default scopes based on cloud type
+     */
+    static class TestPasswordlessPropertiesWithDefaults implements PasswordlessProperties {
+        private static final String JDBC_SCOPE_AZURE = "https://ossrdbms-aad.database.windows.net/.default";
+        private static final String JDBC_SCOPE_AZURE_CHINA = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+        private static final String JDBC_SCOPE_AZURE_US_GOVERNMENT = "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
+
+        private final TokenCredentialProperties credential = new TokenCredentialProperties();
+        private final AzureProfileProperties profile = new AzureProfileProperties();
+        private String scopes;
+        private boolean passwordlessEnabled = false;
+
+        @Override
+        public TokenCredentialProperties getCredential() {
+            return credential;
+        }
+
+        @Override
+        public AzureProfileProperties getProfile() {
+            return profile;
+        }
+
+        @Override
+        public String getScopes() {
+            return this.scopes == null ? getDefaultScopes() : this.scopes;
+        }
+
+        private String getDefaultScopes() {
+            CloudType cloudType = getProfile().getCloudType();
+            if (cloudType == null) {
+                return JDBC_SCOPE_AZURE;
+            }
+            switch (cloudType) {
+                case AZURE_CHINA:
+                    return JDBC_SCOPE_AZURE_CHINA;
+                case AZURE_US_GOVERNMENT:
+                    return JDBC_SCOPE_AZURE_US_GOVERNMENT;
+                default:
+                    return JDBC_SCOPE_AZURE;
+            }
         }
 
         @Override
