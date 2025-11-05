@@ -10,8 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsStopExecutionSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
-     * Job_Stop_Execution.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Job_Stop_Execution.json
      */
     /**
      * Sample code: Terminate a Container Apps Job.
@@ -20,6 +19,6 @@ public final class JobsStopExecutionSamples {
      */
     public static void
         terminateAContainerAppsJob(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.jobs().stopExecution("rg", "testcontainerAppsJob0", "jobExecution1", com.azure.core.util.Context.NONE);
+        manager.jobs().stopExecution("rg", "testcontainerappsjob0", "jobExecution1", com.azure.core.util.Context.NONE);
     }
 }

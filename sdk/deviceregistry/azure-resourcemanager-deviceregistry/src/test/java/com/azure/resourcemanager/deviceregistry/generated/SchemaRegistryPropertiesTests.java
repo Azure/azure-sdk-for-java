@@ -12,24 +12,24 @@ public final class SchemaRegistryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryProperties model = BinaryData.fromString(
-            "{\"uuid\":\"bgo\",\"namespace\":\"rb\",\"displayName\":\"oybfhjxakvvj\",\"description\":\"lordilmywwtkgkxn\",\"storageAccountContainerUrl\":\"edabgyvudtjue\",\"provisioningState\":\"Succeeded\"}")
+            "{\"uuid\":\"uzqgnjdgkynsc\",\"namespace\":\"i\",\"displayName\":\"zvhxnk\",\"description\":\"tkubotppn\",\"storageAccountContainerUrl\":\"dxzxhi\",\"provisioningState\":\"Succeeded\"}")
             .toObject(SchemaRegistryProperties.class);
-        Assertions.assertEquals("rb", model.namespace());
-        Assertions.assertEquals("oybfhjxakvvj", model.displayName());
-        Assertions.assertEquals("lordilmywwtkgkxn", model.description());
-        Assertions.assertEquals("edabgyvudtjue", model.storageAccountContainerUrl());
+        Assertions.assertEquals("i", model.namespace());
+        Assertions.assertEquals("zvhxnk", model.displayName());
+        Assertions.assertEquals("tkubotppn", model.description());
+        Assertions.assertEquals("dxzxhi", model.storageAccountContainerUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryProperties model = new SchemaRegistryProperties().withNamespace("rb")
-            .withDisplayName("oybfhjxakvvj")
-            .withDescription("lordilmywwtkgkxn")
-            .withStorageAccountContainerUrl("edabgyvudtjue");
+        SchemaRegistryProperties model = new SchemaRegistryProperties().withNamespace("i")
+            .withDisplayName("zvhxnk")
+            .withDescription("tkubotppn")
+            .withStorageAccountContainerUrl("dxzxhi");
         model = BinaryData.fromObject(model).toObject(SchemaRegistryProperties.class);
-        Assertions.assertEquals("rb", model.namespace());
-        Assertions.assertEquals("oybfhjxakvvj", model.displayName());
-        Assertions.assertEquals("lordilmywwtkgkxn", model.description());
-        Assertions.assertEquals("edabgyvudtjue", model.storageAccountContainerUrl());
+        Assertions.assertEquals("i", model.namespace());
+        Assertions.assertEquals("zvhxnk", model.displayName());
+        Assertions.assertEquals("tkubotppn", model.description());
+        Assertions.assertEquals("dxzxhi", model.storageAccountContainerUrl());
     }
 }

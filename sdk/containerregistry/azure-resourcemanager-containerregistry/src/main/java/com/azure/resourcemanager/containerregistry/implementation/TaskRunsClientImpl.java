@@ -70,7 +70,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientTaskRuns")
     public interface TaskRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")

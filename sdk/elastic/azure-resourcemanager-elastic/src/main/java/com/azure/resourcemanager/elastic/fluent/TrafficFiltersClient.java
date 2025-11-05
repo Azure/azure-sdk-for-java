@@ -14,7 +14,8 @@ import com.azure.core.util.Context;
  */
 public interface TrafficFiltersClient {
     /**
-     * Delete traffic filter from the account.
+     * Delete an existing traffic filter associated with your Elastic monitor resource, removing its network traffic
+     * control capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -29,7 +30,8 @@ public interface TrafficFiltersClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String rulesetId, Context context);
 
     /**
-     * Delete traffic filter from the account.
+     * Delete an existing traffic filter associated with your Elastic monitor resource, removing its network traffic
+     * control capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

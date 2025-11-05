@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"quotaSizeInKiBs\":3451547714942547827,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ybww\"},\"location\":\"d\",\"tags\":{\"plfmuvapckccrrvw\":\"idmhmwf\"},\"id\":\"yoxoy\",\"name\":\"ukphaimmoiroq\",\"type\":\"oshbragapyy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"quotaSizeInKiBs\":3451547714942547827,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ybww\"},\"location\":\"d\",\"tags\":{\"plfmuvapckccrrvw\":\"idmhmwf\"},\"id\":\"yoxoy\",\"name\":\"ukphaimmoiroq\",\"type\":\"oshbragapyy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.elastic.fluent.models.UpgradableVersionsListInn
  */
 public interface UpgradableVersionsClient {
     /**
-     * List of upgradable versions for a given monitor resource.
+     * List all upgradable versions for your Elastic monitor resource, helping you plan and execute upgrades.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -30,7 +30,7 @@ public interface UpgradableVersionsClient {
         Context context);
 
     /**
-     * List of upgradable versions for a given monitor resource.
+     * List all upgradable versions for your Elastic monitor resource, helping you plan and execute upgrades.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

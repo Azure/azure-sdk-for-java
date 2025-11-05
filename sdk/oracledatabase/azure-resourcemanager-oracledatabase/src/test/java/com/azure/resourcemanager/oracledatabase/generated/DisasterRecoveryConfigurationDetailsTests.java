@@ -14,10 +14,10 @@ public final class DisasterRecoveryConfigurationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DisasterRecoveryConfigurationDetails model = BinaryData.fromString(
-            "{\"disasterRecoveryType\":\"BackupBased\",\"timeSnapshotStandbyEnabledTill\":\"2021-03-12T17:23:33Z\",\"isSnapshotStandby\":false,\"isReplicateAutomaticBackups\":true}")
+            "{\"disasterRecoveryType\":\"BackupBased\",\"timeSnapshotStandbyEnabledTill\":\"2021-09-06T21:17:56Z\",\"isSnapshotStandby\":false,\"isReplicateAutomaticBackups\":true}")
             .toObject(DisasterRecoveryConfigurationDetails.class);
         Assertions.assertEquals(DisasterRecoveryType.BACKUP_BASED, model.disasterRecoveryType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T17:23:33Z"), model.timeSnapshotStandbyEnabledTill());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T21:17:56Z"), model.timeSnapshotStandbyEnabledTill());
         Assertions.assertFalse(model.isSnapshotStandby());
         Assertions.assertTrue(model.isReplicateAutomaticBackups());
     }
@@ -26,12 +26,12 @@ public final class DisasterRecoveryConfigurationDetailsTests {
     public void testSerialize() throws Exception {
         DisasterRecoveryConfigurationDetails model
             = new DisasterRecoveryConfigurationDetails().withDisasterRecoveryType(DisasterRecoveryType.BACKUP_BASED)
-                .withTimeSnapshotStandbyEnabledTill(OffsetDateTime.parse("2021-03-12T17:23:33Z"))
+                .withTimeSnapshotStandbyEnabledTill(OffsetDateTime.parse("2021-09-06T21:17:56Z"))
                 .withIsSnapshotStandby(false)
                 .withIsReplicateAutomaticBackups(true);
         model = BinaryData.fromObject(model).toObject(DisasterRecoveryConfigurationDetails.class);
         Assertions.assertEquals(DisasterRecoveryType.BACKUP_BASED, model.disasterRecoveryType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T17:23:33Z"), model.timeSnapshotStandbyEnabledTill());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T21:17:56Z"), model.timeSnapshotStandbyEnabledTill());
         Assertions.assertFalse(model.isSnapshotStandby());
         Assertions.assertTrue(model.isReplicateAutomaticBackups());
     }

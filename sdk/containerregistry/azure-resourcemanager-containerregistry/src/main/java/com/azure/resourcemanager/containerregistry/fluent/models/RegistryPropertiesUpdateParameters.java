@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptio
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
+import com.azure.resourcemanager.containerregistry.models.RoleAssignmentMode;
 import java.io.IOException;
 
 /**
@@ -57,9 +58,19 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
     /*
+     * Whether to allow ACR Tasks service to access a network restricted registry.
+     */
+    private Boolean networkRuleBypassAllowedForTasks;
+
+    /*
      * Enables registry-wide pull from unauthenticated clients.
      */
     private Boolean anonymousPullEnabled;
+
+    /*
+     * Determines registry role assignment mode.
+     */
+    private RoleAssignmentMode roleAssignmentMode;
 
     /**
      * Creates an instance of RegistryPropertiesUpdateParameters class.
@@ -211,6 +222,29 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     }
 
     /**
+     * Get the networkRuleBypassAllowedForTasks property: Whether to allow ACR Tasks service to access a network
+     * restricted registry.
+     * 
+     * @return the networkRuleBypassAllowedForTasks value.
+     */
+    public Boolean networkRuleBypassAllowedForTasks() {
+        return this.networkRuleBypassAllowedForTasks;
+    }
+
+    /**
+     * Set the networkRuleBypassAllowedForTasks property: Whether to allow ACR Tasks service to access a network
+     * restricted registry.
+     * 
+     * @param networkRuleBypassAllowedForTasks the networkRuleBypassAllowedForTasks value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters
+        withNetworkRuleBypassAllowedForTasks(Boolean networkRuleBypassAllowedForTasks) {
+        this.networkRuleBypassAllowedForTasks = networkRuleBypassAllowedForTasks;
+        return this;
+    }
+
+    /**
      * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
      * 
      * @return the anonymousPullEnabled value.
@@ -227,6 +261,26 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
      */
     public RegistryPropertiesUpdateParameters withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
         this.anonymousPullEnabled = anonymousPullEnabled;
+        return this;
+    }
+
+    /**
+     * Get the roleAssignmentMode property: Determines registry role assignment mode.
+     * 
+     * @return the roleAssignmentMode value.
+     */
+    public RoleAssignmentMode roleAssignmentMode() {
+        return this.roleAssignmentMode;
+    }
+
+    /**
+     * Set the roleAssignmentMode property: Determines registry role assignment mode.
+     * 
+     * @param roleAssignmentMode the roleAssignmentMode value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters withRoleAssignmentMode(RoleAssignmentMode roleAssignmentMode) {
+        this.roleAssignmentMode = roleAssignmentMode;
         return this;
     }
 
@@ -262,7 +316,10 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("networkRuleBypassOptions",
             this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
+        jsonWriter.writeBooleanField("networkRuleBypassAllowedForTasks", this.networkRuleBypassAllowedForTasks);
         jsonWriter.writeBooleanField("anonymousPullEnabled", this.anonymousPullEnabled);
+        jsonWriter.writeStringField("roleAssignmentMode",
+            this.roleAssignmentMode == null ? null : this.roleAssignmentMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -300,9 +357,15 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
                 } else if ("networkRuleBypassOptions".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.networkRuleBypassOptions
                         = NetworkRuleBypassOptions.fromString(reader.getString());
+                } else if ("networkRuleBypassAllowedForTasks".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.networkRuleBypassAllowedForTasks
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("anonymousPullEnabled".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.anonymousPullEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("roleAssignmentMode".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.roleAssignmentMode
+                        = RoleAssignmentMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

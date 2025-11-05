@@ -22,7 +22,7 @@ import java.util.Map;
 public final class VpnSitesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSitePut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VpnSitePut.json
      */
     /**
      * Sample code: VpnSiteCreate.

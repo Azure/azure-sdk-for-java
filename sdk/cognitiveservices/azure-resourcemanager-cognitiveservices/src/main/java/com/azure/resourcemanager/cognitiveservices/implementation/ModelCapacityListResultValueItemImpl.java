@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ModelCapacityListResultValueItemInner;
 import com.azure.resourcemanager.cognitiveservices.models.ModelCapacityListResultValueItem;
 import com.azure.resourcemanager.cognitiveservices.models.ModelSkuCapacityProperties;
@@ -37,6 +38,10 @@ public final class ModelCapacityListResultValueItemImpl implements ModelCapacity
 
     public ModelSkuCapacityProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ModelCapacityListResultValueItemInner innerModel() {

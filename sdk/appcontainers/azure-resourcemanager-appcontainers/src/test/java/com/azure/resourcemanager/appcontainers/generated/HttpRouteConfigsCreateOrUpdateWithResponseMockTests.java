@@ -28,7 +28,7 @@ public final class HttpRouteConfigsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningErrors\":[{\"timestamp\":\"2021-11-08T00:33:35Z\",\"message\":\"ahhhsaaxxsritr\"},{\"timestamp\":\"2021-04-11T15:20:30Z\",\"message\":\"aesyyefm\"},{\"timestamp\":\"2021-08-19T00:07:20Z\",\"message\":\"otii\"},{\"timestamp\":\"2021-07-14T11:01:53Z\",\"message\":\"asrvrmtist\"}],\"fqdn\":\"kjhorlxkpy\",\"customDomains\":[{\"name\":\"nnycntrqxxwtd\",\"bindingType\":\"Auto\",\"certificateId\":\"tsuhqhtoxtd\"},{\"name\":\"qavfxbqmzxs\",\"bindingType\":\"Auto\",\"certificateId\":\"inpaamihwbgh\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"bgchcgsfzhbjkiy\"},{\"containerApp\":\"qbjsdjpgxeysgw\"},{\"containerApp\":\"cfferznzc\"}],\"routes\":[{},{},{},{}],\"description\":\"veomkhfeqc\"},{\"targets\":[{\"containerApp\":\"lfpohimgckycj\"},{\"containerApp\":\"eebznbznxs\"},{\"containerApp\":\"loutnp\"},{\"containerApp\":\"mxooqohgpncdm\"}],\"routes\":[{},{},{},{}],\"description\":\"pfhsldqdza\"}]},\"id\":\"unye\",\"name\":\"dyzdsy\",\"type\":\"cikswhcamwu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningErrors\":[{\"timestamp\":\"2021-11-13T04:32:20Z\",\"message\":\"wixvtbouguxtndop\"}],\"fqdn\":\"ttbas\",\"customDomains\":[{\"name\":\"ap\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"bea\"},{\"name\":\"bkixvvlwyn\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"qvzfj\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"zfe\"},{\"containerApp\":\"zjljmphfk\"}],\"routes\":[{},{},{},{}],\"description\":\"lgjzmi\"}]},\"id\":\"ydoccnxshanzb\",\"name\":\"iadhbatec\",\"type\":\"atsdohzniucbdaom\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,41 +38,43 @@ public final class HttpRouteConfigsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HttpRouteConfig response = manager.httpRouteConfigs()
-            .define("p")
-            .withExistingManagedEnvironment("owewjskr", "eedddrftfquu")
+            .define("lqxov")
+            .withExistingManagedEnvironment("foxqwecrsn", "pcs")
             .withProperties(new HttpRouteConfigProperties().withCustomDomains(Arrays.asList(
-                new CustomDomain().withName("bqajejir")
+                new CustomDomain().withName("zkxitd").withBindingType(BindingType.AUTO).withCertificateId("svkolru"),
+                new CustomDomain().withName("jovmozsaye")
                     .withBindingType(BindingType.SNI_ENABLED)
-                    .withCertificateId("vkgpogplbjuvlnhx"),
-                new CustomDomain().withName("rnjhinaeges").withBindingType(BindingType.AUTO).withCertificateId("pqm"),
-                new CustomDomain().withName("moplukfykkfhsov")
-                    .withBindingType(BindingType.SNI_ENABLED)
-                    .withCertificateId("mjxmwqpdk")))
+                    .withCertificateId("wzlpzbtz")))
                 .withRules(Arrays.asList(
                     new HttpRouteRule()
-                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("zkqmx"),
-                            new HttpRouteTarget().withContainerApp("poriwbwggijtspzj")))
-                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute(), new HttpRoute()))
-                        .withDescription("ikwsbzrhdugq"),
-                    new HttpRouteRule()
-                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("rgzfrunjfhrjhi"),
-                            new HttpRouteTarget().withContainerApp("cbaus")))
-                        .withRoutes(Arrays.asList(new HttpRoute()))
-                        .withDescription("zkvihvtu"),
-                    new HttpRouteRule()
-                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("sqwzszoszjgzu"),
-                            new HttpRouteTarget().withContainerApp("kfnyskwwunqhc"),
-                            new HttpRouteTarget().withContainerApp("avoj"),
-                            new HttpRouteTarget().withContainerApp("slhip")))
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("ip"),
+                            new HttpRouteTarget().withContainerApp("sdyepfno"),
+                            new HttpRouteTarget().withContainerApp("mbezacfpztg")))
                         .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute()))
-                        .withDescription("bljp"))))
+                        .withDescription("qejg"),
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("kctgkp"),
+                            new HttpRouteTarget().withContainerApp("gkqzkcyzmffngdyf"),
+                            new HttpRouteTarget().withContainerApp("ixrhl"),
+                            new HttpRouteTarget().withContainerApp("qvhoej")))
+                        .withRoutes(Arrays.asList(new HttpRoute()))
+                        .withDescription("tgwrmkahpqha"),
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("tac"),
+                            new HttpRouteTarget().withContainerApp("hncogmipnml")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute(), new HttpRoute()))
+                        .withDescription("lbhik"),
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("grvgpomxp"),
+                            new HttpRouteTarget().withContainerApp("pdtsdfjyiesocwi")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
+                        .withDescription("utmp"))))
             .create();
 
-        Assertions.assertEquals("nnycntrqxxwtd", response.properties().customDomains().get(0).name());
-        Assertions.assertEquals(BindingType.AUTO, response.properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("tsuhqhtoxtd", response.properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("bgchcgsfzhbjkiy",
-            response.properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("veomkhfeqc", response.properties().rules().get(0).description());
+        Assertions.assertEquals("ap", response.properties().customDomains().get(0).name());
+        Assertions.assertEquals(BindingType.SNI_ENABLED, response.properties().customDomains().get(0).bindingType());
+        Assertions.assertEquals("bea", response.properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("zfe", response.properties().rules().get(0).targets().get(0).containerApp());
+        Assertions.assertEquals("lgjzmi", response.properties().rules().get(0).description());
     }
 }

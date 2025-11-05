@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.models.ProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 import com.azure.resourcemanager.netapp.models.Type;
 import java.io.IOException;
 import java.util.Map;
@@ -118,11 +118,11 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
+     * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

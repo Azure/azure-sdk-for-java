@@ -11,7 +11,7 @@ public final class ElasticCloudDeploymentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticCloudDeployment model = BinaryData.fromString(
-            "{\"name\":\"sezcxtb\",\"deploymentId\":\"gfycc\",\"azureSubscriptionId\":\"ewmdw\",\"elasticsearchRegion\":\"eiachboosflnr\",\"elasticsearchServiceUrl\":\"fqpte\",\"kibanaServiceUrl\":\"zzvypyqrimzinp\",\"kibanaSsoUrl\":\"wjdk\"}")
+            "{\"name\":\"ckwhds\",\"deploymentId\":\"fiyipjxsqwpgrj\",\"azureSubscriptionId\":\"norcjxvsnbyxqab\",\"elasticsearchRegion\":\"ocpcy\",\"elasticsearchServiceUrl\":\"urzafb\",\"kibanaServiceUrl\":\"j\",\"kibanaSsoUrl\":\"btoqcjmkljavbqid\"}")
             .toObject(ElasticCloudDeployment.class);
     }
 

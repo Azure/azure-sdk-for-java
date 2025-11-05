@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Metadata used to render different experiences for resources of the same type; e.g. WorkflowApp is a kind of
- * Microsoft.App/ContainerApps type. If supported, the resource provider must validate and persist this value.
+ * Metadata to represent the container app kind, representing if a container app is workflowapp or functionapp.
  */
 public final class Kind extends ExpandableStringEnum<Kind> {
     /**
      * Static value workflowapp for Kind.
      */
     public static final Kind WORKFLOWAPP = fromString("workflowapp");
+
+    /**
+     * Static value functionapp for Kind.
+     */
+    public static final Kind FUNCTIONAPP = fromString("functionapp");
 
     /**
      * Creates a new instance of Kind value.

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
+import com.azure.resourcemanager.containerregistry.models.RoleAssignmentMode;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
@@ -17,7 +18,30 @@ import java.util.Map;
 public final class RegistriesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2025-04-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/
+     * RegistryCreateAbac.json
+     */
+    /**
+     * Sample code: RegistryCreateAbac.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void registryCreateAbac(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .create("myResourceGroup", "myRegistry",
+                new RegistryInner().withLocation("westus")
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withRoleAssignmentMode(RoleAssignmentMode.ABAC_REPOSITORY_PERMISSIONS),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/
      * RegistryCreateZoneRedundant.json
      */
     /**
@@ -40,7 +64,7 @@ public final class RegistriesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2025-04-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/
      * RegistryCreate.json
      */
     /**

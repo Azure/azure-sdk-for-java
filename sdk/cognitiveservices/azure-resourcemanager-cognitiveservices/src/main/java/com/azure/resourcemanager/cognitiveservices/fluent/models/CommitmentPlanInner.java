@@ -21,11 +21,6 @@ import java.util.Map;
 @Fluent
 public final class CommitmentPlanInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource Etag.
      */
     private String etag;
@@ -56,6 +51,11 @@ public final class CommitmentPlanInner extends ProxyResource {
     private CommitmentPlanProperties properties;
 
     /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
      * The type of the resource.
      */
     private String type;
@@ -74,15 +74,6 @@ public final class CommitmentPlanInner extends ProxyResource {
      * Creates an instance of CommitmentPlanInner class.
      */
     public CommitmentPlanInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -195,6 +186,15 @@ public final class CommitmentPlanInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -274,8 +274,6 @@ public final class CommitmentPlanInner extends ProxyResource {
                     deserializedCommitmentPlanInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedCommitmentPlanInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedCommitmentPlanInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedCommitmentPlanInner.etag = reader.getString();
                 } else if ("kind".equals(fieldName)) {
@@ -289,6 +287,8 @@ public final class CommitmentPlanInner extends ProxyResource {
                     deserializedCommitmentPlanInner.location = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCommitmentPlanInner.properties = CommitmentPlanProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCommitmentPlanInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

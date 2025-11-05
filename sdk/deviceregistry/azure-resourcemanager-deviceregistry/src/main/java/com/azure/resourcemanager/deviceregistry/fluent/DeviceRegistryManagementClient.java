@@ -89,6 +89,20 @@ public interface DeviceRegistryManagementClient {
     NamespacesClient getNamespaces();
 
     /**
+     * Gets the CredentialsClient object to access its operations.
+     * 
+     * @return the CredentialsClient object.
+     */
+    CredentialsClient getCredentials();
+
+    /**
+     * Gets the PoliciesClient object to access its operations.
+     * 
+     * @return the PoliciesClient object.
+     */
+    PoliciesClient getPolicies();
+
+    /**
      * Gets the NamespaceAssetsClient object to access its operations.
      * 
      * @return the NamespaceAssetsClient object.

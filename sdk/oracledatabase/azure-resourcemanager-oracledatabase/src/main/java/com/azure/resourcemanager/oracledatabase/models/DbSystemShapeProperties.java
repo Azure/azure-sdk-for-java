@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * DbSystemShape resource model.
@@ -136,6 +137,11 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
      * The display name of the shape used for the DB system
      */
     private String displayName;
+
+    /*
+     * The shapeAttributes of the DB system shape..
+     */
+    private List<String> shapeAttributes;
 
     /**
      * Creates an instance of DbSystemShapeProperties class.
@@ -372,6 +378,15 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
     }
 
     /**
+     * Get the shapeAttributes property: The shapeAttributes of the DB system shape..
+     * 
+     * @return the shapeAttributes value.
+     */
+    public List<String> shapeAttributes() {
+        return this.shapeAttributes;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -401,6 +416,8 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
         jsonWriter.writeStringField("computeModel", this.computeModel == null ? null : this.computeModel.toString());
         jsonWriter.writeBooleanField("areServerTypesSupported", this.areServerTypesSupported);
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("shapeAttributes", this.shapeAttributes,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -477,6 +494,9 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("displayName".equals(fieldName)) {
                     deserializedDbSystemShapeProperties.displayName = reader.getString();
+                } else if ("shapeAttributes".equals(fieldName)) {
+                    List<String> shapeAttributes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDbSystemShapeProperties.shapeAttributes = shapeAttributes;
                 } else {
                     reader.skipChildren();
                 }

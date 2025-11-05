@@ -12,10 +12,10 @@ public final class DbIormConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbIormConfig model = BinaryData
-            .fromString("{\"dbName\":\"hhkxbp\",\"flashCacheLimit\":\"ymjhxxjyngudivkr\",\"share\":855265021}")
+            .fromString("{\"dbName\":\"havhqlkthumaqolb\",\"flashCacheLimit\":\"cdui\",\"share\":1108910411}")
             .toObject(DbIormConfig.class);
-        Assertions.assertEquals("hhkxbp", model.dbName());
-        Assertions.assertEquals("ymjhxxjyngudivkr", model.flashCacheLimit());
-        Assertions.assertEquals(855265021, model.share());
+        Assertions.assertEquals("havhqlkthumaqolb", model.dbName());
+        Assertions.assertEquals("cdui", model.flashCacheLimit());
+        Assertions.assertEquals(1108910411, model.share());
     }
 }

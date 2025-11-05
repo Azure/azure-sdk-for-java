@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The status of the replication.
+ * The mirror state property describes the current status of data replication for a resource. It provides insight into
+ * whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to be
+ * initialized.
  */
 public final class MirrorState extends ExpandableStringEnum<MirrorState> {
     /**

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appcontainers.models.HttpRouteConfigProperties;
 import java.io.IOException;
 
 /**
- * Advanced Ingress routing for path/header based routing for a Container App Environment.
+ * A set of host names and http request routing rules for a Container App Environment.
  */
 @Fluent
 public final class HttpRouteConfigInner extends ProxyResource {

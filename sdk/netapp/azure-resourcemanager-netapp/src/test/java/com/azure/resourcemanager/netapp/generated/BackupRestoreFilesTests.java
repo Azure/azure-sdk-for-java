@@ -13,22 +13,22 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"vqikfxcvhrfsphu\",\"grttikteusqczk\",\"yklxubyjaffmmfbl\"],\"restoreFilePath\":\"cuubgq\",\"destinationVolumeId\":\"brta\"}")
+            "{\"fileList\":[\"tcyohpfkyrk\",\"bdgiogsjk\",\"nwqjnoba\",\"yhddvia\"],\"restoreFilePath\":\"gfnmntfpmvmemfnc\",\"destinationVolumeId\":\"dwvvba\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("vqikfxcvhrfsphu", model.fileList().get(0));
-        Assertions.assertEquals("cuubgq", model.restoreFilePath());
-        Assertions.assertEquals("brta", model.destinationVolumeId());
+        Assertions.assertEquals("tcyohpfkyrk", model.fileList().get(0));
+        Assertions.assertEquals("gfnmntfpmvmemfnc", model.restoreFilePath());
+        Assertions.assertEquals("dwvvba", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles()
-            .withFileList(Arrays.asList("vqikfxcvhrfsphu", "grttikteusqczk", "yklxubyjaffmmfbl"))
-            .withRestoreFilePath("cuubgq")
-            .withDestinationVolumeId("brta");
+        BackupRestoreFiles model
+            = new BackupRestoreFiles().withFileList(Arrays.asList("tcyohpfkyrk", "bdgiogsjk", "nwqjnoba", "yhddvia"))
+                .withRestoreFilePath("gfnmntfpmvmemfnc")
+                .withDestinationVolumeId("dwvvba");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("vqikfxcvhrfsphu", model.fileList().get(0));
-        Assertions.assertEquals("cuubgq", model.restoreFilePath());
-        Assertions.assertEquals("brta", model.destinationVolumeId());
+        Assertions.assertEquals("tcyohpfkyrk", model.fileList().get(0));
+        Assertions.assertEquals("gfnmntfpmvmemfnc", model.restoreFilePath());
+        Assertions.assertEquals("dwvvba", model.destinationVolumeId());
     }
 }

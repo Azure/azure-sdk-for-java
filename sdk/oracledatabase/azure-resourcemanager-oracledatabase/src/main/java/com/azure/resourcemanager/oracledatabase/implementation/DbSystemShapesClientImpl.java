@@ -87,7 +87,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
         Mono<Response<DbSystemShapeListResult>> listByLocation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @QueryParam("zone") String zone,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("shapeAttribute") String shapeAttribute, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/dbSystemShapes")
@@ -96,7 +96,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
         Response<DbSystemShapeListResult> listByLocationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @QueryParam("zone") String zone,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("shapeAttribute") String shapeAttribute, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -187,6 +187,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * 
      * @param location The name of the Azure region.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,11 +195,12 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DbSystemShapeInner>> listByLocationSinglePageAsync(String location, String zone) {
+    private Mono<PagedResponse<DbSystemShapeInner>> listByLocationSinglePageAsync(String location, String zone,
+        String shapeAttribute) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, zone, accept, context))
+                this.client.getSubscriptionId(), location, zone, shapeAttribute, accept, context))
             .<PagedResponse<DbSystemShapeInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -209,14 +211,15 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * 
      * @param location The name of the Azure region.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DbSystemShape list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DbSystemShapeInner> listByLocationAsync(String location, String zone) {
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, zone),
+    private PagedFlux<DbSystemShapeInner> listByLocationAsync(String location, String zone, String shapeAttribute) {
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, zone, shapeAttribute),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -232,7 +235,8 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DbSystemShapeInner> listByLocationAsync(String location) {
         final String zone = null;
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, zone),
+        final String shapeAttribute = null;
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(location, zone, shapeAttribute),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -241,16 +245,19 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * 
      * @param location The name of the Azure region.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DbSystemShape list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<DbSystemShapeInner> listByLocationSinglePage(String location, String zone) {
+    private PagedResponse<DbSystemShapeInner> listByLocationSinglePage(String location, String zone,
+        String shapeAttribute) {
         final String accept = "application/json";
-        Response<DbSystemShapeListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, zone, accept, Context.NONE);
+        Response<DbSystemShapeListResult> res
+            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, zone, shapeAttribute, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -260,6 +267,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * 
      * @param location The name of the Azure region.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -267,10 +275,12 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * @return the response of a DbSystemShape list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<DbSystemShapeInner> listByLocationSinglePage(String location, String zone, Context context) {
+    private PagedResponse<DbSystemShapeInner> listByLocationSinglePage(String location, String zone,
+        String shapeAttribute, Context context) {
         final String accept = "application/json";
-        Response<DbSystemShapeListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, zone, accept, context);
+        Response<DbSystemShapeListResult> res
+            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, zone, shapeAttribute, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -287,7 +297,8 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbSystemShapeInner> listByLocation(String location) {
         final String zone = null;
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, zone),
+        final String shapeAttribute = null;
+        return new PagedIterable<>(() -> listByLocationSinglePage(location, zone, shapeAttribute),
             nextLink -> listByLocationNextSinglePage(nextLink));
     }
 
@@ -296,6 +307,7 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * 
      * @param location The name of the Azure region.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -303,8 +315,9 @@ public final class DbSystemShapesClientImpl implements DbSystemShapesClient {
      * @return the response of a DbSystemShape list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DbSystemShapeInner> listByLocation(String location, String zone, Context context) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, zone, context),
+    public PagedIterable<DbSystemShapeInner> listByLocation(String location, String zone, String shapeAttribute,
+        Context context) {
+        return new PagedIterable<>(() -> listByLocationSinglePage(location, zone, shapeAttribute, context),
             nextLink -> listByLocationNextSinglePage(nextLink, context));
     }
 

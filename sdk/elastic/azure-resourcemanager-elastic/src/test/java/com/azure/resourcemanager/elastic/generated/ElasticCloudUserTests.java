@@ -10,8 +10,9 @@ import com.azure.resourcemanager.elastic.models.ElasticCloudUser;
 public final class ElasticCloudUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticCloudUser model = BinaryData.fromString(
-            "{\"emailAddress\":\"dkfthwxmnt\",\"id\":\"waopvkmijcmmxd\",\"elasticCloudSsoDefaultUrl\":\"fufsrpymzi\"}")
+        ElasticCloudUser model = BinaryData
+            .fromString(
+                "{\"emailAddress\":\"ypyqrimzinp\",\"id\":\"wjdk\",\"elasticCloudSsoDefaultUrl\":\"soodqxhcrmnoh\"}")
             .toObject(ElasticCloudUser.class);
     }
 

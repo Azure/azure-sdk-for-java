@@ -11,7 +11,7 @@ public final class HttpRouteProvisioningErrorsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpRouteProvisioningErrors model
-            = BinaryData.fromString("{\"timestamp\":\"2021-01-02T06:20:20Z\",\"message\":\"gon\"}")
+            = BinaryData.fromString("{\"timestamp\":\"2021-02-27T03:40:46Z\",\"message\":\"baxk\"}")
                 .toObject(HttpRouteProvisioningErrors.class);
     }
 

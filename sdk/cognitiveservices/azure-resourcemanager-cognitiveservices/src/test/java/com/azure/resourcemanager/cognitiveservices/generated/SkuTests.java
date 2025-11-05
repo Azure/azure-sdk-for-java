@@ -13,27 +13,27 @@ public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Sku model = BinaryData.fromString(
-            "{\"name\":\"hmwhfpmrqo\",\"tier\":\"Basic\",\"size\":\"kknryrtihf\",\"family\":\"ijbpzvgnwzsymgl\",\"capacity\":2137761200}")
+            "{\"name\":\"eitjz\",\"tier\":\"Standard\",\"size\":\"sarhmofc\",\"family\":\"smy\",\"capacity\":753612767}")
             .toObject(Sku.class);
-        Assertions.assertEquals("hmwhfpmrqo", model.name());
-        Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals("kknryrtihf", model.size());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.family());
-        Assertions.assertEquals(2137761200, model.capacity());
+        Assertions.assertEquals("eitjz", model.name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.tier());
+        Assertions.assertEquals("sarhmofc", model.size());
+        Assertions.assertEquals("smy", model.family());
+        Assertions.assertEquals(753612767, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("hmwhfpmrqo")
-            .withTier(SkuTier.BASIC)
-            .withSize("kknryrtihf")
-            .withFamily("ijbpzvgnwzsymgl")
-            .withCapacity(2137761200);
+        Sku model = new Sku().withName("eitjz")
+            .withTier(SkuTier.STANDARD)
+            .withSize("sarhmofc")
+            .withFamily("smy")
+            .withCapacity(753612767);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("hmwhfpmrqo", model.name());
-        Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals("kknryrtihf", model.size());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.family());
-        Assertions.assertEquals(2137761200, model.capacity());
+        Assertions.assertEquals("eitjz", model.name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.tier());
+        Assertions.assertEquals("sarhmofc", model.size());
+        Assertions.assertEquals("smy", model.family());
+        Assertions.assertEquals(753612767, model.capacity());
     }
 }

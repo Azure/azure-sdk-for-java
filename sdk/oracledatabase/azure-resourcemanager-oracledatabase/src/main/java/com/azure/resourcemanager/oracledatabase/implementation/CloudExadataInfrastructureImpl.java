@@ -12,6 +12,7 @@ import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructur
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureProperties;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureUpdate;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureUpdateProperties;
+import com.azure.resourcemanager.oracledatabase.models.ConfigureExascaleCloudExadataInfrastructureDetails;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +169,17 @@ public final class CloudExadataInfrastructureImpl
     public CloudExadataInfrastructure addStorageCapacity(Context context) {
         return serviceManager.cloudExadataInfrastructures()
             .addStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, context);
+    }
+
+    public CloudExadataInfrastructure configureExascale(ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        return serviceManager.cloudExadataInfrastructures()
+            .configureExascale(resourceGroupName, cloudexadatainfrastructurename, body);
+    }
+
+    public CloudExadataInfrastructure configureExascale(ConfigureExascaleCloudExadataInfrastructureDetails body,
+        Context context) {
+        return serviceManager.cloudExadataInfrastructures()
+            .configureExascale(resourceGroupName, cloudexadatainfrastructurename, body, context);
     }
 
     public CloudExadataInfrastructureImpl withRegion(Region location) {

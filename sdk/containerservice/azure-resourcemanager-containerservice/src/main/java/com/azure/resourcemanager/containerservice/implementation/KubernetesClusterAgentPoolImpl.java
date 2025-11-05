@@ -324,6 +324,11 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withVirtualMachinesProfile(innerModel().virtualMachinesProfile());
         agentPoolInner.withVirtualMachineNodesStatus(innerModel().virtualMachineNodesStatus());
         agentPoolInner.withStatus(innerModel().status());
+
+        // available only in preview api-version
+        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());
+        agentPoolInner.withUpgradeStrategy(innerModel().upgradeStrategy());
+
         return agentPoolInner;
     }
 

@@ -20,119 +20,79 @@ public final class HttpRouteConfigCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpRouteConfigCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"provisioningErrors\":[{\"timestamp\":\"2021-06-29T16:28:10Z\",\"message\":\"zzkivyhjr\"}],\"fqdn\":\"izjixlq\",\"customDomains\":[{\"name\":\"fkwa\",\"bindingType\":\"Auto\",\"certificateId\":\"ron\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"nlqxsjxtele\"}],\"routes\":[{},{}],\"description\":\"qbozoolzqoc\"},{\"targets\":[{\"containerApp\":\"uzlbcnn\"},{\"containerApp\":\"t\"}],\"routes\":[{},{}],\"description\":\"wqy\"},{\"targets\":[{\"containerApp\":\"hd\"},{\"containerApp\":\"z\"},{\"containerApp\":\"yckzex\"}],\"routes\":[{},{}],\"description\":\"ckywymxga\"}]},\"id\":\"jkdtfoh\",\"name\":\"aogzvkiw\",\"type\":\"siwdyjqur\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"provisioningErrors\":[{\"timestamp\":\"2020-12-23T02:01:54Z\",\"message\":\"kcsueho\"},{\"timestamp\":\"2021-06-18T15:14:05Z\",\"message\":\"cbcbgydlqidy\"},{\"timestamp\":\"2021-11-30T08:44:28Z\",\"message\":\"ptyrilkfbnrqqxv\"}],\"fqdn\":\"pbnfnqtx\",\"customDomains\":[{\"name\":\"m\",\"bindingType\":\"Auto\",\"certificateId\":\"bnfddep\"},{\"name\":\"dwq\",\"bindingType\":\"Auto\",\"certificateId\":\"zygleexahvm\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"rcarycsjj\"},{\"containerApp\":\"yvoaqajuvehzp\"}],\"routes\":[{}],\"description\":\"rr\"},{\"targets\":[{\"containerApp\":\"pfulube\"}],\"routes\":[{},{}],\"description\":\"pmfbfununmpzkr\"}]},\"id\":\"yifkdschlzvf\",\"name\":\"ctnkjjwgcwnph\",\"type\":\"kgf\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"provisioningErrors\":[{\"timestamp\":\"2021-09-23T00:19:05Z\",\"message\":\"pjscdfpdqwtygev\"},{\"timestamp\":\"2021-05-16T09:34:56Z\",\"message\":\"eharxifv\"}],\"fqdn\":\"rxtmbpjptnvw\",\"customDomains\":[{\"name\":\"sidqpxlbtpakft\",\"bindingType\":\"Disabled\",\"certificateId\":\"wmykyutry\"},{\"name\":\"dwmf\",\"bindingType\":\"Auto\",\"certificateId\":\"cvjqdv\"},{\"name\":\"wkqp\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"efgnaavuagnt\"},{\"name\":\"taoutnpdct\",\"bindingType\":\"Disabled\",\"certificateId\":\"fefyihduyeuyld\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"bkcgsuthhllnm\"},{\"containerApp\":\"y\"},{\"containerApp\":\"efxexlf\"},{\"containerApp\":\"i\"}],\"routes\":[{},{}],\"description\":\"jrr\"},{\"targets\":[{\"containerApp\":\"dskjhhxdlaj\"},{\"containerApp\":\"oxcxscvslx\"},{\"containerApp\":\"hu\"},{\"containerApp\":\"vkrmukmyjmkx\"}],\"routes\":[{},{}],\"description\":\"slojfkqidnqt\"},{\"targets\":[{\"containerApp\":\"jhqxc\"},{\"containerApp\":\"qhtkbt\"},{\"containerApp\":\"qlrn\"}],\"routes\":[{}],\"description\":\"biipsnawwlqkznx\"}]},\"id\":\"llxricc\",\"name\":\"kwmuqqo\",\"type\":\"jxeiy\"},{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningErrors\":[{\"timestamp\":\"2021-03-11T06:28:53Z\",\"message\":\"xhdctrceqnk\"},{\"timestamp\":\"2021-01-13T23:52:33Z\",\"message\":\"obehdmljz\"},{\"timestamp\":\"2021-03-30T19:42:04Z\",\"message\":\"me\"}],\"fqdn\":\"pbibn\",\"customDomains\":[{\"name\":\"hep\",\"bindingType\":\"Auto\",\"certificateId\":\"leqirccjclykcgxv\"},{\"name\":\"pjlvczuoda\",\"bindingType\":\"Auto\",\"certificateId\":\"ettepdjxqe\"},{\"name\":\"koynuiylpckae\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"vesk\"},{\"name\":\"xegqphr\",\"bindingType\":\"Disabled\",\"certificateId\":\"hctmjtsgh\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"pzarpzeqacdld\"}],\"routes\":[{},{},{},{}],\"description\":\"ypefcpczshnuqnda\"}]},\"id\":\"upfkhuytuszxhmtv\",\"name\":\"vegwqiukvz\",\"type\":\"ydwtthao\"}],\"nextLink\":\"ksk\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"provisioningErrors\":[{\"timestamp\":\"2021-06-12T04:55:31Z\",\"message\":\"ubcpzgpxti\"}],\"fqdn\":\"j\",\"customDomains\":[{\"name\":\"dibgqjxgpnrhgov\",\"bindingType\":\"Disabled\",\"certificateId\":\"kqmhhaowjr\"},{\"name\":\"zvuporqzdfuydz\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"xcnqmxqpswokmvkh\"},{\"name\":\"ggdhbemzqkzszuw\",\"bindingType\":\"Auto\",\"certificateId\":\"lxxhljfp\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"mnzhrgmqg\"},{\"containerApp\":\"sxvpqcbfrmbodths\"}],\"routes\":[{},{},{}],\"description\":\"riibakclacj\"},{\"targets\":[{\"containerApp\":\"xousxauzl\"}],\"routes\":[{},{}],\"description\":\"mwohqfzizvuxmmkj\"}]},\"id\":\"thnwpzte\",\"name\":\"ovmribiattg\",\"type\":\"lu\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningErrors\":[{\"timestamp\":\"2021-06-30T19:06:44Z\",\"message\":\"hnykz\"}],\"fqdn\":\"gswvxwlmzqwm\",\"customDomains\":[{\"name\":\"njmxmcuqudtcvcl\",\"bindingType\":\"Disabled\",\"certificateId\":\"dkvgfabuiyjibuzp\"},{\"name\":\"dugneiknp\",\"bindingType\":\"Auto\",\"certificateId\":\"jiuqhibtozi\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"d\"},{\"containerApp\":\"urrxxgewpktv\"},{\"containerApp\":\"ylkmqp\"}],\"routes\":[{},{}],\"description\":\"lfbcgwgcl\"},{\"targets\":[{\"containerApp\":\"ebqinjipnw\"},{\"containerApp\":\"fujqlafcba\"},{\"containerApp\":\"hpzpo\"}],\"routes\":[{},{},{},{}],\"description\":\"jwpfilkm\"},{\"targets\":[{\"containerApp\":\"olvdnd\"},{\"containerApp\":\"iauogphuartv\"}],\"routes\":[{},{},{},{}],\"description\":\"yefchnm\"},{\"targets\":[{\"containerApp\":\"mnxhkxjqirwrweo\"},{\"containerApp\":\"xffi\"},{\"containerApp\":\"hx\"}],\"routes\":[{},{},{}],\"description\":\"ewmozqvbu\"}]},\"id\":\"ma\",\"name\":\"hsycxhxzgaz\",\"type\":\"taboidvmf\"}],\"nextLink\":\"ppu\"}")
             .toObject(HttpRouteConfigCollection.class);
-        Assertions.assertEquals("fkwa", model.value().get(0).properties().customDomains().get(0).name());
-        Assertions.assertEquals(BindingType.AUTO,
+        Assertions.assertEquals("dibgqjxgpnrhgov", model.value().get(0).properties().customDomains().get(0).name());
+        Assertions.assertEquals(BindingType.DISABLED,
             model.value().get(0).properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("ron", model.value().get(0).properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("nlqxsjxtele",
+        Assertions.assertEquals("kqmhhaowjr", model.value().get(0).properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("mnzhrgmqg",
             model.value().get(0).properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("qbozoolzqoc", model.value().get(0).properties().rules().get(0).description());
+        Assertions.assertEquals("riibakclacj", model.value().get(0).properties().rules().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRouteConfigCollection model
-            = new HttpRouteConfigCollection().withValue(Arrays.asList(
-                new HttpRouteConfigInner()
-                    .withProperties(new HttpRouteConfigProperties().withCustomDomains(Arrays.asList(
-                        new CustomDomain().withName("fkwa").withBindingType(BindingType.AUTO).withCertificateId("ron")))
-                        .withRules(
-                            Arrays
-                                .asList(
-                                    new HttpRouteRule()
-                                        .withTargets(
-                                            Arrays.asList(new HttpRouteTarget().withContainerApp("nlqxsjxtele")))
-                                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
-                                        .withDescription("qbozoolzqoc"),
-                                    new HttpRouteRule()
-                                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("uzlbcnn"),
-                                            new HttpRouteTarget().withContainerApp("t")))
-                                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
-                                        .withDescription("wqy"),
-                                    new HttpRouteRule()
-                                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("hd"),
-                                            new HttpRouteTarget().withContainerApp("z"),
-                                            new HttpRouteTarget().withContainerApp("yckzex")))
-                                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
-                                        .withDescription("ckywymxga")))),
-                new HttpRouteConfigInner().withProperties(new HttpRouteConfigProperties()
-                    .withCustomDomains(Arrays.asList(
-                        new CustomDomain().withName("m").withBindingType(BindingType.AUTO).withCertificateId("bnfddep"),
-                        new CustomDomain().withName("dwq")
-                            .withBindingType(BindingType.AUTO)
-                            .withCertificateId("zygleexahvm")))
-                    .withRules(Arrays.asList(
-                        new HttpRouteRule()
-                            .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("rcarycsjj"),
-                                new HttpRouteTarget().withContainerApp("yvoaqajuvehzp")))
-                            .withRoutes(Arrays.asList(new HttpRoute()))
-                            .withDescription("rr"),
-                        new HttpRouteRule()
-                            .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("pfulube")))
-                            .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
-                            .withDescription("pmfbfununmpzkr")))),
-                new HttpRouteConfigInner().withProperties(new HttpRouteConfigProperties()
-                    .withCustomDomains(Arrays.asList(new CustomDomain()
-                        .withName("sidqpxlbtpakft")
+        HttpRouteConfigCollection model = new HttpRouteConfigCollection().withValue(Arrays.asList(
+            new HttpRouteConfigInner().withProperties(new HttpRouteConfigProperties()
+                .withCustomDomains(Arrays.asList(
+                    new CustomDomain().withName("dibgqjxgpnrhgov")
                         .withBindingType(BindingType.DISABLED)
-                        .withCertificateId("wmykyutry"),
-                        new CustomDomain().withName("dwmf")
-                            .withBindingType(BindingType.AUTO)
-                            .withCertificateId("cvjqdv"),
-                        new CustomDomain().withName("wkqp")
-                            .withBindingType(BindingType.SNI_ENABLED)
-                            .withCertificateId("efgnaavuagnt"),
-                        new CustomDomain().withName("taoutnpdct")
-                            .withBindingType(BindingType.DISABLED)
-                            .withCertificateId("fefyihduyeuyld")))
-                    .withRules(Arrays.asList(
-                        new HttpRouteRule()
-                            .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("bkcgsuthhllnm"),
-                                new HttpRouteTarget().withContainerApp("y"),
-                                new HttpRouteTarget().withContainerApp("efxexlf"),
-                                new HttpRouteTarget().withContainerApp("i")))
-                            .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
-                            .withDescription("jrr"),
-                        new HttpRouteRule()
-                            .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("dskjhhxdlaj"),
-                                new HttpRouteTarget().withContainerApp("oxcxscvslx"),
-                                new HttpRouteTarget().withContainerApp("hu"),
-                                new HttpRouteTarget().withContainerApp("vkrmukmyjmkx")))
-                            .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
-                            .withDescription("slojfkqidnqt"),
-                        new HttpRouteRule()
-                            .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("jhqxc"),
-                                new HttpRouteTarget().withContainerApp("qhtkbt"),
-                                new HttpRouteTarget().withContainerApp("qlrn")))
-                            .withRoutes(Arrays.asList(new HttpRoute()))
-                            .withDescription("biipsnawwlqkznx")))),
-                new HttpRouteConfigInner().withProperties(new HttpRouteConfigProperties()
-                    .withCustomDomains(Arrays.asList(
-                        new CustomDomain().withName("hep")
-                            .withBindingType(BindingType.AUTO)
-                            .withCertificateId("leqirccjclykcgxv"),
-                        new CustomDomain().withName("pjlvczuoda")
-                            .withBindingType(BindingType.AUTO)
-                            .withCertificateId("ettepdjxqe"),
-                        new CustomDomain().withName("koynuiylpckae")
-                            .withBindingType(BindingType.SNI_ENABLED)
-                            .withCertificateId("vesk"),
-                        new CustomDomain().withName("xegqphr")
-                            .withBindingType(BindingType.DISABLED)
-                            .withCertificateId("hctmjtsgh")))
-                    .withRules(Arrays.asList(new HttpRouteRule()
-                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("pzarpzeqacdld")))
+                        .withCertificateId("kqmhhaowjr"),
+                    new CustomDomain().withName("zvuporqzdfuydz")
+                        .withBindingType(BindingType.SNI_ENABLED)
+                        .withCertificateId("xcnqmxqpswokmvkh"),
+                    new CustomDomain().withName("ggdhbemzqkzszuw")
+                        .withBindingType(BindingType.AUTO)
+                        .withCertificateId("lxxhljfp")))
+                .withRules(Arrays.asList(
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("mnzhrgmqg"),
+                            new HttpRouteTarget().withContainerApp("sxvpqcbfrmbodths")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute()))
+                        .withDescription("riibakclacj"),
+                    new HttpRouteRule().withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("xousxauzl")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
+                        .withDescription("mwohqfzizvuxmmkj")))),
+            new HttpRouteConfigInner().withProperties(new HttpRouteConfigProperties()
+                .withCustomDomains(Arrays.asList(
+                    new CustomDomain().withName("njmxmcuqudtcvcl")
+                        .withBindingType(BindingType.DISABLED)
+                        .withCertificateId("dkvgfabuiyjibuzp"),
+                    new CustomDomain().withName("dugneiknp")
+                        .withBindingType(BindingType.AUTO)
+                        .withCertificateId("jiuqhibtozi")))
+                .withRules(Arrays.asList(
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("d"),
+                            new HttpRouteTarget().withContainerApp("urrxxgewpktv"),
+                            new HttpRouteTarget().withContainerApp("ylkmqp")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute()))
+                        .withDescription("lfbcgwgcl"),
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("ebqinjipnw"),
+                            new HttpRouteTarget().withContainerApp("fujqlafcba"),
+                            new HttpRouteTarget().withContainerApp("hpzpo")))
                         .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute(), new HttpRoute()))
-                        .withDescription("ypefcpczshnuqnda"))))));
+                        .withDescription("jwpfilkm"),
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("olvdnd"),
+                            new HttpRouteTarget().withContainerApp("iauogphuartv")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute(), new HttpRoute()))
+                        .withDescription("yefchnm"),
+                    new HttpRouteRule()
+                        .withTargets(Arrays.asList(new HttpRouteTarget().withContainerApp("mnxhkxjqirwrweo"),
+                            new HttpRouteTarget().withContainerApp("xffi"),
+                            new HttpRouteTarget().withContainerApp("hx")))
+                        .withRoutes(Arrays.asList(new HttpRoute(), new HttpRoute(), new HttpRoute()))
+                        .withDescription("ewmozqvbu"))))));
         model = BinaryData.fromObject(model).toObject(HttpRouteConfigCollection.class);
-        Assertions.assertEquals("fkwa", model.value().get(0).properties().customDomains().get(0).name());
-        Assertions.assertEquals(BindingType.AUTO,
+        Assertions.assertEquals("dibgqjxgpnrhgov", model.value().get(0).properties().customDomains().get(0).name());
+        Assertions.assertEquals(BindingType.DISABLED,
             model.value().get(0).properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("ron", model.value().get(0).properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("nlqxsjxtele",
+        Assertions.assertEquals("kqmhhaowjr", model.value().get(0).properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("mnzhrgmqg",
             model.value().get(0).properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("qbozoolzqoc", model.value().get(0).properties().rules().get(0).description());
+        Assertions.assertEquals("riibakclacj", model.value().get(0).properties().rules().get(0).description());
     }
 }

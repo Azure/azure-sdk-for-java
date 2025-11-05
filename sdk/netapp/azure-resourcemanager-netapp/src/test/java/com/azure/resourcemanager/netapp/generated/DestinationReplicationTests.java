@@ -13,24 +13,24 @@ public final class DestinationReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DestinationReplication model = BinaryData.fromString(
-            "{\"resourceId\":\"rbqtkoie\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"tgqr\",\"zone\":\"tmuwlauwzi\"}")
+            "{\"resourceId\":\"fovasr\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"bhsqfsubcgjbirxb\",\"zone\":\"bsrfbj\"}")
             .toObject(DestinationReplication.class);
-        Assertions.assertEquals("rbqtkoie", model.resourceId());
+        Assertions.assertEquals("fovasr", model.resourceId());
         Assertions.assertEquals(ReplicationType.CROSS_REGION_REPLICATION, model.replicationType());
-        Assertions.assertEquals("tgqr", model.region());
-        Assertions.assertEquals("tmuwlauwzi", model.zone());
+        Assertions.assertEquals("bhsqfsubcgjbirxb", model.region());
+        Assertions.assertEquals("bsrfbj", model.zone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DestinationReplication model = new DestinationReplication().withResourceId("rbqtkoie")
+        DestinationReplication model = new DestinationReplication().withResourceId("fovasr")
             .withReplicationType(ReplicationType.CROSS_REGION_REPLICATION)
-            .withRegion("tgqr")
-            .withZone("tmuwlauwzi");
+            .withRegion("bhsqfsubcgjbirxb")
+            .withZone("bsrfbj");
         model = BinaryData.fromObject(model).toObject(DestinationReplication.class);
-        Assertions.assertEquals("rbqtkoie", model.resourceId());
+        Assertions.assertEquals("fovasr", model.resourceId());
         Assertions.assertEquals(ReplicationType.CROSS_REGION_REPLICATION, model.replicationType());
-        Assertions.assertEquals("tgqr", model.region());
-        Assertions.assertEquals("tmuwlauwzi", model.zone());
+        Assertions.assertEquals("bhsqfsubcgjbirxb", model.region());
+        Assertions.assertEquals("bsrfbj", model.zone());
     }
 }

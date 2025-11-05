@@ -1,12 +1,26 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
+## 12.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.31.0 (2025-10-21)
+
+### Features Added
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
 
 ## 12.30.3 (2025-09-25)
 
@@ -152,10 +166,10 @@
 
 ### Breaking Changes
 - When creating a `EncryptedBlobClient` via EncryptedBlobClientBuilder, the blob name will be stored exactly as passed 
-  in and will not be URL-encoded. For example, if blob name is "test%25test" and is created by calling
-  `EncryptedBlobClientBuilder.blobName("test%25test")` along with other required parameters, 
-  `EncryptedBlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
-  “https://account.blob.core.windows.net/container/test%25%25test”.
+  in and will not be URL-encoded. For example, if blob name is "directory/blob.txt" and is created by calling
+  `EncryptedBlobClientBuilder.blobName("directory/blob.txt")` along with other required parameters, 
+  `EncryptedBlobClient.getBlobName()` will return "directory/blob.txt" and the blob's url will result in 
+  “https://account.blob.core.windows.net/container/directory%2Fblob.txt”.
 
 ### Other Changes
 

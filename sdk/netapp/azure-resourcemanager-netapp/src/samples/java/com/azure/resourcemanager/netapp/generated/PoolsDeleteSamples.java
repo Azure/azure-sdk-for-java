@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class PoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Delete.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Pools_Delete.json
      */
     /**
      * Sample code: Pools_Delete.

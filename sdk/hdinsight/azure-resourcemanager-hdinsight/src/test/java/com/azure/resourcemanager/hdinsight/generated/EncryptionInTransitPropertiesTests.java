@@ -13,7 +13,7 @@ public final class EncryptionInTransitPropertiesTests {
     public void testDeserialize() throws Exception {
         EncryptionInTransitProperties model = BinaryData.fromString("{\"isEncryptionInTransitEnabled\":false}")
             .toObject(EncryptionInTransitProperties.class);
-        Assertions.assertEquals(false, model.isEncryptionInTransitEnabled());
+        Assertions.assertFalse(model.isEncryptionInTransitEnabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -21,6 +21,6 @@ public final class EncryptionInTransitPropertiesTests {
         EncryptionInTransitProperties model
             = new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(false);
         model = BinaryData.fromObject(model).toObject(EncryptionInTransitProperties.class);
-        Assertions.assertEquals(false, model.isEncryptionInTransitEnabled());
+        Assertions.assertFalse(model.isEncryptionInTransitEnabled());
     }
 }

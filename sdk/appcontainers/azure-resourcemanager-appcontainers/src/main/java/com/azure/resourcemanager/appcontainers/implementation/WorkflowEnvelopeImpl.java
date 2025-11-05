@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner;
 import com.azure.resourcemanager.appcontainers.models.WorkflowEnvelope;
 import com.azure.resourcemanager.appcontainers.models.WorkflowEnvelopeProperties;
+import com.azure.resourcemanager.appcontainers.models.WorkflowKind;
 
 public final class WorkflowEnvelopeImpl implements WorkflowEnvelope {
     private WorkflowEnvelopeInner innerObject;
@@ -31,16 +33,16 @@ public final class WorkflowEnvelopeImpl implements WorkflowEnvelope {
         return this.innerModel().type();
     }
 
-    public String kind() {
+    public WorkflowKind kind() {
         return this.innerModel().kind();
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public WorkflowEnvelopeProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public WorkflowEnvelopeInner innerModel() {

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
 public final class PoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.
@@ -26,9 +26,8 @@ public final class PoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Update_CustomThroughput.
-     * json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/
+     * Pools_Update_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Update_CustomThroughput.

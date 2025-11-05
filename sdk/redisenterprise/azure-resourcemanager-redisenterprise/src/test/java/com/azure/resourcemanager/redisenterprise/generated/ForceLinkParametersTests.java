@@ -15,19 +15,19 @@ public final class ForceLinkParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForceLinkParameters model = BinaryData.fromString(
-            "{\"geoReplication\":{\"groupNickname\":\"fhyhltrpmopjmcma\",\"linkedDatabases\":[{\"id\":\"thfuiuaodsfcpkvx\",\"state\":\"Linked\"}]}}")
+            "{\"geoReplication\":{\"groupNickname\":\"t\",\"linkedDatabases\":[{\"id\":\"ulexxbczwtr\",\"state\":\"UnlinkFailed\"}]}}")
             .toObject(ForceLinkParameters.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.geoReplication().groupNickname());
-        Assertions.assertEquals("thfuiuaodsfcpkvx", model.geoReplication().linkedDatabases().get(0).id());
+        Assertions.assertEquals("t", model.geoReplication().groupNickname());
+        Assertions.assertEquals("ulexxbczwtr", model.geoReplication().linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ForceLinkParameters model = new ForceLinkParameters()
-            .withGeoReplication(new ForceLinkParametersGeoReplication().withGroupNickname("fhyhltrpmopjmcma")
-                .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("thfuiuaodsfcpkvx"))));
+            .withGeoReplication(new ForceLinkParametersGeoReplication().withGroupNickname("t")
+                .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("ulexxbczwtr"))));
         model = BinaryData.fromObject(model).toObject(ForceLinkParameters.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.geoReplication().groupNickname());
-        Assertions.assertEquals("thfuiuaodsfcpkvx", model.geoReplication().linkedDatabases().get(0).id());
+        Assertions.assertEquals("t", model.geoReplication().groupNickname());
+        Assertions.assertEquals("ulexxbczwtr", model.geoReplication().linkedDatabases().get(0).id());
     }
 }

@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupVaultPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupVaultPatch model = BinaryData.fromString(
-            "{\"tags\":{\"ojyqdhcuplcplcw\":\"pe\",\"nowc\":\"hihihlhzdsqtzbsr\",\"oteyowc\":\"hfgmvecactxm\",\"mpjw\":\"uqovekqvgqouwif\"}}")
-            .toObject(BackupVaultPatch.class);
-        Assertions.assertEquals("pe", model.tags().get("ojyqdhcuplcplcw"));
+        BackupVaultPatch model
+            = BinaryData.fromString("{\"tags\":{\"j\":\"wbcihxuuwh\",\"akkud\":\"xccybvpa\",\"wjplma\":\"px\"}}")
+                .toObject(BackupVaultPatch.class);
+        Assertions.assertEquals("wbcihxuuwh", model.tags().get("j"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultPatch model = new BackupVaultPatch().withTags(mapOf("ojyqdhcuplcplcw", "pe", "nowc",
-            "hihihlhzdsqtzbsr", "oteyowc", "hfgmvecactxm", "mpjw", "uqovekqvgqouwif"));
+        BackupVaultPatch model
+            = new BackupVaultPatch().withTags(mapOf("j", "wbcihxuuwh", "akkud", "xccybvpa", "wjplma", "px"));
         model = BinaryData.fromObject(model).toObject(BackupVaultPatch.class);
-        Assertions.assertEquals("pe", model.tags().get("ojyqdhcuplcplcw"));
+        Assertions.assertEquals("wbcihxuuwh", model.tags().get("j"));
     }
 
     // Use "Map.of" if available

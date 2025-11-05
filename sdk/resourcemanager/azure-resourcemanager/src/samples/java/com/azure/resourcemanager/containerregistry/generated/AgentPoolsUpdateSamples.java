@@ -12,8 +12,8 @@ import com.azure.resourcemanager.containerregistry.models.AgentPoolUpdateParamet
 public final class AgentPoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * AgentPoolsUpdate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/AgentPoolsUpdate.json
      */
     /**
      * Sample code: AgentPools_Update.

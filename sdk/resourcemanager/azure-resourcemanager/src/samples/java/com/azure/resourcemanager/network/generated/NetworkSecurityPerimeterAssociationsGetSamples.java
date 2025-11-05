@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkSecurityPerimeterAssociationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NspAssociationGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NspAssociationGet.json
      */
     /**
      * Sample code: NspAssociationGet.

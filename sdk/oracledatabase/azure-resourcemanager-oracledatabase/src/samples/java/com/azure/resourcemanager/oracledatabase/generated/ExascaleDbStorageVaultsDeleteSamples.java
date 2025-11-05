@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class ExascaleDbStorageVaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01/ExascaleDbStorageVaults_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExascaleDbStorageVaults_Delete_MaximumSet.
@@ -18,6 +18,19 @@ public final class ExascaleDbStorageVaultsDeleteSamples {
      */
     public static void exascaleDbStorageVaultsDeleteMaximumSet(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults().delete("rgopenapi", "vmClusterName", com.azure.core.util.Context.NONE);
+        manager.exascaleDbStorageVaults().delete("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: ExascaleDbStorageVaults_Delete_MinimumSet.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exascaleDbStorageVaultsDeleteMinimumSet(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exascaleDbStorageVaults().delete("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE);
     }
 }

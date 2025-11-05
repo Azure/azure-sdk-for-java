@@ -81,6 +81,16 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
      */
     private Boolean generateApiKey;
 
+    /*
+     * Hosting type of the monitor resource - either Hosted deployments OR Serverless Projects.
+     */
+    private HostingType hostingType;
+
+    /*
+     * Project details of the monitor resource IF it belongs to Serverless offer kind.
+     */
+    private ProjectDetails projectDetails;
+
     /**
      * Creates an instance of MonitorProperties class.
      */
@@ -94,17 +104,6 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the monitor resource.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the MonitorProperties object itself.
-     */
-    public MonitorProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -326,6 +325,48 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
     }
 
     /**
+     * Get the hostingType property: Hosting type of the monitor resource - either Hosted deployments OR Serverless
+     * Projects.
+     * 
+     * @return the hostingType value.
+     */
+    public HostingType hostingType() {
+        return this.hostingType;
+    }
+
+    /**
+     * Set the hostingType property: Hosting type of the monitor resource - either Hosted deployments OR Serverless
+     * Projects.
+     * 
+     * @param hostingType the hostingType value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withHostingType(HostingType hostingType) {
+        this.hostingType = hostingType;
+        return this;
+    }
+
+    /**
+     * Get the projectDetails property: Project details of the monitor resource IF it belongs to Serverless offer kind.
+     * 
+     * @return the projectDetails value.
+     */
+    public ProjectDetails projectDetails() {
+        return this.projectDetails;
+    }
+
+    /**
+     * Set the projectDetails property: Project details of the monitor resource IF it belongs to Serverless offer kind.
+     * 
+     * @param projectDetails the projectDetails value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withProjectDetails(ProjectDetails projectDetails) {
+        this.projectDetails = projectDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -340,6 +381,9 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
         if (planDetails() != null) {
             planDetails().validate();
         }
+        if (projectDetails() != null) {
+            projectDetails().validate();
+        }
     }
 
     /**
@@ -348,8 +392,6 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("provisioningState",
-            this.provisioningState == null ? null : this.provisioningState.toString());
         jsonWriter.writeStringField("monitoringStatus",
             this.monitoringStatus == null ? null : this.monitoringStatus.toString());
         jsonWriter.writeJsonField("elasticProperties", this.elasticProperties);
@@ -361,6 +403,8 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
         jsonWriter.writeStringField("sourceCampaignName", this.sourceCampaignName);
         jsonWriter.writeStringField("sourceCampaignId", this.sourceCampaignId);
         jsonWriter.writeBooleanField("generateApiKey", this.generateApiKey);
+        jsonWriter.writeStringField("hostingType", this.hostingType == null ? null : this.hostingType.toString());
+        jsonWriter.writeJsonField("projectDetails", this.projectDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -406,6 +450,10 @@ public final class MonitorProperties implements JsonSerializable<MonitorProperti
                     deserializedMonitorProperties.liftrResourcePreference = reader.getNullable(JsonReader::getInt);
                 } else if ("generateApiKey".equals(fieldName)) {
                     deserializedMonitorProperties.generateApiKey = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hostingType".equals(fieldName)) {
+                    deserializedMonitorProperties.hostingType = HostingType.fromString(reader.getString());
+                } else if ("projectDetails".equals(fieldName)) {
+                    deserializedMonitorProperties.projectDetails = ProjectDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

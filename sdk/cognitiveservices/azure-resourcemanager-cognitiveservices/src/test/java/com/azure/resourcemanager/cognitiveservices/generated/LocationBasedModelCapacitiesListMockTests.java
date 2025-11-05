@@ -22,7 +22,7 @@ public final class LocationBasedModelCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"lghktuidvrm\",\"properties\":{\"model\":{\"publisher\":\"dwwexymz\",\"format\":\"azipbhpwvqsg\",\"name\":\"yuuzivens\",\"version\":\"meyyvpkpatlb\",\"source\":\"pzgsk\",\"sourceAccount\":\"fhfv\",\"callRateLimit\":{\"count\":93.26642,\"renewalPeriod\":29.562151,\"rules\":[{},{}]}},\"skuName\":\"cdommpvfqaw\",\"availableCapacity\":19.802982,\"availableFinetuneCapacity\":83.162605},\"id\":\"ttuiaclkiexhajl\",\"name\":\"n\",\"type\":\"hiqfyuttdiy\"}]}";
+            = "{\"value\":[{\"location\":\"dxlwyojbfqz\",\"properties\":{\"model\":{\"publisher\":\"jyixhaf\",\"format\":\"tqxmbj\",\"name\":\"umzznvalqjrhuz\",\"version\":\"xonjtpusl\",\"source\":\"wpvtiotzbpdbol\",\"sourceAccount\":\"ryf\",\"callRateLimit\":{\"count\":71.75664,\"renewalPeriod\":1.5519679,\"rules\":[{},{},{}]}},\"skuName\":\"wsocnequygdjbo\",\"availableCapacity\":73.7661,\"availableFinetuneCapacity\":54.30265},\"id\":\"jkqev\",\"name\":\"drmmwiuawvcmjz\",\"type\":\"xiid\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class LocationBasedModelCapacitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ModelCapacityListResultValueItem> response = manager.locationBasedModelCapacities()
-            .list("rduczkgofxyfs", "uc", "crrpcjttbstvje", "qnrmvvfko", com.azure.core.util.Context.NONE);
+            .list("wyrmouv", "lgmokzkl", "rfowtdvrfmvlih", "vjdrqcrjidhftuk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lghktuidvrm", response.iterator().next().location());
-        Assertions.assertEquals("dwwexymz", response.iterator().next().properties().model().publisher());
-        Assertions.assertEquals("azipbhpwvqsg", response.iterator().next().properties().model().format());
-        Assertions.assertEquals("yuuzivens", response.iterator().next().properties().model().name());
-        Assertions.assertEquals("meyyvpkpatlb", response.iterator().next().properties().model().version());
-        Assertions.assertEquals("pzgsk", response.iterator().next().properties().model().source());
-        Assertions.assertEquals("fhfv", response.iterator().next().properties().model().sourceAccount());
-        Assertions.assertEquals("cdommpvfqaw", response.iterator().next().properties().skuName());
-        Assertions.assertEquals(19.802982F, response.iterator().next().properties().availableCapacity());
-        Assertions.assertEquals(83.162605F, response.iterator().next().properties().availableFinetuneCapacity());
+        Assertions.assertEquals("dxlwyojbfqz", response.iterator().next().location());
+        Assertions.assertEquals("jyixhaf", response.iterator().next().properties().model().publisher());
+        Assertions.assertEquals("tqxmbj", response.iterator().next().properties().model().format());
+        Assertions.assertEquals("umzznvalqjrhuz", response.iterator().next().properties().model().name());
+        Assertions.assertEquals("xonjtpusl", response.iterator().next().properties().model().version());
+        Assertions.assertEquals("wpvtiotzbpdbol", response.iterator().next().properties().model().source());
+        Assertions.assertEquals("ryf", response.iterator().next().properties().model().sourceAccount());
+        Assertions.assertEquals("wsocnequygdjbo", response.iterator().next().properties().skuName());
+        Assertions.assertEquals(73.7661F, response.iterator().next().properties().availableCapacity());
+        Assertions.assertEquals(54.30265F, response.iterator().next().properties().availableFinetuneCapacity());
     }
 }

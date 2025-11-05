@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Http Route rule.
+ * A set of routing conditions and targets.
  */
 @Fluent
 public final class HttpRouteRule implements JsonSerializable<HttpRouteRule> {

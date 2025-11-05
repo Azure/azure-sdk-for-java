@@ -19,7 +19,7 @@ public final class SchedulerSku implements JsonSerializable<SchedulerSku> {
     /*
      * The name of the SKU
      */
-    private String name;
+    private SchedulerSkuName name;
 
     /*
      * The SKU capacity. This allows scale out/in for the resource and impacts zone redundancy
@@ -42,7 +42,7 @@ public final class SchedulerSku implements JsonSerializable<SchedulerSku> {
      * 
      * @return the name value.
      */
-    public String name() {
+    public SchedulerSkuName name() {
         return this.name;
     }
 
@@ -52,7 +52,7 @@ public final class SchedulerSku implements JsonSerializable<SchedulerSku> {
      * @param name the name value to set.
      * @return the SchedulerSku object itself.
      */
-    public SchedulerSku withName(String name) {
+    public SchedulerSku withName(SchedulerSkuName name) {
         this.name = name;
         return this;
     }
@@ -94,7 +94,7 @@ public final class SchedulerSku implements JsonSerializable<SchedulerSku> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         jsonWriter.writeNumberField("capacity", this.capacity);
         return jsonWriter.writeEndObject();
     }
@@ -116,7 +116,7 @@ public final class SchedulerSku implements JsonSerializable<SchedulerSku> {
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedSchedulerSku.name = reader.getString();
+                    deserializedSchedulerSku.name = SchedulerSkuName.fromString(reader.getString());
                 } else if ("capacity".equals(fieldName)) {
                     deserializedSchedulerSku.capacity = reader.getNullable(JsonReader::getInt);
                 } else if ("redundancyState".equals(fieldName)) {

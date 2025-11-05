@@ -27,8 +27,7 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.privateEndpointConnections()
-            .delete("abzoghktdpyczhco", "ocnhzqrottjzcfyj", "pt", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections().delete("hvwyp", "suvjslcz", "ciidjs", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -75,7 +75,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientWebhooks")
     public interface WebhooksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks")
@@ -106,15 +106,6 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @BodyParam("application/json") WebhookCreateParameters webhookCreateParameters,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
-        @ExpectedResponses({ 200, 202, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @PathParam("webhookName") String webhookName, Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({ 200, 201 })
@@ -127,10 +118,19 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/ping")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/getCallbackConfig")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventInfoInner>> ping(@HostParam("$host") String endpoint,
+        Mono<Response<CallbackConfigInner>> getCallbackConfig(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName, @HeaderParam("Accept") String accept, Context context);
@@ -145,10 +145,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
             @PathParam("webhookName") String webhookName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/getCallbackConfig")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/ping")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CallbackConfigInner>> getCallbackConfig(@HostParam("$host") String endpoint,
+        Mono<Response<EventInfoInner>> ping(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName, @HeaderParam("Accept") String accept, Context context);
@@ -196,7 +196,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -236,7 +236,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -347,7 +347,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -389,7 +389,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -487,7 +487,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -537,7 +537,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -704,226 +704,6 @@ public final class WebhooksClientImpl implements WebhooksClient {
     }
 
     /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
-        String webhookName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (webhookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
-        }
-        final String apiVersion = "2025-04-01";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
-        String webhookName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (webhookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
-        }
-        final String apiVersion = "2025-04-01";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, webhookName, context);
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String webhookName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, webhookName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String webhookName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, registryName, webhookName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
-        String webhookName) {
-        return this.beginDeleteAsync(resourceGroupName, registryName, webhookName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
-        String webhookName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, registryName, webhookName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String webhookName) {
-        return beginDeleteAsync(resourceGroupName, registryName, webhookName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String webhookName, Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, webhookName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String registryName, String webhookName) {
-        deleteAsync(resourceGroupName, registryName, webhookName).block();
-    }
-
-    /**
-     * Deletes a webhook from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String registryName, String webhookName, Context context) {
-        deleteAsync(resourceGroupName, registryName, webhookName, context).block();
-    }
-
-    /**
      * Updates a webhook with the specified parameters.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -963,7 +743,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1013,7 +793,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1180,7 +960,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
     }
 
     /**
-     * Triggers a ping event to be sent to the webhook.
+     * Deletes a webhook from a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1188,10 +968,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic information of an event along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EventInfoInner>> pingWithResponseAsync(String resourceGroupName, String registryName,
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String webhookName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1211,16 +991,16 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.ping(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, webhookName, accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Triggers a ping event to be sent to the webhook.
+     * Deletes a webhook from a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1229,10 +1009,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic information of an event along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInfoInner>> pingWithResponseAsync(String resourceGroupName, String registryName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String webhookName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1252,15 +1032,15 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.ping(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             registryName, webhookName, accept, context);
     }
 
     /**
-     * Triggers a ping event to be sent to the webhook.
+     * Deletes a webhook from a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1268,16 +1048,18 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic information of an event on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EventInfoInner> pingAsync(String resourceGroupName, String registryName, String webhookName) {
-        return pingWithResponseAsync(resourceGroupName, registryName, webhookName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String webhookName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, webhookName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Triggers a ping event to be sent to the webhook.
+     * Deletes a webhook from a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1286,16 +1068,20 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic information of an event along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventInfoInner> pingWithResponse(String resourceGroupName, String registryName, String webhookName,
-        Context context) {
-        return pingWithResponseAsync(resourceGroupName, registryName, webhookName, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String webhookName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, registryName, webhookName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Triggers a ping event to be sent to the webhook.
+     * Deletes a webhook from a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1303,11 +1089,231 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic information of an event.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String webhookName) {
+        return this.beginDeleteAsync(resourceGroupName, registryName, webhookName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a webhook from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String webhookName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, registryName, webhookName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a webhook from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventInfoInner ping(String resourceGroupName, String registryName, String webhookName) {
-        return pingWithResponse(resourceGroupName, registryName, webhookName, Context.NONE).getValue();
+    public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String webhookName) {
+        return beginDeleteAsync(resourceGroupName, registryName, webhookName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a webhook from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String webhookName, Context context) {
+        return beginDeleteAsync(resourceGroupName, registryName, webhookName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a webhook from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String registryName, String webhookName) {
+        deleteAsync(resourceGroupName, registryName, webhookName).block();
+    }
+
+    /**
+     * Deletes a webhook from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String registryName, String webhookName, Context context) {
+        deleteAsync(resourceGroupName, registryName, webhookName, context).block();
+    }
+
+    /**
+     * Gets the configuration of service URI and custom headers for the webhook.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallbackConfigInner>> getCallbackConfigWithResponseAsync(String resourceGroupName,
+        String registryName, String webhookName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (webhookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCallbackConfig(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the configuration of service URI and custom headers for the webhook.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CallbackConfigInner>> getCallbackConfigWithResponseAsync(String resourceGroupName,
+        String registryName, String webhookName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (webhookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getCallbackConfig(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, registryName, webhookName, accept, context);
+    }
+
+    /**
+     * Gets the configuration of service URI and custom headers for the webhook.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallbackConfigInner> getCallbackConfigAsync(String resourceGroupName, String registryName,
+        String webhookName) {
+        return getCallbackConfigWithResponseAsync(resourceGroupName, registryName, webhookName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the configuration of service URI and custom headers for the webhook.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallbackConfigInner> getCallbackConfigWithResponse(String resourceGroupName, String registryName,
+        String webhookName, Context context) {
+        return getCallbackConfigWithResponseAsync(resourceGroupName, registryName, webhookName, context).block();
+    }
+
+    /**
+     * Gets the configuration of service URI and custom headers for the webhook.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallbackConfigInner getCallbackConfig(String resourceGroupName, String registryName, String webhookName) {
+        return getCallbackConfigWithResponse(resourceGroupName, registryName, webhookName, Context.NONE).getValue();
     }
 
     /**
@@ -1343,7 +1349,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEvents(this.client.getEndpoint(), apiVersion,
@@ -1387,7 +1393,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1468,7 +1474,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
     }
 
     /**
-     * Gets the configuration of service URI and custom headers for the webhook.
+     * Triggers a ping event to be sent to the webhook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1476,12 +1482,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of service URI and custom headers for the webhook along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return the basic information of an event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallbackConfigInner>> getCallbackConfigWithResponseAsync(String resourceGroupName,
-        String registryName, String webhookName) {
+    public Mono<Response<EventInfoInner>> pingWithResponseAsync(String resourceGroupName, String registryName,
+        String webhookName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1500,16 +1505,16 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getCallbackConfig(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
+            .withContext(context -> service.ping(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, webhookName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the configuration of service URI and custom headers for the webhook.
+     * Triggers a ping event to be sent to the webhook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1518,12 +1523,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of service URI and custom headers for the webhook along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return the basic information of an event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CallbackConfigInner>> getCallbackConfigWithResponseAsync(String resourceGroupName,
-        String registryName, String webhookName, Context context) {
+    private Mono<Response<EventInfoInner>> pingWithResponseAsync(String resourceGroupName, String registryName,
+        String webhookName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1542,15 +1546,15 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getCallbackConfig(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, webhookName, accept, context);
+        return service.ping(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, webhookName, accept, context);
     }
 
     /**
-     * Gets the configuration of service URI and custom headers for the webhook.
+     * Triggers a ping event to be sent to the webhook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1558,18 +1562,16 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of service URI and custom headers for the webhook on successful completion of
-     * {@link Mono}.
+     * @return the basic information of an event on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallbackConfigInner> getCallbackConfigAsync(String resourceGroupName, String registryName,
-        String webhookName) {
-        return getCallbackConfigWithResponseAsync(resourceGroupName, registryName, webhookName)
+    public Mono<EventInfoInner> pingAsync(String resourceGroupName, String registryName, String webhookName) {
+        return pingWithResponseAsync(resourceGroupName, registryName, webhookName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets the configuration of service URI and custom headers for the webhook.
+     * Triggers a ping event to be sent to the webhook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1578,16 +1580,16 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of service URI and custom headers for the webhook along with {@link Response}.
+     * @return the basic information of an event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallbackConfigInner> getCallbackConfigWithResponse(String resourceGroupName, String registryName,
-        String webhookName, Context context) {
-        return getCallbackConfigWithResponseAsync(resourceGroupName, registryName, webhookName, context).block();
+    public Response<EventInfoInner> pingWithResponse(String resourceGroupName, String registryName, String webhookName,
+        Context context) {
+        return pingWithResponseAsync(resourceGroupName, registryName, webhookName, context).block();
     }
 
     /**
-     * Gets the configuration of service URI and custom headers for the webhook.
+     * Triggers a ping event to be sent to the webhook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -1595,11 +1597,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of service URI and custom headers for the webhook.
+     * @return the basic information of an event.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallbackConfigInner getCallbackConfig(String resourceGroupName, String registryName, String webhookName) {
-        return getCallbackConfigWithResponse(resourceGroupName, registryName, webhookName, Context.NONE).getValue();
+    public EventInfoInner ping(String resourceGroupName, String registryName, String webhookName) {
+        return pingWithResponse(resourceGroupName, registryName, webhookName, Context.NONE).getValue();
     }
 
     /**

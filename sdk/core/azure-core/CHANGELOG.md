@@ -1,17 +1,31 @@
 # Release History
 
-## 1.57.0-beta.1 (Unreleased)
+## 1.58.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Adds `RetryStrategy.calculateRetryDelay(RequestRetryCondition)` to allow for richer inspection of the reason the
-  request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.57.0 (2025-10-06)
+
+### Features Added
+
+- Adds `RetryStrategy.calculateRetryDelay(RequestRetryCondition)` to allow for richer inspection of the reason the
+  request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+
+### Bugs Fixed
+
+- Fixed a bug where `SharedExecutorService` didn't allow core threads to time out, even when a time out was set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
 
 ## 1.56.1 (2025-09-05)
 

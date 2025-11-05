@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class RunsCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RunsCancel.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RunsCancel.json
      */
     /**
      * Sample code: Runs_Cancel.

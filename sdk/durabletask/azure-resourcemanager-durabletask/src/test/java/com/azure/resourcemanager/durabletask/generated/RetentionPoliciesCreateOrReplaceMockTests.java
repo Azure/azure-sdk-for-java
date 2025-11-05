@@ -26,7 +26,7 @@ public final class RetentionPoliciesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1879062252,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":1856393411,\"orchestrationState\":\"Failed\"},{\"retentionPeriodInDays\":442163665,\"orchestrationState\":\"Failed\"}]},\"id\":\"ggzfbu\",\"name\":\"fmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":994913433,\"orchestrationState\":\"Terminated\"}]},\"id\":\"s\",\"name\":\"mddystkiiux\",\"type\":\"qyud\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,13 +36,13 @@ public final class RetentionPoliciesCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RetentionPolicy response = manager.retentionPolicies()
-            .createOrReplace("zdobpxjmflbvvnch", "kcciwwzjuqkhr",
+            .createOrReplace("u", "kthfui",
                 new RetentionPolicyInner().withProperties(new RetentionPolicyProperties().withRetentionPolicies(
-                    Arrays.asList(new RetentionPolicyDetails().withRetentionPeriodInDays(481973669)
-                        .withOrchestrationState(PurgeableOrchestrationState.CANCELED)))),
+                    Arrays.asList(new RetentionPolicyDetails().withRetentionPeriodInDays(2105680522)
+                        .withOrchestrationState(PurgeableOrchestrationState.FAILED)))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1879062252, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(994913433, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
         Assertions.assertEquals(PurgeableOrchestrationState.TERMINATED,
             response.properties().retentionPolicies().get(0).orchestrationState());
     }

@@ -28,8 +28,8 @@ import java.util.Map;
 public final class TasksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TasksUpdate_QuickTask.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TasksUpdate_QuickTask.json
      */
     /**
      * Sample code: Tasks_Update_QuickTask.
@@ -50,8 +50,8 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * ManagedIdentity/TasksUpdate_WithMSICustomCredentials.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/ManagedIdentity/TasksUpdate_WithMSICustomCredentials.json
      */
     /**
      * Sample code: Tasks_Update_WithMSICustomCredentials.
@@ -83,8 +83,8 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * ManagedIdentity/TasksUpdate_WithKeyVaultCustomCredentials.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/ManagedIdentity/TasksUpdate_WithKeyVaultCustomCredentials.json
      */
     /**
      * Sample code: Tasks_Update_WithKeyVaultCustomCredentials.
@@ -123,8 +123,8 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TasksUpdate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TasksUpdate.json
      */
     /**
      * Sample code: Tasks_Update.
@@ -161,8 +161,8 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TasksUpdate_WithOpaqueCustomCredentials.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TasksUpdate_WithOpaqueCustomCredentials.json
      */
     /**
      * Sample code: Tasks_Update_WithOpaqueCustomCredentials.

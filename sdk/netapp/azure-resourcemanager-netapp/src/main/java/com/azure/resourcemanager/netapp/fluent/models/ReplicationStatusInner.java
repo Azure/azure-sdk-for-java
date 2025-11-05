@@ -29,7 +29,9 @@ public final class ReplicationStatusInner implements JsonSerializable<Replicatio
     private RelationshipStatus relationshipStatus;
 
     /*
-     * The status of the replication
+     * The mirror state property describes the current status of data replication for a replication. It provides insight
+     * into whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to
+     * be initialized.
      */
     private MirrorState mirrorState;
 
@@ -90,23 +92,14 @@ public final class ReplicationStatusInner implements JsonSerializable<Replicatio
     }
 
     /**
-     * Get the mirrorState property: The status of the replication.
+     * Get the mirrorState property: The mirror state property describes the current status of data replication for a
+     * replication. It provides insight into whether the data is actively being mirrored, if the replication process has
+     * been paused, or if it has yet to be initialized.
      * 
      * @return the mirrorState value.
      */
     public MirrorState mirrorState() {
         return this.mirrorState;
-    }
-
-    /**
-     * Set the mirrorState property: The status of the replication.
-     * 
-     * @param mirrorState the mirrorState value to set.
-     * @return the ReplicationStatusInner object itself.
-     */
-    public ReplicationStatusInner withMirrorState(MirrorState mirrorState) {
-        this.mirrorState = mirrorState;
-        return this;
     }
 
     /**
@@ -166,7 +159,6 @@ public final class ReplicationStatusInner implements JsonSerializable<Replicatio
         jsonWriter.writeBooleanField("healthy", this.healthy);
         jsonWriter.writeStringField("relationshipStatus",
             this.relationshipStatus == null ? null : this.relationshipStatus.toString());
-        jsonWriter.writeStringField("mirrorState", this.mirrorState == null ? null : this.mirrorState.toString());
         jsonWriter.writeStringField("totalProgress", this.totalProgress);
         jsonWriter.writeStringField("errorMessage", this.errorMessage);
         return jsonWriter.writeEndObject();

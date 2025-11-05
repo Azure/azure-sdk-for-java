@@ -16,7 +16,7 @@ public final class OperationResultInnerTests {
             "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"}")
             .toObject(OperationResultInner.class);
         Assertions.assertEquals("nygj", model.name());
-        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertTrue(model.isDataAction());
         Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
         Assertions.assertEquals("yflusarhmofc", model.display().resource());
         Assertions.assertEquals("smy", model.display().operation());
@@ -35,7 +35,7 @@ public final class OperationResultInnerTests {
             .withOrigin("txukcdmp");
         model = BinaryData.fromObject(model).toObject(OperationResultInner.class);
         Assertions.assertEquals("nygj", model.name());
-        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertTrue(model.isDataAction());
         Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
         Assertions.assertEquals("yflusarhmofc", model.display().resource());
         Assertions.assertEquals("smy", model.display().operation());

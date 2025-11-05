@@ -18,6 +18,7 @@ import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallNetworkRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -33,6 +34,11 @@ public final class AzureFirewallInner extends Resource {
      * Properties of the azure firewall.
      */
     private AzureFirewallPropertiesFormat innerProperties;
+
+    /*
+     * The extended location of type local virtual network gateway.
+     */
+    private ExtendedLocation extendedLocation;
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
@@ -72,6 +78,26 @@ public final class AzureFirewallInner extends Resource {
      */
     private AzureFirewallPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of type local virtual network gateway.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of type local virtual network gateway.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
     }
 
     /**
@@ -468,6 +494,9 @@ public final class AzureFirewallInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
     }
 
     /**
@@ -479,6 +508,7 @@ public final class AzureFirewallInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
@@ -511,6 +541,8 @@ public final class AzureFirewallInner extends Resource {
                     deserializedAzureFirewallInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedAzureFirewallInner.innerProperties = AzureFirewallPropertiesFormat.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedAzureFirewallInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedAzureFirewallInner.zones = zones;

@@ -399,4 +399,27 @@ public interface AutonomousDatabase {
      * @return the response.
      */
     AutonomousDatabase changeDisasterRecoveryConfiguration(DisasterRecoveryConfigurationDetails body, Context context);
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    AutonomousDatabase action(AutonomousDatabaseLifecycleAction body);
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    AutonomousDatabase action(AutonomousDatabaseLifecycleAction body, Context context);
 }

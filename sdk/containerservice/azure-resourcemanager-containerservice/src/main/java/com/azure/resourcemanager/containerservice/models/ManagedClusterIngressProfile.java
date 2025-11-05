@@ -17,8 +17,12 @@ import java.io.IOException;
 @Fluent
 public final class ManagedClusterIngressProfile implements JsonSerializable<ManagedClusterIngressProfile> {
     /*
-     * App Routing settings for the ingress profile. You can find an overview and onboarding guide for this feature at
-     * https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default.
+     * Settings for the managed Gateway API installation
+     */
+    private ManagedClusterIngressProfileGatewayConfiguration gatewayApi;
+
+    /*
+     * Web App Routing settings for the ingress profile.
      */
     private ManagedClusterIngressProfileWebAppRouting webAppRouting;
 
@@ -29,9 +33,27 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Get the webAppRouting property: App Routing settings for the ingress profile. You can find an overview and
-     * onboarding guide for this feature at
-     * https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default.
+     * Get the gatewayApi property: Settings for the managed Gateway API installation.
+     * 
+     * @return the gatewayApi value.
+     */
+    public ManagedClusterIngressProfileGatewayConfiguration gatewayApi() {
+        return this.gatewayApi;
+    }
+
+    /**
+     * Set the gatewayApi property: Settings for the managed Gateway API installation.
+     * 
+     * @param gatewayApi the gatewayApi value to set.
+     * @return the ManagedClusterIngressProfile object itself.
+     */
+    public ManagedClusterIngressProfile withGatewayApi(ManagedClusterIngressProfileGatewayConfiguration gatewayApi) {
+        this.gatewayApi = gatewayApi;
+        return this;
+    }
+
+    /**
+     * Get the webAppRouting property: Web App Routing settings for the ingress profile.
      * 
      * @return the webAppRouting value.
      */
@@ -40,9 +62,7 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Set the webAppRouting property: App Routing settings for the ingress profile. You can find an overview and
-     * onboarding guide for this feature at
-     * https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default.
+     * Set the webAppRouting property: Web App Routing settings for the ingress profile.
      * 
      * @param webAppRouting the webAppRouting value to set.
      * @return the ManagedClusterIngressProfile object itself.
@@ -58,6 +78,9 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (gatewayApi() != null) {
+            gatewayApi().validate();
+        }
         if (webAppRouting() != null) {
             webAppRouting().validate();
         }
@@ -69,6 +92,7 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gatewayAPI", this.gatewayApi);
         jsonWriter.writeJsonField("webAppRouting", this.webAppRouting);
         return jsonWriter.writeEndObject();
     }
@@ -88,7 +112,10 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("webAppRouting".equals(fieldName)) {
+                if ("gatewayAPI".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfile.gatewayApi
+                        = ManagedClusterIngressProfileGatewayConfiguration.fromJson(reader);
+                } else if ("webAppRouting".equals(fieldName)) {
                     deserializedManagedClusterIngressProfile.webAppRouting
                         = ManagedClusterIngressProfileWebAppRouting.fromJson(reader);
                 } else {

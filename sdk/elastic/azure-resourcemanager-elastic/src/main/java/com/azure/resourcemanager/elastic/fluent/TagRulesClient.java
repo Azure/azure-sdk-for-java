@@ -18,7 +18,8 @@ import com.azure.resourcemanager.elastic.fluent.models.MonitoringTagRulesInner;
  */
 public interface TagRulesClient {
     /**
-     * List the tag rules for a given monitor resource.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -31,7 +32,8 @@ public interface TagRulesClient {
     PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName);
 
     /**
-     * List the tag rules for a given monitor resource.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -45,7 +47,8 @@ public interface TagRulesClient {
     PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Create or update a tag rule set for a given monitor resource.
+     * Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
+     * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -62,7 +65,8 @@ public interface TagRulesClient {
         String ruleSetName, MonitoringTagRulesInner body, Context context);
 
     /**
-     * Create or update a tag rule set for a given monitor resource.
+     * Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
+     * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -76,7 +80,7 @@ public interface TagRulesClient {
     MonitoringTagRulesInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Get a tag rule set for a given monitor resource.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -85,14 +89,15 @@ public interface TagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitoringTagRulesInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
         Context context);
 
     /**
-     * Get a tag rule set for a given monitor resource.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -100,13 +105,14 @@ public interface TagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MonitoringTagRulesInner get(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -120,7 +126,8 @@ public interface TagRulesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -136,7 +143,8 @@ public interface TagRulesClient {
         Context context);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -149,7 +157,8 @@ public interface TagRulesClient {
     void delete(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

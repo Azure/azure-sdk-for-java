@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.DiagnosticSupportTopic;
 public final class DiagnosticSupportTopicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticSupportTopic model = BinaryData.fromString("{\"id\":\"ucfotangcf\",\"pesId\":\"ykzcugswvxwl\"}")
+        DiagnosticSupportTopic model = BinaryData.fromString("{\"id\":\"fuajly\",\"pesId\":\"lvofqzhvfcibyfmo\"}")
             .toObject(DiagnosticSupportTopic.class);
     }
 

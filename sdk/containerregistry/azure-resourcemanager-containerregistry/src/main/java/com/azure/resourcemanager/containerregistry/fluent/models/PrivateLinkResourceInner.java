@@ -5,27 +5,33 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * A resource that supports private link capabilities.
+ * A private link resource.
  */
 @Fluent
-public final class PrivateLinkResourceInner implements JsonSerializable<PrivateLinkResourceInner> {
+public final class PrivateLinkResourceInner extends ProxyResource {
     /*
-     * The resource type is private link resource.
+     * Resource properties.
      */
-    private String type;
+    private PrivateLinkResourceProperties innerProperties;
 
     /*
-     * The resource ID.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String id;
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /*
      * The name of the resource.
@@ -33,9 +39,9 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
     private String name;
 
     /*
-     * A resource that supports private link capabilities.
+     * Fully qualified resource Id for the resource.
      */
-    private PrivateLinkResourceProperties innerProperties;
+    private String id;
 
     /**
      * Creates an instance of PrivateLinkResourceInner class.
@@ -44,32 +50,31 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
     }
 
     /**
-     * Get the type property: The resource type is private link resource.
+     * Get the innerProperties property: Resource properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
+    @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the id property: The resource ID.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: The resource ID.
-     * 
-     * @param id the id value to set.
-     * @return the PrivateLinkResourceInner object itself.
-     */
-    public PrivateLinkResourceInner withId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -77,28 +82,19 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
      * 
      * @return the name value.
      */
+    @Override
     public String name() {
         return this.name;
     }
 
     /**
-     * Set the name property: The name of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @param name the name value to set.
-     * @return the PrivateLinkResourceInner object itself.
+     * @return the id value.
      */
-    public PrivateLinkResourceInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the innerProperties property: A resource that supports private link capabilities.
-     * 
-     * @return the innerProperties value.
-     */
-    private PrivateLinkResourceProperties innerProperties() {
-        return this.innerProperties;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -111,20 +107,6 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
     }
 
     /**
-     * Set the groupId property: The private link resource group id.
-     * 
-     * @param groupId the groupId value to set.
-     * @return the PrivateLinkResourceInner object itself.
-     */
-    public PrivateLinkResourceInner withGroupId(String groupId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withGroupId(groupId);
-        return this;
-    }
-
-    /**
      * Get the requiredMembers property: The private link resource required member names.
      * 
      * @return the requiredMembers value.
@@ -134,21 +116,7 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
     }
 
     /**
-     * Set the requiredMembers property: The private link resource required member names.
-     * 
-     * @param requiredMembers the requiredMembers value to set.
-     * @return the PrivateLinkResourceInner object itself.
-     */
-    public PrivateLinkResourceInner withRequiredMembers(List<String> requiredMembers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withRequiredMembers(requiredMembers);
-        return this;
-    }
-
-    /**
-     * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
+     * Get the requiredZoneNames property: The private link resource private link DNS zone name.
      * 
      * @return the requiredZoneNames value.
      */
@@ -157,7 +125,7 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
     }
 
     /**
-     * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
+     * Set the requiredZoneNames property: The private link resource private link DNS zone name.
      * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResourceInner object itself.
@@ -187,8 +155,6 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -199,6 +165,7 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
      * @param jsonReader The JsonReader being read.
      * @return An instance of PrivateLinkResourceInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PrivateLinkResourceInner.
      */
     public static PrivateLinkResourceInner fromJson(JsonReader jsonReader) throws IOException {
@@ -208,15 +175,17 @@ public final class PrivateLinkResourceInner implements JsonSerializable<PrivateL
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
-                    deserializedPrivateLinkResourceInner.type = reader.getString();
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     deserializedPrivateLinkResourceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedPrivateLinkResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateLinkResourceInner.innerProperties
                         = PrivateLinkResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

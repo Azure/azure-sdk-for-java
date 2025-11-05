@@ -37,11 +37,6 @@ public final class AccountInner extends AzureEntityResource {
     private Identity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -55,6 +50,11 @@ public final class AccountInner extends AzureEntityResource {
      * Properties of Cognitive Services account.
      */
     private AccountProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * Resource Etag.
@@ -143,15 +143,6 @@ public final class AccountInner extends AzureEntityResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the tags property: Resource tags.
      * 
      * @return the tags value.
@@ -209,6 +200,16 @@ public final class AccountInner extends AzureEntityResource {
     public AccountInner withProperties(AccountProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -308,14 +309,14 @@ public final class AccountInner extends AzureEntityResource {
                     deserializedAccountInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedAccountInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAccountInner.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedAccountInner.kind = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedAccountInner.sku = Sku.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedAccountInner.identity = Identity.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedAccountInner.systemData = SystemData.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAccountInner.tags = tags;

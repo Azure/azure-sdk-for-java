@@ -14,30 +14,30 @@ public final class ReplicationObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationObject model = BinaryData.fromString(
-            "{\"replicationId\":\"qsemwabne\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"h\",\"remotePath\":{\"externalHostName\":\"plvwiwubmwmbes\",\"serverName\":\"dnkwwtppjflcxog\",\"volumeName\":\"okonzmnsikvmkqz\"},\"remoteVolumeRegion\":\"qkdltfz\",\"destinationReplications\":[{\"resourceId\":\"v\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"eodkwobda\",\"zone\":\"tibqdxbxwakb\"}]}")
+            "{\"replicationId\":\"pcqeqx\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"zxctobgb\",\"remotePath\":{\"externalHostName\":\"moizpos\",\"serverName\":\"mgrcfbu\",\"volumeName\":\"rmfqjhhkxbpvj\"},\"remoteVolumeRegion\":\"jhxxjyn\",\"destinationReplications\":[{\"resourceId\":\"vkr\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"xqzvszjfa\",\"zone\":\"j\"},{\"resourceId\":\"xxivetv\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"qtdo\",\"zone\":\"cbxvwvxyslqbh\"}],\"externalReplicationSetupStatus\":\"ClusterPeerRequired\",\"externalReplicationSetupInfo\":\"blytk\",\"mirrorState\":\"Uninitialized\",\"relationshipStatus\":\"Transferring\"}")
             .toObject(ReplicationObject.class);
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("h", model.remoteVolumeResourceId());
-        Assertions.assertEquals("plvwiwubmwmbes", model.remotePath().externalHostname());
-        Assertions.assertEquals("dnkwwtppjflcxog", model.remotePath().serverName());
-        Assertions.assertEquals("okonzmnsikvmkqz", model.remotePath().volumeName());
-        Assertions.assertEquals("qkdltfz", model.remoteVolumeRegion());
+        Assertions.assertEquals("zxctobgb", model.remoteVolumeResourceId());
+        Assertions.assertEquals("moizpos", model.remotePath().externalHostname());
+        Assertions.assertEquals("mgrcfbu", model.remotePath().serverName());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.remotePath().volumeName());
+        Assertions.assertEquals("jhxxjyn", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationObject model = new ReplicationObject().withReplicationSchedule(ReplicationSchedule.HOURLY)
-            .withRemoteVolumeResourceId("h")
-            .withRemotePath(new RemotePath().withExternalHostname("plvwiwubmwmbes")
-                .withServerName("dnkwwtppjflcxog")
-                .withVolumeName("okonzmnsikvmkqz"))
-            .withRemoteVolumeRegion("qkdltfz");
+            .withRemoteVolumeResourceId("zxctobgb")
+            .withRemotePath(new RemotePath().withExternalHostname("moizpos")
+                .withServerName("mgrcfbu")
+                .withVolumeName("rmfqjhhkxbpvj"))
+            .withRemoteVolumeRegion("jhxxjyn");
         model = BinaryData.fromObject(model).toObject(ReplicationObject.class);
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("h", model.remoteVolumeResourceId());
-        Assertions.assertEquals("plvwiwubmwmbes", model.remotePath().externalHostname());
-        Assertions.assertEquals("dnkwwtppjflcxog", model.remotePath().serverName());
-        Assertions.assertEquals("okonzmnsikvmkqz", model.remotePath().volumeName());
-        Assertions.assertEquals("qkdltfz", model.remoteVolumeRegion());
+        Assertions.assertEquals("zxctobgb", model.remoteVolumeResourceId());
+        Assertions.assertEquals("moizpos", model.remotePath().externalHostname());
+        Assertions.assertEquals("mgrcfbu", model.remotePath().serverName());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.remotePath().volumeName());
+        Assertions.assertEquals("jhxxjyn", model.remoteVolumeRegion());
     }
 }

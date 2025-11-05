@@ -15,26 +15,23 @@ public final class MultiRegionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MultiRegionSettings model = BinaryData.fromString(
-            "{\"routingMethod\":\"Performance\",\"regions\":[{\"name\":\"qqedqytbciqfou\",\"value\":68.96301,\"customsubdomain\":\"nkzsmodmglou\"},{\"name\":\"b\",\"value\":18.99814,\"customsubdomain\":\"utduqktapspwgcu\"},{\"name\":\"tumkdosvqwhbm\",\"value\":84.869194,\"customsubdomain\":\"jfddgmbmbe\"},{\"name\":\"pbhtqqrolfpfpsa\",\"value\":49.90956,\"customsubdomain\":\"uxig\"}]}")
+            "{\"routingMethod\":\"Weighted\",\"regions\":[{\"name\":\"yqkgfg\",\"value\":77.32275,\"customsubdomain\":\"dgak\"}]}")
             .toObject(MultiRegionSettings.class);
-        Assertions.assertEquals(RoutingMethods.PERFORMANCE, model.routingMethod());
-        Assertions.assertEquals("qqedqytbciqfou", model.regions().get(0).name());
-        Assertions.assertEquals(68.96301F, model.regions().get(0).value());
-        Assertions.assertEquals("nkzsmodmglou", model.regions().get(0).customsubdomain());
+        Assertions.assertEquals(RoutingMethods.WEIGHTED, model.routingMethod());
+        Assertions.assertEquals("yqkgfg", model.regions().get(0).name());
+        Assertions.assertEquals(77.32275F, model.regions().get(0).value());
+        Assertions.assertEquals("dgak", model.regions().get(0).customsubdomain());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MultiRegionSettings model = new MultiRegionSettings().withRoutingMethod(RoutingMethods.PERFORMANCE)
-            .withRegions(Arrays.asList(
-                new RegionSetting().withName("qqedqytbciqfou").withValue(68.96301F).withCustomsubdomain("nkzsmodmglou"),
-                new RegionSetting().withName("b").withValue(18.99814F).withCustomsubdomain("utduqktapspwgcu"),
-                new RegionSetting().withName("tumkdosvqwhbm").withValue(84.869194F).withCustomsubdomain("jfddgmbmbe"),
-                new RegionSetting().withName("pbhtqqrolfpfpsa").withValue(49.90956F).withCustomsubdomain("uxig")));
+        MultiRegionSettings model = new MultiRegionSettings().withRoutingMethod(RoutingMethods.WEIGHTED)
+            .withRegions(
+                Arrays.asList(new RegionSetting().withName("yqkgfg").withValue(77.32275F).withCustomsubdomain("dgak")));
         model = BinaryData.fromObject(model).toObject(MultiRegionSettings.class);
-        Assertions.assertEquals(RoutingMethods.PERFORMANCE, model.routingMethod());
-        Assertions.assertEquals("qqedqytbciqfou", model.regions().get(0).name());
-        Assertions.assertEquals(68.96301F, model.regions().get(0).value());
-        Assertions.assertEquals("nkzsmodmglou", model.regions().get(0).customsubdomain());
+        Assertions.assertEquals(RoutingMethods.WEIGHTED, model.routingMethod());
+        Assertions.assertEquals("yqkgfg", model.regions().get(0).name());
+        Assertions.assertEquals(77.32275F, model.regions().get(0).value());
+        Assertions.assertEquals("dgak", model.regions().get(0).customsubdomain());
     }
 }

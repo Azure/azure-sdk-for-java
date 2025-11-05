@@ -21,8 +21,7 @@ public interface MaintenanceConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName The name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment as paginated response with
      * {@link PagedIterable}.
@@ -37,8 +36,7 @@ public interface MaintenanceConfigurationsClient {
      * @param environmentName The name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all maintenance configurations in the specified Managed Environment as paginated response with
      * {@link PagedIterable}.
@@ -56,8 +54,7 @@ public interface MaintenanceConfigurationsClient {
      * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the Maintenance Configuration resource along with {@link Response}.
      */
@@ -74,8 +71,7 @@ public interface MaintenanceConfigurationsClient {
      * @param configName The name of the maintenance configuration.
      * @param maintenanceConfigurationEnvelope Parameters to set the maintenance configuration for ManagedEnvironment .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the Maintenance Configuration resource.
      */
@@ -91,8 +87,7 @@ public interface MaintenanceConfigurationsClient {
      * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -107,8 +102,7 @@ public interface MaintenanceConfigurationsClient {
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -122,8 +116,7 @@ public interface MaintenanceConfigurationsClient {
      * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the maintenance configuration of a ManagedEnvironment along with {@link Response}.
      */
@@ -138,8 +131,7 @@ public interface MaintenanceConfigurationsClient {
      * @param environmentName The name of the Managed Environment.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the maintenance configuration of a ManagedEnvironment.
      */

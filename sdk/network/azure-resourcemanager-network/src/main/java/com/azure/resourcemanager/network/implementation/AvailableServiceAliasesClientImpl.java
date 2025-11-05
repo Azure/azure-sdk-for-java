@@ -60,7 +60,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientAvailableServiceAliases")
     public interface AvailableServiceAliasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableServiceAliases")
@@ -119,7 +119,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
@@ -153,7 +153,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -254,7 +254,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, location,
@@ -294,7 +294,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -381,8 +381,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all available service aliases for this subscription in this region along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listNextSinglePageAsync(String nextLink) {
@@ -408,8 +408,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all available service aliases for this subscription in this region along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -434,8 +434,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all available service aliases for this resource group in this region along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -463,8 +463,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all available service aliases for this resource group in this region along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

@@ -13,20 +13,20 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Application Routing add-on settings for the ingress profile.
+ * Web App Routing settings for the ingress profile.
  */
 @Fluent
 public final class ManagedClusterIngressProfileWebAppRouting
     implements JsonSerializable<ManagedClusterIngressProfileWebAppRouting> {
     /*
-     * Whether to enable the Application Routing add-on.
+     * Whether to enable Web App Routing.
      */
     private Boolean enabled;
 
     /*
-     * Resource IDs of the DNS zones to be associated with the Application Routing add-on. Used only when Application
-     * Routing add-on is enabled. Public and private DNS zones can be in different resource groups, but all public DNS
-     * zones must be in the same resource group and all private DNS zones must be in the same resource group.
+     * Resource IDs of the DNS zones to be associated with the Web App Routing add-on. Used only when Web App Routing is
+     * enabled. Public and private DNS zones can be in different resource groups, but all public DNS zones must be in
+     * the same resource group and all private DNS zones must be in the same resource group.
      */
     private List<String> dnsZoneResourceIds;
 
@@ -37,8 +37,8 @@ public final class ManagedClusterIngressProfileWebAppRouting
     private ManagedClusterIngressProfileNginx nginx;
 
     /*
-     * Managed identity of the Application Routing add-on. This is the identity that should be granted permissions, for
-     * example, to manage the associated Azure DNS resource and get certificates from Azure Key Vault. See [this
+     * Managed identity of the Web Application Routing add-on. This is the identity that should be granted permissions,
+     * for example, to manage the associated Azure DNS resource and get certificates from Azure Key Vault. See [this
      * overview of the add-on](https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm) for more
      * instructions.
      */
@@ -51,7 +51,7 @@ public final class ManagedClusterIngressProfileWebAppRouting
     }
 
     /**
-     * Get the enabled property: Whether to enable the Application Routing add-on.
+     * Get the enabled property: Whether to enable Web App Routing.
      * 
      * @return the enabled value.
      */
@@ -60,7 +60,7 @@ public final class ManagedClusterIngressProfileWebAppRouting
     }
 
     /**
-     * Set the enabled property: Whether to enable the Application Routing add-on.
+     * Set the enabled property: Whether to enable Web App Routing.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterIngressProfileWebAppRouting object itself.
@@ -71,10 +71,10 @@ public final class ManagedClusterIngressProfileWebAppRouting
     }
 
     /**
-     * Get the dnsZoneResourceIds property: Resource IDs of the DNS zones to be associated with the Application Routing
-     * add-on. Used only when Application Routing add-on is enabled. Public and private DNS zones can be in different
-     * resource groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in
-     * the same resource group.
+     * Get the dnsZoneResourceIds property: Resource IDs of the DNS zones to be associated with the Web App Routing
+     * add-on. Used only when Web App Routing is enabled. Public and private DNS zones can be in different resource
+     * groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in the same
+     * resource group.
      * 
      * @return the dnsZoneResourceIds value.
      */
@@ -83,10 +83,10 @@ public final class ManagedClusterIngressProfileWebAppRouting
     }
 
     /**
-     * Set the dnsZoneResourceIds property: Resource IDs of the DNS zones to be associated with the Application Routing
-     * add-on. Used only when Application Routing add-on is enabled. Public and private DNS zones can be in different
-     * resource groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in
-     * the same resource group.
+     * Set the dnsZoneResourceIds property: Resource IDs of the DNS zones to be associated with the Web App Routing
+     * add-on. Used only when Web App Routing is enabled. Public and private DNS zones can be in different resource
+     * groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in the same
+     * resource group.
      * 
      * @param dnsZoneResourceIds the dnsZoneResourceIds value to set.
      * @return the ManagedClusterIngressProfileWebAppRouting object itself.
@@ -119,9 +119,9 @@ public final class ManagedClusterIngressProfileWebAppRouting
     }
 
     /**
-     * Get the identity property: Managed identity of the Application Routing add-on. This is the identity that should
-     * be granted permissions, for example, to manage the associated Azure DNS resource and get certificates from Azure
-     * Key Vault. See [this overview of the
+     * Get the identity property: Managed identity of the Web Application Routing add-on. This is the identity that
+     * should be granted permissions, for example, to manage the associated Azure DNS resource and get certificates from
+     * Azure Key Vault. See [this overview of the
      * add-on](https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm) for more instructions.
      * 
      * @return the identity value.

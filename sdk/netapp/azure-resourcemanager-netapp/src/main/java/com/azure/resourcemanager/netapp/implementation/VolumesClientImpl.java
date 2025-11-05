@@ -38,6 +38,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -322,6 +323,26 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GetGroupIdListForLdapUserRequest body, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listQuotaReport")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listQuotaReport(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listQuotaReport")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> listQuotaReportSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakReplication")
@@ -3734,6 +3755,281 @@ public final class VolumesClientImpl implements VolumesClient {
         Context context) {
         return beginListGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context)
             .getFinalResult();
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> listQuotaReportWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listQuotaReport(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> listQuotaReportWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listQuotaReportSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> listQuotaReportWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listQuotaReportSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of quota Report for volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
+        beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota Report for volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
+        beginListQuotaReport(String resourceGroupName, String accountName, String poolName, String volumeName) {
+        Response<BinaryData> response
+            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName);
+        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
+            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, Context.NONE);
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota Report for volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner> beginListQuotaReport(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        Response<BinaryData> response
+            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
+            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, context);
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ListQuotaReportResponseInner> listQuotaReportAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
+    }
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
     }
 
     /**

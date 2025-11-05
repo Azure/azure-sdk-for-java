@@ -10,7 +10,8 @@ package com.azure.resourcemanager.netapp.generated;
 public final class VolumesSplitCloneFromParentSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_SplitClone.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Volumes_SplitClone.
+     * json
      */
     /**
      * Sample code: Volumes_SplitClone.

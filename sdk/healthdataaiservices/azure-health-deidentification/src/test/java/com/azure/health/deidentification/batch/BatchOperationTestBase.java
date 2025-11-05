@@ -13,6 +13,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
+import com.azure.health.deidentification.DeidentificationServiceVersion;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
@@ -25,8 +26,10 @@ public class BatchOperationTestBase extends TestProxyTestBase {
     private boolean sanitizersRemoved = false;
     private static final String FAKE_STORAGE_ACCOUNT_SAS_URI
         = "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid";
+    protected static final String FAKE_JOB_NAME_WITH_NEXTLINK = "recordedJobWithNextLink";
     private static final String FAKE_NEXT_LINK
-        = "https://localhost:5020/jobs/recorded8-008r/documents?api-version=2024-11-15&maxpagesize=2&continuationToken=1234";
+        = String.format("https://localhost:5020/jobs/%s/documents?api-version=%s&maxpagesize=2&continuationToken=1234",
+            FAKE_JOB_NAME_WITH_NEXTLINK, DeidentificationServiceVersion.getLatest().getVersion());
     private static final String FAKE_CONTINUATION_TOKEN = "1234";
 
     protected DeidentificationClientBuilder getDeidServicesClientBuilder() {

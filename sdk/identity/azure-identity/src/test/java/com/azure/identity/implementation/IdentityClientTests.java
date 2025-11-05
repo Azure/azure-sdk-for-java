@@ -4,6 +4,10 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.test.utils.TestConfigurationSource;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -943,4 +947,38 @@ public class IdentityClientTests {
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
         assertEquals("Suggestion: Final message", result);
     }
+
+    @Test
+    public void testManagedCredentialSkipsImdsProbing() {
+        String accessToken = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // Create isolated configuration without affecting global system properties
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "managedidentitycredential"));
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+
+                when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                    .thenReturn(TestUtils.getMockAccessToken(accessToken, expiresOn));
+            })) {
+            assertNotNull(identityClientMock);
+
+            DefaultAzureCredential credential
+                = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+
+            StepVerifier.create(credential.getToken(request)).assertNext(token -> {
+                assertEquals(accessToken, token.getToken());
+                assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+            }).verifyComplete();
+
+            // Verify that only one IdentityClient was created (for ManagedIdentityCredential only)
+            // This indirectly proves that probing is skipped since the full credential chain isn't created
+            assertEquals(1, identityClientMock.constructed().size(),
+                "Should create only one IdentityClient when AZURE_TOKEN_CREDENTIALS=managedidentitycredential");
+        }
+    }
+
 }

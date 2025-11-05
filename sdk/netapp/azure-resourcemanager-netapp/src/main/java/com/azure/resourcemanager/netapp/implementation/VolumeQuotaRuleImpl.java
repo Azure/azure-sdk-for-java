@@ -8,7 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRuleInner;
-import com.azure.resourcemanager.netapp.models.ProvisioningState;
+import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
 import com.azure.resourcemanager.netapp.models.Type;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRulePatch;
@@ -49,7 +49,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
         return this.innerModel().systemData();
     }
 
-    public ProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

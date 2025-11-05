@@ -23,8 +23,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hdinsight.fluent.ExtensionsClient;
@@ -68,13 +70,24 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "HDInsightManagementC")
+    @ServiceInterface(name = "HDInsightManagementClientExtensions")
     public interface ExtensionsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableMonitoring(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClusterMonitoringRequest parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> enableMonitoringSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion,
@@ -91,10 +104,28 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ClusterMonitoringResponseInner> getMonitoringStatusSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableMonitoring(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> disableMonitoringSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -110,6 +141,16 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> enableAzureMonitorSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AzureMonitorRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -119,10 +160,28 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureMonitorResponseInner> getAzureMonitorStatusSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableAzureMonitor(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> disableAzureMonitorSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -138,10 +197,29 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitorAgent")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> enableAzureMonitorAgentSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AzureMonitorRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitorAgent")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureMonitorResponseInner>> getAzureMonitorAgentStatus(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitorAgent")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureMonitorResponseInner> getAzureMonitorAgentStatusSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -156,10 +234,29 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitorAgent")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> disableAzureMonitorAgentSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") Extension parameters, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
@@ -176,6 +273,16 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ClusterMonitoringResponseInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -186,10 +293,30 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}/azureAsyncOperations/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatus(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}/azureAsyncOperations/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AsyncOperationResultInner> getAzureAsyncOperationStatusSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
@@ -243,39 +370,85 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableMonitoringWithResponseAsync(String resourceGroupName,
-        String clusterName, ClusterMonitoringRequest parameters, Context context) {
+    private Response<BinaryData> enableMonitoringWithResponse(String resourceGroupName, String clusterName,
+        ClusterMonitoringRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.enableMonitoring(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            clusterName, this.client.getApiVersion(), parameters, accept, context);
+        return service.enableMonitoringSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Operations Management Suite (OMS) workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> enableMonitoringWithResponse(String resourceGroupName, String clusterName,
+        ClusterMonitoringRequest parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.enableMonitoringSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -304,28 +477,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableMonitoringAsync(String resourceGroupName, String clusterName,
-        ClusterMonitoringRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = enableMonitoringWithResponseAsync(resourceGroupName, clusterName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param parameters The Operations Management Suite (OMS) workspace parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,7 +485,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(String resourceGroupName, String clusterName,
         ClusterMonitoringRequest parameters) {
-        return this.beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        Response<BinaryData> response = enableMonitoringWithResponse(resourceGroupName, clusterName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -352,7 +504,9 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(String resourceGroupName, String clusterName,
         ClusterMonitoringRequest parameters, Context context) {
-        return this.beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        Response<BinaryData> response
+            = enableMonitoringWithResponse(resourceGroupName, clusterName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -379,32 +533,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableMonitoringAsync(String resourceGroupName, String clusterName,
-        ClusterMonitoringRequest parameters, Context context) {
-        return beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param parameters The Operations Management Suite (OMS) workspace parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableMonitoring(String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters) {
-        enableMonitoringAsync(resourceGroupName, clusterName, parameters).block();
+        beginEnableMonitoring(resourceGroupName, clusterName, parameters).getFinalResult();
     }
 
     /**
@@ -421,7 +556,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableMonitoring(String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters,
         Context context) {
-        enableMonitoringAsync(resourceGroupName, clusterName, parameters, context).block();
+        beginEnableMonitoring(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**
@@ -466,42 +601,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Operations Management Suite (OMS) on the HDInsight cluster along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterMonitoringResponseInner>>
-        getMonitoringStatusWithResponseAsync(String resourceGroupName, String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getMonitoringStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the status of Operations Management Suite (OMS) on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -529,7 +628,27 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterMonitoringResponseInner> getMonitoringStatusWithResponse(String resourceGroupName,
         String clusterName, Context context) {
-        return getMonitoringStatusWithResponseAsync(resourceGroupName, clusterName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getMonitoringStatusSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -588,34 +707,71 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> disableMonitoringWithResponse(String resourceGroupName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableMonitoringSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableMonitoringWithResponseAsync(String resourceGroupName,
-        String clusterName, Context context) {
+    private Response<BinaryData> disableMonitoringWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableMonitoring(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            clusterName, this.client.getApiVersion(), accept, context);
+        return service.disableMonitoringSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -641,27 +797,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableMonitoringAsync(String resourceGroupName, String clusterName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = disableMonitoringWithResponseAsync(resourceGroupName, clusterName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -669,7 +804,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(String resourceGroupName, String clusterName) {
-        return this.beginDisableMonitoringAsync(resourceGroupName, clusterName).getSyncPoller();
+        Response<BinaryData> response = disableMonitoringWithResponse(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -686,7 +822,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(String resourceGroupName, String clusterName,
         Context context) {
-        return this.beginDisableMonitoringAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        Response<BinaryData> response = disableMonitoringWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -710,30 +847,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableMonitoringAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginDisableMonitoringAsync(resourceGroupName, clusterName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableMonitoring(String resourceGroupName, String clusterName) {
-        disableMonitoringAsync(resourceGroupName, clusterName).block();
+        beginDisableMonitoring(resourceGroupName, clusterName).getFinalResult();
     }
 
     /**
@@ -748,7 +868,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableMonitoring(String resourceGroupName, String clusterName, Context context) {
-        disableMonitoringAsync(resourceGroupName, clusterName, context).block();
+        beginDisableMonitoring(resourceGroupName, clusterName, context).getFinalResult();
     }
 
     /**
@@ -799,39 +919,85 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableAzureMonitorWithResponseAsync(String resourceGroupName,
-        String clusterName, AzureMonitorRequest parameters, Context context) {
+    private Response<BinaryData> enableAzureMonitorWithResponse(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.enableAzureMonitor(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            clusterName, this.client.getApiVersion(), parameters, accept, context);
+        return service.enableAzureMonitorSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Enables the Azure Monitor on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> enableAzureMonitorWithResponse(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.enableAzureMonitorSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -860,28 +1026,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableAzureMonitorAsync(String resourceGroupName,
-        String clusterName, AzureMonitorRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = enableAzureMonitorWithResponseAsync(resourceGroupName, clusterName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Enables the Azure Monitor on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param parameters The Log Analytics workspace parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -890,7 +1034,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(String resourceGroupName, String clusterName,
         AzureMonitorRequest parameters) {
-        return this.beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        Response<BinaryData> response = enableAzureMonitorWithResponse(resourceGroupName, clusterName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -908,7 +1053,9 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(String resourceGroupName, String clusterName,
         AzureMonitorRequest parameters, Context context) {
-        return this.beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        Response<BinaryData> response
+            = enableAzureMonitorWithResponse(resourceGroupName, clusterName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -935,32 +1082,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableAzureMonitorAsync(String resourceGroupName, String clusterName,
-        AzureMonitorRequest parameters, Context context) {
-        return beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Enables the Azure Monitor on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param parameters The Log Analytics workspace parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableAzureMonitor(String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
-        enableAzureMonitorAsync(resourceGroupName, clusterName, parameters).block();
+        beginEnableAzureMonitor(resourceGroupName, clusterName, parameters).getFinalResult();
     }
 
     /**
@@ -977,7 +1105,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableAzureMonitor(String resourceGroupName, String clusterName, AzureMonitorRequest parameters,
         Context context) {
-        enableAzureMonitorAsync(resourceGroupName, clusterName, parameters, context).block();
+        beginEnableAzureMonitor(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**
@@ -1022,42 +1150,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Azure Monitor on the HDInsight cluster along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureMonitorResponseInner>> getAzureMonitorStatusWithResponseAsync(String resourceGroupName,
-        String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getAzureMonitorStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the status of Azure Monitor on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1083,7 +1175,27 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureMonitorResponseInner> getAzureMonitorStatusWithResponse(String resourceGroupName,
         String clusterName, Context context) {
-        return getAzureMonitorStatusWithResponseAsync(resourceGroupName, clusterName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getAzureMonitorStatusSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1142,33 +1254,70 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> disableAzureMonitorWithResponse(String resourceGroupName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableAzureMonitorSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Disables the Azure Monitor on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableAzureMonitorWithResponseAsync(String resourceGroupName,
-        String clusterName, Context context) {
+    private Response<BinaryData> disableAzureMonitorWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableAzureMonitor(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.disableAzureMonitorSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1195,27 +1344,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableAzureMonitorAsync(String resourceGroupName,
-        String clusterName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = disableAzureMonitorWithResponseAsync(resourceGroupName, clusterName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Disables the Azure Monitor on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1223,7 +1351,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(String resourceGroupName, String clusterName) {
-        return this.beginDisableAzureMonitorAsync(resourceGroupName, clusterName).getSyncPoller();
+        Response<BinaryData> response = disableAzureMonitorWithResponse(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1240,7 +1369,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(String resourceGroupName, String clusterName,
         Context context) {
-        return this.beginDisableAzureMonitorAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        Response<BinaryData> response = disableAzureMonitorWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1264,30 +1394,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableAzureMonitorAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginDisableAzureMonitorAsync(resourceGroupName, clusterName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disables the Azure Monitor on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableAzureMonitor(String resourceGroupName, String clusterName) {
-        disableAzureMonitorAsync(resourceGroupName, clusterName).block();
+        beginDisableAzureMonitor(resourceGroupName, clusterName).getFinalResult();
     }
 
     /**
@@ -1302,7 +1415,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableAzureMonitor(String resourceGroupName, String clusterName, Context context) {
-        disableAzureMonitorAsync(resourceGroupName, clusterName, context).block();
+        beginDisableAzureMonitor(resourceGroupName, clusterName, context).getFinalResult();
     }
 
     /**
@@ -1353,38 +1466,84 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableAzureMonitorAgentWithResponseAsync(String resourceGroupName,
-        String clusterName, AzureMonitorRequest parameters, Context context) {
+    private Response<BinaryData> enableAzureMonitorAgentWithResponse(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.enableAzureMonitorAgent(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.enableAzureMonitorAgentSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Enables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> enableAzureMonitorAgentWithResponse(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.enableAzureMonitorAgentSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, this.client.getApiVersion(), parameters, accept, context);
     }
 
@@ -1414,28 +1573,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableAzureMonitorAgentAsync(String resourceGroupName,
-        String clusterName, AzureMonitorRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = enableAzureMonitorAgentWithResponseAsync(resourceGroupName, clusterName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Enables the Azure Monitor Agent on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param parameters The Log Analytics workspace parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1444,7 +1581,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitorAgent(String resourceGroupName, String clusterName,
         AzureMonitorRequest parameters) {
-        return this.beginEnableAzureMonitorAgentAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        Response<BinaryData> response = enableAzureMonitorAgentWithResponse(resourceGroupName, clusterName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1462,8 +1600,9 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitorAgent(String resourceGroupName, String clusterName,
         AzureMonitorRequest parameters, Context context) {
-        return this.beginEnableAzureMonitorAgentAsync(resourceGroupName, clusterName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = enableAzureMonitorAgentWithResponse(resourceGroupName, clusterName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1490,32 +1629,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableAzureMonitorAgentAsync(String resourceGroupName, String clusterName,
-        AzureMonitorRequest parameters, Context context) {
-        return beginEnableAzureMonitorAgentAsync(resourceGroupName, clusterName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Enables the Azure Monitor Agent on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param parameters The Log Analytics workspace parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableAzureMonitorAgent(String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
-        enableAzureMonitorAgentAsync(resourceGroupName, clusterName, parameters).block();
+        beginEnableAzureMonitorAgent(resourceGroupName, clusterName, parameters).getFinalResult();
     }
 
     /**
@@ -1532,7 +1652,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableAzureMonitorAgent(String resourceGroupName, String clusterName, AzureMonitorRequest parameters,
         Context context) {
-        enableAzureMonitorAgentAsync(resourceGroupName, clusterName, parameters, context).block();
+        beginEnableAzureMonitorAgent(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**
@@ -1577,42 +1697,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Azure Monitor Agent on the HDInsight cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureMonitorResponseInner>>
-        getAzureMonitorAgentStatusWithResponseAsync(String resourceGroupName, String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getAzureMonitorAgentStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the status of Azure Monitor Agent on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1639,7 +1723,27 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureMonitorResponseInner> getAzureMonitorAgentStatusWithResponse(String resourceGroupName,
         String clusterName, Context context) {
-        return getAzureMonitorAgentStatusWithResponseAsync(resourceGroupName, clusterName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getAzureMonitorAgentStatusSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1698,33 +1802,70 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> disableAzureMonitorAgentWithResponse(String resourceGroupName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableAzureMonitorAgentSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Disables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableAzureMonitorAgentWithResponseAsync(String resourceGroupName,
-        String clusterName, Context context) {
+    private Response<BinaryData> disableAzureMonitorAgentWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableAzureMonitorAgent(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.disableAzureMonitorAgentSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1752,27 +1893,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableAzureMonitorAgentAsync(String resourceGroupName,
-        String clusterName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = disableAzureMonitorAgentWithResponseAsync(resourceGroupName, clusterName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Disables the Azure Monitor Agent on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1781,7 +1901,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitorAgent(String resourceGroupName,
         String clusterName) {
-        return this.beginDisableAzureMonitorAgentAsync(resourceGroupName, clusterName).getSyncPoller();
+        Response<BinaryData> response = disableAzureMonitorAgentWithResponse(resourceGroupName, clusterName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1798,7 +1919,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitorAgent(String resourceGroupName,
         String clusterName, Context context) {
-        return this.beginDisableAzureMonitorAgentAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        Response<BinaryData> response = disableAzureMonitorAgentWithResponse(resourceGroupName, clusterName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1822,30 +1944,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableAzureMonitorAgentAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginDisableAzureMonitorAgentAsync(resourceGroupName, clusterName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disables the Azure Monitor Agent on the HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableAzureMonitorAgent(String resourceGroupName, String clusterName) {
-        disableAzureMonitorAgentAsync(resourceGroupName, clusterName).block();
+        beginDisableAzureMonitorAgent(resourceGroupName, clusterName).getFinalResult();
     }
 
     /**
@@ -1860,7 +1965,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableAzureMonitorAgent(String resourceGroupName, String clusterName, Context context) {
-        disableAzureMonitorAgentAsync(resourceGroupName, clusterName, context).block();
+        beginDisableAzureMonitorAgent(resourceGroupName, clusterName, context).getFinalResult();
     }
 
     /**
@@ -1916,41 +2021,93 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
      * @param parameters The cluster extensions create request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
-        String extensionName, Extension parameters, Context context) {
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String clusterName, String extensionName,
+        Extension parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (extensionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, extensionName, this.client.getApiVersion(), parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Creates an HDInsight cluster extension.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param extensionName The name of the cluster extension.
+     * @param parameters The cluster extensions create request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String clusterName, String extensionName,
+        Extension parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (extensionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             clusterName, extensionName, this.client.getApiVersion(), parameters, accept, context);
     }
 
@@ -1982,29 +2139,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
      * @param parameters The cluster extensions create request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String clusterName,
-        String extensionName, Extension parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, clusterName, extensionName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Creates an HDInsight cluster extension.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param extensionName The name of the cluster extension.
-     * @param parameters The cluster extensions create request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2013,7 +2147,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String clusterName,
         String extensionName, Extension parameters) {
-        return this.beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters).getSyncPoller();
+        Response<BinaryData> response = createWithResponse(resourceGroupName, clusterName, extensionName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2032,8 +2167,9 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String clusterName,
         String extensionName, Extension parameters, Context context) {
-        return this.beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, clusterName, extensionName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2062,33 +2198,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
      * @param parameters The cluster extensions create request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createAsync(String resourceGroupName, String clusterName, String extensionName,
-        Extension parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates an HDInsight cluster extension.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param extensionName The name of the cluster extension.
-     * @param parameters The cluster extensions create request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters) {
-        createAsync(resourceGroupName, clusterName, extensionName, parameters).block();
+        beginCreate(resourceGroupName, clusterName, extensionName, parameters).getFinalResult();
     }
 
     /**
@@ -2106,7 +2222,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters,
         Context context) {
-        createAsync(resourceGroupName, clusterName, extensionName, parameters, context).block();
+        beginCreate(resourceGroupName, clusterName, extensionName, parameters, context).getFinalResult();
     }
 
     /**
@@ -2155,46 +2271,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the extension properties for the specified HDInsight cluster extension along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterMonitoringResponseInner>> getWithResponseAsync(String resourceGroupName,
-        String clusterName, String extensionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (extensionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
-            extensionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the extension properties for the specified HDInsight cluster extension.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param extensionName The name of the cluster extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2223,7 +2299,31 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterMonitoringResponseInner> getWithResponse(String resourceGroupName, String clusterName,
         String extensionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, extensionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (extensionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, extensionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2287,36 +2387,80 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
+        String extensionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (extensionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, extensionName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified extension for HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param extensionName The name of the cluster extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
-        String extensionName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String extensionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (extensionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             clusterName, extensionName, this.client.getApiVersion(), accept, context);
     }
 
@@ -2345,28 +2489,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        String extensionName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, clusterName, extensionName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes the specified extension for HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param extensionName The name of the cluster extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2375,7 +2497,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String extensionName) {
-        return this.beginDeleteAsync(resourceGroupName, clusterName, extensionName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, extensionName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2393,7 +2516,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String extensionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, clusterName, extensionName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, extensionName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2419,32 +2543,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String extensionName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, extensionName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified extension for HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param extensionName The name of the cluster extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String extensionName) {
-        deleteAsync(resourceGroupName, clusterName, extensionName).block();
+        beginDelete(resourceGroupName, clusterName, extensionName).getFinalResult();
     }
 
     /**
@@ -2460,7 +2565,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String extensionName, Context context) {
-        deleteAsync(resourceGroupName, clusterName, extensionName, context).block();
+        beginDelete(resourceGroupName, clusterName, extensionName, context).getFinalResult();
     }
 
     /**
@@ -2514,49 +2619,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
      * @param operationId The long running operation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatusWithResponseAsync(
-        String resourceGroupName, String clusterName, String extensionName, String operationId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (extensionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
-        }
-        if (operationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getAzureAsyncOperationStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, extensionName, this.client.getApiVersion(), operationId, accept, context);
-    }
-
-    /**
-     * Gets the async operation status.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param extensionName The name of the cluster extension.
-     * @param operationId The long running operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2585,8 +2647,35 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(String resourceGroupName,
         String clusterName, String extensionName, String operationId, Context context) {
-        return getAzureAsyncOperationStatusWithResponseAsync(resourceGroupName, clusterName, extensionName, operationId,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (extensionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getAzureAsyncOperationStatusSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, extensionName, this.client.getApiVersion(), operationId, accept, context);
     }
 
     /**
@@ -2607,4 +2696,6 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         return getAzureAsyncOperationStatusWithResponse(resourceGroupName, clusterName, extensionName, operationId,
             Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExtensionsClientImpl.class);
 }

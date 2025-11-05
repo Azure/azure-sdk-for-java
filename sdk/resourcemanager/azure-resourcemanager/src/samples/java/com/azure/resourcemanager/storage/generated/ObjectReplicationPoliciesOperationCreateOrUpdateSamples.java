@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.generated;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyFilter;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesMetrics;
+import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesPriorityReplication;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
 import java.util.Arrays;
 
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountCreateObjectReplicationPolicyOnSource.json
      */
     /**
@@ -41,12 +42,14 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                                     .withFilters(new ObjectReplicationPolicyFilter()
                                         .withPrefixMatch(Arrays.asList("blobA", "blobB"))
                                         .withMinCreationTime("2020-02-19T16:05:00Z"))))
-                    .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true)),
+                    .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true))
+                    .withPriorityReplication(
+                        new ObjectReplicationPolicyPropertiesPriorityReplication().withEnabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateObjectReplicationPolicyOnDestination.json
      */
     /**
@@ -72,12 +75,14 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                                     .withPrefixMatch(Arrays.asList("blobA", "blobB"))),
                             new ObjectReplicationPolicyRule().withSourceContainer("scont179")
                                 .withDestinationContainer("dcont179")))
-                    .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true)),
+                    .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true))
+                    .withPriorityReplication(
+                        new ObjectReplicationPolicyPropertiesPriorityReplication().withEnabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountCreateObjectReplicationPolicyOnDestination.json
      */
     /**
@@ -97,12 +102,13 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                 .withRules(Arrays.asList(new ObjectReplicationPolicyRule().withSourceContainer("scont139")
                     .withDestinationContainer("dcont139")
                     .withFilters(new ObjectReplicationPolicyFilter().withPrefixMatch(Arrays.asList("blobA", "blobB")))))
-                .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true)),
+                .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true))
+                .withPriorityReplication(new ObjectReplicationPolicyPropertiesPriorityReplication().withEnabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateObjectReplicationPolicyOnSource.json
      */
     /**
@@ -129,7 +135,9 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                             new ObjectReplicationPolicyRule().withRuleId("cfbb4bc2-8b60-429f-b05a-d1e0942b33b2")
                                 .withSourceContainer("scont179")
                                 .withDestinationContainer("dcont179")))
-                    .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true)),
+                    .withMetrics(new ObjectReplicationPolicyPropertiesMetrics().withEnabled(true))
+                    .withPriorityReplication(
+                        new ObjectReplicationPolicyPropertiesPriorityReplication().withEnabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 }

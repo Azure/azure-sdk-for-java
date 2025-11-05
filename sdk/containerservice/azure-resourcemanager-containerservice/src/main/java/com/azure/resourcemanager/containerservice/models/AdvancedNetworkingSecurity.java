@@ -12,15 +12,29 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Security profile to enable security features on cilium based cluster.
+ * Security profile to enable security features on cilium-based cluster.
  */
 @Fluent
 public final class AdvancedNetworkingSecurity implements JsonSerializable<AdvancedNetworkingSecurity> {
     /*
-     * This feature allows user to configure network policy based on DNS (FQDN) names. It can be enabled only on cilium
-     * based clusters. If not specified, the default is false.
+     * Configure Advanced Networking Security features on Cilium clusters. See individual fields for their default
+     * values.
      */
     private Boolean enabled;
+
+    /*
+     * Enable advanced network policies. This allows users to configure Layer 7 network policies (FQDN, HTTP, Kafka).
+     * Policies themselves must be configured via the Cilium Network Policy resources, see
+     * https://docs.cilium.io/en/latest/security/policy/index.html. This can be enabled only on cilium-based clusters.
+     * If not specified, the default value is FQDN if security.enabled is set to true.
+     */
+    private AdvancedNetworkPolicies advancedNetworkPolicies;
+
+    /*
+     * Encryption configuration for Cilium-based clusters. Once enabled all traffic between Cilium managed pods will be
+     * encrypted when it leaves the node boundary.
+     */
+    private AdvancedNetworkingSecurityTransitEncryption transitEncryption;
 
     /**
      * Creates an instance of AdvancedNetworkingSecurity class.
@@ -29,8 +43,8 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
     }
 
     /**
-     * Get the enabled property: This feature allows user to configure network policy based on DNS (FQDN) names. It can
-     * be enabled only on cilium based clusters. If not specified, the default is false.
+     * Get the enabled property: Configure Advanced Networking Security features on Cilium clusters. See individual
+     * fields for their default values.
      * 
      * @return the enabled value.
      */
@@ -39,8 +53,8 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
     }
 
     /**
-     * Set the enabled property: This feature allows user to configure network policy based on DNS (FQDN) names. It can
-     * be enabled only on cilium based clusters. If not specified, the default is false.
+     * Set the enabled property: Configure Advanced Networking Security features on Cilium clusters. See individual
+     * fields for their default values.
      * 
      * @param enabled the enabled value to set.
      * @return the AdvancedNetworkingSecurity object itself.
@@ -51,11 +65,63 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
     }
 
     /**
+     * Get the advancedNetworkPolicies property: Enable advanced network policies. This allows users to configure Layer
+     * 7 network policies (FQDN, HTTP, Kafka). Policies themselves must be configured via the Cilium Network Policy
+     * resources, see https://docs.cilium.io/en/latest/security/policy/index.html. This can be enabled only on
+     * cilium-based clusters. If not specified, the default value is FQDN if security.enabled is set to true.
+     * 
+     * @return the advancedNetworkPolicies value.
+     */
+    public AdvancedNetworkPolicies advancedNetworkPolicies() {
+        return this.advancedNetworkPolicies;
+    }
+
+    /**
+     * Set the advancedNetworkPolicies property: Enable advanced network policies. This allows users to configure Layer
+     * 7 network policies (FQDN, HTTP, Kafka). Policies themselves must be configured via the Cilium Network Policy
+     * resources, see https://docs.cilium.io/en/latest/security/policy/index.html. This can be enabled only on
+     * cilium-based clusters. If not specified, the default value is FQDN if security.enabled is set to true.
+     * 
+     * @param advancedNetworkPolicies the advancedNetworkPolicies value to set.
+     * @return the AdvancedNetworkingSecurity object itself.
+     */
+    public AdvancedNetworkingSecurity withAdvancedNetworkPolicies(AdvancedNetworkPolicies advancedNetworkPolicies) {
+        this.advancedNetworkPolicies = advancedNetworkPolicies;
+        return this;
+    }
+
+    /**
+     * Get the transitEncryption property: Encryption configuration for Cilium-based clusters. Once enabled all traffic
+     * between Cilium managed pods will be encrypted when it leaves the node boundary.
+     * 
+     * @return the transitEncryption value.
+     */
+    public AdvancedNetworkingSecurityTransitEncryption transitEncryption() {
+        return this.transitEncryption;
+    }
+
+    /**
+     * Set the transitEncryption property: Encryption configuration for Cilium-based clusters. Once enabled all traffic
+     * between Cilium managed pods will be encrypted when it leaves the node boundary.
+     * 
+     * @param transitEncryption the transitEncryption value to set.
+     * @return the AdvancedNetworkingSecurity object itself.
+     */
+    public AdvancedNetworkingSecurity
+        withTransitEncryption(AdvancedNetworkingSecurityTransitEncryption transitEncryption) {
+        this.transitEncryption = transitEncryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (transitEncryption() != null) {
+            transitEncryption().validate();
+        }
     }
 
     /**
@@ -65,6 +131,9 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("advancedNetworkPolicies",
+            this.advancedNetworkPolicies == null ? null : this.advancedNetworkPolicies.toString());
+        jsonWriter.writeJsonField("transitEncryption", this.transitEncryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +154,12 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
 
                 if ("enabled".equals(fieldName)) {
                     deserializedAdvancedNetworkingSecurity.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("advancedNetworkPolicies".equals(fieldName)) {
+                    deserializedAdvancedNetworkingSecurity.advancedNetworkPolicies
+                        = AdvancedNetworkPolicies.fromString(reader.getString());
+                } else if ("transitEncryption".equals(fieldName)) {
+                    deserializedAdvancedNetworkingSecurity.transitEncryption
+                        = AdvancedNetworkingSecurityTransitEncryption.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

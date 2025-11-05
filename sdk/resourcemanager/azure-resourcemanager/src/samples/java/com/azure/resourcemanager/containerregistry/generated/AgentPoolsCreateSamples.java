@@ -15,8 +15,8 @@ import java.util.Map;
 public final class AgentPoolsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * AgentPoolsCreate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/AgentPoolsCreate.json
      */
     /**
      * Sample code: AgentPools_Create.

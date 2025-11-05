@@ -40,112 +40,10 @@ import reactor.core.publisher.Mono;
 public interface RegistriesClient
     extends InnerSupportsGet<RegistryInner>, InnerSupportsListing<RegistryInner>, InnerSupportsDelete<Void> {
     /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> importImageWithResponseAsync(String resourceGroupName, String registryName,
-        ImportImageParameters parameters);
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginImportImageAsync(String resourceGroupName, String registryName,
-        ImportImageParameters parameters);
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginImportImage(String resourceGroupName, String registryName,
-        ImportImageParameters parameters);
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginImportImage(String resourceGroupName, String registryName,
-        ImportImageParameters parameters, Context context);
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> importImageAsync(String resourceGroupName, String registryName, ImportImageParameters parameters);
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void importImage(String resourceGroupName, String registryName, ImportImageParameters parameters);
-
-    /**
-     * Copies an image to this container registry from the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param parameters The parameters specifying the image to copy and the source container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void importImage(String resourceGroupName, String registryName, ImportImageParameters parameters, Context context);
-
-    /**
      * Checks whether the container registry name is available for use. The name must contain only alphanumeric
      * characters, be globally unique, and between 5 and 50 characters in length.
      * 
-     * @param registryNameCheckRequest The object containing information for the availability request.
+     * @param registryNameCheckRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,7 +58,7 @@ public interface RegistriesClient
      * Checks whether the container registry name is available for use. The name must contain only alphanumeric
      * characters, be globally unique, and between 5 and 50 characters in length.
      * 
-     * @param registryNameCheckRequest The object containing information for the availability request.
+     * @param registryNameCheckRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -174,7 +72,7 @@ public interface RegistriesClient
      * Checks whether the container registry name is available for use. The name must contain only alphanumeric
      * characters, be globally unique, and between 5 and 50 characters in length.
      * 
-     * @param registryNameCheckRequest The object containing information for the availability request.
+     * @param registryNameCheckRequest The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -190,7 +88,7 @@ public interface RegistriesClient
      * Checks whether the container registry name is available for use. The name must contain only alphanumeric
      * characters, be globally unique, and between 5 and 50 characters in length.
      * 
-     * @param registryNameCheckRequest The object containing information for the availability request.
+     * @param registryNameCheckRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -429,97 +327,6 @@ public interface RegistriesClient
     RegistryInner create(String resourceGroupName, String registryName, RegistryInner registry, Context context);
 
     /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName);
-
-    /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, Context context);
-
-    /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String registryName);
-
-    /**
-     * Deletes a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String registryName, Context context);
-
-    /**
      * Updates a container registry with the specified parameters.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -628,35 +435,46 @@ public interface RegistriesClient
         RegistryUpdateParameters registryUpdateParameters, Context context);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Deletes a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RegistryUsageListResultInner>> listUsagesWithResponseAsync(String resourceGroupName,
-        String registryName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Deletes a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RegistryUsageListResultInner> listUsagesAsync(String resourceGroupName, String registryName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Deletes a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName);
+
+    /**
+     * Deletes a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -664,55 +482,38 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, Context context);
+
+    /**
+     * Deletes a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistryUsageListResultInner> listUsagesWithResponse(String resourceGroupName, String registryName,
-        Context context);
+    Mono<Void> deleteAsync(String resourceGroupName, String registryName);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Deletes a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RegistryUsageListResultInner listUsages(String resourceGroupName, String registryName);
+    void delete(String resourceGroupName, String registryName);
 
     /**
-     * Lists the private link resources for a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry as paginated response
-     * with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PrivateLinkResourceInner> listPrivateLinkResourcesAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Lists the private link resources for a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry as paginated response
-     * with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(String resourceGroupName, String registryName);
-
-    /**
-     * Lists the private link resources for a container registry.
+     * Deletes a container registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
@@ -720,196 +521,9 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry as paginated response
-     * with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(String resourceGroupName, String registryName,
-        Context context);
-
-    /**
-     * Gets a private link resource by a specified group name for a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource by a specified group name for a container registry along with {@link Response} on
-     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateLinkResourceInner>> getPrivateLinkResourceWithResponseAsync(String resourceGroupName,
-        String registryName, String groupName);
-
-    /**
-     * Gets a private link resource by a specified group name for a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource by a specified group name for a container registry on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkResourceInner> getPrivateLinkResourceAsync(String resourceGroupName, String registryName,
-        String groupName);
-
-    /**
-     * Gets a private link resource by a specified group name for a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param groupName The name of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource by a specified group name for a container registry along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getPrivateLinkResourceWithResponse(String resourceGroupName, String registryName,
-        String groupName, Context context);
-
-    /**
-     * Gets a private link resource by a specified group name for a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource by a specified group name for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourceInner getPrivateLinkResource(String resourceGroupName, String registryName, String groupName);
-
-    /**
-     * Lists the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RegistryListCredentialsResultInner>> listCredentialsWithResponseAsync(String resourceGroupName,
-        String registryName);
-
-    /**
-     * Lists the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Lists the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistryListCredentialsResultInner> listCredentialsWithResponse(String resourceGroupName,
-        String registryName, Context context);
-
-    /**
-     * Lists the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RegistryListCredentialsResultInner listCredentials(String resourceGroupName, String registryName);
-
-    /**
-     * Regenerates one of the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
-     * password2.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RegistryListCredentialsResultInner>> regenerateCredentialWithResponseAsync(String resourceGroupName,
-        String registryName, RegenerateCredentialParameters regenerateCredentialParameters);
-
-    /**
-     * Regenerates one of the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
-     * password2.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName,
-        RegenerateCredentialParameters regenerateCredentialParameters);
-
-    /**
-     * Regenerates one of the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
-     * password2.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistryListCredentialsResultInner> regenerateCredentialWithResponse(String resourceGroupName,
-        String registryName, RegenerateCredentialParameters regenerateCredentialParameters, Context context);
-
-    /**
-     * Regenerates one of the login credentials for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
-     * password2.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RegistryListCredentialsResultInner regenerateCredential(String resourceGroupName, String registryName,
-        RegenerateCredentialParameters regenerateCredentialParameters);
+    void delete(String resourceGroupName, String registryName, Context context);
 
     /**
      * Generate keys for a token of a specified container registry.
@@ -1020,6 +634,392 @@ public interface RegistriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     GenerateCredentialsResultInner generateCredentials(String resourceGroupName, String registryName,
         GenerateCredentialsParameters generateCredentialsParameters, Context context);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> importImageWithResponseAsync(String resourceGroupName, String registryName,
+        ImportImageParameters parameters);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginImportImageAsync(String resourceGroupName, String registryName,
+        ImportImageParameters parameters);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginImportImage(String resourceGroupName, String registryName,
+        ImportImageParameters parameters);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginImportImage(String resourceGroupName, String registryName,
+        ImportImageParameters parameters, Context context);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> importImageAsync(String resourceGroupName, String registryName, ImportImageParameters parameters);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void importImage(String resourceGroupName, String registryName, ImportImageParameters parameters);
+
+    /**
+     * Copies an image to this container registry from the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param parameters The parameters specifying the image to copy and the source container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void importImage(String resourceGroupName, String registryName, ImportImageParameters parameters, Context context);
+
+    /**
+     * Lists the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RegistryListCredentialsResultInner>> listCredentialsWithResponseAsync(String resourceGroupName,
+        String registryName);
+
+    /**
+     * Lists the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RegistryListCredentialsResultInner> listCredentialsWithResponse(String resourceGroupName,
+        String registryName, Context context);
+
+    /**
+     * Lists the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegistryListCredentialsResultInner listCredentials(String resourceGroupName, String registryName);
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RegistryUsageListResultInner>> listUsagesWithResponseAsync(String resourceGroupName,
+        String registryName);
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RegistryUsageListResultInner> listUsagesAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RegistryUsageListResultInner> listUsagesWithResponse(String resourceGroupName, String registryName,
+        Context context);
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegistryUsageListResultInner listUsages(String resourceGroupName, String registryName);
+
+    /**
+     * Lists the private link resources for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private link resources for a container registry as paginated response
+     * with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PrivateLinkResourceInner> listPrivateLinkResourcesAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists the private link resources for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private link resources for a container registry as paginated response
+     * with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(String resourceGroupName, String registryName);
+
+    /**
+     * Lists the private link resources for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private link resources for a container registry as paginated response
+     * with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(String resourceGroupName, String registryName,
+        Context context);
+
+    /**
+     * Gets a private link resource by a specified group name for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link associated with the Azure resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource by a specified group name for a container registry along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PrivateLinkResourceInner>> getPrivateLinkResourceWithResponseAsync(String resourceGroupName,
+        String registryName, String groupName);
+
+    /**
+     * Gets a private link resource by a specified group name for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link associated with the Azure resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource by a specified group name for a container registry on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PrivateLinkResourceInner> getPrivateLinkResourceAsync(String resourceGroupName, String registryName,
+        String groupName);
+
+    /**
+     * Gets a private link resource by a specified group name for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link associated with the Azure resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource by a specified group name for a container registry along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateLinkResourceInner> getPrivateLinkResourceWithResponse(String resourceGroupName, String registryName,
+        String groupName, Context context);
+
+    /**
+     * Gets a private link resource by a specified group name for a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link associated with the Azure resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource by a specified group name for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourceInner getPrivateLinkResource(String resourceGroupName, String registryName, String groupName);
+
+    /**
+     * Regenerates one of the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
+     * password2.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RegistryListCredentialsResultInner>> regenerateCredentialWithResponseAsync(String resourceGroupName,
+        String registryName, RegenerateCredentialParameters regenerateCredentialParameters);
+
+    /**
+     * Regenerates one of the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
+     * password2.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName,
+        RegenerateCredentialParameters regenerateCredentialParameters);
+
+    /**
+     * Regenerates one of the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
+     * password2.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RegistryListCredentialsResultInner> regenerateCredentialWithResponse(String resourceGroupName,
+        String registryName, RegenerateCredentialParameters regenerateCredentialParameters, Context context);
+
+    /**
+     * Regenerates one of the login credentials for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param regenerateCredentialParameters Specifies name of the password which should be regenerated -- password or
+     * password2.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the ListCredentials operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegistryListCredentialsResultInner regenerateCredential(String resourceGroupName, String registryName,
+        RegenerateCredentialParameters regenerateCredentialParameters);
 
     /**
      * Schedules a new run based on the request parameters and add it to the run queue.

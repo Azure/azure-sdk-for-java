@@ -12,14 +12,14 @@ public final class VolumeSnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeSnapshotProperties model
-            = BinaryData.fromString("{\"snapshotPolicyId\":\"bm\"}").toObject(VolumeSnapshotProperties.class);
-        Assertions.assertEquals("bm", model.snapshotPolicyId());
+            = BinaryData.fromString("{\"snapshotPolicyId\":\"twss\"}").toObject(VolumeSnapshotProperties.class);
+        Assertions.assertEquals("twss", model.snapshotPolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeSnapshotProperties model = new VolumeSnapshotProperties().withSnapshotPolicyId("bm");
+        VolumeSnapshotProperties model = new VolumeSnapshotProperties().withSnapshotPolicyId("twss");
         model = BinaryData.fromObject(model).toObject(VolumeSnapshotProperties.class);
-        Assertions.assertEquals("bm", model.snapshotPolicyId());
+        Assertions.assertEquals("twss", model.snapshotPolicyId());
     }
 }

@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * NIC type - PublicNic, PrivateNic, or AdditionalNic.
+ * NIC type - PublicNic, PrivateNic, or AdditionalNic; AdditionalPrivateNic and AdditionalPublicNic are only supported
+ * for NVAs deployed in VNets.
  */
 public final class NicTypeInResponse extends ExpandableStringEnum<NicTypeInResponse> {
     /**

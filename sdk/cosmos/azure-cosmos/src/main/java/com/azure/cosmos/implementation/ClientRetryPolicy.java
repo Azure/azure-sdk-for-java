@@ -137,7 +137,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
-                return shouldRetryOnGatewayTimeout();
+                return shouldRetryOnGatewayTimeout(clientException);
             }
         }
 
@@ -177,18 +177,20 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             }
 
             return this.shouldRetryOnRequestTimeout(
+                clientException,
                 this.isReadRequest,
                 this.request.getNonIdempotentWriteRetriesEnabled(),
                 clientException.getSubStatusCode());
         }
 
-        if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR)) {
 
-            if (logger.isDebugEnabled()) {
-                logger.info("Internal server error - IsReadRequest {}", this.isReadRequest, e);
-            }
+        if (clientException != null
+            && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR)
+            && !Exceptions.isClientAssignedSubStatusCodeForInternalServerError(clientException.getStatusCode(), clientException.getSubStatusCode())) {
 
-            return this.shouldRetryOnInternalServerError();
+            logger.error("Internal server error - IsReadRequest " + this.isReadRequest, e);
+
+            return this.shouldRetryOnInternalServerError(clientException);
         }
 
         if (this.request != null
@@ -302,12 +304,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnGatewayTimeout() {
+    private Mono<ShouldRetryResult> shouldRetryOnGatewayTimeout(CosmosException clientException) {
 
         boolean canPerformCrossRegionRetryOnGatewayReadTimeout = canRequestToGatewayBeSafelyRetriedOnReadTimeout(this.request);
 
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
-            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute);
+            try {
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute, false);
+            } catch (CosmosException e) {
+                logger.error("Per-partition circuit breaker hit an exception when failing over for", clientException);
+                BridgeInternal.setCosmosDiagnostics(e, this.cosmosDiagnostics);
+                return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+            }
         }
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
@@ -372,8 +380,13 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         CosmosException cosmosException) {
 
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
-            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute);
+            try {
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute, false);
+            } catch (CosmosException e) {
+                logger.error("Per-partition circuit breaker hit an exception when failing over for", cosmosException);
+                BridgeInternal.setCosmosDiagnostics(e, this.cosmosDiagnostics);
+                return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+            }
         }
 
         boolean isPPAFBasedFailoverApplied = this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false);
@@ -438,6 +451,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnRequestTimeout(
+        CosmosException cosmosException,
         boolean isReadRequest,
         boolean nonIdempotentWriteRetriesEnabled,
         int subStatusCode) {
@@ -445,10 +459,13 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
             if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
                 if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
-
-                    this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
-                        this.request,
-                        this.request.requestContext.regionalRoutingContextToRoute);
+                    try {
+                        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute, false);
+                    } catch (CosmosException e) {
+                        logger.error("Per-partition circuit breaker hit an exception when failing over for", cosmosException);
+                        BridgeInternal.setCosmosDiagnostics(e, this.cosmosDiagnostics);
+                        return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+                    }
                 }
             }
         }
@@ -460,14 +477,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return Mono.just(ShouldRetryResult.NO_RETRY);
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnInternalServerError() {
+    private Mono<ShouldRetryResult> shouldRetryOnInternalServerError(CosmosException cosmosException) {
 
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
-
-            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
-                this.request,
-                this.request.requestContext.regionalRoutingContextToRoute);
-
+            try {
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute, false);
+            } catch (CosmosException e) {
+                logger.error("Per-partition circuit breaker hit an exception when failing over for", cosmosException);
+                BridgeInternal.setCosmosDiagnostics(e, this.cosmosDiagnostics);
+                return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+            }
         }
 
         return Mono.just(ShouldRetryResult.NO_RETRY);

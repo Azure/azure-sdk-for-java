@@ -23,7 +23,7 @@ public final class MaintenanceConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Thursday\",\"startHourUtc\":834960499,\"durationHours\":2147399640},{\"weekDay\":\"Sunday\",\"startHourUtc\":941427858,\"durationHours\":1063904252},{\"weekDay\":\"Saturday\",\"startHourUtc\":186736869,\"durationHours\":293128413},{\"weekDay\":\"Thursday\",\"startHourUtc\":1455522664,\"durationHours\":1610433650}]},\"id\":\"j\",\"name\":\"owggx\",\"type\":\"wwdmbyp\"}]}";
+            = "{\"value\":[{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Thursday\",\"startHourUtc\":428488381,\"durationHours\":276935692},{\"weekDay\":\"Thursday\",\"startHourUtc\":2081787522,\"durationHours\":1931497357},{\"weekDay\":\"Monday\",\"startHourUtc\":562316193,\"durationHours\":1040898912},{\"weekDay\":\"Wednesday\",\"startHourUtc\":1260910253,\"durationHours\":2037921455}]},\"id\":\"uws\",\"name\":\"kxx\",\"type\":\"clhuulriqbyokv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class MaintenanceConfigurationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MaintenanceConfigurationResource> response
-            = manager.maintenanceConfigurations().list("nfxkcgsfcmvhad", "pba", com.azure.core.util.Context.NONE);
+            = manager.maintenanceConfigurations().list("wiinjdllw", "tlepowavvqxua", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(WeekDay.THURSDAY, response.iterator().next().scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(834960499, response.iterator().next().scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(2147399640, response.iterator().next().scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(428488381, response.iterator().next().scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(276935692, response.iterator().next().scheduledEntries().get(0).durationHours());
     }
 }

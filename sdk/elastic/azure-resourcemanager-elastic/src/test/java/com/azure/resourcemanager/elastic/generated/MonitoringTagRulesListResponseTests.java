@@ -10,7 +10,6 @@ import com.azure.resourcemanager.elastic.models.FilteringTag;
 import com.azure.resourcemanager.elastic.models.LogRules;
 import com.azure.resourcemanager.elastic.models.MonitoringTagRulesListResponse;
 import com.azure.resourcemanager.elastic.models.MonitoringTagRulesProperties;
-import com.azure.resourcemanager.elastic.models.ProvisioningState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -18,38 +17,47 @@ public final class MonitoringTagRulesListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringTagRulesListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":false,\"filteringTags\":[{},{},{},{}]}},\"id\":\"ciwwzjuqkhr\",\"name\":\"ajiwkuo\",\"type\":\"oskg\"},{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":true,\"filteringTags\":[{},{}]}},\"id\":\"uugidyjrrfby\",\"name\":\"osvexcsonpclhoc\",\"type\":\"hslkevleggzf\"}],\"nextLink\":\"hfmvfaxkffe\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[{},{},{}]}},\"id\":\"hjjdhtldwkyzxuut\",\"name\":\"ncwscwsvlxoto\",\"type\":\"twrupqsxvnm\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[{},{},{},{}]}},\"id\":\"notyfjfcnjbkcn\",\"name\":\"dhbt\",\"type\":\"kphywpnvjto\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[{},{},{},{}]}},\"id\":\"uscrpabgyepsb\",\"name\":\"tazqugxywpmueefj\",\"type\":\"wfqkquj\"}],\"nextLink\":\"suyonobglaocq\"}")
             .toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals(ProvisioningState.CREATING, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(true, model.value().get(0).properties().logRules().sendAadLogs());
-        Assertions.assertEquals(true, model.value().get(0).properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, model.value().get(0).properties().logRules().sendActivityLogs());
-        Assertions.assertEquals("hfmvfaxkffe", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().logRules().sendAadLogs());
+        Assertions.assertTrue(model.value().get(0).properties().logRules().sendSubscriptionLogs());
+        Assertions.assertTrue(model.value().get(0).properties().logRules().sendActivityLogs());
+        Assertions.assertEquals("suyonobglaocq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoringTagRulesListResponse model = new MonitoringTagRulesListResponse()
-            .withValue(Arrays.asList(
-                new MonitoringTagRulesInner()
-                    .withProperties(new MonitoringTagRulesProperties().withProvisioningState(ProvisioningState.CREATING)
-                        .withLogRules(new LogRules().withSendAadLogs(true)
-                            .withSendSubscriptionLogs(true)
-                            .withSendActivityLogs(false)
-                            .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(), new FilteringTag(),
-                                new FilteringTag())))),
-                new MonitoringTagRulesInner()
-                    .withProperties(new MonitoringTagRulesProperties().withProvisioningState(ProvisioningState.FAILED)
-                        .withLogRules(new LogRules().withSendAadLogs(true)
-                            .withSendSubscriptionLogs(false)
-                            .withSendActivityLogs(true)
-                            .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag()))))))
-            .withNextLink("hfmvfaxkffe");
+        MonitoringTagRulesListResponse model
+            = new MonitoringTagRulesListResponse()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new MonitoringTagRulesInner()
+                                .withProperties(new MonitoringTagRulesProperties()
+                                    .withLogRules(new LogRules().withSendAadLogs(false)
+                                        .withSendSubscriptionLogs(true)
+                                        .withSendActivityLogs(true)
+                                        .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
+                                            new FilteringTag())))),
+                            new MonitoringTagRulesInner().withProperties(
+                                new MonitoringTagRulesProperties().withLogRules(new LogRules().withSendAadLogs(true)
+                                    .withSendSubscriptionLogs(false)
+                                    .withSendActivityLogs(false)
+                                    .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
+                                        new FilteringTag(), new FilteringTag())))),
+                            new MonitoringTagRulesInner()
+                                .withProperties(
+                                    new MonitoringTagRulesProperties()
+                                        .withLogRules(new LogRules().withSendAadLogs(false)
+                                            .withSendSubscriptionLogs(false)
+                                            .withSendActivityLogs(false)
+                                            .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
+                                                new FilteringTag(), new FilteringTag()))))))
+                .withNextLink("suyonobglaocq");
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals(ProvisioningState.CREATING, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(true, model.value().get(0).properties().logRules().sendAadLogs());
-        Assertions.assertEquals(true, model.value().get(0).properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, model.value().get(0).properties().logRules().sendActivityLogs());
-        Assertions.assertEquals("hfmvfaxkffe", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().logRules().sendAadLogs());
+        Assertions.assertTrue(model.value().get(0).properties().logRules().sendSubscriptionLogs());
+        Assertions.assertTrue(model.value().get(0).properties().logRules().sendActivityLogs());
+        Assertions.assertEquals("suyonobglaocq", model.nextLink());
     }
 }

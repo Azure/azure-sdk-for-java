@@ -9,8 +9,8 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesFinalizeRelocationSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_FinalizeRelocation.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/
+     * Volumes_FinalizeRelocation.json
      */
     /**
      * Sample code: Volumes_FinalizeRelocation.

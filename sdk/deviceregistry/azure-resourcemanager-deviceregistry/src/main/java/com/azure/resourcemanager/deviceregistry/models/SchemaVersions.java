@@ -49,14 +49,11 @@ public interface SchemaVersions {
      * @param schemaRegistryName Schema registry name parameter.
      * @param schemaName Schema name parameter.
      * @param schemaVersionName Schema version name parameter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String schemaRegistryName, String schemaName,
-        String schemaVersionName, Context context);
+    void delete(String resourceGroupName, String schemaRegistryName, String schemaName, String schemaVersionName);
 
     /**
      * Delete a SchemaVersion.
@@ -65,11 +62,13 @@ public interface SchemaVersions {
      * @param schemaRegistryName Schema registry name parameter.
      * @param schemaName Schema name parameter.
      * @param schemaVersionName Schema version name parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String schemaRegistryName, String schemaName, String schemaVersionName);
+    void delete(String resourceGroupName, String schemaRegistryName, String schemaName, String schemaVersionName,
+        Context context);
 
     /**
      * List SchemaVersion resources by Schema.
@@ -140,9 +139,8 @@ public interface SchemaVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new SchemaVersion resource.

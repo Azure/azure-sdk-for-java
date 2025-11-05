@@ -250,6 +250,16 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        /**
+         * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
+         *
+         * <p>Azure Blob Storage has a flat namespace and doesn't inherently support directories.
+         * To implement directory-like organization, the Azure Storage client libraries use
+         * the convention of empty blobs with this metadata key set to "true".
+         *
+         * <p>When this metadata is present on a zero-length blob without extension, it should
+         * be treated as a directory marker rather than a regular blob.
+         */
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
 
         public static final String X_MS_META = "x-ms-meta";

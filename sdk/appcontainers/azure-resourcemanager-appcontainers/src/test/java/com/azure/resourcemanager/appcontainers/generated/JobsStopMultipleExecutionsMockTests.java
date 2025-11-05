@@ -21,7 +21,7 @@ public final class JobsStopMultipleExecutionsMockTests {
     @Test
     public void testStopMultipleExecutions() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"nfhkqytkztado\",\"id\":\"fzdgjfcycrsvloy\",\"type\":\"igqkzjuqwqa\",\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2021-11-09T10:22:41Z\",\"endTime\":\"2021-07-12T08:15:44Z\",\"template\":{\"containers\":[{},{}],\"initContainers\":[{},{},{},{}]},\"detailedStatus\":{\"replicas\":[{},{}]}}},{\"name\":\"gsoscienezfvb\",\"id\":\"n\",\"type\":\"kbpjnrte\",\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-10-04T18:12:05Z\",\"endTime\":\"2021-12-03T18:03:23Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{}]},\"detailedStatus\":{\"replicas\":[{},{}]}}},{\"name\":\"rzt\",\"id\":\"tjhffecqkoqy\",\"type\":\"ergaghpuzx\",\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2021-04-01T11:19:13Z\",\"endTime\":\"2021-05-24T03:25:19Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{}]},\"detailedStatus\":{\"replicas\":[{}]}}},{\"name\":\"fzqiyuq\",\"id\":\"dereunokakzw\",\"type\":\"jlwyxedzn\",\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-01-18T22:09:52Z\",\"endTime\":\"2021-03-30T13:48:32Z\",\"template\":{\"containers\":[{},{},{}],\"initContainers\":[{},{}]},\"detailedStatus\":{\"replicas\":[{},{},{}]}}}],\"nextLink\":\"xfjjtpdyzout\"}";
+            = "{\"value\":[{\"name\":\"owzafczu\",\"id\":\"ljcirvpefycdvei\",\"type\":\"tjnsx\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-09-01T14:25:33Z\",\"endTime\":\"2021-10-08T22:15:33Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{}]}}},{\"name\":\"bxqvmvuayt\",\"id\":\"dxk\",\"type\":\"qbwpntghyk\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-07-12T18:58:47Z\",\"endTime\":\"2021-10-22T05:34:35Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{},{},{}]}}}],\"nextLink\":\"ladltxkpbqhvfd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,13 @@ public final class JobsStopMultipleExecutionsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ContainerAppJobExecutions response
-            = manager.jobs().stopMultipleExecutions("uiyxfwkztsmsfb", "vy", com.azure.core.util.Context.NONE);
+        ContainerAppJobExecutions response = manager.jobs()
+            .stopMultipleExecutions("lkndrndpgfjodh", "aqotwfhipxwgsabv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nfhkqytkztado", response.value().get(0).name());
-        Assertions.assertEquals("fzdgjfcycrsvloy", response.value().get(0).id());
-        Assertions.assertEquals("igqkzjuqwqa", response.value().get(0).type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T10:22:41Z"), response.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T08:15:44Z"), response.value().get(0).endTime());
+        Assertions.assertEquals("owzafczu", response.value().get(0).name());
+        Assertions.assertEquals("ljcirvpefycdvei", response.value().get(0).id());
+        Assertions.assertEquals("tjnsx", response.value().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T14:25:33Z"), response.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T22:15:33Z"), response.value().get(0).endTime());
     }
 }

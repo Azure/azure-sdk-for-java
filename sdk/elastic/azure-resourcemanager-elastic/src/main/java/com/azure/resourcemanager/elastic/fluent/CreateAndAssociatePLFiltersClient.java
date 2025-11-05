@@ -15,7 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
  */
 public interface CreateAndAssociatePLFiltersClient {
     /**
-     * Create and Associate private link traffic filter for the given deployment.
+     * Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -28,7 +28,7 @@ public interface CreateAndAssociatePLFiltersClient {
     SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName);
 
     /**
-     * Create and Associate private link traffic filter for the given deployment.
+     * Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -46,7 +46,7 @@ public interface CreateAndAssociatePLFiltersClient {
         String privateEndpointGuid, String privateEndpointName, Context context);
 
     /**
-     * Create and Associate private link traffic filter for the given deployment.
+     * Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -58,7 +58,7 @@ public interface CreateAndAssociatePLFiltersClient {
     void create(String resourceGroupName, String monitorName);
 
     /**
-     * Create and Associate private link traffic filter for the given deployment.
+     * Create and associate a PL filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

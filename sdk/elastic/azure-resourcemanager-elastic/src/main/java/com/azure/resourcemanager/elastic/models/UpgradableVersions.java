@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface UpgradableVersions {
     /**
-     * List of upgradable versions for a given monitor resource.
+     * List all upgradable versions for your Elastic monitor resource, helping you plan and execute upgrades.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -25,7 +25,7 @@ public interface UpgradableVersions {
     Response<UpgradableVersionsList> detailsWithResponse(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * List of upgradable versions for a given monitor resource.
+     * List all upgradable versions for your Elastic monitor resource, helping you plan and execute upgrades.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

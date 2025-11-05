@@ -22,6 +22,11 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
      */
     private Boolean enabled;
 
+    /*
+     * The version of AzureDisk CSI Driver. The default value is v1.
+     */
+    private String version;
+
     /**
      * Creates an instance of ManagedClusterStorageProfileDiskCsiDriver class.
      */
@@ -49,6 +54,26 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
     }
 
     /**
+     * Get the version property: The version of AzureDisk CSI Driver. The default value is v1.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The version of AzureDisk CSI Driver. The default value is v1.
+     * 
+     * @param version the version value to set.
+     * @return the ManagedClusterStorageProfileDiskCsiDriver object itself.
+     */
+    public ManagedClusterStorageProfileDiskCsiDriver withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +88,7 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +111,8 @@ public final class ManagedClusterStorageProfileDiskCsiDriver
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterStorageProfileDiskCsiDriver.enabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("version".equals(fieldName)) {
+                    deserializedManagedClusterStorageProfileDiskCsiDriver.version = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

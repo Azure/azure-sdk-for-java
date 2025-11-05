@@ -14,19 +14,17 @@ public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"czsulmdggl\",\"requiredMembers\":[\"jpfseykg\",\"angpszngafpgyl\",\"vecjujcn\"],\"requiredZoneNames\":[\"dyedmzrgjfo\",\"nub\",\"oitpkpztrgdgx\",\"coqra\"]},\"id\":\"ugyxpqit\",\"name\":\"eialwvskb\",\"type\":\"hzacaqtyltco\"},{\"properties\":{\"groupId\":\"jpds\",\"requiredMembers\":[\"kuejk\",\"vbiztjofqcv\"],\"requiredZoneNames\":[\"uf\"]},\"id\":\"sj\",\"name\":\"lbemyej\",\"type\":\"riuxegthortuda\"},{\"properties\":{\"groupId\":\"jfel\",\"requiredMembers\":[\"pptcbgqnzmnhii\",\"ialwc\",\"gckbb\",\"ccgzpraoxnyu\"],\"requiredZoneNames\":[\"tsgftipwcxbyubh\"]},\"id\":\"dxyurnpnuhza\",\"name\":\"ccnuhiig\",\"type\":\"yl\"}],\"nextLink\":\"igvxvatvcrk\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"st\",\"requiredMembers\":[\"l\",\"xbcuiiznkt\",\"f\"],\"requiredZoneNames\":[\"nv\",\"dibmikostbzbkiwb\",\"qnyophzfyls\"]},\"id\":\"rpfbcunezz\",\"name\":\"e\",\"type\":\"elfwy\"}],\"nextLink\":\"lwxjwetn\"}")
             .toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("dyedmzrgjfo", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("nv", model.value().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceListResult model = new PrivateLinkResourceListResult().withValue(Arrays.asList(
-            new PrivateLinkResourceInner()
-                .withRequiredZoneNames(Arrays.asList("dyedmzrgjfo", "nub", "oitpkpztrgdgx", "coqra")),
-            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("uf")),
-            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("tsgftipwcxbyubh"))));
+        PrivateLinkResourceListResult model
+            = new PrivateLinkResourceListResult().withValue(Arrays.asList(new PrivateLinkResourceInner()
+                .withRequiredZoneNames(Arrays.asList("nv", "dibmikostbzbkiwb", "qnyophzfyls"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("dyedmzrgjfo", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("nv", model.value().get(0).requiredZoneNames().get(0));
     }
 }

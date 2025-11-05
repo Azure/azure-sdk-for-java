@@ -70,7 +70,7 @@ public final class TasksClientImpl implements TasksClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientTasks")
     public interface TasksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks")

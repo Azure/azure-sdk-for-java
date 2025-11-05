@@ -68,7 +68,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientExpressRouteCrossConnectionPeerings")
     public interface ExpressRouteCrossConnectionPeeringsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings")
@@ -149,7 +149,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, crossConnectionName,
@@ -191,7 +191,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -302,7 +302,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, crossConnectionName,
@@ -344,7 +344,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName,
@@ -529,7 +529,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, crossConnectionName,
@@ -572,7 +572,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion,
@@ -674,7 +674,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -727,7 +727,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName,
@@ -920,8 +920,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPeering API service call retrieves all peerings that belong to an
-     * ExpressRouteCrossConnection along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all peerings in a specified ExpressRouteCrossConnection along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listNextSinglePageAsync(String nextLink) {
@@ -948,8 +948,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPeering API service call retrieves all peerings that belong to an
-     * ExpressRouteCrossConnection along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all peerings in a specified ExpressRouteCrossConnection along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listNextSinglePageAsync(String nextLink,

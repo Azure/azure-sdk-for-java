@@ -34,6 +34,11 @@ public final class NamespaceDeviceUpdateProperties implements JsonSerializable<N
     private Map<String, BinaryData> attributes;
 
     /*
+     * Policy used to issue device certificates.
+     */
+    private DeviceCredentialPolicy policy;
+
+    /*
      * Indicates if the resource and identity are enabled or not. A disabled device cannot authenticate with Microsoft
      * Entra ID.
      */
@@ -106,6 +111,26 @@ public final class NamespaceDeviceUpdateProperties implements JsonSerializable<N
     }
 
     /**
+     * Get the policy property: Policy used to issue device certificates.
+     * 
+     * @return the policy value.
+     */
+    public DeviceCredentialPolicy policy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Policy used to issue device certificates.
+     * 
+     * @param policy the policy value to set.
+     * @return the NamespaceDeviceUpdateProperties object itself.
+     */
+    public NamespaceDeviceUpdateProperties withPolicy(DeviceCredentialPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
+
+    /**
      * Get the enabled property: Indicates if the resource and identity are enabled or not. A disabled device cannot
      * authenticate with Microsoft Entra ID.
      * 
@@ -137,6 +162,7 @@ public final class NamespaceDeviceUpdateProperties implements JsonSerializable<N
         jsonWriter.writeJsonField("endpoints", this.endpoints);
         jsonWriter.writeMapField("attributes", this.attributes,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeJsonField("policy", this.policy);
         jsonWriter.writeBooleanField("enabled", this.enabled);
         return jsonWriter.writeEndObject();
     }
@@ -165,6 +191,8 @@ public final class NamespaceDeviceUpdateProperties implements JsonSerializable<N
                     Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedNamespaceDeviceUpdateProperties.attributes = attributes;
+                } else if ("policy".equals(fieldName)) {
+                    deserializedNamespaceDeviceUpdateProperties.policy = DeviceCredentialPolicy.fromJson(reader);
                 } else if ("enabled".equals(fieldName)) {
                     deserializedNamespaceDeviceUpdateProperties.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else {

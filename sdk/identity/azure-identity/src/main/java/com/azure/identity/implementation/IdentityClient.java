@@ -32,7 +32,6 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
-import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -574,8 +573,7 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
 
-        return Mono.fromSupplier(() -> options.isChained()
-            && ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(ManagedIdentityApplication.getManagedIdentitySource()))
+        return Mono.fromSupplier(() -> IdentityUtil.shouldProbeImds(options))
             .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
             .flatMap(ignored -> getTokenFromMsalMIClient(resource));
     }

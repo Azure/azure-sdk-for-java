@@ -63,7 +63,7 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkSecurityPerimeterAssociableResourceTypes")
     public interface NetworkSecurityPerimeterAssociableResourceTypesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/perimeterAssociableResourceTypes")
@@ -106,7 +106,7 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
@@ -142,7 +142,7 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -221,8 +221,8 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of perimeter associable resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of resources that are onboarded with NSP along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerimeterAssociableResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -248,8 +248,8 @@ public final class NetworkSecurityPerimeterAssociableResourceTypesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of perimeter associable resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of resources that are onboarded with NSP along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerimeterAssociableResourceInner>> listNextSinglePageAsync(String nextLink,

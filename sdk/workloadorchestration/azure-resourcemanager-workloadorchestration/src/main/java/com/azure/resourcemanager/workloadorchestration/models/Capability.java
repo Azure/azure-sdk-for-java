@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Capability, to match in Solution Templates &amp; Targets.
+ * Capability, to match in Solution Templates and Targets.
  */
 @Fluent
 public final class Capability implements JsonSerializable<Capability> {

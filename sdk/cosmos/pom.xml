@@ -13,9 +13,10 @@
     <module>azure-cosmos</module>
     <module>azure-cosmos-benchmark</module>
     <module>azure-cosmos-encryption</module>
-    <module>azure-cosmos-spark_3_2-12</module>
+    <module>azure-cosmos-spark_3</module>
     <module>azure-cosmos-spark_3-3_2-12</module>
     <module>azure-cosmos-spark_3-4_2-12</module>
+    <module>azure-cosmos-spark_3-5</module>
     <module>azure-cosmos-spark_3-5_2-12</module>
     <module>azure-cosmos-test</module>
     <module>azure-cosmos-tests</module>

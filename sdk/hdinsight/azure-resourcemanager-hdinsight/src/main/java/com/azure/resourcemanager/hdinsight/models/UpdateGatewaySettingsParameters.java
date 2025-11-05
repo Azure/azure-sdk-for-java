@@ -10,9 +10,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * The update gateway settings request parameters.
+ * The update gateway settings request parameters. Note either basic or entra user should be provided at a time.
  */
 @Fluent
 public final class UpdateGatewaySettingsParameters implements JsonSerializable<UpdateGatewaySettingsParameters> {
@@ -30,6 +31,11 @@ public final class UpdateGatewaySettingsParameters implements JsonSerializable<U
      * The gateway settings user password.
      */
     private String password;
+
+    /*
+     * List of Entra users for gateway access.
+     */
+    private List<EntraUserInfo> restAuthEntraUsers;
 
     /**
      * Creates an instance of UpdateGatewaySettingsParameters class.
@@ -100,11 +106,34 @@ public final class UpdateGatewaySettingsParameters implements JsonSerializable<U
     }
 
     /**
+     * Get the restAuthEntraUsers property: List of Entra users for gateway access.
+     * 
+     * @return the restAuthEntraUsers value.
+     */
+    public List<EntraUserInfo> restAuthEntraUsers() {
+        return this.restAuthEntraUsers;
+    }
+
+    /**
+     * Set the restAuthEntraUsers property: List of Entra users for gateway access.
+     * 
+     * @param restAuthEntraUsers the restAuthEntraUsers value to set.
+     * @return the UpdateGatewaySettingsParameters object itself.
+     */
+    public UpdateGatewaySettingsParameters withRestAuthEntraUsers(List<EntraUserInfo> restAuthEntraUsers) {
+        this.restAuthEntraUsers = restAuthEntraUsers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (restAuthEntraUsers() != null) {
+            restAuthEntraUsers().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -116,6 +145,8 @@ public final class UpdateGatewaySettingsParameters implements JsonSerializable<U
         jsonWriter.writeBooleanField("restAuthCredential.isEnabled", this.isCredentialEnabled);
         jsonWriter.writeStringField("restAuthCredential.username", this.username);
         jsonWriter.writeStringField("restAuthCredential.password", this.password);
+        jsonWriter.writeArrayField("restAuthEntraUsers", this.restAuthEntraUsers,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -142,6 +173,10 @@ public final class UpdateGatewaySettingsParameters implements JsonSerializable<U
                     deserializedUpdateGatewaySettingsParameters.username = reader.getString();
                 } else if ("restAuthCredential.password".equals(fieldName)) {
                     deserializedUpdateGatewaySettingsParameters.password = reader.getString();
+                } else if ("restAuthEntraUsers".equals(fieldName)) {
+                    List<EntraUserInfo> restAuthEntraUsers
+                        = reader.readArray(reader1 -> EntraUserInfo.fromJson(reader1));
+                    deserializedUpdateGatewaySettingsParameters.restAuthEntraUsers = restAuthEntraUsers;
                 } else {
                     reader.skipChildren();
                 }

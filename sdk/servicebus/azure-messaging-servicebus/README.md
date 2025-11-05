@@ -90,7 +90,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.18.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

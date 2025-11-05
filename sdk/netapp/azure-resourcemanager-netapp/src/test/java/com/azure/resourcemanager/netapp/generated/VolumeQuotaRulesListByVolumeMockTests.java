@@ -23,7 +23,7 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":1290302634644263235,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"dmflhuytx\"},\"location\":\"tznapxbannovv\",\"tags\":{\"lyokrrrou\":\"zytprwnwvroevy\",\"sasbcrymodizrx\":\"xv\"},\"id\":\"lobdxna\",\"name\":\"pmkmlmvevfx\",\"type\":\"op\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":1290302634644263235,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"dmflhuytx\"},\"location\":\"tznapxbannovv\",\"tags\":{\"lyokrrrou\":\"zytprwnwvroevy\",\"sasbcrymodizrx\":\"xv\"},\"id\":\"lobdxna\",\"name\":\"pmkmlmvevfx\",\"type\":\"op\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

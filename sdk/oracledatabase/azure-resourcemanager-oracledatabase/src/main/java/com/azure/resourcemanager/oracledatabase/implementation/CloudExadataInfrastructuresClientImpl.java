@@ -38,6 +38,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.CloudExadataInfrastructur
 import com.azure.resourcemanager.oracledatabase.fluent.models.CloudExadataInfrastructureInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.CloudExadataInfrastructureListResult;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureUpdate;
+import com.azure.resourcemanager.oracledatabase.models.ConfigureExascaleCloudExadataInfrastructureDetails;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -205,6 +206,26 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/configureExascale")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> configureExascale(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigureExascaleCloudExadataInfrastructureDetails body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/configureExascale")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> configureExascaleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigureExascaleCloudExadataInfrastructureDetails body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1200,6 +1221,193 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     public CloudExadataInfrastructureInner addStorageCapacity(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
         return beginAddStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, context).getFinalResult();
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> configureExascaleWithResponseAsync(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.configureExascale(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> configureExascaleWithResponse(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.configureExascaleSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
+            body, Context.NONE);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> configureExascaleWithResponse(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body,
+        Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.configureExascaleSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
+            body, context);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
+        beginConfigureExascaleAsync(String resourceGroupName, String cloudexadatainfrastructurename,
+            ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = configureExascaleWithResponseAsync(resourceGroupName, cloudexadatainfrastructurename, body);
+        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
+        beginConfigureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
+            ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        Response<BinaryData> response
+            = configureExascaleWithResponse(resourceGroupName, cloudexadatainfrastructurename, body);
+        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
+            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, Context.NONE);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
+        beginConfigureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
+            ConfigureExascaleCloudExadataInfrastructureDetails body, Context context) {
+        Response<BinaryData> response
+            = configureExascaleWithResponse(resourceGroupName, cloudexadatainfrastructurename, body, context);
+        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
+            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, context);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CloudExadataInfrastructureInner> configureExascaleAsync(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        return beginConfigureExascaleAsync(resourceGroupName, cloudexadatainfrastructurename, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CloudExadataInfrastructureInner configureExascale(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body).getFinalResult();
+    }
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CloudExadataInfrastructureInner configureExascale(String resourceGroupName,
+        String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body,
+        Context context) {
+        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body, context)
+            .getFinalResult();
     }
 
     /**

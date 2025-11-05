@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class RetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Get_MaximumSet.

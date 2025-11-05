@@ -3,10 +3,22 @@
 ## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.8.5 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
 
 ## 1.8.4 (2025-09-25)
 

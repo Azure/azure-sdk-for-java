@@ -13,6 +13,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.RadiusAuthServerListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -419,4 +420,61 @@ public interface VpnServerConfigurationsClient extends InnerSupportsGet<VpnServe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnServerConfigurationInner> list(Context context);
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName);
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RadiusAuthServerListResultInner> listRadiusSecretsAsync(String resourceGroupName,
+        String vpnServerConfigurationName);
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RadiusAuthServerListResultInner> listRadiusSecretsWithResponse(String resourceGroupName,
+        String vpnServerConfigurationName, Context context);
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RadiusAuthServerListResultInner listRadiusSecrets(String resourceGroupName, String vpnServerConfigurationName);
 }

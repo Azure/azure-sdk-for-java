@@ -60,7 +60,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ContainerRegistry/operations")
@@ -78,7 +78,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,7 +91,7 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
             .<PagedResponse<OperationDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -100,7 +100,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +115,7 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, accept, context)
@@ -124,7 +124,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,7 +137,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,7 +166,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

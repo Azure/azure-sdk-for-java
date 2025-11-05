@@ -140,10 +140,8 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         boolean expectedCanOpOrchestrateFailover) throws NoSuchFieldException, IllegalAccessException {
 
         try {
-            System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
-
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, Objects.equals(Configs.isPerPartitionAutomaticFailoverEnabled(), "true"));
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, true);
 
             String pkRangeId = "0";
             String minInclusive = "AA";
@@ -208,9 +206,6 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
     public void allRegionUnavailableHandlingWithMultiThreading() {
 
         try {
-
-            System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
-
             int threadPoolSizeForExecutors = 4;
 
             ScheduledThreadPoolExecutor executorForEastUs = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
@@ -272,7 +267,7 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
                 LocationEastUs2EndpointToLocationPair.getKey());
 
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, Objects.equals(Configs.isPerPartitionAutomaticFailoverEnabled(), "true"));
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, true);
 
             for (int i = 1; i <= 100; i++) {
 

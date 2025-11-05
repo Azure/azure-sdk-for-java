@@ -23,6 +23,11 @@ public final class ManagementGroup implements JsonSerializable<ManagementGroup> 
     private String name;
 
     /*
+     * Reference to a data source for a given management group.
+     */
+    private String dataSource;
+
+    /*
      * Stringified JSON that contains connector-specific configuration for the management group.
      */
     private String managementGroupConfiguration;
@@ -71,6 +76,26 @@ public final class ManagementGroup implements JsonSerializable<ManagementGroup> 
      */
     public ManagementGroup withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the dataSource property: Reference to a data source for a given management group.
+     * 
+     * @return the dataSource value.
+     */
+    public String dataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Set the dataSource property: Reference to a data source for a given management group.
+     * 
+     * @param dataSource the dataSource value to set.
+     * @return the ManagementGroup object itself.
+     */
+    public ManagementGroup withDataSource(String dataSource) {
+        this.dataSource = dataSource;
         return this;
     }
 
@@ -189,6 +214,7 @@ public final class ManagementGroup implements JsonSerializable<ManagementGroup> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("dataSource", this.dataSource);
         jsonWriter.writeStringField("managementGroupConfiguration", this.managementGroupConfiguration);
         jsonWriter.writeStringField("typeRef", this.typeRef);
         jsonWriter.writeStringField("defaultTopic", this.defaultTopic);
@@ -215,6 +241,8 @@ public final class ManagementGroup implements JsonSerializable<ManagementGroup> 
 
                 if ("name".equals(fieldName)) {
                     deserializedManagementGroup.name = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedManagementGroup.dataSource = reader.getString();
                 } else if ("managementGroupConfiguration".equals(fieldName)) {
                     deserializedManagementGroup.managementGroupConfiguration = reader.getString();
                 } else if ("typeRef".equals(fieldName)) {

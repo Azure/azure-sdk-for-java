@@ -49,10 +49,8 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
 import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteRequest;
-import static com.azure.search.documents.SearchAsyncClient.createContinuationToken;
 import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
 import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
-import static com.azure.search.documents.SearchAsyncClient.getSearchResults;
 import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
 
 /**
@@ -1111,9 +1109,6 @@ public final class SearchClient {
 
     private SearchPagedResponse search(SearchRequest request, String continuationToken,
         SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return firstPageResponseWrapper.getFirstPageResponse();
-        }
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
@@ -1121,13 +1116,7 @@ public final class SearchClient {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Response<SearchDocumentsResult> response = restClient.getDocuments()
                 .searchPostWithResponse(requestToUse, querySourceAuthorization, null, context);
-            SearchDocumentsResult result = response.getValue();
-            SearchPagedResponse page
-                = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                    createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                    result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                    result.getSemanticPartialResponseType(), result.getDebugInfo(),
-                    result.getSemanticQueryRewritesResultType());
+            SearchPagedResponse page = SearchAsyncClient.mapToSearchPagedResponse(response, serializer, serviceVersion);
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }

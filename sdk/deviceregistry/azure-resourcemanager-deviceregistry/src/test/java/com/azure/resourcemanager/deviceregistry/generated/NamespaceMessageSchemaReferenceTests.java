@@ -11,7 +11,7 @@ public final class NamespaceMessageSchemaReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceMessageSchemaReference model = BinaryData.fromString(
-            "{\"schemaRegistryNamespace\":\"txon\",\"schemaName\":\"mtsavjcbpwxqp\",\"schemaVersion\":\"rknftguvriuhprwm\"}")
+            "{\"schemaRegistryNamespace\":\"idzyexznelixhnr\",\"schemaName\":\"tfolhbnx\",\"schemaVersion\":\"nalaulppg\"}")
             .toObject(NamespaceMessageSchemaReference.class);
     }
 }

@@ -12,27 +12,27 @@ public final class DaprAppHealthTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprAppHealth model = BinaryData.fromString(
-            "{\"enabled\":false,\"path\":\"nyhgbijtji\",\"probeIntervalSeconds\":2036493170,\"probeTimeoutMilliseconds\":1649484823,\"threshold\":410549379}")
+            "{\"enabled\":false,\"path\":\"t\",\"probeIntervalSeconds\":393815457,\"probeTimeoutMilliseconds\":730619532,\"threshold\":1493412527}")
             .toObject(DaprAppHealth.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("nyhgbijtji", model.path());
-        Assertions.assertEquals(2036493170, model.probeIntervalSeconds());
-        Assertions.assertEquals(1649484823, model.probeTimeoutMilliseconds());
-        Assertions.assertEquals(410549379, model.threshold());
+        Assertions.assertEquals("t", model.path());
+        Assertions.assertEquals(393815457, model.probeIntervalSeconds());
+        Assertions.assertEquals(730619532, model.probeTimeoutMilliseconds());
+        Assertions.assertEquals(1493412527, model.threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprAppHealth model = new DaprAppHealth().withEnabled(false)
-            .withPath("nyhgbijtji")
-            .withProbeIntervalSeconds(2036493170)
-            .withProbeTimeoutMilliseconds(1649484823)
-            .withThreshold(410549379);
+            .withPath("t")
+            .withProbeIntervalSeconds(393815457)
+            .withProbeTimeoutMilliseconds(730619532)
+            .withThreshold(1493412527);
         model = BinaryData.fromObject(model).toObject(DaprAppHealth.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("nyhgbijtji", model.path());
-        Assertions.assertEquals(2036493170, model.probeIntervalSeconds());
-        Assertions.assertEquals(1649484823, model.probeTimeoutMilliseconds());
-        Assertions.assertEquals(410549379, model.threshold());
+        Assertions.assertEquals("t", model.path());
+        Assertions.assertEquals(393815457, model.probeIntervalSeconds());
+        Assertions.assertEquals(730619532, model.probeTimeoutMilliseconds());
+        Assertions.assertEquals(1493412527, model.threshold());
     }
 }

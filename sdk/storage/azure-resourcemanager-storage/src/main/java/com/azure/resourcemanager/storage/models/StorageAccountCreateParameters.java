@@ -887,6 +887,32 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
     }
 
     /**
+     * Get the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @return the geoPriorityReplicationStatus value.
+     */
+    public GeoPriorityReplicationStatus geoPriorityReplicationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoPriorityReplicationStatus();
+    }
+
+    /**
+     * Set the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @param geoPriorityReplicationStatus the geoPriorityReplicationStatus value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters
+        withGeoPriorityReplicationStatus(GeoPriorityReplicationStatus geoPriorityReplicationStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withGeoPriorityReplicationStatus(geoPriorityReplicationStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

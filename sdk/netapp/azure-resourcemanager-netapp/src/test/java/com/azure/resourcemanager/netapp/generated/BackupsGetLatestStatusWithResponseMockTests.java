@@ -20,7 +20,7 @@ public final class BackupsGetLatestStatusWithResponseMockTests {
     @Test
     public void testGetLatestStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":false,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Uninitialized\",\"unhealthyReason\":\"t\",\"errorMessage\":\"wxvgpiudeugfsxze\",\"lastTransferSize\":4398452965731029485,\"lastTransferType\":\"kufykhvu\",\"totalTransferBytes\":6780132883179901729,\"transferProgressBytes\":7620434324373710563}";
+            = "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Uninitialized\",\"unhealthyReason\":\"t\",\"errorMessage\":\"wxvgpiudeugfsxze\",\"lastTransferSize\":4398452965731029485,\"lastTransferType\":\"kufykhvu\",\"totalTransferBytes\":6780132883179901729,\"transferProgressBytes\":7620434324373710563}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

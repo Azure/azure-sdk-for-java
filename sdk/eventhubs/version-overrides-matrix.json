@@ -3,7 +3,7 @@
     "Agent": {
       "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
     },
-    "JavaTestVersion": "1.21",
+    "JavaTestVersion": "1.25",
     "TestGoals": "surefire:test",
     "VersionOverride": [
       "reactor_2020",

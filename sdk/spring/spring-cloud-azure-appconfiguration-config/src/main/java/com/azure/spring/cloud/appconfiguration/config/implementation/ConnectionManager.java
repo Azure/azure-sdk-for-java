@@ -49,6 +49,11 @@ class ConnectionManager {
     /** Service for discovering auto-failover replica endpoints. */
     private final ReplicaLookUp replicaLookUp;
 
+    private List<AppConfigurationReplicaClient> activeClients;
+
+    /** The last active replica client endpoint used for requests. */
+    private String lastActiveClient;
+
     /**
      * Creates a connection manager for the specified App Configuration store.
      * 
@@ -65,6 +70,8 @@ class ConnectionManager {
         this.currentReplica = configStore.getEndpoint();
         this.autoFailoverClients = new HashMap<>();
         this.replicaLookUp = replicaLookUp;
+        this.activeClients = new ArrayList<>();
+        this.lastActiveClient = "";
     }
 
     /**
@@ -95,22 +102,70 @@ class ConnectionManager {
     }
 
     /**
-     * Retrieves all available App Configuration clients that are ready for use.
+     * Gets the next active replica client, optionally using the last active client if available.
      * 
-     * @return a list of available clients; may be empty if all clients are currently unavailable
+     * @param useLastActive whether to use the last active client if available
+     * @return the next active AppConfigurationReplicaClient
      */
-    List<AppConfigurationReplicaClient> getAvailableClients() {
-        return getAvailableClients(false);
+    AppConfigurationReplicaClient getNextActiveClient(boolean useLastActive) {
+        if (activeClients.isEmpty()) {
+            lastActiveClient = "";
+            return null;
+        } else if (useLastActive) {
+            List<AppConfigurationReplicaClient> clients = getAvailableClients();
+            for (AppConfigurationReplicaClient client: clients) {
+                if (client.getEndpoint().equals(lastActiveClient)) {
+                    return client;
+                }
+            }
+        }
+
+        if (!configStore.isLoadBalancingEnabled()) {
+            if (!activeClients.isEmpty()) {
+                return activeClients.get(0);
+            }
+            return null;
+        }
+
+        AppConfigurationReplicaClient nextClient = activeClients.remove(0);
+        lastActiveClient = nextClient.getEndpoint();
+        return nextClient;
     }
 
     /**
-     * Retrieves available App Configuration clients with optional current replica preference.
+     * Finds the currently active clients for a given origin endpoint.
+     */
+    void findActiveClients() {
+        activeClients = getAvailableClients();
+
+        if (!configStore.isLoadBalancingEnabled() || lastActiveClient.isEmpty()) {
+            return;
+        }
+
+        for (int i = 0; i < activeClients.size(); i++) {
+            AppConfigurationReplicaClient client = activeClients.get(i);
+            if (client.getEndpoint().equals(lastActiveClient)) {
+                int swapPoint = (i + 1) % activeClients.size();
+                List<AppConfigurationReplicaClient> rotatedClients = new ArrayList<>();
+
+                // Add elements from swapPoint to end
+                rotatedClients.addAll(activeClients.subList(swapPoint, activeClients.size()));
+
+                // Add elements from beginning to swapPoint
+                rotatedClients.addAll(activeClients.subList(0, swapPoint));
+
+                activeClients = rotatedClients;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Retrieves available App Configuration clients.
      * 
-     * @param useCurrent if true, prioritizes returning clients starting from the current replica; if false, returns all
-     * available clients
      * @return a list of available clients ordered by preference; may be empty if all clients are currently unavailable
      */
-    List<AppConfigurationReplicaClient> getAvailableClients(Boolean useCurrent) {
+    public List<AppConfigurationReplicaClient> getAvailableClients() {
         if (clients == null) {
             clients = clientBuilder.buildClients(configStore);
 
@@ -120,25 +175,27 @@ class ConnectionManager {
         }
 
         List<AppConfigurationReplicaClient> availableClients = new ArrayList<>();
-        boolean foundCurrent = !useCurrent;
 
-        if (clients.size() == 1) {
+        if (clients.size() == 1 && !configStore.isLoadBalancingEnabled()) {
             if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
                 availableClients.add(clients.get(0));
             }
-        } else if (clients.size() > 0) {
+        } else if (clients.size() > 0 && !configStore.isLoadBalancingEnabled()) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
-                if (replicaClient.getEndpoint().equals(currentReplica)) {
-                    foundCurrent = true;
-                }
-                if (foundCurrent && replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
+                if (replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
                     availableClients.add(replicaClient);
                 }
             }
+        } else if (configStore.isLoadBalancingEnabled()) {
+            for (AppConfigurationReplicaClient client: clients) {
+                if (client.getBackoffEndTime().isBefore(Instant.now())) {
+                    availableClients.add(client);
+                }
+            }
         }
 
-        if (availableClients.size() == 0) {
+        if (availableClients.size() == 0 || configStore.isLoadBalancingEnabled()) {
             List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
 
             if (autoFailoverEndpoints.size() > 0) {

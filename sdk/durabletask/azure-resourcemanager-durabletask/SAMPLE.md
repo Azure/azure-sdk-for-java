@@ -36,7 +36,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-11-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -63,7 +63,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_CreateOrReplace_MaximumSet.
@@ -91,7 +91,7 @@ public final class RetentionPoliciesCreateOrReplaceSamples {
  */
 public final class RetentionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Delete_MaximumSet.
@@ -113,7 +113,7 @@ public final class RetentionPoliciesDeleteSamples {
  */
 public final class RetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Get_MaximumSet.
@@ -135,7 +135,7 @@ public final class RetentionPoliciesGetSamples {
  */
 public final class RetentionPoliciesListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_ListByScheduler_MaximumSet.
@@ -163,7 +163,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Update_MaximumSet.
@@ -190,6 +190,7 @@ public final class RetentionPoliciesUpdateSamples {
 ```java
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -199,7 +200,7 @@ import java.util.Map;
  */
 public final class SchedulersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/Schedulers_CreateOrUpdate.json
      */
     /**
      * Sample code: Schedulers_CreateOrUpdate.
@@ -213,7 +214,7 @@ public final class SchedulersCreateOrUpdateSamples {
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("department", "research", "development", "true"))
             .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSku().withName("Dedicated")))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED)))
             .create();
     }
 
@@ -239,7 +240,7 @@ public final class SchedulersCreateOrUpdateSamples {
  */
 public final class SchedulersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Delete.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Delete.json
      */
     /**
      * Sample code: Schedulers_Delete.
@@ -260,7 +261,7 @@ public final class SchedulersDeleteSamples {
  */
 public final class SchedulersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Get.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Get.json
      */
     /**
      * Sample code: Schedulers_Get.
@@ -282,7 +283,7 @@ public final class SchedulersGetByResourceGroupSamples {
  */
 public final class SchedulersListSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_ListBySubscription.json
+     * x-ms-original-file: 2025-11-01/Schedulers_ListBySubscription.json
      */
     /**
      * Sample code: Schedulers_ListBySubscription.
@@ -303,7 +304,7 @@ public final class SchedulersListSamples {
  */
 public final class SchedulersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_ListByResourceGroup.json
+     * x-ms-original-file: 2025-11-01/Schedulers_ListByResourceGroup.json
      */
     /**
      * Sample code: Schedulers_ListByResourceGroup.
@@ -321,6 +322,7 @@ public final class SchedulersListByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -331,7 +333,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Update.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.
@@ -345,7 +347,7 @@ public final class SchedulersUpdateSamples {
         resource.update()
             .withTags(mapOf("hello", "world"))
             .withProperties(new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSkuUpdate().withName("Dedicated").withCapacity(3)))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(3)))
             .apply();
     }
 
@@ -373,7 +375,7 @@ import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
  */
 public final class TaskHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: TaskHubs_CreateOrUpdate.
@@ -398,7 +400,7 @@ public final class TaskHubsCreateOrUpdateSamples {
  */
 public final class TaskHubsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_Delete.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_Delete.json
      */
     /**
      * Sample code: TaskHubs_Delete.
@@ -419,7 +421,7 @@ public final class TaskHubsDeleteSamples {
  */
 public final class TaskHubsGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_Get.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_Get.json
      */
     /**
      * Sample code: TaskHubs_Get.
@@ -441,7 +443,7 @@ public final class TaskHubsGetSamples {
  */
 public final class TaskHubsListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_ListByScheduler.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_ListByScheduler.json
      */
     /**
      * Sample code: TaskHubs_ListByScheduler.

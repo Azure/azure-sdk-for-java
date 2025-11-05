@@ -29,8 +29,8 @@ public final class VolumesBreakReplicationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .breakReplication("mcjn", "zqdqxt", "jw", "nyfusfzsvtuikzh",
-                new BreakReplicationRequest().withForceBreakReplication(true), com.azure.core.util.Context.NONE);
+            .breakReplication("s", "yrio", "vzidsxwaab", "mifrygznmma",
+                new BreakReplicationRequest().withForceBreakReplication(false), com.azure.core.util.Context.NONE);
 
     }
 }

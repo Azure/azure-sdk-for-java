@@ -13,7 +13,8 @@ import com.azure.core.util.Context;
  */
 public interface TagRules {
     /**
-     * List the tag rules for a given monitor resource.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -25,7 +26,8 @@ public interface TagRules {
     PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName);
 
     /**
-     * List the tag rules for a given monitor resource.
+     * List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over
+     * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -38,7 +40,7 @@ public interface TagRules {
     PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get a tag rule set for a given monitor resource.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -47,13 +49,14 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     Response<MonitoringTagRules> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
         Context context);
 
     /**
-     * Get a tag rule set for a given monitor resource.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -61,12 +64,13 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource.
      */
     MonitoringTagRules get(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -78,7 +82,8 @@ public interface TagRules {
     void delete(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -91,30 +96,33 @@ public interface TagRules {
     void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context);
 
     /**
-     * Get a tag rule set for a given monitor resource.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     MonitoringTagRules getById(String id);
 
     /**
-     * Get a tag rule set for a given monitor resource.
+     * Get detailed information about a tag rule set for a given Elastic monitor resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     * @return detailed information about a tag rule set for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     Response<MonitoringTagRules> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +132,8 @@ public interface TagRules {
     void deleteById(String id);
 
     /**
-     * Delete a tag rule set for a given monitor resource.
+     * Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

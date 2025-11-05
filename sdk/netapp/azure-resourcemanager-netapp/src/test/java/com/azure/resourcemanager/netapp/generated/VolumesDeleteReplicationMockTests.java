@@ -28,7 +28,7 @@ public final class VolumesDeleteReplicationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .deleteReplication("kqscazuawxtzx", "uamwabzxrvxc", "s", "sphaivmxyasflvg",
+            .deleteReplication("ujlzqnhcvsqltn", "oibgsxg", "xfyqonmpqoxwdo", "dbxiqx",
                 com.azure.core.util.Context.NONE);
 
     }

@@ -8,6 +8,17 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 12.5.8 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+
 ## 12.5.7 (2025-09-25)
 
 ### Other Changes

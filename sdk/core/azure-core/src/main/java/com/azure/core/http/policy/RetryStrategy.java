@@ -27,6 +27,9 @@ public interface RetryStrategy {
 
     /**
      * Computes the delay between each retry.
+     * <p>
+     * If both this method and {@link #calculateRetryDelay(RequestRetryCondition)} are overridden, this method is
+     * ignored.
      *
      * @param retryAttempts The number of retry attempts completed so far.
      * @return The delay duration before the next retry.
@@ -35,10 +38,16 @@ public interface RetryStrategy {
 
     /**
      * Computes the delay between each retry based on the {@link RequestRetryCondition}.
+     * <p>
+     * If this method is not overridden, the {@link #calculateRetryDelay(int)} method is called with
+     * {@link RequestRetryCondition#getTryCount()}.
+     * <p>
+     * If both this method and {@link #calculateRetryDelay(int)} are overridden, this method is used.
      *
      * @param requestRetryCondition The {@link RequestRetryCondition} containing information that can be used to
      * determine the delay.
      * @return The delay duration before the next retry.
+     * @throws NullPointerException If {@code requestRetryCondition} is null.
      */
     default Duration calculateRetryDelay(RequestRetryCondition requestRetryCondition) {
         return calculateRetryDelay(requestRetryCondition.getTryCount());

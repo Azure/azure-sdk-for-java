@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface ExternalUsers {
     /**
-     * Create User inside elastic deployment which are used by customers to perform operations on the elastic
-     * deployment.
+     * Create or update external user configurations for your Elastic monitor resource, enabling access and management
+     * by external users.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -29,8 +29,8 @@ public interface ExternalUsers {
         ExternalUserInfo body, Context context);
 
     /**
-     * Create User inside elastic deployment which are used by customers to perform operations on the elastic
-     * deployment.
+     * Create or update external user configurations for your Elastic monitor resource, enabling access and management
+     * by external users.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

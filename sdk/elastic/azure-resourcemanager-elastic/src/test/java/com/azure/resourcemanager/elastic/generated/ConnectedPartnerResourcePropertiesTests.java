@@ -12,25 +12,28 @@ public final class ConnectedPartnerResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedPartnerResourceProperties model = BinaryData.fromString(
-            "{\"partnerDeploymentName\":\"mcmatuokthfuiu\",\"partnerDeploymentUri\":\"dsfcpkvxodpuoz\",\"azureResourceId\":\"zydagfuaxbezyiuo\",\"location\":\"twhrdxwzywqsm\"}")
+            "{\"partnerDeploymentName\":\"ocmnyyazttbtwwrq\",\"partnerDeploymentUri\":\"edckzywbiexzfey\",\"azureResourceId\":\"axibxujw\",\"location\":\"qwalmuzyoxaepd\",\"type\":\"jancu\"}")
             .toObject(ConnectedPartnerResourceProperties.class);
-        Assertions.assertEquals("mcmatuokthfuiu", model.partnerDeploymentName());
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.partnerDeploymentUri());
-        Assertions.assertEquals("zydagfuaxbezyiuo", model.azureResourceId());
-        Assertions.assertEquals("twhrdxwzywqsm", model.location());
+        Assertions.assertEquals("ocmnyyazttbtwwrq", model.partnerDeploymentName());
+        Assertions.assertEquals("edckzywbiexzfey", model.partnerDeploymentUri());
+        Assertions.assertEquals("axibxujw", model.azureResourceId());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.location());
+        Assertions.assertEquals("jancu", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectedPartnerResourceProperties model
-            = new ConnectedPartnerResourceProperties().withPartnerDeploymentName("mcmatuokthfuiu")
-                .withPartnerDeploymentUri("dsfcpkvxodpuoz")
-                .withAzureResourceId("zydagfuaxbezyiuo")
-                .withLocation("twhrdxwzywqsm");
+            = new ConnectedPartnerResourceProperties().withPartnerDeploymentName("ocmnyyazttbtwwrq")
+                .withPartnerDeploymentUri("edckzywbiexzfey")
+                .withAzureResourceId("axibxujw")
+                .withLocation("qwalmuzyoxaepd")
+                .withType("jancu");
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourceProperties.class);
-        Assertions.assertEquals("mcmatuokthfuiu", model.partnerDeploymentName());
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.partnerDeploymentUri());
-        Assertions.assertEquals("zydagfuaxbezyiuo", model.azureResourceId());
-        Assertions.assertEquals("twhrdxwzywqsm", model.location());
+        Assertions.assertEquals("ocmnyyazttbtwwrq", model.partnerDeploymentName());
+        Assertions.assertEquals("edckzywbiexzfey", model.partnerDeploymentUri());
+        Assertions.assertEquals("axibxujw", model.azureResourceId());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.location());
+        Assertions.assertEquals("jancu", model.type());
     }
 }

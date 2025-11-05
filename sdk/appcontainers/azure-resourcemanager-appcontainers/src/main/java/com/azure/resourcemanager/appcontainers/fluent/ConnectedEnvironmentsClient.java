@@ -254,6 +254,7 @@ public interface ConnectedEnvironmentsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
+     * @param environmentEnvelope Configuration details of the connectedEnvironment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
@@ -261,7 +262,8 @@ public interface ConnectedEnvironmentsClient {
      * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedEnvironmentInner update(String resourceGroupName, String connectedEnvironmentName);
+    ConnectedEnvironmentInner update(String resourceGroupName, String connectedEnvironmentName,
+        ConnectedEnvironmentPatchResource environmentEnvelope);
 
     /**
      * Checks the resource connectedEnvironmentName availability.

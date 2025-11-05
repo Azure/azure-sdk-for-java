@@ -9,9 +9,8 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsListByVaultSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderBackupVault_List.
-     * json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/
+     * BackupsUnderBackupVault_List.json
      */
     /**
      * Sample code: Backups_List.

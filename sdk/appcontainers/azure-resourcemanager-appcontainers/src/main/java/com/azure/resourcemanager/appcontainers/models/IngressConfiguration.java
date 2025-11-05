@@ -22,11 +22,6 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
     private String workloadProfileName;
 
     /*
-     * Scaling configuration for the ingress component. Required.
-     */
-    private IngressConfigurationScale scale;
-
-    /*
      * Time (in seconds) to allow active connections to complete on termination. Must be between 0 and 3600. Defaults to
      * 480 seconds.
      */
@@ -38,7 +33,8 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
     private Integer headerCountLimit;
 
     /*
-     * Duration (in minutes) before idle requests are timed out. Must be at least 1 minute. Defaults to 4 minutes.
+     * Duration (in minutes) before idle requests are timed out. Must be between 4 and 30 inclusive. Defaults to 4
+     * minutes.
      */
     private Integer requestIdleTimeout;
 
@@ -65,26 +61,6 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
      */
     public IngressConfiguration withWorkloadProfileName(String workloadProfileName) {
         this.workloadProfileName = workloadProfileName;
-        return this;
-    }
-
-    /**
-     * Get the scale property: Scaling configuration for the ingress component. Required.
-     * 
-     * @return the scale value.
-     */
-    public IngressConfigurationScale scale() {
-        return this.scale;
-    }
-
-    /**
-     * Set the scale property: Scaling configuration for the ingress component. Required.
-     * 
-     * @param scale the scale value to set.
-     * @return the IngressConfiguration object itself.
-     */
-    public IngressConfiguration withScale(IngressConfigurationScale scale) {
-        this.scale = scale;
         return this;
     }
 
@@ -133,8 +109,8 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
     }
 
     /**
-     * Get the requestIdleTimeout property: Duration (in minutes) before idle requests are timed out. Must be at least 1
-     * minute. Defaults to 4 minutes.
+     * Get the requestIdleTimeout property: Duration (in minutes) before idle requests are timed out. Must be between 4
+     * and 30 inclusive. Defaults to 4 minutes.
      * 
      * @return the requestIdleTimeout value.
      */
@@ -143,8 +119,8 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
     }
 
     /**
-     * Set the requestIdleTimeout property: Duration (in minutes) before idle requests are timed out. Must be at least 1
-     * minute. Defaults to 4 minutes.
+     * Set the requestIdleTimeout property: Duration (in minutes) before idle requests are timed out. Must be between 4
+     * and 30 inclusive. Defaults to 4 minutes.
      * 
      * @param requestIdleTimeout the requestIdleTimeout value to set.
      * @return the IngressConfiguration object itself.
@@ -160,9 +136,6 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (scale() != null) {
-            scale().validate();
-        }
     }
 
     /**
@@ -172,7 +145,6 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("workloadProfileName", this.workloadProfileName);
-        jsonWriter.writeJsonField("scale", this.scale);
         jsonWriter.writeNumberField("terminationGracePeriodSeconds", this.terminationGracePeriodSeconds);
         jsonWriter.writeNumberField("headerCountLimit", this.headerCountLimit);
         jsonWriter.writeNumberField("requestIdleTimeout", this.requestIdleTimeout);
@@ -196,8 +168,6 @@ public final class IngressConfiguration implements JsonSerializable<IngressConfi
 
                 if ("workloadProfileName".equals(fieldName)) {
                     deserializedIngressConfiguration.workloadProfileName = reader.getString();
-                } else if ("scale".equals(fieldName)) {
-                    deserializedIngressConfiguration.scale = IngressConfigurationScale.fromJson(reader);
                 } else if ("terminationGracePeriodSeconds".equals(fieldName)) {
                     deserializedIngressConfiguration.terminationGracePeriodSeconds
                         = reader.getNullable(JsonReader::getInt);

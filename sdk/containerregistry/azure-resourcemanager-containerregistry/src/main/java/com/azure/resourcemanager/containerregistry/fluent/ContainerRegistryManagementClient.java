@@ -40,6 +40,20 @@ public interface ContainerRegistryManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the RegistriesClient object to access its operations.
+     * 
+     * @return the RegistriesClient object.
+     */
+    RegistriesClient getRegistries();
+
+    /**
      * Gets the CacheRulesClient object to access its operations.
      * 
      * @return the CacheRulesClient object.
@@ -59,20 +73,6 @@ public interface ContainerRegistryManagementClient {
      * @return the CredentialSetsClient object.
      */
     CredentialSetsClient getCredentialSets();
-
-    /**
-     * Gets the RegistriesClient object to access its operations.
-     * 
-     * @return the RegistriesClient object.
-     */
-    RegistriesClient getRegistries();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     * 
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.

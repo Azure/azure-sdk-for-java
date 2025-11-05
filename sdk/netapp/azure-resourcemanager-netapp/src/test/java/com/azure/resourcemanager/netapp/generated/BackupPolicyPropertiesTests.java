@@ -12,24 +12,24 @@ public final class BackupPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyProperties model = BinaryData.fromString(
-            "{\"backupPolicyId\":\"nbsazejjoqkag\",\"provisioningState\":\"sxtta\",\"dailyBackupsToKeep\":1689987065,\"weeklyBackupsToKeep\":1620389391,\"monthlyBackupsToKeep\":288495023,\"volumesAssigned\":1224578213,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"kdmkqjjlwuenvrkp\",\"volumeResourceId\":\"uaibrebqaaysj\",\"backupsCount\":1330578772,\"policyEnabled\":true},{\"volumeName\":\"qttezlwfffiakpjp\",\"volumeResourceId\":\"m\",\"backupsCount\":147103484,\"policyEnabled\":true}]}")
+            "{\"backupPolicyId\":\"nyowxwlmdjrkvfg\",\"provisioningState\":\"fvpdbo\",\"dailyBackupsToKeep\":2095776205,\"weeklyBackupsToKeep\":1592823352,\"monthlyBackupsToKeep\":218756340,\"volumesAssigned\":1933405509,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"bdeibqipqk\",\"volumeResourceId\":\"vxndz\",\"backupsCount\":74498684,\"policyEnabled\":false}]}")
             .toObject(BackupPolicyProperties.class);
-        Assertions.assertEquals(1689987065, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1620389391, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(288495023, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(2095776205, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1592823352, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(218756340, model.monthlyBackupsToKeep());
         Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyProperties model = new BackupPolicyProperties().withDailyBackupsToKeep(1689987065)
-            .withWeeklyBackupsToKeep(1620389391)
-            .withMonthlyBackupsToKeep(288495023)
+        BackupPolicyProperties model = new BackupPolicyProperties().withDailyBackupsToKeep(2095776205)
+            .withWeeklyBackupsToKeep(1592823352)
+            .withMonthlyBackupsToKeep(218756340)
             .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyProperties.class);
-        Assertions.assertEquals(1689987065, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1620389391, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(288495023, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(2095776205, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1592823352, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(218756340, model.monthlyBackupsToKeep());
         Assertions.assertTrue(model.enabled());
     }
 }

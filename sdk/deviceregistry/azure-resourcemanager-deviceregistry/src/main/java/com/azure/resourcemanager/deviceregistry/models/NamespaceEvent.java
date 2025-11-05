@@ -23,10 +23,9 @@ public final class NamespaceEvent implements JsonSerializable<NamespaceEvent> {
     private String name;
 
     /*
-     * The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the
-     * asset.
+     * Reference to a data source for a given event.
      */
-    private String eventNotifier;
+    private String dataSource;
 
     /*
      * Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include
@@ -43,11 +42,6 @@ public final class NamespaceEvent implements JsonSerializable<NamespaceEvent> {
      * URI or type definition ID.
      */
     private String typeRef;
-
-    /*
-     * Array of data points that are part of the event. Each data point can have a per-data point configuration.
-     */
-    private List<NamespaceEventDataPoint> dataPoints;
 
     /**
      * Creates an instance of NamespaceEvent class.
@@ -76,24 +70,22 @@ public final class NamespaceEvent implements JsonSerializable<NamespaceEvent> {
     }
 
     /**
-     * Get the eventNotifier property: The address of the notifier of the event in the asset (e.g. URL) so that a client
-     * can access the event on the asset.
+     * Get the dataSource property: Reference to a data source for a given event.
      * 
-     * @return the eventNotifier value.
+     * @return the dataSource value.
      */
-    public String eventNotifier() {
-        return this.eventNotifier;
+    public String dataSource() {
+        return this.dataSource;
     }
 
     /**
-     * Set the eventNotifier property: The address of the notifier of the event in the asset (e.g. URL) so that a client
-     * can access the event on the asset.
+     * Set the dataSource property: Reference to a data source for a given event.
      * 
-     * @param eventNotifier the eventNotifier value to set.
+     * @param dataSource the dataSource value to set.
      * @return the NamespaceEvent object itself.
      */
-    public NamespaceEvent withEventNotifier(String eventNotifier) {
-        this.eventNotifier = eventNotifier;
+    public NamespaceEvent withDataSource(String dataSource) {
+        this.dataSource = dataSource;
         return this;
     }
 
@@ -160,39 +152,16 @@ public final class NamespaceEvent implements JsonSerializable<NamespaceEvent> {
     }
 
     /**
-     * Get the dataPoints property: Array of data points that are part of the event. Each data point can have a per-data
-     * point configuration.
-     * 
-     * @return the dataPoints value.
-     */
-    public List<NamespaceEventDataPoint> dataPoints() {
-        return this.dataPoints;
-    }
-
-    /**
-     * Set the dataPoints property: Array of data points that are part of the event. Each data point can have a per-data
-     * point configuration.
-     * 
-     * @param dataPoints the dataPoints value to set.
-     * @return the NamespaceEvent object itself.
-     */
-    public NamespaceEvent withDataPoints(List<NamespaceEventDataPoint> dataPoints) {
-        this.dataPoints = dataPoints;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("eventNotifier", this.eventNotifier);
+        jsonWriter.writeStringField("dataSource", this.dataSource);
         jsonWriter.writeStringField("eventConfiguration", this.eventConfiguration);
         jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("typeRef", this.typeRef);
-        jsonWriter.writeArrayField("dataPoints", this.dataPoints, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -214,8 +183,8 @@ public final class NamespaceEvent implements JsonSerializable<NamespaceEvent> {
 
                 if ("name".equals(fieldName)) {
                     deserializedNamespaceEvent.name = reader.getString();
-                } else if ("eventNotifier".equals(fieldName)) {
-                    deserializedNamespaceEvent.eventNotifier = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedNamespaceEvent.dataSource = reader.getString();
                 } else if ("eventConfiguration".equals(fieldName)) {
                     deserializedNamespaceEvent.eventConfiguration = reader.getString();
                 } else if ("destinations".equals(fieldName)) {
@@ -224,10 +193,6 @@ public final class NamespaceEvent implements JsonSerializable<NamespaceEvent> {
                     deserializedNamespaceEvent.destinations = destinations;
                 } else if ("typeRef".equals(fieldName)) {
                     deserializedNamespaceEvent.typeRef = reader.getString();
-                } else if ("dataPoints".equals(fieldName)) {
-                    List<NamespaceEventDataPoint> dataPoints
-                        = reader.readArray(reader1 -> NamespaceEventDataPoint.fromJson(reader1));
-                    deserializedNamespaceEvent.dataPoints = dataPoints;
                 } else {
                     reader.skipChildren();
                 }

@@ -91,6 +91,29 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
     private String path;
 
     /*
+     * Enable or disable dedicated connection per backend server. Default is set to false.
+     */
+    private Boolean dedicatedBackendConnection;
+
+    /*
+     * Verify or skip both chain and expiry validations of the certificate on the backend server. Default is set to
+     * true.
+     */
+    private Boolean validateCertChainAndExpiry;
+
+    /*
+     * When enabled, verifies if the Common Name of the certificate provided by the backend server matches the Server
+     * Name Indication (SNI) value. Default value is true.
+     */
+    private Boolean validateSni;
+
+    /*
+     * Specify an SNI value to match the common name of the certificate on the backend. By default, the application
+     * gateway uses the incoming request’s host header as the SNI. Default value is null.
+     */
+    private String sniName;
+
+    /*
      * The provisioning state of the backend HTTP settings resource.
      */
     private ProvisioningState provisioningState;
@@ -375,6 +398,96 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
     }
 
     /**
+     * Get the dedicatedBackendConnection property: Enable or disable dedicated connection per backend server. Default
+     * is set to false.
+     * 
+     * @return the dedicatedBackendConnection value.
+     */
+    public Boolean dedicatedBackendConnection() {
+        return this.dedicatedBackendConnection;
+    }
+
+    /**
+     * Set the dedicatedBackendConnection property: Enable or disable dedicated connection per backend server. Default
+     * is set to false.
+     * 
+     * @param dedicatedBackendConnection the dedicatedBackendConnection value to set.
+     * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withDedicatedBackendConnection(Boolean dedicatedBackendConnection) {
+        this.dedicatedBackendConnection = dedicatedBackendConnection;
+        return this;
+    }
+
+    /**
+     * Get the validateCertChainAndExpiry property: Verify or skip both chain and expiry validations of the certificate
+     * on the backend server. Default is set to true.
+     * 
+     * @return the validateCertChainAndExpiry value.
+     */
+    public Boolean validateCertChainAndExpiry() {
+        return this.validateCertChainAndExpiry;
+    }
+
+    /**
+     * Set the validateCertChainAndExpiry property: Verify or skip both chain and expiry validations of the certificate
+     * on the backend server. Default is set to true.
+     * 
+     * @param validateCertChainAndExpiry the validateCertChainAndExpiry value to set.
+     * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withValidateCertChainAndExpiry(Boolean validateCertChainAndExpiry) {
+        this.validateCertChainAndExpiry = validateCertChainAndExpiry;
+        return this;
+    }
+
+    /**
+     * Get the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
+     * backend server matches the Server Name Indication (SNI) value. Default value is true.
+     * 
+     * @return the validateSni value.
+     */
+    public Boolean validateSni() {
+        return this.validateSni;
+    }
+
+    /**
+     * Set the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
+     * backend server matches the Server Name Indication (SNI) value. Default value is true.
+     * 
+     * @param validateSni the validateSni value to set.
+     * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withValidateSni(Boolean validateSni) {
+        this.validateSni = validateSni;
+        return this;
+    }
+
+    /**
+     * Get the sniName property: Specify an SNI value to match the common name of the certificate on the backend. By
+     * default, the application gateway uses the incoming request’s host header as the SNI. Default value is null.
+     * 
+     * @return the sniName value.
+     */
+    public String sniName() {
+        return this.sniName;
+    }
+
+    /**
+     * Set the sniName property: Specify an SNI value to match the common name of the certificate on the backend. By
+     * default, the application gateway uses the incoming request’s host header as the SNI. Default value is null.
+     * 
+     * @param sniName the sniName value to set.
+     * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withSniName(String sniName) {
+        this.sniName = sniName;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
      * 
      * @return the provisioningState value.
@@ -416,6 +529,10 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
         jsonWriter.writeStringField("affinityCookieName", this.affinityCookieName);
         jsonWriter.writeBooleanField("probeEnabled", this.probeEnabled);
         jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeBooleanField("dedicatedBackendConnection", this.dedicatedBackendConnection);
+        jsonWriter.writeBooleanField("validateCertChainAndExpiry", this.validateCertChainAndExpiry);
+        jsonWriter.writeBooleanField("validateSNI", this.validateSni);
+        jsonWriter.writeStringField("sniName", this.sniName);
         return jsonWriter.writeEndObject();
     }
 
@@ -477,6 +594,17 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("path".equals(fieldName)) {
                     deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.path = reader.getString();
+                } else if ("dedicatedBackendConnection".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.dedicatedBackendConnection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validateCertChainAndExpiry".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.validateCertChainAndExpiry
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validateSNI".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.validateSni
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sniName".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.sniName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

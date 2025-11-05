@@ -64,11 +64,11 @@ public final class VolumeQuotaRulePatch implements JsonSerializable<VolumeQuotaR
     }
 
     /**
-     * Get the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
+     * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public NetAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

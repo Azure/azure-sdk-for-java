@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hdinsight.models.Extension;
 public final class ExtensionsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/CreateExtension.
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/CreateExtension.
      * json
      */
     /**
