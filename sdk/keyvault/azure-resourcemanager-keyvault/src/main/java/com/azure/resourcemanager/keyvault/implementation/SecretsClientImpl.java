@@ -33,7 +33,6 @@ import com.azure.resourcemanager.keyvault.fluent.models.SecretInner;
 import com.azure.resourcemanager.keyvault.implementation.models.SecretListResult;
 import com.azure.resourcemanager.keyvault.models.SecretCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.SecretPatchParameters;
-import com.azure.resourcemanager.keyvault.models.SecretsCreateOrUpdateResponse;
 import reactor.core.publisher.Mono;
 
 /**
@@ -79,7 +78,7 @@ public final class SecretsClientImpl implements SecretsClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SecretsCreateOrUpdateResponse> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<SecretInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("secretName") String secretName, @HeaderParam("Content-Type") String contentType,
@@ -258,11 +257,12 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String vaultName, String secretName, SecretCreateOrUpdateParameters parameters) {
+    public Mono<Response<SecretInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
+        String secretName, SecretCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -307,11 +307,12 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecretsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String vaultName, String secretName, SecretCreateOrUpdateParameters parameters, Context context) {
+    private Mono<Response<SecretInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
+        String secretName, SecretCreateOrUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -375,10 +376,10 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
+     * @return resource information with extended details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String vaultName,
+    public Response<SecretInner> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
         String secretName, SecretCreateOrUpdateParameters parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, secretName, parameters, context).block();
     }

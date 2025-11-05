@@ -23,9 +23,9 @@ public final class ManagedHsmPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmProperties model = BinaryData.fromString(
-            "{\"tenantId\":\"7f926392-7c8b-4014-a821-4dc698a1281f\",\"initialAdminObjectIds\":[\"wfvovbv\",\"euecivyhzceuoj\"],\"hsmUri\":\"rw\",\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":1907813820,\"enablePurgeProtection\":true,\"createMode\":\"recover\",\"statusMessage\":\"ytdxwit\",\"provisioningState\":\"Provisioning\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"xhniskxfbkpycgk\"},{\"value\":\"wndnhj\"}],\"serviceTags\":[{\"tag\":\"whvylw\"},{\"tag\":\"btdhxujznbm\"},{\"tag\":\"ow\"},{\"tag\":\"wpr\"}],\"virtualNetworkRules\":[{\"id\":\"veual\"}]},\"regions\":[{\"name\":\"khfxobbcswsrt\",\"provisioningState\":\"Failed\",\"isPrimary\":true}],\"privateEndpointConnections\":[{\"id\":\"bewtghfg\",\"etag\":\"c\",\"properties\":{\"privateEndpoint\":{\"id\":\"vlvqhjkbegi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"iebwwaloayqcgwrt\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"}},{\"id\":\"yzm\",\"etag\":\"xongmtsavjcbpwxq\",\"properties\":{\"privateEndpoint\":{\"id\":\"nftguvriuhpr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"xqtayriwwro\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Failed\"}},{\"id\":\"mcqibycnojv\",\"etag\":\"mefqsgzvahapjyzh\",\"properties\":{\"privateEndpoint\":{\"id\":\"zcjrvxdjzlmwlx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"hzovawjvzunlut\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"}}],\"publicNetworkAccess\":\"Disabled\",\"scheduledPurgeDate\":\"2021-11-18T19:16:34Z\",\"securityDomainProperties\":{\"activationStatus\":\"Unknown\",\"activationStatusMessage\":\"jzuaejxdultskzbb\"}}")
+            "{\"tenantId\":\"ce7c1e19-59de-445f-a597-a022d8653166\",\"initialAdminObjectIds\":[\"wfvovbv\",\"euecivyhzceuoj\"],\"hsmUri\":\"rw\",\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":1907813820,\"enablePurgeProtection\":true,\"createMode\":\"recover\",\"statusMessage\":\"ytdxwit\",\"provisioningState\":\"Provisioning\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"xhniskxfbkpycgk\"},{\"value\":\"wndnhj\"}],\"serviceTags\":[{\"tag\":\"whvylw\"},{\"tag\":\"btdhxujznbm\"},{\"tag\":\"ow\"},{\"tag\":\"wpr\"}],\"virtualNetworkRules\":[{\"id\":\"veual\"}]},\"regions\":[{\"name\":\"khfxobbcswsrt\",\"provisioningState\":\"Failed\",\"isPrimary\":true}],\"privateEndpointConnections\":[{\"id\":\"bewtghfg\",\"etag\":\"c\",\"properties\":{\"privateEndpoint\":{\"id\":\"vlvqhjkbegi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"iebwwaloayqcgwrt\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"}},{\"id\":\"yzm\",\"etag\":\"xongmtsavjcbpwxq\",\"properties\":{\"privateEndpoint\":{\"id\":\"nftguvriuhpr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"xqtayriwwro\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Failed\"}},{\"id\":\"mcqibycnojv\",\"etag\":\"mefqsgzvahapjyzh\",\"properties\":{\"privateEndpoint\":{\"id\":\"zcjrvxdjzlmwlx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"hzovawjvzunlut\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"}}],\"publicNetworkAccess\":\"Disabled\",\"scheduledPurgeDate\":\"2021-11-18T19:16:34Z\",\"securityDomainProperties\":{\"activationStatus\":\"Unknown\",\"activationStatusMessage\":\"jzuaejxdultskzbb\"}}")
             .toObject(ManagedHsmProperties.class);
-        Assertions.assertEquals(UUID.fromString("7f926392-7c8b-4014-a821-4dc698a1281f"), model.tenantId());
+        Assertions.assertEquals(UUID.fromString("ce7c1e19-59de-445f-a597-a022d8653166"), model.tenantId());
         Assertions.assertEquals("wfvovbv", model.initialAdminObjectIds().get(0));
         Assertions.assertTrue(model.enableSoftDelete());
         Assertions.assertEquals(1907813820, model.softDeleteRetentionInDays());
@@ -44,7 +44,7 @@ public final class ManagedHsmPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedHsmProperties model = new ManagedHsmProperties()
-            .withTenantId(UUID.fromString("7f926392-7c8b-4014-a821-4dc698a1281f"))
+            .withTenantId(UUID.fromString("ce7c1e19-59de-445f-a597-a022d8653166"))
             .withInitialAdminObjectIds(Arrays.asList("wfvovbv", "euecivyhzceuoj"))
             .withEnableSoftDelete(true)
             .withSoftDeleteRetentionInDays(1907813820)
@@ -62,7 +62,7 @@ public final class ManagedHsmPropertiesTests {
                 Arrays.asList(new MhsmGeoReplicatedRegionInner().withName("khfxobbcswsrt").withIsPrimary(true)))
             .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ManagedHsmProperties.class);
-        Assertions.assertEquals(UUID.fromString("7f926392-7c8b-4014-a821-4dc698a1281f"), model.tenantId());
+        Assertions.assertEquals(UUID.fromString("ce7c1e19-59de-445f-a597-a022d8653166"), model.tenantId());
         Assertions.assertEquals("wfvovbv", model.initialAdminObjectIds().get(0));
         Assertions.assertTrue(model.enableSoftDelete());
         Assertions.assertEquals(1907813820, model.softDeleteRetentionInDays());

@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.SecretInner;
 import com.azure.resourcemanager.keyvault.models.SecretCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.SecretPatchParameters;
-import com.azure.resourcemanager.keyvault.models.SecretsCreateOrUpdateResponse;
 import reactor.core.publisher.Mono;
 
 /**
@@ -93,10 +92,11 @@ public interface SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details on successful completion of {@link Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecretsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
+    Mono<Response<SecretInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
         String secretName, SecretCreateOrUpdateParameters parameters);
 
     /**
@@ -128,11 +128,11 @@ public interface SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
+     * @return resource information with extended details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecretsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String vaultName,
-        String secretName, SecretCreateOrUpdateParameters parameters, Context context);
+    Response<SecretInner> createOrUpdateWithResponse(String resourceGroupName, String vaultName, String secretName,
+        SecretCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update a secret in a key vault in the specified subscription. NOTE: This API is intended for internal
