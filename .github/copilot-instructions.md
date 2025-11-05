@@ -149,6 +149,10 @@ When facing issues, direct users to:
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 - [Stack Overflow with azure-java-sdk tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
 
+## SDK Workflow
+
+For anything related to SDK generation, development, verification, and release, see the [Azure SDK Tools instructions](../eng/common/instructions/azsdk-tools/).
+
 ## SDK release
 
 For detailed workflow instructions, see [SDK Release](../eng/common/instructions/copilot/sdk-release.instructions.md).
