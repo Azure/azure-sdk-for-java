@@ -32,7 +32,7 @@ public enum SearchServiceVersion implements ServiceVersion {
     /**
      * {@code 2025-08-01-preview} service version.
      */
-    V2025_08_01_PREVIEW("2025-08-01-preview");
+    V2025_11_01_PREVIEW("2025-11-01-preview");
 
     private final String version;
 
@@ -54,6 +54,6 @@ public enum SearchServiceVersion implements ServiceVersion {
      * @return The latest version supported by this client library.
      */
     public static SearchServiceVersion getLatest() {
-        return V2025_08_01_PREVIEW;
+        return V2025_11_01_PREVIEW;
     }
 }
