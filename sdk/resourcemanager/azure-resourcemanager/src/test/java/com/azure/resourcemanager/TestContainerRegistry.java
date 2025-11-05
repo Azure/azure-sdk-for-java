@@ -22,7 +22,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withStandardSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -40,7 +40,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withBasicSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .defineWebhook("webhookbing1")
             .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
             .withServiceUri("https://www.bing.com")
