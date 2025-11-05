@@ -113,6 +113,28 @@ class ServiceBusRetryTest {
         assertThat(retryTemplate).isNull();
     }
 
+    @Test
+    void testCustomRetryTemplateIsUsed() {
+        // Arrange
+        prepareConsumerProperties();
+        consumerProperties.setMaxAttempts(3);
+        when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
+        
+        // Create a custom RetryTemplate
+        RetryTemplate customRetryTemplate = new RetryTemplate();
+        binder.setRetryTemplate(customRetryTemplate);
+
+        // Act
+        MessageProducer producer = binder.createConsumerEndpoint(consumerDestination, GROUP, consumerProperties);
+
+        // Assert
+        assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
+        ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
+        RetryTemplate actualRetryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
+        assertThat(actualRetryTemplate).isNotNull();
+        assertThat(actualRetryTemplate).isSameAs(customRetryTemplate);
+    }
+
     private void prepareConsumerProperties() {
         serviceBusConsumerProperties.setEntityName(ENTITY_NAME);
         serviceBusConsumerProperties.setSubscriptionName(GROUP);

@@ -123,6 +123,47 @@ spring:
             max-attempts: 1  # No retries
 ```
 
+## Custom RetryTemplate
+
+You can inject a custom `RetryTemplate` bean if you need more control over retry behavior:
+
+```java
+@Configuration
+public class CustomRetryConfiguration {
+    
+    @Bean
+    public RetryTemplate customRetryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
+        
+        // Custom retry policy
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(10);
+        retryTemplate.setRetryPolicy(retryPolicy);
+        
+        // Custom backoff policy
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(500);
+        backOffPolicy.setMultiplier(3.0);
+        backOffPolicy.setMaxInterval(30000);
+        retryTemplate.setBackOffPolicy(backOffPolicy);
+        
+        return retryTemplate;
+    }
+    
+    @Bean
+    public ServiceBusMessageChannelBinder serviceBusMessageChannelBinder(
+            ServiceBusChannelProvisioner provisioner,
+            RetryTemplate customRetryTemplate) {
+        ServiceBusMessageChannelBinder binder = 
+            new ServiceBusMessageChannelBinder(BinderHeaders.STANDARD_HEADERS, provisioner);
+        binder.setRetryTemplate(customRetryTemplate);
+        return binder;
+    }
+}
+```
+
+**Note**: When a custom `RetryTemplate` is injected, it takes precedence over the retry properties configured in `application.yml`. The custom template will be used for all consumers with `max-attempts > 1`.
+
 ## Best Practices
 
 1. **Choose Appropriate Max Attempts**: Consider the nature of your failures. Transient network issues might benefit from more retries, while business logic errors might not.

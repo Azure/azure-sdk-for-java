@@ -94,6 +94,7 @@ public class ServiceBusMessageChannelBinder extends
 
     private final List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
     private final List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
+    private RetryTemplate retryTemplate;
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
@@ -154,8 +155,11 @@ public class ServiceBusMessageChannelBinder extends
         
         // Configure retry if maxAttempts > 1
         if (properties.getMaxAttempts() > 1) {
-            RetryTemplate retryTemplate = createRetryTemplate(properties);
-            inboundAdapter.setRetryTemplate(retryTemplate);
+            // Use injected RetryTemplate if available, otherwise create one from properties
+            RetryTemplate retryTemplateToUse = this.retryTemplate != null 
+                ? this.retryTemplate 
+                : createRetryTemplate(properties);
+            inboundAdapter.setRetryTemplate(retryTemplateToUse);
         }
         
         return inboundAdapter;
@@ -385,6 +389,16 @@ public class ServiceBusMessageChannelBinder extends
         if (processorFactoryCustomizer != null) {
             this.processorFactoryCustomizers.add(processorFactoryCustomizer);
         }
+    }
+
+    /**
+     * Set a custom retry template for message processing retries.
+     * If not set, a retry template will be created automatically based on consumer properties when maxAttempts > 1.
+     *
+     * @param retryTemplate the retry template to use
+     */
+    public void setRetryTemplate(RetryTemplate retryTemplate) {
+        this.retryTemplate = retryTemplate;
     }
 
     /**

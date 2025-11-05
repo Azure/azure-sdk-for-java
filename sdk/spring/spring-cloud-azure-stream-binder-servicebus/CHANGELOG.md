@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added support for Spring Cloud Stream's consumer retry properties (`maxAttempts`, `backOffInitialInterval`, `backOffMaxInterval`, `backOffMultiplier`) to enable automatic retry with exponential backoff for message processing failures.
+- Added `setRetryTemplate()` method to `ServiceBusMessageChannelBinder` to allow users to inject a custom `RetryTemplate` from the Spring context for advanced retry scenarios.
 
 ### Breaking Changes
 
