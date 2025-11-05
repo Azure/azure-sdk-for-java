@@ -51,7 +51,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -125,7 +125,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -210,7 +210,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -285,7 +285,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -376,7 +376,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -465,7 +465,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -561,7 +561,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -604,7 +604,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -647,7 +647,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -689,7 +689,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -734,7 +734,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -779,7 +779,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -832,7 +832,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -910,7 +910,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -983,7 +983,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -1016,7 +1016,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -1110,7 +1110,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
@@ -1151,7 +1151,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withRegion(Region.US_WEST_CENTRAL)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
