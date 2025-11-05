@@ -5,13 +5,13 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.AssetCredentialResult;
+import com.azure.ai.projects.models.BlobReferenceSasCredential;
+import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
-import com.azure.ai.projects.models.SasCredential;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -37,7 +37,7 @@ import java.nio.file.Path;
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class DatasetsClient {
 
-    private final ClientLogger logger = new ClientLogger(DatasetsClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetsClient.class);
 
     @Generated
     private final DatasetsImpl serviceClient;
@@ -53,54 +53,39 @@ public final class DatasetsClient {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     pendingUploadId: String (Optional)
-     *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
-     * }
-     * }
-     * </pre>
-     * 
+     * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     blobReference (Required): {
-     *         blobUri: String (Required)
-     *         storageAccountArmId: String (Required)
-     *         credential (Required): {
-     *             sasUri: String (Required)
-     *             type: String (Required)
-     *         }
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
      *     }
-     *     pendingUploadId: String (Required)
-     *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
      * }
      * }
      * </pre>
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
-     * @param pendingUploadRequest The pending upload request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the response for a pending upload request along with {@link Response}.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> pendingUploadWithResponse(String name, String version, BinaryData pendingUploadRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.pendingUploadWithResponse(name, version, pendingUploadRequest, requestOptions);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersions(name, requestOptions);
     }
 
     /**
@@ -139,27 +124,24 @@ public final class DatasetsClient {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * List all versions of the given DatasetVersion.
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
-     * @param pendingUploadRequest The pending upload request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response for a pending upload request.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PendingUploadResponse pendingUpload(String name, String version, PendingUploadRequest pendingUploadRequest) {
-        // Generated convenience method for pendingUploadWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatasetVersion> listVersions(String name) {
+        // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
-        return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
-            .getValue()
-            .toObject(PendingUploadResponse.class);
+        return serviceClient.listVersions(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
     }
 
     /**
@@ -177,11 +159,10 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetCredentialResult getCredentials(String name, String version) {
+    public DatasetCredential getCredentials(String name, String version) {
         // Generated convenience method for getCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCredentialsWithResponse(name, version, requestOptions).getValue()
-            .toObject(AssetCredentialResult.class);
+        return getCredentialsWithResponse(name, version, requestOptions).getValue().toObject(DatasetCredential.class);
     }
 
     /**
@@ -196,18 +177,18 @@ public final class DatasetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath) {
         if (!Files.isRegularFile(filePath)) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
         }
         PendingUploadRequest body = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
-        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
+        BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
         BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(name).buildClient();
         blobClient.upload(BinaryData.fromFile(filePath));
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
-            .createOrUpdateDatasetVersionWithResponse(name, version,
+            .createOrUpdateWithResponse(name, version,
                 BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
             .getValue()
             .toObject(FileDatasetVersion.class);
@@ -228,14 +209,14 @@ public final class DatasetsClient {
     public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath)
         throws IOException {
         if (!Files.isDirectory(folderPath)) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
         }
         // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
         String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
-        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
+        BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
         // Upload all files in the directory
         Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
@@ -250,47 +231,11 @@ public final class DatasetsClient {
         // Create a FolderDatasetVersion with the container URL
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
-            .createOrUpdateDatasetVersionWithResponse(name, version,
+            .createOrUpdateWithResponse(name, version,
                 BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
             .getValue()
             .toObject(FolderDatasetVersion.class);
         return datasetVersion;
-    }
-
-    /**
-     * List all versions of the given DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDatasetVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listDatasetVersions(name, requestOptions);
     }
 
     /**
@@ -324,12 +269,13 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatestDatasetVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestDatasetVersions(requestOptions);
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.list(requestOptions);
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -361,13 +307,13 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDatasetVersionWithResponse(name, version, requestOptions);
+    public Response<BinaryData> getWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -380,8 +326,8 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDatasetVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteDatasetVersionWithResponse(name, version, requestOptions);
+    public Response<Void> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -438,31 +384,60 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version,
-        BinaryData datasetVersion, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDatasetVersionWithResponse(name, version, datasetVersion,
-            requestOptions);
+    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData datasetVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(name, version, datasetVersion, requestOptions);
     }
 
     /**
-     * List all versions of the given DatasetVersion.
+     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     pendingUploadId: String (Optional)
+     *     connectionName: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String (Required)
+     *         }
+     *     }
+     *     pendingUploadId: String (Required)
+     *     version: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
      *
      * @param name The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     * @return represents the response for a pending upload request along with {@link Response}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> listDatasetVersions(String name) {
-        // Generated convenience method for listDatasetVersions
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listDatasetVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> pendingUploadWithResponse(String name, String version, BinaryData pendingUploadRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.pendingUploadWithResponse(name, version, pendingUploadRequest, requestOptions);
     }
 
     /**
@@ -477,15 +452,16 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> listLatestDatasetVersions() {
-        // Generated convenience method for listLatestDatasetVersions
+    public PagedIterable<DatasetVersion> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatestDatasetVersions(requestOptions)
+        return serviceClient.list(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to retrieve.
@@ -499,14 +475,15 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion getDatasetVersion(String name, String version) {
-        // Generated convenience method for getDatasetVersionWithResponse
+    public DatasetVersion get(String name, String version) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDatasetVersionWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
+        return getWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -519,10 +496,10 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDatasetVersion(String name, String version) {
-        // Generated convenience method for deleteDatasetVersionWithResponse
+    public void delete(String name, String version) {
+        // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteDatasetVersionWithResponse(name, version, requestOptions).getValue();
+        deleteWithResponse(name, version, requestOptions).getValue();
     }
 
     /**
@@ -541,16 +518,39 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion createOrUpdateDatasetVersion(String name, String version, DatasetVersion datasetVersion) {
-        // Generated convenience method for createOrUpdateDatasetVersionWithResponse
+    public DatasetVersion createOrUpdate(String name, String version, DatasetVersion datasetVersion) {
+        // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
         BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         datasetVersionInBinaryData.getLength();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
-        return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
-            .getValue()
+        return createOrUpdateWithResponse(name, version, datasetVersionInBinaryData, requestOptions).getValue()
             .toObject(DatasetVersion.class);
+    }
+
+    /**
+     * Start a new or get an existing pending upload of a dataset for a specific version.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response for a pending upload request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PendingUploadResponse pendingUpload(String name, String version, PendingUploadRequest pendingUploadRequest) {
+        // Generated convenience method for pendingUploadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
+            .getValue()
+            .toObject(PendingUploadResponse.class);
     }
 }

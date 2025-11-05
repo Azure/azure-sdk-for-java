@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class IndexesAsyncClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
@@ -59,7 +60,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         List<Index> indexList = new ArrayList<>();
 
         // Verify that listing indexes returns results
-        StepVerifier.create(indexesAsyncClient.listLatestIndexVersions().doOnNext(index -> {
+        StepVerifier.create(indexesAsyncClient.list().doOnNext(index -> {
             indexList.add(index);
             assertValidIndex(index, null, null);
         })).expectComplete().verify(Duration.ofMinutes(1));
@@ -78,7 +79,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         List<Index> versionList = new ArrayList<>();
 
         // Verify that listing index versions returns results or appropriate error
-        StepVerifier.create(indexesAsyncClient.listIndexVersions(indexName).doOnNext(index -> {
+        StepVerifier.create(indexesAsyncClient.listVersions(indexName).doOnNext(index -> {
             versionList.add(index);
             assertValidIndex(index, indexName, null);
         }).onErrorResume(e -> {
@@ -102,7 +103,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
 
-        StepVerifier.create(indexesAsyncClient.getIndexVersion(indexName, indexVersion).doOnNext(index -> {
+        StepVerifier.create(indexesAsyncClient.get(indexName, indexVersion).doOnNext(index -> {
             // Verify the index properties
             assertValidIndex(index, indexName, indexVersion);
             System.out
@@ -134,8 +135,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         AzureAISearchIndex searchIndex
             = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
-        StepVerifier.create(indexesAsyncClient.createOrUpdateIndexVersion(indexName, indexVersion, searchIndex)
-            .doOnNext(createdIndex -> {
+        StepVerifier
+            .create(indexesAsyncClient.createOrUpdate(indexName, indexVersion, searchIndex).doOnNext(createdIndex -> {
                 // Verify the created/updated index
                 assertValidIndex(createdIndex, indexName, indexVersion);
 
@@ -147,7 +148,10 @@ public class IndexesAsyncClientTest extends ClientTestBase {
 
                 System.out.println("Index created/updated successfully: " + createdIndex.getName() + " (version "
                     + createdIndex.getVersion() + ")");
-            })).expectNextCount(1).expectComplete().verify(Duration.ofMinutes(1));
+            }))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     @Disabled
@@ -160,12 +164,12 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
 
         // First verify the index exists
-        indexesAsyncClient.getIndexVersion(indexName, indexVersion)
+        indexesAsyncClient.get(indexName, indexVersion)
             .doOnNext(index -> assertValidIndex(index, indexName, indexVersion))
-            .flatMap(index -> indexesAsyncClient.deleteIndexVersion(indexName, indexVersion))
+            .flatMap(index -> indexesAsyncClient.delete(indexName, indexVersion))
             .doOnSuccess(unused -> System.out.println("Index deletion request submitted"))
             .then(Mono.delay(Duration.ofSeconds(2))) // Give some time for the deletion to complete
-            .then(indexesAsyncClient.getIndexVersion(indexName, indexVersion))
+            .then(indexesAsyncClient.get(indexName, indexVersion))
             .doOnNext(deletedIndex -> Assertions
                 .fail("Index should have been deleted but was found: " + deletedIndex.getName()))
             .onErrorResume(e -> {

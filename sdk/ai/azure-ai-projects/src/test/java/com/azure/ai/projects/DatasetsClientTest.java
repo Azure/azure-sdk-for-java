@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class DatasetsClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
@@ -118,7 +119,7 @@ public class DatasetsClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing datasets returns results
-        Iterable<DatasetVersion> datasets = datasetsClient.listLatestDatasetVersions();
+        Iterable<DatasetVersion> datasets = datasetsClient.list();
         Assertions.assertNotNull(datasets);
 
         // Verify that at least one dataset can be retrieved
@@ -137,7 +138,7 @@ public class DatasetsClientTest extends ClientTestBase {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
 
         // Verify that listing dataset versions returns results
-        Iterable<DatasetVersion> versions = datasetsClient.listDatasetVersions(datasetName);
+        Iterable<DatasetVersion> versions = datasetsClient.listVersions(datasetName);
         Assertions.assertNotNull(versions);
 
         // Verify that at least one dataset version can be retrieved
@@ -157,7 +158,7 @@ public class DatasetsClientTest extends ClientTestBase {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Get a specific dataset version
-        DatasetVersion dataset = datasetsClient.getDatasetVersion(datasetName, datasetVersion);
+        DatasetVersion dataset = datasetsClient.get(datasetName, datasetVersion);
 
         // Verify the dataset properties
         assertDatasetVersion(dataset, datasetName, datasetVersion);
@@ -179,8 +180,8 @@ public class DatasetsClientTest extends ClientTestBase {
             = new FileDatasetVersion().setDataUri(dataUri).setDescription("Test dataset created via SDK tests");
 
         // Create or update the dataset
-        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient
-            .createOrUpdateDatasetVersion(datasetName, datasetVersion, fileDataset);
+        FileDatasetVersion createdDataset
+            = (FileDatasetVersion) datasetsClient.createOrUpdate(datasetName, datasetVersion, fileDataset);
 
         // Verify the created dataset
         assertFileDatasetVersion(createdDataset, datasetName, datasetVersion, dataUri);
@@ -229,11 +230,11 @@ public class DatasetsClientTest extends ClientTestBase {
         Assertions.assertNotNull(createdDataset);
 
         // Delete the dataset
-        datasetsClient.deleteDatasetVersion(datasetName, datasetVersion);
+        datasetsClient.delete(datasetName, datasetVersion);
 
         // Verify deletion - this should throw ResourceNotFoundException
         try {
-            datasetsClient.getDatasetVersion(datasetName, datasetVersion);
+            datasetsClient.get(datasetName, datasetVersion);
             Assertions.fail("Expected ResourceNotFoundException was not thrown");
         } catch (Exception e) {
             // Expected exception

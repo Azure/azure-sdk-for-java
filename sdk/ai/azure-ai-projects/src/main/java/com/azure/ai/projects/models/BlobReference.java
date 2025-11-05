@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class BlobReference implements JsonSerializable<BlobReference> {
 
     /*
-     * Blob URI path for client to upload data. Example: https://blob.windows.core.net/Container/Path
+     * Blob URI path for client to upload data. Example: `https://blob.windows.core.net/Container/Path`
      */
     @Generated
     private final String blobUri;
@@ -33,25 +33,11 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
      * Credential info to access the storage account.
      */
     @Generated
-    private final SasCredential credential;
-
-    /**
-     * Creates an instance of BlobReference class.
-     *
-     * @param blobUri the blobUri value to set.
-     * @param storageAccountArmId the storageAccountArmId value to set.
-     * @param credential the credential value to set.
-     */
-    @Generated
-    private BlobReference(String blobUri, String storageAccountArmId, SasCredential credential) {
-        this.blobUri = blobUri;
-        this.storageAccountArmId = storageAccountArmId;
-        this.credential = credential;
-    }
+    private final BlobReferenceSasCredential credential;
 
     /**
      * Get the blobUri property: Blob URI path for client to upload data. Example:
-     * https://blob.windows.core.net/Container/Path.
+     * `https://blob.windows.core.net/Container/Path`.
      *
      * @return the blobUri value.
      */
@@ -76,7 +62,7 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
      * @return the credential value.
      */
     @Generated
-    public SasCredential getCredential() {
+    public BlobReferenceSasCredential getCredential() {
         return this.credential;
     }
 
@@ -107,7 +93,7 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
         return jsonReader.readObject(reader -> {
             String blobUri = null;
             String storageAccountArmId = null;
-            SasCredential credential = null;
+            BlobReferenceSasCredential credential = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -116,12 +102,26 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
                 } else if ("storageAccountArmId".equals(fieldName)) {
                     storageAccountArmId = reader.getString();
                 } else if ("credential".equals(fieldName)) {
-                    credential = SasCredential.fromJson(reader);
+                    credential = BlobReferenceSasCredential.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new BlobReference(blobUri, storageAccountArmId, credential);
         });
+    }
+
+    /**
+     * Creates an instance of BlobReference class.
+     *
+     * @param blobUri the blobUri value to set.
+     * @param storageAccountArmId the storageAccountArmId value to set.
+     * @param credential the credential value to set.
+     */
+    @Generated
+    private BlobReference(String blobUri, String storageAccountArmId, BlobReferenceSasCredential credential) {
+        this.blobUri = blobUri;
+        this.storageAccountArmId = storageAccountArmId;
+        this.credential = credential;
     }
 }

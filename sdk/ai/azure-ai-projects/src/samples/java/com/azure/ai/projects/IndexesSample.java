@@ -31,7 +31,7 @@ public class IndexesSample {
         String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
         String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-        Index index = indexesClient.createOrUpdateIndexVersion(
+        Index index = indexesClient.createOrUpdate(
             indexName,
             indexVersion,
             new AzureAISearchIndex()
@@ -47,7 +47,7 @@ public class IndexesSample {
     public static void listIndexes() {
         // BEGIN:com.azure.ai.projects.IndexesListSample.listIndexes
 
-        indexesClient.listLatestIndexVersions().forEach(index -> {
+        indexesClient.list().forEach(index -> {
             System.out.println("Index name: " + index.getName());
             System.out.println("Index version: " + index.getVersion());
         });
@@ -60,7 +60,7 @@ public class IndexesSample {
         
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         
-        indexesClient.listIndexVersions(indexName).forEach(index -> {
+        indexesClient.listVersions(indexName).forEach(index -> {
             System.out.println("Index name: " + index.getName());
             System.out.println("Index version: " + index.getVersion());
             System.out.println("Index type: " + index.getType());
@@ -75,7 +75,7 @@ public class IndexesSample {
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
         
-        Index index = indexesClient.getIndexVersion(indexName, indexVersion);
+        Index index = indexesClient.get(indexName, indexVersion);
         
         System.out.println("Retrieved index:");
         System.out.println("Name: " + index.getName());
@@ -92,7 +92,7 @@ public class IndexesSample {
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
         
         // Delete the index version
-        indexesClient.deleteIndexVersion(indexName, indexVersion);
+        indexesClient.delete(indexName, indexVersion);
         
         System.out.println("Deleted index: " + indexName + ", version: " + indexVersion);
         

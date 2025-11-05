@@ -7,11 +7,13 @@ import com.azure.ai.projects.models.ConnectionType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConnectionsClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
@@ -57,7 +59,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing connections returns results
-        Iterable<Connection> connections = connectionsClient.listConnections();
+        Iterable<Connection> connections = connectionsClient.list();
         Assertions.assertNotNull(connections);
 
         // Verify that at least one connection can be retrieved if available
@@ -80,8 +82,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Test listing connections with type filter
-        Iterable<Connection> azureOpenAIConnections
-            = connectionsClient.listConnections(ConnectionType.AZURE_OPEN_AI, null);
+        Iterable<Connection> azureOpenAIConnections = connectionsClient.list(ConnectionType.AZURE_OPEN_AI, null);
         Assertions.assertNotNull(azureOpenAIConnections);
 
         // Verify that all returned connections have the correct type
@@ -90,7 +91,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         });
 
         // Test listing default connections
-        Iterable<Connection> defaultConnections = connectionsClient.listConnections(null, true);
+        Iterable<Connection> defaultConnections = connectionsClient.list(null, true);
         Assertions.assertNotNull(defaultConnections);
 
         // Verify that all returned connections are default connections
@@ -107,7 +108,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
         try {
-            Connection connection = connectionsClient.getConnection(connectionName, false);
+            Connection connection = connectionsClient.get(connectionName);
 
             // Verify the connection properties
             assertValidConnection(connection, connectionName, null, null);
@@ -130,7 +131,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
         try {
-            Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
+            Connection connection = connectionsClient.getWithCredentials(connectionName);
 
             // Verify the connection properties
             assertValidConnection(connection, connectionName, null, null);

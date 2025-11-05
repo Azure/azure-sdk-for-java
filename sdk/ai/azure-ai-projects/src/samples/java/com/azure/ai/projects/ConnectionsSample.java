@@ -24,7 +24,7 @@ public class ConnectionsSample {
     public static void listConnections() {
         // BEGIN:com.azure.ai.projects.ConnectionsSample.listConnections
 
-        PagedIterable<Connection> connections = connectionsClient.listConnections();
+        PagedIterable<Connection> connections = connectionsClient.list();
         for (Connection connection : connections) {
             System.out.printf("Connection name: %s%n", connection.getName());
         }
@@ -36,7 +36,7 @@ public class ConnectionsSample {
         // BEGIN:com.azure.ai.projects.ConnectionsSample.getConnectionWithoutCredentials
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-        Connection connection = connectionsClient.getConnection(connectionName, false);
+        Connection connection = connectionsClient.get(connectionName);
 
         System.out.printf("Connection name: %s%n", connection.getName());
 
@@ -47,7 +47,7 @@ public class ConnectionsSample {
         // BEGIN:com.azure.ai.projects.ConnectionsSample.getConnectionWithCredentials
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-        Connection connection = connectionsClient.getConnection(connectionName, true);
+        Connection connection = connectionsClient.getWithCredentials(connectionName);
 
         System.out.printf("Connection name: %s%n", connection.getName());
         System.out.printf("Connection credentials: %s%n", connection.getCredentials().getType());

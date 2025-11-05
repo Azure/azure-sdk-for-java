@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConnectionsAsyncClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
@@ -63,7 +65,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing connections returns results
-        PagedFlux<Connection> connectionsFlux = connectionsAsyncClient.listConnections();
+        PagedFlux<Connection> connectionsFlux = connectionsAsyncClient.list();
         Assertions.assertNotNull(connectionsFlux);
 
         // Collect all connections and verify
@@ -85,8 +87,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Test listing connections with type filter
-        PagedFlux<Connection> azureOpenAIConnections
-            = connectionsAsyncClient.listConnections(ConnectionType.AZURE_OPEN_AI, null);
+        PagedFlux<Connection> azureOpenAIConnections = connectionsAsyncClient.list(ConnectionType.AZURE_OPEN_AI, null);
         Assertions.assertNotNull(azureOpenAIConnections);
 
         // Verify that all returned connections have the correct type
@@ -96,7 +97,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         }).verifyComplete();
 
         // Test listing default connections
-        PagedFlux<Connection> defaultConnections = connectionsAsyncClient.listConnections(null, true);
+        PagedFlux<Connection> defaultConnections = connectionsAsyncClient.list(null, true);
         Assertions.assertNotNull(defaultConnections);
 
         // Verify that all returned connections are default connections
@@ -113,7 +114,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.getConnection(connectionName, false);
+        Mono<Connection> connectionMono = connectionsAsyncClient.get(connectionName);
 
         try {
             // Test retrieving a connection
@@ -137,7 +138,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.getConnectionWithCredentials(connectionName);
+        Mono<Connection> connectionMono = connectionsAsyncClient.getWithCredentials(connectionName);
 
         try {
             // Test retrieving a connection with credentials

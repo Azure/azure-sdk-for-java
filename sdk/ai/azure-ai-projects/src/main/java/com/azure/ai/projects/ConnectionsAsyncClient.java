@@ -45,90 +45,6 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, with or without its connection credentials.
-     *
-     * @param name The friendly name of the connection, provided by the user.
-     * @param includeCredentials Whether to include connection credentials in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, with or without its connection credentials on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Connection> getConnection(String name, boolean includeCredentials) {
-        if (includeCredentials) {
-            return getConnectionWithCredentials(name);
-        } else {
-            return getConnection(name);
-        }
-    }
-
-    /**
-     * Get a connection by name, without populating connection credentials.
-     *
-     * @param name The friendly name of the connection, provided by the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Connection> getConnection(String name) {
-        // Generated convenience method for getConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Connection.class));
-    }
-
-    /**
-     * Get the default connection for a given connection type.
-     *
-     * @param connectionType The type of the connection
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Default connection of the type specified on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Connection> getDefaultConnection(ConnectionType connectionType) {
-        return getDefaultConnection(connectionType, false);
-    }
-
-    /**
-     * Get the default connection for a given connection type.
-     *
-     * @param connectionType The type of the connection
-     * @param includeCredentials Whether to include connection credentials in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Default connection of the type specified on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Connection> getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
-        return listConnections(connectionType, true).filter(Connection::isDefault).next().flatMap(connection -> {
-            if (includeCredentials && connection != null) {
-                return getConnectionWithCredentials(connection.getName());
-            } else {
-                return Mono.just(connection);
-            }
-        });
-    }
-
-    /**
      * Get a connection by name, without populating connection credentials.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -137,11 +53,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -161,8 +77,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getConnectionWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getConnectionWithResponseAsync(name, requestOptions);
+    Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -174,11 +90,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -198,8 +114,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getConnectionWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getConnectionWithCredentialsWithResponseAsync(name, requestOptions);
+    Mono<Response<BinaryData>> getWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getWithCredentialsWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -210,7 +126,7 @@ public final class ConnectionsAsyncClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
      * connections</td></tr>
      * </table>
@@ -222,11 +138,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -244,8 +160,29 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listConnections(RequestOptions requestOptions) {
-        return this.serviceClient.listConnectionsAsync(requestOptions);
+    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(requestOptions);
+    }
+
+    /**
+     * Get a connection by name, without populating connection credentials.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connection by name, without populating connection credentials on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Connection> get(String name) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Connection.class));
     }
 
     /**
@@ -262,10 +199,10 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Connection> getConnectionWithCredentials(String name) {
-        // Generated convenience method for getConnectionWithCredentialsWithResponse
+    Mono<Connection> getWithCredentials(String name) {
+        // Generated convenience method for getWithCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getConnectionWithCredentialsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getWithCredentialsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Connection.class));
     }
 
@@ -284,8 +221,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Connection> listConnections(ConnectionType connectionType, Boolean defaultConnection) {
-        // Generated convenience method for listConnections
+    public PagedFlux<Connection> list(ConnectionType connectionType, Boolean defaultConnection) {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
         if (connectionType != null) {
             requestOptions.addQueryParam("connectionType", connectionType.toString(), false);
@@ -293,7 +230,7 @@ public final class ConnectionsAsyncClient {
         if (defaultConnection != null) {
             requestOptions.addQueryParam("defaultConnection", String.valueOf(defaultConnection), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listConnections(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -320,10 +257,10 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Connection> listConnections() {
-        // Generated convenience method for listConnections
+    public PagedFlux<Connection> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listConnections(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)

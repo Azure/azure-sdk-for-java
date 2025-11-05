@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class DatasetsAsyncClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
@@ -35,7 +36,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
 
     /**
      * Helper method to validate common properties of a DatasetVersion
-     * 
+     *
      * @param datasetVersion The dataset version to validate
      * @param expectedName The expected name of the dataset
      * @param expectedVersion The expected version string
@@ -50,7 +51,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
 
     /**
      * Helper method to validate common properties of a FileDatasetVersion
-     * 
+     *
      * @param fileDatasetVersion The file dataset version to validate
      * @param expectedName The expected name of the dataset
      * @param expectedVersion The expected version string
@@ -122,8 +123,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         // Collect datasets into a list
         List<DatasetVersion> datasetsList = new ArrayList<>();
 
-        StepVerifier.create(datasetsAsyncClient.listLatestDatasetVersions().doOnNext(datasetsList::add).then())
-            .verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.list().doOnNext(datasetsList::add).then()).verifyComplete();
 
         // Verify we found at least one dataset
         Assertions.assertFalse(datasetsList.isEmpty(), "Expected at least one dataset");
@@ -145,7 +145,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         // Collect dataset versions into a list
         List<DatasetVersion> versionsList = new ArrayList<>();
 
-        StepVerifier.create(datasetsAsyncClient.listDatasetVersions(datasetName).doOnNext(versionsList::add).then())
+        StepVerifier.create(datasetsAsyncClient.listVersions(datasetName).doOnNext(versionsList::add).then())
             .verifyComplete();
 
         // Verify we found at least one version
@@ -166,7 +166,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
-        StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersion))
+        StepVerifier.create(datasetsAsyncClient.get(datasetName, datasetVersion))
             .assertNext(dataset -> assertDatasetVersion(dataset, datasetName, datasetVersion))
             .verifyComplete();
     }
@@ -186,7 +186,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         FileDatasetVersion fileDataset
             = new FileDatasetVersion().setDataUri(dataUri).setDescription("Test dataset created via SDK tests");
 
-        StepVerifier.create(datasetsAsyncClient.createOrUpdateDatasetVersion(datasetName, datasetVersion, fileDataset))
+        StepVerifier.create(datasetsAsyncClient.createOrUpdate(datasetName, datasetVersion, fileDataset))
             .assertNext(createdDataset -> {
                 FileDatasetVersion fileDatasetVersion = (FileDatasetVersion) createdDataset;
                 assertFileDatasetVersion(fileDatasetVersion, datasetName, datasetVersion, dataUri);
@@ -236,10 +236,10 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersion, filePath).block(); // We need to ensure the dataset is created before continuing
 
         // Delete the dataset
-        StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersion)).verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.delete(datasetName, datasetVersion)).verifyComplete();
 
         // Verify deletion - this should cause an error
-        StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersion))
+        StepVerifier.create(datasetsAsyncClient.get(datasetName, datasetVersion))
             .expectErrorMatches(e -> e.getMessage().contains("404") || e.getMessage().contains("Not Found"))
             .verify();
     }
