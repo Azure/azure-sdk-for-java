@@ -282,7 +282,7 @@ com.azure.resourcemanager:azure-resourcemanager-cosmos;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.53.4;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.4;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.4;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-network;2.54.1;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
