@@ -28,6 +28,11 @@ public final class Actions implements JsonSerializable<Actions> {
      */
     private Map<String, String> customProperties;
 
+    /*
+     * The properties of an action properties.
+     */
+    private Map<String, String> actionProperties;
+
     /**
      * Creates an instance of Actions class.
      */
@@ -75,6 +80,26 @@ public final class Actions implements JsonSerializable<Actions> {
     }
 
     /**
+     * Get the actionProperties property: The properties of an action properties.
+     * 
+     * @return the actionProperties value.
+     */
+    public Map<String, String> actionProperties() {
+        return this.actionProperties;
+    }
+
+    /**
+     * Set the actionProperties property: The properties of an action properties.
+     * 
+     * @param actionProperties the actionProperties value to set.
+     * @return the Actions object itself.
+     */
+    public Actions withActionProperties(Map<String, String> actionProperties) {
+        this.actionProperties = actionProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -90,6 +115,8 @@ public final class Actions implements JsonSerializable<Actions> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("actionGroups", this.actionGroups, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("customProperties", this.customProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("actionProperties", this.actionProperties,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -115,6 +142,9 @@ public final class Actions implements JsonSerializable<Actions> {
                 } else if ("customProperties".equals(fieldName)) {
                     Map<String, String> customProperties = reader.readMap(reader1 -> reader1.getString());
                     deserializedActions.customProperties = customProperties;
+                } else if ("actionProperties".equals(fieldName)) {
+                    Map<String, String> actionProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedActions.actionProperties = actionProperties;
                 } else {
                     reader.skipChildren();
                 }
