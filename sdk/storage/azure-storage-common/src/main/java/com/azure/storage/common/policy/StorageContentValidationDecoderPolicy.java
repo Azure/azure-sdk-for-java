@@ -63,10 +63,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 // Get or create decoder with state tracking
                 DecoderState decoderState = getOrCreateDecoderState(context, contentLength);
 
-                // Determine the starting offset of this response (for retry handling)
-                long responseStartOffset = getResponseStartOffset(httpResponse);
-                decoderState.setCurrentResponseStartOffset(responseStartOffset);
-
                 // Decode using the stateful decoder
                 Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoderState);
 
@@ -90,42 +86,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
             try {
-                // Calculate the absolute offset of this buffer in the encoded stream
-                long bufferAbsoluteOffset = state.currentResponseStartOffset + state.currentResponseBytesRead;
-                int bufferSize = encodedBuffer.remaining();
-                state.currentResponseBytesRead += bufferSize;
-
-                // Determine how many bytes to skip (if this is overlapping with already-processed data)
-                long bytesToSkip = state.totalEncodedBytesProcessed.get() - bufferAbsoluteOffset;
-
-                ByteBuffer bufferToProcess;
-                if (bytesToSkip > 0) {
-                    // Skip bytes that have already been processed
-                    if (bytesToSkip >= bufferSize) {
-                        // Entire buffer is duplicate, skip it
-                        return Flux.empty();
-                    }
-                    // Skip partial buffer
-                    ByteBuffer skippedBuffer = encodedBuffer.duplicate();
-                    skippedBuffer.position(skippedBuffer.position() + (int) bytesToSkip);
-                    bufferToProcess = skippedBuffer;
-                    // Only count the new bytes
-                    state.totalEncodedBytesProcessed.addAndGet(bufferSize - (int) bytesToSkip);
-                } else {
-                    // All bytes are new
-                    bufferToProcess = encodedBuffer;
-                    state.totalEncodedBytesProcessed.addAndGet(bufferSize);
-                }
-
                 // Combine with pending data if any
-                ByteBuffer dataToProcess = state.combineWithPending(bufferToProcess);
+                ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
+
+                // Track encoded bytes
+                int encodedBytesInBuffer = encodedBuffer.remaining();
+                state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
 
                 // Try to decode what we have - decoder handles partial data
                 int availableSize = dataToProcess.remaining();
-                if (availableSize == 0) {
-                    return Flux.empty();
-                }
-
                 ByteBuffer decodedData = state.decoder.decode(dataToProcess.duplicate(), availableSize);
 
                 // Track decoded bytes
@@ -218,30 +187,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
-     * Gets the starting offset of the response by parsing the Content-Range header.
-     *
-     * @param httpResponse The HTTP response.
-     * @return The starting offset, or 0 if not a range response.
-     */
-    private long getResponseStartOffset(HttpResponse httpResponse) {
-        String contentRange = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_RANGE);
-        if (contentRange != null && contentRange.startsWith("bytes ")) {
-            try {
-                // Format: "bytes start-end/total" or "bytes start-end/*"
-                String range = contentRange.substring(6); // Skip "bytes "
-                int dashIndex = range.indexOf('-');
-                if (dashIndex > 0) {
-                    String startStr = range.substring(0, dashIndex);
-                    return Long.parseLong(startStr);
-                }
-            } catch (Exception e) {
-                LOGGER.warning("Failed to parse Content-Range header: " + contentRange, e);
-            }
-        }
-        return 0;
-    }
-
-    /**
      * Checks if the response is a download response.
      *
      * @param httpResponse The HTTP response.
@@ -262,8 +207,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
         private ByteBuffer pendingBuffer;
-        private long currentResponseStartOffset = 0;
-        private long currentResponseBytesRead = 0;
 
         /**
          * Creates a new decoder state.
@@ -276,16 +219,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             this.totalBytesDecoded = new AtomicLong(0);
             this.totalEncodedBytesProcessed = new AtomicLong(0);
             this.pendingBuffer = null;
-        }
-
-        /**
-         * Sets the starting offset of the current response (for retry handling).
-         *
-         * @param offset The starting offset.
-         */
-        public void setCurrentResponseStartOffset(long offset) {
-            this.currentResponseStartOffset = offset;
-            this.currentResponseBytesRead = 0;
         }
 
         /**
