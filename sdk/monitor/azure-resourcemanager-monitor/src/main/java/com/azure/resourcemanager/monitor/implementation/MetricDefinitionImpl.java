@@ -185,7 +185,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
                     DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
                     DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC))),
                 this.interval, this.inner.name().value(), this.aggreagation, this.top, this.orderBy, this.odataFilter,
-                this.resultType, this.namespaceFilter)
+                this.resultType, this.namespaceFilter, false, true)
             .map(Response::getValue)
             .map(MetricCollectionImpl::new);
     }

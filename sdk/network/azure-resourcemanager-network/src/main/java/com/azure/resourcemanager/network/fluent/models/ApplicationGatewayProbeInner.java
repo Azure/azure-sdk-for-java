@@ -345,6 +345,31 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
+     * Get the enableProbeProxyProtocolHeader property: Whether to send Proxy Protocol header along with the Health
+     * Probe over TCP or TLS protocol. Default value is false.
+     * 
+     * @return the enableProbeProxyProtocolHeader value.
+     */
+    public Boolean enableProbeProxyProtocolHeader() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableProbeProxyProtocolHeader();
+    }
+
+    /**
+     * Set the enableProbeProxyProtocolHeader property: Whether to send Proxy Protocol header along with the Health
+     * Probe over TCP or TLS protocol. Default value is false.
+     * 
+     * @param enableProbeProxyProtocolHeader the enableProbeProxyProtocolHeader value to set.
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withEnableProbeProxyProtocolHeader(Boolean enableProbeProxyProtocolHeader) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withEnableProbeProxyProtocolHeader(enableProbeProxyProtocolHeader);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the probe resource.
      * 
      * @return the provisioningState value.
