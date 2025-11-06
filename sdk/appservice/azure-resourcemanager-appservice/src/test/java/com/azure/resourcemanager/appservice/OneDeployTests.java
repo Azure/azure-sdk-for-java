@@ -79,7 +79,7 @@ public class OneDeployTests extends AppServiceTest {
         webApp1.deploy(DeployType.ZIP, zipFile);
 
         // wait a bit
-        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+        ResourceManagerUtils.sleep(Duration.ofSeconds(60));
 
         String response = curl("https://" + webAppName1 + ".azurewebsites.net/" + "helloworld/").getValue();
         Assertions.assertTrue(response.contains("Hello"));
