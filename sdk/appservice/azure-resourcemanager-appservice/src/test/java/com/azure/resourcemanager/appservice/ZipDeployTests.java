@@ -34,7 +34,7 @@ public class ZipDeployTests extends AppServiceTest {
         // Create function app
         FunctionApp functionApp = appServiceManager.functionApps()
             .define(webappName4)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .create();
         Assertions.assertNotNull(functionApp);

@@ -46,7 +46,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         // Create with consumption
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewAppServicePlan(PricingTier.STANDARD_S1)
             .withAppSetting("appkey", "appvalue")
@@ -56,10 +56,10 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
             .withPythonVersion(PythonVersion.PYTHON_27)
             .create();
         Assertions.assertNotNull(functionApp1);
-        Assertions.assertEquals(Region.US_WEST, functionApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
 
         /*
         IMPORTANT, function app cannot create slot with empty config.

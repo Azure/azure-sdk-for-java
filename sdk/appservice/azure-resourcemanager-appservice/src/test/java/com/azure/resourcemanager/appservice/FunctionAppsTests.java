@@ -101,15 +101,15 @@ public class FunctionAppsTests extends AppServiceTest {
         // Create with consumption
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .create();
         Assertions.assertNotNull(functionApp1);
-        Assertions.assertEquals(Region.US_WEST, functionApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp1.region());
         Assertions.assertFalse(functionApp1.alwaysOn());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(new PricingTier(SkuName.DYNAMIC.toString(), "Y1"), plan1.pricingTier());
 
         FunctionAppResource functionAppResource1 = getStorageAccount(storageManager, functionApp1);
@@ -132,19 +132,19 @@ public class FunctionAppsTests extends AppServiceTest {
             .withExistingStorageAccount(functionApp1.storageAccount())
             .create();
         Assertions.assertNotNull(functionApp2);
-        Assertions.assertEquals(Region.US_WEST, functionApp2.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp2.region());
         Assertions.assertFalse(functionApp2.alwaysOn());
 
         // Create with app service plan
         FunctionApp functionApp3 = appServiceManager.functionApps()
             .define(webappName3)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName2)
             .withNewAppServicePlan(PricingTier.BASIC_B1)
             .withExistingStorageAccount(functionApp1.storageAccount())
             .create();
         Assertions.assertNotNull(functionApp3);
-        Assertions.assertEquals(Region.US_WEST, functionApp3.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp3.region());
         Assertions.assertTrue(functionApp3.alwaysOn());
 
         // app service plan does not have this 2 settings
@@ -421,7 +421,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withContainerSize(512)
             .create();
@@ -574,7 +574,7 @@ public class FunctionAppsTests extends AppServiceTest {
         webappName1 = generateRandomResourceName("java-function-", 20);
         FunctionApp functionApp = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withContainerSize(512)
             .disablePublicNetworkAccess()
