@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class WebAppsRestoreSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/RestoreWebAppBackup.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/RestoreWebAppBackup.json
      */
     /**
      * Sample code: Restore web app from backup.
