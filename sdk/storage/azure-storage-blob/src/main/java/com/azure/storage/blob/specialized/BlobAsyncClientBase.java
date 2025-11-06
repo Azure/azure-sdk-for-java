@@ -85,6 +85,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1402,9 +1403,9 @@ public class BlobAsyncClientBase {
                                 = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
                                     .orElse(null);
 
-                            if (decoderStateObj instanceof com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState) {
-                                com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState decoderState
-                                    = (com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+                            if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
+                                StorageContentValidationDecoderPolicy.DecoderState decoderState
+                                    = (StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
 
                                 // Use the encoded offset for retry (number of encoded bytes processed)
                                 long encodedOffset = decoderState.getTotalEncodedBytesProcessed();
