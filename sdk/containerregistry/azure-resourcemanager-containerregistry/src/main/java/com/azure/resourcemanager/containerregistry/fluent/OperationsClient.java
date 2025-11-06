@@ -16,7 +16,7 @@ import com.azure.resourcemanager.containerregistry.fluent.models.OperationDefini
  */
 public interface OperationsClient {
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,7 +27,7 @@ public interface OperationsClient {
     PagedFlux<OperationDefinitionInner> listAsync();
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -38,7 +38,7 @@ public interface OperationsClient {
     PagedIterable<OperationDefinitionInner> list();
 
     /**
-     * Lists all of the available Azure Container Registry REST API operations.
+     * List the operations for the provider.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
