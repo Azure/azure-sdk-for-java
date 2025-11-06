@@ -22,8 +22,10 @@ import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
 public class FunctionDeploymentSlotsTests extends AppServiceTest {
     private String webappName1 = "";
     private String slotName1 = "";

@@ -96,6 +96,7 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDFunctionApp() throws Exception {
         // Create with consumption
@@ -213,6 +214,7 @@ public class FunctionAppsTests extends AppServiceTest {
     private static final String FUNCTION_APP_PACKAGE_URL
         = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionApp() throws Exception {
         rgName2 = null;
@@ -310,6 +312,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(1, TestUtilities.getSize(functions));
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionAppPremium() {
         rgName2 = null;
@@ -370,6 +373,7 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionAppJava11() throws Exception {
         rgName2 = null;
@@ -393,6 +397,7 @@ public class FunctionAppsTests extends AppServiceTest {
         assertFunctionAppRunning(functionApp1);
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionAppJava17() throws Exception {
         rgName2 = null;
@@ -413,6 +418,7 @@ public class FunctionAppsTests extends AppServiceTest {
         assertFunctionAppRunning(functionApp1);
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCreateAndUpdateFunctionAppWithContainerSize() {
         rgName2 = null;
@@ -569,6 +575,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .apply();
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCreateAndUpdatePublicNetworkAccess() {
         webappName1 = generateRandomResourceName("java-function-", 20);
