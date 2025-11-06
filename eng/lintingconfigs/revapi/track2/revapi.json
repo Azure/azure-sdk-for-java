@@ -703,6 +703,15 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(java.lang.String)",
           "justification": "The property is a constant, and hence not settable."
+        },
+        {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.appservice\\.models\\.ManagedServiceIdentityType\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
         }
       ]
     }
