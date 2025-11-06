@@ -171,7 +171,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -217,7 +217,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -372,7 +372,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -414,7 +414,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -514,7 +514,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         } else {
             body.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -565,7 +565,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         } else {
             body.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -673,7 +673,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -723,7 +723,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -826,7 +826,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -871,7 +871,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
