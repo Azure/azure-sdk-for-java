@@ -831,6 +831,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         siteUpdate.withCloningInfo(siteInner.cloningInfo());
         siteUpdate.withHttpsOnly(siteInner.httpsOnly());
         siteUpdate.withRedundancyMode(siteInner.redundancyMode());
+        siteUpdate.withPublicNetworkAccess(siteInner.publicNetworkAccess());
 
         this.webAppMsiHandler.handleExternalIdentities(siteUpdate);
         return submitSite(siteUpdate).map(siteInner1 -> {
@@ -1754,6 +1755,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.siteConfig = new SiteConfigResourceInner();
         }
         this.siteConfig.withPublicNetworkAccess("Enabled");
+        this.innerModel().withPublicNetworkAccess("Enabled");
         return (FluentImplT) this;
     }
 
@@ -1764,6 +1766,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.siteConfig = new SiteConfigResourceInner();
         }
         this.siteConfig.withPublicNetworkAccess("Disabled");
+        this.innerModel().withPublicNetworkAccess("Disabled");
         return (FluentImplT) this;
     }
 
