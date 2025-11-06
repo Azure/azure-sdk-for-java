@@ -263,6 +263,11 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
      */
     private String virtualNetworkSubnetId;
 
+    /*
+     * Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     */
+    private String publicNetworkAccess;
+
     /**
      * Creates an instance of SitePatchResourcePropertiesInner class.
      */
@@ -977,6 +982,28 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
     }
 
     /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SitePatchResourcePropertiesInner object itself.
+     */
+    public SitePatchResourcePropertiesInner withPublicNetworkAccess(String publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1036,6 +1063,7 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
         jsonWriter.writeBooleanField("storageAccountRequired", this.storageAccountRequired);
         jsonWriter.writeStringField("keyVaultReferenceIdentity", this.keyVaultReferenceIdentity);
         jsonWriter.writeStringField("virtualNetworkSubnetId", this.virtualNetworkSubnetId);
+        jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
         return jsonWriter.writeEndObject();
     }
 
@@ -1162,6 +1190,8 @@ public final class SitePatchResourcePropertiesInner implements JsonSerializable<
                     deserializedSitePatchResourcePropertiesInner.keyVaultReferenceIdentity = reader.getString();
                 } else if ("virtualNetworkSubnetId".equals(fieldName)) {
                     deserializedSitePatchResourcePropertiesInner.virtualNetworkSubnetId = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSitePatchResourcePropertiesInner.publicNetworkAccess = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
