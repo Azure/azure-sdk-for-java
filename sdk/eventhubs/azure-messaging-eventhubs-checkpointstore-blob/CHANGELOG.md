@@ -8,6 +8,17 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.21.2 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.21.1` to version `5.21.2`.
+- Upgraded `azure-storage-blob` from `12.31.2` to version `12.32.0`.
+
 ## 1.21.1 (2025-09-25)
 
 ### Other Changes

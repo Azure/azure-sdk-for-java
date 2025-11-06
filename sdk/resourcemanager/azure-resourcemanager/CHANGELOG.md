@@ -1,14 +1,36 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
 
-### Features Added
+### azure-resourcemanager-containerregistry
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
+- Updated `api-version` to `2025-11-01`.
+
+## 2.56.0 (2025-10-31)
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-08-01`.
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed a bug that `ApplicationGateway.availabilityZones()` throws exception.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-10-01`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.55.0 (2025-09-30)
 

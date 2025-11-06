@@ -26,14 +26,29 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
     private DeviceRef deviceRef;
 
     /*
+     * Human-readable display name.
+     */
+    private String displayName;
+
+    /*
      * URIs or type definition IDs.
      */
     private List<String> assetTypeRefs;
 
     /*
+     * Human-readable description of the asset.
+     */
+    private String description;
+
+    /*
      * Identifier used to detect changes in the asset.
      */
     private String discoveryId;
+
+    /*
+     * Asset ID provided by the customer.
+     */
+    private String externalAssetId;
 
     /*
      * An integer that is incremented each time the resource is modified.
@@ -130,9 +145,9 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
     private List<NamespaceDiscoveredDataset> datasets;
 
     /*
-     * Array of events that are part of the asset. Each event can have per-event configuration.
+     * Array of event groups that are part of the asset. Each event group can have per-event group configuration.
      */
-    private List<NamespaceDiscoveredEvent> events;
+    private List<NamespaceDiscoveredEventGroup> eventGroups;
 
     /*
      * Array of streams that are part of the asset. Each stream can have a per-stream configuration.
@@ -178,6 +193,26 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
     }
 
     /**
+     * Get the displayName property: Human-readable display name.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: Human-readable display name.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the NamespaceDiscoveredAssetProperties object itself.
+     */
+    public NamespaceDiscoveredAssetProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the assetTypeRefs property: URIs or type definition IDs.
      * 
      * @return the assetTypeRefs value.
@@ -198,6 +233,26 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
     }
 
     /**
+     * Get the description property: Human-readable description of the asset.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Human-readable description of the asset.
+     * 
+     * @param description the description value to set.
+     * @return the NamespaceDiscoveredAssetProperties object itself.
+     */
+    public NamespaceDiscoveredAssetProperties withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the discoveryId property: Identifier used to detect changes in the asset.
      * 
      * @return the discoveryId value.
@@ -214,6 +269,26 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
      */
     public NamespaceDiscoveredAssetProperties withDiscoveryId(String discoveryId) {
         this.discoveryId = discoveryId;
+        return this;
+    }
+
+    /**
+     * Get the externalAssetId property: Asset ID provided by the customer.
+     * 
+     * @return the externalAssetId value.
+     */
+    public String externalAssetId() {
+        return this.externalAssetId;
+    }
+
+    /**
+     * Set the externalAssetId property: Asset ID provided by the customer.
+     * 
+     * @param externalAssetId the externalAssetId value to set.
+     * @return the NamespaceDiscoveredAssetProperties object itself.
+     */
+    public NamespaceDiscoveredAssetProperties withExternalAssetId(String externalAssetId) {
+        this.externalAssetId = externalAssetId;
         return this;
     }
 
@@ -598,22 +673,24 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
     }
 
     /**
-     * Get the events property: Array of events that are part of the asset. Each event can have per-event configuration.
+     * Get the eventGroups property: Array of event groups that are part of the asset. Each event group can have
+     * per-event group configuration.
      * 
-     * @return the events value.
+     * @return the eventGroups value.
      */
-    public List<NamespaceDiscoveredEvent> events() {
-        return this.events;
+    public List<NamespaceDiscoveredEventGroup> eventGroups() {
+        return this.eventGroups;
     }
 
     /**
-     * Set the events property: Array of events that are part of the asset. Each event can have per-event configuration.
+     * Set the eventGroups property: Array of event groups that are part of the asset. Each event group can have
+     * per-event group configuration.
      * 
-     * @param events the events value to set.
+     * @param eventGroups the eventGroups value to set.
      * @return the NamespaceDiscoveredAssetProperties object itself.
      */
-    public NamespaceDiscoveredAssetProperties withEvents(List<NamespaceDiscoveredEvent> events) {
-        this.events = events;
+    public NamespaceDiscoveredAssetProperties withEventGroups(List<NamespaceDiscoveredEventGroup> eventGroups) {
+        this.eventGroups = eventGroups;
         return this;
     }
 
@@ -680,8 +757,11 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
         jsonWriter.writeJsonField("deviceRef", this.deviceRef);
         jsonWriter.writeStringField("discoveryId", this.discoveryId);
         jsonWriter.writeLongField("version", this.version);
+        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeArrayField("assetTypeRefs", this.assetTypeRefs,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("externalAssetId", this.externalAssetId);
         jsonWriter.writeStringField("manufacturer", this.manufacturer);
         jsonWriter.writeStringField("manufacturerUri", this.manufacturerUri);
         jsonWriter.writeStringField("model", this.model);
@@ -703,7 +783,7 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
         jsonWriter.writeArrayField("defaultStreamsDestinations", this.defaultStreamsDestinations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventGroups", this.eventGroups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("streams", this.streams, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("managementGroups", this.managementGroups,
             (writer, element) -> writer.writeJson(element));
@@ -733,9 +813,15 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
                     deserializedNamespaceDiscoveredAssetProperties.discoveryId = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     deserializedNamespaceDiscoveredAssetProperties.version = reader.getLong();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredAssetProperties.displayName = reader.getString();
                 } else if ("assetTypeRefs".equals(fieldName)) {
                     List<String> assetTypeRefs = reader.readArray(reader1 -> reader1.getString());
                     deserializedNamespaceDiscoveredAssetProperties.assetTypeRefs = assetTypeRefs;
+                } else if ("description".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredAssetProperties.description = reader.getString();
+                } else if ("externalAssetId".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredAssetProperties.externalAssetId = reader.getString();
                 } else if ("manufacturer".equals(fieldName)) {
                     deserializedNamespaceDiscoveredAssetProperties.manufacturer = reader.getString();
                 } else if ("manufacturerUri".equals(fieldName)) {
@@ -784,10 +870,10 @@ public final class NamespaceDiscoveredAssetProperties implements JsonSerializabl
                     List<NamespaceDiscoveredDataset> datasets
                         = reader.readArray(reader1 -> NamespaceDiscoveredDataset.fromJson(reader1));
                     deserializedNamespaceDiscoveredAssetProperties.datasets = datasets;
-                } else if ("events".equals(fieldName)) {
-                    List<NamespaceDiscoveredEvent> events
-                        = reader.readArray(reader1 -> NamespaceDiscoveredEvent.fromJson(reader1));
-                    deserializedNamespaceDiscoveredAssetProperties.events = events;
+                } else if ("eventGroups".equals(fieldName)) {
+                    List<NamespaceDiscoveredEventGroup> eventGroups
+                        = reader.readArray(reader1 -> NamespaceDiscoveredEventGroup.fromJson(reader1));
+                    deserializedNamespaceDiscoveredAssetProperties.eventGroups = eventGroups;
                 } else if ("streams".equals(fieldName)) {
                     List<NamespaceDiscoveredStream> streams
                         = reader.readArray(reader1 -> NamespaceDiscoveredStream.fromJson(reader1));

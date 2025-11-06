@@ -44,6 +44,13 @@ public interface Account {
     String etag();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the kind property: The Kind of the resource.
      * 
      * @return the kind value.
@@ -63,13 +70,6 @@ public interface Account {
      * @return the identity value.
      */
     Identity identity();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the tags property: Resource tags.

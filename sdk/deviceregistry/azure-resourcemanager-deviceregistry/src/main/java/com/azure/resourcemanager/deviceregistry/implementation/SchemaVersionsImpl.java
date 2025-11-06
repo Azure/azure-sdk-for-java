@@ -50,15 +50,14 @@ public final class SchemaVersionsImpl implements SchemaVersions {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String schemaRegistryName, String schemaName,
-        String schemaVersionName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, context);
-    }
-
     public void delete(String resourceGroupName, String schemaRegistryName, String schemaName,
         String schemaVersionName) {
         this.serviceClient().delete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName);
+    }
+
+    public void delete(String resourceGroupName, String schemaRegistryName, String schemaName, String schemaVersionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, context);
     }
 
     public PagedIterable<SchemaVersion> listBySchema(String resourceGroupName, String schemaRegistryName,
@@ -145,10 +144,10 @@ public final class SchemaVersionsImpl implements SchemaVersions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'schemaVersions'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, Context.NONE);
+        this.delete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -169,7 +168,7 @@ public final class SchemaVersionsImpl implements SchemaVersions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'schemaVersions'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, context);
+        this.delete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, context);
     }
 
     private SchemaVersionsClient serviceClient() {

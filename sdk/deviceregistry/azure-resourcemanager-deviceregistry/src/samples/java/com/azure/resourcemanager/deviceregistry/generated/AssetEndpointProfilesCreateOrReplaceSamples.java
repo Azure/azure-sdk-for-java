@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.
@@ -42,7 +42,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_AssetEndpointProfile.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_AssetEndpointProfile.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile.
