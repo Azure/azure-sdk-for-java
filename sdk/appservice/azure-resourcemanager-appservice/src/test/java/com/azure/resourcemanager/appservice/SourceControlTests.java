@@ -9,8 +9,11 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class SourceControlTests extends AppServiceTest {
     private String webappName = "";
@@ -37,7 +40,8 @@ public class SourceControlTests extends AppServiceTest {
             .create();
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
-            Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(60));
+            Response<String> response = curl("https://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
