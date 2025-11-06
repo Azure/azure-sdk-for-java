@@ -23,6 +23,7 @@ import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class WebAppsTests extends AppServiceTest {
@@ -185,6 +186,7 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertTrue(webApp1.windowsFxVersion().contains(imageAndTag));
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canListWebAppAndFunctionApp() {
         rgName2 = null;
