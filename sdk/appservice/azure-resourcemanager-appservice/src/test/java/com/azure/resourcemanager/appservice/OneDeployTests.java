@@ -40,6 +40,7 @@ import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -143,6 +144,7 @@ public class OneDeployTests extends AppServiceTest {
     }
 
     // test uses storage account key and connection string to configure the function app
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @LiveOnly
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
@@ -232,6 +234,7 @@ public class OneDeployTests extends AppServiceTest {
         // Flex does not support slot
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @LiveOnly
     @ParameterizedTest
     @ValueSource(booleans = { false, true })

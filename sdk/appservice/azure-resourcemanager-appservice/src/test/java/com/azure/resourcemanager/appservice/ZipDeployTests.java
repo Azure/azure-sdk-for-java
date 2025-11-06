@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ZipDeployTests extends AppServiceTest {
@@ -28,6 +29,7 @@ public class ZipDeployTests extends AppServiceTest {
         super.initializeClients(httpPipeline, profile);
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     @LiveOnly
     public void canZipDeployFunction() {
