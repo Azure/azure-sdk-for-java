@@ -242,107 +242,6 @@ public interface ScopeMapsClient {
         ScopeMapInner scopeMapCreateParameters, Context context);
 
     /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
-        String scopeMapName);
-
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String scopeMapName);
-
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String scopeMapName);
-
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String scopeMapName,
-        Context context);
-
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String registryName, String scopeMapName);
-
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String registryName, String scopeMapName);
-
-    /**
-     * Deletes a scope map from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param scopeMapName The name of the scope map.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String registryName, String scopeMapName, Context context);
-
-    /**
      * Updates a scope map with the specified parameters.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -456,4 +355,105 @@ public interface ScopeMapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScopeMapInner update(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapUpdateParameters scopeMapUpdateParameters, Context context);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String scopeMapName);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String scopeMapName);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String scopeMapName);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String scopeMapName,
+        Context context);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String registryName, String scopeMapName);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String registryName, String scopeMapName);
+
+    /**
+     * Deletes a scope map from a container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param scopeMapName The name of the scope map.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String registryName, String scopeMapName, Context context);
 }
