@@ -186,9 +186,9 @@ resource search_Storage_RoleAssignment 'Microsoft.Authorization/roleAssignments@
   name: guid(storageBlobDataReaderRoleDefinition.id, search.id, storageAccount.id)
   scope: storageAccount
   properties: {
-    principalId: tenantId != '70a036f6-8e4d-4615-bad6-149c02e7720d'
-      ? searchServiceIdentity.properties.principalId
-      : staticSearchServiceIdentity.properties.principalId
+    principalId: canUseStatic
+      ? staticSearchServiceIdentity.properties.principalId
+      : searchServiceIdentity.properties.principalId
     roleDefinitionId: storageBlobDataReaderRoleDefinition.id
   }
 }
