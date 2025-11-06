@@ -14,6 +14,12 @@
 
 - Updated `api-version` to `2025-01-01`.
 
+### azure-resourcemanager-appservice
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-03-01`.
+
 ## 2.56.0 (2025-10-31)
 
 ### azure-resourcemanager-containerservice
