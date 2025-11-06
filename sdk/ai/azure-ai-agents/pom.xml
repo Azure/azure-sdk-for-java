@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-agents</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Agents</name>
