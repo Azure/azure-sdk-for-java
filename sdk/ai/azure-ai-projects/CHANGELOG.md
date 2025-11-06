@@ -1,12 +1,14 @@
 # Release History
 
-## 2.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Projects Client: Get Azure OpenAI should use the parent resource unless caller provides a connection name
 
 ### Other Changes
 
