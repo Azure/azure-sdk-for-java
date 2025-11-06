@@ -10,10 +10,10 @@ import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
+
 import reactor.core.scheduler.Schedulers;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -26,7 +26,7 @@ public class TestCredentialUtils {
         if (createAzurePipelinesCredential != null) {
             builder.addLast(createAzurePipelinesCredential);
         }
-        // This is for local
+        // Adds DefaultAzureCredential, which works for both local development and Azure environments
         builder.addLast(new DefaultAzureCredentialBuilder().build());
         return builder.build();
     }
