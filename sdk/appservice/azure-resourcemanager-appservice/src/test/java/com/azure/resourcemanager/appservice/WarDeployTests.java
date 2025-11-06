@@ -5,6 +5,8 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.resourcemanager.appservice.models.DeployOptions;
+import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -18,10 +20,8 @@ import java.time.Duration;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled("App does not run after warDeploy")
 public class WarDeployTests extends AppServiceTest {
     private String webappName = "";
 
@@ -48,7 +48,7 @@ public class WarDeployTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
 
         if (!isPlaybackMode()) {
-            webApp.warDeploy(warFile);
+            webApp.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"));
             ResourceManagerUtils.sleep(Duration.ofSeconds(60));
 
             Response<String> response = curl("https://" + webappName + "." + "azurewebsites.net");
@@ -73,9 +73,9 @@ public class WarDeployTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
 
         if (!isPlaybackMode()) {
-            webApp.warDeploy(warFile);
+            webApp.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"));
             try (InputStream is = new FileInputStream(warFile)) {
-                webApp.warDeploy(is, warFile.length(), "app2");
+                webApp.deploy(DeployType.WAR, is, warFile.length(), new DeployOptions().withPath("webapps/app2"));
             }
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(60));
