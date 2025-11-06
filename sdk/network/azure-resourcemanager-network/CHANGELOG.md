@@ -2,6 +2,8 @@
 
 ## 2.55.0 (2025-11-06)
 
+### Other Changes
+
 #### Dependency Updates
 
 - Updated `api-version` to `2025-01-01`.
