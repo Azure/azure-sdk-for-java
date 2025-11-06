@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -61,7 +61,7 @@ public class OneDeployTests extends AppServiceTest {
         = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/helloworld.jar";
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canDeployZip() {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
@@ -86,7 +86,7 @@ public class OneDeployTests extends AppServiceTest {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canPushDeployJar() throws Exception {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
@@ -143,7 +143,7 @@ public class OneDeployTests extends AppServiceTest {
     }
 
     // test uses storage account key and connection string to configure the function app
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void canDeployFlexConsumptionFunctionApp(boolean pushDeploy) throws FileNotFoundException {
@@ -232,7 +232,7 @@ public class OneDeployTests extends AppServiceTest {
         // Flex does not support slot
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void canDeployFunctionApp(boolean pushDeploy) {

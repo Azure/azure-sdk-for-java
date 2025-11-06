@@ -4,7 +4,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -29,7 +29,7 @@ public class ZipDeployTests extends AppServiceTest {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canZipDeployFunction() {
         // Create function app
         FunctionApp functionApp = appServiceManager.functionApps()
