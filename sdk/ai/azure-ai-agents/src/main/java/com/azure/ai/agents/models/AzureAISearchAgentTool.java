@@ -22,6 +22,22 @@ public final class AzureAISearchAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.AZURE_AI_SEARCH;
 
+    /*
+     * The azure ai search index resource.
+     */
+    @Generated
+    private final AzureAISearchToolResource azureAiSearch;
+
+    /**
+     * Creates an instance of AzureAISearchAgentTool class.
+     *
+     * @param azureAiSearch the azureAiSearch value to set.
+     */
+    @Generated
+    public AzureAISearchAgentTool(AzureAISearchToolResource azureAiSearch) {
+        this.azureAiSearch = azureAiSearch;
+    }
+
     /**
      * Get the type property: The type property.
      *
@@ -31,6 +47,16 @@ public final class AzureAISearchAgentTool extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the azureAiSearch property: The azure ai search index resource.
+     *
+     * @return the azureAiSearch value.
+     */
+    @Generated
+    public AzureAISearchToolResource getAzureAiSearch() {
+        return this.azureAiSearch;
     }
 
     /**
@@ -74,31 +100,5 @@ public final class AzureAISearchAgentTool extends Tool {
             deserializedAzureAISearchAgentTool.type = type;
             return deserializedAzureAISearchAgentTool;
         });
-    }
-
-    /*
-     * The azure ai search index resource.
-     */
-    @Generated
-    private final AzureAISearchToolResource azureAiSearch;
-
-    /**
-     * Creates an instance of AzureAISearchAgentTool class.
-     *
-     * @param azureAiSearch the azureAiSearch value to set.
-     */
-    @Generated
-    public AzureAISearchAgentTool(AzureAISearchToolResource azureAiSearch) {
-        this.azureAiSearch = azureAiSearch;
-    }
-
-    /**
-     * Get the azureAiSearch property: The azure ai search index resource.
-     *
-     * @return the azureAiSearch value.
-     */
-    @Generated
-    public AzureAISearchToolResource getAzureAiSearch() {
-        return this.azureAiSearch;
     }
 }

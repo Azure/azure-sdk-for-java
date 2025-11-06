@@ -67,6 +67,24 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static final ToolType BING_GROUNDING = fromString("bing_grounding");
 
     /**
+     * Static value browser_automation_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType BROWSER_AUTOMATION_PREVIEW = fromString("browser_automation_preview");
+
+    /**
+     * Static value fabric_dataagent_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType FABRIC_DATAAGENT_PREVIEW = fromString("fabric_dataagent_preview");
+
+    /**
+     * Static value sharepoint_grounding_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType SHAREPOINT_GROUNDING_PREVIEW = fromString("sharepoint_grounding_preview");
+
+    /**
      * Static value azure_ai_search for ToolType.
      */
     @Generated
@@ -79,10 +97,34 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static final ToolType OPENAPI = fromString("openapi");
 
     /**
+     * Static value bing_custom_search_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType BING_CUSTOM_SEARCH_PREVIEW = fromString("bing_custom_search_preview");
+
+    /**
      * Static value capture_structured_outputs for ToolType.
      */
     @Generated
     public static final ToolType CAPTURE_STRUCTURED_OUTPUTS = fromString("capture_structured_outputs");
+
+    /**
+     * Static value a2a_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType A2A_PREVIEW = fromString("a2a_preview");
+
+    /**
+     * Static value azure_function for ToolType.
+     */
+    @Generated
+    public static final ToolType AZURE_FUNCTION = fromString("azure_function");
+
+    /**
+     * Static value memory_search for ToolType.
+     */
+    @Generated
+    public static final ToolType MEMORY_SEARCH = fromString("memory_search");
 
     /**
      * Creates a new instance of ToolType value.
@@ -114,46 +156,4 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static Collection<ToolType> values() {
         return values(ToolType.class);
     }
-
-    /**
-     * Static value memory_search for ToolType.
-     */
-    @Generated
-    public static final ToolType MEMORY_SEARCH = fromString("memory_search");
-
-    /**
-     * Static value browser_automation_preview for ToolType.
-     */
-    @Generated
-    public static final ToolType BROWSER_AUTOMATION_PREVIEW = fromString("browser_automation_preview");
-
-    /**
-     * Static value fabric_dataagent_preview for ToolType.
-     */
-    @Generated
-    public static final ToolType FABRIC_DATAAGENT_PREVIEW = fromString("fabric_dataagent_preview");
-
-    /**
-     * Static value sharepoint_grounding_preview for ToolType.
-     */
-    @Generated
-    public static final ToolType SHAREPOINT_GROUNDING_PREVIEW = fromString("sharepoint_grounding_preview");
-
-    /**
-     * Static value bing_custom_search_preview for ToolType.
-     */
-    @Generated
-    public static final ToolType BING_CUSTOM_SEARCH_PREVIEW = fromString("bing_custom_search_preview");
-
-    /**
-     * Static value a2a_preview for ToolType.
-     */
-    @Generated
-    public static final ToolType A2A_PREVIEW = fromString("a2a_preview");
-
-    /**
-     * Static value azure_function for ToolType.
-     */
-    @Generated
-    public static final ToolType AZURE_FUNCTION = fromString("azure_function");
 }

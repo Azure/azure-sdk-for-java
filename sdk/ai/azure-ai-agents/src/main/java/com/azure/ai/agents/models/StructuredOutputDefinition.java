@@ -20,6 +20,12 @@ import java.util.Map;
 public final class StructuredOutputDefinition implements JsonSerializable<StructuredOutputDefinition> {
 
     /*
+     * The name of the structured output.
+     */
+    @Generated
+    private final String name;
+
+    /*
      * A description of the output to emit. Used by the model to determine when to emit the output.
      */
     @Generated
@@ -30,6 +36,38 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
      */
     @Generated
     private final Map<String, BinaryData> schema;
+
+    /*
+     * Whether to enforce strict validation. Default `true`.
+     */
+    @Generated
+    private final Boolean strict;
+
+    /**
+     * Creates an instance of StructuredOutputDefinition class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param schema the schema value to set.
+     * @param strict the strict value to set.
+     */
+    @Generated
+    public StructuredOutputDefinition(String name, String description, Map<String, BinaryData> schema, Boolean strict) {
+        this.name = name;
+        this.description = description;
+        this.schema = schema;
+        this.strict = strict;
+    }
+
+    /**
+     * Get the name property: The name of the structured output.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Get the description property: A description of the output to emit. Used by the model to determine when to emit
@@ -50,6 +88,16 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
     @Generated
     public Map<String, BinaryData> getSchema() {
         return this.schema;
+    }
+
+    /**
+     * Get the strict property: Whether to enforce strict validation. Default `true`.
+     *
+     * @return the strict value.
+     */
+    @Generated
+    public Boolean isStrict() {
+        return this.strict;
     }
 
     /**
@@ -101,53 +149,5 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
             }
             return new StructuredOutputDefinition(name, description, schema, strict);
         });
-    }
-
-    /*
-     * The name of the structured output.
-     */
-    @Generated
-    private final String name;
-
-    /*
-     * Whether to enforce strict validation. Default `true`.
-     */
-    @Generated
-    private final Boolean strict;
-
-    /**
-     * Creates an instance of StructuredOutputDefinition class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param schema the schema value to set.
-     * @param strict the strict value to set.
-     */
-    @Generated
-    public StructuredOutputDefinition(String name, String description, Map<String, BinaryData> schema, Boolean strict) {
-        this.name = name;
-        this.description = description;
-        this.schema = schema;
-        this.strict = strict;
-    }
-
-    /**
-     * Get the name property: The name of the structured output.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the strict property: Whether to enforce strict validation. Default `true`.
-     *
-     * @return the strict value.
-     */
-    @Generated
-    public Boolean isStrict() {
-        return this.strict;
     }
 }

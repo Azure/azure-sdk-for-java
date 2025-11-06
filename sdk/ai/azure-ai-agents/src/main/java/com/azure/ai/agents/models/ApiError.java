@@ -31,10 +31,36 @@ public final class ApiError implements JsonSerializable<ApiError> {
     private final String message;
 
     /*
+     * The target of the error, if applicable.
+     */
+    @Generated
+    private String target;
+
+    /*
      * Additional details about the error.
      */
     @Generated
     private final List<ApiError> details;
+
+    /*
+     * The inner error, if any.
+     */
+    @Generated
+    private ApiInnerError innererror;
+
+    /**
+     * Creates an instance of ApiError class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     * @param details the details value to set.
+     */
+    @Generated
+    private ApiError(String code, String message, List<ApiError> details) {
+        this.code = code;
+        this.message = message;
+        this.details = details;
+    }
 
     /**
      * Get the code property: The error code.
@@ -57,6 +83,16 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
+     * Get the target property: The target of the error, if applicable.
+     *
+     * @return the target value.
+     */
+    @Generated
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
      * Get the details property: Additional details about the error.
      *
      * @return the details value.
@@ -64,6 +100,16 @@ public final class ApiError implements JsonSerializable<ApiError> {
     @Generated
     public List<ApiError> getDetails() {
         return this.details;
+    }
+
+    /**
+     * Get the innererror property: The inner error, if any.
+     *
+     * @return the innererror value.
+     */
+    @Generated
+    public ApiInnerError getInnererror() {
+        return this.innererror;
     }
 
     /**
@@ -120,51 +166,5 @@ public final class ApiError implements JsonSerializable<ApiError> {
             deserializedApiError.innererror = innererror;
             return deserializedApiError;
         });
-    }
-
-    /*
-     * The target of the error, if applicable.
-     */
-    @Generated
-    private String target;
-
-    /*
-     * The inner error, if any.
-     */
-    @Generated
-    private ApiInnerError innererror;
-
-    /**
-     * Creates an instance of ApiError class.
-     *
-     * @param code the code value to set.
-     * @param message the message value to set.
-     * @param details the details value to set.
-     */
-    @Generated
-    private ApiError(String code, String message, List<ApiError> details) {
-        this.code = code;
-        this.message = message;
-        this.details = details;
-    }
-
-    /**
-     * Get the target property: The target of the error, if applicable.
-     *
-     * @return the target value.
-     */
-    @Generated
-    public String getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Get the innererror property: The inner error, if any.
-     *
-     * @return the innererror value.
-     */
-    @Generated
-    public ApiInnerError getInnererror() {
-        return this.innererror;
     }
 }

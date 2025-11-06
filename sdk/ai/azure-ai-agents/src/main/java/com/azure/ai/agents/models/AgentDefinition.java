@@ -107,7 +107,7 @@ public class AgentDefinition implements JsonSerializable<AgentDefinition> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("workflow".equals(discriminatorValue)) {
-                    return WorkflowDefinition.fromJson(readerToUse.reset());
+                    return WorkflowAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("hosted".equals(discriminatorValue)) {
                     return HostedAgentDefinition.fromJsonKnownDiscriminator(readerToUse.reset());
                 } else if ("hosted".equals(discriminatorValue)) {

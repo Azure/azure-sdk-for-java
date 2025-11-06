@@ -54,6 +54,13 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     private String indexAssetId;
 
     /**
+     * Creates an instance of AISearchIndexResource class.
+     */
+    @Generated
+    public AISearchIndexResource() {
+    }
+
+    /**
      * Get the projectConnectionId property: An index connection ID in an IndexResource attached to this agent.
      *
      * @return the projectConnectionId value.
@@ -61,6 +68,18 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
     @Generated
     public String getProjectConnectionId() {
         return this.projectConnectionId;
+    }
+
+    /**
+     * Set the projectConnectionId property: An index connection ID in an IndexResource attached to this agent.
+     *
+     * @param projectConnectionId the projectConnectionId value to set.
+     * @return the AISearchIndexResource object itself.
+     */
+    @Generated
+    public AISearchIndexResource setProjectConnectionId(String projectConnectionId) {
+        this.projectConnectionId = projectConnectionId;
+        return this;
     }
 
     /**
@@ -224,24 +243,5 @@ public final class AISearchIndexResource implements JsonSerializable<AISearchInd
             }
             return deserializedAISearchIndexResource;
         });
-    }
-
-    /**
-     * Creates an instance of AISearchIndexResource class.
-     */
-    @Generated
-    public AISearchIndexResource() {
-    }
-
-    /**
-     * Set the projectConnectionId property: An index connection ID in an IndexResource attached to this agent.
-     *
-     * @param projectConnectionId the projectConnectionId value to set.
-     * @return the AISearchIndexResource object itself.
-     */
-    @Generated
-    public AISearchIndexResource setProjectConnectionId(String projectConnectionId) {
-        this.projectConnectionId = projectConnectionId;
-        return this;
     }
 }

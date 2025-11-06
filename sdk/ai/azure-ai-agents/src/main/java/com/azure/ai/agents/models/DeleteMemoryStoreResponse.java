@@ -24,6 +24,12 @@ public final class DeleteMemoryStoreResponse implements JsonSerializable<DeleteM
     private final String object = "memory_store.deleted";
 
     /*
+     * The name of the memory store.
+     */
+    @Generated
+    private final String name;
+
+    /*
      * Whether the memory store was successfully deleted.
      */
     @Generated
@@ -49,6 +55,16 @@ public final class DeleteMemoryStoreResponse implements JsonSerializable<DeleteM
     @Generated
     public String getObject() {
         return this.object;
+    }
+
+    /**
+     * Get the name property: The name of the memory store.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -101,21 +117,5 @@ public final class DeleteMemoryStoreResponse implements JsonSerializable<DeleteM
             }
             return new DeleteMemoryStoreResponse(name, deleted);
         });
-    }
-
-    /*
-     * The name of the memory store.
-     */
-    @Generated
-    private final String name;
-
-    /**
-     * Get the name property: The name of the memory store.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
     }
 }

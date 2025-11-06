@@ -11,10 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The workflow specification in CSDL format.
+ * The workflow agent definition.
  */
 @Fluent
-public final class WorkflowDefinition extends AgentDefinition {
+public final class WorkflowAgentDefinition extends AgentDefinition {
 
     /*
      * The kind property.
@@ -22,11 +22,17 @@ public final class WorkflowDefinition extends AgentDefinition {
     @Generated
     private AgentKind kind = AgentKind.WORKFLOW;
 
-    /**
-     * Creates an instance of WorkflowDefinition class.
+    /*
+     * The CSDL YAML definition of the workflow.
      */
     @Generated
-    public WorkflowDefinition() {
+    private String workflow;
+
+    /**
+     * Creates an instance of WorkflowAgentDefinition class.
+     */
+    @Generated
+    public WorkflowAgentDefinition() {
     }
 
     /**
@@ -41,11 +47,33 @@ public final class WorkflowDefinition extends AgentDefinition {
     }
 
     /**
+     * Get the workflow property: The CSDL YAML definition of the workflow.
+     *
+     * @return the workflow value.
+     */
+    @Generated
+    public String getWorkflow() {
+        return this.workflow;
+    }
+
+    /**
+     * Set the workflow property: The CSDL YAML definition of the workflow.
+     *
+     * @param workflow the workflow value to set.
+     * @return the WorkflowAgentDefinition object itself.
+     */
+    @Generated
+    public WorkflowAgentDefinition setWorkflow(String workflow) {
+        this.workflow = workflow;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
-    public WorkflowDefinition setRaiConfig(RaiConfig raiConfig) {
+    public WorkflowAgentDefinition setRaiConfig(RaiConfig raiConfig) {
         super.setRaiConfig(raiConfig);
         return this;
     }
@@ -64,59 +92,31 @@ public final class WorkflowDefinition extends AgentDefinition {
     }
 
     /**
-     * Reads an instance of WorkflowDefinition from the JsonReader.
+     * Reads an instance of WorkflowAgentDefinition from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkflowDefinition if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WorkflowDefinition.
+     * @return An instance of WorkflowAgentDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowAgentDefinition.
      */
     @Generated
-    public static WorkflowDefinition fromJson(JsonReader jsonReader) throws IOException {
+    public static WorkflowAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            WorkflowDefinition deserializedWorkflowDefinition = new WorkflowDefinition();
+            WorkflowAgentDefinition deserializedWorkflowAgentDefinition = new WorkflowAgentDefinition();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("rai_config".equals(fieldName)) {
-                    deserializedWorkflowDefinition.setRaiConfig(RaiConfig.fromJson(reader));
+                    deserializedWorkflowAgentDefinition.setRaiConfig(RaiConfig.fromJson(reader));
                 } else if ("kind".equals(fieldName)) {
-                    deserializedWorkflowDefinition.kind = AgentKind.fromString(reader.getString());
+                    deserializedWorkflowAgentDefinition.kind = AgentKind.fromString(reader.getString());
                 } else if ("workflow".equals(fieldName)) {
-                    deserializedWorkflowDefinition.workflow = reader.getString();
+                    deserializedWorkflowAgentDefinition.workflow = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedWorkflowDefinition;
+            return deserializedWorkflowAgentDefinition;
         });
-    }
-
-    /*
-     * The CSDL YAML definition of the workflow.
-     */
-    @Generated
-    private String workflow;
-
-    /**
-     * Get the workflow property: The CSDL YAML definition of the workflow.
-     *
-     * @return the workflow value.
-     */
-    @Generated
-    public String getWorkflow() {
-        return this.workflow;
-    }
-
-    /**
-     * Set the workflow property: The CSDL YAML definition of the workflow.
-     *
-     * @param workflow the workflow value to set.
-     * @return the WorkflowDefinition object itself.
-     */
-    @Generated
-    public WorkflowDefinition setWorkflow(String workflow) {
-        this.workflow = workflow;
-        return this;
     }
 }

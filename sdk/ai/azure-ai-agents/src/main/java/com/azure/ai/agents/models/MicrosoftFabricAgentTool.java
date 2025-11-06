@@ -22,6 +22,12 @@ public final class MicrosoftFabricAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
 
+    /*
+     * The fabric data agent tool parameters.
+     */
+    @Generated
+    private final FabricDataAgentToolParameters fabricDataagentPreview;
+
     /**
      * Creates an instance of MicrosoftFabricAgentTool class.
      *
@@ -41,6 +47,16 @@ public final class MicrosoftFabricAgentTool extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the fabricDataagentPreview property: The fabric data agent tool parameters.
+     *
+     * @return the fabricDataagentPreview value.
+     */
+    @Generated
+    public FabricDataAgentToolParameters getFabricDataagentPreview() {
+        return this.fabricDataagentPreview;
     }
 
     /**
@@ -85,21 +101,5 @@ public final class MicrosoftFabricAgentTool extends Tool {
             deserializedMicrosoftFabricAgentTool.type = type;
             return deserializedMicrosoftFabricAgentTool;
         });
-    }
-
-    /*
-     * The fabric data agent tool parameters.
-     */
-    @Generated
-    private final FabricDataAgentToolParameters fabricDataagentPreview;
-
-    /**
-     * Get the fabricDataagentPreview property: The fabric data agent tool parameters.
-     *
-     * @return the fabricDataagentPreview value.
-     */
-    @Generated
-    public FabricDataAgentToolParameters getFabricDataagentPreview() {
-        return this.fabricDataagentPreview;
     }
 }

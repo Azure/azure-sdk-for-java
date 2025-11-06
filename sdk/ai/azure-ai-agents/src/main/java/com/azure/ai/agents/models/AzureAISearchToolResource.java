@@ -18,6 +18,34 @@ import java.util.List;
 @Immutable
 public final class AzureAISearchToolResource implements JsonSerializable<AzureAISearchToolResource> {
 
+    /*
+     * The indices attached to this agent. There can be a maximum of 1 index
+     * resource attached to the agent.
+     */
+    @Generated
+    private final List<AISearchIndexResource> indexes;
+
+    /**
+     * Creates an instance of AzureAISearchToolResource class.
+     *
+     * @param indexes the indexes value to set.
+     */
+    @Generated
+    public AzureAISearchToolResource(List<AISearchIndexResource> indexes) {
+        this.indexes = indexes;
+    }
+
+    /**
+     * Get the indexes property: The indices attached to this agent. There can be a maximum of 1 index
+     * resource attached to the agent.
+     *
+     * @return the indexes value.
+     */
+    @Generated
+    public List<AISearchIndexResource> getIndexes() {
+        return this.indexes;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -53,33 +81,5 @@ public final class AzureAISearchToolResource implements JsonSerializable<AzureAI
             }
             return new AzureAISearchToolResource(indexes);
         });
-    }
-
-    /*
-     * The indices attached to this agent. There can be a maximum of 1 index
-     * resource attached to the agent.
-     */
-    @Generated
-    private final List<AISearchIndexResource> indexes;
-
-    /**
-     * Creates an instance of AzureAISearchToolResource class.
-     *
-     * @param indexes the indexes value to set.
-     */
-    @Generated
-    public AzureAISearchToolResource(List<AISearchIndexResource> indexes) {
-        this.indexes = indexes;
-    }
-
-    /**
-     * Get the indexes property: The indices attached to this agent. There can be a maximum of 1 index
-     * resource attached to the agent.
-     *
-     * @return the indexes value.
-     */
-    @Generated
-    public List<AISearchIndexResource> getIndexes() {
-        return this.indexes;
     }
 }

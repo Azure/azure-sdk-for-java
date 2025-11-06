@@ -22,6 +22,12 @@ public final class BrowserAutomationAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.BROWSER_AUTOMATION_PREVIEW;
 
+    /*
+     * The Browser Automation Tool parameters.
+     */
+    @Generated
+    private final BrowserAutomationToolParameters browserAutomationPreview;
+
     /**
      * Creates an instance of BrowserAutomationAgentTool class.
      *
@@ -41,6 +47,16 @@ public final class BrowserAutomationAgentTool extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the browserAutomationPreview property: The Browser Automation Tool parameters.
+     *
+     * @return the browserAutomationPreview value.
+     */
+    @Generated
+    public BrowserAutomationToolParameters getBrowserAutomationPreview() {
+        return this.browserAutomationPreview;
     }
 
     /**
@@ -85,21 +101,5 @@ public final class BrowserAutomationAgentTool extends Tool {
             deserializedBrowserAutomationAgentTool.type = type;
             return deserializedBrowserAutomationAgentTool;
         });
-    }
-
-    /*
-     * The Browser Automation Tool parameters.
-     */
-    @Generated
-    private final BrowserAutomationToolParameters browserAutomationPreview;
-
-    /**
-     * Get the browserAutomationPreview property: The Browser Automation Tool parameters.
-     *
-     * @return the browserAutomationPreview value.
-     */
-    @Generated
-    public BrowserAutomationToolParameters getBrowserAutomationPreview() {
-        return this.browserAutomationPreview;
     }
 }

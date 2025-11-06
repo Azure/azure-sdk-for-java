@@ -64,6 +64,18 @@ public final class MCPTool extends Tool {
     private String projectConnectionId;
 
     /**
+     * Creates an instance of MCPTool class.
+     *
+     * @param serverLabel the serverLabel value to set.
+     * @param serverUrl the serverUrl value to set.
+     */
+    @Generated
+    public MCPTool(String serverLabel, String serverUrl) {
+        this.serverLabel = serverLabel;
+        this.serverUrl = serverUrl;
+    }
+
+    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -174,6 +186,19 @@ public final class MCPTool extends Tool {
     }
 
     /**
+     * Set the projectConnectionId property: The connection ID in the project for the MCP server. The connection stores
+     * authentication and other connection details needed to connect to the MCP server.
+     *
+     * @param projectConnectionId the projectConnectionId value to set.
+     * @return the MCPTool object itself.
+     */
+    @Generated
+    public MCPTool setProjectConnectionId(String projectConnectionId) {
+        this.projectConnectionId = projectConnectionId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -246,30 +271,5 @@ public final class MCPTool extends Tool {
             deserializedMCPTool.projectConnectionId = projectConnectionId;
             return deserializedMCPTool;
         });
-    }
-
-    /**
-     * Creates an instance of MCPTool class.
-     *
-     * @param serverLabel the serverLabel value to set.
-     * @param serverUrl the serverUrl value to set.
-     */
-    @Generated
-    public MCPTool(String serverLabel, String serverUrl) {
-        this.serverLabel = serverLabel;
-        this.serverUrl = serverUrl;
-    }
-
-    /**
-     * Set the projectConnectionId property: The connection ID in the project for the MCP server. The connection stores
-     * authentication and other connection details needed to connect to the MCP server.
-     *
-     * @param projectConnectionId the projectConnectionId value to set.
-     * @return the MCPTool object itself.
-     */
-    @Generated
-    public MCPTool setProjectConnectionId(String projectConnectionId) {
-        this.projectConnectionId = projectConnectionId;
-        return this;
     }
 }

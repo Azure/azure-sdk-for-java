@@ -18,6 +18,12 @@ import java.io.IOException;
 public final class BrowserAutomationToolConnectionParameters
     implements JsonSerializable<BrowserAutomationToolConnectionParameters> {
 
+    /*
+     * The ID of the project connection to your Azure Playwright resource.
+     */
+    @Generated
+    private final String projectConnectionId;
+
     /**
      * Creates an instance of BrowserAutomationToolConnectionParameters class.
      *
@@ -26,6 +32,16 @@ public final class BrowserAutomationToolConnectionParameters
     @Generated
     public BrowserAutomationToolConnectionParameters(String projectConnectionId) {
         this.projectConnectionId = projectConnectionId;
+    }
+
+    /**
+     * Get the projectConnectionId property: The ID of the project connection to your Azure Playwright resource.
+     *
+     * @return the projectConnectionId value.
+     */
+    @Generated
+    public String getProjectConnectionId() {
+        return this.projectConnectionId;
     }
 
     /**
@@ -63,21 +79,5 @@ public final class BrowserAutomationToolConnectionParameters
             }
             return new BrowserAutomationToolConnectionParameters(projectConnectionId);
         });
-    }
-
-    /*
-     * The ID of the project connection to your Azure Playwright resource.
-     */
-    @Generated
-    private final String projectConnectionId;
-
-    /**
-     * Get the projectConnectionId property: The ID of the project connection to your Azure Playwright resource.
-     *
-     * @return the projectConnectionId value.
-     */
-    @Generated
-    public String getProjectConnectionId() {
-        return this.projectConnectionId;
     }
 }

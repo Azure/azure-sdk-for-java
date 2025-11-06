@@ -71,6 +71,16 @@ public final class ImageBasedHostedAgentDefinition extends HostedAgentDefinition
      */
     @Generated
     @Override
+    public ImageBasedHostedAgentDefinition setTools(List<Tool> tools) {
+        super.setTools(tools);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public ImageBasedHostedAgentDefinition setEnvironmentVariables(Map<String, String> environmentVariables) {
         super.setEnvironmentVariables(environmentVariables);
         return this;
@@ -157,15 +167,5 @@ public final class ImageBasedHostedAgentDefinition extends HostedAgentDefinition
             deserializedImageBasedHostedAgentDefinition.kind = kind;
             return deserializedImageBasedHostedAgentDefinition;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public ImageBasedHostedAgentDefinition setTools(List<Tool> tools) {
-        super.setTools(tools);
-        return this;
     }
 }

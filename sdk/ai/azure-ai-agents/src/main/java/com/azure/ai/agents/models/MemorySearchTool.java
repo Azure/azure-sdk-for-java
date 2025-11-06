@@ -23,6 +23,12 @@ public final class MemorySearchTool extends Tool {
     private ToolType type = ToolType.MEMORY_SEARCH;
 
     /*
+     * The name of the memory store to use.
+     */
+    @Generated
+    private final String memoryStoreName;
+
+    /*
      * The namespace used to group and isolate memories, such as a user ID.
      * Limits which memories can be retrieved or updated.
      * Use special variable `{{$userId}}` to scope memories to the current signed-in user.
@@ -63,6 +69,16 @@ public final class MemorySearchTool extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the memoryStoreName property: The name of the memory store to use.
+     *
+     * @return the memoryStoreName value.
+     */
+    @Generated
+    public String getMemoryStoreName() {
+        return this.memoryStoreName;
     }
 
     /**
@@ -107,6 +123,18 @@ public final class MemorySearchTool extends Tool {
     @Generated
     public Integer getUpdateDelay() {
         return this.updateDelay;
+    }
+
+    /**
+     * Set the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
+     *
+     * @param updateDelay the updateDelay value to set.
+     * @return the MemorySearchTool object itself.
+     */
+    @Generated
+    public MemorySearchTool setUpdateDelay(Integer updateDelay) {
+        this.updateDelay = updateDelay;
+        return this;
     }
 
     /**
@@ -164,33 +192,5 @@ public final class MemorySearchTool extends Tool {
             deserializedMemorySearchTool.updateDelay = updateDelay;
             return deserializedMemorySearchTool;
         });
-    }
-
-    /*
-     * The name of the memory store to use.
-     */
-    @Generated
-    private final String memoryStoreName;
-
-    /**
-     * Get the memoryStoreName property: The name of the memory store to use.
-     *
-     * @return the memoryStoreName value.
-     */
-    @Generated
-    public String getMemoryStoreName() {
-        return this.memoryStoreName;
-    }
-
-    /**
-     * Set the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
-     *
-     * @param updateDelay the updateDelay value to set.
-     * @return the MemorySearchTool object itself.
-     */
-    @Generated
-    public MemorySearchTool setUpdateDelay(Integer updateDelay) {
-        this.updateDelay = updateDelay;
-        return this;
     }
 }

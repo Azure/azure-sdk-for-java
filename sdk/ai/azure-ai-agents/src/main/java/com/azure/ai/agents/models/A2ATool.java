@@ -35,6 +35,20 @@ public final class A2ATool extends Tool {
     @Generated
     private String agentCardPath;
 
+    /*
+     * The connection ID in the project for the A2A server.
+     * The connection stores authentication and other connection details needed to connect to the A2A server.
+     */
+    @Generated
+    private String projectConnectionId;
+
+    /**
+     * Creates an instance of A2ATool class.
+     */
+    @Generated
+    public A2ATool() {
+    }
+
     /**
      * Get the type property: The type property.
      *
@@ -54,6 +68,18 @@ public final class A2ATool extends Tool {
     @Generated
     public String getBaseUrl() {
         return this.baseUrl;
+    }
+
+    /**
+     * Set the baseUrl property: Base URL of the agent.
+     *
+     * @param baseUrl the baseUrl value to set.
+     * @return the A2ATool object itself.
+     */
+    @Generated
+    public A2ATool setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        return this;
     }
 
     /**
@@ -77,6 +103,30 @@ public final class A2ATool extends Tool {
     @Generated
     public A2ATool setAgentCardPath(String agentCardPath) {
         this.agentCardPath = agentCardPath;
+        return this;
+    }
+
+    /**
+     * Get the projectConnectionId property: The connection ID in the project for the A2A server.
+     * The connection stores authentication and other connection details needed to connect to the A2A server.
+     *
+     * @return the projectConnectionId value.
+     */
+    @Generated
+    public String getProjectConnectionId() {
+        return this.projectConnectionId;
+    }
+
+    /**
+     * Set the projectConnectionId property: The connection ID in the project for the A2A server.
+     * The connection stores authentication and other connection details needed to connect to the A2A server.
+     *
+     * @param projectConnectionId the projectConnectionId value to set.
+     * @return the A2ATool object itself.
+     */
+    @Generated
+    public A2ATool setProjectConnectionId(String projectConnectionId) {
+        this.projectConnectionId = projectConnectionId;
         return this;
     }
 
@@ -123,55 +173,5 @@ public final class A2ATool extends Tool {
             }
             return deserializedA2ATool;
         });
-    }
-
-    /*
-     * The connection ID in the project for the A2A server.
-     * The connection stores authentication and other connection details needed to connect to the A2A server.
-     */
-    @Generated
-    private String projectConnectionId;
-
-    /**
-     * Creates an instance of A2ATool class.
-     */
-    @Generated
-    public A2ATool() {
-    }
-
-    /**
-     * Set the baseUrl property: Base URL of the agent.
-     *
-     * @param baseUrl the baseUrl value to set.
-     * @return the A2ATool object itself.
-     */
-    @Generated
-    public A2ATool setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-        return this;
-    }
-
-    /**
-     * Get the projectConnectionId property: The connection ID in the project for the A2A server.
-     * The connection stores authentication and other connection details needed to connect to the A2A server.
-     *
-     * @return the projectConnectionId value.
-     */
-    @Generated
-    public String getProjectConnectionId() {
-        return this.projectConnectionId;
-    }
-
-    /**
-     * Set the projectConnectionId property: The connection ID in the project for the A2A server.
-     * The connection stores authentication and other connection details needed to connect to the A2A server.
-     *
-     * @param projectConnectionId the projectConnectionId value to set.
-     * @return the A2ATool object itself.
-     */
-    @Generated
-    public A2ATool setProjectConnectionId(String projectConnectionId) {
-        this.projectConnectionId = projectConnectionId;
-        return this;
     }
 }

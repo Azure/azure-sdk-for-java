@@ -26,6 +26,16 @@ public final class BingGroundingSearchToolParameters implements JsonSerializable
     private final List<BingGroundingSearchConfiguration> searchConfigurations;
 
     /**
+     * Creates an instance of BingGroundingSearchToolParameters class.
+     *
+     * @param searchConfigurations the searchConfigurations value to set.
+     */
+    @Generated
+    public BingGroundingSearchToolParameters(List<BingGroundingSearchConfiguration> searchConfigurations) {
+        this.searchConfigurations = searchConfigurations;
+    }
+
+    /**
      * Get the searchConfigurations property: The search configurations attached to this tool. There can be a maximum of
      * 1
      * search configuration resource attached to the tool.
@@ -74,15 +84,5 @@ public final class BingGroundingSearchToolParameters implements JsonSerializable
             }
             return new BingGroundingSearchToolParameters(searchConfigurations);
         });
-    }
-
-    /**
-     * Creates an instance of BingGroundingSearchToolParameters class.
-     *
-     * @param searchConfigurations the searchConfigurations value to set.
-     */
-    @Generated
-    public BingGroundingSearchToolParameters(List<BingGroundingSearchConfiguration> searchConfigurations) {
-        this.searchConfigurations = searchConfigurations;
     }
 }

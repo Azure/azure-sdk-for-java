@@ -22,6 +22,17 @@ import java.util.Map;
 public final class AgentVersionObject implements JsonSerializable<AgentVersionObject> {
 
     /*
+     * Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     * 
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     */
+    @Generated
+    private final Map<String, String> metadata;
+
+    /*
      * The object type, which is always 'agent.version'.
      */
     @Generated
@@ -53,17 +64,6 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     private String description;
 
     /*
-     * Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     * 
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     */
-    @Generated
-    private final Map<String, String> metadata;
-
-    /*
      * The Unix timestamp (seconds) when the agent was created.
      */
     @Generated
@@ -74,6 +74,46 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
      */
     @Generated
     private final AgentDefinition definition;
+
+    /**
+     * Creates an instance of AgentVersionObject class.
+     *
+     * @param metadata the metadata value to set.
+     * @param id the id value to set.
+     * @param name the name value to set.
+     * @param version the version value to set.
+     * @param createdAt the createdAt value to set.
+     * @param definition the definition value to set.
+     */
+    @Generated
+    private AgentVersionObject(Map<String, String> metadata, String id, String name, String version,
+        OffsetDateTime createdAt, AgentDefinition definition) {
+        this.metadata = metadata;
+        this.id = id;
+        this.name = name;
+        this.version = version;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.definition = definition;
+    }
+
+    /**
+     * Get the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
 
     /**
      * Get the object property: The object type, which is always 'agent.version'.
@@ -124,21 +164,6 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     @Generated
     public String getDescription() {
         return this.description;
-    }
-
-    /**
-     * Get the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     *
-     * @return the metadata value.
-     */
-    @Generated
-    public Map<String, String> getMetadata() {
-        return this.metadata;
     }
 
     /**
@@ -224,30 +249,5 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
             deserializedAgentVersionObject.description = description;
             return deserializedAgentVersionObject;
         });
-    }
-
-    /**
-     * Creates an instance of AgentVersionObject class.
-     *
-     * @param metadata the metadata value to set.
-     * @param id the id value to set.
-     * @param name the name value to set.
-     * @param version the version value to set.
-     * @param createdAt the createdAt value to set.
-     * @param definition the definition value to set.
-     */
-    @Generated
-    private AgentVersionObject(Map<String, String> metadata, String id, String name, String version,
-        OffsetDateTime createdAt, AgentDefinition definition) {
-        this.metadata = metadata;
-        this.id = id;
-        this.name = name;
-        this.version = version;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.definition = definition;
     }
 }

@@ -17,6 +17,12 @@ import java.io.IOException;
 @Immutable
 public final class BrowserAutomationToolParameters implements JsonSerializable<BrowserAutomationToolParameters> {
 
+    /*
+     * The project connection parameters associated with the Browser Automation Tool.
+     */
+    @Generated
+    private final BrowserAutomationToolConnectionParameters connection;
+
     /**
      * Creates an instance of BrowserAutomationToolParameters class.
      *
@@ -25,6 +31,16 @@ public final class BrowserAutomationToolParameters implements JsonSerializable<B
     @Generated
     public BrowserAutomationToolParameters(BrowserAutomationToolConnectionParameters connection) {
         this.connection = connection;
+    }
+
+    /**
+     * Get the connection property: The project connection parameters associated with the Browser Automation Tool.
+     *
+     * @return the connection value.
+     */
+    @Generated
+    public BrowserAutomationToolConnectionParameters getConnection() {
+        return this.connection;
     }
 
     /**
@@ -62,21 +78,5 @@ public final class BrowserAutomationToolParameters implements JsonSerializable<B
             }
             return new BrowserAutomationToolParameters(connection);
         });
-    }
-
-    /*
-     * The project connection parameters associated with the Browser Automation Tool.
-     */
-    @Generated
-    private final BrowserAutomationToolConnectionParameters connection;
-
-    /**
-     * Get the connection property: The project connection parameters associated with the Browser Automation Tool.
-     *
-     * @return the connection value.
-     */
-    @Generated
-    public BrowserAutomationToolConnectionParameters getConnection() {
-        return this.connection;
     }
 }

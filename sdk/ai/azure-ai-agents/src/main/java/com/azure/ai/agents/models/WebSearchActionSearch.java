@@ -29,6 +29,14 @@ public final class WebSearchActionSearch extends WebSearchAction {
     @Generated
     private final String query;
 
+    /*
+     * Web search sources
+     * 
+     * The sources used in the search.
+     */
+    @Generated
+    private List<WebSearchActionSearchSources> sources;
+
     /**
      * Creates an instance of WebSearchActionSearch class.
      *
@@ -58,6 +66,32 @@ public final class WebSearchActionSearch extends WebSearchAction {
     @Generated
     public String getQuery() {
         return this.query;
+    }
+
+    /**
+     * Get the sources property: Web search sources
+     *
+     * The sources used in the search.
+     *
+     * @return the sources value.
+     */
+    @Generated
+    public List<WebSearchActionSearchSources> getSources() {
+        return this.sources;
+    }
+
+    /**
+     * Set the sources property: Web search sources
+     *
+     * The sources used in the search.
+     *
+     * @param sources the sources value to set.
+     * @return the WebSearchActionSearch object itself.
+     */
+    @Generated
+    public WebSearchActionSearch setSources(List<WebSearchActionSearchSources> sources) {
+        this.sources = sources;
+        return this;
     }
 
     /**
@@ -106,39 +140,5 @@ public final class WebSearchActionSearch extends WebSearchAction {
             deserializedWebSearchActionSearch.sources = sources;
             return deserializedWebSearchActionSearch;
         });
-    }
-
-    /*
-     * Web search sources
-     * 
-     * The sources used in the search.
-     */
-    @Generated
-    private List<WebSearchActionSearchSources> sources;
-
-    /**
-     * Get the sources property: Web search sources
-     *
-     * The sources used in the search.
-     *
-     * @return the sources value.
-     */
-    @Generated
-    public List<WebSearchActionSearchSources> getSources() {
-        return this.sources;
-    }
-
-    /**
-     * Set the sources property: Web search sources
-     *
-     * The sources used in the search.
-     *
-     * @param sources the sources value to set.
-     * @return the WebSearchActionSearch object itself.
-     */
-    @Generated
-    public WebSearchActionSearch setSources(List<WebSearchActionSearchSources> sources) {
-        this.sources = sources;
-        return this;
     }
 }

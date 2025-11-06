@@ -25,6 +25,13 @@ public class HostedAgentDefinition extends AgentDefinition {
     private AgentKind kind = AgentKind.HOSTED;
 
     /*
+     * An array of tools the hosted agent's model may call while generating a response. You
+     * can specify which tool to use by setting the `tool_choice` parameter.
+     */
+    @Generated
+    private List<Tool> tools;
+
+    /*
      * The protocols that the agent supports for ingress communication of the containers.
      */
     @Generated
@@ -71,6 +78,30 @@ public class HostedAgentDefinition extends AgentDefinition {
     @Override
     public AgentKind getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the tools property: An array of tools the hosted agent's model may call while generating a response. You
+     * can specify which tool to use by setting the `tool_choice` parameter.
+     *
+     * @return the tools value.
+     */
+    @Generated
+    public List<Tool> getTools() {
+        return this.tools;
+    }
+
+    /**
+     * Set the tools property: An array of tools the hosted agent's model may call while generating a response. You
+     * can specify which tool to use by setting the `tool_choice` parameter.
+     *
+     * @param tools the tools value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setTools(List<Tool> tools) {
+        this.tools = tools;
+        return this;
     }
 
     /**
@@ -230,36 +261,5 @@ public class HostedAgentDefinition extends AgentDefinition {
             deserializedHostedAgentDefinition.environmentVariables = environmentVariables;
             return deserializedHostedAgentDefinition;
         });
-    }
-
-    /*
-     * An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     */
-    @Generated
-    private List<Tool> tools;
-
-    /**
-     * Get the tools property: An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     *
-     * @return the tools value.
-     */
-    @Generated
-    public List<Tool> getTools() {
-        return this.tools;
-    }
-
-    /**
-     * Set the tools property: An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     *
-     * @param tools the tools value to set.
-     * @return the HostedAgentDefinition object itself.
-     */
-    @Generated
-    public HostedAgentDefinition setTools(List<Tool> tools) {
-        this.tools = tools;
-        return this;
     }
 }

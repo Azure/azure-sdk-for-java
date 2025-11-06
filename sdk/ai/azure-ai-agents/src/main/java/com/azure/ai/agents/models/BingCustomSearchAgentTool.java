@@ -22,6 +22,12 @@ public final class BingCustomSearchAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.BING_CUSTOM_SEARCH_PREVIEW;
 
+    /*
+     * The bing custom search tool parameters.
+     */
+    @Generated
+    private final BingCustomSearchToolParameters bingCustomSearchPreview;
+
     /**
      * Creates an instance of BingCustomSearchAgentTool class.
      *
@@ -41,6 +47,16 @@ public final class BingCustomSearchAgentTool extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the bingCustomSearchPreview property: The bing custom search tool parameters.
+     *
+     * @return the bingCustomSearchPreview value.
+     */
+    @Generated
+    public BingCustomSearchToolParameters getBingCustomSearchPreview() {
+        return this.bingCustomSearchPreview;
     }
 
     /**
@@ -85,21 +101,5 @@ public final class BingCustomSearchAgentTool extends Tool {
             deserializedBingCustomSearchAgentTool.type = type;
             return deserializedBingCustomSearchAgentTool;
         });
-    }
-
-    /*
-     * The bing custom search tool parameters.
-     */
-    @Generated
-    private final BingCustomSearchToolParameters bingCustomSearchPreview;
-
-    /**
-     * Get the bingCustomSearchPreview property: The bing custom search tool parameters.
-     *
-     * @return the bingCustomSearchPreview value.
-     */
-    @Generated
-    public BingCustomSearchToolParameters getBingCustomSearchPreview() {
-        return this.bingCustomSearchPreview;
     }
 }

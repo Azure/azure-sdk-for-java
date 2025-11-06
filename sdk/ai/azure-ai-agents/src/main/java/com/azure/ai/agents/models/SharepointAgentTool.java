@@ -22,6 +22,12 @@ public final class SharepointAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.SHAREPOINT_GROUNDING_PREVIEW;
 
+    /*
+     * The sharepoint grounding tool parameters.
+     */
+    @Generated
+    private final SharepointGroundingToolParameters sharepointGroundingPreview;
+
     /**
      * Creates an instance of SharepointAgentTool class.
      *
@@ -41,6 +47,16 @@ public final class SharepointAgentTool extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the sharepointGroundingPreview property: The sharepoint grounding tool parameters.
+     *
+     * @return the sharepointGroundingPreview value.
+     */
+    @Generated
+    public SharepointGroundingToolParameters getSharepointGroundingPreview() {
+        return this.sharepointGroundingPreview;
     }
 
     /**
@@ -84,21 +100,5 @@ public final class SharepointAgentTool extends Tool {
             deserializedSharepointAgentTool.type = type;
             return deserializedSharepointAgentTool;
         });
-    }
-
-    /*
-     * The sharepoint grounding tool parameters.
-     */
-    @Generated
-    private final SharepointGroundingToolParameters sharepointGroundingPreview;
-
-    /**
-     * Get the sharepointGroundingPreview property: The sharepoint grounding tool parameters.
-     *
-     * @return the sharepointGroundingPreview value.
-     */
-    @Generated
-    public SharepointGroundingToolParameters getSharepointGroundingPreview() {
-        return this.sharepointGroundingPreview;
     }
 }

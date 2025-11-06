@@ -29,6 +29,16 @@ public final class CaptureStructuredOutputsTool extends Tool {
     private final StructuredOutputDefinition outputs;
 
     /**
+     * Creates an instance of CaptureStructuredOutputsTool class.
+     *
+     * @param outputs the outputs value to set.
+     */
+    @Generated
+    public CaptureStructuredOutputsTool(StructuredOutputDefinition outputs) {
+        this.outputs = outputs;
+    }
+
+    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -91,15 +101,5 @@ public final class CaptureStructuredOutputsTool extends Tool {
             deserializedCaptureStructuredOutputsTool.type = type;
             return deserializedCaptureStructuredOutputsTool;
         });
-    }
-
-    /**
-     * Creates an instance of CaptureStructuredOutputsTool class.
-     *
-     * @param outputs the outputs value to set.
-     */
-    @Generated
-    public CaptureStructuredOutputsTool(StructuredOutputDefinition outputs) {
-        this.outputs = outputs;
     }
 }

@@ -133,6 +133,12 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
     public static final ItemType MEMORY_SEARCH_CALL = fromString("memory_search_call");
 
     /**
+     * Static value oauth_consent_request for ItemType.
+     */
+    @Generated
+    public static final ItemType OAUTH_CONSENT_REQUEST = fromString("oauth_consent_request");
+
+    /**
      * Creates a new instance of ItemType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -162,10 +168,4 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
     public static Collection<ItemType> values() {
         return values(ItemType.class);
     }
-
-    /**
-     * Static value oauth_consent_request for ItemType.
-     */
-    @Generated
-    public static final ItemType OAUTH_CONSENT_REQUEST = fromString("oauth_consent_request");
 }
