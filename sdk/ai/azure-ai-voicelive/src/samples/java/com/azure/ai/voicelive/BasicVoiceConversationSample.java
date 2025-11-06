@@ -77,6 +77,9 @@ public final class BasicVoiceConversationSample {
         // Configure basic session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful AI assistant.")
+            // Voice options:
+            // - OpenAI: new OpenAIVoice(OpenAIVoiceName.ALLOY) - use OpenAIVoiceName enum
+            // - Azure: AzureStandardVoice, AzureCustomVoice, AzurePersonalVoice (all extend AzureVoice)
             .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)

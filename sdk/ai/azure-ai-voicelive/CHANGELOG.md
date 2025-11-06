@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (2025-11-04)
+## 1.0.0-beta.1 (2025-11-06)
 
 - Initial release of Azure VoiceLive client library for Java. This library enables real-time, bidirectional voice conversations with AI assistants using WebSocket-based streaming communication.
 
@@ -17,7 +17,8 @@
 - Conversation management with support for adding, deleting, and truncating conversation items
 - Response generation control with support for interruption and cancellation
 - Configurable session options including voice selection, modalities, and audio formats
-- Support for OpenAI voices (Alloy, Echo, Fable, Onyx, Nova, Shimmer) and Azure voices
+- Support for OpenAI voices (Alloy, Ash, Ballad, Coral, Echo, Sage, Shimmer, Verse)
+- Support for Azure voices including AzureStandardVoice, AzureCustomVoice, and AzurePersonalVoice
 - Audio turn management for multi-turn conversations
 - Avatar connection support for video-enabled scenarios
 - Comprehensive sample applications demonstrating microphone input, audio playback, and complete voice assistant implementations

@@ -101,7 +101,7 @@ Represents an active WebSocket connection for bidirectional streaming communicat
 
 Configuration options for customizing session behavior:
 - **Model selection**: Specify the AI model (e.g., "gpt-4o-realtime-preview")
-- **Voice settings**: Choose from OpenAI voices (Alloy, Echo, Fable, etc.) or Azure voices
+- **Voice settings**: Choose from OpenAI voices (Alloy, Ash, Ballad, Coral, Echo, Sage, Shimmer, Verse) or Azure voices
 - **Modalities**: Configure text and/or audio interaction modes
 - **Turn detection**: Server-side voice activity detection with configurable thresholds
 - **Audio formats**: PCM16 input/output with configurable sample rates
@@ -158,6 +158,12 @@ For easier learning, explore these focused samples in order:
    - Noise reduction and echo cancellation
    - Multi-threaded audio processing
 
+> **Note:** To run audio samples (AudioPlaybackSample, MicrophoneInputSample, VoiceAssistantSample):
+> ```bash
+> mvn exec:java -Dexec.mainClass=com.azure.ai.voicelive.AudioPlaybackSample -Dexec.classpathScope=test
+> ```
+> These samples use `javax.sound.sampled` for audio I/O.
+
 ### Simple voice assistant
 
 Create a basic voice assistant session:
@@ -206,7 +212,7 @@ AudioInputTranscriptionOptions transcription = new AudioInputTranscriptionOption
 // Create session options
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInstructions("You are a helpful AI voice assistant. Respond naturally and conversationally.")
-    .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+    .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
     .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
     .setInputAudioFormat(InputAudioFormat.PCM16)
     .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -316,30 +322,30 @@ The SDK supports multiple voice providers:
 #### OpenAI Voices
 
 ```java
-// Available voices: ALLOY, ECHO, FABLE, ONYX, NOVA, SHIMMER
+// Use OpenAIVoiceName enum for available voices (ALLOY, ASH, BALLAD, CORAL, ECHO, SAGE, SHIMMER, VERSE)
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY));
+    .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)));
 ```
 
-#### Azure Standard Voices
+#### Azure Voices
+
+Azure voices include `AzureStandardVoice`, `AzureCustomVoice`, and `AzurePersonalVoice` (all extend `AzureVoice`):
 
 ```java
+// Azure Standard Voice - use any Azure TTS voice name
+// See: https://learn.microsoft.com/azure/ai-services/speech-service/language-support?tabs=tts
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new AzureStandardVoice("en-US-JennyNeural"));
-```
+    .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-JennyNeural")));
 
-#### Azure Custom Voices
-
-```java
+// Azure Custom Voice - requires custom voice name and endpoint ID
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new AzureCustomVoice("your-custom-voice-id", "your-deployment-id"));
-```
+    .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
-#### Azure Personal Voices
-
-```java
+// Azure Personal Voice - requires speaker profile ID and model
+// Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new AzurePersonalVoice("your-speaker-profile-id"));
+    .setVoice(BinaryData.fromObject(
+        new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
 ```
 
 ### Complete voice assistant with microphone
@@ -372,7 +378,7 @@ AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptio
 
 VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
     .setInstructions("You are a helpful AI voice assistant.")
-    .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+    .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
     .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
     .setInputAudioFormat(InputAudioFormat.PCM16)
     .setOutputAudioFormat(OutputAudioFormat.PCM16)

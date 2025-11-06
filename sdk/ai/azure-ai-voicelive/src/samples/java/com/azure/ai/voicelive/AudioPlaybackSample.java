@@ -113,6 +113,9 @@ public final class AudioPlaybackSample {
         // Configure session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful assistant. Respond to user messages with clear, friendly audio.")
+            // Voice options:
+            // - OpenAI: new OpenAIVoice(OpenAIVoiceName.ALLOY) - use OpenAIVoiceName enum
+            // - Azure: AzureStandardVoice, AzureCustomVoice, AzurePersonalVoice (all extend AzureVoice)
             .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
