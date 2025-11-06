@@ -1,20 +1,15 @@
 spring:
   cloud:
-    azure:
-      eventhubs:
-        connection-string: ${AZURE_EVENT_HUBS_CONNECTION_STRING}
     function:
       definition: consume;supply
     stream:
+      kafka:
+        binder:
+          brokers: ${AZURE_EVENTHUBS_NAMESPACE}.servicebus.windows.net:9093
       bindings:
         consume-in-0:
-          destination: connnection-string-auth
+          destination: aad-auth
           group: $Default
         supply-out-0:
-          destination: connnection-string-auth
-      binders:
-        kafka:
-          environment:
-            spring:
-              main:
-                sources: com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration
+          destination: aad-auth
+      default-binder: kafka
