@@ -99,7 +99,6 @@ public final class RuleWebhookAction extends RuleAction {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
