@@ -109,7 +109,7 @@ resource search 'Microsoft.Search/searchServices@2025-05-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${canUseStatic ? searchServiceIdentity.id : staticSearchServiceIdentity.id}': {}
+      '${canUseStatic ? staticSearchServiceIdentity.id : searchServiceIdentity.id}': {}
     }
   }
 }
