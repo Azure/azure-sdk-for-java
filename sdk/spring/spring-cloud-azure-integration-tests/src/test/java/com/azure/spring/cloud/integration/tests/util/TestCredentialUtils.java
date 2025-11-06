@@ -6,14 +6,10 @@ package com.azure.spring.cloud.integration.tests.util;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import reactor.core.scheduler.Schedulers;
 
 import static org.springframework.util.StringUtils.hasText;
