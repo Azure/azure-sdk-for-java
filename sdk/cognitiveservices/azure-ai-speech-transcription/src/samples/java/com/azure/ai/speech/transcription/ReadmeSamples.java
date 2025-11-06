@@ -167,7 +167,6 @@ public final class ReadmeSamples {
             .setLocales(java.util.Arrays.asList("en-US", "es-ES"))  // Specify candidate locales
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)     // Mask profanity
             .setDiarizationOptions(new TranscriptionDiarizationOptions()   // Enable speaker diarization
-                .setEnabled(true)
                 .setMaxSpeakers(5));
 
         TranscriptionContent requestContent = new TranscriptionContent()

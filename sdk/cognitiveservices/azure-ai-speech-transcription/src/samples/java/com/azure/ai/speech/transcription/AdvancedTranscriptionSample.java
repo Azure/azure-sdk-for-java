@@ -138,9 +138,7 @@ public class AdvancedTranscriptionSample {
                 // Control profanity handling: MASKED, REMOVED, RAW, or TAGS
                 .setProfanityFilterMode(ProfanityFilterMode.MASKED)
                 // Enable speaker diarization to identify different speakers
-                .setDiarizationOptions(new TranscriptionDiarizationOptions()
-                    .setEnabled(true)
-                    .setMaxSpeakers(5)); // Max number of speakers (2-36)
+                .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5)); // Max number of speakers (2-36)
             // END: com.azure.ai.speech.transcription.advanced.transcription-options
 
             TranscriptionContent requestContent = new TranscriptionContent()
@@ -192,7 +190,7 @@ public class AdvancedTranscriptionSample {
 
             // Enable diarization for speaker identification
             TranscriptionOptions options = new TranscriptionOptions()
-                .setDiarizationOptions(new TranscriptionDiarizationOptions().setEnabled(true));
+                .setDiarizationOptions(new TranscriptionDiarizationOptions());
 
             TranscriptionContent requestContent = new TranscriptionContent()
                 .setAudio(audioFileDetails)

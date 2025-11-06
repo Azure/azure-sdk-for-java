@@ -70,8 +70,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionDiarizationOptions diarizationOptions
-            = new TranscriptionDiarizationOptions().setEnabled(true).setMaxSpeakers(5);
+        TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
 
         TranscriptionOptions options = new TranscriptionOptions().setDiarizationOptions(diarizationOptions);
 
@@ -109,8 +108,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionDiarizationOptions diarizationOptions
-            = new TranscriptionDiarizationOptions().setEnabled(true).setMaxSpeakers(5);
+        TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
 
         TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US"))
             .setDiarizationOptions(diarizationOptions)
@@ -141,8 +139,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionDiarizationOptions diarizationOptions
-            = new TranscriptionDiarizationOptions().setEnabled(true).setMaxSpeakers(5);
+        TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
 
         TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US", "es-ES"))
             .setDiarizationOptions(diarizationOptions)

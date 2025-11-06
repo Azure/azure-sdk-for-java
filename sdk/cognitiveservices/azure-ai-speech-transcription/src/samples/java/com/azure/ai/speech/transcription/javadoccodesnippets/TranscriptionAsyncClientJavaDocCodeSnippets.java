@@ -134,9 +134,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(Arrays.asList("en-US", "es-ES"))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setDiarizationOptions(new TranscriptionDiarizationOptions()
-                .setEnabled(true)
-                .setMaxSpeakers(5));
+            .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5));
 
         TranscriptionContent requestContent = new TranscriptionContent()
             .setAudio(audioFileDetails)
