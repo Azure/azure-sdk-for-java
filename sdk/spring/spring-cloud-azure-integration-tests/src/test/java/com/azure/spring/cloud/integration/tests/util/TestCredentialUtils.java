@@ -12,6 +12,7 @@ import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import reactor.core.scheduler.Schedulers;
 
@@ -20,15 +21,13 @@ import static org.springframework.util.StringUtils.hasText;
 public class TestCredentialUtils {
 
     public static TokenCredential getIntegrationTestTokenCredential() {
-        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-            .addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder();
         TokenCredential createAzurePipelinesCredential = createAzurePipelinesCredential();
         if (createAzurePipelinesCredential != null) {
             builder.addLast(createAzurePipelinesCredential);
         }
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        // This is for local
+        builder.addLast(new DefaultAzureCredentialBuilder().build());
         return builder.build();
     }
 
