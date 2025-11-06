@@ -150,19 +150,9 @@ public final class GroupDataMessage extends WebPubSubMessage {
                 }
             }
 
-            BinaryData data;
-            if (rawData == null) {
-                data = null;
-            } else if (dataType == WebPubSubDataFormat.TEXT) {
-                data = BinaryData.fromString(rawData);
-            } else if (dataType == WebPubSubDataFormat.BINARY || dataType == WebPubSubDataFormat.PROTOBUF) {
-                data = BinaryData.fromBytes(Base64.getDecoder().decode(rawData));
-            } else {
-                // WebPubSubDataType.JSON
-                try (JsonReader jsonReaderData = JsonProviders.createReader(rawData)) {
-                    data = BinaryData.fromObject(jsonReaderData.readUntyped());
-                }
-            }
+            // Use enhanced decoder for robust data type conversion
+            BinaryData data = com.azure.messaging.webpubsub.client.implementation.MessageDecoder
+                .convertDataForType(rawData, dataType);
 
             return new GroupDataMessage(group, dataType, data, fromUserId, sequenceId);
         });
