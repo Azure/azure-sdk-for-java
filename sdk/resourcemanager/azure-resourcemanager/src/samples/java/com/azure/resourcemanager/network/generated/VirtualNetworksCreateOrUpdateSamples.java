@@ -22,7 +22,7 @@ import java.util.Arrays;
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VirtualNetworkCreateSubnet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkCreateSubnet.
      * json
      */
     /**
@@ -43,7 +43,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateWithIpamPool.json
      */
     /**
@@ -70,7 +70,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateWithBgpCommunities.json
      */
     /**
@@ -92,7 +92,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateSubnetWithAddressPrefixes.json
      */
     /**
@@ -115,7 +115,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateSubnetWithDelegation.json
      */
     /**
@@ -138,7 +138,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateWithEncryption.json
      */
     /**
@@ -162,7 +162,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VirtualNetworkCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkCreate.json
      */
     /**
      * Sample code: Create virtual network.
@@ -182,7 +182,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateServiceEndpointPolicy.json
      */
     /**
@@ -208,7 +208,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * VirtualNetworkCreateServiceEndpoints.json
      */
     /**
