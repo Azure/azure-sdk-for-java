@@ -19,6 +19,7 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -112,7 +113,7 @@ public final class AudioPlaybackSample {
         // Configure session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful assistant. Respond to user messages with clear, friendly audio.")
-            .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)

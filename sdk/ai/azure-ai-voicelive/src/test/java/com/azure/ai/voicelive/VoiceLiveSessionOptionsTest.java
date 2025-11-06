@@ -4,6 +4,7 @@
 package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.*;
+import com.azure.core.util.BinaryData;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,13 +67,15 @@ class VoiceLiveSessionOptionsTest {
     void testSetAndGetVoice() {
         // Arrange
         OpenAIVoice voice = new OpenAIVoice(OpenAIVoiceName.ALLOY);
+        BinaryData voiceData = BinaryData.fromObject(voice);
 
         // Act
-        VoiceLiveSessionOptions result = sessionOptions.setVoice(voice);
+        VoiceLiveSessionOptions result = sessionOptions.setVoice(voiceData);
 
         // Assert
         assertSame(sessionOptions, result);
-        assertEquals(voice, sessionOptions.getVoice());
+        assertNotNull(sessionOptions.getVoice());
+        assertEquals(OpenAIVoiceName.ALLOY, sessionOptions.getVoice().toObject(OpenAIVoice.class).getName());
     }
 
     @Test
@@ -154,14 +157,15 @@ class VoiceLiveSessionOptionsTest {
     @Test
     void testSetAndGetToolChoice() {
         // Arrange
-        ToolChoice toolChoice = ToolChoice.fromLiteral(ToolChoiceLiteral.AUTO);
+        ToolChoiceSelection toolChoice = new ToolChoiceSelection();
+        BinaryData toolChoiceData = BinaryData.fromObject(toolChoice);
 
         // Act
-        VoiceLiveSessionOptions result = sessionOptions.setToolChoice(toolChoice);
+        VoiceLiveSessionOptions result = sessionOptions.setToolChoice(toolChoiceData);
 
         // Assert
         assertSame(sessionOptions, result);
-        assertEquals(toolChoice, sessionOptions.getToolChoice());
+        assertNotNull(sessionOptions.getToolChoice());
     }
 
     @Test
@@ -192,13 +196,15 @@ class VoiceLiveSessionOptionsTest {
         // Arrange
         Integer maxTokens = 1000;
         MaxOutputTokens maxOutputTokens = MaxOutputTokens.of(maxTokens);
+        BinaryData maxOutputTokensData = BinaryData.fromObject(maxOutputTokens);
 
         // Act
-        VoiceLiveSessionOptions result = sessionOptions.setMaxResponseOutputTokens(maxOutputTokens);
+        VoiceLiveSessionOptions result = sessionOptions.setMaxResponseOutputTokens(maxOutputTokensData);
 
         // Assert
         assertSame(sessionOptions, result);
-        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().getValue());
+        assertNotNull(sessionOptions.getMaxResponseOutputTokens());
+        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().toObject(MaxOutputTokens.class).getValue());
     }
 
     @Test
@@ -216,23 +222,25 @@ class VoiceLiveSessionOptionsTest {
 
         // Act & Assert
         VoiceLiveSessionOptions result = sessionOptions.setInstructions(instructions)
-            .setVoice(voice)
+            .setVoice(BinaryData.fromObject(voice))
             .setInputAudioFormat(inputFormat)
             .setOutputAudioFormat(outputFormat)
             .setModalities(modalities)
             .setTurnDetection(turnDetection)
             .setTemperature(temperature)
-            .setMaxResponseOutputTokens(maxOutputTokens);
+            .setMaxResponseOutputTokens(BinaryData.fromObject(maxOutputTokens));
 
         assertSame(sessionOptions, result);
         assertEquals(instructions, sessionOptions.getInstructions());
-        assertEquals(voice, sessionOptions.getVoice());
+        assertNotNull(sessionOptions.getVoice());
+        assertEquals(OpenAIVoiceName.ECHO, sessionOptions.getVoice().toObject(OpenAIVoice.class).getName());
         assertEquals(inputFormat, sessionOptions.getInputAudioFormat());
         assertEquals(outputFormat, sessionOptions.getOutputAudioFormat());
         assertEquals(modalities, sessionOptions.getModalities());
         assertEquals(turnDetection, sessionOptions.getTurnDetection());
         assertEquals(temperature, sessionOptions.getTemperature());
-        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().getValue());
+        assertNotNull(sessionOptions.getMaxResponseOutputTokens());
+        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().toObject(MaxOutputTokens.class).getValue());
     }
 
     @Test
