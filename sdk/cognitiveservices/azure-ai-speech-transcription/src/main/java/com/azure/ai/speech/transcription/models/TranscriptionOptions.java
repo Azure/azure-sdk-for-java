@@ -34,13 +34,6 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     private List<String> locales;
 
     /*
-     * Maps some or all candidate locales to a model URI to be used for transcription. If no mapping is given, the
-     * default model for the locale is used.
-     */
-    @Generated
-    private Map<String, String> models;
-
-    /*
      * Mode of profanity filtering.
      */
     @Generated
@@ -102,30 +95,6 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
-     * Get the models property: Maps some or all candidate locales to a model URI to be used for transcription. If no
-     * mapping is given, the default model for the locale is used.
-     *
-     * @return the models value.
-     */
-    @Generated
-    public Map<String, String> getModels() {
-        return this.models;
-    }
-
-    /**
-     * Set the models property: Maps some or all candidate locales to a model URI to be used for transcription. If no
-     * mapping is given, the default model for the locale is used.
-     *
-     * @param models the models value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setModels(Map<String, String> models) {
-        this.models = models;
-        return this;
-    }
-
-    /**
      * Get the profanityFilterMode property: Mode of profanity filtering.
      *
      * @return the profanityFilterMode value.
@@ -156,7 +125,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("audioUrl", this.audioUrl);
         jsonWriter.writeArrayField("locales", this.locales, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("models", this.models, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("models", this.localeModelMapping, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("profanityFilterMode",
             this.profanityFilterMode == null ? null : this.profanityFilterMode.toString());
         jsonWriter.writeJsonField("diarization", this.diarizationOptions);
@@ -187,8 +156,8 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
                     List<String> locales = reader.readArray(reader1 -> reader1.getString());
                     deserializedTranscriptionOptions.locales = locales;
                 } else if ("models".equals(fieldName)) {
-                    Map<String, String> models = reader.readMap(reader1 -> reader1.getString());
-                    deserializedTranscriptionOptions.models = models;
+                    Map<String, String> localeModelMapping = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTranscriptionOptions.localeModelMapping = localeModelMapping;
                 } else if ("profanityFilterMode".equals(fieldName)) {
                     deserializedTranscriptionOptions.profanityFilterMode
                         = ProfanityFilterMode.fromString(reader.getString());
@@ -322,6 +291,37 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     public TranscriptionOptions setPhraseListOptions(PhraseListOptions phraseListOptions) {
         this.phraseListOptions = phraseListOptions;
+        return this;
+    }
+
+    /*
+     * Maps some or all candidate locales to a model URI to be used for transcription. If no mapping is given, the
+     * default model for the locale is used.
+     */
+    @Generated
+    private Map<String, String> localeModelMapping;
+
+    /**
+     * Get the localeModelMapping property: Maps some or all candidate locales to a model URI to be used for
+     * transcription. If no mapping is given, the default model for the locale is used.
+     *
+     * @return the localeModelMapping value.
+     */
+    @Generated
+    public Map<String, String> getLocaleModelMapping() {
+        return this.localeModelMapping;
+    }
+
+    /**
+     * Set the localeModelMapping property: Maps some or all candidate locales to a model URI to be used for
+     * transcription. If no mapping is given, the default model for the locale is used.
+     *
+     * @param localeModelMapping the localeModelMapping value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setLocaleModelMapping(Map<String, String> localeModelMapping) {
+        this.localeModelMapping = localeModelMapping;
         return this;
     }
 }
