@@ -36,26 +36,26 @@
 
 #### `models.PrivateEndpointConnectionsPutHeaders` was modified
 
-* `withAzureAsyncOperation(java.lang.String)` was removed
 * `withRetryAfter(java.lang.Integer)` was removed
+* `withAzureAsyncOperation(java.lang.String)` was removed
 
 #### `models.MhsmPrivateEndpointConnectionItem` was modified
 
 * `MhsmPrivateEndpointConnectionItem()` was changed to private access
 * `withId(java.lang.String)` was removed
+* `withPrivateLinkServiceConnectionState(models.MhsmPrivateLinkServiceConnectionState)` was removed
+* `withProvisioningState(models.PrivateEndpointConnectionProvisioningState)` was removed
 * `withEtag(java.lang.String)` was removed
 * `withPrivateEndpoint(models.MhsmPrivateEndpoint)` was removed
-* `withProvisioningState(models.PrivateEndpointConnectionProvisioningState)` was removed
-* `withPrivateLinkServiceConnectionState(models.MhsmPrivateLinkServiceConnectionState)` was removed
 
 #### `models.PrivateEndpointConnectionItem` was modified
 
 * `PrivateEndpointConnectionItem()` was changed to private access
-* `withEtag(java.lang.String)` was removed
-* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
 * `withProvisioningState(models.PrivateEndpointConnectionProvisioningState)` was removed
+* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
 * `withPrivateLinkServiceConnectionState(models.PrivateLinkServiceConnectionState)` was removed
 * `withId(java.lang.String)` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.ManagedHsmSecurityDomainProperties` was modified
 
@@ -64,17 +64,17 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withInternalMetricName(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
-* `withDisplayDescription(java.lang.String)` was removed
-* `withFillGapWithZero(java.lang.Boolean)` was removed
 * `withDisplayName(java.lang.String)` was removed
-* `withUnit(java.lang.String)` was removed
-* `withLockAggregationType(java.lang.String)` was removed
-* `withAggregationType(java.lang.String)` was removed
-* `withDimensions(java.util.List)` was removed
-* `withSupportedAggregationTypes(java.util.List)` was removed
 * `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withLockAggregationType(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withSupportedAggregationTypes(java.util.List)` was removed
+* `withInternalMetricName(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
 
 #### `models.Error` was modified
 
@@ -83,9 +83,9 @@
 #### `models.MhsmPrivateLinkResource` was modified
 
 * `MhsmPrivateLinkResource()` was changed to private access
-* `withIdentity(models.ManagedServiceIdentity)` was removed
-* `withTags(java.util.Map)` was removed
 * `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `withIdentity(models.ManagedServiceIdentity)` was removed
 * `withSku(models.ManagedHsmSku)` was removed
 * `withRequiredZoneNames(java.util.List)` was removed
 
@@ -100,53 +100,47 @@
 
 #### `models.ManagedHsmResource` was modified
 
-* `models.ManagedHsmResource withIdentity(models.ManagedServiceIdentity)` -> `models.ManagedHsmResource withIdentity(models.ManagedServiceIdentity)`
-* `models.ManagedHsmResource withTags(java.util.Map)` -> `models.ManagedHsmResource withTags(java.util.Map)`
 * `withTags(java.util.Map)` was removed
-* `models.ManagedHsmResource withSku(models.ManagedHsmSku)` -> `models.ManagedHsmResource withSku(models.ManagedHsmSku)`
 * `withLocation(java.lang.String)` was removed
+* `models.ManagedHsmResource withIdentity(models.ManagedServiceIdentity)` -> `models.ManagedHsmResource withIdentity(models.ManagedServiceIdentity)`
 * `models.ManagedHsmResource withLocation(java.lang.String)` -> `models.ManagedHsmResource withLocation(java.lang.String)`
+* `models.ManagedHsmResource withSku(models.ManagedHsmSku)` -> `models.ManagedHsmResource withSku(models.ManagedHsmSku)`
+* `models.ManagedHsmResource withTags(java.util.Map)` -> `models.ManagedHsmResource withTags(java.util.Map)`
 
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
-* `withProvider(java.lang.String)` was removed
 
 #### `models.LogSpecification` was modified
 
 * `LogSpecification()` was changed to private access
 * `withBlobDuration(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
 
 #### `models.DimensionProperties` was modified
 
 * `DimensionProperties()` was changed to private access
-* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
 
 #### `models.PrivateLinkResource` was modified
 
 * `PrivateLinkResource()` was changed to private access
-* `withTags(java.util.Map)` was removed
 * `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
 * `withRequiredZoneNames(java.util.List)` was removed
-
-#### `models.Reason` was modified
-
-* `valueOf(java.lang.String)` was removed
-* `models.Reason[] values()` -> `java.util.Collection values()`
-* `toString()` was removed
 
 #### `models.ServiceSpecification` was modified
 
 * `ServiceSpecification()` was changed to private access
-* `withMetricSpecifications(java.util.List)` was removed
 * `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
 
 ### Features Added
 
@@ -166,18 +160,14 @@
 
 #### `models.ManagedHsmResource` was modified
 
-* `tags()` was added
 * `location()` was added
+* `tags()` was added
 
 #### `models.PrivateLinkResource` was modified
 
-* `location()` was added
-* `tags()` was added
 * `systemData()` was added
-
-#### `models.Reason` was modified
-
-* `Reason()` was added
+* `tags()` was added
+* `location()` was added
 
 ## 2.53.4 (2025-10-27)
 

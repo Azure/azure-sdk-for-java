@@ -15,7 +15,7 @@ public final class ManagedHsmResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmResource model = BinaryData.fromString(
-            "{\"id\":\"jkqa\",\"name\":\"gzslesjcbhernnti\",\"type\":\"djc\",\"location\":\"quwrbehwag\",\"sku\":{\"family\":\"C\",\"name\":\"Custom_B6\"},\"tags\":{\"emvvhm\":\"kmr\"},\"identity\":{\"principalId\":\"04d891de-c9ec-473b-b342-dad7becb0378\",\"tenantId\":\"8c7498ab-38ae-4c1d-8c76-c4dbabd359fe\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"oe\":{\"principalId\":\"e580d080-cca1-4e5e-949d-e4498d664a1f\",\"clientId\":\"e5edb4b6-5d7e-4498-a889-33ad262e4879\"}}}}")
+            "{\"id\":\"jkqa\",\"name\":\"gzslesjcbhernnti\",\"type\":\"djc\",\"location\":\"quwrbehwag\",\"sku\":{\"family\":\"C\",\"name\":\"Custom_B6\"},\"tags\":{\"emvvhm\":\"kmr\"},\"identity\":{\"principalId\":\"c32b22e1-a7a8-40ed-a6a3-26ed522afdb7\",\"tenantId\":\"327899d8-97e0-4cc2-a9d5-1ace57557aa2\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"oe\":{\"principalId\":\"f88bbd39-0df3-4f4e-8117-94eb501b113c\",\"clientId\":\"1c8e75bb-b037-4578-bb3e-9cff14d64697\"}}}}")
             .toObject(ManagedHsmResource.class);
         Assertions.assertEquals("quwrbehwag", model.location());
         Assertions.assertEquals(ManagedHsmSkuFamily.C, model.sku().family());

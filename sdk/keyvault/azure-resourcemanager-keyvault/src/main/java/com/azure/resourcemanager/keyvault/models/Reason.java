@@ -4,48 +4,53 @@
 
 package com.azure.resourcemanager.keyvault.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * The reason that a vault name could not be used. The Reason element is only returned if NameAvailable is false.
  */
-public final class Reason extends ExpandableStringEnum<Reason> {
+public enum Reason {
     /**
-     * Static value AccountNameInvalid for Reason.
+     * Enum value AccountNameInvalid.
      */
-    public static final Reason ACCOUNT_NAME_INVALID = fromString("AccountNameInvalid");
+    ACCOUNT_NAME_INVALID("AccountNameInvalid"),
 
     /**
-     * Static value AlreadyExists for Reason.
+     * Enum value AlreadyExists.
      */
-    public static final Reason ALREADY_EXISTS = fromString("AlreadyExists");
+    ALREADY_EXISTS("AlreadyExists");
 
     /**
-     * Creates a new instance of Reason value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a Reason instance.
      */
-    @Deprecated
-    public Reason() {
+    private final String value;
+
+    Reason(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a Reason from its string representation.
+     * Parses a serialized value to a Reason instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding Reason.
+     * @param value the serialized value to parse.
+     * @return the parsed Reason object, or null if unable to parse.
      */
-    public static Reason fromString(String name) {
-        return fromString(name, Reason.class);
+    public static Reason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        Reason[] items = Reason.values();
+        for (Reason item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known Reason values.
-     * 
-     * @return known Reason values.
+     * {@inheritDoc}
      */
-    public static Collection<Reason> values() {
-        return values(Reason.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
