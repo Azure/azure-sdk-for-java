@@ -34,7 +34,7 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
     }
 
     // This method must be called as early as possible in the lifecycle of a process
-    // before any Netty ByteBNuf has been allocated
+    // before any Netty ByteBuf has been allocated
     public static void ingestIntoNetty() {
         if (isInitialized) {
             return;
