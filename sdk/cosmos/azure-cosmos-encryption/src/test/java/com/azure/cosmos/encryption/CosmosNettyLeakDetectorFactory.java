@@ -70,6 +70,8 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
     public static AutoCloseable createDisableLeakDetectionScope() {
         synchronized (staticLock) {
             logger.info("Disabling Leak detection: {}", StackTraceUtil.currentCallStack());
+            isLeakDetectionDisabled = true;
+
             return new DisableLeakDetectionScope();
         }
     }
