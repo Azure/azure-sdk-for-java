@@ -37,6 +37,16 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
      * {@inheritDoc}
      */
     @Override
+    public DataCollectionRuleDataSources
+        withPerformanceCountersOTel(List<PerformanceCountersOTelDataSource> performanceCountersOTel) {
+        super.withPerformanceCountersOTel(performanceCountersOTel);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DataCollectionRuleDataSources withWindowsEventLogs(List<WindowsEventLogDataSource> windowsEventLogs) {
         super.withWindowsEventLogs(windowsEventLogs);
         return this;
@@ -79,13 +89,131 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources
+        withWindowsFirewallLogs(List<WindowsFirewallLogsDataSource> windowsFirewallLogs) {
+        super.withWindowsFirewallLogs(windowsFirewallLogs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources
+        withPrometheusForwarder(List<PrometheusForwarderDataSource> prometheusForwarder) {
+        super.withPrometheusForwarder(prometheusForwarder);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources withPlatformTelemetry(List<PlatformTelemetryDataSource> platformTelemetry) {
+        super.withPlatformTelemetry(platformTelemetry);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources withDataImports(DataSourcesSpecDataImports dataImports) {
+        super.withDataImports(dataImports);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources withOtelLogs(List<OtelLogsDataSource> otelLogs) {
+        super.withOtelLogs(otelLogs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources withOtelTraces(List<OtelTracesDataSource> otelTraces) {
+        super.withOtelTraces(otelTraces);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources withOtelMetrics(List<OtelMetricsDataSource> otelMetrics) {
+        super.withOtelMetrics(otelMetrics);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDataSources withEtwProviders(List<EtwProviderDataSource> etwProviders) {
+        super.withEtwProviders(etwProviders);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (performanceCounters() != null) {
+            performanceCounters().forEach(e -> e.validate());
+        }
+        if (performanceCountersOTel() != null) {
+            performanceCountersOTel().forEach(e -> e.validate());
+        }
+        if (windowsEventLogs() != null) {
+            windowsEventLogs().forEach(e -> e.validate());
+        }
+        if (syslog() != null) {
+            syslog().forEach(e -> e.validate());
+        }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
+        }
+        if (logFiles() != null) {
+            logFiles().forEach(e -> e.validate());
+        }
+        if (iisLogs() != null) {
+            iisLogs().forEach(e -> e.validate());
+        }
+        if (windowsFirewallLogs() != null) {
+            windowsFirewallLogs().forEach(e -> e.validate());
+        }
+        if (prometheusForwarder() != null) {
+            prometheusForwarder().forEach(e -> e.validate());
+        }
+        if (platformTelemetry() != null) {
+            platformTelemetry().forEach(e -> e.validate());
+        }
+        if (dataImports() != null) {
+            dataImports().validate();
+        }
+        if (otelLogs() != null) {
+            otelLogs().forEach(e -> e.validate());
+        }
+        if (otelTraces() != null) {
+            otelTraces().forEach(e -> e.validate());
+        }
+        if (otelMetrics() != null) {
+            otelMetrics().forEach(e -> e.validate());
+        }
+        if (etwProviders() != null) {
+            etwProviders().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -96,12 +224,25 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("performanceCounters", performanceCounters(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("performanceCountersOTel", performanceCountersOTel(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("windowsEventLogs", windowsEventLogs(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("syslog", syslog(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("extensions", extensions(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("logFiles", logFiles(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("iisLogs", iisLogs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("windowsFirewallLogs", windowsFirewallLogs(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("prometheusForwarder", prometheusForwarder(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("platformTelemetry", platformTelemetry(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dataImports", dataImports());
+        jsonWriter.writeArrayField("otelLogs", otelLogs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("otelTraces", otelTraces(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("otelMetrics", otelMetrics(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("etwProviders", etwProviders(), (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -125,6 +266,10 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
                     List<PerfCounterDataSource> performanceCounters
                         = reader.readArray(reader1 -> PerfCounterDataSource.fromJson(reader1));
                     deserializedDataCollectionRuleDataSources.withPerformanceCounters(performanceCounters);
+                } else if ("performanceCountersOTel".equals(fieldName)) {
+                    List<PerformanceCountersOTelDataSource> performanceCountersOTel
+                        = reader.readArray(reader1 -> PerformanceCountersOTelDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withPerformanceCountersOTel(performanceCountersOTel);
                 } else if ("windowsEventLogs".equals(fieldName)) {
                     List<WindowsEventLogDataSource> windowsEventLogs
                         = reader.readArray(reader1 -> WindowsEventLogDataSource.fromJson(reader1));
@@ -143,6 +288,37 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
                 } else if ("iisLogs".equals(fieldName)) {
                     List<IisLogsDataSource> iisLogs = reader.readArray(reader1 -> IisLogsDataSource.fromJson(reader1));
                     deserializedDataCollectionRuleDataSources.withIisLogs(iisLogs);
+                } else if ("windowsFirewallLogs".equals(fieldName)) {
+                    List<WindowsFirewallLogsDataSource> windowsFirewallLogs
+                        = reader.readArray(reader1 -> WindowsFirewallLogsDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withWindowsFirewallLogs(windowsFirewallLogs);
+                } else if ("prometheusForwarder".equals(fieldName)) {
+                    List<PrometheusForwarderDataSource> prometheusForwarder
+                        = reader.readArray(reader1 -> PrometheusForwarderDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withPrometheusForwarder(prometheusForwarder);
+                } else if ("platformTelemetry".equals(fieldName)) {
+                    List<PlatformTelemetryDataSource> platformTelemetry
+                        = reader.readArray(reader1 -> PlatformTelemetryDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withPlatformTelemetry(platformTelemetry);
+                } else if ("dataImports".equals(fieldName)) {
+                    deserializedDataCollectionRuleDataSources
+                        .withDataImports(DataSourcesSpecDataImports.fromJson(reader));
+                } else if ("otelLogs".equals(fieldName)) {
+                    List<OtelLogsDataSource> otelLogs
+                        = reader.readArray(reader1 -> OtelLogsDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withOtelLogs(otelLogs);
+                } else if ("otelTraces".equals(fieldName)) {
+                    List<OtelTracesDataSource> otelTraces
+                        = reader.readArray(reader1 -> OtelTracesDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withOtelTraces(otelTraces);
+                } else if ("otelMetrics".equals(fieldName)) {
+                    List<OtelMetricsDataSource> otelMetrics
+                        = reader.readArray(reader1 -> OtelMetricsDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withOtelMetrics(otelMetrics);
+                } else if ("etwProviders".equals(fieldName)) {
+                    List<EtwProviderDataSource> etwProviders
+                        = reader.readArray(reader1 -> EtwProviderDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withEtwProviders(etwProviders);
                 } else {
                     reader.skipChildren();
                 }
