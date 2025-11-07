@@ -514,6 +514,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionRetryOptions = sessionRetryOptions;
         this.defaultCustomSerializer = defaultCustomSerializer;
 
+        this.addToActiveClients();
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
@@ -1394,7 +1395,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     /**
-     * Returns a snapshot of the active clients. The key is teh clientId, the value the callstack shows from
+     * Returns a snapshot of the active clients. The key is the clientId, the value the callstack shows from
      * where the client was created.
      * @return a snapshot of the active clients.
      */
@@ -6475,6 +6476,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public void close() {
+        this.removeFromActiveClients();
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
             activeClientsCnt.decrementAndGet();
