@@ -275,7 +275,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
                 sb.append(leak).append("\n");
             }
 
-            String msg = "\"NETTY LEAKS detected in test class: "
+            String msg = "NETTY LEAKS detected in test class: "
                 + this.getClass().getCanonicalName()
                 + sb;
 

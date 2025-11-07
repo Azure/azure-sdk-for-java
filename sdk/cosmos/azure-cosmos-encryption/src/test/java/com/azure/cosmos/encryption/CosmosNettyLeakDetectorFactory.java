@@ -81,36 +81,45 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
         return new ResourceLeakDetector<T>(resource, samplingInterval, maxActive) {
             @Override
             protected void reportTracedLeak(String resourceType, String records) {
-                synchronized (staticLock) {
-                    if (!isLeakDetectionDisabled) {
-                        String msg = "NETTY LEAK (traced) type="
-                            + resourceType
-                            + "records=\n"
-                            + records;
+                if (!isLeakDetectionDisabled) {
+                    synchronized (staticLock) {
+                        if (!isLeakDetectionDisabled) {
+                            String msg = "NETTY LEAK (traced) type="
+                                + resourceType
+                                + "records=\n"
+                                + records;
 
-                        identifiedLeaks.add(msg);
-                        logger.error(msg);
+                            identifiedLeaks.add(msg);
+                            logger.error(msg);
+                        }
                     }
                 }
             }
 
             @Override
             protected void reportUntracedLeak(String resourceType) {
-                synchronized (staticLock) {
-                    String msg = "NETTY LEAK (untraced) type="  + resourceType;
+                if (!isLeakDetectionDisabled) {
+                    synchronized (staticLock) {
+                        if (!isLeakDetectionDisabled) {
+                            String msg = "NETTY LEAK (untraced) type=" + resourceType;
 
-                    identifiedLeaks.add(msg);
-                    logger.error(msg);
+                            identifiedLeaks.add(msg);
+                            logger.error(msg);
+                        }
+                    }
                 }
             }
 
             @Override
             protected void reportInstancesLeak(String resourceType) {
-                synchronized (staticLock) {
-                    String msg = "NETTY LEAK (instances) type=" + resourceType;
-
-                    identifiedLeaks.add(msg);
-                    logger.error(msg);
+                if (!isLeakDetectionDisabled) {
+                    synchronized (staticLock) {
+                        if (!isLeakDetectionDisabled) {
+                            String msg = "NETTY LEAK (instances) type=" + resourceType;
+                            identifiedLeaks.add(msg);
+                            logger.error(msg);
+                        }
+                    }
                 }
             }
         };
