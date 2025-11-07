@@ -51,13 +51,13 @@ public class SpeechTranscriptionCustomization extends Customization {
     private void customizeDurationGetter(PackageCustomization packageCustomization, String className) {
         packageCustomization.getClass(className).customizeAst(ast -> {
             ast.addImport("java.time.Duration");
-            ast.getClassByName(className)
-                .ifPresent(clazz -> clazz.getMethodsByName("getDuration").forEach(method -> {
-                    method.setType("Duration")
-                        .setBody(parseBlock("{ return Duration.ofMillis(this.duration); }"))
-                        .setJavadocComment(new Javadoc(parseText("Get the duration property: The duration in milliseconds."))
+            ast.getClassByName(className).ifPresent(clazz -> clazz.getMethodsByName("getDuration").forEach(method -> {
+                method.setType("Duration")
+                    .setBody(parseBlock("{ return Duration.ofMillis(this.duration); }"))
+                    .setJavadocComment(
+                        new Javadoc(parseText("Get the duration property: The duration in milliseconds."))
                             .addBlockTag("return", "the duration value as Duration."));
-                }));
+            }));
         });
     }
 }

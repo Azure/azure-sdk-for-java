@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -225,12 +226,12 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     }
 
     /**
-     * Get the duration property: The duration of the phrase in milliseconds.
+     * Get the duration property: The duration in milliseconds.
      *
-     * @return the duration value.
+     * @return the duration value as Duration.
      */
     @Generated
-    public int getDuration() {
-        return this.duration;
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
     }
 }
