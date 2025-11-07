@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -22,6 +21,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,6 +135,8 @@ public class QuorumReader {
         final MutableVolatile<Boolean> shouldRetryOnSecondary = new MutableVolatile<>(false);
         final MutableVolatile<Boolean> hasPerformedReadFromPrimary = new MutableVolatile<>(false);
         final MutableVolatile<Boolean> includePrimary = new MutableVolatile<>(false);
+        final MutableVolatile<CosmosException> cosmosExceptionValueHolder = new MutableVolatile<>(null);
+        final MutableVolatile<Boolean> bailOnBarrierValueHolder = new MutableVolatile<>(false);
 
         return Flux.defer(
             // the following will be repeated till the repeat().takeUntil(.) condition is satisfied.
@@ -149,7 +151,9 @@ public class QuorumReader {
                         entity,
                         readQuorumValue,
                         includePrimary.v,
-                        readMode);
+                        readMode,
+                        cosmosExceptionValueHolder,
+                        bailOnBarrierValueHolder);
 
                     return secondaryQuorumReadResultObs.flux().flatMap(
                     secondaryQuorumReadResult -> {
@@ -185,7 +189,9 @@ public class QuorumReader {
                                         readQuorumValue,
                                         secondaryQuorumReadResult.selectedLsn,
                                         secondaryQuorumReadResult.globalCommittedSelectedLsn,
-                                        readMode);
+                                        readMode,
+                                        cosmosExceptionValueHolder,
+                                        bailOnBarrierValueHolder);
 
                                             return readBarrierObs.flux().flatMap(
                                         readBarrier -> {
@@ -291,11 +297,15 @@ public class QuorumReader {
                    .switchIfEmpty(Flux.defer(() -> {
                        logger.info("Could not complete read quorum with read quorum value of {}", readQuorumValue);
 
-                    return Flux.error(new GoneException(
+                       if (cosmosExceptionValueHolder.v != null) {
+                           return Flux.error(cosmosExceptionValueHolder.v);
+                       }
+
+                       return Flux.error(new GoneException(
                            String.format(
                                RMResources.ReadQuorumNotMet,
                                readQuorumValue),
-                               HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
+                           HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                    }))
                    .take(1)
                    .single();
@@ -305,7 +315,10 @@ public class QuorumReader {
         RxDocumentServiceRequest entity,
         int readQuorum,
         boolean includePrimary,
-        ReadMode readMode) {
+        ReadMode readMode,
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
+        MutableVolatile<Boolean> bailOnBarrierValueHolder) {
+
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
         }
@@ -327,7 +340,7 @@ public class QuorumReader {
                 Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, entity, this.authorizationTokenProvider, readLsn, globalCommittedLSN);
                 return barrierRequestObs.flatMap(
                     barrierRequest -> {
-                        Mono<Boolean> waitForObs = this.waitForReadBarrierAsync(barrierRequest, false, readQuorum, readLsn, globalCommittedLSN, readMode);
+                        Mono<Boolean> waitForObs = this.waitForReadBarrierAsync(barrierRequest, false, readQuorum, readLsn, globalCommittedLSN, readMode, cosmosExceptionValueHolder, bailOnBarrierValueHolder);
                         return waitForObs.flatMap(
                             waitFor -> {
                                 if (!waitFor) {
@@ -616,7 +629,9 @@ public class QuorumReader {
         final int readQuorum,
         final long readBarrierLsn,
         final long targetGlobalCommittedLSN,
-        ReadMode readMode) {
+        ReadMode readMode,
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
+        MutableVolatile<Boolean> bailFromReadBarrierLoopValueHolder) {
         AtomicInteger readBarrierRetryCount = new AtomicInteger(maxNumberOfReadBarrierReadRetries);
         AtomicInteger readBarrierRetryCountMultiRegion = new AtomicInteger(maxBarrierRetriesForMultiRegion);
 
@@ -634,6 +649,27 @@ public class QuorumReader {
 
             return responsesObs.flux().flatMap(
                 responses -> {
+
+                    boolean isAvoidQuorumSelectionStoreResult = false;
+                    CosmosException cosmosExceptionFromStoreResult = null;
+
+                    for (StoreResult storeResult : responses) {
+                        if (storeResult.isAvoidQuorumSelectionException) {
+                            isAvoidQuorumSelectionStoreResult = true;
+                            cosmosExceptionFromStoreResult = storeResult.getException();
+                            break;
+                        }
+                    }
+
+                    if (isAvoidQuorumSelectionStoreResult) {
+                        return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
+                            barrierRequest,
+                            readBarrierLsn,
+                            targetGlobalCommittedLSN,
+                            cosmosExceptionValueHolder,
+                            bailFromReadBarrierLoopValueHolder,
+                            cosmosExceptionFromStoreResult);
+                    }
 
                     long maxGlobalCommittedLsnInResponses = responses.size() > 0 ? responses.stream()
                                                                                             .mapToLong(response -> response.globalCommittedLSN).max().getAsLong() : 0;
@@ -675,6 +711,10 @@ public class QuorumReader {
 
                            if (barrierRequestSucceeded) {
                                 return Flux.just(true);
+                           }
+
+                           if (bailFromReadBarrierLoopValueHolder.v) {
+                               return Flux.just(false);
                            }
 
                            // we will go into global strong read barrier mode for global strong requests after regular barrier calls have been exhausted.
@@ -821,6 +861,60 @@ public class QuorumReader {
         }
 
         return isQuorumMet;
+    }
+
+    private Mono<Boolean> isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
+        RxDocumentServiceRequest barrierRequest,
+        long readBarrierLsn,
+        long targetGlobalCommittedLSN,
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
+        MutableVolatile<Boolean> bailFromReadBarrierLoop,
+        CosmosException cosmosExceptionFromStoreResult) {
+
+        return performBarrierOnPrimary(
+            barrierRequest,
+            true,
+            readBarrierLsn,
+            targetGlobalCommittedLSN).flatMap(barrierStatusFromPrimary -> {
+
+                if (barrierStatusFromPrimary) {
+                    bailFromReadBarrierLoop.v = true;
+                    cosmosExceptionValueHolder.v = null;
+
+                    return Mono.just(true);
+                }
+
+                bailFromReadBarrierLoop.v = true;
+                cosmosExceptionValueHolder.v = Utils.createCosmosException(
+                    HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                    cosmosExceptionFromStoreResult.getSubStatusCode(),
+                    null,
+                    null);
+                return Mono.just(false);
+            });
+    }
+
+    private Mono<Boolean> performBarrierOnPrimary(
+        RxDocumentServiceRequest entity,
+        boolean requiresValidLsn,
+        long readBarrierLsn,
+        long targetGlobalCommittedLSN) {
+
+        entity.requestContext.forceRefreshAddressCache = true;
+        Mono<StoreResult> storeResultObs = this.storeReader.readPrimaryAsync(
+            entity, requiresValidLsn, false /*useSessionToken*/);
+
+        return storeResultObs.flatMap(storeResult -> {
+            if (!storeResult.isValid) {
+                return Mono.just(false);
+            }
+
+            boolean hasRequiredLsn = storeResult.lsn >= readBarrierLsn;
+            boolean hasRequiredGlobalCommittedLsn =
+                targetGlobalCommittedLSN <= 0 || storeResult.globalCommittedLSN >= targetGlobalCommittedLSN;
+
+            return Mono.just(hasRequiredLsn && hasRequiredGlobalCommittedLsn);
+        });
     }
 
     private enum ReadQuorumResultKind {

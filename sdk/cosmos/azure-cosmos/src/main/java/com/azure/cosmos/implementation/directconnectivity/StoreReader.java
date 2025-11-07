@@ -68,10 +68,10 @@ public class StoreReader {
 
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
             RxDocumentServiceRequest entity,
-            boolean includePrimary,
-            int replicaCountToRead,
-            boolean requiresValidLsn,
-            boolean useSessionToken,
+            boolean includePrimary, // false
+            int replicaCountToRead, // 2
+            boolean requiresValidLsn, // true
+            boolean useSessionToken, // false
             ReadMode readMode) {
         return readMultipleReplicaAsync(entity, includePrimary, replicaCountToRead, requiresValidLsn, useSessionToken, readMode, false, false);
     }
@@ -90,13 +90,13 @@ public class StoreReader {
      */
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
             RxDocumentServiceRequest entity,
-            boolean includePrimary,
-            int replicaCountToRead,
-            boolean requiresValidLsn,
-            boolean useSessionToken,
+            boolean includePrimary, // false
+            int replicaCountToRead, // 2
+            boolean requiresValidLsn, // true
+            boolean useSessionToken, // false
             ReadMode readMode,
-            boolean checkMinLSN,
-            boolean forceReadAll) {
+            boolean checkMinLSN, // false
+            boolean forceReadAll /* false */) {
 
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
@@ -283,7 +283,7 @@ public class StoreReader {
 
                     // todo: fail fast when barrier requests also hit isAvoidQuorumSelectionException?
                     // todo: https://github.com/Azure/azure-sdk-for-java/issues/46135
-                    if (!entity.isBarrierRequest) {
+                    // if (!entity.isBarrierRequest) {
 
                         // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
                         // to fail fast in the region where a quorum selection is being attempted
@@ -310,7 +310,7 @@ public class StoreReader {
 
                         // continue to the next store result
                         continue;
-                    }
+                    //}
                 }
 
                 if (srr.isValid) {
@@ -435,13 +435,13 @@ public class StoreReader {
      * @return                      ReadReplicaResult which indicates the LSN and whether Quorum was Met / Not Met etc
      */
     private Mono<ReadReplicaResult> readMultipleReplicasInternalAsync(RxDocumentServiceRequest entity,
-                                                                        boolean includePrimary,
-                                                                        int replicaCountToRead,
-                                                                        boolean requiresValidLsn,
-                                                                        boolean useSessionToken,
+                                                                        boolean includePrimary, // false
+                                                                        int replicaCountToRead, // 2
+                                                                        boolean requiresValidLsn, // true
+                                                                        boolean useSessionToken, // false
                                                                         ReadMode readMode,
-                                                                        boolean checkMinLSN,
-                                                                        boolean forceReadAll) {
+                                                                        boolean checkMinLSN, // false
+                                                                        boolean forceReadAll /* false */) {
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
         }
