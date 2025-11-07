@@ -39,6 +39,10 @@ public class SpeechTranscriptionCustomization extends Customization {
         // Customize TranscribedWord.getDuration() to return Duration instead of int
         logger.info("Customizing TranscribedWord.getDuration()");
         customizeDurationGetter(models, "TranscribedWord");
+
+        // Customize TranscriptionDiarizationOptions to properly serialize enabled field
+        logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
+        customizeDiarizationOptionsToJson(models);
     }
 
     /**
@@ -58,6 +62,22 @@ public class SpeechTranscriptionCustomization extends Customization {
                         new Javadoc(parseText("Get the duration property: The duration in milliseconds."))
                             .addBlockTag("return", "the duration value as Duration."));
             }));
+        });
+    }
+
+    /**
+     * Customize the TranscriptionDiarizationOptions.toJson() method to properly serialize the enabled field.
+     * When maxSpeakers is set, enabled should be automatically set to true and serialized.
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeDiarizationOptionsToJson(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("TranscriptionDiarizationOptions").customizeAst(ast -> {
+            ast.getClassByName("TranscriptionDiarizationOptions")
+                .ifPresent(clazz -> clazz.getMethodsByName("toJson").forEach(method -> {
+                    method.setBody(parseBlock(
+                        "{ jsonWriter.writeStartObject(); if (this.maxSpeakers != null) { jsonWriter.writeBooleanField(\"enabled\", true); jsonWriter.writeNumberField(\"maxSpeakers\", this.maxSpeakers); } return jsonWriter.writeEndObject(); }"));
+                }));
         });
     }
 }
