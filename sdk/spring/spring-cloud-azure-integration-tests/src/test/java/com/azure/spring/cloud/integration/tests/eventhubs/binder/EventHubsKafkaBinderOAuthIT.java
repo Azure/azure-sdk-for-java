@@ -5,6 +5,7 @@ package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,11 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("eventhubs-kafka-binder")
-class EventHubsKafkaBinderIT {
+@ActiveProfiles("eventhubs-kafka-binder-oauth")
+@Disabled("Pipeline oauth is not enabled now")
+class EventHubsKafkaBinderOAuthIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsKafkaBinderIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsKafkaBinderOAuthIT.class);
     private static final String MESSAGE = UUID.randomUUID().toString();
     private static final CountDownLatch LATCH = new CountDownLatch(1);
 
@@ -68,12 +70,12 @@ class EventHubsKafkaBinderIT {
 
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("EventHubsKafkaBinderIT begin.");
+        LOGGER.info("EventHubsKafkaBinderOAuthIT begin.");
         // Wait for Kafka Binder initialization to complete
         Thread.sleep(20000);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsKafkaBinderIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("EventHubsKafkaBinderIT end.");
+        assertThat(EventHubsKafkaBinderOAuthIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("EventHubsKafkaBinderOAuthIT end.");
     }
 }
