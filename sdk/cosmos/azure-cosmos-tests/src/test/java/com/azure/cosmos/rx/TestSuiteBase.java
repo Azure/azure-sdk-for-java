@@ -76,7 +76,9 @@ import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -209,6 +211,20 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         public CosmosAsyncDatabase getDatabase(String id) {
             return client.getDatabase(id);
         }
+    }
+
+    @BeforeClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void beforeClassTestSuiteBase() {
+        logger.info("beforeClassTestSuiteBase {}", this.getClass().getCanonicalName());
+        logMemoryUsage("beforeClassTestSuiteBase");
+    }
+
+    @AfterClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void afterClassTestSuiteBase() {
+        logger.info("afterClassTestSuiteBase {}", this.getClass().getCanonicalName());
+        logMemoryUsage("afterClassTestSuiteBase");
     }
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",

@@ -22,7 +22,6 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.netty.util.internal.ReflectionUtil;
 import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -38,6 +37,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.Assertions.assertThat;
+
 public class InvalidHostnameTest extends TestSuiteBase {
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public InvalidHostnameTest(CosmosClientBuilder clientBuilder) {
