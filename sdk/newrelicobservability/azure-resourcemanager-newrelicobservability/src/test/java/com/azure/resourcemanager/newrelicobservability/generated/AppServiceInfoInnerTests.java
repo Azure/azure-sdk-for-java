@@ -11,22 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AppServiceInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppServiceInfoInner model = BinaryData.fromString(
-            "{\"azureResourceId\":\"zvddntwndeicbtwn\",\"agentVersion\":\"aoqvuh\",\"agentStatus\":\"cffcyddglmj\"}")
+        AppServiceInfoInner model = BinaryData
+            .fromString(
+                "{\"azureResourceId\":\"jbavorxzdm\",\"agentVersion\":\"ctbqvudwx\",\"agentStatus\":\"dnvowg\"}")
             .toObject(AppServiceInfoInner.class);
-        Assertions.assertEquals("zvddntwndeicbtwn", model.azureResourceId());
-        Assertions.assertEquals("aoqvuh", model.agentVersion());
-        Assertions.assertEquals("cffcyddglmj", model.agentStatus());
+        Assertions.assertEquals("jbavorxzdm", model.azureResourceId());
+        Assertions.assertEquals("ctbqvudwx", model.agentVersion());
+        Assertions.assertEquals("dnvowg", model.agentStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppServiceInfoInner model = new AppServiceInfoInner().withAzureResourceId("zvddntwndeicbtwn")
-            .withAgentVersion("aoqvuh")
-            .withAgentStatus("cffcyddglmj");
+        AppServiceInfoInner model = new AppServiceInfoInner().withAzureResourceId("jbavorxzdm")
+            .withAgentVersion("ctbqvudwx")
+            .withAgentStatus("dnvowg");
         model = BinaryData.fromObject(model).toObject(AppServiceInfoInner.class);
-        Assertions.assertEquals("zvddntwndeicbtwn", model.azureResourceId());
-        Assertions.assertEquals("aoqvuh", model.agentVersion());
-        Assertions.assertEquals("cffcyddglmj", model.agentStatus());
+        Assertions.assertEquals("jbavorxzdm", model.azureResourceId());
+        Assertions.assertEquals("ctbqvudwx", model.agentVersion());
+        Assertions.assertEquals("dnvowg", model.agentStatus());
     }
 }

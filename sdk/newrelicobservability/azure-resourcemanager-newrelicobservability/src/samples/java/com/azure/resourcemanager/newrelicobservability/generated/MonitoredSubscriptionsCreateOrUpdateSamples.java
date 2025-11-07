@@ -7,12 +7,13 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
 
 /**
- * Samples for MonitoredSubscriptions CreateorUpdate.
+ * Samples for MonitoredSubscriptions CreateOrUpdate.
  */
-public final class MonitoredSubscriptionsCreateorUpdateSamples {
+public final class MonitoredSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * MonitoredSubscriptions_CreateorUpdate.json
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
+     * MonitoredSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: Monitors_AddMonitoredSubscriptions.

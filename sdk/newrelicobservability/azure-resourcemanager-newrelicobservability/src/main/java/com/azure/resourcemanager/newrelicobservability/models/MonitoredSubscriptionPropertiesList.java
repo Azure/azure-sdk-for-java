@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,13 +15,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The MonitoredSubscriptionPropertiesList model.
+ * Paged collection of MonitoredSubscriptionProperties items.
  */
 @Fluent
 public final class MonitoredSubscriptionPropertiesList
     implements JsonSerializable<MonitoredSubscriptionPropertiesList> {
     /*
-     * The value property.
+     * The MonitoredSubscriptionProperties items on this page
      */
     private List<MonitoredSubscriptionPropertiesInner> value;
 
@@ -36,7 +37,7 @@ public final class MonitoredSubscriptionPropertiesList
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The MonitoredSubscriptionProperties items on this page.
      * 
      * @return the value value.
      */
@@ -45,7 +46,7 @@ public final class MonitoredSubscriptionPropertiesList
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The MonitoredSubscriptionProperties items on this page.
      * 
      * @param value the value value to set.
      * @return the MonitoredSubscriptionPropertiesList object itself.
@@ -81,10 +82,16 @@ public final class MonitoredSubscriptionPropertiesList
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model MonitoredSubscriptionPropertiesList"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MonitoredSubscriptionPropertiesList.class);
 
     /**
      * {@inheritDoc}
@@ -103,6 +110,7 @@ public final class MonitoredSubscriptionPropertiesList
      * @param jsonReader The JsonReader being read.
      * @return An instance of MonitoredSubscriptionPropertiesList if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MonitoredSubscriptionPropertiesList.
      */
     public static MonitoredSubscriptionPropertiesList fromJson(JsonReader jsonReader) throws IOException {
