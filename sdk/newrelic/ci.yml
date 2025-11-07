@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/newrelic/ci.yml
+      - sdk/newrelic/azure-resourcemanager-newrelic/
+    exclude:
+      - sdk/newrelic/pom.xml
+      - sdk/newrelic/azure-resourcemanager-newrelic/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/newrelic/ci.yml
+      - sdk/newrelic/azure-resourcemanager-newrelic/
+    exclude:
+      - sdk/newrelic/pom.xml
+      - sdk/newrelic/azure-resourcemanager-newrelic/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagernewrelic
+    displayName: azure-resourcemanager-newrelic
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: newrelic
+    Artifacts:
+      - name: azure-resourcemanager-newrelic
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernewrelic
+        releaseInBatch: ${{ parameters.release_azureresourcemanagernewrelic }}
