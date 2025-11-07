@@ -116,7 +116,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 }
             } catch (IllegalArgumentException e) {
                 // Handle decoder exceptions - check if it's due to incomplete data
-                if (e.getMessage() != null && e.getMessage().contains("not long enough")) {
+                String errorMsg = e.getMessage();
+                if (errorMsg != null && (errorMsg.contains("not long enough") || errorMsg.contains("is incomplete"))) {
                     // Not enough data to decode yet - preserve all data in pending buffer
                     state.updatePendingBuffer(dataToProcess);
 
