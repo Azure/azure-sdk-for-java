@@ -34,7 +34,7 @@ var storageAccountName = 'search${unique}'
 var staticResourceGroupName = 'static-test-resources'
 
 // Can this deployment access known static resources
-var canUseStatic = tenantId == '70a036f6-8e4d-4615-bad6-149c02e7720d' && subscription().id == '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+var canUseStatic = tenantId == '70a036f6-8e4d-4615-bad6-149c02e7720d' && subscription().subscriptionId == '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
 
 // Deployed OpenAI resource for non-TME tenants
 resource openai 'Microsoft.CognitiveServices/accounts@2025-06-01' = if (!canUseStatic) {
