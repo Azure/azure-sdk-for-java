@@ -5,6 +5,21 @@ package com.azure.cosmos.implementation;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class for capturing and formatting stack traces.
+ * <p>
+ * This class provides methods to capture the current thread's call stack and format
+ * stack traces from Throwable objects. It's primarily used for diagnostic and debugging
+ * purposes, particularly in leak detection and client tracking scenarios.
+ * </p>
+ * <p>
+ * Note: Stack trace capture has performance implications and should be used judiciously,
+ * typically only when diagnostic features are enabled.
+ * </p>
+ * <p>
+ * This class is thread-safe as all methods operate on thread-local data or immutable parameters.
+ * </p>
+ */
 public final class StackTraceUtil {
     private StackTraceUtil() {}
 

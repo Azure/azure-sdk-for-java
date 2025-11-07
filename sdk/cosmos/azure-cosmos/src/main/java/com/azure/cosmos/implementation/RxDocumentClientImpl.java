@@ -875,6 +875,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+            this.addToActiveClients();
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -1394,7 +1395,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     /**
-     * Returns a snapshot of the active clients. The key is teh clientId, the value the callstack shows from
+     * Returns a snapshot of the active clients. The key is the clientId, the value the callstack shows from
      * where the client was created.
      * @return a snapshot of the active clients.
      */
@@ -6477,6 +6478,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
+            this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
 
