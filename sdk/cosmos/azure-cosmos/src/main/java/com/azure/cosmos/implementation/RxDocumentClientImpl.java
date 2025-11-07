@@ -154,6 +154,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final static List<RegionalRoutingContext> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
+    private final static Object staticLock = new Object();
+    private final static Map<Integer, String> activeClients = new HashMap<>();
+
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -506,6 +509,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionRetryOptions = sessionRetryOptions;
         this.defaultCustomSerializer = defaultCustomSerializer;
 
+        this.addToActiveClients();
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
@@ -1367,6 +1371,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
+    }
+
+    private void addToActiveClients() {
+        synchronized (staticLock) {
+            activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
+        }
+    }
+
+    private void removeFromActiveClients() {
+        synchronized (staticLock) {
+            activeClients.remove(this.clientId);
+        }
+    }
+
+    public static String getActiveClientCallstacks() {
+        StringBuilder sb = new StringBuilder();
+        synchronized (staticLock) {
+            boolean isFirst = true;
+            for (int clientId : activeClients.keySet()) {
+                if (!isFirst) {
+                    sb.append(System.lineSeparator());
+                } else {
+                    isFirst = false;
+                }
+                sb.append("Client [").append(clientId).append("]").append(System.lineSeparator());
+                sb.append(activeClients.get(clientId)).append(System.lineSeparator());
+            }
+        }
+
+        return sb.toString();
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -6441,6 +6475,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
+        this.removeFromActiveClients();
         if (!closed.getAndSet(true)) {
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");

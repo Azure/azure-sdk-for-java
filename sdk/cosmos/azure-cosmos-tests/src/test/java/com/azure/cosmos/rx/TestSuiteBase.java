@@ -18,6 +18,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.CustomNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
@@ -33,6 +34,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
@@ -68,6 +70,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.ResourceLeakDetector;
 import io.netty.util.internal.PlatformDependent;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
@@ -161,6 +164,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static {
+        // Must run before any Netty ByteBuf is allocated
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
+        // sample every allocation
+        System.setProperty("io.netty.leakDetection.samplingInterval", "1");
+        // install custom reporter
+        CustomNettyLeakDetectorFactory.setResourceLeakDetectorFactory(new CustomNettyLeakDetectorFactory());
+
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -1645,6 +1655,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected void logMemoryUsage(String name) {
+        logger.info("ACTIVE COSMOS CLIENTS");
+        logger.info(RxDocumentClientImpl.getActiveClientCallstacks());
         long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
                                                                .directArenas().stream()
                                                                .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)

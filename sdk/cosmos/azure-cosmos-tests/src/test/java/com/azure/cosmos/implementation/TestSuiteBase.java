@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CustomNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.ResourceLeakDetector;
 import io.netty.util.internal.PlatformDependent;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
@@ -94,6 +96,13 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static {
+        // Must run before any Netty ByteBuf is allocated
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
+        // sample every allocation
+        System.setProperty("io.netty.leakDetection.samplingInterval", "1");
+        // install custom reporter
+        CustomNettyLeakDetectorFactory.setResourceLeakDetectorFactory(new CustomNettyLeakDetectorFactory());
+
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
                 ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -774,6 +783,9 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     protected void logMemoryUsage(String name) {
+        logger.info("ACTIVE COSMOS CLIENTS");
+        logger.info(RxDocumentClientImpl.getActiveClientCallstacks());
+
         long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
                                                                .directArenas().stream()
                                                                .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)

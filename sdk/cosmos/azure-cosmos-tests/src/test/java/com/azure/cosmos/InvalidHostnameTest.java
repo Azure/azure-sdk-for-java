@@ -22,6 +22,8 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -62,6 +64,12 @@ public class InvalidHostnameTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT)
     public void directConnectionFailsWhenHostnameIsInvalidAndHostnameValidationIsNotSet() throws Exception {
+        ByteBuf buf = ByteBufAllocator.DEFAULT.buffer(1024);
+        buf.writeInt(42);
+        // no release() on purpose
+        System.gc();
+        Thread.sleep(2000); // give GC & leak detector time
+
         directConnectionFailsWhenHostnameIsInvalidCore(null);
     }
 
@@ -110,6 +118,7 @@ public class InvalidHostnameTest extends TestSuiteBase {
             Configs.resetIsHostnameValidationDisabledForTests();
 
             client = builder.buildClient();
+
             TransportClient originalTransportClient = ReflectionUtils.getTransportClient(client);
 
             ReflectionUtils.setTransportClient(
