@@ -71,6 +71,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     private static final String TEST_CLIENT_ID = "test-client-id";
     private static final String TEST_TENANT_ID = "test-tenant-id";
     private static final String MOCK_ACCESS_TOKEN = "mock_access_token_from_aks_proxy";
+    private static final String MISMATCHED_CERT_SAN = "wrong-hostname.example.com";
 
     @TempDir
     Path tempDir;
@@ -470,9 +471,9 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
 
         List<String> dnsNames = fetchCertificateSAN(certificate);
 
-        assertTrue(dnsNames.contains("wrong-hostname.example.com"),
+        assertTrue(dnsNames.contains(MISMATCHED_CERT_SAN),
             "Certificate should contain DNS name 'wrong-hostname.example.com'");
-        assertFalse(dnsNames.contains("test-aks-proxy.ests.aks"),
+        assertFalse(dnsNames.contains(AKS_SNI_NAME),
             "Certificate should NOT contain the SNI name 'test-aks-proxy.ests.aks'");
 
         String mismatchCertPemData = toPemFormat(certificate);
