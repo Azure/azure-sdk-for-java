@@ -162,6 +162,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -218,7 +219,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeClassSetupLeakDetection() {
-        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
     }
 

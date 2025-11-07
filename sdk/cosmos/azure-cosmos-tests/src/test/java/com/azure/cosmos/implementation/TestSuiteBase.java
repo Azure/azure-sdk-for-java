@@ -95,6 +95,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
                 ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -154,7 +155,6 @@ public class TestSuiteBase extends DocumentClientTest {
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
 
     public void beforeClassSetupLeakDetection() {
-        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
     }
 
