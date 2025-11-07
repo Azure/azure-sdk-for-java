@@ -66,6 +66,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.internal.PlatformDependent;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -82,6 +85,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.management.BufferPoolMXBean;
+import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -212,6 +217,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
+        logMemoryUsage("beforeSuite");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
@@ -237,6 +243,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public void afterSuite() {
 
         logger.info("afterSuite Started");
+        logMemoryUsage("afterSuite");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             safeDeleteDatabase(SHARED_DATABASE);
@@ -1619,5 +1626,22 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             outputStream.write(b);
         }
         return outputStream.toByteArray();
+    }
+
+    protected void logMemoryUsage(String name) {
+        long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
+                                                               .directArenas().stream()
+                                                               .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)
+                                                               .sum();
+
+        long used = PlatformDependent.usedDirectMemory();
+        long max  = PlatformDependent.maxDirectMemory();
+        logger.info("MEMORY USAGE: {}:{}", this.getClass().getCanonicalName(), name);
+        logger.info("Netty Direct Memory: {}/{}/{} bytes", used, pooledDirectBytes, max);
+        for (BufferPoolMXBean pool : ManagementFactory.getPlatformMXBeans(BufferPoolMXBean.class)) {
+            logger.info("Pool {}: used={} bytes, capacity={} bytes, count={}",
+                pool.getName(), pool.getMemoryUsed(), pool.getTotalCapacity(), pool.getCount());
+        }
+
     }
 }
