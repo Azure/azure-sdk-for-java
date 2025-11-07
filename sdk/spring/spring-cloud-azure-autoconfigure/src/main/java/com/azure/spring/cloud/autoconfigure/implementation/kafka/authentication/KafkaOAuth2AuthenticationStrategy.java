@@ -29,8 +29,15 @@ import static org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModul
 import static org.springframework.util.StringUtils.delimitedListToStringArray;
 
 /**
- * OAuth2 authentication strategy for Azure Event Hubs Kafka.
- * This strategy configures SASL/OAUTHBEARER authentication using Microsoft Entra ID.
+ * OAuth2 authentication strategy for Azure Event Hubs Kafka using Microsoft Entra ID.
+ * <p>
+ * This strategy configures SASL/OAUTHBEARER authentication for Azure Event Hubs Kafka clients
+ * using Microsoft Entra ID credentials (formerly Azure Active Directory).
+ * </p>
+ * <p>
+ * Note: This is different from connection string-based authentication which is handled by
+ * AzureEventHubsKafkaAutoConfiguration.
+ * </p>
  *
  * @since 6.1.0
  */

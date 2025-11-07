@@ -21,7 +21,11 @@
  * 
  * <h3>OAuth2 Authentication (Microsoft Entra ID)</h3>
  * The {@code KafkaOAuth2AuthenticationStrategy} configures SASL/OAUTHBEARER authentication
- * for connecting to Azure Event Hubs using Microsoft Entra ID credentials.
+ * for connecting to Azure Event Hubs using Microsoft Entra ID credentials (formerly Azure Active Directory).
+ * <p>
+ * Note: This package only contains OAuth2/OAUTHBEARER authentication. Connection string-based
+ * authentication for Event Hubs is handled separately by {@code AzureEventHubsKafkaAutoConfiguration}.
+ * </p>
  * 
  * <p><b>Configuration Requirements:</b></p>
  * <ul>
