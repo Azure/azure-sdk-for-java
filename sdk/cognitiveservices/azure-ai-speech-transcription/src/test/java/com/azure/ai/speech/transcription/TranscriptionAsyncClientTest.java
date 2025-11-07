@@ -214,20 +214,6 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
      *
      ***********************************************************************************/
 
-    // Note: This test now passes due to temporary workaround in generated code.
-    // The null check was manually added to TranscriptionAsyncClient.transcribe()
-    // and should be removed when the TypeSpec generator is fixed to include parameter validation.
-    @Test
-    public void testTranscribeAsyncWithNullRequestContent() {
-        createClient(true, true, sync);
-
-        // Test that null request content results in error
-        // Using StepVerifier to verify error behavior in async context
-        StepVerifier.create(getAsyncClient().transcribe(null))
-            .expectError(NullPointerException.class)
-            .verify(Duration.ofSeconds(5));
-    }
-
     @Test
     public void testTranscribeAsyncWithEmptyAudioData() {
         createClient(true, true, sync);

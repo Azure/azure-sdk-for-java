@@ -78,7 +78,10 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("maxSpeakers", this.maxSpeakers);
+        if (this.maxSpeakers != null) {
+            jsonWriter.writeBooleanField("enabled", true);
+            jsonWriter.writeNumberField("maxSpeakers", this.maxSpeakers);
+        }
         return jsonWriter.writeEndObject();
     }
 
