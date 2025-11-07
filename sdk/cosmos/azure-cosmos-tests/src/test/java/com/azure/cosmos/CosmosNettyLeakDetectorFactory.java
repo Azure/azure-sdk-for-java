@@ -88,7 +88,7 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
                         if (!isLeakDetectionDisabled) {
                             String msg = "NETTY LEAK (traced) type="
                                 + resourceType
-                                + "records=\n"
+                                + " records=\n"
                                 + records;
 
                             identifiedLeaks.add(msg);
