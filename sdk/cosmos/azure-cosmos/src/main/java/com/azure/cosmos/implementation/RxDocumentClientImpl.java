@@ -876,7 +876,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
-            this.addToActiveClients();
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
