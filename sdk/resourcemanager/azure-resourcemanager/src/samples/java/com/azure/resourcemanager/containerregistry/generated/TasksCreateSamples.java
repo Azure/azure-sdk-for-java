@@ -36,8 +36,8 @@ import java.util.Map;
 public final class TasksCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * ManagedIdentity/TasksCreate_WithSystemIdentity.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/ManagedIdentity/TasksCreate_WithSystemIdentity.json
      */
     /**
      * Sample code: Tasks_Create_WithUserIdentities_WithSystemIdentity.
@@ -89,8 +89,8 @@ public final class TasksCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TasksCreate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TasksCreate.json
      */
     /**
      * Sample code: Tasks_Create.
@@ -144,8 +144,8 @@ public final class TasksCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * ManagedIdentity/TasksCreate_WithSystemAndUserIdentities.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/ManagedIdentity/TasksCreate_WithSystemAndUserIdentities.json
      */
     /**
      * Sample code: Tasks_Create_WithSystemAndUserIdentities.
@@ -200,8 +200,8 @@ public final class TasksCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * ManagedIdentity/TasksCreate_WithUserIdentities.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/ManagedIdentity/TasksCreate_WithUserIdentities.json
      */
     /**
      * Sample code: Tasks_Create_WithUserIdentities.
@@ -258,8 +258,8 @@ public final class TasksCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TasksCreate_QuickTask.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TasksCreate_QuickTask.json
      */
     /**
      * Sample code: Tasks_Create_QuickTask.
