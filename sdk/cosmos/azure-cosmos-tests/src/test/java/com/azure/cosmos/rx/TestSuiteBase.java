@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -977,6 +978,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             }
         }
     }
+
+    static protected void safeClose(QueryFeedOperationState client) {
+        if (client != null) {
+            safeClose(client.getClient());
+        }
+    }
+
 
     static protected void safeCloseSyncClient(CosmosClient client) {
         if (client != null) {

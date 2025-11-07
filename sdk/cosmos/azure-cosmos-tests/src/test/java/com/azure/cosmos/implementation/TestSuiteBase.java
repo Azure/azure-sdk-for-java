@@ -129,7 +129,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 OperationType.Query,
                 new CosmosQueryRequestOptions(),
                 client);
-            return client.queryDatabases(query, state);
+            return client.queryDatabases(query, state).doOnComplete(() -> safeClose(state));
         }
 
         @Override
@@ -184,10 +184,11 @@ public class TestSuiteBase extends DocumentClientTest {
     protected static void truncateCollection(DocumentCollection collection) {
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
+        CosmosAsyncClient cosmosClient = null;
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
-            CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            cosmosClient = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(TestConfigurations.HOST)
                 .buildAsyncClient();
@@ -311,6 +312,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
         } finally {
             houseKeepingClient.close();
+            cosmosClient.close();
         }
 
         logger.info("Finished truncating DocumentCollection {}.", collection.getId());
@@ -563,6 +565,7 @@ public class TestSuiteBase extends DocumentClientTest {
         if (!res.isEmpty()) {
             deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
+        safeClose(state);
     }
 
     public static void deleteCollection(AsyncDocumentClient client, String collectionLink) {
@@ -589,6 +592,7 @@ public class TestSuiteBase extends DocumentClientTest {
         if (!res.isEmpty()) {
             deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
+        safeClose(state);
     }
 
     public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk, String collectionLink) {
@@ -610,6 +614,7 @@ public class TestSuiteBase extends DocumentClientTest {
         if (!res.isEmpty()) {
             deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
         }
+        safeClose(state);
     }
 
     public static void deleteUser(AsyncDocumentClient client, String userLink) {
@@ -651,7 +656,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
                     return client.createDatabase(databaseDefinition, null).map(ResourceResponse::getResource);
                 })
-        ).single().block();
+        ).doOnComplete(() -> safeClose(state)) .single().block();
     }
 
     static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
@@ -686,6 +691,7 @@ public class TestSuiteBase extends DocumentClientTest {
             for (DocumentCollection collection : collections) {
                 client.deleteCollection(collection.getSelfLink(), null).block().getResource();
             }
+            safeClose(state);
         }
     }
 
@@ -726,6 +732,22 @@ public class TestSuiteBase extends DocumentClientTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    static protected void safeClose(CosmosAsyncClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    static protected void safeClose(QueryFeedOperationState client) {
+        if (client != null) {
+            safeClose(client.getClient());
         }
     }
 
