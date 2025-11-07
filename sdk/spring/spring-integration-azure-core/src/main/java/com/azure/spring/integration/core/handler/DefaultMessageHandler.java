@@ -18,7 +18,7 @@ import org.springframework.integration.handler.AbstractMessageProducingHandler;
 import org.springframework.integration.support.DefaultErrorMessageStrategy;
 import org.springframework.integration.support.ErrorMessageStrategy;
 import org.springframework.integration.support.MutableMessageBuilder;
-import org.springframework.lang.NonNull;
+
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
@@ -66,7 +66,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      * @param destination the destination
      * @param sendOperation operation for sending Messages to a destination
      */
-    public DefaultMessageHandler(String destination, @NonNull SendOperation sendOperation) {
+    public DefaultMessageHandler(String destination, SendOperation sendOperation) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.destination = destination;
         this.sendOperation = sendOperation;

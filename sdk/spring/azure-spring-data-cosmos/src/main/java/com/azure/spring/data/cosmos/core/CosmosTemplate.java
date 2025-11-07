@@ -60,7 +60,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
@@ -624,7 +624,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param containerName Container name of database
      * @param domainType the domain type
      */
-    public void deleteAll(@NonNull String containerName, @NonNull Class<?> domainType) {
+    public void deleteAll(String containerName, Class<?> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         containerName = getContainerName(domainType);
         final CosmosQuery query = new CosmosQuery(Criteria.getInstance(CriteriaType.ALL));
@@ -633,7 +633,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public void deleteContainer(@NonNull String containerName) {
+    public void deleteContainer(String containerName) {
         Assert.hasText(containerName, "containerName should have text.");
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
@@ -903,7 +903,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param <T> class of domainType
      * @return All the found items as List.
      */
-    public <T> Iterable<T> find(@NonNull CosmosQuery query, @NonNull Class<T> domainType,
+    public <T> Iterable<T> find(CosmosQuery query, Class<T> domainType,
                                 String containerName) {
         Assert.notNull(query, "DocumentQuery should not be null.");
         Assert.notNull(domainType, "domainType should not be null.");
@@ -921,7 +921,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param <T> class of domainType
      * @return if items exist
      */
-    public <T> Boolean exists(@NonNull CosmosQuery query, @NonNull Class<T> domainType,
+    public <T> Boolean exists(CosmosQuery query, Class<T> domainType,
                               String containerName) {
         return this.count(query, containerName) > 0;
     }
@@ -937,8 +937,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @return All the deleted items as List.
      */
     @Override
-    public <T> Iterable<T> delete(@NonNull CosmosQuery query, @NonNull Class<T> domainType,
-                                  @NonNull String containerName) {
+    public <T> Iterable<T> delete(CosmosQuery query, Class<T> domainType,
+                                  String containerName) {
         Assert.notNull(query, "DocumentQuery should not be null.");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
@@ -1239,9 +1239,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .byPage();
     }
 
-    private <T> Flux<JsonNode> findItemsAsFlux(@NonNull CosmosQuery query,
-                                               @NonNull String containerName,
-                                               @NonNull Class<T> domainType) {
+    private <T> Flux<JsonNode> findItemsAsFlux(CosmosQuery query,
+                                               String containerName,
+                                               Class<T> domainType) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         containerName = getContainerNameOverride(containerName);
@@ -1274,7 +1274,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private Flux<JsonNode> getJsonNodeFluxFromQuerySpec(
-        @NonNull String containerName, SqlQuerySpec sqlQuerySpec) {
+        String containerName, SqlQuerySpec sqlQuerySpec) {
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         cosmosQueryRequestOptions.setIndexMetricsEnabled(this.indexMetricsEnabled);
@@ -1300,18 +1300,18 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     this.responseDiagnosticsProcessor));
     }
 
-    private <T> Iterable<T> findItems(@NonNull CosmosQuery query,
-                                      @NonNull String containerName,
-                                      @NonNull Class<T> domainType) {
+    private <T> Iterable<T> findItems(CosmosQuery query,
+                                      String containerName,
+                                      Class<T> domainType) {
         String finalContainerName = getContainerNameOverride(containerName);
         return findItemsAsFlux(query, finalContainerName, domainType)
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, finalContainerName, jsonNode))
             .toIterable();
     }
 
-    private <T> T deleteItem(@NonNull JsonNode jsonNode,
+    private <T> T deleteItem(JsonNode jsonNode,
                              String containerName,
-                             @NonNull Class<T> domainType) {
+                             Class<T> domainType) {
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, jsonNode, options);
@@ -1331,13 +1331,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
     }
 
-    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
+    private <T> T emitOnLoadEventAndConvertToDomainObject(Class<T> domainType, String containerName, JsonNode responseJsonNode) {
         containerName = getContainerNameOverride(containerName);
         maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, containerName));
         return toDomainObject(domainType, responseJsonNode);
     }
 
-    private <T> T toDomainObject(@NonNull Class<T> domainType, JsonNode responseJsonNode) {
+    private <T> T toDomainObject(Class<T> domainType, JsonNode responseJsonNode) {
         return mappingCosmosConverter.read(domainType, responseJsonNode);
     }
 

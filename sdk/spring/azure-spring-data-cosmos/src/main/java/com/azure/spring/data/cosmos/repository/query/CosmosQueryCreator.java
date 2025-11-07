@@ -13,7 +13,7 @@ import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.parser.AbstractQueryCreator;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.data.repository.query.parser.PartTree;
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criter
         this.mappingContext = mappingContext;
     }
 
-    private String getSubject(@NonNull Part part) {
+    private String getSubject(Part part) {
         String subject = mappingContext.getPersistentPropertyPath(part.getProperty()).toDotPath();
         final Class<?> domainType = part.getProperty().getOwningType().getType();
 
@@ -78,19 +78,19 @@ public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criter
     }
 
     @Override
-    protected Criteria and(@NonNull Part part, @NonNull Criteria base, @NonNull Iterator<Object> parameters) {
+    protected Criteria and(Part part, Criteria base, Iterator<Object> parameters) {
         final Criteria right = this.create(part, parameters);
 
         return Criteria.getInstance(CriteriaType.AND, base, right);
     }
 
     @Override
-    protected Criteria or(@NonNull Criteria base, @NonNull Criteria criteria) {
+    protected Criteria or(Criteria base, Criteria criteria) {
         return Criteria.getInstance(CriteriaType.OR, base, criteria);
     }
 
     @Override
-    protected CosmosQuery complete(@NonNull Criteria criteria, @NonNull Sort sort) {
+    protected CosmosQuery complete(Criteria criteria, Sort sort) {
         return new CosmosQuery(criteria).with(sort);
     }
 }

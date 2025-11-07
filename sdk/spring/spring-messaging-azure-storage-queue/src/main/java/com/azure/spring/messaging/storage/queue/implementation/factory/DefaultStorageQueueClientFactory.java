@@ -10,7 +10,7 @@ import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProp
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.lang.NonNull;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
      * Construct a factory with the provided {@link StorageQueueProperties}.
      * @param storageQueueProperties the storage queue properties
      */
-    public DefaultStorageQueueClientFactory(@NonNull StorageQueueProperties storageQueueProperties) {
+    public DefaultStorageQueueClientFactory(StorageQueueProperties storageQueueProperties) {
         QueueServiceClientBuilderFactory queueServiceClientBuilderFactory =
             new QueueServiceClientBuilderFactory(storageQueueProperties);
         queueServiceClientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE);

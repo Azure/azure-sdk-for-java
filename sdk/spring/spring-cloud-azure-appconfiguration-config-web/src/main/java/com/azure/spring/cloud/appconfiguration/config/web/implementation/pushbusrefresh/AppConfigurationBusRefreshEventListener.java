@@ -5,7 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation.pushbu
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
-import org.springframework.lang.NonNull;
+
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 
@@ -32,7 +32,7 @@ public final class AppConfigurationBusRefreshEventListener implements Applicatio
      * @param event Event Triggering refresh, contains valid config store endpoint.
      */
     @Override
-    public void onApplicationEvent(@NonNull AppConfigurationBusRefreshEvent event) {
+    public void onApplicationEvent(AppConfigurationBusRefreshEvent event) {
         try {
             appConfigurationRefresh.expireRefreshInterval(event.getEndpoint(), event.getSyncToken());
         } catch (Exception e) {

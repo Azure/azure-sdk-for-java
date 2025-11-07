@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.implementation.checkpoint;
 
 import com.azure.spring.messaging.checkpoint.Checkpointer;
-import org.springframework.lang.NonNull;
+
 import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
@@ -21,7 +21,7 @@ public class AzureCheckpointer implements Checkpointer {
      * Construct the checkpointer with the {@link Supplier} for a success operation.
      * @param success the {@link Supplier} for a success operation.
      */
-    public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success) {
+    public AzureCheckpointer(Supplier<Mono<Void>> success) {
         this(success, null);
     }
 
@@ -30,7 +30,7 @@ public class AzureCheckpointer implements Checkpointer {
      * @param success the {@link Supplier} for a success operation.
      * @param fail the {@link Supplier} for a failure operation.
      */
-    public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success,
+    public AzureCheckpointer(Supplier<Mono<Void>> success,
                              Supplier<Mono<Void>> fail) {
         this.success = success;
         this.fail = fail;

@@ -10,7 +10,7 @@ import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
+
 
 /**
  * Converts a {@link RetryOptionsProvider.RetryOptions} to a {@link RetryOptions}.
@@ -25,7 +25,7 @@ public final class AzureHttpRetryOptionsConverter implements Converter<RetryOpti
     }
 
     @Override
-    public RetryOptions convert(@NonNull RetryOptionsProvider.RetryOptions retry) {
+    public RetryOptions convert(RetryOptionsProvider.RetryOptions retry) {
 
         RetryOptionsProvider.RetryMode retryMode = retry.getMode();
 

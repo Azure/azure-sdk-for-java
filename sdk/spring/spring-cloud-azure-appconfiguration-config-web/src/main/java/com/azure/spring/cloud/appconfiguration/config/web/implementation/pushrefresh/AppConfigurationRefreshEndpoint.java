@@ -15,7 +15,7 @@ import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.NonNull;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -105,7 +105,7 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
     }
 
     @Override
-    public void setApplicationEventPublisher(@NonNull ApplicationEventPublisher applicationEventPublisher) {
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
     }
 

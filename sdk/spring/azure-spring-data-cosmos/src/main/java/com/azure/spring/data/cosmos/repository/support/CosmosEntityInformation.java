@@ -28,7 +28,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -225,7 +225,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      *
      * @return IndexingPolicy
      */
-    @NonNull
+   
     public IndexingPolicy getIndexingPolicy() {
         return this.indexingPolicy;
     }

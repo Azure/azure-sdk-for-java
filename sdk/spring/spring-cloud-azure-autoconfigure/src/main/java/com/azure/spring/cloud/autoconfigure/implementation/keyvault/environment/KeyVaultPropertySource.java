@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment
 
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.lang.NonNull;
+
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -163,7 +163,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
      * @param property of secret instance.
      * @return the value of secret with given name or null.
      */
-    public static String toKeyVaultSecretName(boolean caseSensitive, @NonNull String property) {
+    public static String toKeyVaultSecretName(boolean caseSensitive, String property) {
         if (!caseSensitive) {
             if (property.matches("[a-z0-9A-Z-]+")) {
                 return property.toLowerCase(Locale.US);

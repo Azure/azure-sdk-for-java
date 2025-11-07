@@ -8,7 +8,7 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventP
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.StringUtils;
 
 /**
@@ -28,7 +28,7 @@ public final class EventPositionConverter implements Converter<EventProcessorCli
     // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
     // https://github.com/Azure/azure-sdk-for-java/issues/46359
     @SuppressWarnings("deprecation")
-    @NonNull
+   
     @Override
     public EventPosition convert(EventProcessorClientProperties.StartPosition source) {
         if (StringUtils.hasText(source.getOffset())) {

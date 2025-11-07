@@ -6,7 +6,7 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -34,7 +34,7 @@ public class CosmosQuery {
      *
      * @param criteria object
      */
-    public CosmosQuery(@NonNull Criteria criteria) {
+    public CosmosQuery(Criteria criteria) {
         this.criteria = criteria;
     }
 
@@ -132,7 +132,7 @@ public class CosmosQuery {
      * @param sort Sort
      * @return CosmosQuery object
      */
-    public CosmosQuery with(@NonNull Sort sort) {
+    public CosmosQuery with(Sort sort) {
         if (sort.isSorted()) {
             this.sort = sort.and(this.sort);
         }
@@ -146,14 +146,14 @@ public class CosmosQuery {
      * @param pageable Sort
      * @return CosmosQuery object
      */
-    public CosmosQuery with(@NonNull Pageable pageable) {
+    public CosmosQuery with(Pageable pageable) {
         Assert.notNull(pageable, "pageable should not be null");
 
         this.pageable = pageable;
         return this;
     }
 
-    private boolean isCrossPartitionQuery(@NonNull String keyName) {
+    private boolean isCrossPartitionQuery(String keyName) {
         Assert.hasText(keyName, "PartitionKey should have text.");
 
         Optional<Criteria> criteria = Optional.empty();
@@ -198,7 +198,7 @@ public class CosmosQuery {
      * @param partitionKeys The list of partitionKey names.
      * @return If DocumentQuery should enable cross partition query
      */
-    public boolean isCrossPartitionQuery(@NonNull List<String> partitionKeys) {
+    public boolean isCrossPartitionQuery(List<String> partitionKeys) {
         if (partitionKeys.isEmpty()) {
             return true;
         }
@@ -214,7 +214,7 @@ public class CosmosQuery {
      * @param partitionKeyFieldName partition key field name
      * @return returns true if this criteria or sub criteria has partition key field present as one of the subjects.
      */
-    public boolean hasPartitionKeyCriteria(@NonNull String partitionKeyFieldName) {
+    public boolean hasPartitionKeyCriteria(String partitionKeyFieldName) {
         if (partitionKeyFieldName.isEmpty()) {
             return false;
         }
@@ -232,7 +232,7 @@ public class CosmosQuery {
      * @param <T> entity class type
      * @return Optional of partition key value
      */
-    public <T> Optional<Object> getPartitionKeyValue(@NonNull Class<T> domainType) {
+    public <T> Optional<Object> getPartitionKeyValue(Class<T> domainType) {
         CosmosEntityInformation<?, ?> instance = CosmosEntityInformation.getInstance(domainType);
         String partitionKeyFieldName = instance.getPartitionKeyFieldName();
         if (partitionKeyFieldName == null
@@ -269,14 +269,14 @@ public class CosmosQuery {
      * @param criteriaType the criteria type
      * @return Optional
      */
-    public Optional<Criteria> getCriteriaByType(@NonNull CriteriaType criteriaType) {
+    public Optional<Criteria> getCriteriaByType(CriteriaType criteriaType) {
         if (this.criteria == null) {
             return Optional.empty();
         }
         return getCriteriaByType(criteriaType, this.criteria);
     }
 
-    private Optional<Criteria> getCriteriaByType(@NonNull CriteriaType criteriaType, @NonNull Criteria criteria) {
+    private Optional<Criteria> getCriteriaByType(CriteriaType criteriaType, Criteria criteria) {
         if (criteria.getType().equals(criteriaType)) {
             return Optional.of(criteria);
         }
@@ -290,7 +290,7 @@ public class CosmosQuery {
         return Optional.empty();
     }
 
-    private Optional<Criteria> getSubjectCriteria(@NonNull Criteria criteria, @NonNull String keyName) {
+    private Optional<Criteria> getSubjectCriteria(Criteria criteria, String keyName) {
         if (keyName.equals(criteria.getSubject())) {
             return Optional.of(criteria);
         }
