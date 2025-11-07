@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class TrunkedNetworksListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * TrunkedNetworks_ListByResourceGroup.json
      */
     /**
@@ -20,6 +20,7 @@ public final class TrunkedNetworksListByResourceGroupSamples {
      */
     public static void
         listTrunkedNetworksForResourceGroup(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.trunkedNetworks().listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
+        manager.trunkedNetworks()
+            .listByResourceGroup("resourceGroupName", null, null, com.azure.core.util.Context.NONE);
     }
 }

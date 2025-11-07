@@ -19,7 +19,7 @@ import java.util.Map;
 public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * BareMetalMachineKeySets_Create.json
      */
     /**
@@ -39,7 +39,7 @@ public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
             .withAzureGroupId("f110271b-XXXX-4163-9b99-214d91660f0e")
             .withExpiration(OffsetDateTime.parse("2022-12-31T23:59:59.008Z"))
             .withJumpHostsAllowed(Arrays.asList("192.0.2.1", "192.0.2.5"))
-            .withPrivilegeLevel(BareMetalMachineKeySetPrivilegeLevel.STANDARD)
+            .withPrivilegeLevel(BareMetalMachineKeySetPrivilegeLevel.OTHER)
             .withUserList(Arrays.asList(
                 new KeySetUser().withAzureUsername("userABC")
                     .withDescription("Needs access for troubleshooting as a part of the support team")
@@ -51,6 +51,7 @@ public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
                     .withUserPrincipalName("userABC@contoso.com")))
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withOsGroupName("standardAccessGroup")
+            .withPrivilegeLevelName("SecurityScanner")
             .create();
     }
 

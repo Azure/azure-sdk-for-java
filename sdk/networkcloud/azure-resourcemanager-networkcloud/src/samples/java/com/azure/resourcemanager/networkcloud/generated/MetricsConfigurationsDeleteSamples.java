@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class MetricsConfigurationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * ClusterMetricsConfigurations_Delete.json
      */
     /**

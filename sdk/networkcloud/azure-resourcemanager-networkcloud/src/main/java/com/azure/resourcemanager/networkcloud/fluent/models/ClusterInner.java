@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
@@ -202,6 +203,16 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    public List<ActionState> actionStates() {
+        return this.innerProperties() == null ? null : this.innerProperties().actionStates();
+    }
+
+    /**
      * Get the aggregatorOrSingleRackDefinition property: The rack definition that is intended to reflect only a single
      * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
      * 
@@ -362,8 +373,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Get the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
+     * service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -372,8 +383,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Set the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
+     * service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterInner object itself.

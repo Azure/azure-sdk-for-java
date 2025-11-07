@@ -40,8 +40,8 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BareMetalMachine> list(Context context) {
-        PagedIterable<BareMetalMachineInner> inner = this.serviceClient().list(context);
+    public PagedIterable<BareMetalMachine> list(Integer top, String skipToken, Context context) {
+        PagedIterable<BareMetalMachineInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
@@ -50,9 +50,10 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BareMetalMachine> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<BareMetalMachine> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
         PagedIterable<BareMetalMachineInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
@@ -233,6 +234,31 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         OperationStatusResultInner inner = this.serviceClient()
             .runDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
                 context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+        Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {

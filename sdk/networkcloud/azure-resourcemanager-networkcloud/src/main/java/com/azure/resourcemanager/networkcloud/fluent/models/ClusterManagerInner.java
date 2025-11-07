@@ -188,9 +188,8 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Get the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
-     * allocation process and will be removed in a future version. The Azure availability zones within the region that
-     * will be used to support the cluster manager resource.
+     * Get the availabilityZones property: The Azure availability zones within the region that will be used to support
+     * the cluster manager resource.
      * 
      * @return the availabilityZones value.
      */
@@ -199,9 +198,8 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Set the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
-     * allocation process and will be removed in a future version. The Azure availability zones within the region that
-     * will be used to support the cluster manager resource.
+     * Set the availabilityZones property: The Azure availability zones within the region that will be used to support
+     * the cluster manager resource.
      * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the ClusterManagerInner object itself.
@@ -315,9 +313,7 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Get the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
-     * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
-     * cluster manager resource.
+     * Get the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
      */
@@ -326,9 +322,7 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Set the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
-     * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
-     * cluster manager resource.
+     * Set the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @param vmSize the vmSize value to set.
      * @return the ClusterManagerInner object itself.

@@ -7,12 +7,15 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.resourcemanager.networkcloud.models.DefaultGateway;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.OsDisk;
 import com.azure.resourcemanager.networkcloud.models.OsDiskCreateOption;
 import com.azure.resourcemanager.networkcloud.models.OsDiskDeleteOption;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
 import com.azure.resourcemanager.networkcloud.models.StorageProfile;
+import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineBootMethod;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineDeviceModelType;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineIpAllocationMethod;
@@ -30,7 +33,7 @@ import java.util.Map;
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * VirtualMachines_Create.json
      */
     /**
@@ -61,6 +64,10 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")))
             .withVmImage("myacr.azurecr.io/foobar:latest")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1",
+                    new UserAssignedIdentity())))
             .withBootMethod(VirtualMachineBootMethod.UEFI)
             .withNetworkAttachments(Arrays.asList(new NetworkAttachment().withAttachedNetworkId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
@@ -69,7 +76,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                 .withIpv4Address("198.51.100.1")
                 .withIpv6Address("2001:0db8:0000:0000:0000:0000:0000:0000")
                 .withNetworkAttachmentName("netAttachName01")))
-            .withNetworkData("bmV0d29ya0RhdGVTYW1wbGU=")
+            .withNetworkDataContent("bmV0d29ya0RhdGVTYW1wbGU=")
             .withPlacementHints(Arrays.asList(new VirtualMachinePlacementHint()
                 .withHintType(VirtualMachinePlacementHintType.AFFINITY)
                 .withResourceId(
@@ -77,7 +84,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                 .withSchedulingExecution(VirtualMachineSchedulingExecution.HARD)
                 .withScope(VirtualMachinePlacementHintPodAffinityScope.fromString(""))))
             .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder")))
-            .withUserData("dXNlckRhdGVTYW1wbGU=")
+            .withUserDataContent("dXNlckRhdGVTYW1wbGU=")
             .withVmDeviceModel(VirtualMachineDeviceModelType.T2)
             .withVmImageRepositoryCredentials(new ImageRepositoryCredentials().withPassword("fakeTokenPlaceholder")
                 .withRegistryUrl("myacr.azurecr.io")

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class CloudServicesNetworksListSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * CloudServicesNetworks_ListBySubscription.json
      */
     /**
@@ -20,6 +20,6 @@ public final class CloudServicesNetworksListSamples {
      */
     public static void
         listCloudServicesNetworksForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.cloudServicesNetworks().list(com.azure.core.util.Context.NONE);
+        manager.cloudServicesNetworks().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

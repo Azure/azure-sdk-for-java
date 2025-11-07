@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class KubernetesClustersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * KubernetesClusters_ListByResourceGroup.json
      */
     /**
@@ -20,6 +20,7 @@ public final class KubernetesClustersListByResourceGroupSamples {
      */
     public static void
         listKubernetesClustersForResourceGroup(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.kubernetesClusters().listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
+        manager.kubernetesClusters()
+            .listByResourceGroup("resourceGroupName", null, null, com.azure.core.util.Context.NONE);
     }
 }

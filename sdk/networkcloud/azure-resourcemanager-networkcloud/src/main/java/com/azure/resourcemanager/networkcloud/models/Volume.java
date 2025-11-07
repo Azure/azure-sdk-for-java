@@ -72,6 +72,13 @@ public interface Volume {
     SystemData systemData();
 
     /**
+     * Gets the allocatedSizeMiB property: The allocated size of the volume in Mebibytes.
+     * 
+     * @return the allocatedSizeMiB value.
+     */
+    Long allocatedSizeMiB();
+
+    /**
      * Gets the attachedTo property: The list of resource IDs that attach the volume. It may include virtual machines
      * and Hybrid AKS clusters.
      * 
@@ -108,11 +115,18 @@ public interface Volume {
     String serialNumber();
 
     /**
-     * Gets the sizeMiB property: The size of the allocation for this volume in Mebibytes.
+     * Gets the sizeMiB property: The requested storage allocation for the volume in Mebibytes.
      * 
      * @return the sizeMiB value.
      */
     long sizeMiB();
+
+    /**
+     * Gets the storageApplianceId property: The resource ID of the storage appliance that hosts the volume.
+     * 
+     * @return the storageApplianceId value.
+     */
+    String storageApplianceId();
 
     /**
      * Gets the region of the resource.
@@ -213,9 +227,9 @@ public interface Volume {
          */
         interface WithSizeMiB {
             /**
-             * Specifies the sizeMiB property: The size of the allocation for this volume in Mebibytes..
+             * Specifies the sizeMiB property: The requested storage allocation for the volume in Mebibytes..
              * 
-             * @param sizeMiB The size of the allocation for this volume in Mebibytes.
+             * @param sizeMiB The requested storage allocation for the volume in Mebibytes.
              * @return the next definition stage.
              */
             WithCreate withSizeMiB(long sizeMiB);
@@ -225,8 +239,8 @@ public interface Volume {
          * The stage of the Volume definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithStorageApplianceId,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -254,6 +268,20 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify storageApplianceId.
+         */
+        interface WithStorageApplianceId {
+            /**
+             * Specifies the storageApplianceId property: The resource ID of the storage appliance that hosts the
+             * volume..
+             * 
+             * @param storageApplianceId The resource ID of the storage appliance that hosts the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withStorageApplianceId(String storageApplianceId);
         }
 
         /**

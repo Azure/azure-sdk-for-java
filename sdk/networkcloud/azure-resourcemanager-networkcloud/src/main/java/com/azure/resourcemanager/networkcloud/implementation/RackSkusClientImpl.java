@@ -341,14 +341,16 @@ public final class RackSkusClientImpl implements RackSkusClient {
     }
 
     /**
+     * List rack SKUs in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackSkuList represents a list of rack SKUs along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of rack SKUs in the provided subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackSkuInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -369,13 +371,15 @@ public final class RackSkusClientImpl implements RackSkusClient {
     }
 
     /**
+     * List rack SKUs in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackSkuList represents a list of rack SKUs along with {@link PagedResponse}.
+     * @return a list of rack SKUs in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RackSkuInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -396,6 +400,8 @@ public final class RackSkusClientImpl implements RackSkusClient {
     }
 
     /**
+     * List rack SKUs in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -403,7 +409,7 @@ public final class RackSkusClientImpl implements RackSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackSkuList represents a list of rack SKUs along with {@link PagedResponse}.
+     * @return a list of rack SKUs in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RackSkuInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {

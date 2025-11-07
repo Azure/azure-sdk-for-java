@@ -6,6 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplaceParameters;
+import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplaceSafeguardMode;
+import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplaceStoragePolicy;
 
 /**
  * Samples for BareMetalMachines Replace.
@@ -13,7 +15,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplacePara
 public final class BareMetalMachinesReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * BareMetalMachines_Replace.json
      */
     /**
@@ -30,7 +32,9 @@ public final class BareMetalMachinesReplaceSamples {
                     .withBmcMacAddress("00:00:4f:00:57:ad")
                     .withBootMacAddress("00:00:4e:00:58:af")
                     .withMachineName("name")
-                    .withSerialNumber("BM1219XXX"),
+                    .withSafeguardMode(BareMetalMachineReplaceSafeguardMode.ALL)
+                    .withSerialNumber("BM1219XXX")
+                    .withStoragePolicy(BareMetalMachineReplaceStoragePolicy.DISCARD_ALL),
                 com.azure.core.util.Context.NONE);
     }
 }

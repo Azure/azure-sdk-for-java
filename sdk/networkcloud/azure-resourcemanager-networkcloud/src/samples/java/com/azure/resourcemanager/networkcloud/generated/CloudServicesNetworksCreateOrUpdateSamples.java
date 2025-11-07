@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageMode;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptions;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import com.azure.resourcemanager.networkcloud.models.EndpointDependency;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
@@ -18,7 +20,7 @@ import java.util.Map;
 public final class CloudServicesNetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * CloudServicesNetworks_Create.json
      */
     /**
@@ -40,6 +42,11 @@ public final class CloudServicesNetworksCreateOrUpdateSamples {
                 .withEndpoints(Arrays.asList(
                     new EndpointDependency().withDomainName("storageaccountex.blob.core.windows.net").withPort(443L)))))
             .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE)
+            .withStorageOptions(new CloudServicesNetworkStorageOptions()
+                .withMode(CloudServicesNetworkStorageMode.STANDARD)
+                .withSizeMiB(1048576L)
+                .withStorageApplianceId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"))
             .create();
     }
 

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class L2NetworksListSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * L2Networks_ListBySubscription.json
      */
     /**
@@ -20,6 +20,6 @@ public final class L2NetworksListSamples {
      */
     public static void
         listL2NetworksForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.l2Networks().list(com.azure.core.util.Context.NONE);
+        manager.l2Networks().list(null, null, com.azure.core.util.Context.NONE);
     }
 }
