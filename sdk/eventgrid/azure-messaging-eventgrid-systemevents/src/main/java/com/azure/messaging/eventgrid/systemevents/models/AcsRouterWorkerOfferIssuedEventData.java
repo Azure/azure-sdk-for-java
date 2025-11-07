@@ -42,7 +42,7 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
      * Router Worker Offer Issued Worker Labels
      */
     @Generated
-    private final Map<String, String> workerLabels;
+    private Map<String, String> workerLabels;
 
     /*
      * Router Worker Offer Issued Time in UTC
@@ -60,19 +60,19 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
      * Router Worker Offer Issued Worker Tags
      */
     @Generated
-    private final Map<String, String> workerTags;
+    private Map<String, String> workerTags;
 
     /*
      * Router Worker Offer Issued Job Labels
      */
     @Generated
-    private final Map<String, String> jobLabels;
+    private Map<String, String> jobLabels;
 
     /*
      * Router Worker Offer Issued Job Tags
      */
     @Generated
-    private final Map<String, String> jobTags;
+    private Map<String, String> jobTags;
 
     /*
      * Router Worker events Worker Id
@@ -96,24 +96,14 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
      * Creates an instance of AcsRouterWorkerOfferIssuedEventData class.
      *
      * @param jobId the jobId value to set.
-     * @param workerLabels the workerLabels value to set.
      * @param offeredOn the offeredOn value to set.
      * @param expiresOn the expiresOn value to set.
-     * @param workerTags the workerTags value to set.
-     * @param jobLabels the jobLabels value to set.
-     * @param jobTags the jobTags value to set.
      */
     @Generated
-    private AcsRouterWorkerOfferIssuedEventData(String jobId, Map<String, String> workerLabels,
-        OffsetDateTime offeredOn, OffsetDateTime expiresOn, Map<String, String> workerTags,
-        Map<String, String> jobLabels, Map<String, String> jobTags) {
+    private AcsRouterWorkerOfferIssuedEventData(String jobId, OffsetDateTime offeredOn, OffsetDateTime expiresOn) {
         super(jobId);
-        this.workerLabels = workerLabels;
         this.offeredOn = offeredOn;
         this.expiresOn = expiresOn;
-        this.workerTags = workerTags;
-        this.jobLabels = jobLabels;
-        this.jobTags = jobTags;
     }
 
     /**
@@ -250,14 +240,10 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("workerId", getWorkerId());
-        jsonWriter.writeMapField("workerLabels", this.workerLabels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("offeredOn",
             this.offeredOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.offeredOn));
         jsonWriter.writeStringField("expiresOn",
             this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
-        jsonWriter.writeMapField("workerTags", this.workerTags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("jobLabels", this.jobLabels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("jobTags", this.jobTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("queueId", this.queueId);
         jsonWriter.writeStringField("offerId", this.offerId);
         jsonWriter.writeNumberField("jobPriority", this.jobPriority);
@@ -325,11 +311,14 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
                 }
             }
             AcsRouterWorkerOfferIssuedEventData deserializedAcsRouterWorkerOfferIssuedEventData
-                = new AcsRouterWorkerOfferIssuedEventData(jobId, workerLabels, offeredOn, expiresOn, workerTags,
-                    jobLabels, jobTags);
+                = new AcsRouterWorkerOfferIssuedEventData(jobId, offeredOn, expiresOn);
             deserializedAcsRouterWorkerOfferIssuedEventData.channelReference = channelReference;
             deserializedAcsRouterWorkerOfferIssuedEventData.channelId = channelId;
             deserializedAcsRouterWorkerOfferIssuedEventData.workerId = workerId;
+            deserializedAcsRouterWorkerOfferIssuedEventData.workerLabels = workerLabels;
+            deserializedAcsRouterWorkerOfferIssuedEventData.workerTags = workerTags;
+            deserializedAcsRouterWorkerOfferIssuedEventData.jobLabels = jobLabels;
+            deserializedAcsRouterWorkerOfferIssuedEventData.jobTags = jobTags;
             deserializedAcsRouterWorkerOfferIssuedEventData.queueId = queueId;
             deserializedAcsRouterWorkerOfferIssuedEventData.offerId = offerId;
             deserializedAcsRouterWorkerOfferIssuedEventData.jobPriority = jobPriority;

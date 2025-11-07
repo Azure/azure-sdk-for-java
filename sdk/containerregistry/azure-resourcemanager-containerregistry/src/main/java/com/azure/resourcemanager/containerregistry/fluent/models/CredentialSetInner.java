@@ -23,17 +23,17 @@ import java.util.List;
 @Fluent
 public final class CredentialSetInner extends ProxyResource {
     /*
-     * Identities associated with the resource. This is used to access the KeyVault secrets.
-     */
-    private IdentityProperties identity;
-
-    /*
      * The properties of the credential set.
      */
     private CredentialSetProperties innerProperties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Identities associated with the resource. This is used to access the KeyVault secrets.
+     */
+    private IdentityProperties identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -59,6 +59,15 @@ public final class CredentialSetInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the credential set.
+     * 
+     * @return the innerProperties value.
+     */
+    private CredentialSetProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the identity property: Identities associated with the resource. This is used to access the KeyVault secrets.
      * 
      * @return the identity value.
@@ -79,16 +88,7 @@ public final class CredentialSetInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The properties of the credential set.
-     * 
-     * @return the innerProperties value.
-     */
-    private CredentialSetProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -198,11 +198,11 @@ public final class CredentialSetInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -212,8 +212,8 @@ public final class CredentialSetInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -239,10 +239,10 @@ public final class CredentialSetInner extends ProxyResource {
                     deserializedCredentialSetInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedCredentialSetInner.type = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedCredentialSetInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedCredentialSetInner.innerProperties = CredentialSetProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCredentialSetInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedCredentialSetInner.systemData = SystemData.fromJson(reader);
                 } else {

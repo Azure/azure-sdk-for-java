@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VerifierWorkspacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspacePatch.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VerifierWorkspacePatch.json
      */
     /**
      * Sample code: VerifierWorkspacePatch.

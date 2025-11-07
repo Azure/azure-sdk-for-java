@@ -2,13 +2,17 @@
 
 ## 2.57.0-beta.1 (Unreleased)
 
-### Features Added
+### azure-resourcemanager-containerregistry
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
+- Updated `api-version` to `2025-11-01`.
 
-### Other Changes
+### azure-resourcemanager-network
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-01-01`.
 
 ## 2.56.0 (2025-10-31)
 
