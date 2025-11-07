@@ -236,7 +236,7 @@ public final class ReadmeSamples {
             System.out.println("  Locale: " + phrase.getLocale());
             System.out.println("  Confidence: " + phrase.getConfidence());
             System.out.println("  Timing: " + phrase.getOffset() + "ms - "
-                + (phrase.getOffset() + phrase.getDuration()) + "ms");
+                + (phrase.getOffset() + phrase.getDuration().toMillis()) + "ms");
 
             // Process individual words with timestamps
             if (phrase.getWords() != null) {

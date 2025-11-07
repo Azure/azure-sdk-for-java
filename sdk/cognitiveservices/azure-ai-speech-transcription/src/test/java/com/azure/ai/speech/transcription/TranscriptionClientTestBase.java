@@ -234,7 +234,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
         // Basic validation
         assertNotNull(result, "Transcription result should not be null");
         assertNotNull(result.getDuration(), "Duration should not be null");
-        assertTrue(result.getDuration() > 0, "Duration should be greater than 0");
+        assertTrue(result.getDuration().toMillis() > 0, "Duration should be greater than 0");
         assertNotNull(result.getCombinedPhrases(), "Combined phrases should not be null");
         assertFalse(result.getCombinedPhrases().isEmpty(), "Combined phrases should not be empty");
         assertNotNull(result.getPhrases(), "Phrases should not be null");
@@ -253,7 +253,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             assertTrue(phrase.getConfidence() >= 0 && phrase.getConfidence() <= 1,
                 "Confidence should be between 0 and 1");
             assertTrue(phrase.getOffset() >= 0, "Offset should be non-negative");
-            assertTrue(phrase.getDuration() > 0, "Phrase duration should be positive");
+            assertTrue(phrase.getDuration().toMillis() > 0, "Phrase duration should be positive");
         });
     }
 

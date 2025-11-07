@@ -9,5 +9,4 @@ module com.azure.ai.speech.transcription {
     exports com.azure.ai.speech.transcription.models;
 
     opens com.azure.ai.speech.transcription.models to com.azure.core;
-    opens com.azure.ai.speech.transcription.models to com.azure.core, com.fasterxml.jackson.databind;
 }

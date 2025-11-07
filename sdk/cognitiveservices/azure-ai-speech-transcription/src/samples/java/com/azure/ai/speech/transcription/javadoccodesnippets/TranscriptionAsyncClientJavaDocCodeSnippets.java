@@ -217,7 +217,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
                     result.getPhrases().forEach(phrase -> {
                         System.out.printf("Phrase (%.2f-%.2fs): %s%n",
                             phrase.getOffset() / 1000.0,
-                            (phrase.getOffset() + phrase.getDuration()) / 1000.0,
+                            (phrase.getOffset() + phrase.getDuration().toMillis()) / 1000.0,
                             phrase.getText());
 
                         if (phrase.getWords() != null) {

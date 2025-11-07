@@ -216,7 +216,7 @@ public class AdvancedTranscriptionSample {
                     System.out.printf("  Speaker %d (%.2f-%.2fs): %s%n",
                         phrase.getSpeaker() != null ? phrase.getSpeaker() : 0,
                         phrase.getOffset() / 1000.0,
-                        (phrase.getOffset() + phrase.getDuration()) / 1000.0,
+                        (phrase.getOffset() + phrase.getDuration().toMillis()) / 1000.0,
                         phrase.getText());
 
                     // Show word-level timings
