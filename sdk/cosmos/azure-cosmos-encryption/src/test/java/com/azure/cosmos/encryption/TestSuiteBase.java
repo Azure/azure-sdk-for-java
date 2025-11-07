@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
@@ -62,7 +63,9 @@ import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -73,7 +76,9 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -81,6 +86,7 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.BridgeInternal.extractConfigs;
 import static com.azure.cosmos.BridgeInternal.injectConfigs;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
@@ -109,6 +115,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     protected static final AzureKeyCredential credential;
 
     protected int subscriberValidationTimeout = TIMEOUT;
+
+    private volatile Map<Integer, String> activeClientsAtBegin = new HashMap<>();
 
     private static CosmosAsyncDatabase SHARED_DATABASE;
     private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
@@ -223,6 +231,56 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         @Override
         public CosmosAsyncDatabase getDatabase(String id) {
             return client.getDatabase(id);
+        }
+    }
+
+    @BeforeClass(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
+
+    public void beforeClassSetupLeakDetection() {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
+        this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
+    }
+
+    @AfterClass(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void afterClassSetupLeakDetection() {
+
+        Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
+        StringBuilder sb = new StringBuilder();
+        Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
+
+        for (Integer clientId : leakedClientSnapshotNow.keySet()) {
+            if (!leakedClientSnapshotAtBegin.containsKey(clientId)) {
+                // this client was leaked in this class
+                sb
+                    .append("CosmosClient [")
+                    .append(clientId)
+                    .append("] leaked. Callstack of initialization:\n")
+                    .append(leakedClientSnapshotNow.get(clientId));
+            }
+        }
+
+        if (sb.length() > 0) {
+            String msg = "\"COSMOS CLIENT LEAKS detected in test class: "
+                + this.getClass().getCanonicalName()
+                + sb;
+
+            logger.error(msg);
+            // fail(msg);
+        }
+
+        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+        if (nettyLeaks.size() > 0) {
+            sb.append("\n");
+            for (String leak : nettyLeaks) {
+                sb.append(leak).append("\n");
+            }
+
+            String msg = "\"NETTY LEAKS detected in test class: "
+                + this.getClass().getCanonicalName()
+                + sb;
+
+            logger.error(msg);
+            // fail(msg);
         }
     }
 

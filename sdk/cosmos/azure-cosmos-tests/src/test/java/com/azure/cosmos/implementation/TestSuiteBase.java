@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -38,7 +39,9 @@ import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -48,17 +51,19 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.doAnswer;
 
 @Listeners({TestNGLogListener.class})
 public class TestSuiteBase extends DocumentClientTest {
-
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
@@ -82,6 +87,8 @@ public class TestSuiteBase extends DocumentClientTest {
     protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION;
     protected static DocumentCollection SHARED_SINGLE_PARTITION_COLLECTION;
     protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
+
+    private volatile Map<Integer, String> activeClientsAtBegin = new HashMap<>();
 
     private static <T> ImmutableList<T> immutableListOrNull(List<T> list) {
         return list != null ? ImmutableList.copyOf(list) : null;
@@ -140,6 +147,58 @@ public class TestSuiteBase extends DocumentClientTest {
         @Override
         public Mono<ResourceResponse<Database>> deleteDatabase(String id) {
             return client.deleteDatabase("dbs/" + id, null);
+        }
+    }
+
+    @BeforeClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+
+    public void beforeClassSetupLeakDetection() {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
+        this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
+    }
+
+    @AfterClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void afterClassSetupLeakDetection() {
+
+        Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
+        StringBuilder sb = new StringBuilder();
+        Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
+
+        for (Integer clientId : leakedClientSnapshotNow.keySet()) {
+            if (!leakedClientSnapshotAtBegin.containsKey(clientId)) {
+                // this client was leaked in this class
+                sb
+                    .append("CosmosClient [")
+                    .append(clientId)
+                    .append("] leaked. Callstack of initialization:\n")
+                    .append(leakedClientSnapshotNow.get(clientId));
+            }
+        }
+
+        if (sb.length() > 0) {
+            String msg = "\"COSMOS CLIENT LEAKS detected in test class: "
+                + this.getClass().getCanonicalName()
+                + sb;
+
+            logger.error(msg);
+            // fail(msg);
+        }
+
+        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+        if (nettyLeaks.size() > 0) {
+            sb.append("\n");
+            for (String leak : nettyLeaks) {
+                sb.append(leak).append("\n");
+            }
+
+            String msg = "\"NETTY LEAKS detected in test class: "
+                + this.getClass().getCanonicalName()
+                + sb;
+
+            logger.error(msg);
+            // fail(msg);
         }
     }
 
