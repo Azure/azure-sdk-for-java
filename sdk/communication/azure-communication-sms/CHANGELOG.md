@@ -1,42 +1,27 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.2.0 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.3.0 (2025-09-22)
-
-### Features Added
-
-- Added `TelcoMessagingClient` and `TelcoMessagingAsyncClient` for organized access to SMS functionality through specialized sub-clients:
-  - `SmsClient` and `SmsAsyncClient` for sending SMS messages
-  - `DeliveryReportsClient` and `DeliveryReportsAsyncClient` for retrieving SMS delivery reports
-  - `OptOutsClient` and `OptOutsAsyncClient` for managing SMS opt-out lists
+- Added delivery report methods into `SmsClient` and `SmsAsyncClient`:
+  - `getDeliveryReport()` and `getDeliveryReportWithResponse()` are now direct methods on `SmsClient`
+  - `getDeliveryReport()` and `getDeliveryReportWithResponse()` are now direct methods on `SmsAsyncClient`
+- Added `getOptOutsClient()` method to `SmsClient` for accessing opt-out functionality
+- `SmsClient` and `SmsAsyncClient` are now the primary entry points for SMS functionality (no longer deprecated)
 - Added support for `MessagingConnect` options in SMS sending to enable partner connectivity
 - Added support for `DeliveryReportTimeoutInSeconds` option to configure delivery report timeout
-- Enhanced parameter validation for delivery reports and opt-out operations with proper exception handling
-
-### Breaking Changes
-
-- Updated default API version to `2025-08-01-preview` (was `2026-01-23`)
-- `SmsServiceVersion.getLatest()` now returns `V2025_08_01_PREVIEW`
 
 ### Bugs Fixed
 
-- Fixed null parameter validation in `DeliveryReportsAsyncClient` to properly throw `IllegalArgumentException` for null message IDs
-- Fixed null parameter validation in `OptOutsAsyncClient` to properly throw `NullPointerException` for null recipient values
-- Removed problematic test methods for delivery report error scenarios that had no equivalent in the main SMS client tests
+- Fixed null parameter validation in delivery report operations to properly throw `IllegalArgumentException` for null message IDs
+- Fixed null parameter validation in opt-out operations to properly throw `NullPointerException` for null recipient values
 
 ### Other Changes
 
-- **DEPRECATED**: `SmsClient`, `SmsAsyncClient`, and `SmsClientBuilder` are now deprecated. Use `TelcoMessagingClient` and `TelcoMessagingClientBuilder` instead for organized access to SMS functionality.
-- Updated API version examples in README and sample code to use `V2025_08_01_PREVIEW`
+- Introduced API versioning with default version set to `2026-01-23`
+- Added `SmsServiceVersion.getLatest()` method that returns `V2026_01_23`
+- Added API version examples in README and sample code using `V2026_01_23`
 - Enhanced error handling and validation across all client operations
 
 ## 1.1.35 (2025-08-21)

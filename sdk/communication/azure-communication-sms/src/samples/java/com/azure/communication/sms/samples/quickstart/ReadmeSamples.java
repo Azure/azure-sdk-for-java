@@ -7,8 +7,6 @@ import com.azure.communication.sms.SmsAsyncClient;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.SmsServiceVersion;
-import com.azure.communication.sms.TelcoMessagingClient;
-import com.azure.communication.sms.TelcoMessagingClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -20,28 +18,30 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ReadmeSamples {
     public SmsClient createSmsClientUsingAzureKeyCredential() {
         // BEGIN: readme-sample-createSmsClientUsingAzureKeyCredential
-        // You can find your endpoint and access key from your resource in the Azure Portal
+        // You can find your endpoint and access key from your resource in the Azure
+        // Portal
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
         SmsClient smsClient = new SmsClientBuilder()
-            .endpoint(endpoint)
-            .credential(azureKeyCredential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(azureKeyCredential)
+                .buildClient();
         // END: readme-sample-createSmsClientUsingAzureKeyCredential
 
         return smsClient;
     }
 
     public SmsAsyncClient createSmsAsyncClientUsingAzureKeyCredential() {
-        // You can find your endpoint and access key from your resource in the Azure Portal
+        // You can find your endpoint and access key from your resource in the Azure
+        // Portal
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
         SmsAsyncClient smsClient = new SmsClientBuilder()
-            .endpoint(endpoint)
-            .credential(azureKeyCredential)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .credential(azureKeyCredential)
+                .buildAsyncClient();
 
         return smsClient;
     }
@@ -52,8 +52,8 @@ public class ReadmeSamples {
         String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
         SmsClient smsClient = new SmsClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+                .connectionString(connectionString)
+                .buildClient();
         // END: readme-sample-createSmsClientWithConnectionString
 
         return smsClient;
@@ -61,13 +61,14 @@ public class ReadmeSamples {
 
     public SmsClient createSmsClientWithAAD() {
         // BEGIN: readme-sample-createSmsClientWithAAD
-        // You can find your endpoint and access key from your resource in the Azure Portal
+        // You can find your endpoint and access key from your resource in the Azure
+        // Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
         SmsClient smsClient = new SmsClientBuilder()
-            .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
         // END: readme-sample-createSmsClientWithAAD
 
         return smsClient;
@@ -75,13 +76,14 @@ public class ReadmeSamples {
 
     public SmsClient createSyncClientUsingTokenCredential() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-        // You can find your endpoint and access key from your resource in the Azure Portal
+        // You can find your endpoint and access key from your resource in the Azure
+        // Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
         SmsClient smsClient = new SmsClientBuilder()
-            .endpoint(endpoint)
-            .credential(tokenCredential)
-            .buildClient();
+                .endpoint(endpoint)
+                .credential(tokenCredential)
+                .buildClient();
         return smsClient;
     }
 
@@ -90,9 +92,9 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-sendMessageToOneRecipient
         SmsSendResult sendResult = smsClient.send(
-            "<from-phone-number>",
-            "<to-phone-number>",
-            "Weekly Promotion");
+                "<from-phone-number>",
+                "<to-phone-number>",
+                "Weekly Promotion");
 
         System.out.println("Message Id: " + sendResult.getMessageId());
         System.out.println("Recipient Number: " + sendResult.getTo());
@@ -109,11 +111,11 @@ public class ReadmeSamples {
         options.setTag("Marketing");
 
         Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
-            "<from-phone-number>",
-            Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-            "Weekly Promotion",
-            options /* Optional */,
-            Context.NONE).getValue();
+                "<from-phone-number>",
+                Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+                "Weekly Promotion",
+                options /* Optional */,
+                Context.NONE).getValue();
 
         for (SmsSendResult result : sendResults) {
             System.out.println("Message Id: " + result.getMessageId());
@@ -130,10 +132,9 @@ public class ReadmeSamples {
         SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
         try {
             SmsSendResult sendResult = smsClient.send(
-                "<from-phone-number>",
-                "<to-phone-number>",
-                "Weekly Promotion"
-            );
+                    "<from-phone-number>",
+                    "<to-phone-number>",
+                    "Weekly Promotion");
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
         }
@@ -149,19 +150,22 @@ public class ReadmeSamples {
             options.setTag("Marketing");
 
             Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
-                "<from-phone-number>",
-                Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-                "Weekly Promotion",
-                options /* Optional */,
-                Context.NONE);
+                    "<from-phone-number>",
+                    Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+                    "Weekly Promotion",
+                    options /* Optional */,
+                    Context.NONE);
 
             Iterable<SmsSendResult> smsSendResults = sendResults.getValue();
             for (SmsSendResult result : smsSendResults) {
                 if (result.isSuccessful()) {
-                    System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
+                    System.out.println(
+                            "Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
                 } else {
-                    System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
-                    System.out.println("Status code " + result.getHttpStatusCode() + " and error message " + result.getErrorMessage());
+                    System.out.println("Something went wrong when trying to send this message " + result.getMessageId()
+                            + " to " + result.getTo());
+                    System.out.println("Status code " + result.getHttpStatusCode() + " and error message "
+                            + result.getErrorMessage());
                 }
             }
         } catch (RuntimeException ex) {
@@ -175,22 +179,11 @@ public class ReadmeSamples {
         String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
         SmsClient smsClient = new SmsClientBuilder()
-            .connectionString(connectionString)
-            .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
-            .buildClient();
+                .connectionString(connectionString)
+                .serviceVersion(SmsServiceVersion.V2026_01_23) // Specify API version
+                .buildClient();
         // END: readme-sample-createSmsClientWithApiVersion
 
         return smsClient;
-    }
-
-    public void createTelcoMessagingClientWithApiVersion() {
-        // BEGIN: readme-sample-createTelcoMessagingClientWithApiVersion
-        String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
-
-        TelcoMessagingClient telcoMessagingClient = new TelcoMessagingClientBuilder()
-            .connectionString(connectionString)
-            .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
-            .buildClient();
-        // END: readme-sample-createTelcoMessagingClientWithApiVersion
     }
 }

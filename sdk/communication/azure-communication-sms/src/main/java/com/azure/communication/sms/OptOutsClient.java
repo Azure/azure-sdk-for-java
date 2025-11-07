@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Client for managing SMS opt-outs with Azure Communication SMS Services.
  */
-@ServiceClient(builder = TelcoMessagingClientBuilder.class)
+@ServiceClient(builder = SmsClientBuilder.class)
 public final class OptOutsClient {
     private final OptOutsAsyncClient asyncClient;
 
@@ -25,10 +25,11 @@ public final class OptOutsClient {
     }
 
     /**
-     * Add phone numbers to the opt-outs list which shall stop receiving messages from a sender number.
+     * Add phone numbers to the opt-outs list which shall stop receiving messages
+     * from a sender number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to The recipient's phone number.
+     * @param to   The recipient's phone number.
      * @return A list of opt-out results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -37,10 +38,11 @@ public final class OptOutsClient {
     }
 
     /**
-     * Add phone numbers to the opt-outs list which shall stop receiving messages from a sender number.
+     * Add phone numbers to the opt-outs list which shall stop receiving messages
+     * from a sender number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param to   A list of the recipient's phone numbers.
      * @return A list of opt-out results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -49,10 +51,12 @@ public final class OptOutsClient {
     }
 
     /**
-     * Add phone numbers to the opt-outs list which shall stop receiving messages from a sender number.
+     * Add phone numbers to the opt-outs list which shall stop receiving messages
+     * from a sender number.
      *
-     * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param from    The sender's identifier (typically phone number in E.164
+     *                format).
+     * @param to      A list of the recipient's phone numbers.
      * @param context A {@link Context} representing the request context.
      * @return A list of opt-out results with HTTP response information.
      */
@@ -65,7 +69,7 @@ public final class OptOutsClient {
      * Remove phone numbers from the opt-outs list.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to The recipient's phone number.
+     * @param to   The recipient's phone number.
      * @return A list of opt-out results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -77,7 +81,7 @@ public final class OptOutsClient {
      * Remove phone numbers from the opt-outs list.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param to   A list of the recipient's phone numbers.
      * @return A list of opt-out results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -88,8 +92,9 @@ public final class OptOutsClient {
     /**
      * Remove phone numbers from the opt-outs list.
      *
-     * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param from    The sender's identifier (typically phone number in E.164
+     *                format).
+     * @param to      A list of the recipient's phone numbers.
      * @param context A {@link Context} representing the request context.
      * @return A list of opt-out results with HTTP response information.
      */
@@ -99,10 +104,11 @@ public final class OptOutsClient {
     }
 
     /**
-     * Check the opt-out status for recipient phone numbers with a sender phone number.
+     * Check the opt-out status for recipient phone numbers with a sender phone
+     * number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to The recipient's phone number.
+     * @param to   The recipient's phone number.
      * @return A list of opt-out check results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -111,10 +117,11 @@ public final class OptOutsClient {
     }
 
     /**
-     * Check the opt-out status for recipient phone numbers with a sender phone number.
+     * Check the opt-out status for recipient phone numbers with a sender phone
+     * number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param to   A list of the recipient's phone numbers.
      * @return A list of opt-out check results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -123,10 +130,12 @@ public final class OptOutsClient {
     }
 
     /**
-     * Check the opt-out status for recipient phone numbers with a sender phone number.
+     * Check the opt-out status for recipient phone numbers with a sender phone
+     * number.
      *
-     * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param from    The sender's identifier (typically phone number in E.164
+     *                format).
+     * @param to      A list of the recipient's phone numbers.
      * @param context A {@link Context} representing the request context.
      * @return A list of opt-out check results with HTTP response information.
      */

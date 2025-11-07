@@ -31,7 +31,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Async client for managing SMS opt-outs with Azure Communication SMS Services.
  */
-@ServiceClient(builder = TelcoMessagingClientBuilder.class, isAsync = true)
+@ServiceClient(builder = SmsClientBuilder.class, isAsync = true)
 public final class OptOutsAsyncClient {
     private final AzureCommunicationSMSServiceImpl serviceClient;
     private final ClientLogger logger = new ClientLogger(OptOutsAsyncClient.class);
@@ -41,10 +41,11 @@ public final class OptOutsAsyncClient {
     }
 
     /**
-     * Add phone numbers to the opt-outs list which shall stop receiving messages from a sender number.
+     * Add phone numbers to the opt-outs list which shall stop receiving messages
+     * from a sender number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to The recipient's phone number.
+     * @param to   The recipient's phone number.
      * @return A list of opt-out results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -53,10 +54,11 @@ public final class OptOutsAsyncClient {
     }
 
     /**
-     * Add phone numbers to the opt-outs list which shall stop receiving messages from a sender number.
+     * Add phone numbers to the opt-outs list which shall stop receiving messages
+     * from a sender number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param to   A list of the recipient's phone numbers.
      * @return A list of opt-out results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -65,12 +67,15 @@ public final class OptOutsAsyncClient {
     }
 
     /**
-     * Add phone numbers to the opt-outs list which shall stop receiving messages from a sender number.
+     * Add phone numbers to the opt-outs list which shall stop receiving messages
+     * from a sender number.
      *
-     * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param from    The sender's identifier (typically phone number in E.164
+     *                format).
+     * @param to      A list of the recipient's phone numbers.
      * @param context A {@link Context} representing the request context.
-     * @return A list of opt-out results with HTTP response information on successful completion of {@link Mono}.
+     * @return A list of opt-out results with HTTP response information on
+     *         successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<OptOutResult>>> addOptOutWithResponse(String from, Iterable<String> to, Context context) {
@@ -96,7 +101,7 @@ public final class OptOutsAsyncClient {
      * Remove phone numbers from the opt-outs list.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to The recipient's phone number.
+     * @param to   The recipient's phone number.
      * @return A list of opt-out results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -108,7 +113,7 @@ public final class OptOutsAsyncClient {
      * Remove phone numbers from the opt-outs list.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param to   A list of the recipient's phone numbers.
      * @return A list of opt-out results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -120,10 +125,12 @@ public final class OptOutsAsyncClient {
     /**
      * Remove phone numbers from the opt-outs list.
      *
-     * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param from    The sender's identifier (typically phone number in E.164
+     *                format).
+     * @param to      A list of the recipient's phone numbers.
      * @param context A {@link Context} representing the request context.
-     * @return A list of opt-out results with HTTP response information on successful completion of {@link Mono}.
+     * @return A list of opt-out results with HTTP response information on
+     *         successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<OptOutResult>>> removeOptOutWithResponse(String from, Iterable<String> to,
@@ -147,11 +154,13 @@ public final class OptOutsAsyncClient {
     }
 
     /**
-     * Check the opt-out status for recipient phone numbers with a sender phone number.
+     * Check the opt-out status for recipient phone numbers with a sender phone
+     * number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to The recipient's phone number.
-     * @return A list of opt-out check results on successful completion of {@link Mono}.
+     * @param to   The recipient's phone number.
+     * @return A list of opt-out check results on successful completion of
+     *         {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OptOutCheckResult>> checkOptOut(String from, String to) {
@@ -159,11 +168,13 @@ public final class OptOutsAsyncClient {
     }
 
     /**
-     * Check the opt-out status for recipient phone numbers with a sender phone number.
+     * Check the opt-out status for recipient phone numbers with a sender phone
+     * number.
      *
      * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
-     * @return A list of opt-out check results on successful completion of {@link Mono}.
+     * @param to   A list of the recipient's phone numbers.
+     * @return A list of opt-out check results on successful completion of
+     *         {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OptOutCheckResult>> checkOptOut(String from, Iterable<String> to) {
@@ -172,12 +183,15 @@ public final class OptOutsAsyncClient {
     }
 
     /**
-     * Check the opt-out status for recipient phone numbers with a sender phone number.
+     * Check the opt-out status for recipient phone numbers with a sender phone
+     * number.
      *
-     * @param from The sender's identifier (typically phone number in E.164 format).
-     * @param to A list of the recipient's phone numbers.
+     * @param from    The sender's identifier (typically phone number in E.164
+     *                format).
+     * @param to      A list of the recipient's phone numbers.
      * @param context A {@link Context} representing the request context.
-     * @return A list of opt-out check results with HTTP response information on successful completion of {@link Mono}.
+     * @return A list of opt-out check results with HTTP response information on
+     *         successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<OptOutCheckResult>>> checkOptOutWithResponse(String from, Iterable<String> to,

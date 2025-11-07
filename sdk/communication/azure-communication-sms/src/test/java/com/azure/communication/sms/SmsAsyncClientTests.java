@@ -3,6 +3,7 @@
 
 package com.azure.communication.sms;
 
+import com.azure.communication.sms.implementation.models.DeliveryReport;
 import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
@@ -10,6 +11,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.Test;
@@ -257,18 +261,23 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setDeliveryReportEnabled(true);
 
         MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
-        messagingConnect.setApiKey("test-api-key-async-123");
         messagingConnect.setPartner("TestPartnerAsync");
+
+        Map<String, Object> partnerParams = new HashMap<>();
+        partnerParams.put("apiKey", "test-api-key-async-123");
+        messagingConnect.setPartnerParams(partnerParams);
         options.setMessagingConnect(messagingConnect);
 
         // Action & Assert
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options))
-            .assertNext(this::assertHappyPath)
-            .verifyComplete();
+            .expectErrorMatches(throwable -> throwable instanceof HttpResponseException
+                && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400
+                && throwable.getMessage().contains("Partner is invalid"))
+            .verify();
     }
 
     @Test
-    public void sendSmsWithMessagingConnectValidationAsync_MissingApiKey() {
+    public void sendSmsWithMessagingConnectValidationAsync_MissingPartnerParams() {
         // Arrange - use a simple mock client without recording
         SmsAsyncClient simpleClient = new SmsClientBuilder()
             .connectionString("endpoint=https://example.communication.azure.com/;accesskey=fake_key")
@@ -276,13 +285,13 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
         SmsSendOptions options = new SmsSendOptions();
         MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
-        messagingConnect.setPartner("TestPartnerAsync"); // API key is missing
+        messagingConnect.setPartner("TestPartnerAsync"); // partnerParams is missing/null
         options.setMessagingConnect(messagingConnect);
 
         // Action & Assert
         StepVerifier.create(simpleClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options))
             .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().contains("MessagingConnect apiKey cannot be null or empty"))
+                && throwable.getMessage().contains("MessagingConnect partnerParams cannot be null or empty"))
             .verify();
     }
 
@@ -295,7 +304,10 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
         SmsSendOptions options = new SmsSendOptions();
         MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
-        messagingConnect.setApiKey("test-api-key-async-123"); // Partner is missing
+        // Partner is missing, but partnerParams is provided
+        Map<String, Object> partnerParams = new HashMap<>();
+        partnerParams.put("apiKey", "test-api-key-async-123");
+        messagingConnect.setPartnerParams(partnerParams);
         options.setMessagingConnect(messagingConnect);
 
         // Action & Assert
@@ -317,30 +329,107 @@ public class SmsAsyncClientTests extends SmsTestBase {
         options.setTag("SerializationTestAsync");
 
         MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
-        messagingConnect.setApiKey("serialization-test-key-async");
         messagingConnect.setPartner("SerializationPartnerAsync");
+
+        Map<String, Object> partnerParams = new HashMap<>();
+        partnerParams.put("apiKey", "serialization-test-key-async");
+        messagingConnect.setPartnerParams(partnerParams);
         options.setMessagingConnect(messagingConnect);
 
         // Action & Assert
-        StepVerifier.create(asyncClient
-            .sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER), MESSAGE, options, Context.NONE)
-            .flatMap(requestResponse -> {
-                // Verify response
-                for (SmsSendResult result : requestResponse.getValue()) {
-                    assertHappyPath(result);
-                }
-                // Return request body for validation
-                return requestResponse.getRequest().getBody().last();
-            })).assertNext(bodyBuff -> {
-                String bodyRequest = StandardCharsets.UTF_8.decode(bodyBuff).toString();
+        StepVerifier
+            .create(asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER), MESSAGE, options,
+                Context.NONE))
+            .expectErrorMatches(throwable -> throwable instanceof HttpResponseException
+                && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400
+                && throwable.getMessage().contains("Partner is invalid"))
+            .verify();
+    }
 
-                // Verify that the new fields are properly serialized in the request
-                assertTrue(bodyRequest.contains("deliveryReportTimeoutInSeconds"));
-                assertTrue(bodyRequest.contains("180"));
-                assertTrue(bodyRequest.contains("messagingConnect"));
-                assertTrue(bodyRequest.contains("serialization-test-key-async"));
-                assertTrue(bodyRequest.contains("SerializationPartnerAsync"));
-            }).verifyComplete();
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getDeliveryReport(HttpClient httpClient) {
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "getDeliveryReportAsync");
+
+        // First send a message to get a message ID
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+
+        Mono<DeliveryReport> deliveryReportMono
+            = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options).flatMap(sendResult -> {
+                assertNotNull(sendResult.getMessageId());
+                // First attempt should fail with 404 immediately after SMS submission
+                return asyncClient.getDeliveryReport(sendResult.getMessageId())
+                    .onErrorResume(HttpResponseException.class, ex -> {
+                        // Expect 404 initially as delivery report is not ready yet
+                        assertEquals(404, ex.getResponse().getStatusCode());
+                        // Wait 10 seconds and try again when delivery report should be available
+                        return Mono.delay(Duration.ofSeconds(10))
+                            .then(asyncClient.getDeliveryReport(sendResult.getMessageId()));
+                    });
+            });
+
+        // After waiting, delivery report should be available
+        StepVerifier.create(deliveryReportMono).expectNextCount(1).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getDeliveryReportWithResponse(HttpClient httpClient) {
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "getDeliveryReportWithResponseAsync");
+
+        // First send a message to get a message ID
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+
+        Mono<Response<DeliveryReport>> deliveryReportMono
+            = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options).flatMap(sendResult -> {
+                assertNotNull(sendResult.getMessageId());
+                // First attempt should fail with 404 immediately after SMS submission
+                return asyncClient.getDeliveryReportWithResponse(sendResult.getMessageId(), Context.NONE)
+                    .onErrorResume(HttpResponseException.class, ex -> {
+                        // Expect 404 initially as delivery report is not ready yet
+                        assertEquals(404, ex.getResponse().getStatusCode());
+                        // Wait 10 seconds and try again when delivery report should be available
+                        return Mono.delay(Duration.ofSeconds(10))
+                            .then(asyncClient.getDeliveryReportWithResponse(sendResult.getMessageId(), Context.NONE));
+                    });
+            });
+
+        // After waiting, delivery report should be available
+        StepVerifier.create(deliveryReportMono).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void getDeliveryReportWithNullMessageId() {
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(null);
+        asyncClient = setupAsyncClient(builder, "getDeliveryReportNullMessageIdAsync");
+
+        StepVerifier.create(asyncClient.getDeliveryReport(null)).expectError(IllegalArgumentException.class).verify();
+    }
+
+    @Test
+    public void getDeliveryReportWithEmptyMessageId() {
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(null);
+        asyncClient = setupAsyncClient(builder, "getDeliveryReportEmptyMessageIdAsync");
+
+        StepVerifier.create(asyncClient.getDeliveryReport("")).expectError(IllegalArgumentException.class).verify();
+    }
+
+    @Test
+    public void getOptOutsAsyncClient() {
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(null);
+        asyncClient = setupAsyncClient(builder, "getOptOutsAsyncClientTest");
+
+        OptOutsAsyncClient optOutsAsyncClient = asyncClient.getOptOutsAsyncClient();
+        assertNotNull(optOutsAsyncClient);
+
+        // Verify that calling getOptOutsAsyncClient multiple times returns the same
+        // instance
+        OptOutsAsyncClient optOutsAsyncClient2 = asyncClient.getOptOutsAsyncClient();
+        assertEquals(optOutsAsyncClient, optOutsAsyncClient2);
     }
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {

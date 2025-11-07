@@ -18,16 +18,17 @@ import java.io.IOException;
 @Fluent
 public final class MessagingConnectOptions implements JsonSerializable<MessagingConnectOptions> {
     /*
-     * Represents the API key associated with the customer's account in the Messaging Connect Partner portal.
-     */
-    @Generated
-    private String apiKey;
-
-    /*
-     * Specifies the partner associated with the API key.
+     * Specifies the partner name for message delivery.
      */
     @Generated
     private String partner;
+
+    /*
+     * Partner-specific parameters as key-value pairs. Must contain at least one parameter required by the messaging
+     * connect partner (e.g., apiKey, servicePlanId, authToken, etc.).
+     */
+    @Generated
+    private Object partnerParams;
 
     /**
      * Creates an instance of MessagingConnectOptions class.
@@ -37,31 +38,7 @@ public final class MessagingConnectOptions implements JsonSerializable<Messaging
     }
 
     /**
-     * Get the apiKey property: Represents the API key associated with the customer's account in the Messaging Connect
-     * Partner portal.
-     * 
-     * @return the apiKey value.
-     */
-    @Generated
-    public String getApiKey() {
-        return this.apiKey;
-    }
-
-    /**
-     * Set the apiKey property: Represents the API key associated with the customer's account in the Messaging Connect
-     * Partner portal.
-     * 
-     * @param apiKey the apiKey value to set.
-     * @return the MessagingConnectOptions object itself.
-     */
-    @Generated
-    public MessagingConnectOptions setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-        return this;
-    }
-
-    /**
-     * Get the partner property: Specifies the partner associated with the API key.
+     * Get the partner property: Specifies the partner name for message delivery.
      * 
      * @return the partner value.
      */
@@ -71,7 +48,7 @@ public final class MessagingConnectOptions implements JsonSerializable<Messaging
     }
 
     /**
-     * Set the partner property: Specifies the partner associated with the API key.
+     * Set the partner property: Specifies the partner name for message delivery.
      * 
      * @param partner the partner value to set.
      * @return the MessagingConnectOptions object itself.
@@ -83,14 +60,38 @@ public final class MessagingConnectOptions implements JsonSerializable<Messaging
     }
 
     /**
+     * Get the partnerParams property: Partner-specific parameters as key-value pairs. Must contain at least one
+     * parameter required by the messaging connect partner (e.g., apiKey, servicePlanId, authToken, etc.).
+     * 
+     * @return the partnerParams value.
+     */
+    @Generated
+    public Object getPartnerParams() {
+        return this.partnerParams;
+    }
+
+    /**
+     * Set the partnerParams property: Partner-specific parameters as key-value pairs. Must contain at least one
+     * parameter required by the messaging connect partner (e.g., apiKey, servicePlanId, authToken, etc.).
+     * 
+     * @param partnerParams the partnerParams value to set.
+     * @return the MessagingConnectOptions object itself.
+     */
+    @Generated
+    public MessagingConnectOptions setPartnerParams(Object partnerParams) {
+        this.partnerParams = partnerParams;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeStringField("partner", this.partner);
+        jsonWriter.writeUntypedField("partnerParams", this.partnerParams);
         return jsonWriter.writeEndObject();
     }
 
@@ -111,10 +112,10 @@ public final class MessagingConnectOptions implements JsonSerializable<Messaging
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("apiKey".equals(fieldName)) {
-                    deserializedMessagingConnectOptions.apiKey = reader.getString();
-                } else if ("partner".equals(fieldName)) {
+                if ("partner".equals(fieldName)) {
                     deserializedMessagingConnectOptions.partner = reader.getString();
+                } else if ("partnerParams".equals(fieldName)) {
+                    deserializedMessagingConnectOptions.partnerParams = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

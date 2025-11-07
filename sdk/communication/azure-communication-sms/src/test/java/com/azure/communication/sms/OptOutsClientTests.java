@@ -21,7 +21,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for OptOutsClient functionality including opt-out management operations.
+ * Tests for OptOutsClient functionality including opt-out management
+ * operations.
  */
 public class OptOutsClientTests extends SmsTestBase {
 
@@ -225,15 +226,15 @@ public class OptOutsClientTests extends SmsTestBase {
      * Helper method to create OptOutsClient for testing.
      */
     private OptOutsClient getOptOutsClient(HttpClient httpClient) {
-        TelcoMessagingClientBuilder builder = getTelcoMessagingClientBuilder(httpClient);
+        SmsClientBuilder builder = getSmsClientBuilder(httpClient);
         return builder.buildClient().getOptOutsClient();
     }
 
     /**
-     * Helper method to create TelcoMessagingClientBuilder with proper configuration.
+     * Helper method to create SmsClientBuilder with proper configuration.
      */
-    private TelcoMessagingClientBuilder getTelcoMessagingClientBuilder(HttpClient httpClient) {
-        TelcoMessagingClientBuilder builder = new TelcoMessagingClientBuilder();
+    private SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
+        SmsClientBuilder builder = new SmsClientBuilder();
         builder.connectionString(CONNECTION_STRING);
 
         if (httpClient != null) {

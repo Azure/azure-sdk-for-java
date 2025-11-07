@@ -4,6 +4,7 @@
 
 package com.azure.communication.sms.implementation;
 
+import com.azure.communication.sms.implementation.models.DeliveryReport;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -55,9 +56,9 @@ public final class DeliveryReportsImpl {
     @ServiceInterface(name = "AzureCommunicationSMSServiceDeliveryReports")
     public interface DeliveryReportsService {
         @Get("/deliveryReports/{outgoingMessageId}")
-        @ExpectedResponses({ 200, 404 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Object>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<DeliveryReport>> get(@HostParam("endpoint") String endpoint,
             @PathParam("outgoingMessageId") String outgoingMessageId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -73,7 +74,7 @@ public final class DeliveryReportsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(String outgoingMessageId) {
+    public Mono<Response<DeliveryReport>> getWithResponseAsync(String outgoingMessageId) {
         return FluxUtil.withContext(context -> getWithResponseAsync(outgoingMessageId, context));
     }
 
@@ -89,7 +90,7 @@ public final class DeliveryReportsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(String outgoingMessageId, Context context) {
+    public Mono<Response<DeliveryReport>> getWithResponseAsync(String outgoingMessageId, Context context) {
         final String accept = "application/json";
         return service.get(this.client.getEndpoint(), outgoingMessageId, this.client.getApiVersion(), accept, context);
     }
@@ -104,7 +105,7 @@ public final class DeliveryReportsImpl {
      * @return delivery report for a specific outgoing message on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String outgoingMessageId) {
+    public Mono<DeliveryReport> getAsync(String outgoingMessageId) {
         return getWithResponseAsync(outgoingMessageId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -119,7 +120,7 @@ public final class DeliveryReportsImpl {
      * @return delivery report for a specific outgoing message on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String outgoingMessageId, Context context) {
+    public Mono<DeliveryReport> getAsync(String outgoingMessageId, Context context) {
         return getWithResponseAsync(outgoingMessageId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -134,7 +135,7 @@ public final class DeliveryReportsImpl {
      * @return delivery report for a specific outgoing message along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getWithResponse(String outgoingMessageId, Context context) {
+    public Response<DeliveryReport> getWithResponse(String outgoingMessageId, Context context) {
         return getWithResponseAsync(outgoingMessageId, context).block();
     }
 
@@ -148,7 +149,7 @@ public final class DeliveryReportsImpl {
      * @return delivery report for a specific outgoing message.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object get(String outgoingMessageId) {
+    public DeliveryReport get(String outgoingMessageId) {
         return getWithResponse(outgoingMessageId, Context.NONE).getValue();
     }
 }

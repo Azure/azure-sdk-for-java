@@ -66,13 +66,14 @@ A `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via t
 are needed to create a DefaultAzureCredential object.
 
 ```java readme-sample-createSmsClientWithAAD
-// You can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure
+// Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
 SmsClient smsClient = new SmsClientBuilder()
-    .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 ```
 
 ### Access Key Authentication
@@ -80,14 +81,15 @@ SMS uses HMAC authentication with the resource access key.
 The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
 ```java readme-sample-createSmsClientUsingAzureKeyCredential
-// You can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure
+// Portal
 String endpoint = "https://<resource-name>.communication.azure.com";
 AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
 SmsClient smsClient = new SmsClientBuilder()
-    .endpoint(endpoint)
-    .credential(azureKeyCredential)
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(azureKeyCredential)
+        .buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
@@ -97,8 +99,8 @@ Alternatively, you can provide the entire connection string using the connection
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
 SmsClient smsClient = new SmsClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
+        .connectionString(connectionString)
+        .buildClient();
 ```
 
 ## Key concepts
@@ -113,26 +115,15 @@ You can specify which version of the Azure Communication SMS API to use by setti
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
 SmsClient smsClient = new SmsClientBuilder()
-    .connectionString(connectionString)
-    .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
-    .buildClient();
+        .connectionString(connectionString)
+        .serviceVersion(SmsServiceVersion.V2026_01_23) // Specify API version
+        .buildClient();
 ```
 
 If no service version is specified, the latest supported version will be used. Available versions:
 
 - `SmsServiceVersion.V2021_03_07` - API version 2021-03-07
 - `SmsServiceVersion.V2026_01_23` - API version 2026-01-23 (latest)
-
-For the TelcoMessagingClient:
-
-```java readme-sample-createTelcoMessagingClientWithApiVersion
-String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
-
-TelcoMessagingClient telcoMessagingClient = new TelcoMessagingClientBuilder()
-    .connectionString(connectionString)
-    .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
-    .buildClient();
-```
 
 ## Examples
 
@@ -142,9 +133,9 @@ Use the `send` or `sendWithResponse` function to send an SMS message to a single
 
 ```java readme-sample-sendMessageToOneRecipient
 SmsSendResult sendResult = smsClient.send(
-    "<from-phone-number>",
-    "<to-phone-number>",
-    "Weekly Promotion");
+        "<from-phone-number>",
+        "<to-phone-number>",
+        "Weekly Promotion");
 
 System.out.println("Message Id: " + sendResult.getMessageId());
 System.out.println("Recipient Number: " + sendResult.getTo());
@@ -152,6 +143,7 @@ System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ```
 
 ### Send a 1:N SMS Message
+
 To send an SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
 ```java readme-sample-sendMessageToGroupWithOptions
@@ -160,112 +152,16 @@ options.setDeliveryReportEnabled(true);
 options.setTag("Marketing");
 
 Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
-    "<from-phone-number>",
-    Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-    "Weekly Promotion",
-    options /* Optional */,
-    Context.NONE).getValue();
+        "<from-phone-number>",
+        Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+        "Weekly Promotion",
+        options /* Optional */,
+        Context.NONE).getValue();
 
 for (SmsSendResult result : sendResults) {
     System.out.println("Message Id: " + result.getMessageId());
     System.out.println("Recipient Number: " + result.getTo());
     System.out.println("Send Result Successful:" + result.isSuccessful());
-}
-```
-
-### TelcoMessagingClient - Organized SMS Functionality
-
-The `TelcoMessagingClient` provides organized access to SMS functionality through specialized sub-clients for different operations:
-
-- **SmsClient**: For sending SMS messages
-- **DeliveryReportsClient**: For retrieving SMS delivery reports
-- **OptOutsClient**: For managing SMS opt-out lists
-
-#### Creating a TelcoMessagingClient
-
-```java readme-sample-createTelcoMessagingClientWithConnectionString
-// You can find your connection string from your resource in the Azure Portal
-String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
-
-TelcoMessagingClient telcoMessagingClient = new TelcoMessagingClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
-```
-
-#### Sending SMS via TelcoMessagingClient
-
-```java readme-sample-sendSmsUsingTelcoMessagingClient
-// Get the SMS client from the organized telco messaging client
-SmsClient smsClient = telcoMessagingClient.getSmsClient();
-
-// Send a simple SMS
-SmsSendResult result = smsClient.send(
-    "+1234567890", // from
-    "+0987654321", // to
-    "Hello, this is a test message!"
-);
-
-System.out.println("Message sent. Message Id: " + result.getMessageId());
-```
-
-#### Getting Delivery Reports
-
-```java readme-sample-getDeliveryReportUsingTelcoMessagingClient
-// Get the delivery reports client from the organized telco messaging client
-DeliveryReportsClient deliveryReportsClient = telcoMessagingClient.getDeliveryReportsClient();
-
-String messageId = "message-id-from-send-operation";
-
-try {
-    DeliveryReport deliveryReport = deliveryReportsClient.getDeliveryReport(messageId);
-
-    System.out.println("Delivery Status: " + deliveryReport.getDeliveryStatus());
-    System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());
-    if (deliveryReport.getDeliveryStatusDetails() != null) {
-        System.out.println("Status Details: " + deliveryReport.getDeliveryStatusDetails());
-    }
-} catch (Exception e) {
-    System.err.println("Failed to get delivery report: " + e.getMessage());
-}
-```
-
-#### Managing Opt-Outs
-
-```java readme-sample-addOptOutUsingTelcoMessagingClient
-// Get the opt-outs client from the organized telco messaging client
-OptOutsClient optOutsClient = telcoMessagingClient.getOptOutsClient();
-
-List<OptOutResult> results = optOutsClient.addOptOut(
-    "+1234567890", // from
-    "+0987654321"  // to
-);
-
-for (OptOutResult result : results) {
-    System.out.println("Recipient: " + result.getTo());
-    System.out.println("HTTP Status: " + result.getHttpStatusCode());
-    if (result.getErrorMessage() != null) {
-        System.out.println("Error: " + result.getErrorMessage());
-    }
-}
-```
-
-```java readme-sample-checkOptOutUsingTelcoMessagingClient
-OptOutsClient optOutsClient = telcoMessagingClient.getOptOutsClient();
-
-List<OptOutCheckResult> results = optOutsClient.checkOptOut(
-    "+1234567890", // from
-    "+0987654321"  // to
-);
-
-for (OptOutCheckResult result : results) {
-    System.out.println("Recipient: " + result.getTo());
-    System.out.println("HTTP Status: " + result.getHttpStatusCode());
-    if (result.isOptedOut() != null) {
-        System.out.println("Is Opted Out: " + result.isOptedOut());
-    }
-    if (result.getErrorMessage() != null) {
-        System.out.println("Error: " + result.getErrorMessage());
-    }
 }
 ```
 
@@ -282,19 +178,22 @@ try {
     options.setTag("Marketing");
 
     Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
-        "<from-phone-number>",
-        Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-        "Weekly Promotion",
-        options /* Optional */,
-        Context.NONE);
+            "<from-phone-number>",
+            Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+            "Weekly Promotion",
+            options /* Optional */,
+            Context.NONE);
 
     Iterable<SmsSendResult> smsSendResults = sendResults.getValue();
     for (SmsSendResult result : smsSendResults) {
         if (result.isSuccessful()) {
-            System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
+            System.out.println(
+                    "Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
         } else {
-            System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
-            System.out.println("Status code " + result.getHttpStatusCode() + " and error message " + result.getErrorMessage());
+            System.out.println("Something went wrong when trying to send this message " + result.getMessageId()
+                    + " to " + result.getTo());
+            System.out.println("Status code " + result.getHttpStatusCode() + " and error message "
+                    + result.getErrorMessage());
         }
     }
 } catch (RuntimeException ex) {

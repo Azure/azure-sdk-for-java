@@ -7,11 +7,17 @@ import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Sample demonstrating how to send an SMS message using Messaging Connect feature.
+ * Sample demonstrating how to send an SMS message using Messaging Connect
+ * feature.
  * Messaging Connect allows connecting with partners to deliver SMS messages.
- * When using MessagingConnect, both apiKey and partner fields must be provided.
+ * When using MessagingConnect, both partner name and partnerParams must be
+ * provided.
+ * The partnerParams should contain the required parameters for your specific
+ * messaging partner.
  */
 public class SendSmsWithMessagingConnectExample {
     public static void main(String[] args) {
@@ -21,13 +27,21 @@ public class SendSmsWithMessagingConnectExample {
 
         // Create SMS client
         SmsClient smsClient = new SmsClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+                .connectionString(connectionString)
+                .buildClient();
 
-        // Configure MessagingConnect options
+        // Configure MessagingConnect options with dynamic partner parameters
         MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
-        messagingConnect.setApiKey("your-partner-api-key"); // API key from partner portal
-        messagingConnect.setPartner("YourPartnerName");   // Partner name
+        messagingConnect.setPartner("YourPartnerName"); // Partner name
+
+        // Create partner-specific parameters map
+        Map<String, Object> partnerParams = new HashMap<>();
+        partnerParams.put("apiKey", "your-partner-api-key"); // API key from partner portal
+        // Add other partner-specific parameters as needed
+        // partnerParams.put("servicePlanId", "your-service-plan-id");
+        // partnerParams.put("authToken", "your-auth-token");
+
+        messagingConnect.setPartnerParams(partnerParams);
 
         // Configure SMS options with MessagingConnect
         SmsSendOptions options = new SmsSendOptions();
@@ -37,17 +51,16 @@ public class SendSmsWithMessagingConnectExample {
 
         // Send SMS message through Messaging Connect partner
         SmsSendResult sendResult = smsClient.send(
-            phoneNumber,
-            phoneNumber,
-            "This message is sent via Messaging Connect partner",
-            options
-        );
+                phoneNumber,
+                phoneNumber,
+                "This message is sent via Messaging Connect partner",
+                options);
 
         // Output results
         System.out.println("Message Id: " + sendResult.getMessageId());
         System.out.println("Recipient Number: " + sendResult.getTo());
         System.out.println("Send Result Successful: " + sendResult.isSuccessful());
         System.out.println("Message sent via Messaging Connect partner: " +
-            messagingConnect.getPartner());
+                messagingConnect.getPartner());
     }
 }

@@ -244,16 +244,16 @@ public class OptOutsAsyncClientTests extends SmsTestBase {
      * Helper method to create OptOutsAsyncClient for testing.
      */
     private OptOutsAsyncClient getOptOutsAsyncClient(HttpClient httpClient) {
-        TelcoMessagingClientBuilder builder = getTelcoMessagingClientBuilder(httpClient);
+        SmsClientBuilder builder = getSmsClientBuilder(httpClient);
         return builder.buildAsyncClient().getOptOutsAsyncClient();
     }
 
     /**
-     * Helper method to create TelcoMessagingClientBuilder with proper
+     * Helper method to create SmsClientBuilder with proper
      * configuration.
      */
-    private TelcoMessagingClientBuilder getTelcoMessagingClientBuilder(HttpClient httpClient) {
-        TelcoMessagingClientBuilder builder = new TelcoMessagingClientBuilder();
+    private SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
+        SmsClientBuilder builder = new SmsClientBuilder();
         builder.connectionString(CONNECTION_STRING);
 
         if (httpClient != null) {
