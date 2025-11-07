@@ -160,8 +160,7 @@ public final class IdentitySslUtil {
         }
 
         @Override
-        public Socket createSocket(String host, int port, InetAddress localAddress, int localPort)
-            throws IOException {
+        public Socket createSocket(String host, int port, InetAddress localAddress, int localPort) throws IOException {
             Socket sslSocket = sslSocketFactory.createSocket(host, port, localAddress, localPort);
             configureSni(sslSocket);
             return sslSocket;
@@ -175,8 +174,8 @@ public final class IdentitySslUtil {
         }
 
         @Override
-        public Socket createSocket(InetAddress address, int port, InetAddress localAddress,
-            int localPort) throws IOException {
+        public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort)
+            throws IOException {
             Socket sslSocket = sslSocketFactory.createSocket(address, port, localAddress, localPort);
             configureSni(sslSocket);
             return sslSocket;
