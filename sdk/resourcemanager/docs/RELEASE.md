@@ -28,7 +28,7 @@ Example PR: https://github.com/Azure/azure-sdk-for-java/pull/47139
 
 #### Prepare release
 - Determine the next stable version to release.
-- Update current version of the library to the new stable version, as well as the `unreleased` entry of it. E.g. https://github.com/Azure/azure-sdk-for-java/pull/46981/commits/cfc6d2a93cfab113103642f54023b8f3d9bfe3b1#diff-8c575b582f7315a913d70b6b0e50888a67a278187ccb7f8d4b8ceb2cb2d67959
+- In `eng/versioning/version_client.txt`, update current version of the library to the new stable version, as well as the `unreleased` entry of it. E.g. https://github.com/Azure/azure-sdk-for-java/pull/46981/commits/cfc6d2a93cfab113103642f54023b8f3d9bfe3b1#diff-8c575b582f7315a913d70b6b0e50888a67a278187ccb7f8d4b8ceb2cb2d67959
 - Run `python eng/versioning/update_versions.py --sr` to update library version for pom.xml.
 - Run `python eng/versioning/update_versions.py` to update readme. Only take changes in target library directory. Revert others.
 - Update CHANGELOG.md
