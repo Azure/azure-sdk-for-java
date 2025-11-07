@@ -284,7 +284,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    public void beforeSuite() {
 
         logger.info("beforeSuite Started");
 
@@ -318,14 +318,14 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
+    public void parallelizeUnitTests(ITestContext context) {
         // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
 //        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    public void afterSuite() {
 
         logger.info("afterSuite Started");
 

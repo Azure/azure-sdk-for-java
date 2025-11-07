@@ -204,7 +204,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    public void beforeSuite() {
         logger.info("beforeSuite Started");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
@@ -221,7 +221,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
+    public void parallelizeUnitTests(ITestContext context) {
         // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
 //        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
@@ -229,7 +229,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    public void afterSuite() {
         logger.info("afterSuite Started");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
