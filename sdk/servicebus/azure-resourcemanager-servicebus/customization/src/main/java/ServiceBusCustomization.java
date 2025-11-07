@@ -50,7 +50,7 @@ public class ServiceBusCustomization extends Customization {
      *
      * @param customization the customization for class
      */
-    private void CustomizeToJsonDateSerialization(ClassCustomization customization) {
+    private static void CustomizeToJsonDateSerialization(ClassCustomization customization) {
         customization.customizeAst(ast -> {
             ast.addImport("com.azure.resourcemanager.servicebus.implementation.DurationSerializer");
             ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
