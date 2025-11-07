@@ -36,8 +36,81 @@ public final class DataCollectionRuleDestinations extends DestinationsSpec {
      */
     @Override
     public DataCollectionRuleDestinations
+        withMonitoringAccounts(List<MonitoringAccountDestination> monitoringAccounts) {
+        super.withMonitoringAccounts(monitoringAccounts);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations
         withAzureMonitorMetrics(DestinationsSpecAzureMonitorMetrics azureMonitorMetrics) {
         super.withAzureMonitorMetrics(azureMonitorMetrics);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withEventHubs(List<EventHubDestination> eventHubs) {
+        super.withEventHubs(eventHubs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withEventHubsDirect(List<EventHubDirectDestination> eventHubsDirect) {
+        super.withEventHubsDirect(eventHubsDirect);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withStorageBlobsDirect(List<StorageBlobDestination> storageBlobsDirect) {
+        super.withStorageBlobsDirect(storageBlobsDirect);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withStorageTablesDirect(List<StorageTableDestination> storageTablesDirect) {
+        super.withStorageTablesDirect(storageTablesDirect);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withStorageAccounts(List<StorageBlobDestination> storageAccounts) {
+        super.withStorageAccounts(storageAccounts);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withMicrosoftFabric(List<MicrosoftFabricDestination> microsoftFabric) {
+        super.withMicrosoftFabric(microsoftFabric);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataCollectionRuleDestinations withAzureDataExplorer(List<AdxDestination> azureDataExplorer) {
+        super.withAzureDataExplorer(azureDataExplorer);
         return this;
     }
 
@@ -48,7 +121,36 @@ public final class DataCollectionRuleDestinations extends DestinationsSpec {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (logAnalytics() != null) {
+            logAnalytics().forEach(e -> e.validate());
+        }
+        if (monitoringAccounts() != null) {
+            monitoringAccounts().forEach(e -> e.validate());
+        }
+        if (azureMonitorMetrics() != null) {
+            azureMonitorMetrics().validate();
+        }
+        if (eventHubs() != null) {
+            eventHubs().forEach(e -> e.validate());
+        }
+        if (eventHubsDirect() != null) {
+            eventHubsDirect().forEach(e -> e.validate());
+        }
+        if (storageBlobsDirect() != null) {
+            storageBlobsDirect().forEach(e -> e.validate());
+        }
+        if (storageTablesDirect() != null) {
+            storageTablesDirect().forEach(e -> e.validate());
+        }
+        if (storageAccounts() != null) {
+            storageAccounts().forEach(e -> e.validate());
+        }
+        if (microsoftFabric() != null) {
+            microsoftFabric().forEach(e -> e.validate());
+        }
+        if (azureDataExplorer() != null) {
+            azureDataExplorer().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -58,7 +160,22 @@ public final class DataCollectionRuleDestinations extends DestinationsSpec {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("logAnalytics", logAnalytics(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("monitoringAccounts", monitoringAccounts(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("azureMonitorMetrics", azureMonitorMetrics());
+        jsonWriter.writeArrayField("eventHubs", eventHubs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventHubsDirect", eventHubsDirect(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageBlobsDirect", storageBlobsDirect(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageTablesDirect", storageTablesDirect(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageAccounts", storageAccounts(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("microsoftFabric", microsoftFabric(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("azureDataExplorer", azureDataExplorer(),
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -82,9 +199,41 @@ public final class DataCollectionRuleDestinations extends DestinationsSpec {
                     List<LogAnalyticsDestination> logAnalytics
                         = reader.readArray(reader1 -> LogAnalyticsDestination.fromJson(reader1));
                     deserializedDataCollectionRuleDestinations.withLogAnalytics(logAnalytics);
+                } else if ("monitoringAccounts".equals(fieldName)) {
+                    List<MonitoringAccountDestination> monitoringAccounts
+                        = reader.readArray(reader1 -> MonitoringAccountDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withMonitoringAccounts(monitoringAccounts);
                 } else if ("azureMonitorMetrics".equals(fieldName)) {
                     deserializedDataCollectionRuleDestinations
                         .withAzureMonitorMetrics(DestinationsSpecAzureMonitorMetrics.fromJson(reader));
+                } else if ("eventHubs".equals(fieldName)) {
+                    List<EventHubDestination> eventHubs
+                        = reader.readArray(reader1 -> EventHubDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withEventHubs(eventHubs);
+                } else if ("eventHubsDirect".equals(fieldName)) {
+                    List<EventHubDirectDestination> eventHubsDirect
+                        = reader.readArray(reader1 -> EventHubDirectDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withEventHubsDirect(eventHubsDirect);
+                } else if ("storageBlobsDirect".equals(fieldName)) {
+                    List<StorageBlobDestination> storageBlobsDirect
+                        = reader.readArray(reader1 -> StorageBlobDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withStorageBlobsDirect(storageBlobsDirect);
+                } else if ("storageTablesDirect".equals(fieldName)) {
+                    List<StorageTableDestination> storageTablesDirect
+                        = reader.readArray(reader1 -> StorageTableDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withStorageTablesDirect(storageTablesDirect);
+                } else if ("storageAccounts".equals(fieldName)) {
+                    List<StorageBlobDestination> storageAccounts
+                        = reader.readArray(reader1 -> StorageBlobDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withStorageAccounts(storageAccounts);
+                } else if ("microsoftFabric".equals(fieldName)) {
+                    List<MicrosoftFabricDestination> microsoftFabric
+                        = reader.readArray(reader1 -> MicrosoftFabricDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withMicrosoftFabric(microsoftFabric);
+                } else if ("azureDataExplorer".equals(fieldName)) {
+                    List<AdxDestination> azureDataExplorer
+                        = reader.readArray(reader1 -> AdxDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withAzureDataExplorer(azureDataExplorer);
                 } else {
                     reader.skipChildren();
                 }

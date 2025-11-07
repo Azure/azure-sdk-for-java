@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class SecurityRulesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkSecurityGroupRuleList.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkSecurityGroupRuleList.
      * json
      */
     /**

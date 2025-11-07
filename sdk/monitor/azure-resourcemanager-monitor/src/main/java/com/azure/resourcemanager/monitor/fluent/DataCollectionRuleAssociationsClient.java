@@ -61,6 +61,22 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName,
+        String dataCollectionRuleName, String skipToken, Integer top);
+
+    /**
+     * Lists associations for the specified data collection rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,6 +105,8 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,7 +115,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName,
-        String dataCollectionRuleName, Context context);
+        String dataCollectionRuleName, String skipToken, Integer top, Context context);
 
     /**
      * Lists associations for the specified data collection endpoint.
