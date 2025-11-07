@@ -232,6 +232,12 @@ class ConnectionManager {
                 int failedAttempt = client.getFailedAttempts();
                 long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
                 client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+                for (int i = 0; i < activeClients.size(); i++) {
+                    if (activeClients.get(i).getEndpoint().equals(endpoint)) {
+                        activeClients.remove(i);
+                        break;
+                    }
+                }
                 return;
             }
         }
