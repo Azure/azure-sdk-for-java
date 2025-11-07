@@ -2,18 +2,20 @@
 
 ## Table of Contents
 
-- [Generate SDK PR](#generate-sdk-pr)
+- [Prepare SDK PR](#1-prepare-sdk-pr)
   - [Swagger](#swagger)
+    - [Generate from new release tag (API-version)](#generate-from-new-release-tag-api-version)
+    - [Prepare release](#prepare-release)
   - [TypeSpec](#typespec)
-- [Dev on SDK PR](#dev-on-sdk-pr)
+- [Dev on SDK PR](#2-dev-on-sdk-pr)
   - [Review breaking changes (if any)](#review-breaking-changes-if-any)
   - [Record test](#record-test)
   - [Local verification](#local-verification)
   - [PR review](#pr-review)
-- [Release](#release)
-- [Post Release](#post-release)
+- [Release](#3-release)
+- [Post Release](#4-post-release)
 
-## Prepare SDK PR
+## 1. Prepare SDK PR
 
 ### Swagger
 
@@ -39,7 +41,7 @@ Parameters are self-explained. Do ensure `Create SDK pull request` is checked.
 
 Example PR: https://github.com/Azure/azure-sdk-for-java/pull/47100
 
-## Dev on SDK PR
+## 2. Dev on SDK PR
 Pull PR branch to your local repository. Further development will base on this branch.
 
 ### Review breaking changes (if any)
@@ -55,12 +57,12 @@ Run `mvn verify` and check for failures. If it passes, push local changes to the
 ### PR review
 Request for PR review. Merge PR after approval.
 
-## Release
+## 3. Release
 In Azure DevOps's internal pipelines, look for `java - xx` pipeline. They can be either `java - containerservice` or `java - azure-resourcemanager-cosmos` depending on different services.
 If former, there should be an e.g. `azure-resourcemanager-containerservice` choice unselected by default. Make sure to de-select data-plane SDK and select mgmt SDK.
 If latter, there should be no choice.
 Run and approve release.
 
-## Post Release
+## 4. Post Release
 Once release is complete, there should be a follow-up `Increment versions after xx release` PR. E.g. https://github.com/Azure/azure-sdk-for-java/pull/46982
 Approve and merge the PR.
