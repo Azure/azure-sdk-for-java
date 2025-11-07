@@ -85,14 +85,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
+            // Combine with pending data if any
+            ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
+
+            // Track encoded bytes
+            int encodedBytesInBuffer = encodedBuffer.remaining();
+            state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
+
             try {
-                // Combine with pending data if any
-                ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
-
-                // Track encoded bytes
-                int encodedBytesInBuffer = encodedBuffer.remaining();
-                state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
-
                 // Try to decode what we have - decoder handles partial data
                 int availableSize = dataToProcess.remaining();
                 ByteBuffer decodedData = state.decoder.decode(dataToProcess.duplicate(), availableSize);
@@ -113,6 +113,19 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     return Flux.just(decodedData);
                 } else {
                     return Flux.empty();
+                }
+            } catch (IllegalArgumentException e) {
+                // Handle decoder exceptions - check if it's due to incomplete data
+                if (e.getMessage() != null && e.getMessage().contains("not long enough")) {
+                    // Not enough data to decode yet - preserve all data in pending buffer
+                    state.updatePendingBuffer(dataToProcess);
+
+                    // Don't fail - just return empty and wait for more data
+                    return Flux.empty();
+                } else {
+                    // Other errors should propagate
+                    LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
+                    return Flux.error(e);
                 }
             } catch (Exception e) {
                 LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
