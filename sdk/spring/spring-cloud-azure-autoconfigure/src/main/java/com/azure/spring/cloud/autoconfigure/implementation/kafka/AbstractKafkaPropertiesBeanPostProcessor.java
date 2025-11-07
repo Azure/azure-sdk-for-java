@@ -28,10 +28,39 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
 
 /**
  * Abstract base class for Kafka properties BeanPostProcessors.
- * This class provides common functionality for configuring Kafka authentication
- * using different strategies (OAuth2, connection string, etc.).
+ * <p>
+ * This class provides common functionality for configuring Kafka authentication for Azure Event Hubs
+ * using different strategies. It uses the Strategy pattern to delegate authentication configuration
+ * to pluggable {@link KafkaAuthenticationStrategy} implementations.
+ * </p>
+ * <p>
+ * The processor intercepts Kafka properties beans during Spring bean initialization and applies
+ * authentication configuration to producer, consumer, and admin properties based on the configured
+ * strategy.
+ * </p>
+ * <p>
+ * <b>Authentication Flow:</b>
+ * <ol>
+ *   <li>Bean post processor detects Kafka properties beans during initialization</li>
+ *   <li>Retrieves AzureGlobalProperties for credential configuration</li>
+ *   <li>For each set of properties (producer/consumer/admin):
+ *     <ul>
+ *       <li>Checks if authentication strategy should be applied via {@link KafkaAuthenticationStrategy#shouldApply}</li>
+ *       <li>If applicable, applies authentication via {@link KafkaAuthenticationStrategy#applyAuthentication}</li>
+ *       <li>Configures Kafka user agent for telemetry</li>
+ *       <li>Clears Azure-specific properties from raw properties map</li>
+ *     </ul>
+ *   </li>
+ * </ol>
+ * </p>
+ * <p>
+ * By default, uses {@link KafkaOAuth2AuthenticationStrategy} for OAuth2/Microsoft Entra ID authentication.
+ * Subclasses can provide alternative strategies via the constructor.
+ * </p>
  *
- * @param <T> the type of Kafka properties bean to process
+ * @param <T> the type of Kafka properties bean to process (e.g., {@link KafkaProperties})
+ * @see KafkaAuthenticationStrategy
+ * @see KafkaOAuth2AuthenticationStrategy
  */
 abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor, ApplicationContextAware {
 
