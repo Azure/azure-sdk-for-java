@@ -20,7 +20,6 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
     private static volatile boolean isInitialized = false;
 
     public CosmosNettyLeakDetectorFactory() {
-        ingestIntoNetty();
     }
 
     @Override
@@ -32,6 +31,11 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
     public void onExecutionFinish() {
         // Run GC to force finalizers to run - only in finalizers Netty would actually detect any leaks.
         System.gc();
+        try {
+            Thread.sleep(1_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // This method must be called as early as possible in the lifecycle of a process
@@ -53,6 +57,7 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
             // install custom reporter
             ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(new CosmosNettyLeakDetectorFactory());
 
+            logger.info("NETTY LEAK detection initialized");
             isInitialized = true;
         }
     }
@@ -60,6 +65,12 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
     public static List<String> resetIdentifiedLeaks() {
         // Run GC to force finalizers to run - only in finalizers Netty would actually detect any leaks.
         System.gc();
+        try {
+            Thread.sleep(1_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         synchronized (staticLock) {
             List<String> leaksSnapshot = new ArrayList<>(identifiedLeaks);
 
