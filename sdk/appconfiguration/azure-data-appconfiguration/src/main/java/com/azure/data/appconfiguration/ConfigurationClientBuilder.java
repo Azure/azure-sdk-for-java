@@ -42,6 +42,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.AudiencePolicy;
 import com.azure.data.appconfiguration.implementation.QueryParamPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationAudience;
@@ -266,6 +267,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
 
         // Add query parameter reordering policy
         policies.add(new QueryParamPolicy());
+
+        // Add policy to deal with Audience Exception in new clouds
+        policies.add(new AudiencePolicy(audience));
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
