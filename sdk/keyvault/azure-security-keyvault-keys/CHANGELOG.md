@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Trigger PR CI
+
 ## 4.10.4 (2025-10-27)
 
 ### Other Changes
