@@ -115,13 +115,6 @@
       <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- BouncyCastle is required for generating self-signed certificates with SANs in tests -->
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcpkix-lts8on</artifactId>
-      <version>2.73.8</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

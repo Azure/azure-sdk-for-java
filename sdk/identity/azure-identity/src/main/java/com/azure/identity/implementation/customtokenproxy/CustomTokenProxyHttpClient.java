@@ -15,16 +15,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyStore;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -57,7 +61,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         this.sniName = proxyConfig.getSniName();
         this.caData = proxyConfig.getCaData();
         this.caFile = proxyConfig.getCaFile();
-        this.cachedSSLContext = getSSLContext();
     }
 
     @Override
@@ -78,7 +81,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     private HttpURLConnection createConnection(HttpRequest request) throws IOException {
         URL updatedUrl = rewriteTokenRequestForProxy(request.getUrl());
         HttpsURLConnection connection = (HttpsURLConnection) updatedUrl.openConnection();
-        // If SNI explicitly provided
         try {
             SSLContext sslContext = getSSLContext();
             SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
@@ -174,7 +176,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             synchronized (this) {
                 if (currentContent.length == 0) {
                     if (cachedSSLContext == null) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException("CA file " + caFile + " is empty"));
+                        throw LOGGER.logExceptionAsError(new IllegalStateException("CA file " + caFile + " is empty"));
                     }
                     LOGGER.warning("CA file " + caFile + " is empty, using cached SSL context from previous load");
                     return cachedSSLContext;
@@ -239,10 +241,44 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     private static HostnameVerifier sniAwareVerifier(String sniName, URL customProxyUrl) {
         return (urlHost, session) -> {
             String peerHost = session.getPeerHost();
-            String expectedProxyHost = customProxyUrl.getHost();
-            return peerHost.equalsIgnoreCase(expectedProxyHost)
-                || (!CoreUtils.isNullOrEmpty(sniName) && peerHost.equalsIgnoreCase(sniName));
+            String proxyHost = customProxyUrl.getHost();
+
+            if (peerHost.equalsIgnoreCase(proxyHost)) {
+                if (!CoreUtils.isNullOrEmpty(sniName)) {
+                    try {
+                        Certificate[] certificates = session.getPeerCertificates();
+                        if (certificates.length > 0 && certificates[0] instanceof X509Certificate) {
+                            X509Certificate cert = (X509Certificate) certificates[0];
+                            return certificateContainsDnsName(cert, sniName);
+                        }
+                        return false;
+                    } catch (SSLPeerUnverifiedException e) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            return false;
         };
     }
 
+    private static boolean certificateContainsDnsName(X509Certificate cert, String dnsName) {
+        try {
+            Collection<List<?>> sanList = cert.getSubjectAlternativeNames();
+            if (sanList != null) {
+                for (List<?> san : sanList) {
+                    if (san.size() >= 2 && san.get(0).equals(2)) {
+                        String certDnsName = (String) san.get(1);
+                        if (certDnsName.equalsIgnoreCase(dnsName)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (CertificateParsingException e) {
+            return false;
+        }
+        return false;
+    }
 }

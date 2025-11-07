@@ -32,44 +32,36 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.util.CharsetUtil;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.GeneralName;
-import org.bouncycastle.asn1.x509.GeneralNames;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.X509v3CertificateBuilder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.ContentSigner;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import reactor.test.StepVerifier;
 
 import javax.net.ssl.SSLEngine;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.security.KeyStore;
 import java.security.PrivateKey;
-import java.security.Security;
-import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * E2E test for WorkloadIdentityCredential with AKS Custom Token Proxy using Netty mock server.
+ * The certificate is loaded from pre-generated certificate from resources, which was generated as follows-
+ * keytool -genkeypair -alias test-cert -keyalg RSA -keysize 2048 -validity 3650 -keystore src/test/resources/test-aks-cert.p12 -storetype PKCS12
+ * -storepass password -keypass password -dname "CN=AKS-Proxy-Test" -ext "SAN=DNS:test-aks-proxy.ests.aks"
  *
  */
 public class WorkloadIdentityCredentialIdentityBindingTest {
@@ -92,34 +84,34 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     private String caCertPemData;
     private AtomicInteger tokenRequestCount;
     private AtomicInteger metadataRequestCount;
+    private X509Certificate certificate;
 
     @BeforeEach
     public void setUp() throws Exception {
         tokenRequestCount = new AtomicInteger(0);
         metadataRequestCount = new AtomicInteger(0);
 
-        // Generate key pair and certificate
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(2048);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        try (InputStream keyStoreStream = getClass().getResourceAsStream("/test-aks-cert.p12")) {
+            if (keyStoreStream == null) {
+                throw new IllegalStateException("Test certificate not found in resources: /test-aks-cert.p12");
+            }
+            keyStore.load(keyStoreStream, "password".toCharArray());
+        }
 
-        // Generate self-signed certificate with both localhost and AKS SNI name
-        X509Certificate certificate = generateCertificateWithAksSni(keyPair, AKS_SNI_NAME);
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("test-cert", "password".toCharArray());
+        certificate = (X509Certificate) keyStore.getCertificate("test-cert");
 
-        // Convert certificate to PEM format
         caCertPemData = toPemFormat(certificate);
 
-        // Write CA certificate to file
         caCertFilePath = tempDir.resolve("ca-cert.pem");
         Files.write(caCertFilePath, caCertPemData.getBytes(StandardCharsets.UTF_8));
 
-        // Create mock federated token file
         tokenFilePath = tempDir.resolve("token.jwt");
         String mockJwt = createMockFederatedToken();
         Files.write(tokenFilePath, mockJwt.getBytes(StandardCharsets.UTF_8));
 
-        // Start Netty HTTPS server
-        startNettyHttpsServer(keyPair.getPrivate(), certificate);
+        startNettyHttpsServer(privateKey, certificate);
     }
 
     @AfterEach
@@ -136,7 +128,41 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     }
 
     @Test
-    public void testAksProxyWithCaFile() {
+    public void testAksProxyWithCaFile() throws CertificateParsingException {
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put("AZURE_KUBERNETES_TOKEN_PROXY", serverBaseUrl)
+                .put("AZURE_KUBERNETES_CA_FILE", caCertFilePath.toString())
+                .put("AZURE_KUBERNETES_SNI_NAME", AKS_SNI_NAME)
+                .put(Configuration.PROPERTY_AZURE_CLIENT_ID, TEST_CLIENT_ID)
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, TEST_TENANT_ID)
+                .put("AZURE_FEDERATED_TOKEN_FILE", tokenFilePath.toString()));
+
+        List<String> dnsNames = fetchCertificateSAN(certificate);
+
+        assertTrue(dnsNames.contains("test-aks-proxy.ests.aks"),
+            "Certificate should contain the SNI name 'test-aks-proxy.ests.aks'");
+
+        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId(TEST_TENANT_ID)
+            .clientId(TEST_CLIENT_ID)
+            .tokenFilePath(tokenFilePath.toString())
+            .configuration(configuration)
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
+            .disableInstanceDiscovery()
+            .build();
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+
+        AccessToken token = credential.getTokenSync(request);
+
+        assertNotNull(token, "Access token should not be null");
+        assertEquals(MOCK_ACCESS_TOKEN, token.getToken(), "Token value should match mock response");
+        assertTrue(token.getExpiresAt().isAfter(OffsetDateTime.now()), "Token should not be expired");
+        assertEquals(1, tokenRequestCount.get(), "Server should have received exactly one token request");
+    }
+
+    @Test
+    public void testAksProxyWithCaFileAsync() {
         Configuration configuration = TestUtils
             .createTestConfiguration(new TestConfigurationSource().put("AZURE_KUBERNETES_TOKEN_PROXY", serverBaseUrl)
                 .put("AZURE_KUBERNETES_CA_FILE", caCertFilePath.toString())
@@ -156,11 +182,11 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
 
-        AccessToken token = credential.getTokenSync(request);
+        StepVerifier.create(credential.getToken(request))
+            .expectNextMatches(token -> MOCK_ACCESS_TOKEN.equals(token.getToken())
+                && token.getExpiresAt().isAfter(OffsetDateTime.now()))
+            .verifyComplete();
 
-        assertNotNull(token, "Access token should not be null");
-        assertEquals(MOCK_ACCESS_TOKEN, token.getToken(), "Token value should match mock response");
-        assertTrue(token.getExpiresAt().isAfter(OffsetDateTime.now()), "Token should not be expired");
         assertEquals(1, tokenRequestCount.get(), "Server should have received exactly one token request");
     }
 
@@ -431,37 +457,70 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         assertEquals(1, tokenRequestCount.get(), "Token request should be made once");
     }
 
-    private X509Certificate generateCertificateWithAksSni(KeyPair keyPair, String aksSniName) throws Exception {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
+    @Test
+    public void testAksProxyWithMismatchedSniAndCertificate() throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        try (InputStream keyStoreStream = getClass().getResourceAsStream("/test-aks-cert-mismatch.p12")) {
+            assertNotNull(keyStoreStream, "Mismatched certificate not found: /test-aks-cert-mismatch.p12");
+            keyStore.load(keyStoreStream, "password".toCharArray());
         }
 
-        long now = System.currentTimeMillis();
-        Date notBefore = new Date(now - 1000L * 60 * 60);
-        Date notAfter = new Date(now + 1000L * 60 * 60 * 24 * 365);
-        BigInteger serial = BigInteger.valueOf(now);
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("test-cert", "password".toCharArray());
+        X509Certificate certificate = (X509Certificate) keyStore.getCertificate("test-cert");
 
-        X500Name subject = new X500Name("CN=AKS-Proxy-Test");
-        SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(keyPair.getPublic().getEncoded());
+        List<String> dnsNames = fetchCertificateSAN(certificate);
 
-        X509v3CertificateBuilder certBuilder
-            = new X509v3CertificateBuilder(subject, serial, notBefore, notAfter, subject, publicKeyInfo);
+        assertTrue(dnsNames.contains("wrong-hostname.example.com"),
+            "Certificate should contain DNS name 'wrong-hostname.example.com'");
+        assertFalse(dnsNames.contains("test-aks-proxy.ests.aks"),
+            "Certificate should NOT contain the SNI name 'test-aks-proxy.ests.aks'");
 
-        GeneralName[] sans = new GeneralName[] {
-            new GeneralName(GeneralName.dNSName, "localhost"),
-            new GeneralName(GeneralName.dNSName, new org.bouncycastle.asn1.DERIA5String(aksSniName)) };
-        GeneralNames subjectAltNames = new GeneralNames(sans);
-        certBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
+        String mismatchCertPemData = toPemFormat(certificate);
+        Path mismatchCaCertFile = tempDir.resolve("ca-cert-mismatch.pem");
+        Files.write(mismatchCaCertFile, mismatchCertPemData.getBytes(StandardCharsets.UTF_8));
 
-        ContentSigner signer
-            = new JcaContentSignerBuilder("SHA256withRSA").setProvider("BC").build(keyPair.getPrivate());
+        startNettyHttpsServer(privateKey, certificate);
 
-        X509CertificateHolder certHolder = certBuilder.build(signer);
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put("AZURE_KUBERNETES_TOKEN_PROXY", serverBaseUrl)
+                .put("AZURE_KUBERNETES_CA_FILE", mismatchCaCertFile.toString())
+                .put("AZURE_KUBERNETES_SNI_NAME", AKS_SNI_NAME)
+                .put(Configuration.PROPERTY_AZURE_CLIENT_ID, TEST_CLIENT_ID)
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, TEST_TENANT_ID)
+                .put("AZURE_FEDERATED_TOKEN_FILE", tokenFilePath.toString()));
 
-        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-        try (InputStream in = new ByteArrayInputStream(certHolder.getEncoded())) {
-            return (X509Certificate) certFactory.generateCertificate(in);
+        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId(TEST_TENANT_ID)
+            .clientId(TEST_CLIENT_ID)
+            .tokenFilePath(tokenFilePath.toString())
+            .configuration(configuration)
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
+            .disableInstanceDiscovery()
+            .build();
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+
+        Exception exception = assertThrows(Exception.class, () -> credential.getTokenSync(request));
+
+        assertNotNull(exception, "Should throw exception when SNI doesn't match certificate SAN");
+
+        String exceptionMessage = exception.toString().toLowerCase();
+        assertTrue(exceptionMessage.contains("failed to create connection"),
+            "Exception should be connection failure related, got: " + exception.getMessage());
+
+        assertEquals(0, tokenRequestCount.get(), "No token request should succeed when SNI doesn't match certificate");
+    }
+
+    private List<String> fetchCertificateSAN(X509Certificate certificate) throws CertificateParsingException {
+        Collection<List<?>> sanCollection = certificate.getSubjectAlternativeNames();
+
+        List<String> dnsNames = new ArrayList<>();
+        for (List<?> san : sanCollection) {
+            if (san.size() >= 2 && san.get(0).equals(2)) {
+                dnsNames.add((String) san.get(1));
+            }
         }
+        return dnsNames;
     }
 
     private void startNettyHttpsServer(PrivateKey privateKey, X509Certificate certificate) throws Exception {
@@ -484,7 +543,6 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                     sslHandler.handshakeFuture().addListener(future -> {
                         if (future.isSuccess()) {
                             SSLEngine engine = sslHandler.engine();
-                            System.out.println("OpenSSL handshake successful.");
                         }
                     });
 

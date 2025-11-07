@@ -28,6 +28,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
+import java.net.InetAddress;
 
 public final class IdentitySslUtil {
     public static final HostnameVerifier ALL_HOSTS_ACCEPT_HOSTNAME_VERIFIER;
@@ -153,32 +154,32 @@ public final class IdentitySslUtil {
 
         @Override
         public Socket createSocket(String host, int port) throws IOException {
-            Socket socket = sslSocketFactory.createSocket(host, port);
-            configureSni(socket);
-            return socket;
+            Socket sslSocket = sslSocketFactory.createSocket(host, port);
+            configureSni(sslSocket);
+            return sslSocket;
         }
 
         @Override
-        public Socket createSocket(String host, int port, java.net.InetAddress localAddress, int localPort)
+        public Socket createSocket(String host, int port, InetAddress localAddress, int localPort)
             throws IOException {
-            Socket socket = sslSocketFactory.createSocket(host, port, localAddress, localPort);
-            configureSni(socket);
-            return socket;
+            Socket sslSocket = sslSocketFactory.createSocket(host, port, localAddress, localPort);
+            configureSni(sslSocket);
+            return sslSocket;
         }
 
         @Override
-        public Socket createSocket(java.net.InetAddress host, int port) throws IOException {
-            Socket socket = sslSocketFactory.createSocket(host, port);
-            configureSni(socket);
-            return socket;
+        public Socket createSocket(InetAddress host, int port) throws IOException {
+            Socket sslSocket = sslSocketFactory.createSocket(host, port);
+            configureSni(sslSocket);
+            return sslSocket;
         }
 
         @Override
-        public Socket createSocket(java.net.InetAddress address, int port, java.net.InetAddress localAddress,
+        public Socket createSocket(InetAddress address, int port, InetAddress localAddress,
             int localPort) throws IOException {
-            Socket socket = sslSocketFactory.createSocket(address, port, localAddress, localPort);
-            configureSni(socket);
-            return socket;
+            Socket sslSocket = sslSocketFactory.createSocket(address, port, localAddress, localPort);
+            configureSni(sslSocket);
+            return sslSocket;
         }
 
         @Override
