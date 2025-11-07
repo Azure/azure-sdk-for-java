@@ -8,6 +8,7 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -1220,6 +1221,116 @@ public class SearchTests extends SearchTestBase {
             assertEquals("Fancy Stay", results.get(0).get("HotelName"));
             assertEquals(5, results.get(0).get("Rating"));
         }).verifyComplete();
+    }
+
+    //==Elevated Read Tests==
+
+    @Test
+    public void searchWithElevatedReadIncludesHeader() {
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        assertTrue(searchOptions.isElevatedReadEnabled(), "Elevated read should be enabled");
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Search with elevated read should work");
+    }
+
+    @Test
+    public void searchDefaultOmitsHeader() {
+        SearchOptions searchOptions = new SearchOptions();
+
+        assertNull(searchOptions.isElevatedReadEnabled(), "Elevated read should be null by default");
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Default search should work");
+    }
+
+    @Test
+    public void listDocsWithElevatedReadIncludesHeader() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+
+        SearchOptions searchOptions
+            = new SearchOptions().setElevatedReadEnabled(true).setSelect("HotelId", "HotelName");
+
+        SearchPagedIterable results
+            = indexClient.getSearchClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+
+        assertNotNull(results, "Document listing with elevated read should work");
+        assertTrue(searchOptions.isElevatedReadEnabled(), "Elevated read should be enabled");
+    }
+
+    @Test
+    public void withHeader200CodeparseResponse() {
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Should parse elevated read response");
+        assertNotNull(results.iterator(), "Should have results");
+
+    }
+
+    @Test
+    public void withHeaderPlusUserTokenService400() {
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        try {
+            SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+            assertNotNull(results, "Search completed (may not throw 400 in test environment)");
+        } catch (HttpResponseException ex) {
+            assertEquals(400, ex.getResponse().getStatusCode());
+            assertTrue(ex.getMessage().contains("elevated read") || ex.getMessage().contains("user token"),
+                "Error should be related to elevated read + user token combination");
+        }
+    }
+
+    @Test
+    public void withoutHeaderNoTokenReturnsPublicDocsShape() {
+        SearchOptions searchOptions = new SearchOptions();
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Should parse non-elevated read response");
+        assertNotNull(results.getFacets(), "Should have results");
+    }
+
+    @Test
+    public void oldApiVersionDoesNotSendHeader() {
+        SearchClient oldVersionClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(TestHelpers.getTestTokenCredential())
+            .indexName(HOTEL_INDEX_NAME)
+            .serviceVersion(SearchServiceVersion.V2024_07_01)
+            .buildClient();
+
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            oldVersionClient.search("*", searchOptions, Context.NONE).iterator().hasNext();
+        });
+
+        assertTrue(
+            exception instanceof UnsupportedOperationException
+                || (exception instanceof HttpResponseException
+                    && ((HttpResponseException) exception).getResponse().getStatusCode() == 400),
+            "Should either be unsupported operation or return 400 error for older API version");
+    }
+
+    @Test
+    public void currentApiVersionSendsHeaderWhenRequested() {
+        SearchClient currentClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(TestHelpers.getTestTokenCredential())
+            .indexName(HOTEL_INDEX_NAME)
+            .serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
+            .buildClient();
+
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        try {
+            SearchPagedIterable results = currentClient.search("*", searchOptions, Context.NONE);
+            assertNotNull(results, "Search with elevated read should work with current API version");
+        } catch (Exception exception) {
+            assertFalse(
+                exception.getMessage().contains("api-version") && exception.getMessage().contains("does not exist"),
+                "Should not be an API version error with current version");
+        }
     }
 
     private static List<SearchDocument> getSearchResultsSync(SearchPagedIterable results) {

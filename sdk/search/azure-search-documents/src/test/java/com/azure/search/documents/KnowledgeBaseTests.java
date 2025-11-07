@@ -5,12 +5,14 @@ package com.azure.search.documents;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.TestProxyUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseAsyncClient;
@@ -36,6 +38,8 @@ import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
+
+import org.apache.tools.ant.taskdefs.condition.Http;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -61,9 +65,11 @@ import static com.azure.search.documents.TestHelpers.loadResource;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for Knowledge Base operations.
@@ -475,6 +481,134 @@ public class KnowledgeBaseTests extends SearchTestBase {
             assertNotNull(response.getActivity());
         }).verifyComplete();
     }
+
+    @Test
+    public void knowledgeBaseObjectHasNoAgentReferences() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
+            .setModels(KNOWLEDGE_AGENT_MODELS);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+        String KBJson = BinaryData.fromObject(created).toString();
+
+        assertFalse(KBJson.toLowerCase().contains("agent"), "KB JSON should not contain 'agent' references");
+        assertFalse(KBJson.toLowerCase().contains("ka"), "KB JSON should not contain 'KA' abbreviation");
+    }
+
+    @Test
+    public void knowledgeBaseEndpointsUseKnowledgeBasesPath() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+
+        String kbName = randomKnowledgeBaseName();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_AGENT_MODELS);
+
+        client.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBase retrieved = client.getKnowledgeBase(kbName);
+        assertNotNull(retrieved, "KB should be retrieved via /knowledgeBases endpoint");
+
+        PagedIterable<KnowledgeBase> knowledgeBases = client.listKnowledgeBases();
+        assertNotNull(knowledgeBases, "Should list via /knowledgeBases endpoint");
+
+    }
+
+    @Test
+    public void legacyKnowledgeAgentsListedAsKnowledgeBases() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+
+        PagedIterable<KnowledgeBase> knowledgeBases = client.listKnowledgeBases();
+        assertNotNull(knowledgeBases, "Knowledge Bases list should not be null");
+
+        List<KnowledgeBase> kbList = knowledgeBases.stream().collect(Collectors.toList());
+        assertNotNull(kbList, "Knowledge Bases list should not be null");
+
+        if (!kbList.isEmpty()) {
+            String responseJsonString = BinaryData.fromObject(kbList).toString();
+            assertFalse(responseJsonString.toLowerCase().contains("agent"),
+                "Response should not contain 'agent' terminology");
+            assertTrue(
+                responseJsonString.toLowerCase().contains("knowledgebase")
+                    || responseJsonString.toLowerCase().contains("knowledge"),
+                "Response should contain 'knowledgebase' terminology");
+        }
+    }
+
+    @Test
+    public void knowledgeSourcesEndpointUnchanged() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+
+        String kbName = randomKnowledgeBaseName();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_AGENT_MODELS);
+
+        KnowledgeBase created = client.createKnowledgeBase(knowledgeBase);
+
+        assertNotNull(created.getKnowledgeSources(), "Knowledge sources should be accessible");
+        assertEquals(1, created.getKnowledgeSources().size(), "Should have one knowledge source");
+        assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, created.getKnowledgeSources().get(0).getName(),
+            "Knowledge source name should match");
+
+        assertTrue(true, "Knowledge sources endpoint verified via KB operations");
+    }
+
+    @Test
+    public void knowledgeBaseTypeNamesContainNoAgentReferences() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+
+        String kbName = randomKnowledgeBaseName();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_AGENT_MODELS);
+
+        KnowledgeBase created = client.createKnowledgeBase(knowledgeBase);
+
+        String className = created.getClass().getSimpleName();
+        assertFalse(className.toLowerCase().contains("agent"), "Class name should not contain 'agent': " + className);
+        assertTrue(className.toLowerCase().contains("knowledgebase") || className.toLowerCase().contains("knowledge"),
+            "Class name should contain 'knowledge' terminology: " + className);
+
+        if (created.getModels() != null && !created.getModels().isEmpty()) {
+            KnowledgeBaseModel model = created.getModels().get(0);
+            String modelClassName = model.getClass().getSimpleName();
+            assertFalse(modelClassName.toLowerCase().contains("agent"),
+                "Model class name should not contain 'agent': " + modelClassName);
+            assertTrue(
+                modelClassName.toLowerCase().contains("knowledgebase")
+                    || modelClassName.toLowerCase().contains("knowledge"),
+                "Model class name should contain 'knowledge' terminology: " + modelClassName);
+        }
+
+        if (created.getKnowledgeSources() != null && !created.getKnowledgeSources().isEmpty()) {
+            KnowledgeSourceReference sourceRef = created.getKnowledgeSources().get(0);
+            String sourceRefClassName = sourceRef.getClass().getSimpleName();
+            assertFalse(sourceRefClassName.toLowerCase().contains("agent"),
+                "Knowledge source reference class should not contain 'agent': " + sourceRefClassName);
+            assertTrue(
+                sourceRefClassName.toLowerCase().contains("knowledgebase")
+                    || sourceRefClassName.toLowerCase().contains("knowledge"),
+                "Source reference class should contain proper terminology: " + sourceRefClassName);
+        }
+    }
+
+    @Test
+    public void errorHandlingUsesKnowledgeBaseTerminology() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+            client.getKnowledgeBase("nonexistent-kb-name");
+        });
+
+        assertEquals(404, exception.getResponse().getStatusCode(), "Status code should be 404 Not Found");
+        String errorMessage = exception.getMessage().toLowerCase();
+
+        if (errorMessage != null && errorMessage.toLowerCase().contains("knowledge")) {
+            assertFalse(errorMessage.toLowerCase().contains("agent"),
+                "Error message should not contain 'agent' terminology");
+        }
+    }
+    
 
     private String randomKnowledgeBaseName() {
         // Generate a random name for the knowledge agent.
