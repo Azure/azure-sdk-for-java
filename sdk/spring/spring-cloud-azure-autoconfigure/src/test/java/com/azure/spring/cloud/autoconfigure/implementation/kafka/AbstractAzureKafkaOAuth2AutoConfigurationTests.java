@@ -3,17 +3,18 @@
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.AZURE_CONFIGURED_JAAS_OPTIONS_KEY;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.AZURE_CONFIGURED_JAAS_OPTIONS_VALUE;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_MECHANISM_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.AZURE_CONFIGURED_JAAS_OPTIONS_KEY;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.AZURE_CONFIGURED_JAAS_OPTIONS_VALUE;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.SASL_MECHANISM_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.SECURITY_PROTOCOL_CONFIG_SASL;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;

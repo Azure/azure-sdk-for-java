@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
+import com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy;
 import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_MECHANISM_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.SASL_MECHANISM_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.authentication.KafkaOAuth2AuthenticationStrategy.SECURITY_PROTOCOL_CONFIG_SASL;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
