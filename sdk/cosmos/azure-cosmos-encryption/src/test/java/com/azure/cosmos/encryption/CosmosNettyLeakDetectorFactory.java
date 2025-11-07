@@ -19,7 +19,8 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
     private static volatile boolean isLeakDetectionDisabled = false;
     private static volatile boolean isInitialized = false;
 
-    private CosmosNettyLeakDetectorFactory() {
+    public CosmosNettyLeakDetectorFactory() {
+        ingestIntoNetty();
     }
 
     @Override
