@@ -291,8 +291,8 @@ public final class ReadmeSamples {
                 } else if (ServerEventType.ERROR.equals(eventType)) {
                     if (event instanceof SessionUpdateError) {
                         SessionUpdateError errorEvent = (SessionUpdateError) event;
-                        System.err.println("❌ Error: " +
-                            errorEvent.getError().getMessage());
+                        System.err.println("❌ Error: "
+                            + errorEvent.getError().getMessage());
                     }
                 }
             });
