@@ -54,6 +54,7 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
             ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
             // sample every allocation
             System.setProperty("io.netty.leakDetection.samplingInterval", "1");
+            System.setProperty("io.netty.leakDetection.targetRecords", "256");
             // install custom reporter
             ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(new CosmosNettyLeakDetectorFactory());
 
