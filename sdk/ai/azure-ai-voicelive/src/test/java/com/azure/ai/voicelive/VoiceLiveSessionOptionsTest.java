@@ -3,7 +3,17 @@
 
 package com.azure.ai.voicelive;
 
-import com.azure.ai.voicelive.models.*;
+import com.azure.ai.voicelive.models.InputAudioFormat;
+import com.azure.ai.voicelive.models.InteractionModality;
+import com.azure.ai.voicelive.models.MaxOutputTokens;
+import com.azure.ai.voicelive.models.OpenAIVoice;
+import com.azure.ai.voicelive.models.OpenAIVoiceName;
+import com.azure.ai.voicelive.models.OutputAudioFormat;
+import com.azure.ai.voicelive.models.ServerVadTurnDetection;
+import com.azure.ai.voicelive.models.ToolChoiceSelection;
+import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
+import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
+import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.util.BinaryData;
 
 import org.junit.jupiter.api.BeforeEach;

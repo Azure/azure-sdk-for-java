@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (2025-11-06)
+## 1.0.0-beta.1 (2025-11-07)
 
 - Initial release of Azure VoiceLive client library for Java. This library enables real-time, bidirectional voice conversations with AI assistants using WebSocket-based streaming communication.
 
