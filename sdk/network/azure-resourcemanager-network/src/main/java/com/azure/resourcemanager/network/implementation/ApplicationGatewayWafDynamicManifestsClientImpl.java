@@ -62,7 +62,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientApplicationGatewayWafDynamicManifests")
     public interface ApplicationGatewayWafDynamicManifestsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/applicationGatewayWafDynamicManifests")
@@ -104,7 +104,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, apiVersion,
@@ -140,7 +140,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -215,8 +215,8 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayWafDynamicManifests API service call along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the regional application gateway waf manifest along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGatewayWafDynamicManifestResultInner>>
@@ -244,8 +244,8 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ApplicationGatewayWafDynamicManifests API service call along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the regional application gateway waf manifest along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGatewayWafDynamicManifestResultInner>> getNextSinglePageAsync(String nextLink,

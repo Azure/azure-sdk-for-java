@@ -3,12 +3,31 @@
 ## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.5 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
+## 1.8.4 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
 ## 1.8.3 (2025-08-21)
 
@@ -19,7 +38,6 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 
-
 ## 1.8.2 (2025-07-29)
 
 ### Other Changes
@@ -29,7 +47,6 @@
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 
-
 ## 1.8.1 (2025-06-19)
 
 ### Other Changes
@@ -38,7 +55,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
-
 
 ## 1.8.0 (2025-03-12)
 
@@ -64,7 +80,6 @@
 - Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
-
 ## 1.7.3 (2024-12-04)
 
 ### Other Changes
@@ -73,7 +88,6 @@
 
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
-
 
 ## 1.7.2 (2024-10-27)
 
@@ -93,7 +107,6 @@
 - Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
-
 
 ## 1.7.0 (2024-08-07)
 
@@ -161,7 +174,6 @@ Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
-
 ## 1.5.3 (2024-03-20)
 
 ### Other Changes
@@ -170,7 +182,6 @@ Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 1.6.0-beta.1 (2024-03-04)
 
@@ -182,7 +193,6 @@ Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the
   response.
   Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
 
-
 ## 1.5.2 (2024-02-20)
 
 ### Other Changes
@@ -192,7 +202,6 @@ Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 
-
 ## 1.5.1 (2023-12-04)
 
 ### Other Changes
@@ -201,7 +210,6 @@ Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the
 
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
-
 
 ## 1.5.0 (2023-11-08)
 
@@ -290,7 +298,6 @@ Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 
 ## 1.5.0-beta.1 (2023-07-11)
 

@@ -28,7 +28,7 @@ public final class ContextsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"capabilities\":[{\"name\":\"tedousnktjtgrava\",\"description\":\"ogfkbebauzlqb\",\"state\":\"inactive\"}],\"hierarchies\":[{\"name\":\"pfhnjzudrt\",\"description\":\"zkg\"},{\"name\":\"eboywhczzqrhm\",\"description\":\"gqbedygi\"},{\"name\":\"rzwnyk\",\"description\":\"id\"},{\"name\":\"chl\",\"description\":\"mpwctoflds\"}],\"provisioningState\":\"Succeeded\"},\"location\":\"hztxkbrfgd\",\"tags\":{\"etfgcwvrrmdqntyc\":\"iyewhfjsrwqr\"},\"id\":\"awthvmaxgnu\",\"name\":\"eamc\",\"type\":\"hudfjecehok\"}";
+            = "{\"properties\":{\"capabilities\":[{\"name\":\"rgdtpeqnacyheqw\",\"description\":\"pqqncju\",\"state\":\"active\"},{\"name\":\"jozfym\",\"description\":\"wmbupyvqyvliq\",\"state\":\"inactive\"},{\"name\":\"sejb\",\"description\":\"vsi\",\"state\":\"active\"}],\"hierarchies\":[{\"name\":\"whddzydisnuepyw\",\"description\":\"jlnldpxottdiiaoc\"},{\"name\":\"ibz\",\"description\":\"ihweeb\"},{\"name\":\"ph\",\"description\":\"yv\"},{\"name\":\"jw\",\"description\":\"w\"}],\"provisioningState\":\"Succeeded\"},\"location\":\"atjhdhzybspijhf\",\"tags\":{\"rfmzhwilz\":\"dkkagvwukhsusmm\",\"lrcxivcbkut\":\"hnijmriprlkdneyt\",\"ynbpvzlqywauy\":\"umltwjflu\"},\"id\":\"njc\",\"name\":\"hmocgjshg\",\"type\":\"u\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,23 +38,27 @@ public final class ContextsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ContextModel response = manager.contexts()
-            .define("ojhtollhs")
-            .withRegion("ninjgazlsvbz")
-            .withExistingResourceGroup("ecleqioulndhzyo")
-            .withTags(mapOf("lhsyekrdrenxolr", "uoeedwjcci", "bfgrlpunytjlkes", "yehqbeivdlhydwb"))
+            .define("obektmbozo")
+            .withRegion("xweyslandkdcdjh")
+            .withExistingResourceGroup("hxjxjoezlqxrkdkn")
+            .withTags(mapOf("xsotir", "ghcgawnrrnqu", "xstcyilbvzm", "imseobf", "okjxebjvb", "xcjzlquze", "v",
+                "inzabwmvoglj"))
             .withProperties(new ContextProperties().withCapabilities(Arrays.asList(
-                new Capability().withName("mytzln").withDescription("lxpnovyoanf").withState(ResourceState.INACTIVE)))
-                .withHierarchies(Arrays.asList(new Hierarchy().withName("qagywvtxig").withDescription("jrktpgaeukya"),
-                    new Hierarchy().withName("ohpmwhqn").withDescription("csklhsidsjt"))))
+                new Capability().withName("amicbigwcdgz").withDescription("eznuxkeu").withState(ResourceState.INACTIVE),
+                new Capability().withName("aabmdlqjb").withDescription("dp").withState(ResourceState.INACTIVE)))
+                .withHierarchies(Arrays.asList(new Hierarchy().withName("hupmomihzbd").withDescription("p"),
+                    new Hierarchy().withName("pkcdpreyxely").withDescription("cghf"),
+                    new Hierarchy().withName("rufssjyg").withDescription("sfxrkbhammgm"),
+                    new Hierarchy().withName("fm").withDescription("fgvqcpdw"))))
             .create();
 
-        Assertions.assertEquals("hztxkbrfgd", response.location());
-        Assertions.assertEquals("iyewhfjsrwqr", response.tags().get("etfgcwvrrmdqntyc"));
-        Assertions.assertEquals("tedousnktjtgrava", response.properties().capabilities().get(0).name());
-        Assertions.assertEquals("ogfkbebauzlqb", response.properties().capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.INACTIVE, response.properties().capabilities().get(0).state());
-        Assertions.assertEquals("pfhnjzudrt", response.properties().hierarchies().get(0).name());
-        Assertions.assertEquals("zkg", response.properties().hierarchies().get(0).description());
+        Assertions.assertEquals("atjhdhzybspijhf", response.location());
+        Assertions.assertEquals("dkkagvwukhsusmm", response.tags().get("rfmzhwilz"));
+        Assertions.assertEquals("rgdtpeqnacyheqw", response.properties().capabilities().get(0).name());
+        Assertions.assertEquals("pqqncju", response.properties().capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.ACTIVE, response.properties().capabilities().get(0).state());
+        Assertions.assertEquals("whddzydisnuepyw", response.properties().hierarchies().get(0).name());
+        Assertions.assertEquals("jlnldpxottdiiaoc", response.properties().hierarchies().get(0).description());
     }
 
     // Use "Map.of" if available

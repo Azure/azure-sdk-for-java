@@ -65,7 +65,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
      * to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkSecurityPerimeterLoggingConfigurations")
     public interface NetworkSecurityPerimeterLoggingConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/loggingConfigurations/{loggingConfigurationName}")
@@ -155,7 +155,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -198,7 +198,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -300,7 +300,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -351,7 +351,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -451,7 +451,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -494,7 +494,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -583,7 +583,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -624,7 +624,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

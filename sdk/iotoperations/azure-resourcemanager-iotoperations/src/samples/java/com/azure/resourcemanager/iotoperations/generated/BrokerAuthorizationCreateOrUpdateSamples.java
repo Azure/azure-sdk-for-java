@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public final class BrokerAuthorizationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-01-preview/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate.
@@ -37,8 +37,6 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
         manager.brokerAuthorizations()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthorizationProperties()
                 .withAuthorizationPolicies(new AuthorizationConfig().withCache(OperationalMode.ENABLED)
                     .withRules(Arrays.asList(new AuthorizationRule()
@@ -54,11 +52,14 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
                             Arrays.asList(new StateStoreResourceRule().withKeyType(StateStoreResourceKeyTypes.PATTERN)
                                 .withKeys(Arrays.asList("tkounsqtwvzyaklxjqoerpu"))
                                 .withMethod(StateStoreResourceDefinitionMethods.READ)))))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-07-01-preview/BrokerAuthorization_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Simple.
@@ -70,8 +71,6 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
         manager.brokerAuthorizations()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthorizationProperties()
                 .withAuthorizationPolicies(new AuthorizationConfig().withCache(OperationalMode.ENABLED)
                     .withRules(Arrays.asList(new AuthorizationRule()
@@ -86,11 +85,14 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
                             Arrays.asList(new StateStoreResourceRule().withKeyType(StateStoreResourceKeyTypes.PATTERN)
                                 .withKeys(Arrays.asList("*"))
                                 .withMethod(StateStoreResourceDefinitionMethods.READ_WRITE)))))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-07-01-preview/BrokerAuthorization_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Complex.
@@ -102,8 +104,6 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
         manager.brokerAuthorizations()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthorizationProperties()
                 .withAuthorizationPolicies(new AuthorizationConfig().withCache(OperationalMode.ENABLED)
                     .withRules(Arrays.asList(new AuthorizationRule()
@@ -126,6 +126,9 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
                             new StateStoreResourceRule().withKeyType(StateStoreResourceKeyTypes.BINARY)
                                 .withKeys(Arrays.asList("MTE2IDEwMSAxMTUgMTE2"))
                                 .withMethod(StateStoreResourceDefinitionMethods.READ_WRITE)))))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 

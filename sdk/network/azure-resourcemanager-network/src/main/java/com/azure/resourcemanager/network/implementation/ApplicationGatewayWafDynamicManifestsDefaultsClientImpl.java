@@ -57,7 +57,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
      * to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientApplicationGatewayWafDynamicManifestsDefaults")
     public interface ApplicationGatewayWafDynamicManifestsDefaultsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/applicationGatewayWafDynamicManifests/dafault")
@@ -91,7 +91,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, apiVersion,
@@ -124,7 +124,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), accept,

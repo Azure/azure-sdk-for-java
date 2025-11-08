@@ -35,13 +35,6 @@ public interface CommitmentPlanAccountAssociation {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the etag property: Resource Etag.
      * 
      * @return the etag value.
@@ -54,6 +47,13 @@ public interface CommitmentPlanAccountAssociation {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the accountId property: The Azure resource id of the account.

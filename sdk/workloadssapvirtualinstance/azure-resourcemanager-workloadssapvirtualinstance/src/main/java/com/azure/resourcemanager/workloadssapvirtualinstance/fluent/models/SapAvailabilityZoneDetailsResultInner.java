@@ -40,17 +40,6 @@ public final class SapAvailabilityZoneDetailsResultInner
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (availabilityZonePairs() != null) {
-            availabilityZonePairs().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

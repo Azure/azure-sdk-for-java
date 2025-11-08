@@ -60,7 +60,7 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkInterfaceLoadBalancers")
     public interface NetworkInterfaceLoadBalancersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/loadBalancers")
@@ -111,7 +111,7 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -152,7 +152,7 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

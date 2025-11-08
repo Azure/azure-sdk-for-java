@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NetworkSecurityPerimetersPatchSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkSecurityPerimeterPatch
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkSecurityPerimeterPatch
      * .json
      */
     /**

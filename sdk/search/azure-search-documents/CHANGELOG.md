@@ -1,14 +1,64 @@
 # Release History
 
-## 11.8.0-beta.9 (Unreleased)
+## 11.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added back all service preview features dropped in `2025-09-01` service version release.
+
 ### Breaking Changes
+
+- Updated `RescoringOptions` to match what was changed in `11.8.0` release.
+    - `isEnableRescoring` -> `isRescoringEnabled`
+    - `setEnableRescoring` -> `setRescoringEnabled`
+- Changed `RankingOrder.RE_RANKER_SCORE` to `RankingOrder.RERANKER_SCORE`.
+- Changed `SearchOptions.getDebug` and `.setDebug` to `.getDebugMode` and `.setDebugMode`.
+- Default `SearchServiceVersion` changed from `2025_09_01` to `V2025_08_01_PREVIEW`.
 
 ### Bugs Fixed
 
+- Fixed a bug where multiple iterations / subscriptions of `SearchPagedFlux` and `SearchPagedIterable` would return the
+  same first page result of the initial iteration / subscription.
+
+## 11.8.0 (2025-10-10)
+
+### Features Added
+
+- Added support for `2025-09-01` service version.
+    - Support for reranker boosted scores in search results and the ability to sort results on either reranker or reranker
+      boosted scores in `SemanticConfiguration.rankingOrder`.
+    - Support for `VectorSearchCompression.RescoringOptions` to configure how vector compression handles the original
+      vector when indexing and how vectors are used during rescoring.
+    - Added `SearchIndex.description` to provide a textual description of the index.
+    - Support for `LexicalNormalizer` when defining `SearchIndex`, `SimpleField`, and `SearchableField` and the ability to
+      use it when analyzing text with `SearchIndexClient.analyzeText` and `SearchIndexAsyncClient.analyzeText`.
+    - Support `DocumentIntelligenceLayoutSkill` skillset skill and `OneLake` `SearchIndexerDataSourceConnection` data source.
+    - Support for `QueryDebugMode` in searching to retrieve detailed information about search processing. Only `vector` is
+      supported for `QueryDebugMode`.
+
+### Breaking Changes
+
+- All features from `11.8.0-beta.x` versions that weren't GA'd in `2025-09-01` were removed.
+- `VectorSearchCompression.rerankWithOriginalVectors` and `VectorSearchCompression.defaultOversampling` don't work with
+  `2025-09-01` and were replaced by `VectorSearchCompression.RescoringOptions.enabledRescoring` and
+  `VectorSearchCompression.RescoringOptions.defaultOversampling`. If using `2024-07-01` continue using the old properties,
+  otherwise if using `2025-09-01` use the new properties in `RescoringOptions`.
+
 ### Other Changes
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.1` to version `1.6.2`.
+
+## 11.7.10 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.0` to version `1.6.1`.
 
 ## 11.8.0-beta.8 (2025-09-05)
 
@@ -35,7 +85,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.10` to version `1.6.0`.
 
-
 ## 11.7.8 (2025-07-29)
 
 ### Other Changes
@@ -45,7 +94,6 @@
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.9` to version `1.5.10`.
-
 
 ## 11.7.7 (2025-06-11)
 
@@ -94,7 +142,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
-
 ## 11.7.5 (2025-02-25)
 
 ### Other Changes
@@ -129,7 +176,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.2` to version `1.5.4`.
-
 
 ## 11.8.0-beta.4 (2024-11-22)
 
@@ -177,7 +223,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.2`.
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 
-
 ## 11.7.2 (2024-09-27)
 
 ### Other Changes
@@ -188,7 +233,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.0` to version `1.5.1`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
-
 
 ## 11.8.0-beta.1 (2024-09-23)
 
@@ -211,7 +255,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.` to version `1.5.1`.
 - Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
 
-
 ## 11.7.1 (2024-08-24)
 
 ### Other Changes
@@ -222,7 +265,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
-
 
 ## 11.7.0 (2024-07-17)
 
@@ -509,7 +551,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.1` to version `1.4.2`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
-
 
 ## 11.6.0-beta.7 (2023-07-11)
 

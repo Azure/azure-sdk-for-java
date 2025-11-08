@@ -5,13 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure.cosmos.spark</groupId>
-    <artifactId>azure-cosmos-spark_3_2-12</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;current} -->
-    <relativePath>../azure-cosmos-spark_3_2-12</relativePath>
+    <artifactId>azure-cosmos-spark_3-5</artifactId>
+    <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5;current} -->
+    <relativePath>../azure-cosmos-spark_3-5</relativePath>
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-  <version>4.40.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+  <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-5_2-12</url>
   <name>OLTP Spark 3.5 Connector for Azure Cosmos DB SQL API</name>
@@ -40,10 +40,7 @@
   </developers>
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
-    <cosmos-spark-version>3.5</cosmos-spark-version>
-    <spotless.skip>true</spotless.skip>
   </properties>
-
   <build>
     <plugins>
       <plugin>
@@ -59,7 +56,8 @@
             </goals>
             <configuration>
               <sources>
-                <source>${basedir}/../azure-cosmos-spark_3_2-12/src/main/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3/src/main/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3-5/src/main/scala</source>
                 <source>${basedir}/src/main/scala</source>
               </sources>
             </configuration>
@@ -72,7 +70,8 @@
             </goals>
             <configuration>
               <sources>
-                <source>${basedir}/../azure-cosmos-spark_3_2-12/src/test/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3/src/test/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3-5/src/test/scala</source>
                 <source>${basedir}/src/test/scala</source>
               </sources>
             </configuration>
@@ -85,7 +84,8 @@
             </goals>
             <configuration>
               <resources>
-                <resource><directory>${basedir}/../azure-cosmos-spark_3_2-12/src/main/resources</directory></resource>
+                <resource><directory>${basedir}/../azure-cosmos-spark_3/src/main/resources</directory></resource>
+                <resource><directory>${basedir}/../azure-cosmos-spark_3-5/src/main/resources</directory></resource>
                 <resource><directory>${basedir}/src/main/resources</directory></resource>
               </resources>
             </configuration>
@@ -150,48 +150,4 @@
       </build>
     </profile>
   </profiles>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.12</artifactId>
-      <version>3.5.0</version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-all</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-hive_2.12</artifactId>
-      <version>3.5.0</version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-all</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-scala_2.12</artifactId>
-      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-    </dependency>
-  </dependencies>
 </project>

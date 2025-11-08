@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class AdminRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * NetworkManagerAdminRulePut_NetworkGroupSource.json
      */
     /**
@@ -50,7 +50,7 @@ public final class AdminRulesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerAdminRulePut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerAdminRulePut.
      * json
      */
     /**

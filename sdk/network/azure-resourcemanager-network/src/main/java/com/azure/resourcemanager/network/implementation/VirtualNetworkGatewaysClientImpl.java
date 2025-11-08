@@ -41,6 +41,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestD
 import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
+import com.azure.resourcemanager.network.fluent.models.RadiusAuthServerListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
@@ -94,7 +95,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientVirtualNetworkGateways")
     public interface VirtualNetworkGatewaysService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}")
@@ -223,6 +224,16 @@ public final class VirtualNetworkGatewaysClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<String>> supportedVpnDevices(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/listRadiusSecrets")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecrets(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -481,7 +492,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -526,7 +537,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -716,7 +727,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -755,7 +766,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -840,7 +851,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -878,7 +889,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, apiVersion,
@@ -1054,7 +1065,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -1099,7 +1110,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, apiVersion,
@@ -1282,7 +1293,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1318,7 +1329,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1418,7 +1429,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listConnections(this.client.getEndpoint(), resourceGroupName,
@@ -1460,7 +1471,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1571,7 +1582,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reset(this.client.getEndpoint(), resourceGroupName,
@@ -1612,7 +1623,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reset(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, gatewayVip,
@@ -1841,7 +1852,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetVpnClientSharedKey(this.client.getEndpoint(), resourceGroupName,
@@ -1879,7 +1890,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetVpnClientSharedKey(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2058,7 +2069,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generatevpnclientpackage(this.client.getEndpoint(), resourceGroupName,
@@ -2102,7 +2113,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generatevpnclientpackage(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2298,7 +2309,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName,
@@ -2343,7 +2354,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2540,7 +2551,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnProfilePackageUrl(this.client.getEndpoint(), resourceGroupName,
@@ -2580,7 +2591,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnProfilePackageUrl(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2771,7 +2782,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBgpPeerStatus(this.client.getEndpoint(), resourceGroupName,
@@ -2811,7 +2822,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBgpPeerStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, peer,
@@ -3039,7 +3050,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedVpnDevices(this.client.getEndpoint(), resourceGroupName,
@@ -3078,7 +3089,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.supportedVpnDevices(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3134,6 +3145,132 @@ public final class VirtualNetworkGatewaysClientImpl
     }
 
     /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2025-01-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listRadiusSecrets(this.client.getEndpoint(), resourceGroupName,
+                virtualNetworkGatewayName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2025-01-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listRadiusSecrets(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RadiusAuthServerListResultInner> listRadiusSecretsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName) {
+        return listRadiusSecretsWithResponseAsync(resourceGroupName, virtualNetworkGatewayName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RadiusAuthServerListResultInner> listRadiusSecretsWithResponse(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context) {
+        return listRadiusSecretsWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RadiusAuthServerListResultInner listRadiusSecrets(String resourceGroupName,
+        String virtualNetworkGatewayName) {
+        return listRadiusSecretsWithResponse(resourceGroupName, virtualNetworkGatewayName, Context.NONE).getValue();
+    }
+
+    /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
      * 
@@ -3164,7 +3301,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLearnedRoutes(this.client.getEndpoint(), resourceGroupName,
@@ -3204,7 +3341,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLearnedRoutes(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3395,7 +3532,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName,
@@ -3438,7 +3575,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3629,7 +3766,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getResiliencyInformation(this.client.getEndpoint(), resourceGroupName,
@@ -3670,7 +3807,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getResiliencyInformation(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3915,7 +4052,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getRoutesInformation(this.client.getEndpoint(), resourceGroupName,
@@ -3955,7 +4092,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getRoutesInformation(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -4198,7 +4335,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             vpnclientIpsecParams.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -4247,7 +4384,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             vpnclientIpsecParams.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -4467,7 +4604,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -4507,7 +4644,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -4706,7 +4843,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.vpnDeviceConfigurationScript(this.client.getEndpoint(), resourceGroupName,
@@ -4753,7 +4890,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.vpnDeviceConfigurationScript(this.client.getEndpoint(), resourceGroupName,
@@ -4852,7 +4989,7 @@ public final class VirtualNetworkGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -4894,7 +5031,7 @@ public final class VirtualNetworkGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startPacketCapture(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -5123,7 +5260,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -5167,7 +5304,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -5360,7 +5497,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getFailoverAllTestDetails(this.client.getEndpoint(), resourceGroupName,
@@ -5405,7 +5542,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getFailoverAllTestDetails(this.client.getEndpoint(), resourceGroupName,
@@ -5637,7 +5774,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getFailoverSingleTestDetails(this.client.getEndpoint(), resourceGroupName,
@@ -5687,7 +5824,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getFailoverSingleTestDetails(this.client.getEndpoint(), resourceGroupName,
@@ -5919,7 +6056,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startExpressRouteSiteFailoverSimulation(this.client.getEndpoint(),
@@ -5963,7 +6100,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startExpressRouteSiteFailoverSimulation(this.client.getEndpoint(), resourceGroupName,
@@ -6164,7 +6301,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopExpressRouteSiteFailoverSimulation(this.client.getEndpoint(),
@@ -6211,7 +6348,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopExpressRouteSiteFailoverSimulation(this.client.getEndpoint(), resourceGroupName,
@@ -6416,7 +6553,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnclientConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -6456,7 +6593,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnclientConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -6666,7 +6803,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectVirtualNetworkGatewayVpnConnections(this.client.getEndpoint(),
@@ -6711,7 +6848,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disconnectVirtualNetworkGatewayVpnConnections(this.client.getEndpoint(),
@@ -6911,7 +7048,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             migrationParams.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -6958,7 +7095,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             migrationParams.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.invokePrepareMigration(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -7153,7 +7290,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -7192,7 +7329,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.invokeExecuteMigration(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -7365,7 +7502,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -7404,7 +7541,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.invokeCommitMigration(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -7577,7 +7714,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -7616,7 +7753,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.invokeAbortMigration(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -7767,8 +7904,8 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListVirtualNetworkGateways API service call along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return all virtual network gateways by resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayInner>> listNextSinglePageAsync(String nextLink) {
@@ -7794,8 +7931,8 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListVirtualNetworkGateways API service call along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return all virtual network gateways by resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -7820,8 +7957,8 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the VirtualNetworkGatewayListConnections API service call along with {@link PagedResponse}
-     * on successful completion of {@link Mono}.
+     * @return all the connections in a virtual network gateway along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>>
@@ -7850,8 +7987,8 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the VirtualNetworkGatewayListConnections API service call along with {@link PagedResponse}
-     * on successful completion of {@link Mono}.
+     * @return all the connections in a virtual network gateway along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayConnectionListEntityInner>>

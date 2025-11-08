@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -276,30 +275,6 @@ public final class AgentProperties implements JsonSerializable<AgentProperties> 
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (arcResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property arcResourceId in model AgentProperties"));
-        }
-        if (arcVmUuid() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property arcVmUuid in model AgentProperties"));
-        }
-        if (uploadLimitSchedule() != null) {
-            uploadLimitSchedule().validate();
-        }
-        if (errorDetails() != null) {
-            errorDetails().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AgentProperties.class);
 
     /**
      * {@inheritDoc}

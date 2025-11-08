@@ -68,7 +68,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkManagerRoutingConfigurations")
     public interface NetworkManagerRoutingConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/routingConfigurations")
@@ -158,7 +158,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -205,7 +205,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -354,7 +354,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -397,7 +397,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -499,7 +499,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
         } else {
             routingConfiguration.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -551,7 +551,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
         } else {
             routingConfiguration.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -654,7 +654,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -700,7 +700,7 @@ public final class NetworkManagerRoutingConfigurationsClientImpl implements Netw
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

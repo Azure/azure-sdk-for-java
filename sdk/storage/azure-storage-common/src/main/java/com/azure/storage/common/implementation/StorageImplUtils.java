@@ -536,7 +536,7 @@ public class StorageImplUtils {
                 throw (Error) cause;
             } else {
                 // Wrap in RuntimeException if it's neither Error nor RuntimeException
-                throw LOGGER.logExceptionAsError(new RuntimeException(cause));
+                throw LOGGER.logExceptionAsError(new RuntimeException(cause != null ? cause : e));
             }
         }
     }

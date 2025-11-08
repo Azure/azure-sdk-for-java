@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class VirtualNetworkAddressesListByCloudVmClusterSamples {
     /*
-     * x-ms-original-file: 2025-03-01/virtualNetworkAddresses_listByParent.json
+     * x-ms-original-file: 2025-09-01/virtualNetworkAddresses_listByParent.json
      */
     /**
      * Sample code: VirtualNetworkAddresses_listByCloudVmCluster.

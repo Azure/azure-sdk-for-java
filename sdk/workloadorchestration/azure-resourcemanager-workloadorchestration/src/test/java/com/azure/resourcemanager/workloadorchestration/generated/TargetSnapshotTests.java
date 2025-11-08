@@ -12,9 +12,9 @@ public final class TargetSnapshotTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetSnapshot model = BinaryData
-            .fromString("{\"targetId\":\"hostgktstvdxecl\",\"targetSpecification\":{},\"solutionScope\":\"bcvhzlhpl\"}")
+            .fromString("{\"targetId\":\"eqvldspast\",\"targetSpecification\":{},\"solutionScope\":\"dmflv\"}")
             .toObject(TargetSnapshot.class);
-        Assertions.assertEquals("hostgktstvdxecl", model.targetId());
-        Assertions.assertEquals("bcvhzlhpl", model.solutionScope());
+        Assertions.assertEquals("eqvldspast", model.targetId());
+        Assertions.assertEquals("dmflv", model.solutionScope());
     }
 }

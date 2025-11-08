@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ModelCapacityListResultValueItemInner;
 
 /**
@@ -44,6 +45,13 @@ public interface ModelCapacityListResultValueItem {
      * @return the properties value.
      */
     ModelSkuCapacityProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.ModelCapacityListResultValueItemInner

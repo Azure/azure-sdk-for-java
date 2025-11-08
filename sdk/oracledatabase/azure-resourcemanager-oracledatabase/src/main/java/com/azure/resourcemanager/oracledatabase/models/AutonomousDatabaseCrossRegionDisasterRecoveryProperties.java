@@ -6,7 +6,6 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -391,8 +390,8 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
      */
     @Override
     public AutonomousDatabaseCrossRegionDisasterRecoveryProperties
-        withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -521,52 +520,6 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (sourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceId in model AutonomousDatabaseCrossRegionDisasterRecoveryProperties"));
-        }
-        if (remoteDisasterRecoveryType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property remoteDisasterRecoveryType in model AutonomousDatabaseCrossRegionDisasterRecoveryProperties"));
-        }
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER
-        = new ClientLogger(AutonomousDatabaseCrossRegionDisasterRecoveryProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -595,7 +548,8 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -733,9 +687,11 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                        .withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withPrivateEndpointIp(reader.getString());

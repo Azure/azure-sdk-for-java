@@ -15,23 +15,23 @@ public final class ConfigTemplateVersionWithUpdateTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionWithUpdateTypeInner model = BinaryData.fromString(
-            "{\"updateType\":\"Minor\",\"version\":\"l\",\"configTemplateVersion\":{\"properties\":{\"configurations\":\"qttbaj\",\"provisioningState\":\"Canceled\"},\"eTag\":\"nwxyiop\",\"id\":\"kqqfk\",\"name\":\"vscx\",\"type\":\"dmligovibrxk\"}}")
+            "{\"updateType\":\"Major\",\"version\":\"mvec\",\"configTemplateVersion\":{\"properties\":{\"configurations\":\"txmwoteyow\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ovekqvgqouwi\",\"id\":\"mpjw\",\"name\":\"ivqikfxcvhr\",\"type\":\"sphuagrttikteus\"}}")
             .toObject(ConfigTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MINOR, model.updateType());
-        Assertions.assertEquals("l", model.version());
-        Assertions.assertEquals("qttbaj", model.configTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
+        Assertions.assertEquals("mvec", model.version());
+        Assertions.assertEquals("txmwoteyow", model.configTemplateVersion().properties().configurations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigTemplateVersionWithUpdateTypeInner model
-            = new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MINOR)
-                .withVersion("l")
+            = new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
+                .withVersion("mvec")
                 .withConfigTemplateVersion(new ConfigTemplateVersionInner()
-                    .withProperties(new ConfigTemplateVersionProperties().withConfigurations("qttbaj")));
+                    .withProperties(new ConfigTemplateVersionProperties().withConfigurations("txmwoteyow")));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MINOR, model.updateType());
-        Assertions.assertEquals("l", model.version());
-        Assertions.assertEquals("qttbaj", model.configTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
+        Assertions.assertEquals("mvec", model.version());
+        Assertions.assertEquals("txmwoteyow", model.configTemplateVersion().properties().configurations());
     }
 }

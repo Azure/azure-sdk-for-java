@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualHubIpConfigurationListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubIpConfigurationList
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualHubIpConfigurationList
      * .json
      */
     /**

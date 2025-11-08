@@ -248,7 +248,7 @@ public class FeatureManagerTest {
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertTrue(featureManager.isEnabled("EnabledFeatureWithTelemetry"));
-        verify(telemetryPublisher, times(1)).publishTelemetry(Mockito.any(EvaluationEvent.class));
+        verify(telemetryPublisher, times(1)).publish(Mockito.any(EvaluationEvent.class));
     }
 
     @Test
@@ -258,7 +258,7 @@ public class FeatureManagerTest {
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertTrue(featureManager.isEnabled("FeatureWithTelemetryDisabled"));
-        verify(telemetryPublisher, times(0)).publishTelemetry(Mockito.any(EvaluationEvent.class));
+        verify(telemetryPublisher, times(0)).publish(Mockito.any(EvaluationEvent.class));
     }
 
     @Test
@@ -268,7 +268,7 @@ public class FeatureManagerTest {
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertFalse(featureManager.isEnabled("DisabledFeatureWithTelemetry"));
-        verify(telemetryPublisher, times(1)).publishTelemetry(Mockito.any(EvaluationEvent.class));
+        verify(telemetryPublisher, times(1)).publish(Mockito.any(EvaluationEvent.class));
     }
 
     class AlwaysOnFilter implements FeatureFilter {

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -127,26 +126,6 @@ public final class DynamicDetectionRule implements JsonSerializable<DynamicDetec
         this.trainingStartTime = trainingStartTime;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dynamicThresholdModel() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dynamicThresholdModel in model DynamicDetectionRule"));
-        }
-        if (dynamicThresholdDirection() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dynamicThresholdDirection in model DynamicDetectionRule"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DynamicDetectionRule.class);
 
     /**
      * {@inheritDoc}

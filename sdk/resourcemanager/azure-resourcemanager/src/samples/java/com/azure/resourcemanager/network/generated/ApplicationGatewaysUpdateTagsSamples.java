@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ApplicationGatewaysUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ApplicationGatewayUpdateTags.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/ApplicationGatewayUpdateTags.
      * json
      */
     /**

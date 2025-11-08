@@ -76,7 +76,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientPublicIpAddresses")
     public interface PublicIpAddressesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/publicipaddresses")
@@ -293,7 +293,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServicePublicIpAddresses(this.client.getEndpoint(),
@@ -334,7 +334,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -465,7 +465,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceRoleInstancePublicIpAddresses(this.client.getEndpoint(),
@@ -523,7 +523,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -678,7 +678,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCloudServicePublicIpAddress(this.client.getEndpoint(), resourceGroupName,
@@ -740,7 +740,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCloudServicePublicIpAddress(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
@@ -847,7 +847,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, publicIpAddressName,
@@ -885,7 +885,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1055,7 +1055,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1095,7 +1095,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1188,7 +1188,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -1232,7 +1232,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1424,7 +1424,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -1468,7 +1468,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1546,7 +1546,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1576,7 +1576,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1661,7 +1661,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1697,7 +1697,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1797,7 +1797,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.ddosProtectionStatus(this.client.getEndpoint(), resourceGroupName,
@@ -1836,7 +1836,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.ddosProtectionStatus(this.client.getEndpoint(), resourceGroupName, publicIpAddressName,
@@ -2567,8 +2567,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses on a cloud service level along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2597,8 +2597,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses on a cloud service level along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2624,8 +2624,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2654,8 +2654,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2682,8 +2682,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the public IP addresses in a subscription along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -2710,8 +2710,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the public IP addresses in a subscription along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -2736,8 +2736,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all public IP addresses in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>> listNextSinglePageAsync(String nextLink) {
@@ -2763,8 +2763,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all public IP addresses in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2789,8 +2789,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses on a virtual machine scale set level along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2819,8 +2819,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses on a virtual machine scale set level along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2847,8 +2847,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
+     * scale set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
@@ -2877,8 +2877,8 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPublicIpAddresses API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
+     * scale set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>

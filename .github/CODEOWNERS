@@ -91,6 +91,9 @@
 # PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
 
+# PRLabel: %Voice Live
+/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang
+
 # ServiceLabel: %AKS
 # ServiceOwners:                                                   @Azure/aks-pm
 
@@ -107,8 +110,8 @@
 /sdk/appconfiguration/                                             @alzimmermsft @Azure/azure-java-sdk
 
 # ServiceLabel: %App Configuration
-# AzureSdkOwners:                                                  @alzimmermsft
-# ServiceOwners:                                                   @shenmuxiaosen @avanigupta
+# AzureSdkOwners:                                                  @mrm9084
+# ServiceOwners:                                                   @mrm9084 @rossgrambo @shenmuxiaosen @avanigupta
 
 # ServiceLabel: %App Services
 # ServiceOwners:                                                   @antcp @AzureAppServiceCLI
@@ -171,10 +174,10 @@
 # AzureSdkOwners:                                                  @g2vinay @joshfree
 
 # PRLabel: %Batch
-/sdk/batch/                                                        @skapur12 @wiboris @dpwatrous @NickKouds @Azure/azure-java-sdk
+/sdk/batch/                                                        @skapur12 @wiboris @ReneOv-MSFT @dpwatrous @Azure/azure-java-sdk
 
 # ServiceLabel: %Batch
-# ServiceOwners:                                                   @mksuni @bgklein @mscurrell @cRui861 @paterasMSFT @gingi @dpwatrous
+# ServiceOwners:                                                   @skapur12 @wiboris @ReneOv-MSFT @dpwatrous
 
 # ServiceLabel: %Billing
 # ServiceOwners:                                                   @cabbpt
@@ -300,7 +303,7 @@
 /sdk/communication/azure-communication-identity/                   @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft @Azure/azure-java-sdk
 
 # PRLabel: %Communication - Phone Numbers
-/sdk/communication/azure-communication-phonenumbers/               @Arazan @whisper6284 @danielortega-msft @sofiar-msft @Azure/azure-java-sdk
+/sdk/communication/azure-communication-phonenumbers/               @Azure/azure-java-sdk @gfeitosa-msft @phermanov-msft @ilyapaliakou-msft @besh2014 @ihuseynov-msft @kirill-linnik
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/azure-resourcemanager-communication/            @Azure/azure-java-sdk
@@ -543,11 +546,11 @@
 # ServiceOwners:                                                   @Azure/azure-iot-cli-triage
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                                                     @vcolin7 @g2vinay @Azure/azure-sdk-write-keyvault @Azure/azure-java-sdk
+/sdk/keyvault/                                                     @Azure/azure-sdk-write-keyvault @Azure/azure-java-sdk
 
 # ServiceLabel: %KeyVault
-# AzureSdkOwners:                                                  @vcolin7 @Azure/azure-sdk-write-keyvault
-# ServiceOwners:                                                   @cheathamb36 @chen-karen @Azure/azure-sdk-write-keyvault
+# AzureSdkOwners:                                                  @Azure/azure-sdk-write-keyvault
+# ServiceOwners:                                                   @chen-karen @Azure/azure-sdk-write-keyvault
 
 # ServiceLabel: %Kubernetes Configuration
 # ServiceOwners:                                                   @NarayanThiru
@@ -695,16 +698,16 @@
 /sdk/onlineexperimentation/                                        @Azure/azure-sdk-write-onlineexperimentation @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai/                                       @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai/                                       @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-assistants/                            @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-assistants/                            @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-realtime/                              @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-realtime/                              @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-stainless/                             @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-stainless/                             @jpalvarezl @Azure/azure-java-sdk
 
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                                   @AzmonLogA
@@ -738,9 +741,6 @@
 
 # ServiceLabel: %Redis Cache
 # ServiceOwners:                                                   @yegu-ms
-
-# PRLabel: %Remote Rendering
-/sdk/remoterendering/                                              @MichaelZp0 @ChristopherManthei @Azure/azure-java-sdk
 
 # ServiceLabel: %Reservations
 # ServiceOwners:                                                   @Rkapso
@@ -901,13 +901,13 @@
 # AzureSdkOwners:                                                  @jeanbisutti @trask @ramthi @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @avanigupta @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-feature-management*/                @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @avanigupta @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @avanigupta @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
 /sdk/spring/azure-spring-data-cosmos/                              @rujche @netyyyy @saragluna @moarychan @Azure/azure-cosmos-java-sdk-connectors

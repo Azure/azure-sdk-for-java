@@ -10,6 +10,23 @@
 
 ### Other Changes
 
+## 2.53.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-management` from `1.19.1` to version `1.19.2`.
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+
+## 2.53.3 (2025-09-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.53.2 (2025-08-27)
 
 ### Other Changes

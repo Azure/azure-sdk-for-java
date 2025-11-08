@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.vm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -99,22 +98,6 @@ public final class VirtualMachineInstancePropertiesHardwareProfileVirtualMachine
         this.gpuName = gpuName;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (assignmentType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property assignmentType in model VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU"));
-        }
-    }
-
-    private static final ClientLogger LOGGER
-        = new ClientLogger(VirtualMachineInstancePropertiesHardwareProfileVirtualMachineGPU.class);
 
     /**
      * {@inheritDoc}

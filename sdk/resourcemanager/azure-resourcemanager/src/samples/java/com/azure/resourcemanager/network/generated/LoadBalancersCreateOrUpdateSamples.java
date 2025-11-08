@@ -21,6 +21,7 @@ import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancerScope;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuName;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuTier;
@@ -35,7 +36,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * LoadBalancerCreateWithSyncModePropertyOnPool.json
      */
     /**
@@ -91,7 +92,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
      */
     /**
@@ -140,7 +141,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * LoadBalancerCreateWithInboundNatPool.json
      */
     /**
@@ -183,7 +184,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/LoadBalancerCreateWithZones.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/LoadBalancerCreateWithZones.
      * json
      */
     /**
@@ -236,7 +237,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * LoadBalancerCreateWithOutboundRules.json
      */
     /**
@@ -295,7 +296,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
      */
     /**
@@ -350,7 +351,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/LoadBalancerCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/LoadBalancerCreate.json
      */
     /**
      * Sample code: Create load balancer.
@@ -397,12 +398,13 @@ public final class LoadBalancersCreateOrUpdateSamples {
                     .withIdleTimeoutInMinutes(15)
                     .withEnableFloatingIp(true)
                     .withEnableTcpReset(false)))
-                .withInboundNatPools(Arrays.asList()), com.azure.core.util.Context.NONE);
+                .withInboundNatPools(Arrays.asList())
+                .withScope(LoadBalancerScope.PUBLIC), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/LoadBalancerCreateGlobalTier.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/LoadBalancerCreateGlobalTier.
      * json
      */
     /**
@@ -451,7 +453,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerConsumer.json
      */
     /**
@@ -507,7 +509,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/LoadBalancerCreateStandardSku
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/LoadBalancerCreateStandardSku
      * .json
      */
     /**

@@ -80,7 +80,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientLoadBalancers")
     public interface LoadBalancersService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}")
@@ -213,7 +213,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -251,7 +251,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -419,7 +419,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -458,7 +458,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -551,7 +551,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -595,7 +595,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -786,7 +786,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -830,7 +830,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -907,7 +907,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -937,7 +937,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1022,7 +1022,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1058,7 +1058,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1157,7 +1157,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.swapPublicIpAddresses(this.client.getEndpoint(), location, apiVersion,
@@ -1195,7 +1195,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.swapPublicIpAddresses(this.client.getEndpoint(), location, apiVersion,
@@ -1376,7 +1376,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listInboundNatRulePortMappings(this.client.getEndpoint(), groupName,
@@ -1427,7 +1427,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listInboundNatRulePortMappings(this.client.getEndpoint(), groupName, loadBalancerName,
@@ -1642,7 +1642,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.migrateToIpBased(this.client.getEndpoint(), groupName, loadBalancerName,
@@ -1684,7 +1684,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.migrateToIpBased(this.client.getEndpoint(), groupName, loadBalancerName, apiVersion,
@@ -1749,8 +1749,8 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListLoadBalancers API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all the load balancers in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancerInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1777,8 +1777,8 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListLoadBalancers API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all the load balancers in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancerInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -1803,8 +1803,8 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListLoadBalancers API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all the load balancers in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancerInner>> listNextSinglePageAsync(String nextLink) {
@@ -1830,8 +1830,8 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListLoadBalancers API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all the load balancers in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancerInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -10,6 +10,26 @@
 
 ### Other Changes
 
+## 1.5.2 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-communication-common` from `1.4.3` to version `1.4.4`.
+
+## 1.5.1 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-communication-common` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
 ## 1.5.0 (2025-08-25)
 
 ### Features Added
@@ -28,8 +48,7 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
-- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
-
+- Upgraded `azure-communication-common` from `1.4.1` to version `1.4.2`.
 
 ## 1.4.2 (2025-07-29)
 
@@ -39,7 +58,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
-
+- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
 
 ## 1.4.1 (2025-06-19)
 
@@ -50,7 +69,6 @@
 - Upgraded `azure-communication-common` from `1.3.11` to version `1.4.0`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
-
 
 ## 1.4.0 (2025-06-05)
 
@@ -72,7 +90,6 @@
 - Upgraded `azure-communication-common` from `1.3.9` to version `1.3.10`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
-
 
 ## 1.3.2 (2025-03-03)
 
@@ -153,7 +170,6 @@
 
 - Upgraded `azure-communication-common` from `1.3.4` to version `1.3.5`.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
-
 
 ## 1.3.0-beta.1 (2024-08-06)
 

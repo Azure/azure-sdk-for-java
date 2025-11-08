@@ -20,7 +20,7 @@ public final class PrivateLinkConfigurationPropertiesTests {
             .toObject(PrivateLinkConfigurationProperties.class);
         Assertions.assertEquals("jzicwifsjt", model.groupId());
         Assertions.assertEquals("khaj", model.ipConfigurations().get(0).name());
-        Assertions.assertEquals(true, model.ipConfigurations().get(0).primary());
+        Assertions.assertTrue(model.ipConfigurations().get(0).primary());
         Assertions.assertEquals("honowkgshwank", model.ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.STATIC,
             model.ipConfigurations().get(0).privateIpAllocationMethod());
@@ -49,7 +49,7 @@ public final class PrivateLinkConfigurationPropertiesTests {
         model = BinaryData.fromObject(model).toObject(PrivateLinkConfigurationProperties.class);
         Assertions.assertEquals("jzicwifsjt", model.groupId());
         Assertions.assertEquals("khaj", model.ipConfigurations().get(0).name());
-        Assertions.assertEquals(true, model.ipConfigurations().get(0).primary());
+        Assertions.assertTrue(model.ipConfigurations().get(0).primary());
         Assertions.assertEquals("honowkgshwank", model.ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.STATIC,
             model.ipConfigurations().get(0).privateIpAllocationMethod());

@@ -21,7 +21,7 @@ public final class FilesReadWriteWithResponseMockTests {
     @Test
     public void testReadWriteWithResponse() throws Exception {
         String responseStr
-            = "{\"uri\":\"ennmf\",\"headers\":{\"nthropmdudsyiu\":\"jnrtekw\",\"youergaghp\":\"ztvktjhffecqko\",\"gyedzfzqi\":\"zxkpyehhfdyld\",\"a\":\"uqhtdereuno\"}}";
+            = "{\"uri\":\"xef\",\"headers\":{\"ooifqdywjflob\":\"blmrtuxyprhfca\",\"ecorkfro\":\"ahqmom\",\"zbjesylslur\":\"gbmxldjmz\",\"gdz\":\"qfygpny\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class FilesReadWriteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileStorageInfo response = manager.files()
-            .readWriteWithResponse("h", "gqkzjuqw", "ajquzxpixhyoi", "nfdbgsoscienezf",
+            .readWriteWithResponse("wbyorjplbchych", "kvy", "fbqvumkxqj", "iuepmaxfnzlpqmp",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ennmf", response.uri());
-        Assertions.assertEquals("jnrtekw", response.headers().get("nthropmdudsyiu"));
+        Assertions.assertEquals("xef", response.uri());
+        Assertions.assertEquals("blmrtuxyprhfca", response.headers().get("ooifqdywjflob"));
     }
 }

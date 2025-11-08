@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -197,37 +196,6 @@ public final class Datastore implements JsonSerializable<Datastore> {
         this.kustoOfferingType = kustoOfferingType;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (kustoClusterUri() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property kustoClusterUri in model Datastore"));
-        }
-        if (kustoDataIngestionUri() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property kustoDataIngestionUri in model Datastore"));
-        }
-        if (kustoDatabaseName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property kustoDatabaseName in model Datastore"));
-        }
-        if (kustoManagementUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property kustoManagementUrl in model Datastore"));
-        }
-        if (kustoOfferingType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property kustoOfferingType in model Datastore"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Datastore.class);
 
     /**
      * {@inheritDoc}

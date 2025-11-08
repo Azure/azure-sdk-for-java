@@ -10,6 +10,25 @@
 
 ### Other Changes
 
+## 2.53.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.1` to version `2.53.3`.
+- Upgraded `azure-security-keyvault-keys` from `4.10.2` to version `4.10.3`.
+- Upgraded `azure-security-keyvault-secrets` from `4.10.2` to version `4.10.3`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.1` to version `2.53.3`.
+
 ## 2.53.2 (2025-08-27)
 
 ### Other Changes

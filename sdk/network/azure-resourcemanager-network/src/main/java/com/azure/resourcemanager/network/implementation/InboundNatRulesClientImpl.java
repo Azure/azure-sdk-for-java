@@ -68,7 +68,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientInboundNatRules")
     public interface InboundNatRulesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatRules")
@@ -151,7 +151,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -192,7 +192,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -301,7 +301,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -344,7 +344,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, loadBalancerName, inboundNatRuleName,
@@ -531,7 +531,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -576,7 +576,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName, inboundNatRuleName,
@@ -681,7 +681,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -734,7 +734,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -916,8 +916,8 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListInboundNatRule API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the inbound NAT rules in a load balancer along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InboundNatRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -943,8 +943,8 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListInboundNatRule API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the inbound NAT rules in a load balancer along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InboundNatRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {

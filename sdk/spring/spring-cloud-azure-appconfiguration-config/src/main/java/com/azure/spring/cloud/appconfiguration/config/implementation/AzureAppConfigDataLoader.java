@@ -7,7 +7,6 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -121,9 +120,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             keyVaultClientFactory = context.getBootstrapContext()
                 .get(AppConfigurationKeyVaultClientFactory.class);
 
-            List<AppConfigurationReplicaClient> clients = replicaClientFactory
-                .getAvailableClients(resource.getEndpoint(), true);
-
             boolean reloadFailed = false;
             boolean pushRefresh = false;
             Exception lastException = null;
@@ -137,22 +133,26 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             // Feature Management needs to be set in the last config store.
             requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH, pushRefresh);
 
-            Iterator<AppConfigurationReplicaClient> clientIterator = clients.iterator();
+            replicaClientFactory.findActiveClients(resource.getEndpoint());
 
-            while (clientIterator.hasNext()) {
-                AppConfigurationReplicaClient client = clientIterator.next();
+            AppConfigurationReplicaClient client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
+                true);
+
+            while (client != null) {
+                final AppConfigurationReplicaClient currentClient = client;
 
                 if (reloadFailed
-                    && !AppConfigurationRefreshUtil.refreshStoreCheck(client,
-                        replicaClientFactory.findOriginForEndpoint(client.getEndpoint()), requestContext)) {
-                    // This store doesn't have any changes where to refresh store did. Skipping Checking next.
+                    && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
+                        replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext)) {
+                    // This store doesn't have any changes where to refresh store did. Skipping to next client.
+                    client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
                     continue;
                 }
 
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
-                    sourceList.addAll(createSettings(client));
-                    List<FeatureFlags> featureFlags = createFeatureFlags(client);
+                    sourceList.addAll(createSettings(currentClient));
+                    List<FeatureFlags> featureFlags = createFeatureFlags(currentClient);
 
                     logger.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
@@ -163,7 +163,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     if (monitoring.isEnabled()) {
                         // Setting new ETag values for Watch
                         List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                            .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(),
+                            .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
                                 requestContext))
                             .toList();
 
@@ -175,14 +175,20 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     break;
                 } catch (AppConfigurationStatusException e) {
                     reloadFailed = true;
-                    replicaClientFactory.backoffClient(resource.getEndpoint(), client.getEndpoint());
+                    replicaClientFactory.backoffClient(resource.getEndpoint(), currentClient.getEndpoint());
                     lastException = e;
                     // Log the specific replica failure with context
-                    logReplicaFailure(client, "status exception", clientIterator.hasNext(), e);
+                    AppConfigurationReplicaClient nextClient = replicaClientFactory
+                        .getNextActiveClient(resource.getEndpoint(), false);
+                    logReplicaFailure(currentClient, "status exception", nextClient != null, e);
+                    client = nextClient;
                 } catch (Exception e) {
                     // Store the exception to potentially use if all replicas fail
                     lastException = e; // Log the specific replica failure with context
-                    logReplicaFailure(client, "exception", clientIterator.hasNext(), e);
+                    AppConfigurationReplicaClient nextClient = replicaClientFactory
+                        .getNextActiveClient(resource.getEndpoint(), false);
+                    logReplicaFailure(currentClient, "exception", nextClient != null, e);
+                    client = nextClient;
                 }
             } // Check if all replicas failed
             if (lastException != null && !resource.isRefresh()) {

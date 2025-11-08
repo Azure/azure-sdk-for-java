@@ -11,7 +11,7 @@ public final class NodeMonitoringDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeMonitoringData model = BinaryData.fromString(
-            "{\"additionalProperties\":{\"vxb\":\"datavglsbjjca\",\"udutnco\":\"datat\",\"xqtvcofu\":\"datamr\",\"vkg\":\"dataf\"},\"nodeName\":\"bgdknnqv\",\"availableMemoryInMB\":1989846717,\"cpuUtilization\":2039923498,\"concurrentJobsLimit\":764676926,\"concurrentJobsRunning\":1165613569,\"maxConcurrentJobs\":577659304,\"sentBytes\":80.09511580688786,\"receivedBytes\":17.71073252254488}")
+            "{\"additionalProperties\":{\"ojvdcpzfoqo\":\"datajitcjedftwwaez\",\"ybxarzgszu\":\"datai\",\"hkh\":\"dataoxciqopidoamcio\"},\"nodeName\":\"xkhnzbonlwnto\",\"availableMemoryInMB\":1273575692,\"cpuUtilization\":2078888236,\"concurrentJobsLimit\":542586349,\"concurrentJobsRunning\":970804008,\"maxConcurrentJobs\":924333329,\"sentBytes\":66.87018050632422,\"receivedBytes\":47.08009458641283}")
             .toObject(NodeMonitoringData.class);
     }
 

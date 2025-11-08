@@ -115,6 +115,20 @@ public interface AccountModel {
     ModelDeprecationInfo deprecation();
 
     /**
+     * Gets the replacementConfig property: Configuration for model replacement.
+     * 
+     * @return the replacementConfig value.
+     */
+    ReplacementConfig replacementConfig();
+
+    /**
+     * Gets the modelCatalogAssetId property: Asset identifier for the model in the model catalog.
+     * 
+     * @return the modelCatalogAssetId value.
+     */
+    String modelCatalogAssetId();
+
+    /**
      * Gets the lifecycleStatus property: Model lifecycle status.
      * 
      * @return the lifecycleStatus value.
