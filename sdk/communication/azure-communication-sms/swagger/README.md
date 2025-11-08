@@ -45,6 +45,9 @@ sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication SMS Service
+internal-constructors: BadRequestErrorResponse,StandardErrorResponse,ErrorDetail
+internal-types: BadRequestErrorResponse,StandardErrorResponse,ErrorDetail
+models-subpackage: implementation.models
 ```
 
 ### Directive renaming "id" property to "identifier"
@@ -100,4 +103,27 @@ directive:
     transform: >
         const successResponse = $["200"];
         return { "200": successResponse };
+```
+
+### Directive to make error models package-private
+
+``` yaml
+directive:
+  # Make BadRequestErrorResponse package-private 
+  - from: swagger-document
+    where: '$.definitions.BadRequestErrorResponse'
+    transform: >
+        $["x-accessibility"] = "package";
+  
+  # Make StandardErrorResponse package-private
+  - from: swagger-document
+    where: '$.definitions.StandardErrorResponse'
+    transform: >
+        $["x-accessibility"] = "package";
+  
+  # Make ErrorDetail package-private
+  - from: swagger-document
+    where: '$.definitions.ErrorDetail'
+    transform: >
+        $["x-accessibility"] = "package";
 ```

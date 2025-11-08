@@ -7,6 +7,7 @@ import com.azure.communication.sms.SmsAsyncClient;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.SmsServiceVersion;
+import com.azure.communication.sms.implementation.models.DeliveryReport;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -185,5 +186,129 @@ public class ReadmeSamples {
         // END: readme-sample-createSmsClientWithApiVersion
 
         return smsClient;
+    }
+
+    public void getDeliveryReportAsync() {
+        SmsAsyncClient smsAsyncClient = createSmsAsyncClientUsingAzureKeyCredential();
+
+        // BEGIN: readme-sample-getDeliveryReportAsync
+        // Send an SMS with delivery report enabled
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+
+        smsAsyncClient.send(
+                "<from-phone-number>",
+                "<to-phone-number>",
+                "Your order has been shipped!",
+                options)
+                .flatMap(sendResult -> {
+                    System.out.println("Message sent. Message ID: " + sendResult.getMessageId());
+
+                    // Wait a moment for delivery (in real scenarios, this would be based on your
+                    // application flow)
+                    try {
+                        Thread.sleep(10000); // Wait 10 seconds
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return smsAsyncClient.getDeliveryReport(sendResult.getMessageId());
+                    }
+
+                    // Get delivery report using message ID
+                    return smsAsyncClient.getDeliveryReport(sendResult.getMessageId());
+                })
+                .subscribe(
+                        deliveryReport -> {
+                            System.out.println("Delivery Report Status: " + deliveryReport.getDeliveryStatus());
+                            System.out.println("Delivery Status Details: " + deliveryReport.getDeliveryStatusDetails());
+                            System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());
+                            System.out.println("Message ID: " + deliveryReport.getMessageId());
+                            System.out.println("From: " + deliveryReport.getFrom());
+                            System.out.println("To: " + deliveryReport.getTo());
+                            System.out.println("Tag: " + deliveryReport.getTag());
+                        },
+                        error -> {
+                            System.err.println("Error getting delivery report: " + error.getMessage());
+                        });
+        // END: readme-sample-getDeliveryReportAsync
+    }
+
+    public void getDeliveryReportAsyncWithResponse() {
+        SmsAsyncClient smsAsyncClient = createSmsAsyncClientUsingAzureKeyCredential();
+
+        // BEGIN: readme-sample-getDeliveryReportAsyncWithResponse
+        // Send an SMS with delivery report enabled
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+
+        smsAsyncClient.send(
+                "<from-phone-number>",
+                "<to-phone-number>",
+                "Your order has been shipped!",
+                options)
+                .flatMap(sendResult -> {
+                    System.out.println("Message sent. Message ID: " + sendResult.getMessageId());
+
+                    // Wait a moment for delivery
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return smsAsyncClient.getDeliveryReportWithResponse(sendResult.getMessageId(), Context.NONE);
+                    }
+
+                    // Get delivery report with response details
+                    return smsAsyncClient.getDeliveryReportWithResponse(sendResult.getMessageId(), Context.NONE);
+                })
+                .subscribe(
+                        response -> {
+                            System.out.println("HTTP Status Code: " + response.getStatusCode());
+                            DeliveryReport deliveryReport = response.getValue();
+                            System.out.println("Delivery Report Status: " + deliveryReport.getDeliveryStatus());
+                            System.out.println("Delivery Status Details: " + deliveryReport.getDeliveryStatusDetails());
+                            System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());
+                            System.out.println("Message ID: " + deliveryReport.getMessageId());
+                            System.out.println("From: " + deliveryReport.getFrom());
+                            System.out.println("To: " + deliveryReport.getTo());
+                            System.out.println("Tag: " + deliveryReport.getTag());
+                        },
+                        error -> {
+                            System.err.println("Error getting delivery report: " + error.getMessage());
+                        });
+        // END: readme-sample-getDeliveryReportAsyncWithResponse
+    }
+
+    public void handleDeliveryReportErrors() {
+        SmsAsyncClient smsAsyncClient = createSmsAsyncClientUsingAzureKeyCredential();
+
+        // BEGIN: readme-sample-handleDeliveryReportErrors
+        String messageId = "<message-id>";
+
+        smsAsyncClient.getDeliveryReport(messageId)
+                .doOnError(throwable -> {
+                    if (throwable instanceof RuntimeException) {
+                        RuntimeException ex = (RuntimeException) throwable;
+                        System.err.println("Error retrieving delivery report: " + ex.getMessage());
+
+                        // Handle specific error cases
+                        if (ex.getMessage().contains("404")) {
+                            System.err.println(
+                                    "Delivery report not found - message may not exist or delivery report not enabled");
+                        } else if (ex.getMessage().contains("401")) {
+                            System.err.println("Authentication error - check your credentials");
+                        } else if (ex.getMessage().contains("403")) {
+                            System.err.println("Forbidden - check your permissions");
+                        }
+                    }
+                })
+                .subscribe(
+                        deliveryReport -> {
+                            System.out.println("Delivery Report Retrieved Successfully");
+                            System.out.println("Status: " + deliveryReport.getDeliveryStatus());
+                        },
+                        error -> {
+                            // This will be called if doOnError doesn't handle the error
+                            System.err.println("Unhandled error: " + error.getMessage());
+                        });
+        // END: readme-sample-handleDeliveryReportErrors
     }
 }

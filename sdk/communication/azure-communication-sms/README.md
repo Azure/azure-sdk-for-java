@@ -165,6 +165,58 @@ for (SmsSendResult result : sendResults) {
 }
 ```
 
+### Retrieve Delivery Reports
+
+When you enable delivery reports by setting `setDeliveryReportEnabled(true)` in your SMS options, you can retrieve delivery status information for your sent messages using the message ID.
+
+**Note:** Delivery report retrieval is currently available only through the async client (`SmsAsyncClient`).
+
+```java
+SmsAsyncClient smsAsyncClient = new SmsClientBuilder()
+    .connectionString(connectionString)
+    .buildAsyncClient();
+
+// Send SMS with delivery report enabled
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
+options.setTag("OrderConfirmation");
+
+smsAsyncClient.send(
+        "<from-phone-number>",
+        "<to-phone-number>",
+        "Your order has been shipped!",
+        options)
+    .flatMap(sendResult -> {
+        System.out.println("Message sent. Message ID: " + sendResult.getMessageId());
+        
+        // Wait a moment for delivery processing
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        // Retrieve delivery report
+        return smsAsyncClient.getDeliveryReport(sendResult.getMessageId());
+    })
+    .subscribe(
+        deliveryReport -> {
+            System.out.println("Delivery Status: " + deliveryReport.getDeliveryStatus());
+            System.out.println("Message ID: " + deliveryReport.getMessageId());
+            System.out.println("From: " + deliveryReport.getFrom());
+            System.out.println("To: " + deliveryReport.getTo());
+            System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());
+            System.out.println("Tag: " + deliveryReport.getTag());
+        },
+        error -> {
+            System.err.println("Error retrieving delivery report: " + error.getMessage());
+        }
+    );
+```
+
+For more comprehensive examples of working with delivery reports, including error handling scenarios, see:
+`src/samples/java/com/azure/communication/sms/samples/quickstart/GetDeliveryReportExample.java`
+
 ## Troubleshooting
 
 SMS operations will throw an exception if the request to the server fails.
