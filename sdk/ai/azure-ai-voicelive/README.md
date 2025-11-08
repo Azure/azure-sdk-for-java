@@ -341,7 +341,6 @@ String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
-    .apiVersion("2025-10-01")
     .buildAsyncClient();
 
 // Configure session options for voice conversation
