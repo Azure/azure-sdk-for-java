@@ -71,7 +71,6 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
     private String dacEnvConfiguredCredential;
-    private boolean enableAzureTokenProxy;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
@@ -834,32 +833,6 @@ public final class IdentityClientOptions implements Cloneable {
         return dacEnvConfiguredCredential;
     }
 
-    /**
-     * Gets the status whether the Azure token proxy feature is enabled for workload identity.
-     * When enabled, credentials will attempt to use a custom token proxy configured through environment
-     * variables for authenticating in Azure Kubernetes Service (AKS) environments.
-     *
-     * @return true if the Azure token proxy feature is enabled, false otherwise.
-     */
-    public boolean isAzureTokenProxyEnabled() {
-        return enableAzureTokenProxy;
-    }
-
-    /**
-     * Enables the Azure token proxy feature for workload identity.
-     * When enabled, the credential will attempt to use a custom token proxy configured through
-     * environment variables (AZURE_KUBERNETES_TOKEN_PROXY, AZURE_KUBERNETES_CA_FILE,
-     * AZURE_KUBERNETES_CA_DATA, AZURE_KUBERNETES_SNI_NAME) for authenticating in Azure Kubernetes
-     * Service (AKS) environments.
-     *
-     * @param enableTokenProxy true to enable the Azure token proxy feature.
-     * @return the updated IdentityClientOptions instance.
-     */
-    public IdentityClientOptions setEnableAzureTokenProxy(boolean enableTokenProxy) {
-        this.enableAzureTokenProxy = enableTokenProxy;
-        return this;
-    }
-
     public IdentityClientOptions clone() {
         IdentityClientOptions clone
             = new IdentityClientOptions().setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -890,8 +863,7 @@ public final class IdentityClientOptions implements Cloneable {
                 .setPerRetryPolicies(this.perRetryPolicies)
                 .setBrowserCustomizationOptions(this.browserCustomizationOptions)
                 .setChained(this.isChained)
-                .subscription(this.subscription)
-                .setEnableAzureTokenProxy(this.enableAzureTokenProxy);
+                .subscription(this.subscription);
 
         if (isBrokerEnabled()) {
             clone.setBrokerWindowHandle(this.brokerWindowHandle);

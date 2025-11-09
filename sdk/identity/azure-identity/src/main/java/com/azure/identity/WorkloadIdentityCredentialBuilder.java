@@ -6,6 +6,9 @@ package com.azure.identity;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyConfiguration;
+import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyHttpClient;
+import com.azure.identity.implementation.customtokenproxy.ProxyConfig;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
@@ -102,7 +105,13 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
-        identityClientOptions.setEnableAzureTokenProxy(this.enableTokenProxy);
+        if (enableTokenProxy) {
+            System.out.println("Custom Token Proxy is enabled for WorkloadIdentityCredentialBuilder.");
+            ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
+            if (proxyConfig != null) {
+                identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
+            }
+        }
 
         return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
             identityClientOptions.clone());
