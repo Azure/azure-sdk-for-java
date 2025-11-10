@@ -286,7 +286,7 @@ public class SessionTest extends TestSuiteBase {
             cosmosItemIdentities.add(cosmosItemIdentity);
             safeClose(dummyState);
             dummyState = TestUtils
-                .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient)
+                .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient);
             spyClient.readMany(
                 cosmosItemIdentities,
                 getCollectionLink(isNameBased),
