@@ -510,7 +510,7 @@ public class ConsistencyWriter {
         MutableVolatile<Boolean> bailFromWriteBarrierLoop,
         CosmosException cosmosExceptionInStoreResult) {
 
-        return performBarrierOnPrimary(
+        return performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
             barrierRequest,
             selectedGlobalCommittedLsn)
             .flatMap(barrierStatusFromPrimary -> {
@@ -526,13 +526,13 @@ public class ConsistencyWriter {
                 cosmosExceptionValueHolder.v = Utils.createCosmosException(
                     HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                     cosmosExceptionInStoreResult.getSubStatusCode(),
-                    null,
+                    cosmosExceptionInStoreResult,
                     null);
                 return Mono.just(false);
             });
     }
 
-    private Mono<Boolean> performBarrierOnPrimary(
+    private Mono<Boolean> performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
         RxDocumentServiceRequest entity,
         long selectedGlobalCommittedLSN) {
 
@@ -541,15 +541,16 @@ public class ConsistencyWriter {
             entity, true, false /*useSessionToken*/);
 
         return storeResultObs.flatMap(storeResult -> {
-            if (!storeResult.isValid) {
-                return Mono.just(false);
-            }
+                if (!storeResult.isValid) {
+                    return Mono.just(false);
+                }
 
-            boolean hasRequiredGlobalCommittedLsn =
-                selectedGlobalCommittedLSN <= 0 || storeResult.globalCommittedLSN >= selectedGlobalCommittedLSN;
+                boolean hasRequiredGlobalCommittedLsn =
+                    selectedGlobalCommittedLSN <= 0 || storeResult.globalCommittedLSN >= selectedGlobalCommittedLSN;
 
-            return Mono.just(hasRequiredGlobalCommittedLsn);
-        });
+                return Mono.just(hasRequiredGlobalCommittedLsn);
+            })
+            .onErrorResume(throwable -> Mono.just(false));
     }
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {

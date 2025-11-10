@@ -68,10 +68,10 @@ public class StoreReader {
 
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
             RxDocumentServiceRequest entity,
-            boolean includePrimary, // false
-            int replicaCountToRead, // 2
-            boolean requiresValidLsn, // true
-            boolean useSessionToken, // false
+            boolean includePrimary,
+            int replicaCountToRead,
+            boolean requiresValidLsn,
+            boolean useSessionToken,
             ReadMode readMode) {
         return readMultipleReplicaAsync(entity, includePrimary, replicaCountToRead, requiresValidLsn, useSessionToken, readMode, false, false);
     }
@@ -90,13 +90,13 @@ public class StoreReader {
      */
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
             RxDocumentServiceRequest entity,
-            boolean includePrimary, // false
-            int replicaCountToRead, // 2
-            boolean requiresValidLsn, // true
-            boolean useSessionToken, // false
+            boolean includePrimary,
+            int replicaCountToRead,
+            boolean requiresValidLsn,
+            boolean useSessionToken,
             ReadMode readMode,
-            boolean checkMinLSN, // false
-            boolean forceReadAll /* false */) {
+            boolean checkMinLSN,
+            boolean forceReadAll) {
 
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
@@ -435,13 +435,13 @@ public class StoreReader {
      * @return                      ReadReplicaResult which indicates the LSN and whether Quorum was Met / Not Met etc
      */
     private Mono<ReadReplicaResult> readMultipleReplicasInternalAsync(RxDocumentServiceRequest entity,
-                                                                        boolean includePrimary, // false
-                                                                        int replicaCountToRead, // 2
-                                                                        boolean requiresValidLsn, // true
-                                                                        boolean useSessionToken, // false
+                                                                        boolean includePrimary,
+                                                                        int replicaCountToRead,
+                                                                        boolean requiresValidLsn,
+                                                                        boolean useSessionToken,
                                                                         ReadMode readMode,
-                                                                        boolean checkMinLSN, // false
-                                                                        boolean forceReadAll /* false */) {
+                                                                        boolean checkMinLSN,
+                                                                        boolean forceReadAll) {
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
         }
