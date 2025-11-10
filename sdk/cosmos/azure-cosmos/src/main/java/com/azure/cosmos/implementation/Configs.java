@@ -374,7 +374,8 @@ public class Configs {
 
     public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
-    private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = true; // TODO @fabianm - revert before merging - just cheaper to enable than making test config changes
+    // TODO @fabianm - Make test changes to enable leak detection from CI pipeline tests
+    private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = false;
     private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
 
     public static int getCPUCnt() {

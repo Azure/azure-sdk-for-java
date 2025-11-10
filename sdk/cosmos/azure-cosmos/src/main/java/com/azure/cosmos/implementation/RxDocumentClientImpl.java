@@ -203,7 +203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final Object staticLock = new Object();
 
-    // A map containing the clientId with the callstack form where the Client was initialized.
+    // A map containing the clientId with the callstack from where the Client was initialized.
     // this can help to identify where clients leak.
     // The leak detection via System property "COSMOS.CLIENT_LEAK_DETECTION_ENABLED" is disabled by
     // default - CI pipeline tests will enable it.
