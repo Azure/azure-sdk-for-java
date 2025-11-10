@@ -40,7 +40,7 @@ To interact with the Azure VoiceLive service, you'll need to create an instance 
 
 Get your Azure VoiceLive API key from the Azure Portal:
 
-```java
+```java com.azure.ai.voicelive.authentication.apikey
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint("https://your-resource.openai.azure.com/")
     .credential(new AzureKeyCredential("your-api-key"))
@@ -65,7 +65,7 @@ First, add the Azure Identity package:
 
 Then create a client with DefaultAzureCredential:
 
-```java
+```java com.azure.ai.voicelive.authentication.defaultcredential
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint("https://your-resource.openai.azure.com/")
@@ -75,7 +75,7 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
 
 For development and testing, you can use Azure CLI credentials:
 
-```java
+```java com.azure.ai.voicelive.authentication.azurecli
 TokenCredential credential = new AzureCliCredentialBuilder().build();
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint("https://your-resource.openai.azure.com/")
@@ -101,7 +101,7 @@ Represents an active WebSocket connection for bidirectional streaming communicat
 
 Configuration options for customizing session behavior:
 - **Model selection**: Specify the AI model (e.g., "gpt-4o-realtime-preview")
-- **Voice settings**: Choose from OpenAI voices (Alloy, Echo, Fable, etc.) or Azure voices
+- **Voice settings**: Choose from OpenAI voices (Alloy, Ash, Ballad, Coral, Echo, Sage, Shimmer, Verse) or Azure voices
 - **Modalities**: Configure text and/or audio interaction modes
 - **Turn detection**: Server-side voice activity detection with configurable thresholds
 - **Audio formats**: PCM16 input/output with configurable sample rates
@@ -158,28 +158,29 @@ For easier learning, explore these focused samples in order:
    - Noise reduction and echo cancellation
    - Multi-threaded audio processing
 
+> **Note:** To run audio samples (AudioPlaybackSample, MicrophoneInputSample, VoiceAssistantSample):
+> ```bash
+> mvn exec:java -Dexec.mainClass=com.azure.ai.voicelive.AudioPlaybackSample -Dexec.classpathScope=test
+> ```
+> These samples use `javax.sound.sampled` for audio I/O.
+
 ### Simple voice assistant
 
 Create a basic voice assistant session:
 
-```java
-VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .buildAsyncClient();
-
+```java com.azure.ai.voicelive.simple.session
 // Start session with default options
 client.startSession("gpt-4o-realtime-preview")
     .flatMap(session -> {
         System.out.println("Session started");
-        
+
         // Subscribe to receive events
         session.receiveEvents()
             .subscribe(
                 event -> System.out.println("Event: " + event.getType()),
                 error -> System.err.println("Error: " + error.getMessage())
             );
-        
+
         return Mono.just(session);
     })
     .block();
@@ -189,7 +190,7 @@ client.startSession("gpt-4o-realtime-preview")
 
 Customize the session with specific options:
 
-```java
+```java com.azure.ai.voicelive.configure.sessionoptions
 // Configure server-side voice activity detection
 ServerVadTurnDetection turnDetection = new ServerVadTurnDetection()
     .setThreshold(0.5)                    // Sensitivity threshold (0.0-1.0)
@@ -206,7 +207,7 @@ AudioInputTranscriptionOptions transcription = new AudioInputTranscriptionOption
 // Create session options
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInstructions("You are a helpful AI voice assistant. Respond naturally and conversationally.")
-    .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+    .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
     .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
     .setInputAudioFormat(InputAudioFormat.PCM16)
     .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -233,78 +234,63 @@ client.startSession("gpt-4o-realtime-preview")
 
 Stream audio data to the service:
 
-```java
+```java com.azure.ai.voicelive.send.audioinput
 // Send audio chunk
 byte[] audioData = readAudioChunk(); // Your audio data in PCM16 format
 session.sendInputAudio(BinaryData.fromBytes(audioData))
-    .subscribe(
-        () -> System.out.println("Audio sent"),
-        error -> System.err.println("Error sending audio: " + error.getMessage())
-    );
+    .subscribe();
 
 // Send audio from file
-Path audioFile = Paths.get("audio.wav");
-byte[] fileData = Files.readAllBytes(audioFile);
-session.sendInputAudio(BinaryData.fromBytes(fileData))
-    .subscribe();
+try {
+    Path audioFile = Paths.get("audio.wav");
+    byte[] fileData = Files.readAllBytes(audioFile);
+    session.sendInputAudio(BinaryData.fromBytes(fileData))
+        .subscribe();
+} catch (IOException e) {
+    System.err.println("Error reading audio file: " + e.getMessage());
+}
 ```
 
 ### Handle event types
 
 Process different event types for complete conversation flow:
 
-```java
+```java com.azure.ai.voicelive.handle.eventtypes
 session.receiveEvents()
     .subscribe(event -> {
         ServerEventType eventType = event.getType();
-        
-        switch (eventType) {
-            case SESSION_CREATED:
-                System.out.println("✓ Session created - ready to start");
-                break;
-                
-            case SESSION_UPDATED:
-                System.out.println("✓ Session configured - starting conversation");
-                if (event instanceof SessionUpdateSessionUpdated) {
-                    SessionUpdateSessionUpdated updated = (SessionUpdateSessionUpdated) event;
-                    // Access session configuration details
-                    String json = BinaryData.fromObject(updated).toString();
-                    System.out.println("Config: " + json);
-                }
-                break;
-                
-            case INPUT_AUDIO_BUFFER_SPEECH_STARTED:
-                System.out.println("🎤 User started speaking");
-                break;
-                
-            case INPUT_AUDIO_BUFFER_SPEECH_STOPPED:
-                System.out.println("🤔 User stopped speaking - processing...");
-                break;
-                
-            case RESPONSE_AUDIO_DELTA:
-                // Play audio response
-                if (event instanceof SessionUpdateResponseAudioDelta) {
-                    SessionUpdateResponseAudioDelta audioEvent = 
-                        (SessionUpdateResponseAudioDelta) event;
-                    playAudioChunk(audioEvent.getDelta());
-                }
-                break;
-                
-            case RESPONSE_AUDIO_DONE:
-                System.out.println("🔊 Assistant finished speaking");
-                break;
-                
-            case RESPONSE_DONE:
-                System.out.println("✅ Response complete - ready for next input");
-                break;
-                
-            case ERROR:
-                if (event instanceof SessionUpdateError) {
-                    SessionUpdateError errorEvent = (SessionUpdateError) event;
-                    System.err.println("❌ Error: " + 
-                        errorEvent.getError().getMessage());
-                }
-                break;
+
+        if (ServerEventType.SESSION_CREATED.equals(eventType)) {
+            System.out.println("✓ Session created - ready to start");
+        } else if (ServerEventType.SESSION_UPDATED.equals(eventType)) {
+            System.out.println("✓ Session configured - starting conversation");
+            if (event instanceof SessionUpdateSessionUpdated) {
+                SessionUpdateSessionUpdated updated = (SessionUpdateSessionUpdated) event;
+                // Access session configuration details
+                String json = BinaryData.fromObject(updated).toString();
+                System.out.println("Config: " + json);
+            }
+        } else if (ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED.equals(eventType)) {
+            System.out.println("🎤 User started speaking");
+        } else if (ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED.equals(eventType)) {
+            System.out.println("🤔 User stopped speaking - processing...");
+        } else if (ServerEventType.RESPONSE_AUDIO_DELTA.equals(eventType)) {
+            // Play audio response
+            if (event instanceof SessionUpdateResponseAudioDelta) {
+                SessionUpdateResponseAudioDelta audioEvent =
+                    (SessionUpdateResponseAudioDelta) event;
+                playAudioChunk(audioEvent.getDelta());
+            }
+        } else if (ServerEventType.RESPONSE_AUDIO_DONE.equals(eventType)) {
+            System.out.println("🔊 Assistant finished speaking");
+        } else if (ServerEventType.RESPONSE_DONE.equals(eventType)) {
+            System.out.println("✅ Response complete - ready for next input");
+        } else if (ServerEventType.ERROR.equals(eventType)) {
+            if (event instanceof SessionUpdateError) {
+                SessionUpdateError errorEvent = (SessionUpdateError) event;
+                System.err.println("❌ Error: "
+                    + errorEvent.getError().getMessage());
+            }
         }
     });
 ```
@@ -315,31 +301,31 @@ The SDK supports multiple voice providers:
 
 #### OpenAI Voices
 
-```java
-// Available voices: ALLOY, ECHO, FABLE, ONYX, NOVA, SHIMMER
+```java com.azure.ai.voicelive.voice.openai
+// Use OpenAIVoiceName enum for available voices (ALLOY, ASH, BALLAD, CORAL, ECHO, SAGE, SHIMMER, VERSE)
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY));
+    .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)));
 ```
 
-#### Azure Standard Voices
+#### Azure Voices
 
-```java
+Azure voices include `AzureStandardVoice`, `AzureCustomVoice`, and `AzurePersonalVoice` (all extend `AzureVoice`):
+
+```java com.azure.ai.voicelive.voice.azure
+// Azure Standard Voice - use any Azure TTS voice name
+// See: https://learn.microsoft.com/azure/ai-services/speech-service/language-support?tabs=tts
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new AzureStandardVoice("en-US-JennyNeural"));
-```
+    .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-JennyNeural")));
 
-#### Azure Custom Voices
+// Azure Custom Voice - requires custom voice name and endpoint ID
+VoiceLiveSessionOptions options2 = new VoiceLiveSessionOptions()
+    .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
-```java
-VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new AzureCustomVoice("your-custom-voice-id", "your-deployment-id"));
-```
-
-#### Azure Personal Voices
-
-```java
-VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-    .setVoice(new AzurePersonalVoice("your-speaker-profile-id"));
+// Azure Personal Voice - requires speaker profile ID and model
+// Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
+VoiceLiveSessionOptions options3 = new VoiceLiveSessionOptions()
+    .setVoice(BinaryData.fromObject(
+        new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
 ```
 
 ### Complete voice assistant with microphone
@@ -355,7 +341,6 @@ String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
-    .apiVersion("2025-10-01")
     .buildAsyncClient();
 
 // Configure session options for voice conversation
@@ -372,7 +357,7 @@ AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptio
 
 VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
     .setInstructions("You are a helpful AI voice assistant.")
-    .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+    .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
     .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
     .setInputAudioFormat(InputAudioFormat.PCM16)
     .setOutputAudioFormat(OutputAudioFormat.PCM16)
