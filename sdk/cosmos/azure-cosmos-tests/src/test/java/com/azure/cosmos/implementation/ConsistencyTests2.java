@@ -233,6 +233,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
+        QueryFeedOperationState dummyState = null;
         try {
             // CREATE collection
             DocumentCollection parentResource = writeClient.createCollection(createdDatabase.getSelfLink(),
@@ -250,7 +251,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             cosmosQueryRequestOptions.setSessionToken(token);
 
-            QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+            dummyState = TestUtils.createDummyQueryFeedOperationState(
                 ResourceType.Document,
                 OperationType.ReadFeed,
                 cosmosQueryRequestOptions,
@@ -262,6 +263,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 parentResource.getSelfLink(), dummyState, Document.class);
             validateQueryFailure(feedObservable, validator);
         } finally {
+            safeClose(dummyState);
             safeClose(writeClient);
             safeClose(readSecondaryClient);
         }

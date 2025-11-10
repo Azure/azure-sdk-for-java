@@ -126,7 +126,9 @@ public class TestSuiteBase extends DocumentClientTest {
                 OperationType.Query,
                 new CosmosQueryRequestOptions(),
                 client);
-            return client.queryDatabases(query, state);
+            return client
+                .queryDatabases(query, state)
+                .doFinally(signal -> safeClose(state));
         }
 
         @Override
@@ -554,11 +556,15 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
-                                                               String.format("SELECT * FROM root r where r.id = '%s'", collectionId), state).single().block()
-                .getResults();
-        if (!res.isEmpty()) {
-            deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
+        try {
+            List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
+                                                     String.format("SELECT * FROM root r where r.id = '%s'", collectionId), state).single().block()
+                                                 .getResults();
+            if (!res.isEmpty()) {
+                deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
+            }
+        } finally {
+            safeClose(state);
         }
     }
 
@@ -576,15 +582,19 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        List<Document> res = client
+        try {
+            List<Document> res = client
                 .queryDocuments(
                     TestUtils.getCollectionNameLink(databaseId, collectionId),
                     String.format("SELECT * FROM root r where r.id = '%s'", docId),
                     state,
                     Document.class)
                 .single().block().getResults();
-        if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
+            if (!res.isEmpty()) {
+                deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
+            }
+        } finally {
+            safeClose(state);
         }
     }
 
@@ -601,11 +611,16 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        List<User> res = client
+
+        try {
+            List<User> res = client
                 .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), state)
                 .single().block().getResults();
-        if (!res.isEmpty()) {
-            deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
+            if (!res.isEmpty()) {
+                deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
+            }
+        } finally {
+            safeClose(state);
         }
     }
 
@@ -640,7 +655,8 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), state).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
+        try {
+            return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), state).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
                 Flux.defer(() -> {
 
                     Database databaseDefinition = new Database();
@@ -648,7 +664,10 @@ public class TestSuiteBase extends DocumentClientTest {
 
                     return client.createDatabase(databaseDefinition, null).map(ResourceResponse::getResource);
                 })
-        ).single().block();
+            ).single().block();
+        } finally {
+            safeClose(state);
+        }
     }
 
     static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
@@ -674,14 +693,19 @@ public class TestSuiteBase extends DocumentClientTest {
                 new CosmosQueryRequestOptions(),
                 client
             );
-            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), state)
-                    .flatMap(p -> Flux.fromIterable(p.getResults()))
-                    .collectList()
-                    .single()
-                    .block();
 
-            for (DocumentCollection collection : collections) {
-                client.deleteCollection(collection.getSelfLink(), null).block().getResource();
+            try {
+                List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), state)
+                                                             .flatMap(p -> Flux.fromIterable(p.getResults()))
+                                                             .collectList()
+                                                             .single()
+                                                             .block();
+
+                for (DocumentCollection collection : collections) {
+                    client.deleteCollection(collection.getSelfLink(), null).block().getResource();
+                }
+            } finally {
+                safeClose(state);
             }
         }
     }
@@ -713,6 +737,22 @@ public class TestSuiteBase extends DocumentClientTest {
                     e.printStackTrace();
                 }
             }).start();
+        }
+    }
+
+    static protected void safeClose(QueryFeedOperationState state) {
+        if (state != null) {
+            safeClose(state.getClient());
+        }
+    }
+
+    static protected void safeClose(CosmosAsyncClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

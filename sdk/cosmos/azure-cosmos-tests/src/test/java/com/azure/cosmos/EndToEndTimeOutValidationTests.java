@@ -55,12 +55,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .build();
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT * 100)
-    public void beforeClass() throws Exception {
-        initializeClient(null);
-    }
-
-    public void initializeClient(CosmosEndToEndOperationLatencyPolicyConfig e2eDefaultConfig) {
+    public CosmosAsyncClient initializeClient(CosmosEndToEndOperationLatencyPolicyConfig e2eDefaultConfig) {
         CosmosAsyncClient client = this
             .getClientBuilder()
             .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
@@ -69,6 +64,8 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         truncateCollection(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+
+        return client;
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -77,17 +74,24 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
-        initializeClient(endToEndOperationLatencyPolicyConfig);
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule rule = null;
+        try {
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        TestObject itemToRead = createdDocuments.get(random.nextInt(createdDocuments.size()));
-        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            TestObject itemToRead = createdDocuments.get(random.nextInt(createdDocuments.size()));
+            rule = injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
 
-        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-            createdContainer.readItem(itemToRead.id, new PartitionKey(itemToRead.mypk), options, TestObject.class);
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                createdContainer.readItem(itemToRead.id, new PartitionKey(itemToRead.mypk), options, TestObject.class);
 
-        verifyExpectError(cosmosItemResponseMono);
-        rule.disable();
+            verifyExpectError(cosmosItemResponseMono);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+            }
+            safeClose(cosmosClient);
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -100,7 +104,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED,
             "true");
 
-        initializeClient(endToEndOperationLatencyPolicyConfig);
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
 
         FaultInjectionRule rule = null;
         try {
@@ -119,6 +123,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             }
 
             System.clearProperty(Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED);
+            safeClose(cosmosClient);
         }
     }
 
@@ -128,16 +133,24 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule faultInjectionRule = null;
+        try {
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
-        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.CREATE_ITEM, null);
-        TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
-        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options);
+            faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.CREATE_ITEM, null);
+            TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options);
 
-        verifyExpectError(cosmosItemResponseMono);
-        faultInjectionRule.disable();
+            verifyExpectError(cosmosItemResponseMono);
+        } finally {
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
+            }
+            safeClose(cosmosClient);
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -146,18 +159,26 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule rule = null;
+        try {
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
-        TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
-        createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options).block();
-        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.REPLACE_ITEM, null);
-        inputObject.setName("replaceName");
-        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-            createdContainer.replaceItem(inputObject, inputObject.id, new PartitionKey(inputObject.mypk), options);
+            TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
+            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options).block();
+            rule = injectFailure(createdContainer, FaultInjectionOperationType.REPLACE_ITEM, null);
+            inputObject.setName("replaceName");
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                createdContainer.replaceItem(inputObject, inputObject.id, new PartitionKey(inputObject.mypk), options);
 
-        verifyExpectError(cosmosItemResponseMono);
-        rule.disable();
+            verifyExpectError(cosmosItemResponseMono);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+            }
+            safeClose(cosmosClient);
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -166,16 +187,25 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule rule = null;
+        try {
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
-        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.UPSERT_ITEM, null);
-        TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
-        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-            createdContainer.upsertItem(inputObject, new PartitionKey(inputObject.mypk), options);
+            rule = injectFailure(createdContainer, FaultInjectionOperationType.UPSERT_ITEM, null);
+            TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                createdContainer.upsertItem(inputObject, new PartitionKey(inputObject.mypk), options);
 
-        verifyExpectError(cosmosItemResponseMono);
-        rule.disable();
+            verifyExpectError(cosmosItemResponseMono);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+            }
+
+            safeClose(cosmosClient);
+        }
     }
 
     static void verifyExpectError(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
@@ -190,27 +220,36 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
-                .build();
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule faultInjectionRule = null;
+        try {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                    .build();
 
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
-        createdDocuments.get(random.nextInt(createdDocuments.size()));
+            createdDocuments.get(random.nextInt(createdDocuments.size()));
 
-        String queryText = "select top 1 * from c";
-        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
+            String queryText = "select top 1 * from c";
+            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
-        CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
+            faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+            CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
-        StepVerifier.create(queryPagedFlux)
-            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
-                && ((OperationCancelledException) throwable).getSubStatusCode()
-                == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
-            .verify();
-        faultInjectionRule.disable();
+            StepVerifier.create(queryPagedFlux)
+                        .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                            && ((OperationCancelledException) throwable).getSubStatusCode()
+                            == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
+                        .verify();
+        } finally {
+            if (faultInjectionRule !=  null) {
+                faultInjectionRule.disable();
+            }
+
+            safeClose(cosmosClient);
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -223,24 +262,30 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
                 .build();
 
-        initializeClient(endToEndOperationLatencyPolicyConfig);
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule faultInjectionRule = null;
+        try {
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            createdDocuments.get(random.nextInt(createdDocuments.size()));
 
-        createdDocuments.get(random.nextInt(createdDocuments.size()));
+            String queryText = "select top 1 * from c";
+            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-        String queryText = "select top 1 * from c";
-        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
+            faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+            CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
-        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
-        CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
-
-        StepVerifier.create(queryPagedFlux)
-                    .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
-                        && ((OperationCancelledException) throwable).getSubStatusCode()
-                        == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
-                    .verify();
-        faultInjectionRule.disable();
+            StepVerifier.create(queryPagedFlux)
+                        .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                            && ((OperationCancelledException) throwable).getSubStatusCode()
+                            == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
+                        .verify();
+        } finally {
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
+            }
+            safeClose(cosmosClient);
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -257,7 +302,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             "isDefaultE2ETimeoutDisabledForNonPointOperations() after setting system property {}",
             Configs.isDefaultE2ETimeoutDisabledForNonPointOperations());
 
-        initializeClient(
+        CosmosAsyncClient cosmosClient = initializeClient(
             new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
                 .build()
         );
@@ -283,6 +328,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             }
 
             System.clearProperty(Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED);
+            safeClose(cosmosClient);
         }
     }
 

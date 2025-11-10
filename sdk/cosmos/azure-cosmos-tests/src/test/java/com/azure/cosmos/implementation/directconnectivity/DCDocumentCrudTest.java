@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -228,20 +229,27 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(-1);
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
-        Flux<FeedResponse<Document>> results = client.queryDocuments(
-            getCollectionLink(),
-            "SELECT * FROM r",
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
-            Document.class);
+        QueryFeedOperationState dummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
 
-        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+        try {
+            Flux<FeedResponse<Document>> results = client.queryDocuments(
+                getCollectionLink(),
+                "SELECT * FROM r",
+                dummyState,
+                Document.class);
+
+            FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(documentList.size())
                 .exactlyContainsInAnyOrder(documentList.stream().map(Document::getResourceId).collect(Collectors.toList())).build();
 
-        validateQuerySuccess(results, validator, QUERY_TIMEOUT);
-        validateNoDocumentQueryOperationThroughGateway();
-        // validates only the first query for fetching query plan goes to gateway.
-        assertThat(client.getCapturedRequests().stream().filter(r -> r.getResourceType() == ResourceType.Document)).hasSize(1);
+            validateQuerySuccess(results, validator, QUERY_TIMEOUT);
+            validateNoDocumentQueryOperationThroughGateway();
+            // validates only the first query for fetching query plan goes to gateway.
+            assertThat(client.getCapturedRequests().stream().filter(r -> r.getResourceType() == ResourceType.Document)).hasSize(1);
+        } finally {
+            safeClose(dummyState);
+        }
     }
 
     private void validateNoStoredProcExecutionOperationThroughGateway() {

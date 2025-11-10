@@ -6,6 +6,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -463,6 +464,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     public void queryItemFromResourceToken(DocumentCollection documentCollection, Permission permission, PartitionKey partitionKey) throws Exception {
 
         AsyncDocumentClient asyncClientResourceToken = null;
+        QueryFeedOperationState dummyState = null;
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(permission);
@@ -479,11 +481,19 @@ public class ResourceTokenTest extends TestSuiteBase {
 
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             queryRequestOptions.setPartitionKey(partitionKey);
+
+            dummyState = TestUtils
+                .createDummyQueryFeedOperationState(
+                    ResourceType.Document,
+                    OperationType.Query,
+                    queryRequestOptions,
+                    asyncClientResourceToken);
+
             Flux<FeedResponse<Document>> queryObservable =
                 asyncClientResourceToken.queryDocuments(
                     documentCollection.getAltLink(),
                     "select * from c",
-                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, asyncClientResourceToken),
+                    dummyState,
                     Document.class);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
@@ -493,6 +503,7 @@ public class ResourceTokenTest extends TestSuiteBase {
 
             validateQuerySuccess(queryObservable, validator);
         } finally {
+            safeClose(dummyState);
             safeClose(asyncClientResourceToken);
         }
     }
