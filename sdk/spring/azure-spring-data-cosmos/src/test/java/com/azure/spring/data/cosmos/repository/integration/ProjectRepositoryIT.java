@@ -15,7 +15,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -88,7 +88,7 @@ public class ProjectRepositoryIT {
         this.repository.saveAll(PROJECTS);
     }
 
-    private void assertProjectListEquals(@NonNull List<Project> projects, @NonNull List<Project> reference) {
+    private void assertProjectListEquals(@Nonnull List<Project> projects, @Nonnull List<Project> reference) {
         Assert.assertEquals(reference.size(), projects.size());
 
         projects.sort(Comparator.comparing(Project::getId));

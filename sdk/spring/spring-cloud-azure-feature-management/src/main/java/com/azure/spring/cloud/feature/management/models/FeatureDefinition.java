@@ -5,7 +5,7 @@ package com.azure.spring.cloud.feature.management.models;
 
 import java.util.List;
 
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -51,7 +51,7 @@ public class FeatureDefinition {
      * These conditions contain feature filters and their evaluation logic.
      */
     @JsonProperty("conditions")
-    @NonNull
+    @Nonnull
     private Conditions conditions = new Conditions();
 
     /**

@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.core.mapping.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Base Class that all cosmos related spring application events extend

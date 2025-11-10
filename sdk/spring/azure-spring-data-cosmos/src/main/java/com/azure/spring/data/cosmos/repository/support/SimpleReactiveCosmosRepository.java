@@ -15,7 +15,7 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -239,7 +239,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     }
 
     @Override
-    public Mono<Void> delete(@NonNull T entity) {
+    public Mono<Void> delete(@Nonnull T entity) {
         Assert.notNull(entity, "entity to be deleted must not be null!");
 
         return cosmosOperations.deleteEntity(entityInformation.getContainerName(), entity);

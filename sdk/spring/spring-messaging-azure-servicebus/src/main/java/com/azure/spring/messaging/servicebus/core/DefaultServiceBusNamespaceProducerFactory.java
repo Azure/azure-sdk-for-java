@@ -16,7 +16,7 @@ import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.messaging.servicebus.implementation.properties.merger.SenderPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

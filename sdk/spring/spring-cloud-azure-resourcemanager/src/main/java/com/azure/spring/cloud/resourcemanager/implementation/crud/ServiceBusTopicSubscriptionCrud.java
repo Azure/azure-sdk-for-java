@@ -9,7 +9,7 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusTopicProperties;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 

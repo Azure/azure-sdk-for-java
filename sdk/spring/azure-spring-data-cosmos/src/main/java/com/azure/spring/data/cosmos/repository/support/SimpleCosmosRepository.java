@@ -16,7 +16,7 @@ import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -308,7 +308,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @return all entities sorted by the given options
      */
     @Override
-    public Iterable<T> findAll(@NonNull Sort sort) {
+    public Iterable<T> findAll(@Nonnull Sort sort) {
         Assert.notNull(sort, "sort of findAll should not be null");
         final CosmosQuery query =
             new CosmosQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);

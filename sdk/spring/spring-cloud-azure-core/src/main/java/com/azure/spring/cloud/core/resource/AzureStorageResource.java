@@ -5,7 +5,7 @@ package com.azure.spring.cloud.core.resource;
 
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.WritableResource;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -19,7 +19,7 @@ import java.util.Locale;
 abstract class AzureStorageResource extends AbstractResource implements WritableResource {
     private static final String PATH_DELIMITER = "/";
 
-    private boolean isAzureStorageResource(@NonNull String location) {
+    private boolean isAzureStorageResource(@Nonnull String location) {
         Assert.hasText(location, "Location must not be null or empty");
         return location.toLowerCase(Locale.ROOT).startsWith(getProtocolPrefix());
     }

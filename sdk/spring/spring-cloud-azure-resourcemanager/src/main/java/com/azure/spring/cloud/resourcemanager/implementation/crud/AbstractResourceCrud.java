@@ -8,8 +8,8 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.util.StopWatch;
 
 /**
@@ -33,8 +33,8 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
      * @param resourceManager The Azure resource manager.
      * @param resourceMetadata The Azure resource metadata.
      */
-    protected AbstractResourceCrud(@NonNull AzureResourceManager resourceManager,
-                                @NonNull AzureResourceMetadata resourceMetadata) {
+    protected AbstractResourceCrud(@Nonnull AzureResourceManager resourceManager,
+                                @Nonnull AzureResourceMetadata resourceMetadata) {
         this.resourceManager = resourceManager;
         this.resourceMetadata = resourceMetadata;
     }

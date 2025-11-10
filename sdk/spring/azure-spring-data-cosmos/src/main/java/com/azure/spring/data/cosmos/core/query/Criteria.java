@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.core.query;
 
 import org.springframework.data.repository.query.parser.Part;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +72,8 @@ public final class Criteria {
      * @param ignoreCase ignore case flag
      * @return Criteria instance
      */
-    public static Criteria getInstance(CriteriaType type, @NonNull String subject,
-                                       @NonNull List<Object> values, @NonNull Part.IgnoreCaseType ignoreCase) {
+    public static Criteria getInstance(CriteriaType type, @Nonnull String subject,
+                                       @Nonnull List<Object> values, @Nonnull Part.IgnoreCaseType ignoreCase) {
         final Criteria criteria = new Criteria(type);
 
         criteria.subject = subject;
@@ -89,7 +89,7 @@ public final class Criteria {
      * @param right Criteria
      * @return Criteria instance
      */
-    public static Criteria getInstance(CriteriaType type, @NonNull Criteria left, @NonNull Criteria right) {
+    public static Criteria getInstance(CriteriaType type, @Nonnull Criteria left, @Nonnull Criteria right) {
         final Criteria criteria = new Criteria(type);
 
         criteria.subCriteria.add(left);

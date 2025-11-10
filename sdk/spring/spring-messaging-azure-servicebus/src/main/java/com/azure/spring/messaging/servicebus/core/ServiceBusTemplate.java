@@ -16,7 +16,7 @@ import com.azure.spring.messaging.servicebus.implementation.support.converter.Se
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
@@ -48,7 +48,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Create an instance using the supplied producer factory.
      * @param producerFactory the producer factory.
      */
-    public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerFactory) {
+    public ServiceBusTemplate(@Nonnull ServiceBusProducerFactory producerFactory) {
         this(producerFactory, null);
     }
 
@@ -58,7 +58,7 @@ public class ServiceBusTemplate implements SendOperation {
      * @param consumerFactory the consumer factory.
      * @since 5.22.0
      */
-    public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerFactory,
+    public ServiceBusTemplate(@Nonnull ServiceBusProducerFactory producerFactory,
                               ServiceBusConsumerFactory consumerFactory) {
         this.producerFactory = producerFactory;
         this.consumerFactory = consumerFactory;

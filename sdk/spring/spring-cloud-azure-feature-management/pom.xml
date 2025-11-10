@@ -32,6 +32,13 @@
       <version>7.0.0-RC3</version> <!-- {x-version-update;springboot4_org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <version>3.0.0</version> <!-- {x-version-update;springboot4_jakarta.annotation:jakarta.annotation-api;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
       <version>4.0.0-RC2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->

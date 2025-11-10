@@ -15,7 +15,7 @@ import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
@@ -45,13 +45,13 @@ public class StorageQueueTemplate implements SendOperation {
      * Create an instance using the supplied StorageQueueClientFactory.
      * @param storageQueueClientFactory the StorageQueueClientFactory.
      */
-    public StorageQueueTemplate(@NonNull StorageQueueClientFactory storageQueueClientFactory) {
+    public StorageQueueTemplate(@Nonnull StorageQueueClientFactory storageQueueClientFactory) {
         this.storageQueueClientFactory = storageQueueClientFactory;
         LOG.info("StorageQueueTemplate started with default properties {}", buildProperties());
     }
 
     @Override
-    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message) {
+    public <T> Mono<Void> sendAsync(String queueName, @Nonnull Message<T> message) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueMessageItem queueMessageItem = messageConverter.fromMessage(message, QueueMessageItem.class);
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);

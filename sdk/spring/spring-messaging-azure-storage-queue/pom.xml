@@ -44,6 +44,13 @@
       <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <version>3.0.0</version> <!-- {x-version-update;springboot4_jakarta.annotation:jakarta.annotation-api;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>12.27.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->

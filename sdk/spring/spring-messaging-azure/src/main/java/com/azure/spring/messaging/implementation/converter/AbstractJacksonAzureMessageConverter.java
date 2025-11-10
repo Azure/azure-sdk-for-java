@@ -7,7 +7,7 @@ import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.converter.ConversionException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
@@ -63,7 +63,7 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
     }
 
     @Override
-    public O fromMessage(@NonNull Message<?> message, @NonNull Class<O> targetClass) {
+    public O fromMessage(@Nonnull Message<?> message, @Nonnull Class<O> targetClass) {
         O azureMessage = internalFromMessage(message, targetClass);
 
         setCustomHeaders(message.getHeaders(), azureMessage);
@@ -73,9 +73,9 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> Message<U> toMessage(@NonNull I azureMessage,
+    public <U> Message<U> toMessage(@Nonnull I azureMessage,
                                     Map<String, Object> headers,
-                                    @NonNull Class<U> targetPayloadClass) {
+                                    @Nonnull Class<U> targetPayloadClass) {
         Map<String, Object> mergedHeaders = new HashMap<>();
         mergedHeaders.putAll(buildCustomHeaders(azureMessage));
         mergedHeaders.putAll(headers);

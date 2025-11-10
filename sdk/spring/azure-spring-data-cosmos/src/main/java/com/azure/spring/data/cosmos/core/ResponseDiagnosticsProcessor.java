@@ -3,7 +3,7 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Interface for processing cosmosDB response

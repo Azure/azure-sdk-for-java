@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.converter;
 
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 

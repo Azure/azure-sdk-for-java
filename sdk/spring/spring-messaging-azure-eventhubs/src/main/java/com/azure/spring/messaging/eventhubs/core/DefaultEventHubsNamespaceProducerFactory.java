@@ -15,7 +15,7 @@ import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProducerPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

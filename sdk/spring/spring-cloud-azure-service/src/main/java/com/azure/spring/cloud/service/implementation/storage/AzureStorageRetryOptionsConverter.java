@@ -10,7 +10,7 @@ import com.azure.storage.common.policy.RetryPolicyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 
 import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMode.EXPONENTIAL;
 import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMode.FIXED;
@@ -28,7 +28,7 @@ public final class AzureStorageRetryOptionsConverter implements Converter<Storag
     }
 
     @Override
-    public RequestRetryOptions convert(@NonNull StorageRetry storageRetry) {
+    public RequestRetryOptions convert(@Nonnull StorageRetry storageRetry) {
         RetryOptionsProvider.RetryMode retryMode = storageRetry.getMode();
 
         if (EXPONENTIAL == retryMode) {

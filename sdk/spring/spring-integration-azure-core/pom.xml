@@ -46,6 +46,13 @@
       <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <version>3.0.0</version> <!-- {x-version-update;springboot4_jakarta.annotation:jakarta.annotation-api;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
       <version>7.0.0-RC2</version> <!-- {x-version-update;springboot4_org.springframework.integration:spring-integration-core;external_dependency} -->

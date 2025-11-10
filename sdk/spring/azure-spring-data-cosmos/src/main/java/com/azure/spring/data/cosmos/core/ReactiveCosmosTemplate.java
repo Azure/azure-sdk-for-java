@@ -49,7 +49,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
@@ -168,7 +168,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param applicationContext the application context
      * @throws BeansException the bean exception
      */
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@Nonnull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
@@ -798,7 +798,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return void Mono
      */
     @Override
-    public Mono<Void> deleteAll(@NonNull String containerName, @NonNull Class<?> domainType) {
+    public Mono<Void> deleteAll(@Nonnull String containerName, @Nonnull Class<?> domainType) {
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
         final CosmosQuery query = new CosmosQuery(Criteria.getInstance(CriteriaType.ALL));
@@ -1024,7 +1024,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param containerName the container name
      */
     @Override
-    public void deleteContainer(@NonNull String containerName) {
+    public void deleteContainer(@Nonnull String containerName) {
         containerName = getContainerNameOverride(containerName);
         Assert.hasText(containerName, "containerName should have text.");
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
@@ -1065,9 +1065,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         }
     }
 
-    private <T> Flux<JsonNode> findItems(@NonNull CosmosQuery query,
-                                         @NonNull String containerName,
-                                         @NonNull Class<T> domainType) {
+    private <T> Flux<JsonNode> findItems(@Nonnull CosmosQuery query,
+                                         @Nonnull String containerName,
+                                         @Nonnull Class<T> domainType) {
         containerName = getContainerNameOverride(containerName);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -1098,9 +1098,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     this.responseDiagnosticsProcessor));
     }
 
-    private <T> Mono<T> deleteItem(@NonNull JsonNode jsonNode,
+    private <T> Mono<T> deleteItem(@Nonnull JsonNode jsonNode,
                                    String containerName,
-                                   @NonNull Class<T> domainType) {
+                                   @Nonnull Class<T> domainType) {
         containerName = getContainerNameOverride(containerName);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, jsonNode, options);
@@ -1120,13 +1120,13 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                         this.responseDiagnosticsProcessor));
     }
 
-    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
+    private <T> T emitOnLoadEventAndConvertToDomainObject(@Nonnull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
         containerName = getContainerNameOverride(containerName);
         maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, containerName));
         return toDomainObject(domainType, responseJsonNode);
     }
 
-    private <T> T toDomainObject(@NonNull Class<T> domainType, JsonNode jsonNode) {
+    private <T> T toDomainObject(@Nonnull Class<T> domainType, JsonNode jsonNode) {
         return mappingCosmosConverter.read(domainType, jsonNode);
     }
 

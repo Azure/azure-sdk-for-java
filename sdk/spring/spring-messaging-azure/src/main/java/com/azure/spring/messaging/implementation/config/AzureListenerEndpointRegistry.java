@@ -15,8 +15,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -215,7 +215,7 @@ public class AzureListenerEndpointRegistry
      * @see #getListenerContainerIds()
      */
     @Nullable
-    public MessageListenerContainer getListenerContainer(@NonNull String id) {
+    public MessageListenerContainer getListenerContainer(@Nonnull String id) {
         return this.listenerContainersMap.get(id);
     }
 

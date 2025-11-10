@@ -7,15 +7,15 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 
 /**
  * Resource manager for Service Bus namespace.
  */
 public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusNamespace, String, Object> {
 
-    public ServiceBusNamespaceCrud(@NonNull AzureResourceManager azureResourceManager,
-                                   @NonNull AzureResourceMetadata azureResourceMetadata) {
+    public ServiceBusNamespaceCrud(@Nonnull AzureResourceManager azureResourceManager,
+                                   @Nonnull AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 

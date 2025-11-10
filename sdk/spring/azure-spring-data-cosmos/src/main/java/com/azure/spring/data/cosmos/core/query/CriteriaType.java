@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.core.query;
 
 import org.springframework.data.repository.query.parser.Part;
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 
 import java.beans.ConstructorProperties;
 import java.util.Collections;
@@ -184,7 +184,7 @@ public enum CriteriaType {
      * @param partType PartType to be checked.
      * @return True if unsupported, or false.
      */
-    public static boolean isPartTypeUnSupported(@NonNull Part.Type partType) {
+    public static boolean isPartTypeUnSupported(@Nonnull Part.Type partType) {
         return !isPartTypeSupported(partType);
     }
 
@@ -194,7 +194,7 @@ public enum CriteriaType {
      * @param partType PartType to be checked.
      * @return True if supported, or false.
      */
-    public static boolean isPartTypeSupported(@NonNull Part.Type partType) {
+    public static boolean isPartTypeSupported(@Nonnull Part.Type partType) {
         return PART_TREE_TYPE_TO_CRITERIA.containsKey(partType);
     }
 
@@ -206,7 +206,7 @@ public enum CriteriaType {
      * @throws UnsupportedOperationException for unsupported part type
      */
     @SuppressWarnings("")
-    public static CriteriaType toCriteriaType(@NonNull Part.Type partType) {
+    public static CriteriaType toCriteriaType(@Nonnull Part.Type partType) {
         final CriteriaType criteriaType = PART_TREE_TYPE_TO_CRITERIA.get(partType);
 
         if (criteriaType == null) {

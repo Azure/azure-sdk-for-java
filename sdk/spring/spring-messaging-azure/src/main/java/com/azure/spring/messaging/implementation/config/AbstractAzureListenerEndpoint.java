@@ -7,7 +7,7 @@ import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Base model for a Azure listener endpoint.

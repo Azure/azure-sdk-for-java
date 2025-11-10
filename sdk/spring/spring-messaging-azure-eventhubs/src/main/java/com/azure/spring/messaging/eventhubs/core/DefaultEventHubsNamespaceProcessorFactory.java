@@ -25,8 +25,8 @@ import com.azure.spring.messaging.eventhubs.implementation.properties.merger.Pro
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -108,9 +108,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     }
 
     @Override
-    public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                @NonNull MessageListener<?> listener,
-                                                @NonNull EventHubsErrorHandler errorHandler) {
+    public EventProcessorClient createProcessor(@Nonnull String eventHub, @Nonnull String consumerGroup,
+                                                @Nonnull MessageListener<?> listener,
+                                                @Nonnull EventHubsErrorHandler errorHandler) {
         return doCreateProcessor(eventHub, consumerGroup, listener, errorHandler, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
@@ -145,9 +145,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
         this.listeners.clear();
     }
 
-    private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                   @NonNull MessageListener<?> messageListener,
-                                                   @NonNull EventHubsErrorHandler errorHandler,
+    private EventProcessorClient doCreateProcessor(@Nonnull String eventHub, @Nonnull String consumerGroup,
+                                                   @Nonnull MessageListener<?> messageListener,
+                                                   @Nonnull EventHubsErrorHandler errorHandler,
                                                    @Nullable Consumer<InitializationContext> initializationContextConsumer,
                                                    @Nullable Consumer<CloseContext> closeContextConsumer,
                                                    @Nullable ProcessorProperties properties) {

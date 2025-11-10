@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.dao.DataAccessException;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Public class extending DataAccessException, exposes innerException.

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.common;
 
-import org.springframework.lang.NonNull;
+import jakarta.annotation.Nonnull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public final class PropertyLoader {
         return getPropertyByName("project.version", PROJECT_PROPERTY_FILE);
     }
 
-    private static String getPropertyByName(@NonNull String name, @NonNull String filename) {
+    private static String getPropertyByName(@Nonnull String name, @Nonnull String filename) {
         final Properties properties = new Properties();
         final InputStream inputStream = PropertyLoader.class.getResourceAsStream(filename);
 

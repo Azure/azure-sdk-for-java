@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.lang.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * General exception for illegal creation of cosmos db
