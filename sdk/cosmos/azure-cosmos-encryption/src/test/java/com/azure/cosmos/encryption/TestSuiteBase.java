@@ -59,8 +59,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -90,13 +88,11 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
-    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
@@ -227,7 +223,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    public void beforeSuite() {
 
         logger.info("beforeSuite Started");
 
@@ -261,14 +257,14 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
+    public void parallelizeUnitTests(ITestContext context) {
         // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
 //        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    public void afterSuite() {
 
         logger.info("afterSuite Started");
 
@@ -1485,5 +1481,10 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray());
             assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray());
             assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray());
+        }
+
+
+        static {
+            CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         }
     }
