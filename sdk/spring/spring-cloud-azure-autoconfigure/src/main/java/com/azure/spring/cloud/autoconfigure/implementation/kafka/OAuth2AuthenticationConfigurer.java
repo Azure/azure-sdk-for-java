@@ -10,9 +10,7 @@ import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesU
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.slf4j.Logger;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.AZURE_CONFIGURED_JAAS_OPTIONS_KEY;
@@ -20,18 +18,16 @@ import static com.azure.spring.cloud.autoconfigure.implementation.kafka.Abstract
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SASL_MECHANISM_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AbstractKafkaPropertiesBeanPostProcessor.SECURITY_PROTOCOL_CONFIG_SASL;
-import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
-import static org.springframework.util.StringUtils.delimitedListToStringArray;
 
 /**
  * Configures OAuth2 (OAUTHBEARER) authentication for Kafka using Azure Identity credentials.
  * This configurer handles Azure Event Hubs for Kafka scenarios with Microsoft Entra ID authentication.
  */
-class OAuth2AuthenticationConfigurer implements KafkaAuthenticationConfigurer {
+class OAuth2AuthenticationConfigurer extends AbstractKafkaAuthenticationConfigurer {
 
     private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
     private static final Map<String, String> KAFKA_OAUTH_CONFIGS = Map.of(
@@ -41,17 +37,10 @@ class OAuth2AuthenticationConfigurer implements KafkaAuthenticationConfigurer {
     );
 
     private final AzureProperties azureProperties;
-    private final Logger logger;
 
     OAuth2AuthenticationConfigurer(AzureProperties azureProperties, Logger logger) {
+        super(logger);
         this.azureProperties = azureProperties;
-        this.logger = logger;
-    }
-
-    @Override
-    public boolean canConfigure(Map<String, Object> mergedProperties) {
-        return meetAzureBootstrapServerConditions(mergedProperties)
-            && meetSaslOAuthConditions(mergedProperties);
     }
 
     @Override
@@ -70,39 +59,11 @@ class OAuth2AuthenticationConfigurer implements KafkaAuthenticationConfigurer {
         logConfiguration();
     }
 
-    private boolean meetAzureBootstrapServerConditions(Map<String, Object> sourceProperties) {
-        Object bootstrapServers = sourceProperties.get(BOOTSTRAP_SERVERS_CONFIG);
-        List<String> serverList = extractBootstrapServerList(bootstrapServers);
-
-        if (serverList == null) {
-            logger.debug("Kafka bootstrap server configuration doesn't meet passwordless requirements.");
-            return false;
-        }
-
-        return serverList.size() == 1 && serverList.get(0).endsWith(":9093");
-    }
-
-    private List<String> extractBootstrapServerList(Object bootstrapServers) {
-        if (bootstrapServers instanceof String) {
-            return Arrays.asList(delimitedListToStringArray((String) bootstrapServers, ","));
-        } else if (bootstrapServers instanceof Iterable<?>) {
-            List<String> serverList = new java.util.ArrayList<>();
-            for (Object obj : (Iterable<?>) bootstrapServers) {
-                if (obj instanceof String) {
-                    serverList.add((String) obj);
-                } else {
-                    return null;
-                }
-            }
-            return serverList;
-        }
-        return null;
-    }
-
-    private boolean meetSaslOAuthConditions(Map<String, Object> sourceProperties) {
-        String securityProtocol = (String) sourceProperties.get(SECURITY_PROTOCOL_CONFIG);
-        String saslMechanism = (String) sourceProperties.get(SASL_MECHANISM);
-        String jaasConfig = (String) sourceProperties.get(SASL_JAAS_CONFIG);
+    @Override
+    protected boolean meetAuthenticationConditions(Map<String, Object> sourceProperties) {
+        String securityProtocol = getSecurityProtocol(sourceProperties);
+        String saslMechanism = getSaslMechanism(sourceProperties);
+        String jaasConfig = getJaasConfig(sourceProperties);
 
         if (meetSaslProtocolConditions(securityProtocol)
             && meetSaslOAuth2MechanismConditions(saslMechanism)
@@ -117,10 +78,6 @@ class OAuth2AuthenticationConfigurer implements KafkaAuthenticationConfigurer {
                 + "instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.",
             saslMechanism);
         return false;
-    }
-
-    private boolean meetSaslProtocolConditions(String securityProtocol) {
-        return securityProtocol == null || SECURITY_PROTOCOL_CONFIG_SASL.equalsIgnoreCase(securityProtocol);
     }
 
     private boolean meetSaslOAuth2MechanismConditions(String saslMechanism) {
