@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.exception.HttpResponseException;
@@ -10,45 +12,55 @@ import com.azure.data.appconfiguration.models.ConfigurationAudience;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * HTTP pipeline policy that handles Azure Active Directory audience-related authentication errors.
+ * This policy intercepts HTTP responses and provides more meaningful error messages when
+ * audience configuration issues occur during authentication.
+ */
 public class AudiencePolicy implements HttpPipelinePolicy {
 
-    private static final String NO_AUDIENCE
-        = "No audience was provided, one should be configured to connect to this cloud.";
+    private static final String NO_AUDIENCE_ERROR_MESSAGE
+        = "No audience was provided. An audience must be configured to connect to this cloud.";
 
-    private static final String INCORRECT_AUDIENCE
-        = "The incorrect audience was provided. Please update to connect to this cloud.";
+    private static final String INCORRECT_AUDIENCE_ERROR_MESSAGE
+        = "An incorrect audience was provided. Please update the audience to connect to this cloud.";
+
+    private static final String AAD_AUDIENCE_ERROR_CODE = "AADSTS500011";
 
     private final ConfigurationAudience audience;
 
+    /**
+     * Creates a new instance of AudiencePolicy.
+     *
+     * @param audience The configuration audience to use for validation. May be null.
+     */
     public AudiencePolicy(ConfigurationAudience audience) {
         this.audience = audience;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        try {
-            return next.clone().process();
-        } catch (HttpResponseException ex) {
-            throw handleAudienceException(ex);
-        }
+        return next.process().onErrorMap(HttpResponseException.class, this::handleAudienceException);
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         try {
-            return next.clone().processSync();
+            return next.processSync();
         } catch (HttpResponseException ex) {
             throw handleAudienceException(ex);
         }
     }
 
+    /**
+     * Handles audience-related authentication exceptions by providing more meaningful error messages.
+     *
+     * @param ex The original HttpResponseException
+     * @return A new HttpResponseException with improved error message if audience-related, otherwise the original exception
+     */
     private HttpResponseException handleAudienceException(HttpResponseException ex) {
-        if (ex.getMessage().contains("AADSTS500011")) {
-            String message = INCORRECT_AUDIENCE;
-            if (audience == null) {
-                message = NO_AUDIENCE;
-            }
-
+        if (ex.getMessage() != null && ex.getMessage().contains(AAD_AUDIENCE_ERROR_CODE)) {
+            String message = audience == null ? NO_AUDIENCE_ERROR_MESSAGE : INCORRECT_AUDIENCE_ERROR_MESSAGE;
             return new HttpResponseException(message, ex.getResponse(), ex);
         }
         return ex;
