@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where the copy file operation would fail when using SAS token credentials.
 
 ### Other Changes
 
