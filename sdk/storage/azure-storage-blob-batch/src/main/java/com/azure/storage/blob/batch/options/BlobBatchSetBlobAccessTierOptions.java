@@ -51,8 +51,8 @@ public class BlobBatchSetBlobAccessTierOptions {
         StorageImplUtils.assertNotNull("blobName", blobName);
         StorageImplUtils.assertNotNull("tier", tier);
         this.blobUrlParts = BlobUrlParts.parse("https://account.blob.core.windows.net")
-            .setContainerName(Utility.urlEncode(containerName))
-            .setBlobName(Utility.urlEncode(blobName));
+            .setContainerName(containerName)
+            .setBlobName(blobName);
         this.tier = tier;
     }
 
