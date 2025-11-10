@@ -631,6 +631,9 @@
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
+                
+                <!-- Used by Spring modules for Jakarta annotations in Spring Boot 4 / Spring Framework 7 -->
+                <include>jakarta.annotation:jakarta.annotation-api:[3.0.0]</include> <!-- {x-include-update;springboot4_jakarta.annotation:jakarta.annotation-api;external_dependency} -->
               </includes>
             </bannedDependencies>
 
