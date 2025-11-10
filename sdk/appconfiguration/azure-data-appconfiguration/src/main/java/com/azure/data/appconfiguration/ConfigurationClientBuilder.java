@@ -268,7 +268,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         // Add query parameter reordering policy
         policies.add(new QueryParamPolicy());
 
-        // Add policy to deal with Audience Exception in new clouds
+        // Add policy to provide better error messages for AAD audience authentication failures
         policies.add(new AudiencePolicy(audience));
 
         policies.addAll(perCallPolicies);
