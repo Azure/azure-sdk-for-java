@@ -1395,7 +1395,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     /**
-     * Returns a snapshot of the active clients. The key is the clientId, the value the callstack shows from
+     * Returns a snapshot of the active clients. The key is the clientId, the value is the callstack showing
      * where the client was created.
      * @return a snapshot of the active clients.
      */
