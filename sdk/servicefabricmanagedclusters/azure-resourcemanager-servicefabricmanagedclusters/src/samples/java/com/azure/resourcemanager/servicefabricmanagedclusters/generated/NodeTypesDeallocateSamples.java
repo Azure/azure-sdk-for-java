@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DeallocateNodes_example.json
+     * x-ms-original-file: 2025-10-01-preview/DeallocateNodes_example.json
      */
     /**
      * Sample code: Deallocate nodes.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ApplicationsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ApplicationListOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/ApplicationListOperation_example.json
      */
     /**
      * Sample code: Get a list of application resources.

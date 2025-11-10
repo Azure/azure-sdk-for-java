@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpdateParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpdateParametersProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,17 +15,22 @@ public final class ApplicationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"eeh\":\"lnrosfqp\",\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\"}}")
+            "{\"tags\":{\"eeh\":\"lnrosfqp\",\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\"},\"properties\":{\"parameters\":{\"cyshurzafbljjgp\":\"nmoc\"}}}")
             .toObject(ApplicationUpdateParameters.class);
         Assertions.assertEquals("lnrosfqp", model.tags().get("eeh"));
+        Assertions.assertEquals("nmoc", model.properties().parameters().get("cyshurzafbljjgp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationUpdateParameters model = new ApplicationUpdateParameters().withTags(mapOf("eeh", "lnrosfqp",
-            "swjdkirso", "zvypyqrimzinp", "soifiyipjxsqw", "dqxhcrmnohjtckwh", "bznorcjxvsnby", "gr"));
+        ApplicationUpdateParameters model = new ApplicationUpdateParameters()
+            .withTags(mapOf("eeh", "lnrosfqp", "swjdkirso", "zvypyqrimzinp", "soifiyipjxsqw", "dqxhcrmnohjtckwh",
+                "bznorcjxvsnby", "gr"))
+            .withProperties(
+                new ApplicationUpdateParametersProperties().withParameters(mapOf("cyshurzafbljjgp", "nmoc")));
         model = BinaryData.fromObject(model).toObject(ApplicationUpdateParameters.class);
         Assertions.assertEquals("lnrosfqp", model.tags().get("eeh"));
+        Assertions.assertEquals("nmoc", model.properties().parameters().get("cyshurzafbljjgp"));
     }
 
     // Use "Map.of" if available
