@@ -106,7 +106,6 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
         if (enableTokenProxy) {
-            System.out.println("Custom Token Proxy is enabled for WorkloadIdentityCredentialBuilder.");
             ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
             if (proxyConfig != null) {
                 identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
