@@ -43,6 +43,9 @@
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
 
+  <!-- Suppress RedundantModifier for ServiceBusJmsConnectionFactoryConfigurationTests because public constructors are required for reflection -->
+  <suppress checks="RedundantModifier" files=".*[/\\]ServiceBusJmsConnectionFactoryConfigurationTests\.java"/>
+
   <!-- OpenTelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]cloud[/\\]autoconfigure[/\\]monitor[/\\]*"/>
 

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `ServiceBusJmsConnectionFactoryClassProvider` interface to allow users to specify a custom subclass of `ServiceBusJmsConnectionFactory` to be used in the configuration. This enables injection of custom connection factory implementations with additional functionality beyond the standard Service Bus JMS connection factory.
+
 ### Breaking Changes
 
 ### Bugs Fixed
