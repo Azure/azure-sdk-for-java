@@ -190,13 +190,23 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
      * @param rawPropertiesMap the raw Kafka properties Map to configure JAAS to and remove Azure Properties from
      */
     private void replaceAzurePropertiesWithJaas(Map<String, Object> mergedProperties, Map<String, String> rawPropertiesMap) {
-        resolveJaasForAzure(mergedProperties)
-            .ifPresent(jaas -> {
-                configJaasToKafkaRawProperties(jaas, rawPropertiesMap);
-                logConfigureOAuthProperties();
-                configureKafkaUserAgent();
-            });
+        // Use strategy pattern to configure authentication
+        KafkaAuthenticationConfigurer configurer = createAuthenticationConfigurer();
+        if (configurer.canConfigure(mergedProperties)) {
+            configurer.configure(mergedProperties, rawPropertiesMap);
+            configureKafkaUserAgent();
+        }
         clearAzureProperties(rawPropertiesMap);
+    }
+
+    /**
+     * Creates the appropriate authentication configurer based on available Azure properties.
+     * Currently supports OAuth2 (OAUTHBEARER) authentication with Azure Identity.
+     *
+     * @return the authentication configurer to use
+     */
+    private KafkaAuthenticationConfigurer createAuthenticationConfigurer() {
+        return new OAuth2AuthenticationConfigurer(azureGlobalProperties, getLogger());
     }
 
     private Optional<Jaas> resolveJaasForAzure(Map<String, Object> mergedProperties) {
