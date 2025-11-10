@@ -107,7 +107,7 @@
 # ServiceOwners:                                                   @miaojiang
 
 # PRLabel: %App Configuration
-/sdk/appconfiguration/                                             @alzimmermsft @Azure/azure-java-sdk
+/sdk/appconfiguration/                                             @mrm9084 @rossgrambo @avanigupta @alzimmermsft @Azure/azure-java-sdk
 
 # ServiceLabel: %App Configuration
 # AzureSdkOwners:                                                  @mrm9084
