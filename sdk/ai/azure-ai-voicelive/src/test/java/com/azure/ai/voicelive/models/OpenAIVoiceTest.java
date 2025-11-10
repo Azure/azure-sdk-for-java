@@ -27,7 +27,7 @@ class OpenAIVoiceTest {
         // Assert
         assertNotNull(voice);
         assertEquals(voiceName, voice.getName());
-        assertEquals(VoiceProvider.TYPE_OPENAI, voice.getType());
+        assertEquals("openai", voice.getType());
     }
 
     @Test
@@ -36,8 +36,8 @@ class OpenAIVoiceTest {
         OpenAIVoice alloyVoice = new OpenAIVoice(OpenAIVoiceName.ALLOY);
         OpenAIVoice echoVoice = new OpenAIVoice(OpenAIVoiceName.ECHO);
 
-        assertEquals(VoiceProvider.TYPE_OPENAI, alloyVoice.getType());
-        assertEquals(VoiceProvider.TYPE_OPENAI, echoVoice.getType());
+        assertEquals("openai", alloyVoice.getType());
+        assertEquals("openai", echoVoice.getType());
     }
 
     @Test
@@ -94,12 +94,12 @@ class OpenAIVoiceTest {
     }
 
     @Test
-    void testInheritanceFromVoiceProvider() {
+    void testProviderType() {
         OpenAIVoice voice = new OpenAIVoice(OpenAIVoiceName.ALLOY);
 
-        // Should be instance of VoiceProvider if it extends it
-        // This test verifies the inheritance relationship
-        assertTrue(voice instanceof VoiceProvider || voice.getType() != null);
+        // Verify provider type is openai
+        assertEquals("openai", voice.getType());
+        assertNotNull(voice.getType());
     }
 
     @Test
@@ -108,7 +108,7 @@ class OpenAIVoiceTest {
         for (OpenAIVoiceName voiceName : OpenAIVoiceName.values()) {
             OpenAIVoice voice = new OpenAIVoice(voiceName);
             assertEquals(voiceName, voice.getName());
-            assertEquals(VoiceProvider.TYPE_OPENAI, voice.getType());
+            assertEquals("openai", voice.getType());
         }
     }
 
