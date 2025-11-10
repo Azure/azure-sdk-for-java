@@ -33,7 +33,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
@@ -71,12 +70,8 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -89,9 +84,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -99,7 +92,6 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.BridgeInternal.extractConfigs;
 import static com.azure.cosmos.BridgeInternal.injectConfigs;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
@@ -109,13 +101,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
-    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
@@ -128,8 +118,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final AzureKeyCredential credential;
 
     protected int subscriberValidationTimeout = TIMEOUT;
-
-    private volatile Map<Integer, String> activeClientsAtBegin = new HashMap<>();
 
     private static CosmosAsyncDatabase SHARED_DATABASE;
     private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
@@ -212,58 +200,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         @Override
         public CosmosAsyncDatabase getDatabase(String id) {
             return client.getDatabase(id);
-        }
-    }
-
-    @BeforeClass(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
-        "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public void beforeClassSetupLeakDetection() {
-        this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
-    }
-
-    @AfterClass(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
-        "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public void afterClassSetupLeakDetection() {
-
-        Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
-        StringBuilder sb = new StringBuilder();
-        Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
-
-        for (Integer clientId : leakedClientSnapshotNow.keySet()) {
-            if (!leakedClientSnapshotAtBegin.containsKey(clientId)) {
-                // this client was leaked in this class
-                sb
-                    .append("CosmosClient [")
-                    .append(clientId)
-                    .append("] leaked. Callstack of initialization:\n")
-                    .append(leakedClientSnapshotNow.get(clientId));
-            }
-        }
-
-        if (sb.length() > 0) {
-            String msg = "\"COSMOS CLIENT LEAKS detected in test class: "
-                + this.getClass().getCanonicalName()
-                + sb;
-
-            logger.error(msg);
-            // fail(msg);
-        }
-
-        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
-        if (nettyLeaks.size() > 0) {
-            sb.append("\n");
-            for (String leak : nettyLeaks) {
-                sb.append(leak).append("\n");
-            }
-
-            String msg = "\"NETTY LEAKS detected in test class: "
-                + this.getClass().getCanonicalName()
-                + sb;
-
-            logger.error(msg);
-            // fail(msg);
         }
     }
 
