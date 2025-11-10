@@ -86,6 +86,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1404,11 +1405,11 @@ public class BlobAsyncClientBase {
                                     .orElse(null);
 
                             if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
-                                StorageContentValidationDecoderPolicy.DecoderState decoderState
-                                    = (StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+                                DecoderState decoderState = (DecoderState) decoderStateObj;
 
-                                // Use the encoded offset for retry (number of encoded bytes processed)
-                                long encodedOffset = decoderState.getTotalEncodedBytesProcessed();
+                                // Use the retry offset (encoded bytes processed minus pending buffer)
+                                // The pending buffer contains bytes that have been counted but not yet successfully processed
+                                long encodedOffset = decoderState.getRetryOffset();
                                 long remainingCount = finalCount - encodedOffset;
                                 retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
 
