@@ -27,13 +27,13 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
      * Router Job events Labels
      */
     @Generated
-    private final Map<String, String> labels;
+    private Map<String, String> labels;
 
     /*
      * Router Jobs events Tags
      */
     @Generated
-    private final Map<String, String> tags;
+    private Map<String, String> tags;
 
     /*
      * Router Event Channel ID
@@ -51,14 +51,10 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
      * Creates an instance of AcsRouterJobEventData class.
      *
      * @param jobId the jobId value to set.
-     * @param labels the labels value to set.
-     * @param tags the tags value to set.
      */
     @Generated
-    protected AcsRouterJobEventData(String jobId, Map<String, String> labels, Map<String, String> tags) {
+    protected AcsRouterJobEventData(String jobId) {
         super(jobId);
-        this.labels = labels;
-        this.tags = tags;
     }
 
     /**
@@ -94,6 +90,18 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     }
 
     /**
+     * Set the labels property: Router Job events Labels.
+     *
+     * @param labels the labels value to set.
+     * @return the AcsRouterJobEventData object itself.
+     */
+    @Generated
+    AcsRouterJobEventData setLabels(Map<String, String> labels) {
+        this.labels = labels;
+        return this;
+    }
+
+    /**
      * Get the tags property: Router Jobs events Tags.
      *
      * @return the tags value.
@@ -101,6 +109,18 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     @Generated
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: Router Jobs events Tags.
+     *
+     * @param tags the tags value to set.
+     * @return the AcsRouterJobEventData object itself.
+     */
+    @Generated
+    AcsRouterJobEventData setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -135,8 +155,6 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("queueId", this.queueId);
         return jsonWriter.writeEndObject();
     }
@@ -178,11 +196,26 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
                     reader.skipChildren();
                 }
             }
-            AcsRouterJobEventData deserializedAcsRouterJobEventData = new AcsRouterJobEventData(jobId, labels, tags);
+            AcsRouterJobEventData deserializedAcsRouterJobEventData = new AcsRouterJobEventData(jobId);
             deserializedAcsRouterJobEventData.channelReference = channelReference;
             deserializedAcsRouterJobEventData.channelId = channelId;
+            deserializedAcsRouterJobEventData.labels = labels;
+            deserializedAcsRouterJobEventData.tags = tags;
             deserializedAcsRouterJobEventData.queueId = queueId;
             return deserializedAcsRouterJobEventData;
         });
+    }
+
+    /**
+     * Creates an instance of AcsRouterJobEventData class.
+     *
+     * @param jobId the jobId value to set.
+     * @param labels the labels value to set.
+     * @param tags the tags value to set.
+     */
+    protected AcsRouterJobEventData(String jobId, Map<String, String> labels, Map<String, String> tags) {
+        super(jobId);
+        this.labels = labels;
+        this.tags = tags;
     }
 }

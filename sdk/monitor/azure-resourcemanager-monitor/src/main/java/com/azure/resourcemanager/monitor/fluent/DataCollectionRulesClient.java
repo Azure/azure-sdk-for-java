@@ -269,13 +269,16 @@ public interface DataCollectionRulesClient extends InnerSupportsGet<DataCollecti
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
+     * deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName,
+        Boolean deleteAssociations);
 
     /**
      * Deletes a data collection rule.
@@ -295,6 +298,8 @@ public interface DataCollectionRulesClient extends InnerSupportsGet<DataCollecti
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
+     * deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -302,7 +307,8 @@ public interface DataCollectionRulesClient extends InnerSupportsGet<DataCollecti
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String dataCollectionRuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String dataCollectionRuleName,
+        Boolean deleteAssociations, Context context);
 
     /**
      * Deletes a data collection rule.
