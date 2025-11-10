@@ -91,7 +91,7 @@ public abstract class DocumentClientTest implements ITest {
             }
 
             if (sb.length() > 0) {
-                String msg = "\"COSMOS CLIENT LEAKS detected in test class: "
+                String msg = "COSMOS CLIENT LEAKS detected in test class: "
                     + this.getClass().getCanonicalName()
                     + "\n\n"
                     + sb;
