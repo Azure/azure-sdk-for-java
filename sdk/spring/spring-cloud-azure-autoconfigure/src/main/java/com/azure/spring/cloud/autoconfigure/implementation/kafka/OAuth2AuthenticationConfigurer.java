@@ -7,7 +7,6 @@ import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.service.implementation.jaas.Jaas;
 import com.azure.spring.cloud.service.implementation.jaas.JaasResolver;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
-import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.slf4j.Logger;
 
@@ -151,8 +150,8 @@ class OAuth2AuthenticationConfigurer implements KafkaAuthenticationConfigurer {
 
     private Map<String, String> convertAzurePropertiesToMap(AzureProperties properties) {
         Map<String, String> configs = new HashMap<>();
-        for (AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping m :
-            AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.values()) {
+        for (AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping m
+            : AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.values()) {
             PROPERTY_MAPPER.from(m.getter().apply(properties)).to(p -> configs.put(m.propertyKey(), p));
         }
         return configs;
