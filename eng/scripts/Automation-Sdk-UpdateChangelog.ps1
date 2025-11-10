@@ -62,8 +62,8 @@ function Get-MavenArtifactInfo {
     }
 }
 
-# Function to get the latest released version from Maven Central
-function Get-LatestReleasedVersion {
+# Function to get the latest released stable version from Maven Central
+function Get-LatestReleasedStableVersion {
     param(
         [string]$GroupId,
         [string]$ArtifactId
@@ -95,7 +95,7 @@ function Get-LatestReleasedVersion {
         return $latestVersion
     }
     catch {
-        Write-Warning "Could not retrieve metadata from Maven Central. Package may not be released yet."
+        Write-Warning "Could not retrieve metadata from Maven Central. Package may not be released yet or only beta version released."
         return $null
     }
 }
@@ -309,7 +309,7 @@ try {
     Write-Host ""
     
     Write-Host "Step 2: Fetching latest released version from Maven Central..."
-    $latestVersion = Get-LatestReleasedVersion -GroupId $artifactInfo.GroupId -ArtifactId $artifactInfo.ArtifactId
+    $latestVersion = Get-LatestReleasedStableVersion -GroupId $artifactInfo.GroupId -ArtifactId $artifactInfo.ArtifactId
     
     if ($null -eq $latestVersion) {
         Write-Warning "No released version found on Maven Central. CHANGELOG.md will not be updated."
@@ -333,7 +333,7 @@ try {
         Write-Host "  Downloaded to: $oldJarPath"
         Write-Host ""
         
-        Write-Host "Step 5: Locating built JAR..."
+        Write-Host "Step 4: Locating built JAR..."
         Write-Host "  Debug - PackagePath: $PackagePath"
         Write-Host "  Debug - ArtifactId: $($artifactInfo.ArtifactId)"
         $newJarPath = Get-BuiltJarPath -PackagePath $PackagePath -ArtifactId $artifactInfo.ArtifactId
@@ -343,7 +343,7 @@ try {
         }
         Write-Host ""
         
-        Write-Host "Step 6: Generating changelog..."
+        Write-Host "Step 5: Generating changelog..."
         $changelogResult = Invoke-ChangelogGeneration -SdkRepoPath $SdkRepoPath `
                                                        -OldJarPath $oldJarPath `
                                                        -NewJarPath $newJarPath
@@ -359,7 +359,7 @@ try {
         Write-Host "  Changelog generated successfully"
         Write-Host ""
         
-        Write-Host "Step 7: Updating CHANGELOG.md..."
+        Write-Host "Step 6: Updating CHANGELOG.md..."
         $changelogPath = Join-Path $PackagePath "CHANGELOG.md"
         Update-ChangelogFile -ChangelogPath $changelogPath -NewChangelogText $changelogResult.changelog
         Write-Host "  CHANGELOG.md updated"
