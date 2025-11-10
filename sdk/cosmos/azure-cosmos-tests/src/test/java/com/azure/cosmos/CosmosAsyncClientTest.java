@@ -97,7 +97,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
             }
 
             if (sb.length() > 0) {
-                String msg = "\"COSMOS CLIENT LEAKS detected in test class: "
+                String msg = "COSMOS CLIENT LEAKS detected in test class: "
                     + this.getClass().getCanonicalName()
                     + "\n\n"
                     + sb;
@@ -113,7 +113,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
                     sb.append(leak).append("\n");
                 }
 
-                String msg = "\"NETTY LEAKS detected in test class: "
+                String msg = "NETTY LEAKS detected in test class: "
                     + this.getClass().getCanonicalName()
                     + sb;
 
