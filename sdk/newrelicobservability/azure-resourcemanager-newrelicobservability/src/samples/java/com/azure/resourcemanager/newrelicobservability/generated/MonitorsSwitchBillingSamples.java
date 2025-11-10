@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.newrelicobservability.generated;
 
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
@@ -15,7 +14,8 @@ import java.time.OffsetDateTime;
  */
 public final class MonitorsSwitchBillingSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
      * Monitors_SwitchBilling_MinimumSet_Gen.json
      */
     /**
@@ -31,7 +31,8 @@ public final class MonitorsSwitchBillingSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
      * Monitors_SwitchBilling_MaximumSet_Gen.json
      */
     /**
@@ -47,7 +48,7 @@ public final class MonitorsSwitchBillingSamples {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")
                     .withOrganizationId("k")
                     .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                        .withBillingCycle(BillingCycle.YEARLY)
+                        .withBillingCycle("Yearly")
                         .withPlanDetails("tbbiaga")
                         .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
                     .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),

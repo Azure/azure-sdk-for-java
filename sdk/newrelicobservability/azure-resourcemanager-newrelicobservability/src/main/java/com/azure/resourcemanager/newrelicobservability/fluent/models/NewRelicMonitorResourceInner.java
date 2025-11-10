@@ -20,6 +20,7 @@ import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountPro
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import java.io.IOException;
 import java.util.Map;
@@ -254,6 +255,29 @@ public final class NewRelicMonitorResourceInner extends Resource {
             this.innerProperties = new MonitorProperties();
         }
         this.innerProperties().withPlanData(planData);
+        return this;
+    }
+
+    /**
+     * Get the saaSData property: SaaS details.
+     * 
+     * @return the saaSData value.
+     */
+    public SaaSData saaSData() {
+        return this.innerProperties() == null ? null : this.innerProperties().saaSData();
+    }
+
+    /**
+     * Set the saaSData property: SaaS details.
+     * 
+     * @param saaSData the saaSData value to set.
+     * @return the NewRelicMonitorResourceInner object itself.
+     */
+    public NewRelicMonitorResourceInner withSaaSData(SaaSData saaSData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MonitorProperties();
+        }
+        this.innerProperties().withSaaSData(saaSData);
         return this;
     }
 

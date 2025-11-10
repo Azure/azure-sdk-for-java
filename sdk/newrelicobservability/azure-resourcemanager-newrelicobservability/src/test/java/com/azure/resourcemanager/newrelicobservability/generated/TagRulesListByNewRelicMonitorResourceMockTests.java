@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.SendAadLogsStatus;
@@ -27,33 +27,32 @@ public final class TagRulesListByNewRelicMonitorResourceMockTests {
     @Test
     public void testListByNewRelicMonitorResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"lpichk\",\"value\":\"mkcdyhbpkkpwdre\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"ljxywsu\",\"value\":\"yrs\",\"action\":\"Exclude\"},{\"name\":\"tgadgvraeaen\",\"value\":\"nzar\",\"action\":\"Exclude\"},{\"name\":\"uu\",\"value\":\"fqka\",\"action\":\"Include\"}],\"userEmail\":\"ipfpubji\"}},\"id\":\"wifto\",\"name\":\"qkvpuvksgplsakn\",\"type\":\"n\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[{\"name\":\"altol\",\"value\":\"cwsobqwcs\",\"action\":\"Include\"},{\"name\":\"dcfhucqdpf\",\"value\":\"glsbjjc\",\"action\":\"Include\"},{\"name\":\"bvtvudutncormr\",\"value\":\"qtvcofudflvkgj\",\"action\":\"Include\"}]},\"metricRules\":{\"sendMetrics\":\"Enabled\",\"filteringTags\":[{\"name\":\"saznqntoruds\",\"value\":\"a\",\"action\":\"Exclude\"},{\"name\":\"c\",\"value\":\"auwjuetaebu\",\"action\":\"Exclude\"},{\"name\":\"movsmzlxwabmqoe\",\"value\":\"ifrvtpu\",\"action\":\"Include\"},{\"name\":\"qlgkfbtn\",\"value\":\"aongbj\",\"action\":\"Exclude\"}],\"userEmail\":\"jitcjedftwwaez\"}},\"id\":\"jvdcpzfoqouic\",\"name\":\"bxarzgszufoxci\",\"type\":\"opidoamciodh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TagRule> response = manager.tagRules()
-            .listByNewRelicMonitorResource("iuqgbdbutauv", "btkuwhh", com.azure.core.util.Context.NONE);
+        PagedIterable<TagRule> response
+            = manager.tagRules().listByNewRelicMonitorResource("yq", "xzfe", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.iterator().next().logRules().sendAadLogs());
-        Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED,
+        Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED,
             response.iterator().next().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(SendActivityLogsStatus.ENABLED,
+        Assertions.assertEquals(SendActivityLogsStatus.DISABLED,
             response.iterator().next().logRules().sendActivityLogs());
-        Assertions.assertEquals("lpichk", response.iterator().next().logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("mkcdyhbpkkpwdre",
-            response.iterator().next().logRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE,
+        Assertions.assertEquals("altol", response.iterator().next().logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("cwsobqwcs", response.iterator().next().logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE,
             response.iterator().next().logRules().filteringTags().get(0).action());
-        Assertions.assertEquals(SendMetricsStatus.DISABLED, response.iterator().next().metricRules().sendMetrics());
-        Assertions.assertEquals("ljxywsu", response.iterator().next().metricRules().filteringTags().get(0).name());
-        Assertions.assertEquals("yrs", response.iterator().next().metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(SendMetricsStatus.ENABLED, response.iterator().next().metricRules().sendMetrics());
+        Assertions.assertEquals("saznqntoruds", response.iterator().next().metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("a", response.iterator().next().metricRules().filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE,
             response.iterator().next().metricRules().filteringTags().get(0).action());
-        Assertions.assertEquals("ipfpubji", response.iterator().next().metricRules().userEmail());
+        Assertions.assertEquals("jitcjedftwwaez", response.iterator().next().metricRules().userEmail());
     }
 }

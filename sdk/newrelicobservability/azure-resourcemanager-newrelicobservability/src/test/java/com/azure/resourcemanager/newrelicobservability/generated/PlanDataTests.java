@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
 import java.time.OffsetDateTime;
@@ -15,24 +14,24 @@ public final class PlanDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanData model = BinaryData.fromString(
-            "{\"usageType\":\"COMMITTED\",\"billingCycle\":\"WEEKLY\",\"planDetails\":\"gsntnbybkzgcwr\",\"effectiveDate\":\"2021-09-26T22:03:54Z\"}")
+            "{\"usageType\":\"COMMITTED\",\"billingCycle\":\"vwrwj\",\"planDetails\":\"usnhutje\",\"effectiveDate\":\"2021-05-06T12:31:07Z\"}")
             .toObject(PlanData.class);
         Assertions.assertEquals(UsageType.COMMITTED, model.usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());
-        Assertions.assertEquals("gsntnbybkzgcwr", model.planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T22:03:54Z"), model.effectiveDate());
+        Assertions.assertEquals("vwrwj", model.billingCycle());
+        Assertions.assertEquals("usnhutje", model.planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T12:31:07Z"), model.effectiveDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlanData model = new PlanData().withUsageType(UsageType.COMMITTED)
-            .withBillingCycle(BillingCycle.WEEKLY)
-            .withPlanDetails("gsntnbybkzgcwr")
-            .withEffectiveDate(OffsetDateTime.parse("2021-09-26T22:03:54Z"));
+            .withBillingCycle("vwrwj")
+            .withPlanDetails("usnhutje")
+            .withEffectiveDate(OffsetDateTime.parse("2021-05-06T12:31:07Z"));
         model = BinaryData.fromObject(model).toObject(PlanData.class);
         Assertions.assertEquals(UsageType.COMMITTED, model.usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());
-        Assertions.assertEquals("gsntnbybkzgcwr", model.planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T22:03:54Z"), model.effectiveDate());
+        Assertions.assertEquals("vwrwj", model.billingCycle());
+        Assertions.assertEquals("usnhutje", model.planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T12:31:07Z"), model.effectiveDate());
     }
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.PlanDataResourceInner;
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
@@ -18,31 +17,31 @@ public final class PlanDataResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanDataResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"l\",\"effectiveDate\":\"2020-12-23T01:20:43Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"rlyxwjkcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}")
+            "{\"properties\":{\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"dwzjeiach\",\"planDetails\":\"osfln\",\"effectiveDate\":\"2021-02-05T00:34:52Z\"},\"orgCreationSource\":\"LIFTR\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"ehzzvypyqrim\",\"name\":\"inpvswjdkirsoodq\",\"type\":\"hc\"}")
             .toObject(PlanDataResourceInner.class);
-        Assertions.assertEquals(UsageType.PAYG, model.planData().usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, model.planData().billingCycle());
-        Assertions.assertEquals("l", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T01:20:43Z"), model.planData().effectiveDate());
-        Assertions.assertEquals(OrgCreationSource.NEWRELIC, model.orgCreationSource());
+        Assertions.assertEquals(UsageType.COMMITTED, model.planData().usageType());
+        Assertions.assertEquals("dwzjeiach", model.planData().billingCycle());
+        Assertions.assertEquals("osfln", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T00:34:52Z"), model.planData().effectiveDate());
+        Assertions.assertEquals(OrgCreationSource.LIFTR, model.orgCreationSource());
         Assertions.assertEquals(AccountCreationSource.LIFTR, model.accountCreationSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlanDataResourceInner model = new PlanDataResourceInner()
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.MONTHLY)
-                .withPlanDetails("l")
-                .withEffectiveDate(OffsetDateTime.parse("2020-12-23T01:20:43Z")))
-            .withOrgCreationSource(OrgCreationSource.NEWRELIC)
+            .withPlanData(new PlanData().withUsageType(UsageType.COMMITTED)
+                .withBillingCycle("dwzjeiach")
+                .withPlanDetails("osfln")
+                .withEffectiveDate(OffsetDateTime.parse("2021-02-05T00:34:52Z")))
+            .withOrgCreationSource(OrgCreationSource.LIFTR)
             .withAccountCreationSource(AccountCreationSource.LIFTR);
         model = BinaryData.fromObject(model).toObject(PlanDataResourceInner.class);
-        Assertions.assertEquals(UsageType.PAYG, model.planData().usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, model.planData().billingCycle());
-        Assertions.assertEquals("l", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T01:20:43Z"), model.planData().effectiveDate());
-        Assertions.assertEquals(OrgCreationSource.NEWRELIC, model.orgCreationSource());
+        Assertions.assertEquals(UsageType.COMMITTED, model.planData().usageType());
+        Assertions.assertEquals("dwzjeiach", model.planData().billingCycle());
+        Assertions.assertEquals("osfln", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T00:34:52Z"), model.planData().effectiveDate());
+        Assertions.assertEquals(OrgCreationSource.LIFTR, model.orgCreationSource());
         Assertions.assertEquals(AccountCreationSource.LIFTR, model.accountCreationSource());
     }
 }
