@@ -415,18 +415,9 @@ springboot3_ch.qos.logback:logback-classic;1.5.18
 springboot3_org.springframework.boot:spring-boot-dependencies;3.5.5
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0
 
-# Java 7 support
-
-# Jackson dropped support for Java 7 with the release of 2.14.0.
-# Add custom Jackson dependencies for Track 1 libraries using Jackson.
-java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
-java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
-java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5
-org.mockito:mockito-junit-jupiter;4.11.0
-com.github.tomakehurst:wiremock-jre8;2.35.2
-
 # Spring Boot 4 dependencies
 springboot4_ch.qos.logback:logback-classic;1.5.20
+springboot4_com.diffplug.spotless:spotless-maven-plugin;2.30.0
 springboot4_com.fasterxml.jackson.core:jackson-annotations;2.20
 springboot4_com.fasterxml.jackson.core:jackson-core;2.20.1
 springboot4_com.fasterxml.jackson.core:jackson-databind;2.20.1
@@ -435,8 +426,12 @@ springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.20.1
 springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.20.1
 springboot4_com.fasterxml.jackson.module:jackson-module-afterburner;2.20.1
 springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.1
+springboot4_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
+springboot4_com.google.code.findbugs:jsr305;3.0.2
 springboot4_com.mysql:mysql-connector-j;9.4.0
+springboot4_com.nimbusds:nimbus-jose-jwt;9.37.3
 springboot4_io.lettuce:lettuce-core;6.8.1.RELEASE
+springboot4_io.micrometer:micrometer-core;1.15.3
 springboot4_io.netty:netty-buffer;4.2.7.Final
 springboot4_io.netty:netty-codec-http;4.2.7.Final
 springboot4_io.netty:netty-common;4.2.7.Final
@@ -449,6 +444,7 @@ springboot4_io.projectreactor:reactor-test;3.8.0-RC1
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
 springboot4_jakarta.servlet:jakarta.servlet-api;6.1.0
 springboot4_jakarta.validation:jakarta.validation-api;3.1.1
+springboot4_javax.annotation:javax.annotation-api;1.3.2
 springboot4_junit:junit;4.13.2
 springboot4_net.bytebuddy:byte-buddy;1.17.8
 springboot4_net.bytebuddy:byte-buddy-agent;1.17.8
@@ -463,11 +459,13 @@ springboot4_org.apache.maven.plugins:maven-javadoc-plugin;3.12.0
 springboot4_org.apache.maven.plugins:maven-surefire-plugin;3.5.4
 springboot4_org.assertj:assertj-core;3.27.6
 springboot4_org.hibernate.validator:hibernate-validator;9.0.1.Final
+springboot4_org.javatuples:javatuples;1.2
 springboot4_org.junit.jupiter:junit-jupiter;6.0.1
 springboot4_org.junit.vintage:junit-vintage-engine;6.0.1
 springboot4_org.messaginghub:pooled-jms;3.1.7
 springboot4_org.mockito:mockito-core;5.20.0
 springboot4_org.postgresql:postgresql;42.7.8
+springboot4_org.revapi:revapi-maven-plugin;0.14.6
 springboot4_org.slf4j:slf4j-api;2.0.17
 springboot4_org.slf4j:slf4j-simple;2.0.17
 springboot4_org.springframework.boot:spring-boot-actuator;4.0.0-RC2
@@ -475,7 +473,6 @@ springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;4.0.0-RC
 springboot4_org.springframework.boot:spring-boot-autoconfigure;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-configuration-metadata;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-configuration-processor;4.0.0-RC2
-springboot4_org.springframework.boot:spring-boot-dependencies;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-docker-compose;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-starter;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-starter-actuator;4.0.0-RC2
@@ -486,9 +483,21 @@ springboot4_org.springframework.boot:spring-boot-starter-test;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-starter-web;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-test;4.0.0-RC2
 springboot4_org.springframework.boot:spring-boot-testcontainers;4.0.0-RC2
-springboot4_org.springframework.cloud:spring-cloud-dependencies;2025.1.0-M4
+springboot4_org.springframework.cloud:spring-cloud-bus;4.3.0
+springboot4_org.springframework.cloud:spring-cloud-context;4.3.0
+springboot4_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.3.0
+springboot4_org.springframework.cloud:spring-cloud-stream;4.3.0
+springboot4_org.springframework.cloud:spring-cloud-stream-test-binder;4.3.0
+springboot4_org.springframework.data:spring-data-commons;3.5.3
+springboot4_org.springframework.data:spring-data-redis;3.5.3
 springboot4_org.springframework.integration:spring-integration-core;7.0.0-RC2
 springboot4_org.springframework.kafka:spring-kafka;4.0.0-RC1
+springboot4_org.springframework.retry:spring-retry;2.0.12
+springboot4_org.springframework.security:spring-security-config;6.5.3
+springboot4_org.springframework.security:spring-security-oauth2-client;6.5.3
+springboot4_org.springframework.security:spring-security-oauth2-jose;6.5.3
+springboot4_org.springframework.security:spring-security-oauth2-resource-server;6.5.3
+springboot4_org.springframework.security:spring-security-web;6.5.3
 springboot4_org.springframework:spring-beans;7.0.0-RC3
 springboot4_org.springframework:spring-context;7.0.0-RC3
 springboot4_org.springframework:spring-context-support;7.0.0-RC3
@@ -502,3 +511,17 @@ springboot4_org.springframework:spring-test;7.0.0-RC3
 springboot4_org.springframework:spring-tx;7.0.0-RC3
 springboot4_org.springframework:spring-web;7.0.0-RC3
 springboot4_org.springframework:spring-webmvc;7.0.0-RC3
+springboot4_org.testcontainers:azure;1.21.3
+springboot4_org.testcontainers:junit-jupiter;1.21.3
+
+# Java 7 support
+
+# Jackson dropped support for Java 7 with the release of 2.14.0.
+# Add custom Jackson dependencies for Track 1 libraries using Jackson.
+java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
+java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
+java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5
+org.mockito:mockito-junit-jupiter;4.11.0
+com.github.tomakehurst:wiremock-jre8;2.35.2
+
+# Spring Boot 4 dependencies
