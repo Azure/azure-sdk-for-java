@@ -258,9 +258,15 @@ public class BlobCheckpointStore implements CheckpointStore {
         Map<String, String> metadata = new HashMap<>();
         String sequenceNumber
             = checkpoint.getSequenceNumber() == null ? null : String.valueOf(checkpoint.getSequenceNumber());
-
+        
+        String offset;
+        if (checkpoint.getOffsetString() == null || checkpoint.getOffsetString().isEmpty()) {
+            offset = String.valueOf(checkpoint.getOffset());
+        } else {
+            offset = checkpoint.getOffsetString();
+        }
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
-        metadata.put(OFFSET, checkpoint.getOffsetString());
+        metadata.put(OFFSET, offset);
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
         return blobAsyncClient.exists().flatMap(exists -> {
