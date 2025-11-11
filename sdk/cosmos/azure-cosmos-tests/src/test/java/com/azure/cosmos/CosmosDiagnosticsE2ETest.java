@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -154,12 +156,16 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
             );
         CosmosContainer container = this.getContainer(builder);
-        CosmosItemResponse<ObjectNode> response = executeTestCase(container);
-        assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getDiagnosticsContext()).isNotNull();
-        // no assertions here - invocations for diagnostics handler are validated above
-        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
-        // with custom appender
+        try {
+            CosmosItemResponse<ObjectNode> response = executeTestCase(container);
+            assertThat(response.getDiagnostics()).isNotNull();
+            assertThat(response.getDiagnostics().getDiagnosticsContext()).isNotNull();
+            // no assertions here - invocations for diagnostics handler are validated above
+            // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+            // with custom appender
+        } finally {
+            safeCloseCosmosClient();
+        }
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
@@ -436,12 +442,17 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         CosmosAsyncClient client = this
             .getClientBuilder()
             .buildAsyncClient();
-        TestUtils.createDummyQueryFeedOperationStateWithoutPagedFluxOptions(
-            ResourceType.Document,
-            OperationType.Query,
-            new CosmosQueryRequestOptions(),
-            client
-        );
+
+        try {
+            TestUtils.createDummyQueryFeedOperationStateWithoutPagedFluxOptions(
+                ResourceType.Document,
+                OperationType.Query,
+                new CosmosQueryRequestOptions(),
+                client
+            );
+        } finally {
+            client.close();
+        }
     }
 
     private CosmosItemResponse<ObjectNode> executeTestCase(CosmosContainer container) {
@@ -472,12 +483,16 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         }
     }
 
-    private CosmosContainer getContainer(CosmosClientBuilder builder) {
-
+    private void safeCloseCosmosClient() {
         CosmosClient oldClient = this.client;
         if (oldClient != null) {
             oldClient.close();
         }
+    }
+
+    private CosmosContainer getContainer(CosmosClientBuilder builder) {
+
+        this.safeCloseCosmosClient();
 
         assertThat(builder).isNotNull();
         this.client = builder.buildClient();

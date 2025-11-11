@@ -4,85 +4,27 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * The properties of the machine.
  */
-@Fluent
+@Immutable
 public final class MachineProperties implements JsonSerializable<MachineProperties> {
     /*
-     * The network properties of the machine
+     * network properties of the machine
      */
     private MachineNetworkProperties network;
 
     /*
-     * Arm resource id of the machine. It can be used to GET underlying VM Instance
+     * Azure resource id of the machine. It can be used to GET underlying VM Instance
      */
     private String resourceId;
-
-    /*
-     * The hardware and GPU settings of the machine.
-     */
-    private MachineHardwareProfile hardware;
-
-    /*
-     * The operating system and disk used by the machine.
-     */
-    private MachineOSProfile operatingSystem;
-
-    /*
-     * The Kubernetes configurations used by the machine.
-     */
-    private MachineKubernetesProfile kubernetes;
-
-    /*
-     * Machine only allows 'System' and 'User' mode.
-     */
-    private AgentPoolMode mode;
-
-    /*
-     * The security settings of the machine.
-     */
-    private AgentPoolSecurityProfile security;
-
-    /*
-     * The priority for the machine. If not specified, the default is 'Regular'.
-     */
-    private ScaleSetPriority priority;
-
-    /*
-     * The version of node image.
-     */
-    private String nodeImageVersion;
-
-    /*
-     * The current deployment or provisioning state.
-     */
-    private String provisioningState;
-
-    /*
-     * The tags to be persisted on the machine.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
-     * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
-     * optimistic concurrency per the normal eTag convention.
-     */
-    private String etag;
-
-    /*
-     * Contains read-only information about the machine.
-     */
-    private MachineStatus status;
 
     /**
      * Creates an instance of MachineProperties class.
@@ -91,7 +33,7 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     }
 
     /**
-     * Get the network property: The network properties of the machine.
+     * Get the network property: network properties of the machine.
      * 
      * @return the network value.
      */
@@ -100,201 +42,12 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     }
 
     /**
-     * Set the network property: The network properties of the machine.
-     * 
-     * @param network the network value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withNetwork(MachineNetworkProperties network) {
-        this.network = network;
-        return this;
-    }
-
-    /**
-     * Get the resourceId property: Arm resource id of the machine. It can be used to GET underlying VM Instance.
+     * Get the resourceId property: Azure resource id of the machine. It can be used to GET underlying VM Instance.
      * 
      * @return the resourceId value.
      */
     public String resourceId() {
         return this.resourceId;
-    }
-
-    /**
-     * Get the hardware property: The hardware and GPU settings of the machine.
-     * 
-     * @return the hardware value.
-     */
-    public MachineHardwareProfile hardware() {
-        return this.hardware;
-    }
-
-    /**
-     * Set the hardware property: The hardware and GPU settings of the machine.
-     * 
-     * @param hardware the hardware value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withHardware(MachineHardwareProfile hardware) {
-        this.hardware = hardware;
-        return this;
-    }
-
-    /**
-     * Get the operatingSystem property: The operating system and disk used by the machine.
-     * 
-     * @return the operatingSystem value.
-     */
-    public MachineOSProfile operatingSystem() {
-        return this.operatingSystem;
-    }
-
-    /**
-     * Set the operatingSystem property: The operating system and disk used by the machine.
-     * 
-     * @param operatingSystem the operatingSystem value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withOperatingSystem(MachineOSProfile operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
-
-    /**
-     * Get the kubernetes property: The Kubernetes configurations used by the machine.
-     * 
-     * @return the kubernetes value.
-     */
-    public MachineKubernetesProfile kubernetes() {
-        return this.kubernetes;
-    }
-
-    /**
-     * Set the kubernetes property: The Kubernetes configurations used by the machine.
-     * 
-     * @param kubernetes the kubernetes value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withKubernetes(MachineKubernetesProfile kubernetes) {
-        this.kubernetes = kubernetes;
-        return this;
-    }
-
-    /**
-     * Get the mode property: Machine only allows 'System' and 'User' mode.
-     * 
-     * @return the mode value.
-     */
-    public AgentPoolMode mode() {
-        return this.mode;
-    }
-
-    /**
-     * Set the mode property: Machine only allows 'System' and 'User' mode.
-     * 
-     * @param mode the mode value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withMode(AgentPoolMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
-     * Get the security property: The security settings of the machine.
-     * 
-     * @return the security value.
-     */
-    public AgentPoolSecurityProfile security() {
-        return this.security;
-    }
-
-    /**
-     * Set the security property: The security settings of the machine.
-     * 
-     * @param security the security value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withSecurity(AgentPoolSecurityProfile security) {
-        this.security = security;
-        return this;
-    }
-
-    /**
-     * Get the priority property: The priority for the machine. If not specified, the default is 'Regular'.
-     * 
-     * @return the priority value.
-     */
-    public ScaleSetPriority priority() {
-        return this.priority;
-    }
-
-    /**
-     * Set the priority property: The priority for the machine. If not specified, the default is 'Regular'.
-     * 
-     * @param priority the priority value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withPriority(ScaleSetPriority priority) {
-        this.priority = priority;
-        return this;
-    }
-
-    /**
-     * Get the nodeImageVersion property: The version of node image.
-     * 
-     * @return the nodeImageVersion value.
-     */
-    public String nodeImageVersion() {
-        return this.nodeImageVersion;
-    }
-
-    /**
-     * Get the provisioningState property: The current deployment or provisioning state.
-     * 
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the tags property: The tags to be persisted on the machine.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: The tags to be persisted on the machine.
-     * 
-     * @param tags the tags value to set.
-     * @return the MachineProperties object itself.
-     */
-    public MachineProperties withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
-     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal eTag convention.
-     * 
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Get the status property: Contains read-only information about the machine.
-     * 
-     * @return the status value.
-     */
-    public MachineStatus status() {
-        return this.status;
     }
 
     /**
@@ -306,21 +59,6 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
         if (network() != null) {
             network().validate();
         }
-        if (hardware() != null) {
-            hardware().validate();
-        }
-        if (operatingSystem() != null) {
-            operatingSystem().validate();
-        }
-        if (kubernetes() != null) {
-            kubernetes().validate();
-        }
-        if (security() != null) {
-            security().validate();
-        }
-        if (status() != null) {
-            status().validate();
-        }
     }
 
     /**
@@ -329,14 +67,6 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("network", this.network);
-        jsonWriter.writeJsonField("hardware", this.hardware);
-        jsonWriter.writeJsonField("operatingSystem", this.operatingSystem);
-        jsonWriter.writeJsonField("kubernetes", this.kubernetes);
-        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
-        jsonWriter.writeJsonField("security", this.security);
-        jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -359,29 +89,6 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
                     deserializedMachineProperties.network = MachineNetworkProperties.fromJson(reader);
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedMachineProperties.resourceId = reader.getString();
-                } else if ("hardware".equals(fieldName)) {
-                    deserializedMachineProperties.hardware = MachineHardwareProfile.fromJson(reader);
-                } else if ("operatingSystem".equals(fieldName)) {
-                    deserializedMachineProperties.operatingSystem = MachineOSProfile.fromJson(reader);
-                } else if ("kubernetes".equals(fieldName)) {
-                    deserializedMachineProperties.kubernetes = MachineKubernetesProfile.fromJson(reader);
-                } else if ("mode".equals(fieldName)) {
-                    deserializedMachineProperties.mode = AgentPoolMode.fromString(reader.getString());
-                } else if ("security".equals(fieldName)) {
-                    deserializedMachineProperties.security = AgentPoolSecurityProfile.fromJson(reader);
-                } else if ("priority".equals(fieldName)) {
-                    deserializedMachineProperties.priority = ScaleSetPriority.fromString(reader.getString());
-                } else if ("nodeImageVersion".equals(fieldName)) {
-                    deserializedMachineProperties.nodeImageVersion = reader.getString();
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedMachineProperties.provisioningState = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMachineProperties.tags = tags;
-                } else if ("eTag".equals(fieldName)) {
-                    deserializedMachineProperties.etag = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedMachineProperties.status = MachineStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
