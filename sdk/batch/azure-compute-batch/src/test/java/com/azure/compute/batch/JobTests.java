@@ -249,7 +249,6 @@ public class JobTests extends BatchClientTestBase {
     public void canCRUDJobWithPoolNodeCommunicationMode() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm" + testModeSuffix);
-        BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
         BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
             .setOffer("windowsserver")
@@ -258,8 +257,7 @@ public class JobTests extends BatchClientTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.windows amd64");
 
         BatchPoolSpecification poolSpec
-            = new BatchPoolSpecification("STANDARD_D1_V2").setVirtualMachineConfiguration(configuration)
-                .setTargetNodeCommunicationMode(targetMode);
+            = new BatchPoolSpecification("STANDARD_D1_V2").setVirtualMachineConfiguration(configuration);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo()
             .setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
@@ -275,8 +273,6 @@ public class JobTests extends BatchClientTestBase {
             = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
         Assertions.assertNotNull(job);
         Assertions.assertEquals(jobId, job.getId());
-        Assertions.assertEquals(targetMode,
-            job.getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
 
         // DELETE using LRO
         SyncPoller<BatchJob, Void> poller
