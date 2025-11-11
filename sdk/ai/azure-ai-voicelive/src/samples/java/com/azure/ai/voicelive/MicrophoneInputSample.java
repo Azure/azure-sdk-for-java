@@ -102,7 +102,8 @@ public final class MicrophoneInputSample {
         // Configure session options for audio input
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful AI assistant that responds to voice input.")
-            .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+            // Voice: OpenAIVoice (use OpenAIVoiceName enum) or AzureStandardVoice/AzureCustomVoice/AzurePersonalVoice
+            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)

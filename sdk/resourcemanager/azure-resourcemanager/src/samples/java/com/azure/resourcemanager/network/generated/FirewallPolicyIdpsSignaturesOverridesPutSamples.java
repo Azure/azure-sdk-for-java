@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class FirewallPolicyIdpsSignaturesOverridesPutSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
      * FirewallPolicySignatureOverridesPut.json
      */
     /**

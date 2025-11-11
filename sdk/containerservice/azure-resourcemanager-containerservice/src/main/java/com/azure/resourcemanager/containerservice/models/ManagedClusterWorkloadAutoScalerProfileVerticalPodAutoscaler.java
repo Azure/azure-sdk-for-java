@@ -12,20 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler model.
+ * VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler profile.
  */
 @Fluent
 public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
     implements JsonSerializable<ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler> {
     /*
-     * Whether to enable VPA add-on in cluster. Default value is false.
+     * Whether to enable VPA. Default value is false.
      */
     private boolean enabled;
-
-    /*
-     * Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
-     */
-    private AddonAutoscaling addonAutoscaling;
 
     /**
      * Creates an instance of ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler class.
@@ -34,7 +29,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
     }
 
     /**
-     * Get the enabled property: Whether to enable VPA add-on in cluster. Default value is false.
+     * Get the enabled property: Whether to enable VPA. Default value is false.
      * 
      * @return the enabled value.
      */
@@ -43,34 +38,13 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
     }
 
     /**
-     * Set the enabled property: Whether to enable VPA add-on in cluster. Default value is false.
+     * Set the enabled property: Whether to enable VPA. Default value is false.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler object itself.
      */
     public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler withEnabled(boolean enabled) {
         this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the addonAutoscaling property: Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
-     * 
-     * @return the addonAutoscaling value.
-     */
-    public AddonAutoscaling addonAutoscaling() {
-        return this.addonAutoscaling;
-    }
-
-    /**
-     * Set the addonAutoscaling property: Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
-     * 
-     * @param addonAutoscaling the addonAutoscaling value to set.
-     * @return the ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler object itself.
-     */
-    public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
-        withAddonAutoscaling(AddonAutoscaling addonAutoscaling) {
-        this.addonAutoscaling = addonAutoscaling;
         return this;
     }
 
@@ -89,8 +63,6 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
-        jsonWriter.writeStringField("addonAutoscaling",
-            this.addonAutoscaling == null ? null : this.addonAutoscaling.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -116,9 +88,6 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler.enabled
                         = reader.getBoolean();
-                } else if ("addonAutoscaling".equals(fieldName)) {
-                    deserializedManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler.addonAutoscaling
-                        = AddonAutoscaling.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

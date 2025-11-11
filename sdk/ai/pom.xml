@@ -14,5 +14,6 @@
     <module>azure-ai-projects</module>
     <module>azure-ai-agents</module>
     <module>azure-ai-agents-persistent</module>
+    <module>azure-ai-voicelive</module>
   </modules>
 </project>
