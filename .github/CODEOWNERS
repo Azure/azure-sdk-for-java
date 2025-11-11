@@ -234,9 +234,6 @@
 # PRLabel: %Cognitive - Health Insights
 /sdk/healthinsights/                                               @tomsft @koen-mertens @Azure/azure-java-sdk
 
-# ServiceLabel: %Cognitive - Health Insights
-# ServiceOwners:                                                   @tomsft @koen-mertens
-
 # ServiceLabel: %Cognitive - Immersive Reader
 # ServiceOwners:                                                   @metanMSFT
 
