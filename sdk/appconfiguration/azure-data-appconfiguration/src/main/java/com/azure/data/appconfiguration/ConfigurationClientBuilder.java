@@ -42,7 +42,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
-import com.azure.data.appconfiguration.implementation.AudiencePolicy;
+import com.azure.data.appconfiguration.policies.AudiencePolicy;
 import com.azure.data.appconfiguration.implementation.QueryParamPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationAudience;
