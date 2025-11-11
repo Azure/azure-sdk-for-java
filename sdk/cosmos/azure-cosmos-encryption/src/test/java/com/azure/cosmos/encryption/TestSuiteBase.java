@@ -82,8 +82,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
-@Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
+public abstract class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -170,6 +169,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     }
 
     static {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -254,13 +254,6 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_ENCRYPTION_DATABASE.getCosmosAsyncDatabase().createContainer(properties).block();
             SHARED_ENCRYPTION_CONTAINER = SHARED_ENCRYPTION_DATABASE.getCosmosEncryptionAsyncContainer(containerId);
         }
-    }
-
-    @BeforeSuite(groups = {"unit"})
-    public void parallelizeUnitTests(ITestContext context) {
-        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
@@ -1481,10 +1474,5 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray());
             assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray());
             assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray());
-        }
-
-
-        static {
-            CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         }
     }

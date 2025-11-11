@@ -55,8 +55,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 
-@Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends DocumentClientTest {
+@Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
+public abstract class TestSuiteBase extends DocumentClientTest {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     protected static final int TIMEOUT = 40000;
@@ -158,13 +158,6 @@ public class TestSuiteBase extends DocumentClientTest {
         } finally {
             houseKeepingClient.close();
         }
-    }
-
-    @BeforeSuite(groups = {"unit"})
-    public void parallelizeUnitTests(ITestContext context) {
-        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",

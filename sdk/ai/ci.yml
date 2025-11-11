@@ -12,11 +12,13 @@ trigger:
       - sdk/ai/azure-ai-inference/
       - sdk/ai/azure-ai-projects/
       - sdk/ai/azure-ai-agents-persistent/
+      - sdk/ai/azure-ai-voicelive/
     exclude:
       - sdk/ai/pom.xml
       - sdk/ai/azure-ai-inference/pom.xml
       - sdk/ai/azure-ai-projects/pom.xml
       - sdk/ai/azure-ai-agents-persistent/pom.xml
+      - sdk/ai/azure-ai-voicelive/pom.xml
 
 pr:
   branches:
@@ -31,11 +33,13 @@ pr:
       - sdk/ai/azure-ai-inference/
       - sdk/ai/azure-ai-projects/
       - sdk/ai/azure-ai-agents-persistent/
+      - sdk/ai/azure-ai-voicelive/
     exclude:
       - sdk/ai/pom.xml
       - sdk/ai/azure-ai-inference/pom.xml
       - sdk/ai/azure-ai-projects/pom.xml
       - sdk/ai/azure-ai-agents-persistent/pom.xml
+      - sdk/ai/azure-ai-voicelive/pom.xml
 
 parameters:
   - name: release_azureaiinference
@@ -48,6 +52,10 @@ parameters:
     default: true
   - name: release_azureaiagentspersistent
     displayName: 'azure-ai-agents-persistent'
+    type: boolean
+    default: true
+  - name: release_azureaivoicelive
+    displayName: 'azure-ai-voicelive'
     type: boolean
     default: true
 
@@ -68,3 +76,7 @@ extends:
         groupId: com.azure
         safeName: azureaiagentspersistent
         releaseInBatch: ${{ parameters.release_azureaiagentspersistent }}
+      - name: azure-ai-voicelive
+        groupId: com.azure
+        safeName: azureaivoicelive
+        releaseInBatch: ${{ parameters.release_azureaivoicelive }}

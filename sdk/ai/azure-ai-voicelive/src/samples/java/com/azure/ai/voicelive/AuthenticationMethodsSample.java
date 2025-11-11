@@ -13,6 +13,7 @@ import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
@@ -208,7 +209,8 @@ public final class AuthenticationMethodsSample {
         // Configure basic session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a test assistant.")
-            .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+            // Voice: OpenAIVoice (OpenAIVoiceName enum) or AzureStandardVoice/AzureCustomVoice/AzurePersonalVoice
+            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)

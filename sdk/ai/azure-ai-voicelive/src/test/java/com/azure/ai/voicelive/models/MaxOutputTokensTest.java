@@ -3,6 +3,7 @@
 
 package com.azure.ai.voicelive.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
@@ -281,7 +282,7 @@ class MaxOutputTokensTest {
     void testIntegrationWithResponseCreateParams() throws IOException {
         // Arrange
         ResponseCreateParams params = new ResponseCreateParams();
-        params.setMaxOutputTokens(MaxOutputTokens.of(1000));
+        params.setMaxOutputTokens(BinaryData.fromObject(MaxOutputTokens.of(1000)));
 
         // Act - Serialize
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -298,7 +299,7 @@ class MaxOutputTokensTest {
     void testIntegrationWithResponseCreateParamsInfinite() throws IOException {
         // Arrange
         ResponseCreateParams params = new ResponseCreateParams();
-        params.setMaxOutputTokens(MaxOutputTokens.infinite());
+        params.setMaxOutputTokens(BinaryData.fromObject(MaxOutputTokens.infinite()));
 
         // Act - Serialize
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -345,8 +346,9 @@ class MaxOutputTokensTest {
         // Assert
         assertNotNull(params);
         assertNotNull(params.getMaxOutputTokens());
-        assertFalse(params.getMaxOutputTokens().isInfinite());
-        assertEquals(500, params.getMaxOutputTokens().getValue());
+        MaxOutputTokens deserialized = params.getMaxOutputTokens().toObject(MaxOutputTokens.class);
+        assertFalse(deserialized.isInfinite());
+        assertEquals(500, deserialized.getValue());
     }
 
     @Test
@@ -364,7 +366,8 @@ class MaxOutputTokensTest {
         // Assert
         assertNotNull(params);
         assertNotNull(params.getMaxOutputTokens());
-        assertTrue(params.getMaxOutputTokens().isInfinite());
-        assertNull(params.getMaxOutputTokens().getValue());
+        MaxOutputTokens deserialized = params.getMaxOutputTokens().toObject(MaxOutputTokens.class);
+        assertTrue(deserialized.isInfinite());
+        assertNull(deserialized.getValue());
     }
 }
