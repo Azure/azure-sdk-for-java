@@ -1,14 +1,10 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.55.1 (2025-11-11)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
 
 ## 2.55.0 (2025-11-06)
 
