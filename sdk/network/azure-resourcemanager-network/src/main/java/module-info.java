@@ -3,8 +3,6 @@
 
 module com.azure.resourcemanager.network {
     requires transitive com.azure.resourcemanager.resources;
-    requires com.azure.core;
-    requires reactor.core;
 
     // export public APIs of network
     exports com.azure.resourcemanager.network;
