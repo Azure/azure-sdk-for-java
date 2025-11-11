@@ -1539,7 +1539,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 }
             );
 
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, testItem,false);
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, testItem, false);
             validateFaultInjectionRuleAppliedForBarrier(
                 cosmosDiagnostics,
                 operationType,

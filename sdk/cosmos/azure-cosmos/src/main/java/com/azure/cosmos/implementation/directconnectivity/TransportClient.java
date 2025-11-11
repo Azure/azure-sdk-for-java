@@ -42,7 +42,7 @@ public abstract class TransportClient implements AutoCloseable {
                     // there are interceptors configured, process the store response with the interceptors
                     StoreResponse storeResponse = response;
                     for (ITransportClientInterceptor transportClientInterceptor : this.transportClientInterceptors) {
-                        if(transportClientInterceptor.getStoreResponseInterceptor() != null) {
+                        if (transportClientInterceptor.getStoreResponseInterceptor() != null) {
                             storeResponse = transportClientInterceptor.getStoreResponseInterceptor().apply(request, storeResponse);
                         }
                     }

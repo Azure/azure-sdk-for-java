@@ -210,6 +210,7 @@ public class StoreResponse {
         for (int i = 0; i < responseHeaderNames.length; i++) {
             if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
                 responseHeaderValues[i] = value;
+                break;
             }
         }
     }
