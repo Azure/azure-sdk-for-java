@@ -863,13 +863,13 @@ public class SkillsetManagementTests extends SearchTestBase {
         });
     }
 
-    @Test 
-    public void createSkillsetReturnsCorrectDefinitionContentUnderstandingSync(){
+    @Test
+    public void createSkillsetReturnsCorrectDefinitionContentUnderstandingSync() {
         createAndValidateSkillsetSync(createTestSkillsetContentUnderstanding());
     }
 
-    @Test 
-    public void createSkillsetReturnsCorrectDefinitionContentUnderstandingAsync(){
+    @Test
+    public void createSkillsetReturnsCorrectDefinitionContentUnderstandingAsync() {
         createAndValidateSkillsetAsync(createTestSkillsetContentUnderstanding());
     }
 
@@ -884,18 +884,17 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void contentUnderstandingSkillSerializesCorrectly(){
+    public void contentUnderstandingSkillSerializesCorrectly() {
         ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
-                List.of(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-                List.of(new OutputFieldMappingEntry("text_sections").setTargetName("sections"))
-        )
-        .setExtractionOptions(List.of(ContentUnderstandingSkillExtractionOptions.IMAGES,
-                                    ContentUnderstandingSkillExtractionOptions.LOCATION_METADATA))
-        .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-            .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
-            .setMaximumLength(2000)
-            .setOverlapLength(200));
-        
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setExtractionOptions(Arrays.asList(ContentUnderstandingSkillExtractionOptions.IMAGES,
+                    ContentUnderstandingSkillExtractionOptions.LOCATION_METADATA))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                    .setMaximumLength(2000)
+                    .setOverlapLength(200));
+
         String json = BinaryData.fromObject(skill).toString();
 
         assertTrue(json.contains("\"@odata.type\":\"#Microsoft.Skills.Util.ContentUnderstandingSkill\""));
@@ -906,22 +905,16 @@ public class SkillsetManagementTests extends SearchTestBase {
 
     }
 
-    @Test 
-    public void contentUnderstandingSkillDeserializesCorrectly(){
-        String json = "{\n" +
-        "  \"@odata.type\": \"#Microsoft.Skills.Util.ContentUnderstandingSkill\",\n" +
-        "  \"inputs\": [{\"name\": \"file_data\", \"source\": \"/document/file_data\"}],\n" +
-        "  \"outputs\": [{\"name\": \"text_sections\", \"targetName\": \"sections\"}],\n" +
-        "  \"extractionOptions\": [\"images\", \"locationMetadata\"],\n" +
-        "  \"chunkingProperties\": {\n" +
-        "    \"unit\": \"characters\",\n" +
-        "    \"maximumLength\": 1500,\n" +
-        "    \"overlapLength\": 150\n" +
-        "  }\n" +
-        "}";
-        
-        ContentUnderstandingSkill skill = BinaryData.fromString(json)
-            .toObject(ContentUnderstandingSkill.class);
+    @Test
+    public void contentUnderstandingSkillDeserializesCorrectly() {
+        String json = "{\n" + "  \"@odata.type\": \"#Microsoft.Skills.Util.ContentUnderstandingSkill\",\n"
+            + "  \"inputs\": [{\"name\": \"file_data\", \"source\": \"/document/file_data\"}],\n"
+            + "  \"outputs\": [{\"name\": \"text_sections\", \"targetName\": \"sections\"}],\n"
+            + "  \"extractionOptions\": [\"images\", \"locationMetadata\"],\n" + "  \"chunkingProperties\": {\n"
+            + "    \"unit\": \"characters\",\n" + "    \"maximumLength\": 1500,\n" + "    \"overlapLength\": 150\n"
+            + "  }\n" + "}";
+
+        ContentUnderstandingSkill skill = BinaryData.fromString(json).toObject(ContentUnderstandingSkill.class);
 
         assertEquals("images", skill.getExtractionOptions().get(0));
         assertEquals("locationMetadata", skill.getExtractionOptions().get(1));
@@ -930,20 +923,18 @@ public class SkillsetManagementTests extends SearchTestBase {
         assertEquals(150, skill.getChunkingProperties().getOverlapLength());
     }
 
-    @Test 
-    public void contentUnderstandingSkillWithNullInputsThrows(){
+    @Test
+    public void contentUnderstandingSkillWithNullInputsThrows() {
         assertThrows(NullPointerException.class, () -> {
-            new ContentUnderstandingSkill(null, List.of());
+            new ContentUnderstandingSkill(null, Arrays.asList());
         });
     }
 
-    @Test 
+    @Test
     public void contentUnderstandingSkillWithNullOutputsThrows() {
         assertThrows(NullPointerException.class, () -> {
             new ContentUnderstandingSkill(
-                List.of(new InputFieldMappingEntry("file_data").setSource("/document/file_data")), 
-                null
-            );
+                Arrays.asList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")), null);
         });
     }
 
@@ -951,12 +942,11 @@ public class SkillsetManagementTests extends SearchTestBase {
     public void contentUnderstandingSkillWithInvalidChunkingUnitThrows() {
         assertThrows(IllegalArgumentException.class, () -> {
             new ContentUnderstandingSkill(
-                List.of(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-                List.of(new OutputFieldMappingEntry("text_sections").setTargetName("sections"))
-            )
-            .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-                .setUnit(ContentUnderstandingSkillChunkingUnit.fromString("INVALID_UNIT"))  
-                .setMaximumLength(1000));
+                Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+                Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                    .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                        .setUnit(ContentUnderstandingSkillChunkingUnit.fromString("INVALID_UNIT"))
+                        .setMaximumLength(1000));
         });
     }
 
@@ -964,21 +954,20 @@ public class SkillsetManagementTests extends SearchTestBase {
     public void contentUnderstandingSkillWithNegativeChunkingLengthThrows() {
         assertThrows(IllegalArgumentException.class, () -> {
             new ContentUnderstandingSkill(
-                List.of(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-                List.of(new OutputFieldMappingEntry("text_sections").setTargetName("sections"))
-            )
-            .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-                .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
-                .setMaximumLength(-1)); 
+                Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+                Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                    .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                        .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                        .setMaximumLength(-1));
         });
     }
 
     @Test
-    public void contentUnderstandingSkillWorksWithPreviewApiVersion(){
-        SearchIndexerClient indexerClient = getSearchIndexerClientBuilder(true)
-            .serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
-            .buildClient();
-        
+    public void contentUnderstandingSkillWorksWithPreviewApiVersion() {
+        SearchIndexerClient indexerClient
+            = getSearchIndexerClientBuilder(true).serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
+                .buildClient();
+
         SearchIndexerSkillset skillset = createTestSkillsetContentUnderstanding();
 
         SearchIndexerSkillset created = indexerClient.createSkillset(skillset);
@@ -988,16 +977,15 @@ public class SkillsetManagementTests extends SearchTestBase {
         assertNotNull(skill.getChunkingProperties());
 
         assertEquals("characters", skill.getChunkingProperties().getUnit());
-    
+
         skillsetsToDelete.add(created.getName());
     }
 
-    @Test 
-    public void contentUnderstandingSkillFailsWithOlderApiVersion(){
-        SearchIndexerClient indexerClient = getSearchIndexerClientBuilder(true)
-            .serviceVersion(SearchServiceVersion.V2024_07_01)
-            .buildClient();
-        
+    @Test
+    public void contentUnderstandingSkillFailsWithOlderApiVersion() {
+        SearchIndexerClient indexerClient
+            = getSearchIndexerClientBuilder(true).serviceVersion(SearchServiceVersion.V2024_07_01).buildClient();
+
         SearchIndexerSkillset skillset = createTestSkillsetContentUnderstanding();
 
         HttpResponseException ex = assertThrows(HttpResponseException.class, () -> {
@@ -1005,12 +993,10 @@ public class SkillsetManagementTests extends SearchTestBase {
         });
 
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
-        assertTrue(ex.getMessage().contains("ContentUnderstandingSkill")||
-                                ex.getMessage().contains("unsupported")||
-                                ex.getMessage().contains("not supported"));
+        assertTrue(ex.getMessage().contains("ContentUnderstandingSkill")
+            || ex.getMessage().contains("unsupported")
+            || ex.getMessage().contains("not supported"));
     }
-
-
 
     private static InputFieldMappingEntry simpleInputFieldMappingEntry(String name, String source) {
         return new InputFieldMappingEntry(name).setSource(source);
@@ -1453,43 +1439,35 @@ public class SkillsetManagementTests extends SearchTestBase {
 
     private SearchIndexerSkillset createTestSkillsetContentUnderstanding() {
         ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
-            List.of(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-            List.of(new OutputFieldMappingEntry("text_sections").setTargetName("sections"))
-        )
-        .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-            .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
-            .setMaximumLength(1000)
-            .setOverlapLength(100));
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                    .setMaximumLength(1000)
+                    .setOverlapLength(100));
 
         return new SearchIndexerSkillset(testResourceNamer.randomName("content-understanding-skillset", 48))
-            .setSkills(List.of(skill))
+            .setSkills(Collections.singletonList(skill))
             .setDescription("Test skillset with Content Understanding skill")
             .setCognitiveServicesAccount(new DefaultCognitiveServicesAccount());
     }
 
     private SearchIndexerSkillset createTestSkillsetContentUnderstandingWithAllOptions() {
         ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
-            List.of(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-            List.of(
-                new OutputFieldMappingEntry("text_sections").setTargetName("sections"),
-                new OutputFieldMappingEntry("normalized_images").setTargetName("images")
-            )
-        )
-        .setExtractionOptions(List.of(
-            ContentUnderstandingSkillExtractionOptions.IMAGES,
-            ContentUnderstandingSkillExtractionOptions.LOCATION_METADATA
-        ))
-        .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-            .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
-            .setMaximumLength(2000)
-            .setOverlapLength(200));
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Arrays.asList(new OutputFieldMappingEntry("text_sections").setTargetName("sections"),
+                new OutputFieldMappingEntry("normalized_images").setTargetName("images")))
+                    .setExtractionOptions(Arrays.asList(ContentUnderstandingSkillExtractionOptions.IMAGES,
+                        ContentUnderstandingSkillExtractionOptions.LOCATION_METADATA))
+                    .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                        .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                        .setMaximumLength(2000)
+                        .setOverlapLength(200));
 
         return new SearchIndexerSkillset(testResourceNamer.randomName("content-understanding-all-options-skillset", 48))
-            .setSkills(List.of(skill))
+            .setSkills(Collections.singletonList(skill))
             .setDescription("Test skillset with Content Understanding skill (all options)")
             .setCognitiveServicesAccount(new DefaultCognitiveServicesAccount());
     }
 
-
-        
 }

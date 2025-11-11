@@ -608,7 +608,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 "Error message should not contain 'agent' terminology");
         }
     }
-    
 
     private String randomKnowledgeBaseName() {
         // Generate a random name for the knowledge agent.

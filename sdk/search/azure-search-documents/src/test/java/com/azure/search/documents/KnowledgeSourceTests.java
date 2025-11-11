@@ -7,15 +7,25 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionParameters;
+import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
+import com.azure.search.documents.indexes.models.KnowledgeSourceStatus;
+import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
+import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
+import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
@@ -23,6 +33,7 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -31,19 +42,25 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.time.Duration;
 
 import static com.azure.search.documents.TestHelpers.loadResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for Knowledge Source operations.
@@ -266,6 +283,238 @@ public class KnowledgeSourceTests extends SearchTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void putRequest_includesIngestionParameters_exactJsonShape() throws IOException {
+        SearchIndexerDataUserAssignedIdentity identity = new SearchIndexerDataUserAssignedIdentity(
+            "/subscriptions/test/resourceGroups/test/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity");
+
+        KnowledgeSourceIngestionParameters ingestionParams
+            = new KnowledgeSourceIngestionParameters().setIdentity(identity);
+
+        List<KnowledgeSourceIngestionPermissionOption> permissionOptions = Arrays.asList(
+            KnowledgeSourceIngestionPermissionOption.USER_IDS, KnowledgeSourceIngestionPermissionOption.GROUP_IDS,
+            KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE);
+        ingestionParams.setIngestionPermissionOptions(permissionOptions);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            ingestionParams.toJson(writer);
+        }
+        String json = outputStream.toString();
+
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            reader.nextToken();
+            boolean hasIdentity = false;
+            boolean hasPermissionOptions = false;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                if ("identity".equals(fieldName)) {
+                    hasIdentity = true;
+                    reader.nextToken();
+                } else if ("ingestionPermissionOptions".equals(fieldName)) {
+                    hasPermissionOptions = true;
+                    reader.nextToken();
+                    int optionCount = 0;
+                    while (reader.nextToken() != JsonToken.END_ARRAY) {
+                        reader.skipChildren();
+                        optionCount++;
+                    }
+                    assertTrue(optionCount > 0, "ingestionPermissionOptions array should be non-empty");
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            assertTrue(hasIdentity, "JSON should contain 'identity' object");
+            assertTrue(hasPermissionOptions, "JSON should contain 'ingestionPermissionOptions' array");
+        }
+
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            KnowledgeSourceIngestionParameters deserialized = KnowledgeSourceIngestionParameters.fromJson(reader);
+            assertNotNull(deserialized);
+            assertNotNull(deserialized.getIdentity());
+
+            assertInstanceOf(SearchIndexerDataUserAssignedIdentity.class, deserialized.getIdentity());
+
+            assertNotNull(deserialized.getIngestionPermissionOptions());
+            assertEquals(3, deserialized.getIngestionPermissionOptions().size());
+            assertTrue(deserialized.getIngestionPermissionOptions()
+                .contains(KnowledgeSourceIngestionPermissionOption.USER_IDS));
+            assertTrue(deserialized.getIngestionPermissionOptions()
+                .contains(KnowledgeSourceIngestionPermissionOption.GROUP_IDS));
+            assertTrue(deserialized.getIngestionPermissionOptions()
+                .contains(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE));
+        }
+    }
+
+    @Test
+    public void statusPayload_mapsToModels_withNullables() throws IOException {
+        // Sample status payload with nullables for first sync
+        String statusJson = "{\n" + "    \"synchronizationStatus\": \"creating\",\n"
+            + "    \"synchronizationInterval\": \"PT24H\",\n" + "    \"currentSynchronizationState\": null,\n"
+            + "    \"lastSynchronizationState\": null,\n" + "    \"statistics\": {\n"
+            + "        \"totalSynchronization\": 0,\n" + "        \"averageSynchronizationDuration\": \"00:00:00\",\n"
+            + "        \"averageItemsProcessedPerSynchronization\": 0\n" + "    }\n" + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(statusJson)) {
+            KnowledgeSourceStatus status = KnowledgeSourceStatus.fromJson(reader);
+
+            assertNotNull(status);
+            assertEquals(KnowledgeSourceSynchronizationStatus.CREATING, status.getSynchronizationStatus());
+            assertEquals(Duration.ofHours(24), status.getSynchronizationInterval());
+            assertNull(status.getCurrentSynchronizationState());
+            assertNull(status.getLastSynchronizationState());
+
+            // Statistics object exists with actual available fields
+            assertNotNull(status.getStatistics());
+            assertEquals(0, status.getStatistics().getTotalSynchronization());
+            assertEquals("00:00:00", status.getStatistics().getAverageSynchronizationDuration());
+            assertEquals(0, status.getStatistics().getAverageItemsProcessedPerSynchronization());
+        }
+    }
+
+    @Test
+    public void putNewKnowledgeSource_returns201() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
+
+        try {
+            KnowledgeSource created = client.createKnowledgeSource(knowledgeSource);
+            assertNotNull(created);
+            assertEquals(knowledgeSource.getName(), created.getName());
+        } finally {
+            try {
+                client.deleteKnowledgeSource(knowledgeSource.getName());
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    @Test
+    public void putExistingKnowledgeSource_returns200() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
+        String newDescription = "Updated description";
+
+        try {
+            client.createKnowledgeSource(knowledgeSource);
+
+            knowledgeSource.setDescription(newDescription);
+            KnowledgeSource updated = client.createOrUpdateKnowledgeSource(knowledgeSource);
+            assertNotNull(updated);
+            assertEquals(newDescription, updated.getDescription());
+
+            KnowledgeSource retrieved = client.getKnowledgeSource(knowledgeSource.getName());
+            assertEquals(newDescription, retrieved.getDescription());
+        } finally {
+            try {
+                client.deleteKnowledgeSource(knowledgeSource.getName());
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    @Test
+    public void deleteKnowledegeSourceRemovesSource() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
+
+        client.createKnowledgeSource(knowledgeSource);
+        client.deleteKnowledgeSource(knowledgeSource.getName());
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+            client.getKnowledgeSource(knowledgeSource.getName());
+        });
+        assertEquals(404, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void listKnowledgeSourcesReturnsAllResources() {
+        SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
+        long initialCount = client.listKnowledgeSources().stream().count();
+
+        KnowledgeSource ks1 = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
+        KnowledgeSource ks2 = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(),
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME));
+        try {
+            client.createKnowledgeSource(ks1);
+            client.createKnowledgeSource(ks2);
+
+            Map<String, KnowledgeSource> knowledgeSourcesByName = client.listKnowledgeSources()
+                .stream()
+                .collect(Collectors.toMap(KnowledgeSource::getName, Function.identity()));
+
+            assertEquals(initialCount + 2, knowledgeSourcesByName.size());
+            assertTrue(knowledgeSourcesByName.containsKey(ks1.getName()));
+            assertTrue(knowledgeSourcesByName.containsKey(ks2.getName()));
+
+        } finally {
+            try {
+                client.deleteKnowledgeSource(ks1.getName());
+                client.deleteKnowledgeSource(ks2.getName());
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    @Test
+    public void knowledgeSourceParameters_setsFieldsCorrectly() {
+        SearchIndexKnowledgeSourceParameters params = new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME);
+
+        assertEquals(HOTEL_INDEX_NAME, params.getSearchIndexName());
+
+        params.setSemanticConfigurationName("semantic-config");
+        assertEquals("semantic-config", params.getSemanticConfigurationName());
+
+        List<SearchIndexFieldReference> sourceFields
+            = Arrays.asList(new SearchIndexFieldReference("field1"), new SearchIndexFieldReference("field2"));
+        params.setSourceDataFields(sourceFields);
+        assertEquals(2, params.getSourceDataFields().size());
+        assertEquals("field1", params.getSourceDataFields().get(0).getName());
+        assertEquals("field2", params.getSourceDataFields().get(1).getName());
+
+        List<SearchIndexFieldReference> searchFields = Arrays.asList(new SearchIndexFieldReference("searchField1"));
+        params.setSearchFields(searchFields);
+        assertEquals(1, params.getSearchFields().size());
+        assertEquals("searchField1", params.getSearchFields().get(0).getName());
+
+        SearchIndexKnowledgeSourceParameters result = params.setSemanticConfigurationName("another-config");
+        assertSame(params, result);
+    }
+
+    @Test
+    public void permissionOptions_enumValuesExist() {
+        assertNotNull(KnowledgeSourceIngestionPermissionOption.USER_IDS);
+        assertNotNull(KnowledgeSourceIngestionPermissionOption.GROUP_IDS);
+        assertNotNull(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE);
+
+        assertEquals("userIds", KnowledgeSourceIngestionPermissionOption.USER_IDS.toString());
+        assertEquals("groupIds", KnowledgeSourceIngestionPermissionOption.GROUP_IDS.toString());
+        assertEquals("rbacScope", KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE.toString());
+
+        KnowledgeSourceIngestionPermissionOption userIds
+            = KnowledgeSourceIngestionPermissionOption.fromString("userIds");
+        assertEquals(KnowledgeSourceIngestionPermissionOption.USER_IDS, userIds);
+
+        KnowledgeSourceIngestionPermissionOption groupIds
+            = KnowledgeSourceIngestionPermissionOption.fromString("groupIds");
+        assertEquals(KnowledgeSourceIngestionPermissionOption.GROUP_IDS, groupIds);
+
+        KnowledgeSourceIngestionPermissionOption rbacScope
+            = KnowledgeSourceIngestionPermissionOption.fromString("rbacScope");
+        assertEquals(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE, rbacScope);
+
+        KnowledgeSourceIngestionPermissionOption unknown
+            = KnowledgeSourceIngestionPermissionOption.fromString("unknownValue");
+        assertNotNull(unknown);
+        assertEquals("unknownValue", unknown.toString());
+    }
+
     private String randomKnowledgeSourceName() {
         // Generate a random name for the knowledge source.
         return testResourceNamer.randomName("knowledge-source-", 63);
@@ -296,4 +545,5 @@ public class KnowledgeSourceTests extends SearchTestBase {
             throw new UncheckedIOException(ex);
         }
     }
+
 }

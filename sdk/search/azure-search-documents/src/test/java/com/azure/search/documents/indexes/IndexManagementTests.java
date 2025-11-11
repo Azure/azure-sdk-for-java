@@ -7,6 +7,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
@@ -22,7 +24,9 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.ServiceIndexersRuntime;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +38,10 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1098,6 +1105,145 @@ public class IndexManagementTests extends SearchTestBase {
                 .asList(new ScoringProfile("testProfile").setFunctionAggregation(ScoringFunctionAggregation.PRODUCT)
                     .setFunctions(Arrays.asList(
                         new MagnitudeScoringFunction("rating", 2.0, new MagnitudeScoringParameters(1.0, 5.0))))));
+    }
+
+    @Test
+    public void serviceStatisticsIncludesIndexersRuntimeSync() {
+        SearchServiceStatistics stats = client.getServiceStatistics();
+
+        assertNotNull(stats, "Service statistics should not be null");
+
+        ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
+        if (indexersRuntime != null) {
+            assertTrue(indexersRuntime.getUsedSeconds() >= 0, "UsedSeconds should be non-negative");
+            assertNotNull(indexersRuntime.getBeginningTime(), "BeginningTime should not be null");
+            assertNotNull(indexersRuntime.getEndingTime(), "EndingTime should not be null");
+
+            assertTrue(indexersRuntime.getBeginningTime().toString().endsWith("Z"), "BeginningTime should be UTC");
+            assertTrue(indexersRuntime.getEndingTime().toString().endsWith("Z"), "EndingTime should be UTC");
+
+            OffsetDateTime beginningTime = indexersRuntime.getBeginningTime();
+            OffsetDateTime endingTime = indexersRuntime.getEndingTime();
+            assertTrue(endingTime.isAfter(beginningTime), "EndingTime should be after BeginningTime");
+        }
+    }
+
+    @Test
+    public void serviceStatisticsIncludesIndexersRuntimeAsync() {
+        StepVerifier.create(asyncClient.getServiceStatistics()).assertNext(stats -> {
+            assertNotNull(stats, "Service statistics should not be null");
+
+            ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
+            if (indexersRuntime != null) {
+                assertTrue(indexersRuntime.getUsedSeconds() >= 0, "UsedSeconds should be non-negative");
+                assertNotNull(indexersRuntime.getBeginningTime(), "BeginningTime should not be null");
+                assertNotNull(indexersRuntime.getEndingTime(), "EndingTime should not be null");
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    public void serviceIndexersRuntimeWithQuotaFields() {
+        SearchServiceStatistics stats = client.getServiceStatistics();
+        ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
+
+        if (indexersRuntime != null) {
+            if (indexersRuntime.getRemainingSeconds() != null) {
+                assertTrue(indexersRuntime.getRemainingSeconds() >= 0,
+                    "RemainingSeconds should be non-negative when present");
+
+                long totalExpected = indexersRuntime.getUsedSeconds() + indexersRuntime.getRemainingSeconds();
+                assertTrue(totalExpected > 0, "Total runtime capacity should be positive");
+            }
+        }
+    }
+
+    @Test
+    public void serviceIndexersRuntimeBoundaryValues() {
+        // Test with mock data containing boundary values
+        String mockJson = "{\n" + "    \"usedSeconds\": 0,\n" + "    \"remainingSeconds\": 9223372036854775807,\n"
+            + "    \"beginningTime\": \"2023-01-01T00:00:00Z\",\n" + "    \"endingTime\": \"2023-01-01T23:59:59Z\"\n"
+            + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(mockJson)) {
+            ServiceIndexersRuntime runtime = ServiceIndexersRuntime.fromJson(reader);
+
+            assertEquals(0L, runtime.getUsedSeconds(), "Should handle zero usedSeconds");
+            assertEquals(Long.MAX_VALUE, runtime.getRemainingSeconds(), "Should handle maximum Long value");
+            assertNotNull(runtime.getBeginningTime(), "Should parse beginningTime");
+            assertNotNull(runtime.getEndingTime(), "Should parse endingTime");
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @Test
+    public void serviceIndexersRuntimeForwardCompatibility() {
+        String jsonWithExtraFields = "{\n" + "    \"usedSeconds\": 100,\n" + "    \"remainingSeconds\": 86300,\n"
+            + "    \"beginningTime\": \"2023-01-01T00:00:00Z\",\n" + "    \"endingTime\": \"2023-01-01T23:59:59Z\",\n"
+            + "    \"futureField\": \"someValue\",\n" + "    \"anotherNewField\": 12345\n" + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(jsonWithExtraFields)) {
+            ServiceIndexersRuntime runtime = ServiceIndexersRuntime.fromJson(reader);
+
+            assertNotNull(runtime, "Should deserialize despite extra fields");
+            assertEquals(100L, runtime.getUsedSeconds(), "Should parse known fields correctly");
+            assertEquals(86300L, runtime.getRemainingSeconds(), "Should parse known fields correctly");
+
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @Test
+    public void serviceIndexersRuntimeMissingOptionalFields() {
+        String jsonWithMissingOptionalFields
+            = "{\n" + "    \"usedSeconds\": 50,\n" + "    \"beginningTime\": \"2023-01-01T00:00:00Z\",\n"
+                + "    \"endingTime\": \"2023-01-01T23:59:59Z\"\n" + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(jsonWithMissingOptionalFields)) {
+            ServiceIndexersRuntime runtime = ServiceIndexersRuntime.fromJson(reader);
+
+            assertNotNull(runtime, "Should deserialize with missing optional fields");
+            assertEquals(50L, runtime.getUsedSeconds(), "Should parse required fields correctly");
+            assertNull(runtime.getRemainingSeconds(), "Optional field should be null when missing");
+
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @Test
+    public void serviceIndexersRuntimeRequiredFieldsValidation() {
+        String jsonWithMissingRequired
+            = "{\n" + "    \"remainingSeconds\": 86400,\n" + "    \"beginningTime\": \"2023-01-01T00:00:00Z\"\n" + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(jsonWithMissingRequired)) {
+            IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+                ServiceIndexersRuntime.fromJson(reader);
+            });
+
+            assertTrue(exception.getMessage().contains("Missing required property"),
+                "Should indicate missing required properties");
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @Test
+    public void serviceIndexersRuntimeJsonStructure() {
+        SearchServiceStatistics stats = client.getServiceStatistics();
+        String statsJson = BinaryData.fromObject(stats).toString();
+
+        assertTrue(statsJson.length() > 0, "Service statistics JSON should not be empty");
+
+        ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
+        if (indexersRuntime != null) {
+            String runtimeJson = BinaryData.fromObject(indexersRuntime).toString();
+            assertTrue(runtimeJson.contains("usedSeconds"), "Runtime JSON should contain usedSeconds");
+            assertTrue(runtimeJson.contains("beginningTime"), "Runtime JSON should contain beginningTime");
+            assertTrue(runtimeJson.contains("endingTime"), "Runtime JSON should contain endingTime");
+        }
     }
 
     static SearchIndex mutateCorsOptionsInIndex(SearchIndex index) {
