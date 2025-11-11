@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration.policies;
+package com.azure.data.appconfiguration.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -33,16 +33,9 @@ public class AudiencePolicyTest {
     private static final String LOCAL_HOST = "http://localhost";
     private static final String AAD_AUDIENCE_ERROR_CODE = "AADSTS500011";
     private static final String NO_AUDIENCE_ERROR_MESSAGE
-        = "Unable to authenticate to Azure App Configuration. No authentication token audience was provided. "
-            + "Please set an Audience in your ConfigurationClientBuilder for the target cloud. "
-            + "For details on how to configure the authentication token audience visit "
-            + "https://aka.ms/appconfig/client-token-audience.";
-
+        = "No audience was provided. An audience must be configured to connect to this cloud.";
     private static final String INCORRECT_AUDIENCE_ERROR_MESSAGE
-        = "Unable to authenticate to Azure App Configuration. An incorrect token audience was provided. "
-            + "Please set the Audience in your ConfigurationClientBuilder to the appropriate audience for this cloud. "
-            + "For details on how to configure the authentication token audience visit "
-            + "https://aka.ms/appconfig/client-token-audience.";
+        = "An incorrect audience was provided. Please update the audience to connect to this cloud.";
 
     @SyncAsyncTest
     public void processWithoutException() {
