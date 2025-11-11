@@ -703,6 +703,9 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
+              <systemPropertyVariables>
+                <testng.listener.execution.symmetric>true</testng.listener.execution.symmetric>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
           <!-- To use the ScalaTest Maven plugin, SureFire needs to be disabled and ScalaTest enabled -->

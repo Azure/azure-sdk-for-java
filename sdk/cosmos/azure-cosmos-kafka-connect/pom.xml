@@ -160,7 +160,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.5.1</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.11.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->
@@ -286,6 +286,9 @@ Licensed under the MIT License.
             </property>
           </properties>
           <skipTests>true</skipTests>
+          <systemPropertyVariables>
+            <testng.listener.execution.symmetric>true</testng.listener.execution.symmetric>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
       <plugin>
