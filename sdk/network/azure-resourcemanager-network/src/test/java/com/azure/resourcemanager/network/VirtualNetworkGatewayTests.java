@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class VirtualNetworkGatewayTests extends NetworkTests {
 
-    private final static Region region = Region.US_WEST3;
+    private static final Region region = Region.US_WEST3;
 
     @Test
     public void testListBySubscription() {
