@@ -15,7 +15,7 @@ import java.io.IOException;
  * Metric comparison for a treatment against the baseline.
  */
 @Immutable
-public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunResultCompareItem> {
+public final class EvaluationRunResultCompareItem implements JsonSerializable<EvaluationRunResultCompareItem> {
 
     /*
      * The treatment run ID.
@@ -27,7 +27,7 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
      * Summary statistics of the treatment run.
      */
     @Generated
-    private final EvalRunResultSummary treatmentRunSummary;
+    private final EvaluationRunResultSummary treatmentRunSummary;
 
     /*
      * Estimated difference between treatment and baseline.
@@ -48,7 +48,7 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
     private final TreatmentEffectType treatmentEffect;
 
     /**
-     * Creates an instance of EvalRunResultCompareItem class.
+     * Creates an instance of EvaluationRunResultCompareItem class.
      *
      * @param treatmentRunId the treatmentRunId value to set.
      * @param treatmentRunSummary the treatmentRunSummary value to set.
@@ -57,7 +57,7 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
      * @param treatmentEffect the treatmentEffect value to set.
      */
     @Generated
-    private EvalRunResultCompareItem(String treatmentRunId, EvalRunResultSummary treatmentRunSummary,
+    private EvaluationRunResultCompareItem(String treatmentRunId, EvaluationRunResultSummary treatmentRunSummary,
         double deltaEstimate, double pValue, TreatmentEffectType treatmentEffect) {
         this.treatmentRunId = treatmentRunId;
         this.treatmentRunSummary = treatmentRunSummary;
@@ -82,7 +82,7 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
      * @return the treatmentRunSummary value.
      */
     @Generated
-    public EvalRunResultSummary getTreatmentRunSummary() {
+    public EvaluationRunResultSummary getTreatmentRunSummary() {
         return this.treatmentRunSummary;
     }
 
@@ -133,19 +133,19 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
     }
 
     /**
-     * Reads an instance of EvalRunResultCompareItem from the JsonReader.
+     * Reads an instance of EvaluationRunResultCompareItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvalRunResultCompareItem if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of EvaluationRunResultCompareItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvalRunResultCompareItem.
+     * @throws IOException If an error occurs while reading the EvaluationRunResultCompareItem.
      */
     @Generated
-    public static EvalRunResultCompareItem fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationRunResultCompareItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String treatmentRunId = null;
-            EvalRunResultSummary treatmentRunSummary = null;
+            EvaluationRunResultSummary treatmentRunSummary = null;
             double deltaEstimate = 0.0;
             double pValue = 0.0;
             TreatmentEffectType treatmentEffect = null;
@@ -155,7 +155,7 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
                 if ("treatmentRunId".equals(fieldName)) {
                     treatmentRunId = reader.getString();
                 } else if ("treatmentRunSummary".equals(fieldName)) {
-                    treatmentRunSummary = EvalRunResultSummary.fromJson(reader);
+                    treatmentRunSummary = EvaluationRunResultSummary.fromJson(reader);
                 } else if ("deltaEstimate".equals(fieldName)) {
                     deltaEstimate = reader.getDouble();
                 } else if ("pValue".equals(fieldName)) {
@@ -166,7 +166,7 @@ public final class EvalRunResultCompareItem implements JsonSerializable<EvalRunR
                     reader.skipChildren();
                 }
             }
-            return new EvalRunResultCompareItem(treatmentRunId, treatmentRunSummary, deltaEstimate, pValue,
+            return new EvaluationRunResultCompareItem(treatmentRunId, treatmentRunSummary, deltaEstimate, pValue,
                 treatmentEffect);
         });
     }

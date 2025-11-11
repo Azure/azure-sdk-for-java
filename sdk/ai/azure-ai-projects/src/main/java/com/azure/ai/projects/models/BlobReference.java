@@ -36,6 +36,20 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
     private final BlobReferenceSasCredential credential;
 
     /**
+     * Creates an instance of BlobReference class.
+     *
+     * @param blobUri the blobUri value to set.
+     * @param storageAccountArmId the storageAccountArmId value to set.
+     * @param credential the credential value to set.
+     */
+    @Generated
+    private BlobReference(String blobUri, String storageAccountArmId, BlobReferenceSasCredential credential) {
+        this.blobUri = blobUri;
+        this.storageAccountArmId = storageAccountArmId;
+        this.credential = credential;
+    }
+
+    /**
      * Get the blobUri property: Blob URI path for client to upload data. Example:
      * `https://blob.windows.core.net/Container/Path`.
      *
@@ -109,19 +123,5 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
             }
             return new BlobReference(blobUri, storageAccountArmId, credential);
         });
-    }
-
-    /**
-     * Creates an instance of BlobReference class.
-     *
-     * @param blobUri the blobUri value to set.
-     * @param storageAccountArmId the storageAccountArmId value to set.
-     * @param credential the credential value to set.
-     */
-    @Generated
-    private BlobReference(String blobUri, String storageAccountArmId, BlobReferenceSasCredential credential) {
-        this.blobUri = blobUri;
-        this.storageAccountArmId = storageAccountArmId;
-        this.credential = credential;
     }
 }

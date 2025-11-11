@@ -52,7 +52,7 @@ public class IndexesClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing indexes returns results
-        Iterable<Index> indexes = indexesClient.list();
+        Iterable<Index> indexes = indexesClient.listLatest();
         Assertions.assertNotNull(indexes);
 
         // Verify that at least one index can be retrieved if available
@@ -110,7 +110,7 @@ public class IndexesClientTest extends ClientTestBase {
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
 
         try {
-            Index index = indexesClient.get(indexName, indexVersion);
+            Index index = indexesClient.getVersion(indexName, indexVersion);
 
             // Verify the index properties
             assertValidIndex(index, indexName, indexVersion);
@@ -176,15 +176,15 @@ public class IndexesClientTest extends ClientTestBase {
 
         try {
             // First verify the index exists
-            Index index = indexesClient.get(indexName, indexVersion);
+            Index index = indexesClient.getVersion(indexName, indexVersion);
             assertValidIndex(index, indexName, indexVersion);
 
             // Delete the index
-            indexesClient.delete(indexName, indexVersion);
+            indexesClient.deleteVersion(indexName, indexVersion);
 
             // Try to get the deleted index - should throw ResourceNotFoundException
             try {
-                Index deletedIndex = indexesClient.get(indexName, indexVersion);
+                Index deletedIndex = indexesClient.getVersion(indexName, indexVersion);
                 Assertions.fail("Index should have been deleted but was found: " + deletedIndex.getName());
             } catch (Exception e) {
                 // Expected exception

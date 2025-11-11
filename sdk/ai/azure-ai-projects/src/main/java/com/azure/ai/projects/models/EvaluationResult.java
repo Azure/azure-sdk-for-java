@@ -15,7 +15,7 @@ import java.io.IOException;
  * Result of the evaluation.
  */
 @Immutable
-public final class EvalResult implements JsonSerializable<EvalResult> {
+public final class EvaluationResult implements JsonSerializable<EvaluationResult> {
 
     /*
      * name of the check
@@ -42,7 +42,7 @@ public final class EvalResult implements JsonSerializable<EvalResult> {
     private final boolean passed;
 
     /**
-     * Creates an instance of EvalResult class.
+     * Creates an instance of EvaluationResult class.
      *
      * @param name the name value to set.
      * @param type the type value to set.
@@ -50,7 +50,7 @@ public final class EvalResult implements JsonSerializable<EvalResult> {
      * @param passed the passed value to set.
      */
     @Generated
-    private EvalResult(String name, String type, double score, boolean passed) {
+    private EvaluationResult(String name, String type, double score, boolean passed) {
         this.name = name;
         this.type = type;
         this.score = score;
@@ -112,16 +112,16 @@ public final class EvalResult implements JsonSerializable<EvalResult> {
     }
 
     /**
-     * Reads an instance of EvalResult from the JsonReader.
+     * Reads an instance of EvaluationResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvalResult if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     * @return An instance of EvaluationResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvalResult.
+     * @throws IOException If an error occurs while reading the EvaluationResult.
      */
     @Generated
-    public static EvalResult fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String type = null;
@@ -142,7 +142,7 @@ public final class EvalResult implements JsonSerializable<EvalResult> {
                     reader.skipChildren();
                 }
             }
-            return new EvalResult(name, type, score, passed);
+            return new EvaluationResult(name, type, score, passed);
         });
     }
 }

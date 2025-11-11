@@ -16,7 +16,7 @@ import java.util.List;
  * Comparison results for treatment runs against the baseline.
  */
 @Immutable
-public final class EvalRunResultComparison implements JsonSerializable<EvalRunResultComparison> {
+public final class EvaluationRunResultComparison implements JsonSerializable<EvaluationRunResultComparison> {
 
     /*
      * Name of the testing criteria.
@@ -40,16 +40,16 @@ public final class EvalRunResultComparison implements JsonSerializable<EvalRunRe
      * Summary statistics of the baseline run.
      */
     @Generated
-    private final EvalRunResultSummary baselineRunSummary;
+    private final EvaluationRunResultSummary baselineRunSummary;
 
     /*
      * List of comparison results for each treatment run.
      */
     @Generated
-    private final List<EvalRunResultCompareItem> compareItems;
+    private final List<EvaluationRunResultCompareItem> compareItems;
 
     /**
-     * Creates an instance of EvalRunResultComparison class.
+     * Creates an instance of EvaluationRunResultComparison class.
      *
      * @param testingCriteria the testingCriteria value to set.
      * @param metric the metric value to set.
@@ -58,8 +58,8 @@ public final class EvalRunResultComparison implements JsonSerializable<EvalRunRe
      * @param compareItems the compareItems value to set.
      */
     @Generated
-    private EvalRunResultComparison(String testingCriteria, String metric, String evaluator,
-        EvalRunResultSummary baselineRunSummary, List<EvalRunResultCompareItem> compareItems) {
+    private EvaluationRunResultComparison(String testingCriteria, String metric, String evaluator,
+        EvaluationRunResultSummary baselineRunSummary, List<EvaluationRunResultCompareItem> compareItems) {
         this.testingCriteria = testingCriteria;
         this.metric = metric;
         this.evaluator = evaluator;
@@ -103,7 +103,7 @@ public final class EvalRunResultComparison implements JsonSerializable<EvalRunRe
      * @return the baselineRunSummary value.
      */
     @Generated
-    public EvalRunResultSummary getBaselineRunSummary() {
+    public EvaluationRunResultSummary getBaselineRunSummary() {
         return this.baselineRunSummary;
     }
 
@@ -113,7 +113,7 @@ public final class EvalRunResultComparison implements JsonSerializable<EvalRunRe
      * @return the compareItems value.
      */
     @Generated
-    public List<EvalRunResultCompareItem> getCompareItems() {
+    public List<EvaluationRunResultCompareItem> getCompareItems() {
         return this.compareItems;
     }
 
@@ -133,22 +133,22 @@ public final class EvalRunResultComparison implements JsonSerializable<EvalRunRe
     }
 
     /**
-     * Reads an instance of EvalRunResultComparison from the JsonReader.
+     * Reads an instance of EvaluationRunResultComparison from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvalRunResultComparison if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of EvaluationRunResultComparison if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvalRunResultComparison.
+     * @throws IOException If an error occurs while reading the EvaluationRunResultComparison.
      */
     @Generated
-    public static EvalRunResultComparison fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationRunResultComparison fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String testingCriteria = null;
             String metric = null;
             String evaluator = null;
-            EvalRunResultSummary baselineRunSummary = null;
-            List<EvalRunResultCompareItem> compareItems = null;
+            EvaluationRunResultSummary baselineRunSummary = null;
+            List<EvaluationRunResultCompareItem> compareItems = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,14 +159,15 @@ public final class EvalRunResultComparison implements JsonSerializable<EvalRunRe
                 } else if ("evaluator".equals(fieldName)) {
                     evaluator = reader.getString();
                 } else if ("baselineRunSummary".equals(fieldName)) {
-                    baselineRunSummary = EvalRunResultSummary.fromJson(reader);
+                    baselineRunSummary = EvaluationRunResultSummary.fromJson(reader);
                 } else if ("compareItems".equals(fieldName)) {
-                    compareItems = reader.readArray(reader1 -> EvalRunResultCompareItem.fromJson(reader1));
+                    compareItems = reader.readArray(reader1 -> EvaluationRunResultCompareItem.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new EvalRunResultComparison(testingCriteria, metric, evaluator, baselineRunSummary, compareItems);
+            return new EvaluationRunResultComparison(testingCriteria, metric, evaluator, baselineRunSummary,
+                compareItems);
         });
     }
 }

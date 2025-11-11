@@ -110,91 +110,6 @@ public final class IndexesAsyncClient {
     }
 
     /**
-     * List the latest version of each Index.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of Index items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
-    }
-
-    /**
-     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the Index to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the Index along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, version, requestOptions);
-    }
-
-    /**
-     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
-     * successfully or if the Index does not exist.
-     *
-     * @param name The name of the resource.
-     * @param version The version of the Index to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(name, version, requestOptions);
-    }
-
-    /**
      * Create a new or update an existing Index with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -248,6 +163,120 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Create a new or update an existing Index with the given version id.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the Index to create or update.
+     * @param index The Index to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return index resource Definition on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Index> createOrUpdate(String name, String version, Index index) {
+        // Generated convenience method for createOrUpdateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        BinaryData indexInBinaryData = BinaryData.fromObject(index);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        indexInBinaryData.getLength();
+        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        return createOrUpdateWithResponse(name, version, indexInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
+    }
+
+    /**
+     * List the latest version of each Index.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of Index items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listLatest(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestAsync(requestOptions);
+    }
+
+    /**
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the Index to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the specific version of the Index along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getVersionWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The version of the Index to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteVersionWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
      * List the latest version of each Index.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -259,10 +288,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> list() {
-        // Generated convenience method for list
+    public PagedFlux<Index> listLatest() {
+        // Generated convenience method for listLatest
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listLatest(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -292,10 +321,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> get(String name, String version) {
-        // Generated convenience method for getWithResponse
+    public Mono<Index> getVersion(String name, String version) {
+        // Generated convenience method for getVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
     }
 
@@ -315,37 +344,9 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String name, String version) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteVersion(String name, String version) {
+        // Generated convenience method for deleteVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Create a new or update an existing Index with the given version id.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the Index to create or update.
-     * @param index The Index to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return index resource Definition on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> createOrUpdate(String name, String version, Index index) {
-        // Generated convenience method for createOrUpdateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
-        BinaryData indexInBinaryData = BinaryData.fromObject(index);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        indexInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
-        return createOrUpdateWithResponse(name, version, indexInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
+        return deleteVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * Insights from the evaluation comparison.
  */
 @Immutable
-public final class EvalCompareReport extends InsightResult {
+public final class EvaluationCompareReport extends InsightResult {
 
     /*
      * The type of insights result.
@@ -27,7 +27,7 @@ public final class EvalCompareReport extends InsightResult {
      * Comparison results for each treatment run against the baseline.
      */
     @Generated
-    private final List<EvalRunResultComparison> comparisons;
+    private final List<EvaluationRunResultComparison> comparisons;
 
     /*
      * The statistical method used for comparison.
@@ -36,13 +36,13 @@ public final class EvalCompareReport extends InsightResult {
     private final String method;
 
     /**
-     * Creates an instance of EvalCompareReport class.
+     * Creates an instance of EvaluationCompareReport class.
      *
      * @param comparisons the comparisons value to set.
      * @param method the method value to set.
      */
     @Generated
-    private EvalCompareReport(List<EvalRunResultComparison> comparisons, String method) {
+    private EvaluationCompareReport(List<EvaluationRunResultComparison> comparisons, String method) {
         this.comparisons = comparisons;
         this.method = method;
     }
@@ -64,7 +64,7 @@ public final class EvalCompareReport extends InsightResult {
      * @return the comparisons value.
      */
     @Generated
-    public List<EvalRunResultComparison> getComparisons() {
+    public List<EvaluationRunResultComparison> getComparisons() {
         return this.comparisons;
     }
 
@@ -92,25 +92,25 @@ public final class EvalCompareReport extends InsightResult {
     }
 
     /**
-     * Reads an instance of EvalCompareReport from the JsonReader.
+     * Reads an instance of EvaluationCompareReport from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvalCompareReport if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of EvaluationCompareReport if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvalCompareReport.
+     * @throws IOException If an error occurs while reading the EvaluationCompareReport.
      */
     @Generated
-    public static EvalCompareReport fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationCompareReport fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<EvalRunResultComparison> comparisons = null;
+            List<EvaluationRunResultComparison> comparisons = null;
             String method = null;
             InsightType type = InsightType.EVALUATION_COMPARISON;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("comparisons".equals(fieldName)) {
-                    comparisons = reader.readArray(reader1 -> EvalRunResultComparison.fromJson(reader1));
+                    comparisons = reader.readArray(reader1 -> EvaluationRunResultComparison.fromJson(reader1));
                 } else if ("method".equals(fieldName)) {
                     method = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -119,9 +119,10 @@ public final class EvalCompareReport extends InsightResult {
                     reader.skipChildren();
                 }
             }
-            EvalCompareReport deserializedEvalCompareReport = new EvalCompareReport(comparisons, method);
-            deserializedEvalCompareReport.type = type;
-            return deserializedEvalCompareReport;
+            EvaluationCompareReport deserializedEvaluationCompareReport
+                = new EvaluationCompareReport(comparisons, method);
+            deserializedEvaluationCompareReport.type = type;
+            return deserializedEvaluationCompareReport;
         });
     }
 }

@@ -65,7 +65,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing connections returns results
-        PagedFlux<Connection> connectionsFlux = connectionsAsyncClient.list();
+        PagedFlux<Connection> connectionsFlux = connectionsAsyncClient.listConnections();
         Assertions.assertNotNull(connectionsFlux);
 
         // Collect all connections and verify
@@ -87,7 +87,8 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Test listing connections with type filter
-        PagedFlux<Connection> azureOpenAIConnections = connectionsAsyncClient.list(ConnectionType.AZURE_OPEN_AI, null);
+        PagedFlux<Connection> azureOpenAIConnections
+            = connectionsAsyncClient.listConnections(ConnectionType.AZURE_OPEN_AI, null);
         Assertions.assertNotNull(azureOpenAIConnections);
 
         // Verify that all returned connections have the correct type
@@ -97,7 +98,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         }).verifyComplete();
 
         // Test listing default connections
-        PagedFlux<Connection> defaultConnections = connectionsAsyncClient.list(null, true);
+        PagedFlux<Connection> defaultConnections = connectionsAsyncClient.listConnections(null, true);
         Assertions.assertNotNull(defaultConnections);
 
         // Verify that all returned connections are default connections
@@ -114,7 +115,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.get(connectionName);
+        Mono<Connection> connectionMono = connectionsAsyncClient.getConnection(connectionName);
 
         try {
             // Test retrieving a connection
@@ -138,7 +139,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.getWithCredentials(connectionName);
+        Mono<Connection> connectionMono = connectionsAsyncClient.getConnectionWithCredentials(connectionName);
 
         try {
             // Test retrieving a connection with credentials

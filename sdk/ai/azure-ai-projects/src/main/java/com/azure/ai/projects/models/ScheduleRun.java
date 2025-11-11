@@ -19,12 +19,6 @@ import java.util.Map;
 public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
 
     /*
-     * Identifier of the schedule run.
-     */
-    @Generated
-    private String id;
-
-    /*
      * Identifier of the schedule.
      */
     @Generated
@@ -62,16 +56,6 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
     @Generated
     private ScheduleRun(String scheduleId) {
         this.scheduleId = scheduleId;
-    }
-
-    /**
-     * Get the id property: Identifier of the schedule run.
-     *
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
     }
 
     /**
@@ -148,7 +132,7 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
     @Generated
     public static ScheduleRun fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String id = null;
+            String runId = null;
             String scheduleId = null;
             boolean success = false;
             Map<String, String> properties = null;
@@ -158,7 +142,7 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
-                    id = reader.getString();
+                    runId = reader.getString();
                 } else if ("scheduleId".equals(fieldName)) {
                     scheduleId = reader.getString();
                 } else if ("success".equals(fieldName)) {
@@ -174,12 +158,28 @@ public final class ScheduleRun implements JsonSerializable<ScheduleRun> {
                 }
             }
             ScheduleRun deserializedScheduleRun = new ScheduleRun(scheduleId);
-            deserializedScheduleRun.id = id;
+            deserializedScheduleRun.runId = runId;
             deserializedScheduleRun.success = success;
             deserializedScheduleRun.properties = properties;
             deserializedScheduleRun.triggerTime = triggerTime;
             deserializedScheduleRun.error = error;
             return deserializedScheduleRun;
         });
+    }
+
+    /*
+     * Identifier of the schedule run.
+     */
+    @Generated
+    private String runId;
+
+    /**
+     * Get the runId property: Identifier of the schedule run.
+     *
+     * @return the runId value.
+     */
+    @Generated
+    public String getRunId() {
+        return this.runId;
     }
 }

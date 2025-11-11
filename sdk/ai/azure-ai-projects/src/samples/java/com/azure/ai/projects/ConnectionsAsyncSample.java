@@ -25,7 +25,7 @@ public class ConnectionsAsyncSample {
     public static Flux<Connection> listConnections() {
         // BEGIN:com.azure.ai.projects.ConnectionsAsyncSample.listConnections
 
-        return connectionsAsyncClient.list()
+        return connectionsAsyncClient.listConnections()
             .doOnNext(connection -> System.out.printf("Connection name: %s%n", connection.getName()));
 
         // END:com.azure.ai.projects.ConnectionsAsyncSample.listConnections
@@ -35,7 +35,7 @@ public class ConnectionsAsyncSample {
         // BEGIN:com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithoutCredentials
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-        return connectionsAsyncClient.get(connectionName)
+        return connectionsAsyncClient.getConnection(connectionName)
             .doOnNext(connection -> System.out.printf("Connection name: %s%n", connection.getName()));
 
         // END:com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithoutCredentials
@@ -45,7 +45,7 @@ public class ConnectionsAsyncSample {
         // BEGIN:com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithCredentials
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-        return connectionsAsyncClient.getWithCredentials(connectionName)
+        return connectionsAsyncClient.getConnectionWithCredentials(connectionName)
             .doOnNext(connection -> {
                 System.out.printf("Connection name: %s%n", connection.getName());
                 System.out.printf("Connection credentials: %s%n", connection.getCredentials().getType());

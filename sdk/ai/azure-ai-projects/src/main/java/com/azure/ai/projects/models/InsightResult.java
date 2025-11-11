@@ -78,7 +78,7 @@ public class InsightResult implements JsonSerializable<InsightResult> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("EvaluationComparison".equals(discriminatorValue)) {
-                    return EvalCompareReport.fromJson(readerToUse.reset());
+                    return EvaluationCompareReport.fromJson(readerToUse.reset());
                 } else if ("EvaluationRunClusterInsight".equals(discriminatorValue)) {
                     return EvaluationRunClusterInsightResult.fromJson(readerToUse.reset());
                 } else if ("AgentClusterInsight".equals(discriminatorValue)) {

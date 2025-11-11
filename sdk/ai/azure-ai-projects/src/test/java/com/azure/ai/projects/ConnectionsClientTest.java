@@ -59,7 +59,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing connections returns results
-        Iterable<Connection> connections = connectionsClient.list();
+        Iterable<Connection> connections = connectionsClient.listConnections();
         Assertions.assertNotNull(connections);
 
         // Verify that at least one connection can be retrieved if available
@@ -82,7 +82,8 @@ public class ConnectionsClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Test listing connections with type filter
-        Iterable<Connection> azureOpenAIConnections = connectionsClient.list(ConnectionType.AZURE_OPEN_AI, null);
+        Iterable<Connection> azureOpenAIConnections
+            = connectionsClient.listConnections(ConnectionType.AZURE_OPEN_AI, null);
         Assertions.assertNotNull(azureOpenAIConnections);
 
         // Verify that all returned connections have the correct type
@@ -91,7 +92,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         });
 
         // Test listing default connections
-        Iterable<Connection> defaultConnections = connectionsClient.list(null, true);
+        Iterable<Connection> defaultConnections = connectionsClient.listConnections(null, true);
         Assertions.assertNotNull(defaultConnections);
 
         // Verify that all returned connections are default connections
@@ -108,7 +109,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
         try {
-            Connection connection = connectionsClient.get(connectionName);
+            Connection connection = connectionsClient.getConnection(connectionName);
 
             // Verify the connection properties
             assertValidConnection(connection, connectionName, null, null);
@@ -131,7 +132,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
         try {
-            Connection connection = connectionsClient.getWithCredentials(connectionName);
+            Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
 
             // Verify the connection properties
             assertValidConnection(connection, connectionName, null, null);

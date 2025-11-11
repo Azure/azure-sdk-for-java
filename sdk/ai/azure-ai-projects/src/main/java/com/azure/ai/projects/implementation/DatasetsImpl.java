@@ -105,7 +105,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listLatest(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -115,7 +115,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listLatestSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -125,7 +125,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getDatasetVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -136,7 +136,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getDatasetVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -147,7 +147,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
@@ -157,9 +157,9 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("name") String name, @PathParam("version") String version, RequestOptions requestOptions,
-            Context context);
+        Response<Void> deleteVersionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Patch("/datasets/{name}/versions/{version}")
         @ExpectedResponses({ 200, 201 })
@@ -167,7 +167,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createOrUpdateVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData datasetVersion,
@@ -179,7 +179,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOrUpdateVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData datasetVersion,
@@ -257,7 +257,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listLatestNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -267,7 +267,7 @@ public final class DatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listLatestNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
@@ -461,10 +461,10 @@ public final class DatasetsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listLatestSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(),
+            .withContext(context -> service.listLatest(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -500,12 +500,12 @@ public final class DatasetsImpl {
      * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listLatestAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions),
-            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listLatestSinglePageAsync(requestOptions),
+            nextLink -> listLatestNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -538,9 +538,9 @@ public final class DatasetsImpl {
      * @return paged collection of DatasetVersion items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listLatestSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listLatestSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -576,12 +576,12 @@ public final class DatasetsImpl {
      * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listLatest(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listSinglePage(requestOptions),
-            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listLatestSinglePage(requestOptions),
+            nextLink -> listLatestNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -618,9 +618,10 @@ public final class DatasetsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String name, String version, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDatasetVersionWithResponseAsync(String name, String version,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getDatasetVersion(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, version, accept, requestOptions, context));
     }
 
@@ -657,10 +658,11 @@ public final class DatasetsImpl {
      * @return the specific version of the DatasetVersion along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, String version, RequestOptions requestOptions) {
+    public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name, version,
-            accept, requestOptions, Context.NONE);
+        return service.getDatasetVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            name, version, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -677,8 +679,9 @@ public final class DatasetsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String name, String version, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(),
+    public Mono<Response<Void>> deleteVersionWithResponseAsync(String name, String version,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteVersion(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, version, requestOptions, context));
     }
 
@@ -696,8 +699,8 @@ public final class DatasetsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
+    public Response<Void> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return service.deleteVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
             version, requestOptions, Context.NONE);
     }
 
@@ -754,13 +757,13 @@ public final class DatasetsImpl {
      * @return datasetVersion Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String name, String version,
+    public Mono<Response<BinaryData>> createOrUpdateVersionWithResponseAsync(String name, String version,
         BinaryData datasetVersion, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, contentType, version, accept, datasetVersion, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateVersion(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, datasetVersion,
+            requestOptions, context));
     }
 
     /**
@@ -816,12 +819,13 @@ public final class DatasetsImpl {
      * @return datasetVersion Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData datasetVersion,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateVersionWithResponse(String name, String version,
+        BinaryData datasetVersion, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            contentType, version, accept, datasetVersion, requestOptions, Context.NONE);
+        return service.createOrUpdateVersionSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, datasetVersion,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1117,11 +1121,12 @@ public final class DatasetsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listLatestNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                context -> service.listLatestNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1157,10 +1162,10 @@ public final class DatasetsImpl {
      * @return paged collection of DatasetVersion items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listLatestNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listLatestNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

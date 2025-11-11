@@ -15,7 +15,7 @@ import java.io.IOException;
  * Summary statistics of a metric in an evaluation run.
  */
 @Immutable
-public final class EvalRunResultSummary implements JsonSerializable<EvalRunResultSummary> {
+public final class EvaluationRunResultSummary implements JsonSerializable<EvaluationRunResultSummary> {
 
     /*
      * The evaluation run ID.
@@ -42,7 +42,7 @@ public final class EvalRunResultSummary implements JsonSerializable<EvalRunResul
     private final double standardDeviation;
 
     /**
-     * Creates an instance of EvalRunResultSummary class.
+     * Creates an instance of EvaluationRunResultSummary class.
      *
      * @param runId the runId value to set.
      * @param sampleCount the sampleCount value to set.
@@ -50,7 +50,7 @@ public final class EvalRunResultSummary implements JsonSerializable<EvalRunResul
      * @param standardDeviation the standardDeviation value to set.
      */
     @Generated
-    private EvalRunResultSummary(String runId, int sampleCount, double average, double standardDeviation) {
+    private EvaluationRunResultSummary(String runId, int sampleCount, double average, double standardDeviation) {
         this.runId = runId;
         this.sampleCount = sampleCount;
         this.average = average;
@@ -112,16 +112,16 @@ public final class EvalRunResultSummary implements JsonSerializable<EvalRunResul
     }
 
     /**
-     * Reads an instance of EvalRunResultSummary from the JsonReader.
+     * Reads an instance of EvaluationRunResultSummary from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvalRunResultSummary if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of EvaluationRunResultSummary if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EvalRunResultSummary.
+     * @throws IOException If an error occurs while reading the EvaluationRunResultSummary.
      */
     @Generated
-    public static EvalRunResultSummary fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationRunResultSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String runId = null;
             int sampleCount = 0;
@@ -142,7 +142,7 @@ public final class EvalRunResultSummary implements JsonSerializable<EvalRunResul
                     reader.skipChildren();
                 }
             }
-            return new EvalRunResultSummary(runId, sampleCount, average, standardDeviation);
+            return new EvaluationRunResultSummary(runId, sampleCount, average, standardDeviation);
         });
     }
 }

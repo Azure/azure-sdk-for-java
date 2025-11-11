@@ -119,7 +119,7 @@ public class DatasetsClientTest extends ClientTestBase {
         setup(httpClient);
 
         // Verify that listing datasets returns results
-        Iterable<DatasetVersion> datasets = datasetsClient.list();
+        Iterable<DatasetVersion> datasets = datasetsClient.listLatest();
         Assertions.assertNotNull(datasets);
 
         // Verify that at least one dataset can be retrieved
@@ -158,7 +158,7 @@ public class DatasetsClientTest extends ClientTestBase {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Get a specific dataset version
-        DatasetVersion dataset = datasetsClient.get(datasetName, datasetVersion);
+        DatasetVersion dataset = datasetsClient.getDatasetVersion(datasetName, datasetVersion);
 
         // Verify the dataset properties
         assertDatasetVersion(dataset, datasetName, datasetVersion);
@@ -181,7 +181,7 @@ public class DatasetsClientTest extends ClientTestBase {
 
         // Create or update the dataset
         FileDatasetVersion createdDataset
-            = (FileDatasetVersion) datasetsClient.createOrUpdate(datasetName, datasetVersion, fileDataset);
+            = (FileDatasetVersion) datasetsClient.createOrUpdateVersion(datasetName, datasetVersion, fileDataset);
 
         // Verify the created dataset
         assertFileDatasetVersion(createdDataset, datasetName, datasetVersion, dataUri);
@@ -230,11 +230,11 @@ public class DatasetsClientTest extends ClientTestBase {
         Assertions.assertNotNull(createdDataset);
 
         // Delete the dataset
-        datasetsClient.delete(datasetName, datasetVersion);
+        datasetsClient.deleteVersion(datasetName, datasetVersion);
 
         // Verify deletion - this should throw ResourceNotFoundException
         try {
-            datasetsClient.get(datasetName, datasetVersion);
+            datasetsClient.getDatasetVersion(datasetName, datasetVersion);
             Assertions.fail("Expected ResourceNotFoundException was not thrown");
         } catch (Exception e) {
             // Expected exception

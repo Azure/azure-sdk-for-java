@@ -6,7 +6,6 @@ module com.azure.ai.projects {
     requires transitive com.azure.core;
     requires com.azure.storage.blob;
     requires openai.java.core;
-    requires com.azure.identity;
     requires openai.java.client.okhttp;
 
     exports com.azure.ai.projects;

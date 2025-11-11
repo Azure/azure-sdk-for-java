@@ -77,8 +77,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, requestOptions);
+    Mono<Response<BinaryData>> getConnectionWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getConnectionWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -114,8 +114,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithCredentialsWithResponseAsync(name, requestOptions);
+    Mono<Response<BinaryData>> getConnectionWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getConnectionWithCredentialsWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -160,8 +160,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listConnections(RequestOptions requestOptions) {
+        return this.serviceClient.listConnectionsAsync(requestOptions);
     }
 
     /**
@@ -178,10 +178,10 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Connection> get(String name) {
-        // Generated convenience method for getWithResponse
+    Mono<Connection> getConnection(String name) {
+        // Generated convenience method for getConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Connection.class));
     }
 
@@ -199,10 +199,10 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Connection> getWithCredentials(String name) {
-        // Generated convenience method for getWithCredentialsWithResponse
+    Mono<Connection> getConnectionWithCredentials(String name) {
+        // Generated convenience method for getConnectionWithCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithCredentialsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getConnectionWithCredentialsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Connection.class));
     }
 
@@ -221,8 +221,8 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Connection> list(ConnectionType connectionType, Boolean defaultConnection) {
-        // Generated convenience method for list
+    public PagedFlux<Connection> listConnections(ConnectionType connectionType, Boolean defaultConnection) {
+        // Generated convenience method for listConnections
         RequestOptions requestOptions = new RequestOptions();
         if (connectionType != null) {
             requestOptions.addQueryParam("connectionType", connectionType.toString(), false);
@@ -230,7 +230,7 @@ public final class ConnectionsAsyncClient {
         if (defaultConnection != null) {
             requestOptions.addQueryParam("defaultConnection", String.valueOf(defaultConnection), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listConnections(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -257,10 +257,10 @@ public final class ConnectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Connection> list() {
-        // Generated convenience method for list
+    public PagedFlux<Connection> listConnections() {
+        // Generated convenience method for listConnections
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listConnections(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -273,5 +273,27 @@ public final class ConnectionsAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Get a connection by name, without populating connection credentials.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @param includeCredentials Whether to include connection credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connection by name, without populating connection credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Connection> getConnection(String name, boolean includeCredentials) {
+        if (includeCredentials) {
+            return getConnectionWithCredentials(name);
+        } else {
+            return getConnection(name);
+        }
     }
 }

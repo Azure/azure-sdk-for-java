@@ -60,7 +60,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         List<Index> indexList = new ArrayList<>();
 
         // Verify that listing indexes returns results
-        StepVerifier.create(indexesAsyncClient.list().doOnNext(index -> {
+        StepVerifier.create(indexesAsyncClient.listLatest().doOnNext(index -> {
             indexList.add(index);
             assertValidIndex(index, null, null);
         })).expectComplete().verify(Duration.ofMinutes(1));
@@ -103,7 +103,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
 
-        StepVerifier.create(indexesAsyncClient.get(indexName, indexVersion).doOnNext(index -> {
+        StepVerifier.create(indexesAsyncClient.getVersion(indexName, indexVersion).doOnNext(index -> {
             // Verify the index properties
             assertValidIndex(index, indexName, indexVersion);
             System.out
@@ -164,12 +164,12 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
 
         // First verify the index exists
-        indexesAsyncClient.get(indexName, indexVersion)
+        indexesAsyncClient.getVersion(indexName, indexVersion)
             .doOnNext(index -> assertValidIndex(index, indexName, indexVersion))
-            .flatMap(index -> indexesAsyncClient.delete(indexName, indexVersion))
+            .flatMap(index -> indexesAsyncClient.deleteVersion(indexName, indexVersion))
             .doOnSuccess(unused -> System.out.println("Index deletion request submitted"))
             .then(Mono.delay(Duration.ofSeconds(2))) // Give some time for the deletion to complete
-            .then(indexesAsyncClient.get(indexName, indexVersion))
+            .then(indexesAsyncClient.getVersion(indexName, indexVersion))
             .doOnNext(deletedIndex -> Assertions
                 .fail("Index should have been deleted but was found: " + deletedIndex.getName()))
             .onErrorResume(e -> {

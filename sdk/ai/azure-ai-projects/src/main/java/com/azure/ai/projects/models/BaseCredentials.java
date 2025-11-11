@@ -80,7 +80,7 @@ public class BaseCredentials implements JsonSerializable<BaseCredentials> {
                 if ("ApiKey".equals(discriminatorValue)) {
                     return ApiKeyCredentials.fromJson(readerToUse.reset());
                 } else if ("AAD".equals(discriminatorValue)) {
-                    return EntraIDCredentials.fromJson(readerToUse.reset());
+                    return EntraIdCredentials.fromJson(readerToUse.reset());
                 } else if ("CustomKeys".equals(discriminatorValue)) {
                     return CustomCredential.fromJson(readerToUse.reset());
                 } else if ("SAS".equals(discriminatorValue)) {

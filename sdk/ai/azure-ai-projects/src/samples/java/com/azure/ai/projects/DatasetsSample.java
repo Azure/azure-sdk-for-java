@@ -53,7 +53,7 @@ public class DatasetsSample {
         // BEGIN:com.azure.ai.projects.DatasetsSample.listDatasets
 
         System.out.println("Listing all datasets (latest versions):");
-        datasetsClient.list().forEach(dataset -> {
+        datasetsClient.listLatest().forEach(dataset -> {
             System.out.println("\nDataset name: " + dataset.getName());
             System.out.println("Dataset Id: " + dataset.getId());
             System.out.println("Dataset version: " + dataset.getVersion());
@@ -90,7 +90,7 @@ public class DatasetsSample {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1");
 
-        DatasetVersion dataset = datasetsClient.get(datasetName, datasetVersion);
+        DatasetVersion dataset = datasetsClient.getDatasetVersion(datasetName, datasetVersion);
 
         System.out.println("Retrieved dataset:");
         System.out.println("Name: " + dataset.getName());
@@ -113,7 +113,7 @@ public class DatasetsSample {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Delete the specific version of the dataset
-        datasetsClient.delete(datasetName, datasetVersion);
+        datasetsClient.deleteVersion(datasetName, datasetVersion);
 
         System.out.println("Deleted dataset: " + datasetName + ", version: " + datasetVersion);
 
@@ -133,7 +133,7 @@ public class DatasetsSample {
             .setDescription("Sample dataset created via SDK");
 
         // Create or update the dataset
-        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient.createOrUpdate(
+        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient.createOrUpdateVersion(
             datasetName, 
             datasetVersion, 
             fileDataset

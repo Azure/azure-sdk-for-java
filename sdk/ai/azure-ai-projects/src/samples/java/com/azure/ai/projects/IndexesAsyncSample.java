@@ -47,7 +47,7 @@ public class IndexesAsyncSample {
     public static Flux<Index> listIndexes() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.listIndexes
 
-        return indexesAsyncClient.list()
+        return indexesAsyncClient.listLatest()
             .doOnNext(index -> {
                 System.out.println("Index name: " + index.getName());
                 System.out.println("Index version: " + index.getVersion());
@@ -77,7 +77,7 @@ public class IndexesAsyncSample {
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
         
-        return indexesAsyncClient.get(indexName, indexVersion)
+        return indexesAsyncClient.getVersion(indexName, indexVersion)
             .doOnNext(index -> {
                 System.out.println("Retrieved index:");
                 System.out.println("Name: " + index.getName());
@@ -95,7 +95,7 @@ public class IndexesAsyncSample {
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
         
         // Delete the index version
-        return indexesAsyncClient.delete(indexName, indexVersion)
+        return indexesAsyncClient.deleteVersion(indexName, indexVersion)
             .doOnSuccess(unused -> 
                 System.out.println("Deleted index: " + indexName + ", version: " + indexVersion));
         

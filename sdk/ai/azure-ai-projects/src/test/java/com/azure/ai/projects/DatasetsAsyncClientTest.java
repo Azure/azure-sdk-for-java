@@ -123,7 +123,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         // Collect datasets into a list
         List<DatasetVersion> datasetsList = new ArrayList<>();
 
-        StepVerifier.create(datasetsAsyncClient.list().doOnNext(datasetsList::add).then()).verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.listLatest().doOnNext(datasetsList::add).then()).verifyComplete();
 
         // Verify we found at least one dataset
         Assertions.assertFalse(datasetsList.isEmpty(), "Expected at least one dataset");
@@ -166,7 +166,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
-        StepVerifier.create(datasetsAsyncClient.get(datasetName, datasetVersion))
+        StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersion))
             .assertNext(dataset -> assertDatasetVersion(dataset, datasetName, datasetVersion))
             .verifyComplete();
     }
@@ -186,7 +186,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         FileDatasetVersion fileDataset
             = new FileDatasetVersion().setDataUri(dataUri).setDescription("Test dataset created via SDK tests");
 
-        StepVerifier.create(datasetsAsyncClient.createOrUpdate(datasetName, datasetVersion, fileDataset))
+        StepVerifier.create(datasetsAsyncClient.createOrUpdateVersion(datasetName, datasetVersion, fileDataset))
             .assertNext(createdDataset -> {
                 FileDatasetVersion fileDatasetVersion = (FileDatasetVersion) createdDataset;
                 assertFileDatasetVersion(fileDatasetVersion, datasetName, datasetVersion, dataUri);
@@ -236,10 +236,10 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
         datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersion, filePath).block(); // We need to ensure the dataset is created before continuing
 
         // Delete the dataset
-        StepVerifier.create(datasetsAsyncClient.delete(datasetName, datasetVersion)).verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.deleteVersion(datasetName, datasetVersion)).verifyComplete();
 
         // Verify deletion - this should cause an error
-        StepVerifier.create(datasetsAsyncClient.get(datasetName, datasetVersion))
+        StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersion))
             .expectErrorMatches(e -> e.getMessage().contains("404") || e.getMessage().contains("Not Found"))
             .verify();
     }

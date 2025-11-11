@@ -204,7 +204,8 @@ public final class DatasetsAsyncClient {
         }).flatMap(blobUrl -> {
             RequestOptions requestOptions = new RequestOptions();
             FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUri(blobUrl);
-            return this.createOrUpdateWithResponse(name, version, BinaryData.fromObject(fileDataset), requestOptions)
+            return this
+                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(fileDataset), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FileDatasetVersion.class));
         });
@@ -250,10 +251,88 @@ public final class DatasetsAsyncClient {
             // Create a FolderDatasetVersion with the container URL
             RequestOptions requestOptions = new RequestOptions();
             FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
-            return this.createOrUpdateWithResponse(name, version, BinaryData.fromObject(folderDataset), requestOptions)
+            return this
+                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(folderDataset), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FolderDatasetVersion.class));
         });
+    }
+
+    /**
+     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     pendingUploadId: String (Optional)
+     *     connectionName: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String (Required)
+     *         }
+     *     }
+     *     pendingUploadId: String (Required)
+     *     version: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the response for a pending upload request along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> pendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        return this.serviceClient.pendingUploadWithResponseAsync(name, version, pendingUploadRequest, requestOptions);
+    }
+
+    /**
+     * Start a new or get an existing pending upload of a dataset for a specific version.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response for a pending upload request on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PendingUploadResponse> pendingUpload(String name, String version,
+        PendingUploadRequest pendingUploadRequest) {
+        // Generated convenience method for pendingUploadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class));
     }
 
     /**
@@ -287,8 +366,8 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listLatest(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestAsync(requestOptions);
     }
 
     /**
@@ -326,8 +405,9 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<BinaryData>> getDatasetVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDatasetVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -345,8 +425,8 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -403,61 +483,9 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String name, String version, BinaryData datasetVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(name, version, datasetVersion, requestOptions);
-    }
-
-    /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     pendingUploadId: String (Optional)
-     *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     blobReference (Required): {
-     *         blobUri: String (Required)
-     *         storageAccountArmId: String (Required)
-     *         credential (Required): {
-     *             sasUri: String (Required)
-     *             type: String (Required)
-     *         }
-     *     }
-     *     pendingUploadId: String (Required)
-     *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
-     * @param pendingUploadRequest The pending upload request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the response for a pending upload request along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> pendingUploadWithResponse(String name, String version,
-        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
-        return this.serviceClient.pendingUploadWithResponseAsync(name, version, pendingUploadRequest, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateVersionWithResponse(String name, String version,
+        BinaryData datasetVersion, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateVersionWithResponseAsync(name, version, datasetVersion, requestOptions);
     }
 
     /**
@@ -472,10 +500,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasetVersion> list() {
-        // Generated convenience method for list
+    public PagedFlux<DatasetVersion> listLatest() {
+        // Generated convenience method for listLatest
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listLatest(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -506,10 +534,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> get(String name, String version) {
-        // Generated convenience method for getWithResponse
+    public Mono<DatasetVersion> getDatasetVersion(String name, String version) {
+        // Generated convenience method for getDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
     }
 
@@ -529,10 +557,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String name, String version) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteVersion(String name, String version) {
+        // Generated convenience method for deleteVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -551,41 +579,16 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> createOrUpdate(String name, String version, DatasetVersion datasetVersion) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public Mono<DatasetVersion> createOrUpdateVersion(String name, String version, DatasetVersion datasetVersion) {
+        // Generated convenience method for createOrUpdateVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
         BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         datasetVersionInBinaryData.getLength();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
-        return createOrUpdateWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
+        return createOrUpdateVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
-    }
-
-    /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
-     * @param pendingUploadRequest The pending upload request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response for a pending upload request on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PendingUploadResponse> pendingUpload(String name, String version,
-        PendingUploadRequest pendingUploadRequest) {
-        // Generated convenience method for pendingUploadWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return pendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class));
     }
 }

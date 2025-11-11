@@ -28,22 +28,7 @@ public final class EvaluationResultSample extends InsightSample {
      * Evaluation result for the analysis sample.
      */
     @Generated
-    private final EvalResult evaluationResult;
-
-    /**
-     * Creates an instance of EvaluationResultSample class.
-     *
-     * @param id the id value to set.
-     * @param features the features value to set.
-     * @param correlationInfo the correlationInfo value to set.
-     * @param evaluationResult the evaluationResult value to set.
-     */
-    @Generated
-    private EvaluationResultSample(String id, Map<String, BinaryData> features, Map<String, BinaryData> correlationInfo,
-        EvalResult evaluationResult) {
-        super(id, features, correlationInfo);
-        this.evaluationResult = evaluationResult;
-    }
+    private final EvaluationResult evaluationResult;
 
     /**
      * Get the type property: Sample type.
@@ -62,7 +47,7 @@ public final class EvaluationResultSample extends InsightSample {
      * @return the evaluationResult value.
      */
     @Generated
-    public EvalResult getEvaluationResult() {
+    public EvaluationResult getEvaluationResult() {
         return this.evaluationResult;
     }
 
@@ -98,7 +83,7 @@ public final class EvaluationResultSample extends InsightSample {
             String id = null;
             Map<String, BinaryData> features = null;
             Map<String, BinaryData> correlationInfo = null;
-            EvalResult evaluationResult = null;
+            EvaluationResult evaluationResult = null;
             SampleType type = SampleType.EVALUATION_RESULT_SAMPLE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,7 +97,7 @@ public final class EvaluationResultSample extends InsightSample {
                     correlationInfo = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("evaluationResult".equals(fieldName)) {
-                    evaluationResult = EvalResult.fromJson(reader);
+                    evaluationResult = EvaluationResult.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = SampleType.fromString(reader.getString());
                 } else {
@@ -124,5 +109,20 @@ public final class EvaluationResultSample extends InsightSample {
             deserializedEvaluationResultSample.type = type;
             return deserializedEvaluationResultSample;
         });
+    }
+
+    /**
+     * Creates an instance of EvaluationResultSample class.
+     *
+     * @param id the id value to set.
+     * @param features the features value to set.
+     * @param correlationInfo the correlationInfo value to set.
+     * @param evaluationResult the evaluationResult value to set.
+     */
+    @Generated
+    private EvaluationResultSample(String id, Map<String, BinaryData> features, Map<String, BinaryData> correlationInfo,
+        EvaluationResult evaluationResult) {
+        super(id, features, correlationInfo);
+        this.evaluationResult = evaluationResult;
     }
 }

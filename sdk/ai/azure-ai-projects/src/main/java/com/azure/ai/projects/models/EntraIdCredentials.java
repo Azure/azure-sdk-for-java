@@ -14,7 +14,7 @@ import java.io.IOException;
  * Entra ID credential definition.
  */
 @Immutable
-public final class EntraIDCredentials extends BaseCredentials {
+public final class EntraIdCredentials extends BaseCredentials {
 
     /*
      * The type of credential used by the connection
@@ -23,10 +23,10 @@ public final class EntraIDCredentials extends BaseCredentials {
     private CredentialType type = CredentialType.ENTRA_ID;
 
     /**
-     * Creates an instance of EntraIDCredentials class.
+     * Creates an instance of EntraIdCredentials class.
      */
     @Generated
-    private EntraIDCredentials() {
+    private EntraIdCredentials() {
     }
 
     /**
@@ -52,27 +52,27 @@ public final class EntraIDCredentials extends BaseCredentials {
     }
 
     /**
-     * Reads an instance of EntraIDCredentials from the JsonReader.
+     * Reads an instance of EntraIdCredentials from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EntraIDCredentials if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of EntraIdCredentials if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EntraIDCredentials.
+     * @throws IOException If an error occurs while reading the EntraIdCredentials.
      */
     @Generated
-    public static EntraIDCredentials fromJson(JsonReader jsonReader) throws IOException {
+    public static EntraIdCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            EntraIDCredentials deserializedEntraIDCredentials = new EntraIDCredentials();
+            EntraIdCredentials deserializedEntraIdCredentials = new EntraIdCredentials();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedEntraIDCredentials.type = CredentialType.fromString(reader.getString());
+                    deserializedEntraIdCredentials.type = CredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedEntraIDCredentials;
+            return deserializedEntraIdCredentials;
         });
     }
 }
