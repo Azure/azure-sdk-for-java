@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class VirtualNetworkGatewayTests extends NetworkTests {
 
-    private static final Region region = Region.US_WEST3;
+    private static final Region REGION = Region.US_WEST3;
 
     @Test
     public void testListBySubscription() {
@@ -51,7 +51,7 @@ public class VirtualNetworkGatewayTests extends NetworkTests {
     private VirtualNetworkGateway createVirtualNetworkGateway(String groupName, String name) {
         return networkManager.virtualNetworkGateways()
             .define(name)
-            .withRegion(region)
+            .withRegion(REGION)
             .withNewResourceGroup(groupName)
             .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
             .withRouteBasedVpn()

@@ -35,9 +35,8 @@ final class PagedConverterForMergedPagedFlux {
     static <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             // take all the pages, do not use .take(1)
-            Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? pagedFlux.byPage()
-                : pagedFlux.byPage(continuationToken);
+            Flux<PagedResponse<T>> flux
+                = (continuationToken == null) ? pagedFlux.byPage() : pagedFlux.byPage(continuationToken);
             return flux.map(mapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
