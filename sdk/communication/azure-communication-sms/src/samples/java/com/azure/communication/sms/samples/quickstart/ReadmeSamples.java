@@ -7,7 +7,7 @@ import com.azure.communication.sms.SmsAsyncClient;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.SmsServiceVersion;
-import com.azure.communication.sms.implementation.models.DeliveryReport;
+import com.azure.communication.sms.models.SmsDeliveryReport;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -262,7 +262,7 @@ public class ReadmeSamples {
                 .subscribe(
                         response -> {
                             System.out.println("HTTP Status Code: " + response.getStatusCode());
-                            DeliveryReport deliveryReport = response.getValue();
+                            SmsDeliveryReport deliveryReport = response.getValue();
                             System.out.println("Delivery Report Status: " + deliveryReport.getDeliveryStatus());
                             System.out.println("Delivery Status Details: " + deliveryReport.getDeliveryStatusDetails());
                             System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());

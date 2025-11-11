@@ -6,12 +6,17 @@ package com.azure.communication.sms;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.SmsImpl;
 import com.azure.communication.sms.implementation.models.DeliveryReport;
+import com.azure.communication.sms.implementation.models.DeliveryAttempt;
+import com.azure.communication.sms.implementation.models.DeliveryReportDeliveryStatus;
 import com.azure.communication.sms.implementation.models.ErrorResponse;
 import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
 import com.azure.communication.sms.implementation.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsRecipient;
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
+import com.azure.communication.sms.models.SmsDeliveryReport;
+import com.azure.communication.sms.models.SmsDeliveryStatus;
+import com.azure.communication.sms.models.SmsDeliveryAttempt;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
@@ -32,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -245,7 +251,7 @@ public final class SmsAsyncClient {
      *                                  request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeliveryReport> getDeliveryReport(String outgoingMessageId) {
+    public Mono<SmsDeliveryReport> getDeliveryReport(String outgoingMessageId) {
         if (outgoingMessageId == null) {
             return Mono.error(new IllegalArgumentException("'outgoingMessageId' cannot be null."));
         }
@@ -270,7 +276,7 @@ public final class SmsAsyncClient {
      *                                  request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeliveryReport>> getDeliveryReportWithResponse(String outgoingMessageId, Context context) {
+    public Mono<Response<SmsDeliveryReport>> getDeliveryReportWithResponse(String outgoingMessageId, Context context) {
         if (outgoingMessageId == null) {
             return Mono.error(new IllegalArgumentException("'outgoingMessageId' cannot be null."));
         }
@@ -285,8 +291,10 @@ public final class SmsAsyncClient {
                 Object responseValue = response.getValue();
 
                 if (responseValue instanceof DeliveryReport) {
+                    SmsDeliveryReport publicDeliveryReport
+                        = convertToPublicDeliveryReport((DeliveryReport) responseValue);
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), (DeliveryReport) responseValue));
+                        response.getHeaders(), publicDeliveryReport));
                 } else if (responseValue instanceof ErrorResponse) {
                     ErrorResponse errorResponse = (ErrorResponse) responseValue;
                     String errorMessage
@@ -311,8 +319,9 @@ public final class SmsAsyncClient {
                         } catch (Exception e) {
                             // If not ErrorResponse, try DeliveryReport
                             DeliveryReport deliveryReport = binaryData.toObject(DeliveryReport.class);
+                            SmsDeliveryReport publicDeliveryReport = convertToPublicDeliveryReport(deliveryReport);
                             return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                                response.getHeaders(), deliveryReport));
+                                response.getHeaders(), publicDeliveryReport));
                         }
                     } catch (Exception e) {
                         return Mono.error(new RuntimeException("Failed to deserialize response", e));
@@ -321,5 +330,31 @@ public final class SmsAsyncClient {
                     return Mono.error(new RuntimeException("Response value is null"));
                 }
             });
+    }
+
+    // Private conversion methods
+    private SmsDeliveryReport convertToPublicDeliveryReport(DeliveryReport implDeliveryReport) {
+        if (implDeliveryReport == null) {
+            return null;
+        }
+
+        SmsDeliveryStatus deliveryStatus = null;
+        if (implDeliveryReport.getDeliveryStatus() != null) {
+            deliveryStatus = SmsDeliveryStatus.fromString(implDeliveryReport.getDeliveryStatus().toString());
+        }
+
+        List<SmsDeliveryAttempt> publicDeliveryAttempts = null;
+        if (implDeliveryReport.getDeliveryAttempts() != null) {
+            publicDeliveryAttempts = implDeliveryReport.getDeliveryAttempts()
+                .stream()
+                .map(attempt -> new SmsDeliveryAttempt(attempt.getTimestamp(), attempt.getSegmentsSucceeded(),
+                    attempt.getSegmentsFailed()))
+                .collect(Collectors.toList());
+        }
+
+        return new SmsDeliveryReport(implDeliveryReport.getMessageId(), implDeliveryReport.getFrom(),
+            implDeliveryReport.getTo(), deliveryStatus, implDeliveryReport.getDeliveryStatusDetails(),
+            publicDeliveryAttempts, implDeliveryReport.getReceivedTimestamp(), implDeliveryReport.getTag(),
+            implDeliveryReport.getMessagingConnectPartnerMessageId());
     }
 }

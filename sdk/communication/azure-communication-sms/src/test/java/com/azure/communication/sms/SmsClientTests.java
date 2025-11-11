@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.sms.implementation.models.DeliveryReport;
+import com.azure.communication.sms.models.SmsDeliveryReport;
 import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
@@ -344,7 +344,7 @@ public class SmsClientTests extends SmsTestBase {
         // Wait 10 seconds and try again - delivery report should be available
         try {
             Thread.sleep(10000); // Wait 10 seconds
-            DeliveryReport report = client.getDeliveryReport(sendResult.getMessageId());
+            SmsDeliveryReport report = client.getDeliveryReport(sendResult.getMessageId());
             assertNotNull(report);
         } catch (HttpResponseException e) {
             // If still not available after 10 seconds, that's acceptable for some test
@@ -379,7 +379,7 @@ public class SmsClientTests extends SmsTestBase {
         // Wait 10 seconds and try again - delivery report should be available
         try {
             Thread.sleep(10000); // Wait 10 seconds
-            Response<DeliveryReport> response
+            Response<SmsDeliveryReport> response
                 = client.getDeliveryReportWithResponse(sendResult.getMessageId(), Context.NONE);
             assertNotNull(response);
             assertNotEquals(0, response.getStatusCode());

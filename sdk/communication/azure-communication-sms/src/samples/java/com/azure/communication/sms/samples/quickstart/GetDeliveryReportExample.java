@@ -4,7 +4,8 @@ package com.azure.communication.sms.samples.quickstart;
 
 import com.azure.communication.sms.SmsAsyncClient;
 import com.azure.communication.sms.SmsClientBuilder;
-import com.azure.communication.sms.implementation.models.DeliveryReport;
+import com.azure.communication.sms.models.SmsSendResult;
+import com.azure.communication.sms.models.SmsDeliveryReport;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.core.exception.HttpResponseException;
 
@@ -70,7 +71,7 @@ public class GetDeliveryReportExample {
             options.setTag("SimpleExample");
 
             // Send SMS message (blocking call)
-            var sendResult = smsAsyncClient.send(
+            SmsSendResult sendResult = smsAsyncClient.send(
                     phoneNumber,
                     phoneNumber,
                     "Hello! This message has delivery reporting enabled.",
@@ -85,7 +86,7 @@ public class GetDeliveryReportExample {
                 Thread.sleep(10000);
 
                 // Retrieve delivery report (blocking call)
-                DeliveryReport deliveryReport = smsAsyncClient
+                SmsDeliveryReport deliveryReport = smsAsyncClient
                         .getDeliveryReport(sendResult.getMessageId())
                         .block(); // Block to get result synchronously
 

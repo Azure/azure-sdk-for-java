@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.sms.implementation.models.DeliveryReport;
+import com.azure.communication.sms.models.SmsDeliveryReport;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.annotation.ReturnType;
@@ -118,7 +118,7 @@ public final class SmsClient {
     }
 
     /**
-     * Gets delivery report for a specific outgoing message.
+     * Get delivery report for a specific outgoing message.
      *
      * @param outgoingMessageId The identifier of the outgoing message.
      * @return The delivery report for the specified message.
@@ -128,12 +128,12 @@ public final class SmsClient {
      *                                  request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryReport getDeliveryReport(String outgoingMessageId) {
+    public SmsDeliveryReport getDeliveryReport(String outgoingMessageId) {
         return smsAsyncClient.getDeliveryReport(outgoingMessageId).block();
     }
 
     /**
-     * Gets delivery report for a specific outgoing message.
+     * Get delivery report for a specific outgoing message.
      *
      * @param outgoingMessageId The identifier of the outgoing message.
      * @param context           A {@link Context} representing the request context.
@@ -145,7 +145,7 @@ public final class SmsClient {
      *                                  request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeliveryReport> getDeliveryReportWithResponse(String outgoingMessageId, Context context) {
+    public Response<SmsDeliveryReport> getDeliveryReportWithResponse(String outgoingMessageId, Context context) {
         return smsAsyncClient.getDeliveryReportWithResponse(outgoingMessageId, context).block();
     }
 
