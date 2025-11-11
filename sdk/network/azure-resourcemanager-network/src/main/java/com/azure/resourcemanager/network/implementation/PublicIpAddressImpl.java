@@ -199,6 +199,7 @@ class PublicIpAddressImpl
                 dependencyTasksAsync.blockLast();
 
                 this.cleanupDnsSettings();
+                this.ensureStaticForStandardSku();
             }, this::setInner, Context.NONE);
     }
 
@@ -206,6 +207,7 @@ class PublicIpAddressImpl
     @Override
     public Mono<PublicIpAddress> createResourceAsync() {
         this.cleanupDnsSettings();
+        this.ensureStaticForStandardSku();
 
         return this.manager()
             .serviceClient()
@@ -223,6 +225,12 @@ class PublicIpAddressImpl
                 && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
                 this.innerModel().withDnsSettings(null);
             }
+        }
+    }
+
+    private void ensureStaticForStandardSku() {
+        if (this.sku() != null && this.sku() != PublicIPSkuType.BASIC) {
+            this.withStaticIP();
         }
     }
 

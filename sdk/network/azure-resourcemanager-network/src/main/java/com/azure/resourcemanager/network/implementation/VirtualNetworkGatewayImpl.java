@@ -148,10 +148,14 @@ class VirtualNetworkGatewayImpl extends
             .withExistingResourceGroup(this.resourceGroupName());
 
         // ref https://learn.microsoft.com/azure/vpn-gateway/vpn-gateway-vpn-faq#can-i-request-a-static-public-ip-address-for-my-vpn-gateway
-        if (this.sku() != null && this.sku().name() == VirtualNetworkGatewaySkuName.BASIC) {
+        if (this.sku() == null || this.sku().name() == VirtualNetworkGatewaySkuName.BASIC) {
+            /*
+             * Condition of "this.sku() == null" keeps the previous behavior.
+             * When SKU is not set (i.e. user explicitly calls "withNewPublicIpAddress()"), it still creates a Public IP Address with Basic SKU.
+             */
             this.creatablePip = ipAddressToCreate.withSku(PublicIPSkuType.BASIC);
         } else {
-            this.creatablePip = ipAddressToCreate.withSku(PublicIPSkuType.STANDARD).withStaticIP();
+            this.creatablePip = ipAddressToCreate.withSku(PublicIPSkuType.STANDARD);
         }
         return this;
     }
