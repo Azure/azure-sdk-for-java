@@ -8,19 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if OSType=Linux or Windows2019
- * if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after Windows2019 is deprecated.
+ * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+ * when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is Windows.
  */
 public final class OSSku extends ExpandableStringEnum<OSSku> {
     /**
      * Static value Ubuntu for OSSku.
      */
     public static final OSSku UBUNTU = fromString("Ubuntu");
-
-    /**
-     * Static value Mariner for OSSku.
-     */
-    public static final OSSku MARINER = fromString("Mariner");
 
     /**
      * Static value AzureLinux for OSSku.
@@ -31,11 +26,6 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
      * Static value AzureLinux3 for OSSku.
      */
     public static final OSSku AZURE_LINUX3 = fromString("AzureLinux3");
-
-    /**
-     * Static value Flatcar for OSSku.
-     */
-    public static final OSSku FLATCAR = fromString("Flatcar");
 
     /**
      * Static value CBLMariner for OSSku.
@@ -53,24 +43,9 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku WINDOWS2022 = fromString("Windows2022");
 
     /**
-     * Static value Windows2025 for OSSku.
-     */
-    public static final OSSku WINDOWS2025 = fromString("Windows2025");
-
-    /**
-     * Static value WindowsAnnual for OSSku.
-     */
-    public static final OSSku WINDOWS_ANNUAL = fromString("WindowsAnnual");
-
-    /**
      * Static value Ubuntu2204 for OSSku.
      */
     public static final OSSku UBUNTU2204 = fromString("Ubuntu2204");
-
-    /**
-     * Static value Ubuntu2404 for OSSku.
-     */
-    public static final OSSku UBUNTU2404 = fromString("Ubuntu2404");
 
     /**
      * Creates a new instance of OSSku value.
