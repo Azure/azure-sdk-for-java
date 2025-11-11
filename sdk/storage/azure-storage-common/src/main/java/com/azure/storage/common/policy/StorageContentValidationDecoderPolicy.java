@@ -93,15 +93,23 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
 
             try {
+                // Record the initial size to calculate how many bytes the decoder consumed
+                int initialSize = dataToProcess.remaining();
+                
                 // Try to decode what we have - decoder handles partial data
+                // Pass the buffer directly (not a duplicate) so we can track consumption
                 int availableSize = dataToProcess.remaining();
-                ByteBuffer decodedData = state.decoder.decode(dataToProcess.duplicate(), availableSize);
+                ByteBuffer decodedData = state.decoder.decode(dataToProcess, availableSize);
+
+                // Calculate how many bytes were consumed by the decoder
+                int bytesConsumed = initialSize - dataToProcess.remaining();
 
                 // Track decoded bytes
                 int decodedBytes = decodedData.remaining();
                 state.totalBytesDecoded.addAndGet(decodedBytes);
 
-                // Store any remaining unprocessed data for next iteration
+                // Store any remaining UNCONSUMED data for next iteration
+                // Only save bytes that the decoder hasn't processed yet
                 if (dataToProcess.hasRemaining()) {
                     state.updatePendingBuffer(dataToProcess);
                 } else {
