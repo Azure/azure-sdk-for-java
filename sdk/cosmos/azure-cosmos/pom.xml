@@ -110,7 +110,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.9.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.5.1</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->

@@ -513,9 +513,6 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
-              <systemPropertyVariables>
-                <testng.listener.execution.symmetric>true</testng.listener.execution.symmetric>
-              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

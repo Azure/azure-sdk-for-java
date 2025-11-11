@@ -13,7 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IClassListener;
 import org.testng.IExecutionListener;
+import org.testng.IInvokedMethod;
+import org.testng.IInvokedMethodListener;
 import org.testng.ITestClass;
+import org.testng.ITestResult;
 
 import java.lang.management.BufferPoolMXBean;
 import java.lang.management.ManagementFactory;
@@ -21,13 +24,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class CosmosNettyLeakDetectorFactory
-    extends ResourceLeakDetectorFactory implements IExecutionListener, IClassListener {
+    extends ResourceLeakDetectorFactory implements IExecutionListener, IInvokedMethodListener, IClassListener {
 
     protected static Logger logger = LoggerFactory.getLogger(CosmosNettyLeakDetectorFactory.class.getSimpleName());
     private final static List<String> identifiedLeaks = new ArrayList<>();
     private final static Object staticLock = new Object();
+
+    private final static Map<String, AtomicInteger> testClassInventory = new HashMap<>();
     private static volatile boolean isLeakDetectionDisabled = false;
     private static volatile boolean isInitialized = false;
 
@@ -44,55 +50,111 @@ public final class CosmosNettyLeakDetectorFactory
     @Override
     public void onBeforeClass(ITestClass testClass) {
         if (Configs.isClientLeakDetectionEnabled()) {
-            this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
-            this.logMemoryUsage("BEFORE CLASS", testClass.getRealClass().getCanonicalName());
+            String testClassName = testClass.getRealClass().getCanonicalName();
+            AtomicInteger instanceCountSnapshot = null;
+            synchronized (staticLock) {
+                instanceCountSnapshot = testClassInventory.get(testClassName);
+                if (instanceCountSnapshot == null) {
+                    testClassInventory.put(testClassName, instanceCountSnapshot = new AtomicInteger(0));
+                }
+            }
+
+            int alreadyInitializedInstanceCount = instanceCountSnapshot.getAndIncrement();
+            if (alreadyInitializedInstanceCount == 0) {
+                logger.info("LEAK DETECTION INITIALIZATION for test class {}", testClassName);
+                this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
+                this.logMemoryUsage("BEFORE CLASS", testClassName);
+            }
         }
     }
 
     @Override
     public void onAfterClass(ITestClass testClass) {
+        // Unfortunately can't use this in TestNG 7.51 because execution is not symmetric
+        // IClassListener.onBeforeClass
+        // TestClassBase.@BeforeClass
+        // TestClass.@BeforeClass
+        // IClassListener.onAfterClass
+        // TestClass.@AfterClass
+        // TestClassBase.@AfterClass
+        // we would want the IClassListener.onAfterClass to be called last - which system property
+        // -Dtestng.listener.execution.symmetric=true allows, but this is only available
+        // in TestNG 7.7.1 - which requires Java11
+        // So, this class simulates this behavior by hooking into IInvokedMethodListener
+    }
+
+    @Override
+    public void afterInvocation(IInvokedMethod method, ITestResult result) {
+        if (method.isConfigurationMethod()
+            && method.getTestMethod().isAfterClassConfiguration()) {
+            // <-- This point is guaranteed to be AFTER the class’s @AfterClass ran
+            ITestClass testClass = (ITestClass)result.getTestClass();
+            try {
+                this.onAfterClassCore(testClass);
+            } catch (Throwable t) {
+                // decide if you want to fail the suite or just log
+                System.err.println("Symmetric afterClass failed for " + testClass.getRealClass().getCanonicalName());
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private void onAfterClassCore(ITestClass testClass) {
         if (Configs.isClientLeakDetectionEnabled()) {
-            Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
-            StringBuilder sb = new StringBuilder();
-            Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
-
-            for (Integer clientId : leakedClientSnapshotNow.keySet()) {
-                if (!leakedClientSnapshotAtBegin.containsKey(clientId)) {
-                    // this client was leaked in this class
-                    sb
-                        .append("CosmosClient [")
-                        .append(clientId)
-                        .append("] leaked. Callstack of initialization:\n")
-                        .append(leakedClientSnapshotNow.get(clientId))
-                        .append("\n\n");
+            String testClassName = testClass.getRealClass().getCanonicalName();
+            AtomicInteger instanceCountSnapshot = null;
+            synchronized (staticLock) {
+                instanceCountSnapshot = testClassInventory.get(testClassName);
+                if (instanceCountSnapshot == null) {
+                    testClassInventory.put(testClassName, instanceCountSnapshot = new AtomicInteger(0));
                 }
             }
 
-            if (sb.length() > 0) {
-                String msg = "COSMOS CLIENT LEAKS detected in test class: "
-                    + testClass.getRealClass().getCanonicalName()
-                    + "\n\n"
-                    + sb;
+            int remainingInstanceCount = instanceCountSnapshot.decrementAndGet();
+            if (remainingInstanceCount == 0) {
+                logger.info("LEAK DETECTION EVALUATION for test class {}", testClassName);
+                Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
+                StringBuilder sb = new StringBuilder();
+                Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
 
-                logger.error(msg);
-                // fail(msg);
-            }
-
-            List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
-            if (nettyLeaks.size() > 0) {
-                sb.append("\n");
-                for (String leak : nettyLeaks) {
-                    sb.append(leak).append("\n");
+                for (Integer clientId : leakedClientSnapshotNow.keySet()) {
+                    if (!leakedClientSnapshotAtBegin.containsKey(clientId)) {
+                        // this client was leaked in this class
+                        sb
+                            .append("CosmosClient [")
+                            .append(clientId)
+                            .append("] leaked. Callstack of initialization:\n")
+                            .append(leakedClientSnapshotNow.get(clientId))
+                            .append("\n\n");
+                    }
                 }
 
-                String msg = "NETTY LEAKS detected in test class: "
-                    + this.getClass().getCanonicalName()
-                    + sb;
+                if (sb.length() > 0) {
+                    String msg = "COSMOS CLIENT LEAKS detected in test class: "
+                        + testClassName
+                        + "\n\n"
+                        + sb;
 
-                logger.error(msg);
-                // fail(msg);
+                    logger.error(msg);
+                    // fail(msg);
+                }
+
+                List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+                if (nettyLeaks.size() > 0) {
+                    sb.append("\n");
+                    for (String leak : nettyLeaks) {
+                        sb.append(leak).append("\n");
+                    }
+
+                    String msg = "NETTY LEAKS detected in test class: "
+                        + this.getClass().getCanonicalName()
+                        + sb;
+
+                    logger.error(msg);
+                    // fail(msg);
+                }
+                this.logMemoryUsage("AFTER CLASS", testClassName);
             }
-            this.logMemoryUsage("AFTER CLASS", testClass.getRealClass().getCanonicalName());
         }
     }
 
