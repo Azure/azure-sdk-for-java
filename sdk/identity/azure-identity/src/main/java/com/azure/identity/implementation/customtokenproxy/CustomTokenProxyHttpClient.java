@@ -21,7 +21,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,9 +38,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.util.IdentitySslUtil;
+import com.azure.identity.implementation.SniSslSocketFactory;
 
 import reactor.core.publisher.Mono;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class CustomTokenProxyHttpClient implements HttpClient {
 
@@ -49,7 +50,9 @@ public class CustomTokenProxyHttpClient implements HttpClient {
 
     private final ProxyConfig proxyConfig;
     private volatile SSLContext cachedSSLContext;
-    private volatile byte[] cachedFileContent;
+    private volatile byte[] cachedFileContentHash;
+    private volatile int cachedFileContentLength;
+    private volatile SSLSocketFactory cachedSslSocketFactory;
     private final URL proxyUrl;
     private final String sniName;
     private final byte[] caData;
@@ -82,10 +85,9 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         URL updatedUrl = rewriteTokenRequestForProxy(request.getUrl());
         HttpsURLConnection connection = (HttpsURLConnection) updatedUrl.openConnection();
         try {
-            SSLContext sslContext = getSSLContext();
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            SSLSocketFactory sslSocketFactory = getSSLSocketFactory();
             if (!CoreUtils.isNullOrEmpty(sniName)) {
-                sslSocketFactory = new IdentitySslUtil.SniSslSocketFactory(sslSocketFactory, sniName);
+                sslSocketFactory = new SniSslSocketFactory(sslSocketFactory, sniName);
             }
             connection.setSSLSocketFactory(sslSocketFactory);
             connection.setHostnameVerifier(sniAwareVerifier(sniName, proxyUrl));
@@ -143,13 +145,28 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         }
     }
 
+    private SSLSocketFactory getSSLSocketFactory() {
+        SSLContext sslContext = getSSLContext();
+        if (cachedSslSocketFactory == null) {
+            synchronized (this) {
+                if (cachedSslSocketFactory == null) {
+                    cachedSslSocketFactory = sslContext.getSocketFactory();
+                }
+            }
+        }
+        return cachedSslSocketFactory;
+    }
+
     private SSLContext getSSLContext() {
         try {
             // If no CA override provided, use default
             if (CoreUtils.isNullOrEmpty(caFile) && (caData == null || caData.length == 0)) {
-                synchronized (this) {
-                    if (cachedSSLContext == null) {
-                        cachedSSLContext = SSLContext.getDefault();
+                if (cachedSSLContext == null) {
+                    synchronized (this) {
+                        if (cachedSSLContext == null) {
+                            cachedSSLContext = SSLContext.getDefault();
+                            cachedSslSocketFactory = null;
+                        }
                     }
                 }
                 return cachedSSLContext;
@@ -157,9 +174,12 @@ public class CustomTokenProxyHttpClient implements HttpClient {
 
             // If CA data provided, use it
             if (CoreUtils.isNullOrEmpty(caFile)) {
-                synchronized (this) {
-                    if (cachedSSLContext == null) {
-                        cachedSSLContext = createSslContextFromBytes(caData);
+                if (cachedSSLContext == null) {
+                    synchronized (this) {
+                        if (cachedSSLContext == null) {
+                            cachedSSLContext = createSslContextFromBytes(caData);
+                            cachedSslSocketFactory = null;
+                        }
                     }
                 }
                 return cachedSSLContext;
@@ -172,9 +192,11 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             }
 
             byte[] currentContent = Files.readAllBytes(path);
+            int currentLength = currentContent.length;
+            byte[] currentHash = generateSHA256Hash(currentContent);
 
             synchronized (this) {
-                if (currentContent.length == 0) {
+                if (currentLength == 0) {
                     if (cachedSSLContext == null) {
                         throw LOGGER.logExceptionAsError(new IllegalStateException("CA file " + caFile + " is empty"));
                     }
@@ -182,9 +204,13 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                     return cachedSSLContext;
                 }
 
-                if (cachedSSLContext == null || !Arrays.equals(currentContent, cachedFileContent)) {
+                if (cachedSSLContext == null
+                    || currentLength != cachedFileContentLength
+                    || !MessageDigest.isEqual(currentHash, cachedFileContentHash)) {
                     cachedSSLContext = createSslContextFromBytes(currentContent);
-                    cachedFileContent = currentContent;
+                    cachedFileContentLength = currentLength;
+                    cachedFileContentHash = currentHash;
+                    cachedSslSocketFactory = null;
                 }
             }
             return cachedSSLContext;
@@ -280,5 +306,15 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             return false;
         }
         return false;
+    }
+
+    private static byte[] generateSHA256Hash(byte[] data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(data);
+            return encodedHash;
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("SHA-256 algorithm not found", e));
+        }
     }
 }

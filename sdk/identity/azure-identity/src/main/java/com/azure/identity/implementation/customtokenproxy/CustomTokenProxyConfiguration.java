@@ -17,10 +17,10 @@ public final class CustomTokenProxyConfiguration {
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyConfiguration.class);
 
-    public static final String AZURE_KUBERNETES_TOKEN_PROXY = "AZURE_KUBERNETES_TOKEN_PROXY";
-    public static final String AZURE_KUBERNETES_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
-    public static final String AZURE_KUBERNETES_CA_DATA = "AZURE_KUBERNETES_CA_DATA";
-    public static final String AZURE_KUBERNETES_SNI_NAME = "AZURE_KUBERNETES_SNI_NAME";
+    private static final String AZURE_KUBERNETES_TOKEN_PROXY = "AZURE_KUBERNETES_TOKEN_PROXY";
+    private static final String AZURE_KUBERNETES_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
+    private static final String AZURE_KUBERNETES_CA_DATA = "AZURE_KUBERNETES_CA_DATA";
+    private static final String AZURE_KUBERNETES_SNI_NAME = "AZURE_KUBERNETES_SNI_NAME";
 
     private CustomTokenProxyConfiguration() {
     }
@@ -50,12 +50,7 @@ public final class CustomTokenProxyConfiguration {
 
         byte[] caCertBytes = null;
         if (!CoreUtils.isNullOrEmpty(caData)) {
-            try {
-                caCertBytes = caData.getBytes(StandardCharsets.UTF_8);
-            } catch (Exception e) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Failed to decode CA certificate data from AZURE_KUBERNETES_CA_DATA", e));
-            }
+            caCertBytes = caData.getBytes(StandardCharsets.UTF_8);
         }
 
         ProxyConfig config = new ProxyConfig(proxyUrl, sniName, caFile, caCertBytes);

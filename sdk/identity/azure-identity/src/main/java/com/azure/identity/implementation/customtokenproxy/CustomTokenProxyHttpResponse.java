@@ -82,25 +82,21 @@ public final class CustomTokenProxyHttpResponse extends HttpResponse {
                 return cachedResponseBodyBytes;
             }
 
-            InputStream stream = null;
-            try {
-                stream = getResponseStream();
-                if (stream == null) {
-                    cachedResponseBodyBytes = new byte[0];
-                    return cachedResponseBodyBytes;
-                }
+            InputStream stream = getResponseStream();
+            if (stream == null) {
+                cachedResponseBodyBytes = new byte[0];
+                return cachedResponseBodyBytes;
+            }
+
+            try (InputStream notNullStream = stream) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 int n;
                 byte[] temp = new byte[4096];
-                while ((n = stream.read(temp)) != -1) {
+                while ((n = notNullStream.read(temp)) != -1) {
                     buffer.write(temp, 0, n);
                 }
                 cachedResponseBodyBytes = buffer.toByteArray();
                 return cachedResponseBodyBytes;
-            } finally {
-                if (stream != null) {
-                    stream.close();
-                }
             }
         });
     }
