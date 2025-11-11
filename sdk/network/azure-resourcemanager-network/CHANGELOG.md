@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
+- Improved `VirtualNetworkGateway` to create Public IP Address with Standard SKU (unless the gateway is Basic SKU).
 
 ## 2.55.0 (2025-11-06)
 
