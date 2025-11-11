@@ -183,7 +183,7 @@ extends:
               safeName: azurespringdatacosmos
           TimeoutInMinutes: 90
           TestGoals: 'verify'
-          TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=false'
