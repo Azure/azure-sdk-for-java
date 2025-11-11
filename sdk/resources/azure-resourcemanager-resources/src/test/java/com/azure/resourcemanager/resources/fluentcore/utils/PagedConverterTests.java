@@ -122,7 +122,7 @@ public class PagedConverterTests {
         Assertions.assertEquals(3 * 10, new PagedIterable<>(mergedPagedFlux).stream().count());
     }
 
-    @Disabled("We've commented in PagedConverter.mapPage that it should not be used with PagedConverter.mergePagedFlux.")
+    @Disabled("PagedConverter.mapPage should not be used with PagedConverter.mergePagedFlux (see PagedConverter documentation).")
     @Test
     public void testMergePagedFluxThenMapPage() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
