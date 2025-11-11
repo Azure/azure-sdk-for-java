@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 /**
- * Samples for ManagedClusters Delete.
+ * Samples for ManagedNamespaces ListCredential.
  */
-public final class ManagedClustersDeleteSamples {
+public final class ManagedNamespacesListCredentialSamples {
     /*
      * x-ms-original-file:
      * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
-     * ManagedClustersDelete.json
+     * ManagedNamespacesListCredentialResult.json
      */
     /**
-     * Sample code: Delete Managed Cluster.
+     * Sample code: List managed namespace credentials.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deleteManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listManagedNamespaceCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.kubernetesClusters()
             .manager()
             .serviceClient()
-            .getManagedClusters()
-            .delete("rg1", "clustername1", null, com.azure.core.util.Context.NONE);
+            .getManagedNamespaces()
+            .listCredentialWithResponse("rg1", "clustername1", "namespace1", com.azure.core.util.Context.NONE);
     }
 }

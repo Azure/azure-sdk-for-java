@@ -12,18 +12,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Metrics profile for the prometheus service addon.
+ * Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes
+ * infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom targets.
+ * See aka.ms/AzureManagedPrometheus for an overview.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileMetrics
     implements JsonSerializable<ManagedClusterAzureMonitorProfileMetrics> {
     /*
-     * Whether to enable the Prometheus collector
+     * Whether to enable or disable the Azure Managed Prometheus addon for Prometheus monitoring. See
+     * aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
      */
     private boolean enabled;
 
     /*
-     * Kube State Metrics for prometheus addon profile for the container service cluster
+     * Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the
+     * kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters for
+     * details.
      */
     private ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics;
 
@@ -34,7 +39,8 @@ public final class ManagedClusterAzureMonitorProfileMetrics
     }
 
     /**
-     * Get the enabled property: Whether to enable the Prometheus collector.
+     * Get the enabled property: Whether to enable or disable the Azure Managed Prometheus addon for Prometheus
+     * monitoring. See aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
      * 
      * @return the enabled value.
      */
@@ -43,7 +49,8 @@ public final class ManagedClusterAzureMonitorProfileMetrics
     }
 
     /**
-     * Set the enabled property: Whether to enable the Prometheus collector.
+     * Set the enabled property: Whether to enable or disable the Azure Managed Prometheus addon for Prometheus
+     * monitoring. See aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAzureMonitorProfileMetrics object itself.
@@ -54,8 +61,9 @@ public final class ManagedClusterAzureMonitorProfileMetrics
     }
 
     /**
-     * Get the kubeStateMetrics property: Kube State Metrics for prometheus addon profile for the container service
-     * cluster.
+     * Get the kubeStateMetrics property: Kube State Metrics profile for the Azure Managed Prometheus addon. These
+     * optional settings are for the kube-state-metrics pod that is deployed with the addon. See
+     * aka.ms/AzureManagedPrometheus-optional-parameters for details.
      * 
      * @return the kubeStateMetrics value.
      */
@@ -64,8 +72,9 @@ public final class ManagedClusterAzureMonitorProfileMetrics
     }
 
     /**
-     * Set the kubeStateMetrics property: Kube State Metrics for prometheus addon profile for the container service
-     * cluster.
+     * Set the kubeStateMetrics property: Kube State Metrics profile for the Azure Managed Prometheus addon. These
+     * optional settings are for the kube-state-metrics pod that is deployed with the addon. See
+     * aka.ms/AzureManagedPrometheus-optional-parameters for details.
      * 
      * @param kubeStateMetrics the kubeStateMetrics value to set.
      * @return the ManagedClusterAzureMonitorProfileMetrics object itself.

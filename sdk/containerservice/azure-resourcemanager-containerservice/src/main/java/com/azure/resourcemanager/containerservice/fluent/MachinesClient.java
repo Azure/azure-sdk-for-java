@@ -9,13 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.MachineInner;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -72,7 +67,7 @@ public interface MachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
+     * @param machineName host name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,7 +84,7 @@ public interface MachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
+     * @param machineName host name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +100,7 @@ public interface MachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
+     * @param machineName host name of the machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +117,7 @@ public interface MachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
+     * @param machineName host name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -130,178 +125,4 @@ public interface MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MachineInner get(String resourceGroupName, String resourceName, String agentPoolName, String machineName);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine provides detailed information about its configuration and status along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, String machineName, MachineInner parameters, String ifMatch, String ifNoneMatch);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a machine provides detailed information about its configuration and
-     * status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<MachineInner>, MachineInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String resourceName, String agentPoolName, String machineName, MachineInner parameters, String ifMatch,
-        String ifNoneMatch);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a machine provides detailed information about its configuration and
-     * status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<MachineInner>, MachineInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String resourceName, String agentPoolName, String machineName, MachineInner parameters);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a machine provides detailed information about its configuration and
-     * status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MachineInner>, MachineInner> beginCreateOrUpdate(String resourceGroupName,
-        String resourceName, String agentPoolName, String machineName, MachineInner parameters);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a machine provides detailed information about its configuration and
-     * status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MachineInner>, MachineInner> beginCreateOrUpdate(String resourceGroupName,
-        String resourceName, String agentPoolName, String machineName, MachineInner parameters, String ifMatch,
-        String ifNoneMatch, Context context);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine provides detailed information about its configuration and status on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MachineInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
-        String machineName, MachineInner parameters, String ifMatch, String ifNoneMatch);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine provides detailed information about its configuration and status on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MachineInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
-        String machineName, MachineInner parameters);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine provides detailed information about its configuration and status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MachineInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName, String machineName,
-        MachineInner parameters);
-
-    /**
-     * Creates or updates a machine in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param machineName Host name of the machine.
-     * @param parameters The machine to create or update.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a machine provides detailed information about its configuration and status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MachineInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName, String machineName,
-        MachineInner parameters, String ifMatch, String ifNoneMatch, Context context);
 }

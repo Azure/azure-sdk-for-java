@@ -46,9 +46,8 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
     private OSType osType;
 
     /*
-     * Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if OSType=Linux or
-     * Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after Windows2019 is
-     * deprecated.
+     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+     * when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
      */
     private OSSku osSku;
 
@@ -138,9 +137,9 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
     }
 
     /**
-     * Get the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
-     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
-     * Windows2019 is deprecated.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      * 
      * @return the osSku value.
      */
