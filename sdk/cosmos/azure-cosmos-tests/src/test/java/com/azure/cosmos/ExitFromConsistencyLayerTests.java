@@ -4,10 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
@@ -21,6 +23,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -28,6 +31,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +43,9 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
-    private CosmosAsyncClient client;
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor cosmosAsyncClientAccessor
+        = ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+
     private volatile CosmosAsyncDatabase database;
     private volatile CosmosAsyncContainer container;
     private List<String> preferredRegions;
@@ -90,14 +96,33 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "headFailureScenarios" /*, timeOut = 2 * TIMEOUT*/)
+    @Test(groups = {"multi-region"}, dataProvider = "headFailureScenarios" , timeOut = 2 * TIMEOUT)
     public void validateGCLSNBarrierWithHeadFailures(int headFailureCount, OperationType operationTypeForWhichBarrierFlowIsTriggered) throws Exception {
 
         CosmosAsyncClient targetClient = getClientBuilder()
             .preferredRegions(this.preferredRegions)
-            .directMode()
-            .consistencyLevel(ConsistencyLevel.STRONG)
             .buildAsyncClient();
+
+        ConsistencyLevel effectiveConsistencyLevel
+            = cosmosAsyncClientAccessor.getEffectiveConsistencyLevel(targetClient, operationTypeForWhichBarrierFlowIsTriggered, null);
+
+        ConnectionMode connectionModeOfClientUnderTest
+            = ConnectionMode.valueOf(
+                cosmosAsyncClientAccessor.getConnectionMode(
+                    targetClient).toUpperCase());
+
+        if (!shouldTestExecutionHappen(
+            effectiveConsistencyLevel,
+            ConsistencyLevel.STRONG,
+            connectionModeOfClientUnderTest,
+            ConnectionMode.DIRECT)) {
+
+            safeClose(targetClient);
+            throw new SkipException("Skipping test for arguments: " +
+                " OperationType: " + operationTypeForWhichBarrierFlowIsTriggered +
+                " ConsistencyLevel: " + effectiveConsistencyLevel +
+                " ConnectionMode: " + connectionModeOfClientUnderTest);
+        }
 
         AtomicInteger failureCountTracker = new AtomicInteger();
         Utils.ValueHolder<RntbdTransportClient> originalRntbdTransportClientHolder = new Utils.ValueHolder<>();
@@ -156,7 +181,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(diagnostics).isNotNull();
 
                         validateContactedRegions(diagnostics, 1);
-
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 2);
                     } else {
                         // Should timeout with 408
                         fail("Should have thrown timeout exception");
@@ -178,6 +203,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(diagnostics).isNotNull();
 
                         validateContactedRegions(diagnostics, 1);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4);
                     } else {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
@@ -188,6 +214,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(diagnostics).isNotNull();
 
                         validateContactedRegions(diagnostics, 2);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4);
                     }
                 }
 
@@ -204,6 +231,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = e.getDiagnostics();
 
                         validateContactedRegions(diagnostics, 1);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 2);
                     }
                 }
 
@@ -265,6 +293,39 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         assertThat(cosmosDiagnosticsContext.getContactedRegionNames().size()).isEqualTo(expectedRegionsContactedCount);
     }
 
+    private void validateHeadRequestsInCosmosDiagnostics(
+        CosmosDiagnostics diagnostics,
+        int expectedHeadRequestCount) {
+
+        int headRequestCount = 0;
+        boolean primaryReplicaContacted = false;
+
+        Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection
+            = diagnostics.getClientSideRequestStatistics();
+
+        for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseDiagnosticsList
+                = clientSideRequestStatistics.getSupplementalResponseStatisticsList();
+
+            for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseDiagnosticsList) {
+                if (storeResponseStatistics.getRequestOperationType() == OperationType.Head) {
+                    String storePhysicalAddressContacted
+                        = storeResponseStatistics.getStoreResult().getStorePhysicalAddressAsString();
+
+                    if (isPrimaryReplicaEndpoint(storePhysicalAddressContacted)) {
+                        primaryReplicaContacted = true;
+                    }
+
+                    headRequestCount++;
+                }
+            }
+        }
+
+        assertThat(primaryReplicaContacted).isTrue();
+        assertThat(headRequestCount).isGreaterThan(0);
+        assertThat(headRequestCount).isLessThanOrEqualTo(expectedHeadRequestCount);
+    }
+
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
@@ -290,6 +351,23 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
             regionMap);
     }
 
+    private boolean shouldTestExecutionHappen(
+        ConsistencyLevel accountConsistencyLevel,
+        ConsistencyLevel minimumConsistencyLevel,
+        ConnectionMode connectionModeOfClientUnderTest,
+        ConnectionMode expectedConnectionMode) {
+
+        if (!connectionModeOfClientUnderTest.name().equalsIgnoreCase(expectedConnectionMode.name())) {
+            return false;
+        }
+
+        return accountConsistencyLevel.equals(minimumConsistencyLevel);
+    }
+
+    private static boolean isPrimaryReplicaEndpoint(String storePhysicalAddress) {
+        return storePhysicalAddress.endsWith("p/");
+    }
+
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
@@ -307,7 +385,5 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     }
 
     @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {
-        safeClose(client);
-    }
+    public void afterClass() {}
 }
