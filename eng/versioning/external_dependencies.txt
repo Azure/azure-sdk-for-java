@@ -152,7 +152,7 @@ org.junit.jupiter:junit-jupiter-params;5.13.4
 org.junit.platform:junit-platform-launcher;1.13.4
 org.openjdk.jmh:jmh-core;1.37
 org.openjdk.jmh:jmh-generator-annprocess;1.37
-org.testng:testng;7.11.0
+org.testng:testng;7.9.0
 uk.org.webcompere:system-stubs-jupiter;2.0.2
 com.google.truth:truth;1.1.3
 
