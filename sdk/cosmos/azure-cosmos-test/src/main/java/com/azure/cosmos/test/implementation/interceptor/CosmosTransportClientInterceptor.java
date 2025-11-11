@@ -9,11 +9,15 @@ import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 
 import java.util.function.BiFunction;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class CosmosTransportClientInterceptor implements ITransportClientInterceptor {
 
     private final BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor;
     public CosmosTransportClientInterceptor(
         BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
+
+        checkNotNull(storeResponseInterceptor, "Argument 'storeResponseInterceptor' must not be null.");
         this.storeResponseInterceptor = storeResponseInterceptor;
     }
 

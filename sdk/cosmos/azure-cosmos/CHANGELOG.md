@@ -10,6 +10,7 @@
 
 #### Other Changes
 * Changed to use incremental change feed to get partition key ranges. - [46810](https://github.com/Azure/azure-sdk-for-java/pull/46810)
+* Added support for `ITransportClientInterceptor` which allow to modify the store response on direct layer. - See [PR 47231](https://github.com/Azure/azure-sdk-for-java/pull/47231)
 
 ### 4.75.0 (2025-10-21)
 > [!IMPORTANT]
