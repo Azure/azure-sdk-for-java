@@ -94,17 +94,32 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
             try {
                 // Try to decode what we have - decoder handles partial data
-                // Use duplicate() so decoder doesn't modify original buffer position
+                // Create duplicate for decoder - it will advance the duplicate's position as it reads
                 int availableSize = dataToProcess.remaining();
-                ByteBuffer decodedData = state.decoder.decode(dataToProcess.duplicate(), availableSize);
+                ByteBuffer duplicateForDecode = dataToProcess.duplicate();
+                int initialPosition = duplicateForDecode.position();
+                
+                // Decode - this advances duplicateForDecode's position
+                ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
 
                 // Track decoded bytes
                 int decodedBytes = decodedData.remaining();
                 state.totalBytesDecoded.addAndGet(decodedBytes);
 
-                // The decoder doesn't modify the input buffer (we use duplicate()), so if decoding
-                // succeeded without exception, it consumed all available data. Clear pending.
-                state.pendingBuffer = null;
+                // Calculate how much of the input buffer was consumed by checking the duplicate's position
+                int bytesConsumed = duplicateForDecode.position() - initialPosition;
+                int bytesRemaining = availableSize - bytesConsumed;
+
+                // Save only unconsumed portion to pending
+                if (bytesRemaining > 0) {
+                    // Position the original buffer to skip consumed bytes, then slice to get unconsumed
+                    dataToProcess.position(bytesConsumed);
+                    ByteBuffer unconsumed = dataToProcess.slice();
+                    state.updatePendingBuffer(unconsumed);
+                } else {
+                    // All data was consumed
+                    state.pendingBuffer = null;
+                }
 
                 // Return decoded data if any
                 if (decodedBytes > 0) {
