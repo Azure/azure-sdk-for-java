@@ -23,6 +23,8 @@ final class PagedConverterForMergedPagedFlux {
 
     /**
      * Applies map transform to elements of PagedFlux.
+     * <p>
+     * Use this mapPage (not the one in PagedConverter), when the PagedFlux is produced by PagedConverter.mergePagedFlux
      *
      * @param pagedFlux the input of PagedFlux.
      * @param mapper the map transform of element T to element S.
