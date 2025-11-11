@@ -38,7 +38,7 @@ public final class ResponsesClient {
      *
      * @return the OpenAI response service client.
      */
-    public ResponseService getOpenAIClient() {
+    public ResponseService getResponseService() {
         return openAIResponsesClient;
     }
 

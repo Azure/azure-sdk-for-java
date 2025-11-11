@@ -4,7 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AgentVersionObject;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -44,8 +44,8 @@ public class MultipleAgentsConversation {
         printConversationItems(conversationsClient, conversation.id(), 2);
 
         // creating a new agent and their references for future responses
-        AgentVersionObject agent1 = createPromptAgent(agentsClient, model, "weather-agent-1");
-        AgentVersionObject agent2 = createPromptAgent(agentsClient, model, "weather-agent-2");
+        AgentVersionDetails agent1 = createPromptAgent(agentsClient, model, "weather-agent-1");
+        AgentVersionDetails agent2 = createPromptAgent(agentsClient, model, "weather-agent-2");
 
         AgentReference agent1Reference = new AgentReference(agent1.getName()).setVersion(agent1.getVersion());
         AgentReference agent2Reference = new AgentReference(agent2.getName()).setVersion(agent2.getVersion());
@@ -75,13 +75,13 @@ public class MultipleAgentsConversation {
         System.out.println("\tResponse: " + newMessageThread.output().get(0).asMessage().content().get(0).asOutputText().text());
     }
 
-    private static AgentVersionObject createPromptAgent(AgentsClient agentsClient, String model, String name) {
+    private static AgentVersionDetails createPromptAgent(AgentsClient agentsClient, String model, String name) {
         PromptAgentDefinition request = new PromptAgentDefinition(model);
         return agentsClient.createAgentVersion(name, request);
     }
 
     private static Conversation startConversation(ConversationsClient conversationsClient) {
-        return conversationsClient.getOpenAIClient().create();
+        return conversationsClient.getConversationService().create();
     }
 
     private static void addMessageToConversation(ConversationsClient conversationsClient, String conversationId, String content, EasyInputMessage.Role role) {
@@ -94,12 +94,12 @@ public class MultipleAgentsConversation {
                     .role(role).build()
             ).build();
 
-        conversationsClient.getOpenAIClient().items().create(itemParams);
+        conversationsClient.getConversationService().items().create(itemParams);
     }
 
     private static void printConversationItems(ConversationsClient conversationsClient, String conversationId, int limit) {
         System.out.println("Printing conversation items:");
-        ItemListPage page = conversationsClient.getOpenAIClient().items().list(conversationId);
+        ItemListPage page = conversationsClient.getConversationService().items().list(conversationId);
         page.autoPager().stream().limit(limit).forEach(item -> {
             System.out.println("\t" + item.asMessage().role() + ": " + item.asMessage().content().get(0).asInputText().text());
         });

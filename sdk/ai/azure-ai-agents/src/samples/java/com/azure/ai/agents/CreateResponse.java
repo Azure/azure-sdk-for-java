@@ -23,7 +23,7 @@ public class CreateResponse {
                 .model(model)
                 .build();
 
-        Response response = responsesClient.getOpenAIClient().create(responseRequest);
+        Response response = responsesClient.getResponseService().create(responseRequest);
 
         System.out.println("Response ID: " + response.id());
         System.out.println("Response Model: " + response.model());

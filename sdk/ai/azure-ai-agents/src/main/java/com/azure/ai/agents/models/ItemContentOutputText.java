@@ -35,12 +35,6 @@ public final class ItemContentOutputText extends ItemContent {
     @Generated
     private final List<Annotation> annotations;
 
-    /*
-     * The logprobs property.
-     */
-    @Generated
-    private List<LogProb> logprobs;
-
     /**
      * Creates an instance of ItemContentOutputText class.
      *
@@ -85,28 +79,6 @@ public final class ItemContentOutputText extends ItemContent {
     }
 
     /**
-     * Get the logprobs property: The logprobs property.
-     *
-     * @return the logprobs value.
-     */
-    @Generated
-    public List<LogProb> getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
-     * Set the logprobs property: The logprobs property.
-     *
-     * @param logprobs the logprobs value to set.
-     * @return the ItemContentOutputText object itself.
-     */
-    @Generated
-    public ItemContentOutputText setLogprobs(List<LogProb> logprobs) {
-        this.logprobs = logprobs;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -116,7 +88,7 @@ public final class ItemContentOutputText extends ItemContent {
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logprobs", this.logProbs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -135,7 +107,7 @@ public final class ItemContentOutputText extends ItemContent {
             String text = null;
             List<Annotation> annotations = null;
             ItemContentType type = ItemContentType.OUTPUT_TEXT;
-            List<LogProb> logprobs = null;
+            List<LogProb> logProbs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -146,15 +118,43 @@ public final class ItemContentOutputText extends ItemContent {
                 } else if ("type".equals(fieldName)) {
                     type = ItemContentType.fromString(reader.getString());
                 } else if ("logprobs".equals(fieldName)) {
-                    logprobs = reader.readArray(reader1 -> LogProb.fromJson(reader1));
+                    logProbs = reader.readArray(reader1 -> LogProb.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
             ItemContentOutputText deserializedItemContentOutputText = new ItemContentOutputText(text, annotations);
             deserializedItemContentOutputText.type = type;
-            deserializedItemContentOutputText.logprobs = logprobs;
+            deserializedItemContentOutputText.logProbs = logProbs;
             return deserializedItemContentOutputText;
         });
+    }
+
+    /*
+     * The logprobs property.
+     */
+    @Generated
+    private List<LogProb> logProbs;
+
+    /**
+     * Get the logProbs property: The logprobs property.
+     *
+     * @return the logProbs value.
+     */
+    @Generated
+    public List<LogProb> getLogProbs() {
+        return this.logProbs;
+    }
+
+    /**
+     * Set the logProbs property: The logprobs property.
+     *
+     * @param logProbs the logProbs value to set.
+     * @return the ItemContentOutputText object itself.
+     */
+    @Generated
+    public ItemContentOutputText setLogProbs(List<LogProb> logProbs) {
+        this.logProbs = logProbs;
+        return this;
     }
 }

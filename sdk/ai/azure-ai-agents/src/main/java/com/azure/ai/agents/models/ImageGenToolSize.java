@@ -11,15 +11,15 @@ public enum ImageGenToolSize {
     /**
      * Enum value 1024x1024.
      */
-    SIZE_1024_X_1024("1024x1024"),
+    SIZE_1024X1024("1024x1024"),
     /**
      * Enum value 1024x1536.
      */
-    SIZE_1024_X_1536("1024x1536"),
+    SIZE_1024X1536("1024x1536"),
     /**
      * Enum value 1536x1024.
      */
-    SIZE_1536_X_1024("1536x1024"),
+    SIZE_1536X1024("1536x1024"),
     /**
      * Enum value auto.
      */

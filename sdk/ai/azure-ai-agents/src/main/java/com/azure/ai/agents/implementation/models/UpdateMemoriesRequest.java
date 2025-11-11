@@ -26,20 +26,14 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     private final String scope;
 
     /*
-     * The conversation ID from which to extract memories. Only one of conversation_id or items should be provided.
-     */
-    @Generated
-    private String conversationId;
-
-    /*
-     * Conversation items from which to extract memories. Only one of conversation_id or items should be provided.
+     * Conversation items from which to extract memories.
      */
     @Generated
     private List<ItemParam> items;
 
     /*
      * The unique ID of the previous update request, enabling incremental memory updates from where the last operation
-     * left off. Cannot be used together with conversation_id.
+     * left off.
      */
     @Generated
     private String previousUpdateId;
@@ -74,32 +68,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     }
 
     /**
-     * Get the conversationId property: The conversation ID from which to extract memories. Only one of conversation_id
-     * or items should be provided.
-     *
-     * @return the conversationId value.
-     */
-    @Generated
-    public String getConversationId() {
-        return this.conversationId;
-    }
-
-    /**
-     * Set the conversationId property: The conversation ID from which to extract memories. Only one of conversation_id
-     * or items should be provided.
-     *
-     * @param conversationId the conversationId value to set.
-     * @return the UpdateMemoriesRequest object itself.
-     */
-    @Generated
-    public UpdateMemoriesRequest setConversationId(String conversationId) {
-        this.conversationId = conversationId;
-        return this;
-    }
-
-    /**
-     * Get the items property: Conversation items from which to extract memories. Only one of conversation_id or items
-     * should be provided.
+     * Get the items property: Conversation items from which to extract memories.
      *
      * @return the items value.
      */
@@ -109,8 +78,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     }
 
     /**
-     * Set the items property: Conversation items from which to extract memories. Only one of conversation_id or items
-     * should be provided.
+     * Set the items property: Conversation items from which to extract memories.
      *
      * @param items the items value to set.
      * @return the UpdateMemoriesRequest object itself.
@@ -123,7 +91,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
 
     /**
      * Get the previousUpdateId property: The unique ID of the previous update request, enabling incremental memory
-     * updates from where the last operation left off. Cannot be used together with conversation_id.
+     * updates from where the last operation left off.
      *
      * @return the previousUpdateId value.
      */
@@ -134,7 +102,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
 
     /**
      * Set the previousUpdateId property: The unique ID of the previous update request, enabling incremental memory
-     * updates from where the last operation left off. Cannot be used together with conversation_id.
+     * updates from where the last operation left off.
      *
      * @param previousUpdateId the previousUpdateId value to set.
      * @return the UpdateMemoriesRequest object itself.
@@ -181,7 +149,6 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scope", this.scope);
-        jsonWriter.writeStringField("conversation_id", this.conversationId);
         jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("previous_update_id", this.previousUpdateId);
         jsonWriter.writeNumberField("update_delay", this.updateDelay);
@@ -201,7 +168,6 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     public static UpdateMemoriesRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String scope = null;
-            String conversationId = null;
             List<ItemParam> items = null;
             String previousUpdateId = null;
             Integer updateDelay = null;
@@ -210,8 +176,6 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
                 reader.nextToken();
                 if ("scope".equals(fieldName)) {
                     scope = reader.getString();
-                } else if ("conversation_id".equals(fieldName)) {
-                    conversationId = reader.getString();
                 } else if ("items".equals(fieldName)) {
                     items = reader.readArray(reader1 -> ItemParam.fromJson(reader1));
                 } else if ("previous_update_id".equals(fieldName)) {
@@ -223,7 +187,6 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
                 }
             }
             UpdateMemoriesRequest deserializedUpdateMemoriesRequest = new UpdateMemoriesRequest(scope);
-            deserializedUpdateMemoriesRequest.conversationId = conversationId;
             deserializedUpdateMemoriesRequest.items = items;
             deserializedUpdateMemoriesRequest.previousUpdateId = previousUpdateId;
             deserializedUpdateMemoriesRequest.updateDelay = updateDelay;

@@ -31,6 +31,13 @@ public final class UpdateMemoryStoreRequest implements JsonSerializable<UpdateMe
     private Map<String, String> metadata;
 
     /**
+     * Creates an instance of UpdateMemoryStoreRequest class.
+     */
+    @Generated
+    public UpdateMemoryStoreRequest() {
+    }
+
+    /**
      * Get the description property: A human-readable description of the memory store.
      *
      * @return the description value.
@@ -112,12 +119,5 @@ public final class UpdateMemoryStoreRequest implements JsonSerializable<UpdateMe
             }
             return deserializedUpdateMemoryStoreRequest;
         });
-    }
-
-    /**
-     * Creates an instance of UpdateMemoryStoreRequest class.
-     */
-    @Generated
-    public UpdateMemoryStoreRequest() {
     }
 }

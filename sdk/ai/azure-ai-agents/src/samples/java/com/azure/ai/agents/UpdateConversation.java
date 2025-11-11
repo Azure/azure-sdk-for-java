@@ -29,7 +29,7 @@ public class UpdateConversation {
                 .metadata(metadata)
                 .build();
 
-        Conversation updatedConversation = conversationsClient.getOpenAIClient().update(conversationId, updateParams);
+        Conversation updatedConversation = conversationsClient.getConversationService().update(conversationId, updateParams);
 
         System.out.println("Updated Conversation ID: " + updatedConversation.id());
         System.out.println("Updated Conversation Metadata: " + updatedConversation._metadata());

@@ -29,7 +29,7 @@ public final class ConversationsAsyncClient {
      *
      * @return the OpenAI conversation service client.
      */
-    public ConversationServiceAsync getOpenAIClient() {
+    public ConversationServiceAsync getConversationServiceAsync() {
         return this.openAIConversationsClientAsync;
     }
 }

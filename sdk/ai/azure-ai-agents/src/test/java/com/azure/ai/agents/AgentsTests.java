@@ -28,13 +28,13 @@ public class AgentsTests extends ClientTestBase {
 
         AgentDefinition request = new PromptAgentDefinition(agentModel);
 
-        AgentVersionObject createdAgent = client.createAgentVersion(agentName, request);
+        AgentVersionDetails createdAgent = client.createAgentVersion(agentName, request);
 
         assertNotNull(createdAgent);
         assertNotNull(createdAgent.getId());
         assertEquals(agentName, createdAgent.getName());
 
-        AgentObject retrievedAgent = client.getAgent(agentName);
+        AgentDetails retrievedAgent = client.getAgent(agentName);
 
         assertNotNull(retrievedAgent);
         assertNotNull(retrievedAgent.getId());
@@ -42,7 +42,7 @@ public class AgentsTests extends ClientTestBase {
         assertEquals(createdAgent.getId(), retrievedAgent.getVersions().getLatest().getId());
         assertEquals(createdAgent.getName(), retrievedAgent.getName());
 
-        for (AgentObject agent : client.listAgents()) {
+        for (AgentDetails agent : client.listAgents()) {
             if (agent.getName().equals(agentName)) {
                 assertEquals(agent.getVersions().getLatest().getId(), createdAgent.getId());
                 assertEquals(agent.getVersions().getLatest().getName(), createdAgent.getName());
@@ -65,14 +65,15 @@ public class AgentsTests extends ClientTestBase {
         AgentDefinition request = new PromptAgentDefinition(agentModel);
 
         // Creation
-        AgentVersionObject createdAgent = client.createAgentVersion(agentName, request);
+        AgentVersionDetails createdAgent = client.createAgentVersion(agentName, request);
 
         assertNotNull(createdAgent);
         assertNotNull(createdAgent.getId());
         assertEquals(agentName, createdAgent.getName());
 
         // Retrieval
-        AgentVersionObject retrievedAgent = client.getAgentVersion(createdAgent.getName(), createdAgent.getVersion());
+        AgentVersionDetails retrievedAgent
+            = client.getAgentVersionDetails(createdAgent.getName(), createdAgent.getVersion());
         assertNotNull(retrievedAgent);
         assertNotNull(retrievedAgent.getId());
         assertEquals(createdAgent.getId(), retrievedAgent.getId());
@@ -80,7 +81,7 @@ public class AgentsTests extends ClientTestBase {
         assertEquals(createdAgent.getVersion(), retrievedAgent.getVersion());
 
         // List
-        for (AgentVersionObject agent : client.listAgentVersions(createdAgent.getName())) {
+        for (AgentVersionDetails agent : client.listAgentVersions(createdAgent.getName())) {
             if (agent.getId().equals(createdAgent.getId())) {
                 assertEquals(agent.getName(), createdAgent.getName());
                 assertEquals(agent.getVersion(), createdAgent.getVersion());
@@ -98,41 +99,41 @@ public class AgentsTests extends ClientTestBase {
         assertTrue(deletedAgent.isDeleted());
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
-    public void operationOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        AgentsClient client = getAgentsSyncClient(httpClient, serviceVersion);
-        String agentName = "test_agent_java";
-        String agentModel = "gpt-4o";
-
-        AgentDefinition request = new PromptAgentDefinition(agentModel);
-
-        AgentVersionObject createdAgent = client.createAgentVersion(agentName, request);
-
-        assertNotNull(createdAgent);
-        assertNotNull(createdAgent.getId());
-        assertEquals(agentName, createdAgent.getName());
-
-        for (AgentContainerOperationObject agentOperation : client
-            .listAgentContainerOperations(createdAgent.getName())) {
-            assertNotNull(agentOperation.getAgentId());
-            assertNotNull(agentOperation.getId());
-            assertFalse(agentOperation.getId().trim().isEmpty());
-
-            AgentContainerOperationObject retrievedAgentOperation
-                = client.getAgentContainerOperation(createdAgent.getName(), agentOperation.getId());
-            assertNotNull(retrievedAgentOperation);
-            assertEquals(agentOperation.getId(), retrievedAgentOperation.getId());
-            assertEquals(agentOperation.getAgentId(), retrievedAgentOperation.getAgentId());
-            assertEquals(agentOperation.getStatus(), retrievedAgentOperation.getStatus());
-        }
-
-        // Clean up
-        DeleteAgentVersionResponse agentDeletion
-            = client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
-        assertEquals(agentName, agentDeletion.getName());
-        assertTrue(agentDeletion.isDeleted());
-    }
+    //    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    //    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    //    public void operationOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+    //        AgentsClient client = getAgentsSyncClient(httpClient, serviceVersion);
+    //        String agentName = "test_agent_java";
+    //        String agentModel = "gpt-4o";
+    //
+    //        AgentDefinition request = new PromptAgentDefinition(agentModel);
+    //
+    //        AgentVersionObject createdAgent = client.createAgentVersion(agentName, request);
+    //
+    //        assertNotNull(createdAgent);
+    //        assertNotNull(createdAgent.getId());
+    //        assertEquals(agentName, createdAgent.getName());
+    //
+    //        for (AgentContainerOperationObject agentOperation : client
+    //            .listAgentContainerOperations(createdAgent.getName())) {
+    //            assertNotNull(agentOperation.getAgentId());
+    //            assertNotNull(agentOperation.getId());
+    //            assertFalse(agentOperation.getId().trim().isEmpty());
+    //
+    //            AgentContainerOperationObject retrievedAgentOperation
+    //                = client.getAgentContainerOperation(createdAgent.getName(), agentOperation.getId());
+    //            assertNotNull(retrievedAgentOperation);
+    //            assertEquals(agentOperation.getId(), retrievedAgentOperation.getId());
+    //            assertEquals(agentOperation.getAgentId(), retrievedAgentOperation.getAgentId());
+    //            assertEquals(agentOperation.getStatus(), retrievedAgentOperation.getStatus());
+    //        }
+    //
+    //        // Clean up
+    //        DeleteAgentVersionResponse agentDeletion
+    //            = client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
+    //        assertEquals(agentName, agentDeletion.getName());
+    //        assertTrue(agentDeletion.isDeleted());
+    //    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -146,12 +147,12 @@ public class AgentsTests extends ClientTestBase {
 
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition(agentModel);
 
-        AgentVersionObject createdAgent = agentsClient.createAgentVersion(agentName, promptAgentDefinition);
+        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(agentName, promptAgentDefinition);
 
         AgentReference agentReference = new AgentReference(createdAgent.getName());
         agentReference.setVersion(createdAgent.getVersion());
 
-        Conversation conversation = conversationsClient.getOpenAIClient().create();
+        Conversation conversation = conversationsClient.getConversationService().create();
 
         List<ResponseInputItem> inputItems = new ArrayList<>();
         inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
@@ -182,7 +183,7 @@ public class AgentsTests extends ClientTestBase {
 
         // Clean up
         agentsClient.deleteAgent(createdAgent.getId());
-        conversationsClient.getOpenAIClient().delete(conversation.id());
+        conversationsClient.getConversationService().delete(conversation.id());
         // Deleting response causes a 500
         //        responsesClient.getOpenAIClient().delete(response.id());
     }

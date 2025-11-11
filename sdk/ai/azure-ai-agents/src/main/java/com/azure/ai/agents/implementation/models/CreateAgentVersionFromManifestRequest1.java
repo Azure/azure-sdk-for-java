@@ -21,12 +21,6 @@ public final class CreateAgentVersionFromManifestRequest1
     implements JsonSerializable<CreateAgentVersionFromManifestRequest1> {
 
     /*
-     * A human-readable description of the agent.
-     */
-    @Generated
-    private String description;
-
-    /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -36,6 +30,12 @@ public final class CreateAgentVersionFromManifestRequest1
      */
     @Generated
     private Map<String, String> metadata;
+
+    /*
+     * A human-readable description of the agent.
+     */
+    @Generated
+    private String description;
 
     /*
      * The manifest ID to import the agent version from.
@@ -59,28 +59,6 @@ public final class CreateAgentVersionFromManifestRequest1
     public CreateAgentVersionFromManifestRequest1(String manifestId, Map<String, BinaryData> parameterValues) {
         this.manifestId = manifestId;
         this.parameterValues = parameterValues;
-    }
-
-    /**
-     * Get the description property: A human-readable description of the agent.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: A human-readable description of the agent.
-     *
-     * @param description the description value to set.
-     * @return the CreateAgentVersionFromManifestRequest1 object itself.
-     */
-    @Generated
-    public CreateAgentVersionFromManifestRequest1 setDescription(String description) {
-        this.description = description;
-        return this;
     }
 
     /**
@@ -112,6 +90,28 @@ public final class CreateAgentVersionFromManifestRequest1
     @Generated
     public CreateAgentVersionFromManifestRequest1 setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the description property: A human-readable description of the agent.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: A human-readable description of the agent.
+     *
+     * @param description the description value to set.
+     * @return the CreateAgentVersionFromManifestRequest1 object itself.
+     */
+    @Generated
+    public CreateAgentVersionFromManifestRequest1 setDescription(String description) {
+        this.description = description;
         return this;
     }
 

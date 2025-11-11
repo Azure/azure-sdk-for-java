@@ -17,8 +17,8 @@ import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
 import com.azure.ai.agents.models.MemoryStoreObject;
 import com.azure.ai.agents.models.MemoryStoreSearchResponse;
+import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
 import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
-import com.azure.ai.agents.models.MemoryStoreUpdateResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -290,7 +290,6 @@ public final class MemoryStoresClient {
      * {@code
      * {
      *     scope: String (Required)
-     *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
      *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
@@ -361,7 +360,6 @@ public final class MemoryStoresClient {
      * {@code
      * {
      *     scope: String (Required)
-     *     conversation_id: String (Optional)
      *     items (Optional): [
      *          (Optional){
      *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
@@ -410,13 +408,16 @@ public final class MemoryStoresClient {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Required): [
+     *         param: String (Required)
+     *         type: String (Required)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
      *         }
      *     }
      * }
@@ -478,13 +479,16 @@ public final class MemoryStoresClient {
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Required): [
+     *         param: String (Required)
+     *         type: String (Required)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
      *         }
      *     }
      * }
@@ -666,42 +670,6 @@ public final class MemoryStoresClient {
      *
      * @param name The name of the memory store to search.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
-     * @param conversationId The conversation ID for which to search memories. Only one of conversation_id or items
-     * should be provided.
-     * @param items Items for which to search for relevant memories. Only one of conversation_id or items should be
-     * provided.
-     * @param previousSearchId The unique ID of the previous search request, enabling incremental memory search from
-     * where the last operation left off. Cannot be used together with conversation_id.
-     * @param options Memory search options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return memory search response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreSearchResponse searchMemories(String name, String scope, String conversationId,
-        List<ItemParam> items, String previousSearchId, MemorySearchOptions options) {
-        // Generated convenience method for searchMemoriesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        SearchMemoriesRequest searchMemoriesRequestObj
-            = new SearchMemoriesRequest(scope).setConversationId(conversationId)
-                .setItems(items)
-                .setPreviousSearchId(previousSearchId)
-                .setOptions(options);
-        BinaryData searchMemoriesRequest = BinaryData.fromObject(searchMemoriesRequestObj);
-        return searchMemoriesWithResponse(name, searchMemoriesRequest, requestOptions).getValue()
-            .toObject(MemoryStoreSearchResponse.class);
-    }
-
-    /**
-     * Search for relevant memories from a memory store based on conversation context.
-     *
-     * @param name The name of the memory store to search.
-     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -726,16 +694,6 @@ public final class MemoryStoresClient {
      *
      * @param name The name of the memory store to update.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
-     * @param conversationId The conversation ID from which to extract memories. Only one of conversation_id or items
-     * should be provided.
-     * @param items Conversation items from which to extract memories. Only one of conversation_id or items should be
-     * provided.
-     * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
-     * where the last operation left off. Cannot be used together with conversation_id.
-     * @param updateDelay Timeout period before processing the memory update in seconds.
-     * If a new update request is received during this period, it will cancel the current request and reset the timeout.
-     * Set to 0 to immediately trigger the update without delay.
-     * Defaults to 300 (5 minutes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -746,35 +704,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateResult> beginUpdateMemories(String name, String scope,
-        String conversationId, List<ItemParam> items, String previousUpdateId, Integer updateDelay) {
-        // Generated convenience method for beginUpdateMemoriesWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateMemoriesRequest updateMemoriesRequestObj
-            = new UpdateMemoriesRequest(scope).setConversationId(conversationId)
-                .setItems(items)
-                .setPreviousUpdateId(previousUpdateId)
-                .setUpdateDelay(updateDelay);
-        BinaryData updateMemoriesRequest = BinaryData.fromObject(updateMemoriesRequestObj);
-        return serviceClient.beginUpdateMemoriesWithModel(name, updateMemoriesRequest, requestOptions);
-    }
-
-    /**
-     * Update memory store with conversation memories.
-     *
-     * @param name The name of the memory store to update.
-     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of provides the status of a memory store update operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateResult> beginUpdateMemories(String name,
+    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
         String scope) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -917,5 +847,69 @@ public final class MemoryStoresClient {
         BinaryData deleteScopeRequest = BinaryData.fromObject(deleteScopeRequestObj);
         return deleteScopeWithResponse(name, deleteScopeRequest, requestOptions).getValue()
             .toObject(MemoryStoreDeleteScopeResponse.class);
+    }
+
+    /**
+     * Search for relevant memories from a memory store based on conversation context.
+     *
+     * @param name The name of the memory store to search.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param items Items for which to search for relevant memories.
+     * @param previousSearchId The unique ID of the previous search request, enabling incremental memory search from
+     * where the last operation left off.
+     * @param options Memory search options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memory search response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MemoryStoreSearchResponse searchMemories(String name, String scope, List<ItemParam> items,
+        String previousSearchId, MemorySearchOptions options) {
+        // Generated convenience method for searchMemoriesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        SearchMemoriesRequest searchMemoriesRequestObj = new SearchMemoriesRequest(scope).setItems(items)
+            .setPreviousSearchId(previousSearchId)
+            .setOptions(options);
+        BinaryData searchMemoriesRequest = BinaryData.fromObject(searchMemoriesRequestObj);
+        return searchMemoriesWithResponse(name, searchMemoriesRequest, requestOptions).getValue()
+            .toObject(MemoryStoreSearchResponse.class);
+    }
+
+    /**
+     * Update memory store with conversation memories.
+     *
+     * @param name The name of the memory store to update.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param items Conversation items from which to extract memories.
+     * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
+     * where the last operation left off.
+     * @param updateDelay Timeout period before processing the memory update in seconds.
+     * If a new update request is received during this period, it will cancel the current request and reset the timeout.
+     * Set to 0 to immediately trigger the update without delay.
+     * Defaults to 300 (5 minutes).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provides the status of a memory store update operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+        String scope, List<ItemParam> items, String previousUpdateId, Integer updateDelay) {
+        // Generated convenience method for beginUpdateMemoriesWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateMemoriesRequest updateMemoriesRequestObj = new UpdateMemoriesRequest(scope).setItems(items)
+            .setPreviousUpdateId(previousUpdateId)
+            .setUpdateDelay(updateDelay);
+        BinaryData updateMemoriesRequest = BinaryData.fromObject(updateMemoriesRequestObj);
+        return serviceClient.beginUpdateMemoriesWithModel(name, updateMemoriesRequest, requestOptions);
     }
 }

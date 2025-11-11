@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsClientImpl;
+import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -35,8 +36,6 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.identity.AuthenticationUtil;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -362,8 +361,8 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
-            .credential(BearerTokenCredential.create(AuthenticationUtil
-                .getBearerTokenSupplier(new DefaultAzureCredentialBuilder().build(), DEFAULT_SCOPES)));
+            .credential(
+                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
         // Currently the service produces a `500` response when this header is included
         builder.replaceHeaders("Accept-Encoding", "");
@@ -378,8 +377,8 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder() {
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
-            .credential(BearerTokenCredential.create(AuthenticationUtil
-                .getBearerTokenSupplier(new DefaultAzureCredentialBuilder().build(), DEFAULT_SCOPES)));
+            .credential(
+                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
         // Currently the service produces a `500` response when this header is included
         builder.replaceHeaders("Accept-Encoding", "");

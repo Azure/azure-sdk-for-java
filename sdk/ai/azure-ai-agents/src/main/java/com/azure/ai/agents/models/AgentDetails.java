@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The AgentObject model.
+ * The AgentDetails model.
  */
 @Immutable
-public final class AgentObject implements JsonSerializable<AgentObject> {
+public final class AgentDetails implements JsonSerializable<AgentDetails> {
 
     /*
      * The object type, which is always 'agent'.
@@ -42,14 +42,14 @@ public final class AgentObject implements JsonSerializable<AgentObject> {
     private final AgentObjectVersions versions;
 
     /**
-     * Creates an instance of AgentObject class.
+     * Creates an instance of AgentDetails class.
      *
      * @param id the id value to set.
      * @param name the name value to set.
      * @param versions the versions value to set.
      */
     @Generated
-    private AgentObject(String id, String name, AgentObjectVersions versions) {
+    private AgentDetails(String id, String name, AgentObjectVersions versions) {
         this.id = id;
         this.name = name;
         this.versions = versions;
@@ -110,16 +110,16 @@ public final class AgentObject implements JsonSerializable<AgentObject> {
     }
 
     /**
-     * Reads an instance of AgentObject from the JsonReader.
+     * Reads an instance of AgentDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentObject if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AgentDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AgentObject.
+     * @throws IOException If an error occurs while reading the AgentDetails.
      */
     @Generated
-    public static AgentObject fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
@@ -137,7 +137,7 @@ public final class AgentObject implements JsonSerializable<AgentObject> {
                     reader.skipChildren();
                 }
             }
-            return new AgentObject(id, name, versions);
+            return new AgentDetails(id, name, versions);
         });
     }
 }

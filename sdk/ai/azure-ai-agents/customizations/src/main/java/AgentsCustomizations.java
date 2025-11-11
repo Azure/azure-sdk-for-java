@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 
 /**
  * This class contains the customization code to customize the AutoRest generated code for the Agents Client library
+ * Reference: https://github.com/Azure/autorest.java/blob/main/customization-base/README.md
  */
 public class AgentsCustomizations extends Customization {
 
@@ -23,16 +24,31 @@ public class AgentsCustomizations extends Customization {
         customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
                 .ifPresent(clazz -> clazz.getEntries().stream()
                         .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("SIZE_1024_X_1024"))));
+                        .forEach(entry -> entry.setName("SIZE_1024X1024"))));
 
         customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
                 .ifPresent(clazz -> clazz.getEntries().stream()
                         .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_FIVE_THREE_SIX".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("SIZE_1024_X_1536"))));
+                        .forEach(entry -> entry.setName("SIZE_1024X1536"))));
 
         customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
                 .ifPresent(clazz -> clazz.getEntries().stream()
                         .filter(entry -> "ONE_FIVE_THREE_SIXX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
-                        .forEach(entry -> entry.setName("SIZE_1536_X_1024"))));
+                        .forEach(entry -> entry.setName("SIZE_1536X1024"))));
+
+        customization.getClass("com.azure.ai.agents.models", "ComputerActionType").customizeAst(ast -> ast.getEnumByName("ComputerActionType")
+                .ifPresent(clazz -> clazz.getEntries().stream()
+                        .filter(entry -> "KEYPRESS".equals(entry.getName().getIdentifier()))
+                        .forEach(entry -> entry.setName("KEY_PRESS"))));
+
+        customization.getClass("com.azure.ai.agents.models", "ComputerActionKeyPress")
+                .customizeAst(ast -> ast.getClassByName("ComputerActionKeyPress")
+                        .flatMap(clazz -> clazz.getFieldByName("type"))
+                        .ifPresent(barField ->
+                                barField.getVariables().forEach(var -> {
+                                    if (var.getNameAsString().equals("type")) {
+                                        var.setInitializer("ComputerActionType.KEY_PRESS");
+                                    }
+                                })));
     }
 }

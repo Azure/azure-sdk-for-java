@@ -3,7 +3,7 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentVersionObject;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -19,7 +19,7 @@ public class CreateAgent {
                 .buildAgentsClient();
 
         PromptAgentDefinition request = new PromptAgentDefinition(model);
-        AgentVersionObject agent = agentsClient.createAgentVersion("agent_created_from_java", request);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("agent_created_from_java", request);
 
         System.out.println("Agent ID: " + agent.getId());
         System.out.println("Agent Name: " + agent.getName());

@@ -29,12 +29,6 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     private final String name;
 
     /*
-     * A human-readable description of the agent.
-     */
-    @Generated
-    private String description;
-
-    /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -44,6 +38,12 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
      */
     @Generated
     private Map<String, String> metadata;
+
+    /*
+     * A human-readable description of the agent.
+     */
+    @Generated
+    private String description;
 
     /*
      * The manifest ID to import the agent version from.
@@ -86,28 +86,6 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     }
 
     /**
-     * Get the description property: A human-readable description of the agent.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: A human-readable description of the agent.
-     *
-     * @param description the description value to set.
-     * @return the CreateAgentFromManifestRequest1 object itself.
-     */
-    @Generated
-    public CreateAgentFromManifestRequest1 setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -136,6 +114,28 @@ public final class CreateAgentFromManifestRequest1 implements JsonSerializable<C
     @Generated
     public CreateAgentFromManifestRequest1 setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the description property: A human-readable description of the agent.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: A human-readable description of the agent.
+     *
+     * @param description the description value to set.
+     * @return the CreateAgentFromManifestRequest1 object itself.
+     */
+    @Generated
+    public CreateAgentFromManifestRequest1 setDescription(String description) {
+        this.description = description;
         return this;
     }
 

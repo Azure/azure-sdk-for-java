@@ -26,7 +26,7 @@ public class ResponsesAsyncTests extends ClientTestBase {
         ResponseCreateParams responsesRequest
             = new ResponseCreateParams.Builder().input("Hello, how can you help me?").model("gpt-4o").build();
 
-        Response response = client.getOpenAIClient().create(responsesRequest).get();
+        Response response = client.getResponseServiceAsync().create(responsesRequest).get();
         System.out.println(response);
     }
 }

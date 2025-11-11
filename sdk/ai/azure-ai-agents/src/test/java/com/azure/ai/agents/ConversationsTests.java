@@ -25,7 +25,7 @@ public class ConversationsTests extends ClientTestBase {
         ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
 
         // creation
-        Conversation createdConversation = client.getOpenAIClient().create();
+        Conversation createdConversation = client.getConversationService().create();
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
@@ -35,18 +35,19 @@ public class ConversationsTests extends ClientTestBase {
             .putAdditionalProperty("metadata_key", JsonValue.from("metadata_value"))
             .build();
         ConversationUpdateParams.Builder params = ConversationUpdateParams.builder().metadata(metadata);
-        Conversation updatedConversation = client.getOpenAIClient().update(conversationId, params.build());
+        Conversation updatedConversation = client.getConversationService().update(conversationId, params.build());
 
         assertEquals(JsonValue.from(metadata), updatedConversation._metadata());
         assertEquals(createdConversation.id(), updatedConversation.id());
 
         // retrieve
-        Conversation retrievedConversation = client.getOpenAIClient().retrieve(conversationId);
+        Conversation retrievedConversation = client.getConversationService().retrieve(conversationId);
         assertEquals(updatedConversation.id(), retrievedConversation.id());
         assertEquals(updatedConversation._metadata(), retrievedConversation._metadata());
 
         // deletion
-        ConversationDeletedResource deletedConversationResource = client.getOpenAIClient().delete(conversationId);
+        ConversationDeletedResource deletedConversationResource
+            = client.getConversationService().delete(conversationId);
         assertEquals(conversationId, deletedConversationResource.id());
         assertTrue(deletedConversationResource.deleted());
     }
@@ -57,13 +58,13 @@ public class ConversationsTests extends ClientTestBase {
         ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
 
         // creation - conversation
-        Conversation createdConversation = client.getOpenAIClient().create();
+        Conversation createdConversation = client.getConversationService().create();
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
 
         // creation - conversation item
-        ConversationItemList conversationItem = client.getOpenAIClient()
+        ConversationItemList conversationItem = client.getConversationService()
             .items()
             .create(ItemCreateParams.builder()
                 .conversationId(conversationId)
@@ -84,7 +85,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals("Hello, agent!", createdConversationItem.content().get(0).asInputText().text());
 
         // retrieve - conversation item
-        ConversationItem retrievedItem = client.getOpenAIClient()
+        ConversationItem retrievedItem = client.getConversationService()
             .items()
             .retrieve(ItemRetrieveParams.builder()
                 .itemId(createdConversationItem.id())
@@ -95,7 +96,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals("Hello, agent!", retrievedItem.asMessage().content().get(0).asInputText().text());
 
         // retrieve - conversation item with ID
-        ConversationItem retrievedItemWithId = client.getOpenAIClient()
+        ConversationItem retrievedItemWithId = client.getConversationService()
             .items()
             .retrieve(ItemRetrieveParams.builder()
                 .conversationId(conversationId)
@@ -106,7 +107,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals("Hello, agent!", retrievedItemWithId.asMessage().content().get(0).asInputText().text());
 
         // deletion - conversation
-        Conversation conversationWithDeletedItem = client.getOpenAIClient()
+        Conversation conversationWithDeletedItem = client.getConversationService()
             .items()
             .delete(ItemDeleteParams.builder()
                 .conversationId(conversationId)

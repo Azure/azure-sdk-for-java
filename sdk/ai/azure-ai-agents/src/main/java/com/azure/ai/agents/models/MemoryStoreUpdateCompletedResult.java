@@ -16,7 +16,7 @@ import java.util.List;
  * Memory update result.
  */
 @Immutable
-public final class MemoryStoreUpdateResult implements JsonSerializable<MemoryStoreUpdateResult> {
+public final class MemoryStoreUpdateCompletedResult implements JsonSerializable<MemoryStoreUpdateCompletedResult> {
 
     /*
      * A list of individual memory operations that were performed during the update.
@@ -31,13 +31,13 @@ public final class MemoryStoreUpdateResult implements JsonSerializable<MemorySto
     private final MemoryStoreOperationUsage usage;
 
     /**
-     * Creates an instance of MemoryStoreUpdateResult class.
+     * Creates an instance of MemoryStoreUpdateCompletedResult class.
      *
      * @param memoryOperations the memoryOperations value to set.
      * @param usage the usage value to set.
      */
     @Generated
-    private MemoryStoreUpdateResult(List<MemoryOperation> memoryOperations, MemoryStoreOperationUsage usage) {
+    private MemoryStoreUpdateCompletedResult(List<MemoryOperation> memoryOperations, MemoryStoreOperationUsage usage) {
         this.memoryOperations = memoryOperations;
         this.usage = usage;
     }
@@ -76,16 +76,16 @@ public final class MemoryStoreUpdateResult implements JsonSerializable<MemorySto
     }
 
     /**
-     * Reads an instance of MemoryStoreUpdateResult from the JsonReader.
+     * Reads an instance of MemoryStoreUpdateCompletedResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MemoryStoreUpdateResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of MemoryStoreUpdateCompletedResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MemoryStoreUpdateResult.
+     * @throws IOException If an error occurs while reading the MemoryStoreUpdateCompletedResult.
      */
     @Generated
-    public static MemoryStoreUpdateResult fromJson(JsonReader jsonReader) throws IOException {
+    public static MemoryStoreUpdateCompletedResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<MemoryOperation> memoryOperations = null;
             MemoryStoreOperationUsage usage = null;
@@ -100,7 +100,7 @@ public final class MemoryStoreUpdateResult implements JsonSerializable<MemorySto
                     reader.skipChildren();
                 }
             }
-            return new MemoryStoreUpdateResult(memoryOperations, usage);
+            return new MemoryStoreUpdateCompletedResult(memoryOperations, usage);
         });
     }
 }

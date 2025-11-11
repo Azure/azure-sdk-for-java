@@ -5,7 +5,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AgentVersionObject;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
@@ -22,15 +22,15 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.ai.agents.create_prompt_agent
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
-        AgentVersionObject agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
         // END: com.azure.ai.agents.create_prompt_agent
 
         // BEGIN: com.azure.ai.agents.create_conversation
-        Conversation conversation = conversationsClient.getOpenAIClient().create();
+        Conversation conversation = conversationsClient.getConversationService().create();
         // END: com.azure.ai.agents.create_conversation
 
         // BEGIN: com.azure.ai.agents.add_message_to_conversation
-        conversationsClient.getOpenAIClient().items().create(
+        conversationsClient.getConversationService().items().create(
             ItemCreateParams.builder()
                 .conversationId(conversation.id())
                 .addItem(EasyInputMessage.builder()

@@ -27,20 +27,14 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     private final String scope;
 
     /*
-     * The conversation ID for which to search memories. Only one of conversation_id or items should be provided.
-     */
-    @Generated
-    private String conversationId;
-
-    /*
-     * Items for which to search for relevant memories. Only one of conversation_id or items should be provided.
+     * Items for which to search for relevant memories.
      */
     @Generated
     private List<ItemParam> items;
 
     /*
      * The unique ID of the previous search request, enabling incremental memory search from where the last operation
-     * left off. Cannot be used together with conversation_id.
+     * left off.
      */
     @Generated
     private String previousSearchId;
@@ -72,32 +66,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     }
 
     /**
-     * Get the conversationId property: The conversation ID for which to search memories. Only one of conversation_id or
-     * items should be provided.
-     *
-     * @return the conversationId value.
-     */
-    @Generated
-    public String getConversationId() {
-        return this.conversationId;
-    }
-
-    /**
-     * Set the conversationId property: The conversation ID for which to search memories. Only one of conversation_id or
-     * items should be provided.
-     *
-     * @param conversationId the conversationId value to set.
-     * @return the SearchMemoriesRequest object itself.
-     */
-    @Generated
-    public SearchMemoriesRequest setConversationId(String conversationId) {
-        this.conversationId = conversationId;
-        return this;
-    }
-
-    /**
-     * Get the items property: Items for which to search for relevant memories. Only one of conversation_id or items
-     * should be provided.
+     * Get the items property: Items for which to search for relevant memories.
      *
      * @return the items value.
      */
@@ -107,8 +76,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     }
 
     /**
-     * Set the items property: Items for which to search for relevant memories. Only one of conversation_id or items
-     * should be provided.
+     * Set the items property: Items for which to search for relevant memories.
      *
      * @param items the items value to set.
      * @return the SearchMemoriesRequest object itself.
@@ -121,7 +89,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
 
     /**
      * Get the previousSearchId property: The unique ID of the previous search request, enabling incremental memory
-     * search from where the last operation left off. Cannot be used together with conversation_id.
+     * search from where the last operation left off.
      *
      * @return the previousSearchId value.
      */
@@ -132,7 +100,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
 
     /**
      * Set the previousSearchId property: The unique ID of the previous search request, enabling incremental memory
-     * search from where the last operation left off. Cannot be used together with conversation_id.
+     * search from where the last operation left off.
      *
      * @param previousSearchId the previousSearchId value to set.
      * @return the SearchMemoriesRequest object itself.
@@ -173,7 +141,6 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scope", this.scope);
-        jsonWriter.writeStringField("conversation_id", this.conversationId);
         jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("previous_search_id", this.previousSearchId);
         jsonWriter.writeJsonField("options", this.options);
@@ -193,7 +160,6 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     public static SearchMemoriesRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String scope = null;
-            String conversationId = null;
             List<ItemParam> items = null;
             String previousSearchId = null;
             MemorySearchOptions options = null;
@@ -202,8 +168,6 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
                 reader.nextToken();
                 if ("scope".equals(fieldName)) {
                     scope = reader.getString();
-                } else if ("conversation_id".equals(fieldName)) {
-                    conversationId = reader.getString();
                 } else if ("items".equals(fieldName)) {
                     items = reader.readArray(reader1 -> ItemParam.fromJson(reader1));
                 } else if ("previous_search_id".equals(fieldName)) {
@@ -215,7 +179,6 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
                 }
             }
             SearchMemoriesRequest deserializedSearchMemoriesRequest = new SearchMemoriesRequest(scope);
-            deserializedSearchMemoriesRequest.conversationId = conversationId;
             deserializedSearchMemoriesRequest.items = items;
             deserializedSearchMemoriesRequest.previousSearchId = previousSearchId;
             deserializedSearchMemoriesRequest.options = options;

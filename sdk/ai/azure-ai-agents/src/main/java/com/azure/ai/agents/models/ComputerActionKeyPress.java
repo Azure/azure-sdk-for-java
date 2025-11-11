@@ -21,7 +21,7 @@ public final class ComputerActionKeyPress extends ComputerAction {
      * The type property.
      */
     @Generated
-    private ComputerActionType type = ComputerActionType.KEYPRESS;
+    private ComputerActionType type = ComputerActionType.KEY_PRESS;
 
     /*
      * The combination of keys the model is requesting to be pressed. This is an
@@ -87,7 +87,7 @@ public final class ComputerActionKeyPress extends ComputerAction {
     public static ComputerActionKeyPress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<String> keys = null;
-            ComputerActionType type = ComputerActionType.KEYPRESS;
+            ComputerActionType type = ComputerActionType.KEY_PRESS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

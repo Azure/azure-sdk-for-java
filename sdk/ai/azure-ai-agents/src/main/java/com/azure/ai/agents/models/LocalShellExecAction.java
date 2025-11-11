@@ -32,12 +32,6 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     private final List<String> command;
 
     /*
-     * Optional timeout in milliseconds for the command.
-     */
-    @Generated
-    private Integer timeoutMs;
-
-    /*
      * Optional working directory to run the command in.
      */
     @Generated
@@ -85,28 +79,6 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
     @Generated
     public List<String> getCommand() {
         return this.command;
-    }
-
-    /**
-     * Get the timeoutMs property: Optional timeout in milliseconds for the command.
-     *
-     * @return the timeoutMs value.
-     */
-    @Generated
-    public Integer getTimeoutMs() {
-        return this.timeoutMs;
-    }
-
-    /**
-     * Set the timeoutMs property: Optional timeout in milliseconds for the command.
-     *
-     * @param timeoutMs the timeoutMs value to set.
-     * @return the LocalShellExecAction object itself.
-     */
-    @Generated
-    public LocalShellExecAction setTimeoutMs(Integer timeoutMs) {
-        this.timeoutMs = timeoutMs;
-        return this;
     }
 
     /**
@@ -173,7 +145,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("env", this.env, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("timeout_ms", this.timeoutMs);
+        jsonWriter.writeNumberField("timeout_ms", this.duration);
         jsonWriter.writeStringField("working_directory", this.workingDirectory);
         jsonWriter.writeStringField("user", this.user);
         return jsonWriter.writeEndObject();
@@ -193,7 +165,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
         return jsonReader.readObject(reader -> {
             List<String> command = null;
             Map<String, String> env = null;
-            Integer timeoutMs = null;
+            Integer duration = null;
             String workingDirectory = null;
             String user = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -204,7 +176,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
                 } else if ("env".equals(fieldName)) {
                     env = reader.readMap(reader1 -> reader1.getString());
                 } else if ("timeout_ms".equals(fieldName)) {
-                    timeoutMs = reader.getNullable(JsonReader::getInt);
+                    duration = reader.getNullable(JsonReader::getInt);
                 } else if ("working_directory".equals(fieldName)) {
                     workingDirectory = reader.getString();
                 } else if ("user".equals(fieldName)) {
@@ -214,10 +186,38 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
                 }
             }
             LocalShellExecAction deserializedLocalShellExecAction = new LocalShellExecAction(command, env);
-            deserializedLocalShellExecAction.timeoutMs = timeoutMs;
+            deserializedLocalShellExecAction.duration = duration;
             deserializedLocalShellExecAction.workingDirectory = workingDirectory;
             deserializedLocalShellExecAction.user = user;
             return deserializedLocalShellExecAction;
         });
+    }
+
+    /*
+     * Optional timeout in milliseconds for the command.
+     */
+    @Generated
+    private Integer duration;
+
+    /**
+     * Get the duration property: Optional timeout in milliseconds for the command.
+     *
+     * @return the duration value.
+     */
+    @Generated
+    public Integer getDuration() {
+        return this.duration;
+    }
+
+    /**
+     * Set the duration property: Optional timeout in milliseconds for the command.
+     *
+     * @param duration the duration value to set.
+     * @return the LocalShellExecAction object itself.
+     */
+    @Generated
+    public LocalShellExecAction setDuration(Integer duration) {
+        this.duration = duration;
+        return this;
     }
 }

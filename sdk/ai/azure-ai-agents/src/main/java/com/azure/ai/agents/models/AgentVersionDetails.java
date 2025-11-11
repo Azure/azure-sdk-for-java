@@ -16,10 +16,10 @@ import java.time.ZoneOffset;
 import java.util.Map;
 
 /**
- * The AgentVersionObject model.
+ * The AgentVersionDetails model.
  */
 @Immutable
-public final class AgentVersionObject implements JsonSerializable<AgentVersionObject> {
+public final class AgentVersionDetails implements JsonSerializable<AgentVersionDetails> {
 
     /*
      * Set of 16 key-value pairs that can be attached to an object. This can be
@@ -76,7 +76,7 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     private final AgentDefinition definition;
 
     /**
-     * Creates an instance of AgentVersionObject class.
+     * Creates an instance of AgentVersionDetails class.
      *
      * @param metadata the metadata value to set.
      * @param id the id value to set.
@@ -86,7 +86,7 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
      * @param definition the definition value to set.
      */
     @Generated
-    private AgentVersionObject(Map<String, String> metadata, String id, String name, String version,
+    private AgentVersionDetails(Map<String, String> metadata, String id, String name, String version,
         OffsetDateTime createdAt, AgentDefinition definition) {
         this.metadata = metadata;
         this.id = id;
@@ -205,16 +205,16 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
     }
 
     /**
-     * Reads an instance of AgentVersionObject from the JsonReader.
+     * Reads an instance of AgentVersionDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentVersionObject if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AgentVersionDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AgentVersionObject.
+     * @throws IOException If an error occurs while reading the AgentVersionDetails.
      */
     @Generated
-    public static AgentVersionObject fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentVersionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Map<String, String> metadata = null;
             String id = null;
@@ -244,10 +244,10 @@ public final class AgentVersionObject implements JsonSerializable<AgentVersionOb
                     reader.skipChildren();
                 }
             }
-            AgentVersionObject deserializedAgentVersionObject
-                = new AgentVersionObject(metadata, id, name, version, createdAt, definition);
-            deserializedAgentVersionObject.description = description;
-            return deserializedAgentVersionObject;
+            AgentVersionDetails deserializedAgentVersionDetails
+                = new AgentVersionDetails(metadata, id, name, version, createdAt, definition);
+            deserializedAgentVersionDetails.description = description;
+            return deserializedAgentVersionDetails;
         });
     }
 }

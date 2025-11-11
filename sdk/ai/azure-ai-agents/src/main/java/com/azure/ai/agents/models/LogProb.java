@@ -25,12 +25,6 @@ public final class LogProb implements JsonSerializable<LogProb> {
     private final String token;
 
     /*
-     * The logprob property.
-     */
-    @Generated
-    private final double logprob;
-
-    /*
      * The bytes property.
      */
     @Generated
@@ -46,14 +40,14 @@ public final class LogProb implements JsonSerializable<LogProb> {
      * Creates an instance of LogProb class.
      *
      * @param token the token value to set.
-     * @param logprob the logprob value to set.
+     * @param logProb the logProb value to set.
      * @param bytes the bytes value to set.
      * @param topLogprobs the topLogprobs value to set.
      */
     @Generated
-    public LogProb(String token, double logprob, List<Integer> bytes, List<TopLogProb> topLogprobs) {
+    public LogProb(String token, double logProb, List<Integer> bytes, List<TopLogProb> topLogprobs) {
         this.token = token;
-        this.logprob = logprob;
+        this.logProb = logProb;
         this.bytes = bytes;
         this.topLogprobs = topLogprobs;
     }
@@ -66,16 +60,6 @@ public final class LogProb implements JsonSerializable<LogProb> {
     @Generated
     public String getToken() {
         return this.token;
-    }
-
-    /**
-     * Get the logprob property: The logprob property.
-     *
-     * @return the logprob value.
-     */
-    @Generated
-    public double getLogprob() {
-        return this.logprob;
     }
 
     /**
@@ -106,7 +90,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("token", this.token);
-        jsonWriter.writeDoubleField("logprob", this.logprob);
+        jsonWriter.writeDoubleField("logprob", this.logProb);
         jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeInt(element));
         jsonWriter.writeArrayField("top_logprobs", this.topLogprobs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -125,7 +109,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
     public static LogProb fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String token = null;
-            double logprob = 0.0;
+            double logProb = 0.0;
             List<Integer> bytes = null;
             List<TopLogProb> topLogprobs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -134,7 +118,7 @@ public final class LogProb implements JsonSerializable<LogProb> {
                 if ("token".equals(fieldName)) {
                     token = reader.getString();
                 } else if ("logprob".equals(fieldName)) {
-                    logprob = reader.getDouble();
+                    logProb = reader.getDouble();
                 } else if ("bytes".equals(fieldName)) {
                     bytes = reader.readArray(reader1 -> reader1.getInt());
                 } else if ("top_logprobs".equals(fieldName)) {
@@ -143,7 +127,23 @@ public final class LogProb implements JsonSerializable<LogProb> {
                     reader.skipChildren();
                 }
             }
-            return new LogProb(token, logprob, bytes, topLogprobs);
+            return new LogProb(token, logProb, bytes, topLogprobs);
         });
+    }
+
+    /*
+     * The logprob property.
+     */
+    @Generated
+    private final double logProb;
+
+    /**
+     * Get the logProb property: The logprob property.
+     *
+     * @return the logProb value.
+     */
+    @Generated
+    public double getLogProb() {
+        return this.logProb;
     }
 }

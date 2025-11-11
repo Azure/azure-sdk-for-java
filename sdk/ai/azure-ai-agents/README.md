@@ -101,7 +101,7 @@ Creating an Agent can be done like in the following code snippet:
 
 ```java com.azure.ai.agents.create_prompt_agent
 PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
-AgentVersionObject agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
+AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
 ```
 
 This will return an `AgentVersionObject` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
@@ -111,13 +111,13 @@ This will return an `AgentVersionObject` which contains the information necessar
 First we need to create our `Conversation` object so we can attach items to it:
 
 ```java com.azure.ai.agents.create_conversation
-Conversation conversation = conversationsClient.getOpenAIClient().create();
+Conversation conversation = conversationsClient.getConversationService().create();
 ```
 
 With `conversation.id()` contains the reference we will use to append messages to this `Conversation`. `Conversation` objects can be used by multiple agents and serve the purpose of being a centralized source of context. To add items:
 
 ```java com.azure.ai.agents.add_message_to_conversation
-conversationsClient.getOpenAIClient().items().create(
+conversationsClient.getConversationService().items().create(
     ItemCreateParams.builder()
         .conversationId(conversation.id())
         .addItem(EasyInputMessage.builder()

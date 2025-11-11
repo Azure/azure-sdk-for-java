@@ -5,10 +5,12 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * JSON Schema response format. Used to generate structured JSON responses.
@@ -41,7 +43,7 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
      * The schema property.
      */
     @Generated
-    private final ResponseFormatJsonSchemaSchema schema;
+    private final Map<String, BinaryData> schema;
 
     /*
      * Whether to enable strict schema adherence when generating the output.
@@ -52,18 +54,6 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
      */
     @Generated
     private Boolean strict;
-
-    /**
-     * Creates an instance of ResponseTextFormatConfigurationJsonSchema class.
-     *
-     * @param name the name value to set.
-     * @param schema the schema value to set.
-     */
-    @Generated
-    public ResponseTextFormatConfigurationJsonSchema(String name, ResponseFormatJsonSchemaSchema schema) {
-        this.name = name;
-        this.schema = schema;
-    }
 
     /**
      * Get the type property: The type property.
@@ -117,7 +107,7 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
      * @return the schema value.
      */
     @Generated
-    public ResponseFormatJsonSchemaSchema getSchema() {
+    public Map<String, BinaryData> getSchema() {
         return this.schema;
     }
 
@@ -159,7 +149,8 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeJsonField("schema", this.schema);
+        jsonWriter.writeMapField("schema", this.schema,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeBooleanField("strict", this.strict);
@@ -179,7 +170,7 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
     public static ResponseTextFormatConfigurationJsonSchema fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            ResponseFormatJsonSchemaSchema schema = null;
+            Map<String, BinaryData> schema = null;
             ResponseTextFormatConfigurationType type = ResponseTextFormatConfigurationType.JSON_SCHEMA;
             String description = null;
             Boolean strict = null;
@@ -189,7 +180,8 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("schema".equals(fieldName)) {
-                    schema = ResponseFormatJsonSchemaSchema.fromJson(reader);
+                    schema = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("type".equals(fieldName)) {
                     type = ResponseTextFormatConfigurationType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
@@ -207,5 +199,17 @@ public final class ResponseTextFormatConfigurationJsonSchema extends ResponseTex
             deserializedResponseTextFormatConfigurationJsonSchema.strict = strict;
             return deserializedResponseTextFormatConfigurationJsonSchema;
         });
+    }
+
+    /**
+     * Creates an instance of ResponseTextFormatConfigurationJsonSchema class.
+     *
+     * @param name the name value to set.
+     * @param schema the schema value to set.
+     */
+    @Generated
+    public ResponseTextFormatConfigurationJsonSchema(String name, Map<String, BinaryData> schema) {
+        this.name = name;
+        this.schema = schema;
     }
 }

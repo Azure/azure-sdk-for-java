@@ -3,7 +3,7 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentObject;
+import com.azure.ai.agents.models.AgentDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -17,7 +17,7 @@ public class GetAgent {
                 .endpoint(endpoint)
                 .buildAgentsClient();
 
-        AgentObject agent = agentsClient.getAgent(agentName);
+        AgentDetails agent = agentsClient.getAgent(agentName);
 
         System.out.println("Agent ID: " + agent.getId());
         System.out.println("Agent Name: " + agent.getName());

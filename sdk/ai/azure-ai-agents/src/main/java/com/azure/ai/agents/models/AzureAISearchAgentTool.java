@@ -22,20 +22,14 @@ public final class AzureAISearchAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.AZURE_AI_SEARCH;
 
-    /*
-     * The azure ai search index resource.
-     */
-    @Generated
-    private final AzureAISearchToolResource azureAiSearch;
-
     /**
      * Creates an instance of AzureAISearchAgentTool class.
      *
-     * @param azureAiSearch the azureAiSearch value to set.
+     * @param azureAISearch the azureAISearch value to set.
      */
     @Generated
-    public AzureAISearchAgentTool(AzureAISearchToolResource azureAiSearch) {
-        this.azureAiSearch = azureAiSearch;
+    public AzureAISearchAgentTool(AzureAISearchToolResource azureAISearch) {
+        this.azureAISearch = azureAISearch;
     }
 
     /**
@@ -50,23 +44,13 @@ public final class AzureAISearchAgentTool extends Tool {
     }
 
     /**
-     * Get the azureAiSearch property: The azure ai search index resource.
-     *
-     * @return the azureAiSearch value.
-     */
-    @Generated
-    public AzureAISearchToolResource getAzureAiSearch() {
-        return this.azureAiSearch;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("azure_ai_search", this.azureAiSearch);
+        jsonWriter.writeJsonField("azure_ai_search", this.azureAISearch);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -83,22 +67,38 @@ public final class AzureAISearchAgentTool extends Tool {
     @Generated
     public static AzureAISearchAgentTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AzureAISearchToolResource azureAiSearch = null;
+            AzureAISearchToolResource azureAISearch = null;
             ToolType type = ToolType.AZURE_AI_SEARCH;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("azure_ai_search".equals(fieldName)) {
-                    azureAiSearch = AzureAISearchToolResource.fromJson(reader);
+                    azureAISearch = AzureAISearchToolResource.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            AzureAISearchAgentTool deserializedAzureAISearchAgentTool = new AzureAISearchAgentTool(azureAiSearch);
+            AzureAISearchAgentTool deserializedAzureAISearchAgentTool = new AzureAISearchAgentTool(azureAISearch);
             deserializedAzureAISearchAgentTool.type = type;
             return deserializedAzureAISearchAgentTool;
         });
+    }
+
+    /*
+     * The azure ai search index resource.
+     */
+    @Generated
+    private final AzureAISearchToolResource azureAISearch;
+
+    /**
+     * Get the azureAISearch property: The azure ai search index resource.
+     *
+     * @return the azureAISearch value.
+     */
+    @Generated
+    public AzureAISearchToolResource getAzureAISearch() {
+        return this.azureAISearch;
     }
 }

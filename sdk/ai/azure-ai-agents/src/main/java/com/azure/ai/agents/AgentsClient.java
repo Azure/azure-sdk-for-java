@@ -8,16 +8,12 @@ import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest1
 import com.azure.ai.agents.implementation.models.CreateAgentRequest1;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest1;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest1;
-import com.azure.ai.agents.implementation.models.StartAgentContainerRequest;
-import com.azure.ai.agents.implementation.models.UpdateAgentContainerRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest1;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest1;
-import com.azure.ai.agents.models.AgentContainerObject;
-import com.azure.ai.agents.models.AgentContainerOperationObject;
 import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
-import com.azure.ai.agents.models.AgentObject;
-import com.azure.ai.agents.models.AgentVersionObject;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.ListAgentsRequestOrder;
@@ -252,48 +248,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     created_at: long (Required)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param agentVersion The version of the agent to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAgentVersionWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAgentVersionWithResponse(agentName, agentVersion, requestOptions);
-    }
-
-    /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -385,307 +339,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Start a container for a specific version of an agent. If the container is already running, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     min_replicas: Integer (Optional)
-     *     max_replicas: Integer (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param startAgentContainerRequest The startAgentContainerRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the container operation for a specific version of an agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> startAgentContainerWithResponse(String agentName, String agentVersion,
-        BinaryData startAgentContainerRequest, RequestOptions requestOptions) {
-        return this.serviceClient.startAgentContainerWithResponse(agentName, agentVersion, startAgentContainerRequest,
-            requestOptions);
-    }
-
-    /**
-     * Update a container for a specific version of an agent. If the container is not running, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     min_replicas: Integer (Optional)
-     *     max_replicas: Integer (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param updateAgentContainerRequest The updateAgentContainerRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the container operation for a specific version of an agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentContainerWithResponse(String agentName, String agentVersion,
-        BinaryData updateAgentContainerRequest, RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentContainerWithResponse(agentName, agentVersion, updateAgentContainerRequest,
-            requestOptions);
-    }
-
-    /**
-     * Stop a container for a specific version of an agent. If the container is not running, or already stopped, the
-     * operation will be no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the container operation for a specific version of an agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stopAgentContainerWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.stopAgentContainerWithResponse(agentName, agentVersion, requestOptions);
-    }
-
-    /**
-     * Delete a container for a specific version of an agent. If the container doesn't exist, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the container operation for a specific version of an agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentContainerWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteAgentContainerWithResponse(agentName, agentVersion, requestOptions);
-    }
-
-    /**
-     * Get a container for a specific version of an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *     max_replicas: Integer (Optional)
-     *     min_replicas: Integer (Optional)
-     *     error_message: String (Optional)
-     *     created_at: OffsetDateTime (Required)
-     *     updated_at: OffsetDateTime (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a container for a specific version of an agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAgentContainerWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAgentContainerWithResponse(agentName, agentVersion, requestOptions);
-    }
-
-    /**
-     * Get the status of a container operation for an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param operationId The operation ID.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of a container operation for an agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAgentContainerOperationWithResponse(String agentName, String operationId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAgentContainerOperationWithResponse(agentName, operationId, requestOptions);
-    }
-
-    /**
      * Retrieves the agent.
      *
      * @param agentName The name of the agent to retrieve.
@@ -699,10 +352,10 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject getAgent(String agentName) {
+    public AgentDetails getAgent(String agentName) {
         // Generated convenience method for getAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAgentWithResponse(agentName, requestOptions).getValue().toObject(AgentObject.class);
+        return getAgentWithResponse(agentName, requestOptions).getValue().toObject(AgentDetails.class);
     }
 
     /**
@@ -737,33 +390,11 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentObject> listAgents() {
+    public PagedIterable<AgentDetails> listAgents() {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAgents(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentObject.class));
-    }
-
-    /**
-     * Retrieves a specific version of an agent.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param agentVersion The version of the agent to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionObject getAgentVersion(String agentName, String agentVersion) {
-        // Generated convenience method for getAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAgentVersionWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(AgentVersionObject.class);
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
     }
 
     /**
@@ -802,275 +433,11 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentVersionObject> listAgentVersions(String agentName) {
+    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAgentVersions(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionObject.class));
-    }
-
-    /**
-     * Start a container for a specific version of an agent. If the container is already running, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param minReplicas The minimum number of replicas. Defaults to 1.
-     * @param maxReplicas The maximum number of replicas. Defaults to 1.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container operation for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject startAgentContainer(String agentName, String agentVersion, Integer minReplicas,
-        Integer maxReplicas) {
-        // Generated convenience method for startAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        StartAgentContainerRequest startAgentContainerRequestObj
-            = new StartAgentContainerRequest().setMinReplicas(minReplicas).setMaxReplicas(maxReplicas);
-        BinaryData startAgentContainerRequest = BinaryData.fromObject(startAgentContainerRequestObj);
-        return startAgentContainerWithResponse(agentName, agentVersion, startAgentContainerRequest, requestOptions)
-            .getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * Start a container for a specific version of an agent. If the container is already running, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container operation for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject startAgentContainer(String agentName, String agentVersion) {
-        // Generated convenience method for startAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        StartAgentContainerRequest startAgentContainerRequestObj = new StartAgentContainerRequest();
-        BinaryData startAgentContainerRequest = BinaryData.fromObject(startAgentContainerRequestObj);
-        return startAgentContainerWithResponse(agentName, agentVersion, startAgentContainerRequest, requestOptions)
-            .getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * Update a container for a specific version of an agent. If the container is not running, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param minReplicas The minimum number of replicas.
-     * @param maxReplicas The maximum number of replicas.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container operation for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject updateAgentContainer(String agentName, String agentVersion,
-        Integer minReplicas, Integer maxReplicas) {
-        // Generated convenience method for updateAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentContainerRequest updateAgentContainerRequestObj
-            = new UpdateAgentContainerRequest().setMinReplicas(minReplicas).setMaxReplicas(maxReplicas);
-        BinaryData updateAgentContainerRequest = BinaryData.fromObject(updateAgentContainerRequestObj);
-        return updateAgentContainerWithResponse(agentName, agentVersion, updateAgentContainerRequest, requestOptions)
-            .getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * Update a container for a specific version of an agent. If the container is not running, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container operation for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject updateAgentContainer(String agentName, String agentVersion) {
-        // Generated convenience method for updateAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentContainerRequest updateAgentContainerRequestObj = new UpdateAgentContainerRequest();
-        BinaryData updateAgentContainerRequest = BinaryData.fromObject(updateAgentContainerRequestObj);
-        return updateAgentContainerWithResponse(agentName, agentVersion, updateAgentContainerRequest, requestOptions)
-            .getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * Stop a container for a specific version of an agent. If the container is not running, or already stopped, the
-     * operation will be no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container operation for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject stopAgentContainer(String agentName, String agentVersion) {
-        // Generated convenience method for stopAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return stopAgentContainerWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * Delete a container for a specific version of an agent. If the container doesn't exist, the operation will be
-     * no-op.
-     * The operation is a long-running operation. Following the design guidelines for long-running operations in Azure
-     * REST APIs.
-     * https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#action-operations.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container operation for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject deleteAgentContainer(String agentName, String agentVersion) {
-        // Generated convenience method for deleteAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAgentContainerWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * Get a container for a specific version of an agent.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for a specific version of an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerObject getAgentContainer(String agentName, String agentVersion) {
-        // Generated convenience method for getAgentContainerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAgentContainerWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(AgentContainerObject.class);
-    }
-
-    /**
-     * Get the status of a container operation for an agent.
-     *
-     * @param agentName The name of the agent.
-     * @param operationId The operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a container operation for an agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentContainerOperationObject getAgentContainerOperation(String agentName, String operationId) {
-        // Generated convenience method for getAgentContainerOperationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAgentContainerOperationWithResponse(agentName, operationId, requestOptions).getValue()
-            .toObject(AgentContainerOperationObject.class);
-    }
-
-    /**
-     * List container operations for an agent.
-     *
-     * @param agentName The name of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentContainerOperationObject> listAgentContainerOperations(String agentName) {
-        // Generated convenience method for listAgentContainerOperations
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentContainerOperations(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentContainerOperationObject.class));
-    }
-
-    /**
-     * List container operations for a specific version of an agent.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentContainerOperationObject> listAgentVersionContainerOperations(String agentName,
-        String agentVersion) {
-        // Generated convenience method for listAgentVersionContainerOperations
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentVersionContainerOperations(agentName, agentVersion, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentContainerOperationObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
     /**
@@ -1097,7 +464,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentObject> listAgents(AgentKind kind, Integer limit, ListAgentsRequestOrder order,
+    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, ListAgentsRequestOrder order,
         String after, String before) {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
@@ -1117,7 +484,7 @@ public final class AgentsClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient.listAgents(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
     }
 
     /**
@@ -1144,7 +511,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentVersionObject> listAgentVersions(String agentName, Integer limit,
+    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit,
         ListAgentsRequestOrder order, String after, String before) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
@@ -1161,96 +528,7 @@ public final class AgentsClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient.listAgentVersions(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionObject.class));
-    }
-
-    /**
-     * List container operations for an agent.
-     *
-     * @param agentName The name of the agent.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentContainerOperationObject> listAgentContainerOperations(String agentName, Integer limit,
-        ListAgentsRequestOrder order, String after, String before) {
-        // Generated convenience method for listAgentContainerOperations
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentContainerOperations(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentContainerOperationObject.class));
-    }
-
-    /**
-     * List container operations for a specific version of an agent.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentContainerOperationObject> listAgentVersionContainerOperations(String agentName,
-        String agentVersion, Integer limit, ListAgentsRequestOrder order, String after, String before) {
-        // Generated convenience method for listAgentVersionContainerOperations
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentVersionContainerOperations(agentName, agentVersion, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentContainerOperationObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
     /**
@@ -1271,141 +549,13 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionObject createAgentVersion(String agentName, AgentDefinition definition) {
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest1 createAgentVersionRequest1Obj = new CreateAgentVersionRequest1(definition);
         BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
-            .toObject(AgentVersionObject.class);
-    }
-
-    /**
-     * List container operations for an agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgentContainerOperations(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listAgentContainerOperations(agentName, requestOptions);
-    }
-
-    /**
-     * List container operations for a specific version of an agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     agent_id: String (Required)
-     *     agent_version_id: String (Required)
-     *     status: String(NotStarted/InProgress/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         type: String (Required)
-     *         message: String (Required)
-     *     }
-     *     container (Optional): {
-     *         object: String (Required)
-     *         status: String(Starting/Running/Stopping/Stopped/Failed/Deleting/Deleted/Updating) (Required)
-     *         max_replicas: Integer (Optional)
-     *         min_replicas: Integer (Optional)
-     *         error_message: String (Optional)
-     *         created_at: OffsetDateTime (Required)
-     *         updated_at: OffsetDateTime (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgentVersionContainerOperations(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listAgentVersionContainerOperations(agentName, agentVersion, requestOptions);
+            .toObject(AgentVersionDetails.class);
     }
 
     /**
@@ -1562,12 +712,12 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject createAgent(String name, AgentDefinition definition) {
+    public AgentDetails createAgent(String name, AgentDefinition definition) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentRequest1 createAgentRequest1Obj = new CreateAgentRequest1(name, definition);
         BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentObject.class);
+        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
     }
 
     /**
@@ -1586,13 +736,13 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject updateAgent(String agentName, AgentDefinition definition) {
+    public AgentDetails updateAgent(String agentName, AgentDefinition definition) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateAgentRequest1 updateAgentRequest1Obj = new UpdateAgentRequest1(definition);
         BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
         return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
-            .toObject(AgentObject.class);
+            .toObject(AgentDetails.class);
     }
 
     /**
@@ -1821,7 +971,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject createAgentFromManifest(String name, String manifestId,
+    public AgentDetails createAgentFromManifest(String name, String manifestId,
         Map<String, BinaryData> parameterValues) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1829,7 +979,7 @@ public final class AgentsClient {
             = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues);
         BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
         return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
-            .toObject(AgentObject.class);
+            .toObject(AgentDetails.class);
     }
 
     /**
@@ -1849,7 +999,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject updateAgentFromManifest(String agentName, String manifestId,
+    public AgentDetails updateAgentFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues) {
         // Generated convenience method for updateAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1858,7 +1008,7 @@ public final class AgentsClient {
         BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
         return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
             .getValue()
-            .toObject(AgentObject.class);
+            .toObject(AgentDetails.class);
     }
 
     /**
@@ -1880,7 +1030,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionObject createAgentVersionFromManifest(String agentName, String manifestId,
+    public AgentVersionDetails createAgentVersionFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues) {
         // Generated convenience method for createAgentVersionFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1889,7 +1039,7 @@ public final class AgentsClient {
         BinaryData createAgentVersionFromManifestRequest1
             = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
         return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
-            requestOptions).getValue().toObject(AgentVersionObject.class);
+            requestOptions).getValue().toObject(AgentVersionDetails.class);
     }
 
     /**
@@ -1917,14 +1067,14 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject createAgent(String name, AgentDefinition definition, Map<String, String> metadata,
+    public AgentDetails createAgent(String name, AgentDefinition definition, Map<String, String> metadata,
         String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentRequest1 createAgentRequest1Obj
             = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentObject.class);
+        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
     }
 
     /**
@@ -1950,7 +1100,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
+    public AgentDetails updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
         String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1958,7 +1108,7 @@ public final class AgentsClient {
             = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
         BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
         return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
-            .toObject(AgentObject.class);
+            .toObject(AgentDetails.class);
     }
 
     /**
@@ -1987,7 +1137,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject createAgentFromManifest(String name, String manifestId, Map<String, BinaryData> parameterValues,
+    public AgentDetails createAgentFromManifest(String name, String manifestId, Map<String, BinaryData> parameterValues,
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1996,7 +1146,7 @@ public final class AgentsClient {
                 .setDescription(description);
         BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
         return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
-            .toObject(AgentObject.class);
+            .toObject(AgentDetails.class);
     }
 
     /**
@@ -2023,7 +1173,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentObject updateAgentFromManifest(String agentName, String manifestId,
+    public AgentDetails updateAgentFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2033,7 +1183,7 @@ public final class AgentsClient {
         BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
         return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
             .getValue()
-            .toObject(AgentObject.class);
+            .toObject(AgentDetails.class);
     }
 
     /**
@@ -2061,7 +1211,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionObject createAgentVersion(String agentName, AgentDefinition definition,
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2069,7 +1219,7 @@ public final class AgentsClient {
             = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
-            .toObject(AgentVersionObject.class);
+            .toObject(AgentVersionDetails.class);
     }
 
     /**
@@ -2098,7 +1248,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionObject createAgentVersionFromManifest(String agentName, String manifestId,
+    public AgentVersionDetails createAgentVersionFromManifest(String agentName, String manifestId,
         Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2108,6 +1258,70 @@ public final class AgentsClient {
         BinaryData createAgentVersionFromManifestRequest1
             = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
         return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
-            requestOptions).getValue().toObject(AgentVersionObject.class);
+            requestOptions).getValue().toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Retrieves a specific version of an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     *     object: String (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     created_at: long (Required)
+     *     definition (Required): {
+     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         rai_config (Optional): {
+     *             rai_policy_name: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param agentVersion The version of the agent to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentVersionDetailsWithResponse(String agentName, String agentVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAgentVersionDetailsWithResponse(agentName, agentVersion, requestOptions);
+    }
+
+    /**
+     * Retrieves a specific version of an agent.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param agentVersion The version of the agent to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails getAgentVersionDetails(String agentName, String agentVersion) {
+        // Generated convenience method for getAgentVersionDetailsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAgentVersionDetailsWithResponse(agentName, agentVersion, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
     }
 }

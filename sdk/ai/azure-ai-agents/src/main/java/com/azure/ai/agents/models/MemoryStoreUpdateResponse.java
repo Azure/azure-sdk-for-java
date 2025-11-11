@@ -41,13 +41,13 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
      * The result of memory store update operation when status is "completed".
      */
     @Generated
-    private MemoryStoreUpdateResult result;
+    private MemoryStoreUpdateCompletedResult result;
 
     /*
      * Error object that describes the error when status is "failed".
      */
     @Generated
-    private ApiError error;
+    private Error error;
 
     /**
      * Creates an instance of MemoryStoreUpdateResponse class.
@@ -99,7 +99,7 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
      * @return the result value.
      */
     @Generated
-    public MemoryStoreUpdateResult getResult() {
+    public MemoryStoreUpdateCompletedResult getResult() {
         return this.result;
     }
 
@@ -109,7 +109,7 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
      * @return the error value.
      */
     @Generated
-    public ApiError getError() {
+    public Error getError() {
         return this.error;
     }
 
@@ -143,8 +143,8 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
             String updateId = null;
             MemoryStoreUpdateStatus status = null;
             String supersededBy = null;
-            MemoryStoreUpdateResult result = null;
-            ApiError error = null;
+            MemoryStoreUpdateCompletedResult result = null;
+            Error error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,9 +155,9 @@ public final class MemoryStoreUpdateResponse implements JsonSerializable<MemoryS
                 } else if ("superseded_by".equals(fieldName)) {
                     supersededBy = reader.getString();
                 } else if ("result".equals(fieldName)) {
-                    result = MemoryStoreUpdateResult.fromJson(reader);
+                    result = MemoryStoreUpdateCompletedResult.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
-                    error = ApiError.fromJson(reader);
+                    error = Error.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

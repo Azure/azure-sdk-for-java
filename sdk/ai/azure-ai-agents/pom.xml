@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-agents</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Agents</name>
@@ -64,13 +64,14 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+
+    <!-- test scope -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
     </dependency>
-
-    <!-- test scope -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>

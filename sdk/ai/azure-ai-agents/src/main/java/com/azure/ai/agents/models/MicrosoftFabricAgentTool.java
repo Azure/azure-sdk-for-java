@@ -22,20 +22,14 @@ public final class MicrosoftFabricAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
 
-    /*
-     * The fabric data agent tool parameters.
-     */
-    @Generated
-    private final FabricDataAgentToolParameters fabricDataagentPreview;
-
     /**
      * Creates an instance of MicrosoftFabricAgentTool class.
      *
-     * @param fabricDataagentPreview the fabricDataagentPreview value to set.
+     * @param fabricDataAgentPreview the fabricDataAgentPreview value to set.
      */
     @Generated
-    public MicrosoftFabricAgentTool(FabricDataAgentToolParameters fabricDataagentPreview) {
-        this.fabricDataagentPreview = fabricDataagentPreview;
+    public MicrosoftFabricAgentTool(FabricDataAgentToolParameters fabricDataAgentPreview) {
+        this.fabricDataAgentPreview = fabricDataAgentPreview;
     }
 
     /**
@@ -50,23 +44,13 @@ public final class MicrosoftFabricAgentTool extends Tool {
     }
 
     /**
-     * Get the fabricDataagentPreview property: The fabric data agent tool parameters.
-     *
-     * @return the fabricDataagentPreview value.
-     */
-    @Generated
-    public FabricDataAgentToolParameters getFabricDataagentPreview() {
-        return this.fabricDataagentPreview;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("fabric_dataagent_preview", this.fabricDataagentPreview);
+        jsonWriter.writeJsonField("fabric_dataagent_preview", this.fabricDataAgentPreview);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -83,13 +67,13 @@ public final class MicrosoftFabricAgentTool extends Tool {
     @Generated
     public static MicrosoftFabricAgentTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FabricDataAgentToolParameters fabricDataagentPreview = null;
+            FabricDataAgentToolParameters fabricDataAgentPreview = null;
             ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("fabric_dataagent_preview".equals(fieldName)) {
-                    fabricDataagentPreview = FabricDataAgentToolParameters.fromJson(reader);
+                    fabricDataAgentPreview = FabricDataAgentToolParameters.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {
@@ -97,9 +81,25 @@ public final class MicrosoftFabricAgentTool extends Tool {
                 }
             }
             MicrosoftFabricAgentTool deserializedMicrosoftFabricAgentTool
-                = new MicrosoftFabricAgentTool(fabricDataagentPreview);
+                = new MicrosoftFabricAgentTool(fabricDataAgentPreview);
             deserializedMicrosoftFabricAgentTool.type = type;
             return deserializedMicrosoftFabricAgentTool;
         });
+    }
+
+    /*
+     * The fabric data agent tool parameters.
+     */
+    @Generated
+    private final FabricDataAgentToolParameters fabricDataAgentPreview;
+
+    /**
+     * Get the fabricDataAgentPreview property: The fabric data agent tool parameters.
+     *
+     * @return the fabricDataAgentPreview value.
+     */
+    @Generated
+    public FabricDataAgentToolParameters getFabricDataAgentPreview() {
+        return this.fabricDataAgentPreview;
     }
 }

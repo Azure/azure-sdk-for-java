@@ -21,17 +21,7 @@ public final class AgentObjectVersions implements JsonSerializable<AgentObjectVe
      * The latest property.
      */
     @Generated
-    private final AgentVersionObject latest;
-
-    /**
-     * Creates an instance of AgentObjectVersions class.
-     *
-     * @param latest the latest value to set.
-     */
-    @Generated
-    private AgentObjectVersions(AgentVersionObject latest) {
-        this.latest = latest;
-    }
+    private final AgentVersionDetails latest;
 
     /**
      * Get the latest property: The latest property.
@@ -39,7 +29,7 @@ public final class AgentObjectVersions implements JsonSerializable<AgentObjectVe
      * @return the latest value.
      */
     @Generated
-    public AgentVersionObject getLatest() {
+    public AgentVersionDetails getLatest() {
         return this.latest;
     }
 
@@ -66,17 +56,27 @@ public final class AgentObjectVersions implements JsonSerializable<AgentObjectVe
     @Generated
     public static AgentObjectVersions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentVersionObject latest = null;
+            AgentVersionDetails latest = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("latest".equals(fieldName)) {
-                    latest = AgentVersionObject.fromJson(reader);
+                    latest = AgentVersionDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new AgentObjectVersions(latest);
         });
+    }
+
+    /**
+     * Creates an instance of AgentObjectVersions class.
+     *
+     * @param latest the latest value to set.
+     */
+    @Generated
+    private AgentObjectVersions(AgentVersionDetails latest) {
+        this.latest = latest;
     }
 }

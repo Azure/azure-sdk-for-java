@@ -16,7 +16,7 @@ public class CreateConversation {
                 .endpoint(endpoint)
                 .buildConversationsClient();
 
-        Conversation conversation = conversationsClient.getOpenAIClient().create();
+        Conversation conversation = conversationsClient.getConversationService().create();
 
         System.out.println("Conversation ID: " + conversation.id());
         System.out.println("Conversation Created At: " + conversation.createdAt());

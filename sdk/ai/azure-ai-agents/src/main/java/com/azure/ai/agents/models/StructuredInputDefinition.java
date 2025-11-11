@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An structured input that can participate in prompt template substitutions and tool argument binding.
@@ -30,12 +29,6 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
      */
     @Generated
     private BinaryData defaultValue;
-
-    /*
-     * When provided, the input value is bound to the specified tool arguments.
-     */
-    @Generated
-    private List<ToolArgumentBinding> toolArgumentBindings;
 
     /*
      * The JSON schema for the structured input (optional).
@@ -101,28 +94,6 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
     }
 
     /**
-     * Get the toolArgumentBindings property: When provided, the input value is bound to the specified tool arguments.
-     *
-     * @return the toolArgumentBindings value.
-     */
-    @Generated
-    public List<ToolArgumentBinding> getToolArgumentBindings() {
-        return this.toolArgumentBindings;
-    }
-
-    /**
-     * Set the toolArgumentBindings property: When provided, the input value is bound to the specified tool arguments.
-     *
-     * @param toolArgumentBindings the toolArgumentBindings value to set.
-     * @return the StructuredInputDefinition object itself.
-     */
-    @Generated
-    public StructuredInputDefinition setToolArgumentBindings(List<ToolArgumentBinding> toolArgumentBindings) {
-        this.toolArgumentBindings = toolArgumentBindings;
-        return this;
-    }
-
-    /**
      * Get the schema property: The JSON schema for the structured input (optional).
      *
      * @return the schema value.
@@ -178,8 +149,6 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
             jsonWriter.writeFieldName("default_value");
             this.defaultValue.writeTo(jsonWriter);
         }
-        jsonWriter.writeArrayField("tool_argument_bindings", this.toolArgumentBindings,
-            (writer, element) -> writer.writeJson(element));
         if (this.schema != null) {
             jsonWriter.writeFieldName("schema");
             this.schema.writeTo(jsonWriter);
@@ -208,10 +177,6 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
                 } else if ("default_value".equals(fieldName)) {
                     deserializedStructuredInputDefinition.defaultValue
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("tool_argument_bindings".equals(fieldName)) {
-                    List<ToolArgumentBinding> toolArgumentBindings
-                        = reader.readArray(reader1 -> ToolArgumentBinding.fromJson(reader1));
-                    deserializedStructuredInputDefinition.toolArgumentBindings = toolArgumentBindings;
                 } else if ("schema".equals(fieldName)) {
                     deserializedStructuredInputDefinition.schema
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));

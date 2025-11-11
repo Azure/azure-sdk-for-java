@@ -32,12 +32,6 @@ public final class FileSearchTool extends Tool {
     private final List<String> vectorStoreIds;
 
     /*
-     * The maximum number of results to return. This number should be between 1 and 50 inclusive.
-     */
-    @Generated
-    private Integer maxNumResults;
-
-    /*
      * Ranking options for search.
      */
     @Generated
@@ -78,30 +72,6 @@ public final class FileSearchTool extends Tool {
     @Generated
     public List<String> getVectorStoreIds() {
         return this.vectorStoreIds;
-    }
-
-    /**
-     * Get the maxNumResults property: The maximum number of results to return. This number should be between 1 and 50
-     * inclusive.
-     *
-     * @return the maxNumResults value.
-     */
-    @Generated
-    public Integer getMaxNumResults() {
-        return this.maxNumResults;
-    }
-
-    /**
-     * Set the maxNumResults property: The maximum number of results to return. This number should be between 1 and 50
-     * inclusive.
-     *
-     * @param maxNumResults the maxNumResults value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setMaxNumResults(Integer maxNumResults) {
-        this.maxNumResults = maxNumResults;
-        return this;
     }
 
     /**
@@ -158,7 +128,7 @@ public final class FileSearchTool extends Tool {
         jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("max_num_results", this.maxNumResults);
+        jsonWriter.writeNumberField("max_num_results", this.maxResults);
         jsonWriter.writeJsonField("ranking_options", this.rankingOptions);
         if (this.filters != null) {
             jsonWriter.writeFieldName("filters");
@@ -181,7 +151,7 @@ public final class FileSearchTool extends Tool {
         return jsonReader.readObject(reader -> {
             List<String> vectorStoreIds = null;
             ToolType type = ToolType.FILE_SEARCH;
-            Integer maxNumResults = null;
+            Integer maxResults = null;
             RankingOptions rankingOptions = null;
             BinaryData filters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -192,7 +162,7 @@ public final class FileSearchTool extends Tool {
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else if ("max_num_results".equals(fieldName)) {
-                    maxNumResults = reader.getNullable(JsonReader::getInt);
+                    maxResults = reader.getNullable(JsonReader::getInt);
                 } else if ("ranking_options".equals(fieldName)) {
                     rankingOptions = RankingOptions.fromJson(reader);
                 } else if ("filters".equals(fieldName)) {
@@ -203,10 +173,40 @@ public final class FileSearchTool extends Tool {
             }
             FileSearchTool deserializedFileSearchTool = new FileSearchTool(vectorStoreIds);
             deserializedFileSearchTool.type = type;
-            deserializedFileSearchTool.maxNumResults = maxNumResults;
+            deserializedFileSearchTool.maxResults = maxResults;
             deserializedFileSearchTool.rankingOptions = rankingOptions;
             deserializedFileSearchTool.filters = filters;
             return deserializedFileSearchTool;
         });
+    }
+
+    /*
+     * The maximum number of results to return. This number should be between 1 and 50 inclusive.
+     */
+    @Generated
+    private Integer maxResults;
+
+    /**
+     * Get the maxResults property: The maximum number of results to return. This number should be between 1 and 50
+     * inclusive.
+     *
+     * @return the maxResults value.
+     */
+    @Generated
+    public Integer getMaxResults() {
+        return this.maxResults;
+    }
+
+    /**
+     * Set the maxResults property: The maximum number of results to return. This number should be between 1 and 50
+     * inclusive.
+     *
+     * @param maxResults the maxResults value to set.
+     * @return the FileSearchTool object itself.
+     */
+    @Generated
+    public FileSearchTool setMaxResults(Integer maxResults) {
+        this.maxResults = maxResults;
+        return this;
     }
 }

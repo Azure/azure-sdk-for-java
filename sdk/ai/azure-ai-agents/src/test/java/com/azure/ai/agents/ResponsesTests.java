@@ -26,7 +26,7 @@ public class ResponsesTests extends ClientTestBase {
             = new ResponseCreateParams.Builder().input("Hello, how can you help me?").model("gpt-4o").build();
 
         // Creation
-        Response createdResponse = client.getOpenAIClient().create(responsesRequest);
+        Response createdResponse = client.getResponseService().create(responsesRequest);
 
         assertNotNull(createdResponse);
         assertNotNull(createdResponse.id());

@@ -29,12 +29,6 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
     private final String approvalRequestId;
 
     /*
-     * Whether the request was approved.
-     */
-    @Generated
-    private final boolean approve;
-
-    /*
      * Optional reason for the decision.
      */
     @Generated
@@ -44,12 +38,12 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
      * Creates an instance of MCPApprovalResponseItemParam class.
      *
      * @param approvalRequestId the approvalRequestId value to set.
-     * @param approve the approve value to set.
+     * @param approved the approved value to set.
      */
     @Generated
-    public MCPApprovalResponseItemParam(String approvalRequestId, boolean approve) {
+    public MCPApprovalResponseItemParam(String approvalRequestId, boolean approved) {
         this.approvalRequestId = approvalRequestId;
-        this.approve = approve;
+        this.approved = approved;
     }
 
     /**
@@ -71,16 +65,6 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
     @Generated
     public String getApprovalRequestId() {
         return this.approvalRequestId;
-    }
-
-    /**
-     * Get the approve property: Whether the request was approved.
-     *
-     * @return the approve value.
-     */
-    @Generated
-    public boolean isApprove() {
-        return this.approve;
     }
 
     /**
@@ -113,7 +97,7 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("approval_request_id", this.approvalRequestId);
-        jsonWriter.writeBooleanField("approve", this.approve);
+        jsonWriter.writeBooleanField("approve", this.approved);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("reason", this.reason);
         return jsonWriter.writeEndObject();
@@ -132,7 +116,7 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
     public static MCPApprovalResponseItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String approvalRequestId = null;
-            boolean approve = false;
+            boolean approved = false;
             ItemType type = ItemType.MCP_APPROVAL_RESPONSE;
             String reason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -141,7 +125,7 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
                 if ("approval_request_id".equals(fieldName)) {
                     approvalRequestId = reader.getString();
                 } else if ("approve".equals(fieldName)) {
-                    approve = reader.getBoolean();
+                    approved = reader.getBoolean();
                 } else if ("type".equals(fieldName)) {
                     type = ItemType.fromString(reader.getString());
                 } else if ("reason".equals(fieldName)) {
@@ -151,10 +135,26 @@ public final class MCPApprovalResponseItemParam extends ItemParam {
                 }
             }
             MCPApprovalResponseItemParam deserializedMCPApprovalResponseItemParam
-                = new MCPApprovalResponseItemParam(approvalRequestId, approve);
+                = new MCPApprovalResponseItemParam(approvalRequestId, approved);
             deserializedMCPApprovalResponseItemParam.type = type;
             deserializedMCPApprovalResponseItemParam.reason = reason;
             return deserializedMCPApprovalResponseItemParam;
         });
+    }
+
+    /*
+     * Whether the request was approved.
+     */
+    @Generated
+    private final boolean approved;
+
+    /**
+     * Get the approved property: Whether the request was approved.
+     *
+     * @return the approved value.
+     */
+    @Generated
+    public boolean isApproved() {
+        return this.approved;
     }
 }

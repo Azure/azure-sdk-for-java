@@ -28,7 +28,7 @@ public final class ConversationsClient {
      *
      * @return the OpenAI conversation service client.
      */
-    public ConversationService getOpenAIClient() {
+    public ConversationService getConversationService() {
         return this.openAIConversationClient;
     }
 }

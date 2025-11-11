@@ -39,7 +39,7 @@ public final class ResponsesAsyncClient {
      *
      * @return the OpenAI response service client.
      */
-    public ResponseServiceAsync getOpenAIClient() {
+    public ResponseServiceAsync getResponseServiceAsync() {
         return this.openAIResponsesClientAsync;
     }
 

@@ -17,7 +17,7 @@ public class DeleteConversation {
                 .endpoint(endpoint)
                 .buildConversationsClient();
 
-        ConversationDeletedResource deletedConversation = conversationsClient.getOpenAIClient().delete(conversationId);
+        ConversationDeletedResource deletedConversation = conversationsClient.getConversationService().delete(conversationId);
 
         System.out.println("Deleted conversation with the following details:");
         System.out.println("\tConversation ID: " + deletedConversation.id());
