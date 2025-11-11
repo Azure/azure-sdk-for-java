@@ -75,6 +75,7 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskEncryptionSet", this.diskEncryptionSet);
         jsonWriter.writeStringField("storageAccountType",
             this.storageAccountType == null ? null : this.storageAccountType.toString());
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
@@ -96,7 +97,9 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("storageAccountType".equals(fieldName)) {
+                if ("diskEncryptionSet".equals(fieldName)) {
+                    deserializedManagedDisk.diskEncryptionSet = DiskEncryptionSetParameters.fromJson(reader);
+                } else if ("storageAccountType".equals(fieldName)) {
                     deserializedManagedDisk.storageAccountType = StorageAccountType.fromString(reader.getString());
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedManagedDisk.securityProfile = BatchVmDiskSecurityProfile.fromJson(reader);
@@ -117,6 +120,37 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
     @Generated
     public ManagedDisk setSecurityProfile(BatchVmDiskSecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /*
+     * Specifies the customer managed disk encryption set resource id for the managed disk. It can be set only in
+     * UserSubscription mode.
+     */
+    @Generated
+    private DiskEncryptionSetParameters diskEncryptionSet;
+
+    /**
+     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk. It can be set only in UserSubscription mode.
+     *
+     * @return the diskEncryptionSet value.
+     */
+    @Generated
+    public DiskEncryptionSetParameters getDiskEncryptionSet() {
+        return this.diskEncryptionSet;
+    }
+
+    /**
+     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk. It can be set only in UserSubscription mode.
+     *
+     * @param diskEncryptionSet the diskEncryptionSet value to set.
+     * @return the ManagedDisk object itself.
+     */
+    @Generated
+    public ManagedDisk setDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
+        this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
 }

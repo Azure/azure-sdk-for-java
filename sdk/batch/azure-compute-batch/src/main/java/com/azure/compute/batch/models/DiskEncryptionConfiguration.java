@@ -65,6 +65,7 @@ public final class DiskEncryptionConfiguration implements JsonSerializable<DiskE
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customerManagedKey", this.customerManagedKey);
         jsonWriter.writeArrayField("targets", this.targets,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
@@ -85,7 +86,10 @@ public final class DiskEncryptionConfiguration implements JsonSerializable<DiskE
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("targets".equals(fieldName)) {
+                if ("customerManagedKey".equals(fieldName)) {
+                    deserializedDiskEncryptionConfiguration.customerManagedKey
+                        = DiskCustomerManagedKey.fromJson(reader);
+                } else if ("targets".equals(fieldName)) {
                     List<DiskEncryptionTarget> targets
                         = reader.readArray(reader1 -> DiskEncryptionTarget.fromString(reader1.getString()));
                     deserializedDiskEncryptionConfiguration.targets = targets;
@@ -95,5 +99,39 @@ public final class DiskEncryptionConfiguration implements JsonSerializable<DiskE
             }
             return deserializedDiskEncryptionConfiguration;
         });
+    }
+
+    /*
+     * The Customer Managed Key reference to encrypt the OS Disk. Customer Managed Key will encrypt OS Disk by
+     * EncryptionAtRest, and by default we will encrypt the data disk as well. It can be used only when the pool is
+     * configured with an identity and OsDisk is set as one of the targets of DiskEncryption.
+     */
+    @Generated
+    private DiskCustomerManagedKey customerManagedKey;
+
+    /**
+     * Get the customerManagedKey property: The Customer Managed Key reference to encrypt the OS Disk. Customer Managed
+     * Key will encrypt OS Disk by EncryptionAtRest, and by default we will encrypt the data disk as well. It can be
+     * used only when the pool is configured with an identity and OsDisk is set as one of the targets of DiskEncryption.
+     *
+     * @return the customerManagedKey value.
+     */
+    @Generated
+    public DiskCustomerManagedKey getCustomerManagedKey() {
+        return this.customerManagedKey;
+    }
+
+    /**
+     * Set the customerManagedKey property: The Customer Managed Key reference to encrypt the OS Disk. Customer Managed
+     * Key will encrypt OS Disk by EncryptionAtRest, and by default we will encrypt the data disk as well. It can be
+     * used only when the pool is configured with an identity and OsDisk is set as one of the targets of DiskEncryption.
+     *
+     * @param customerManagedKey the customerManagedKey value to set.
+     * @return the DiskEncryptionConfiguration object itself.
+     */
+    @Generated
+    public DiskEncryptionConfiguration setCustomerManagedKey(DiskCustomerManagedKey customerManagedKey) {
+        this.customerManagedKey = customerManagedKey;
+        return this;
     }
 }

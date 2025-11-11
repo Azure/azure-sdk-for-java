@@ -3,7 +3,6 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchMetadataItem;
-import com.azure.compute.batch.models.BatchNodeCommunicationMode;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolReplaceParameters;
@@ -62,9 +61,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
             BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, vmSize);
-            poolCreateParameters.setTargetDedicatedNodes(2)
-                .setVirtualMachineConfiguration(configuration)
-                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
+            poolCreateParameters.setTargetDedicatedNodes(2).setVirtualMachineConfiguration(configuration);
 
             Response<Void> response = SyncAsyncExtension.execute(
                 () -> batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateParameters),
@@ -96,9 +93,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             updatedMetadata.add(new BatchMetadataItem("foo", "bar"));
 
             BatchPoolReplaceParameters poolReplaceParameters
-                = new BatchPoolReplaceParameters(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
-
-            poolReplaceParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
+                = new BatchPoolReplaceParameters(new ArrayList<>(), updatedMetadata);
 
             SyncAsyncExtension.execute(
                 () -> batchClientWithSharedKey.replacePoolProperties(poolId, poolReplaceParameters),
@@ -106,7 +101,6 @@ public class SharedKeyTests extends BatchClientTestBase {
 
             pool = SyncAsyncExtension.execute(() -> batchClientWithSharedKey.getPool(poolId),
                 () -> batchAsyncClientWithSharedKey.getPool(poolId));
-            Assertions.assertEquals(BatchNodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
             List<BatchMetadataItem> metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("foo"));
 
@@ -116,8 +110,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             updatedMetadata.clear();
             updatedMetadata.add(new BatchMetadataItem("key1", "value1"));
             BatchPoolUpdateParameters poolUpdateParameters
-                = new BatchPoolUpdateParameters().setMetadata(updatedMetadata)
-                    .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
+                = new BatchPoolUpdateParameters().setMetadata(updatedMetadata);
             Response<Void> updatePoolResponse = SyncAsyncExtension.execute(
                 () -> batchClientWithSharedKey.updatePoolWithResponse(poolId,
                     BinaryData.fromObject(poolUpdateParameters), null),
@@ -150,7 +143,6 @@ public class SharedKeyTests extends BatchClientTestBase {
             Assertions.assertTrue(authorizationValue.contains("SharedKey"),
                 "Test is not using SharedKey authentication");
 
-            Assertions.assertEquals(BatchNodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
             metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("key1"));
 

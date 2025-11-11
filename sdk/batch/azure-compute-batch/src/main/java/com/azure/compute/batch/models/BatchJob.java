@@ -99,18 +99,19 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private Integer priority;
 
     /*
-     * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high
-     * priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can
-     * update a job's allowTaskPreemption after it has been created using the update job API.
+     * Whether Tasks in this job can be preempted by other high priority jobs. (This property is not available by
+     * default. Please contact support for more information) If the value is set to True, other high priority jobs
+     * submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's
+     * allowTaskPreemption after it has been created using the update job API.
      */
     @Generated
     private Boolean allowTaskPreemption;
 
     /*
-     * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be
-     * -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the
-     * number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using
-     * the update job API.
+     * The maximum number of tasks that can be executed in parallel for the job. (This property is not available by
+     * default. Please contact support for more information) The value of maxParallelTasks must be -1 or greater than 0
+     * if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that
+     * can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
      */
     @Generated
     private Integer maxParallelTasks;
@@ -156,7 +157,8 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private final BatchPoolInfo poolInfo;
 
     /*
-     * The network configuration for the Job.
+     * (This property is not available by default. Please contact support for more information) The network
+     * configuration for the Job.
      */
     @Generated
     private BatchJobNetworkConfiguration networkConfiguration;
@@ -327,10 +329,10 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Get the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs. If
-     * the value is set to True, other high priority jobs submitted to the system will take precedence and will be able
-     * requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the
-     * update job API.
+     * Get the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs.
+     * (This property is not available by default. Please contact support for more information) If the value is set to
+     * True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from
+     * this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
      *
      * @return the allowTaskPreemption value.
      */
@@ -340,10 +342,10 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Set the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs. If
-     * the value is set to True, other high priority jobs submitted to the system will take precedence and will be able
-     * requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the
-     * update job API.
+     * Set the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs.
+     * (This property is not available by default. Please contact support for more information) If the value is set to
+     * True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from
+     * this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
      *
      * @param allowTaskPreemption the allowTaskPreemption value to set.
      * @return the BatchJob object itself.
@@ -355,10 +357,11 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Get the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job. The
-     * value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1,
-     * which means there's no limit to the number of tasks that can be run at once. You can update a job's
-     * maxParallelTasks after it has been created using the update job API.
+     * Get the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job.
+     * (This property is not available by default. Please contact support for more information) The value of
+     * maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which
+     * means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks
+     * after it has been created using the update job API.
      *
      * @return the maxParallelTasks value.
      */
@@ -368,10 +371,11 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Set the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job. The
-     * value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1,
-     * which means there's no limit to the number of tasks that can be run at once. You can update a job's
-     * maxParallelTasks after it has been created using the update job API.
+     * Set the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job.
+     * (This property is not available by default. Please contact support for more information) The value of
+     * maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which
+     * means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks
+     * after it has been created using the update job API.
      *
      * @param maxParallelTasks the maxParallelTasks value to set.
      * @return the BatchJob object itself.
@@ -460,7 +464,8 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     }
 
     /**
-     * Get the networkConfiguration property: The network configuration for the Job.
+     * Get the networkConfiguration property: (This property is not available by default. Please contact support for
+     * more information) The network configuration for the Job.
      *
      * @return the networkConfiguration value.
      */
@@ -533,16 +538,16 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     @Generated
     public static BatchJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchPoolInfo poolInfo = null;
             String id = null;
-            String displayName = null;
-            Boolean usesTaskDependencies = null;
             String url = null;
             String eTag = null;
             OffsetDateTime lastModified = null;
             OffsetDateTime creationTime = null;
             BatchJobState state = null;
             OffsetDateTime stateTransitionTime = null;
+            BatchPoolInfo poolInfo = null;
+            String displayName = null;
+            Boolean usesTaskDependencies = null;
             BatchJobState previousState = null;
             OffsetDateTime previousStateTransitionTime = null;
             Integer priority = null;
@@ -562,14 +567,8 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("poolInfo".equals(fieldName)) {
-                    poolInfo = BatchPoolInfo.fromJson(reader);
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    displayName = reader.getString();
-                } else if ("usesTaskDependencies".equals(fieldName)) {
-                    usesTaskDependencies = reader.getNullable(JsonReader::getBoolean);
                 } else if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
@@ -585,6 +584,12 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("poolInfo".equals(fieldName)) {
+                    poolInfo = BatchPoolInfo.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("usesTaskDependencies".equals(fieldName)) {
+                    usesTaskDependencies = reader.getNullable(JsonReader::getBoolean);
                 } else if ("previousState".equals(fieldName)) {
                     previousState = BatchJobState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
@@ -624,14 +629,14 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
             }
             BatchJob deserializedBatchJob = new BatchJob(poolInfo);
             deserializedBatchJob.id = id;
-            deserializedBatchJob.displayName = displayName;
-            deserializedBatchJob.usesTaskDependencies = usesTaskDependencies;
             deserializedBatchJob.url = url;
             deserializedBatchJob.eTag = eTag;
             deserializedBatchJob.lastModified = lastModified;
             deserializedBatchJob.creationTime = creationTime;
             deserializedBatchJob.state = state;
             deserializedBatchJob.stateTransitionTime = stateTransitionTime;
+            deserializedBatchJob.displayName = displayName;
+            deserializedBatchJob.usesTaskDependencies = usesTaskDependencies;
             deserializedBatchJob.previousState = previousState;
             deserializedBatchJob.previousStateTransitionTime = previousStateTransitionTime;
             deserializedBatchJob.priority = priority;

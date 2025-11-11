@@ -105,7 +105,10 @@ public final class BatchPublicIpAddressConfiguration implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("provision",
             this.ipAddressProvisioningType == null ? null : this.ipAddressProvisioningType.toString());
+        jsonWriter.writeArrayField("ipFamilies", this.ipFamilies,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("ipAddressIds", this.ipAddressIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipTags", this.ipTags, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -128,14 +131,85 @@ public final class BatchPublicIpAddressConfiguration implements JsonSerializable
                 if ("provision".equals(fieldName)) {
                     deserializedBatchPublicIpAddressConfiguration.ipAddressProvisioningType
                         = IpAddressProvisioningType.fromString(reader.getString());
+                } else if ("ipFamilies".equals(fieldName)) {
+                    List<IPFamily> ipFamilies = reader.readArray(reader1 -> IPFamily.fromString(reader1.getString()));
+                    deserializedBatchPublicIpAddressConfiguration.ipFamilies = ipFamilies;
                 } else if ("ipAddressIds".equals(fieldName)) {
                     List<String> ipAddressIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedBatchPublicIpAddressConfiguration.ipAddressIds = ipAddressIds;
+                } else if ("ipTags".equals(fieldName)) {
+                    List<IPTag> ipTags = reader.readArray(reader1 -> IPTag.fromJson(reader1));
+                    deserializedBatchPublicIpAddressConfiguration.ipTags = ipTags;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBatchPublicIpAddressConfiguration;
         });
+    }
+
+    /*
+     * The IP families used to specify IP versions available to the pool. IP families are used to determine single-stack
+     * or dual-stack pools. For single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4
+     * and IPv6.
+     */
+    @Generated
+    private List<IPFamily> ipFamilies;
+
+    /*
+     * A list of IP tags associated with the public IP addresses of the Pool. IP tags are used to categorize and filter
+     * public IP addresses for billing and management purposes.
+     */
+    @Generated
+    private List<IPTag> ipTags;
+
+    /**
+     * Get the ipFamilies property: The IP families used to specify IP versions available to the pool. IP families are
+     * used to determine single-stack or dual-stack pools. For single-stack, the expected value is IPv4. For dual-stack,
+     * the expected values are IPv4 and IPv6.
+     *
+     * @return the ipFamilies value.
+     */
+    @Generated
+    public List<IPFamily> getIpFamilies() {
+        return this.ipFamilies;
+    }
+
+    /**
+     * Set the ipFamilies property: The IP families used to specify IP versions available to the pool. IP families are
+     * used to determine single-stack or dual-stack pools. For single-stack, the expected value is IPv4. For dual-stack,
+     * the expected values are IPv4 and IPv6.
+     *
+     * @param ipFamilies the ipFamilies value to set.
+     * @return the BatchPublicIpAddressConfiguration object itself.
+     */
+    @Generated
+    public BatchPublicIpAddressConfiguration setIpFamilies(List<IPFamily> ipFamilies) {
+        this.ipFamilies = ipFamilies;
+        return this;
+    }
+
+    /**
+     * Get the ipTags property: A list of IP tags associated with the public IP addresses of the Pool. IP tags are used
+     * to categorize and filter public IP addresses for billing and management purposes.
+     *
+     * @return the ipTags value.
+     */
+    @Generated
+    public List<IPTag> getIpTags() {
+        return this.ipTags;
+    }
+
+    /**
+     * Set the ipTags property: A list of IP tags associated with the public IP addresses of the Pool. IP tags are used
+     * to categorize and filter public IP addresses for billing and management purposes.
+     *
+     * @param ipTags the ipTags value to set.
+     * @return the BatchPublicIpAddressConfiguration object itself.
+     */
+    @Generated
+    public BatchPublicIpAddressConfiguration setIpTags(List<IPTag> ipTags) {
+        this.ipTags = ipTags;
+        return this;
     }
 }

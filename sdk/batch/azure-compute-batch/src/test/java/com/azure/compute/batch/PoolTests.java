@@ -165,8 +165,7 @@ public class PoolTests extends BatchClientTestBase {
             poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setTargetLowPriorityNodes(poolLowPriVmCount)
                 .setVirtualMachineConfiguration(configuration)
-                .setNetworkConfiguration(netConfig)
-                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
+                .setNetworkConfiguration(netConfig);
 
             SyncAsyncExtension.execute(() -> batchClient.createPool(poolToCreate),
                 () -> batchAsyncClient.createPool(poolToCreate));
@@ -186,9 +185,6 @@ public class PoolTests extends BatchClientTestBase {
 
             Assertions.assertEquals(poolVmCount, (long) pool.getCurrentDedicatedNodes());
             Assertions.assertEquals(poolLowPriVmCount, (long) pool.getCurrentLowPriorityNodes());
-            Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(),
-                "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
-            Assertions.assertEquals(BatchNodeCommunicationMode.DEFAULT, pool.getTargetNodeCommunicationMode());
 
             Iterable<BatchNode> nodeListIterator = SyncAsyncExtension.execute(() -> batchClient.listNodes(poolId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()));
@@ -232,29 +228,20 @@ public class PoolTests extends BatchClientTestBase {
             poolUpdateParameters.setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
                 .setMetadata(new LinkedList<BatchMetadataItem>());
 
-            poolUpdateParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
-
             SyncAsyncExtension.execute(() -> batchClient.updatePool(poolId, poolUpdateParameters),
                 () -> batchAsyncClient.updatePool(poolId, poolUpdateParameters));
 
             pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId),
                 () -> batchAsyncClient.getPool(poolId));
-            Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(),
-                "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
-            Assertions.assertEquals(BatchNodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
 
             // Patch NodeCommunicationMode to Classic
 
             BatchPoolUpdateParameters poolUpdateParameters2 = new BatchPoolUpdateParameters();
-            poolUpdateParameters2.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
             SyncAsyncExtension.execute(() -> batchClient.updatePool(poolId, poolUpdateParameters2),
                 () -> batchAsyncClient.updatePool(poolId, poolUpdateParameters2));
 
             pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId),
                 () -> batchAsyncClient.getPool(poolId));
-            Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(),
-                "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
-            Assertions.assertEquals(BatchNodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
 
             // RESIZE
             BatchPoolResizeParameters resizeParameters

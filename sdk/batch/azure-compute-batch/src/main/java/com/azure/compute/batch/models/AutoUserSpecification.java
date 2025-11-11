@@ -20,8 +20,7 @@ public final class AutoUserSpecification implements JsonSerializable<AutoUserSpe
     /*
      * The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be
      * specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way
-     * which could impact other tasks, or if certificates have been specified on the pool which should not be accessible
-     * by normal tasks but should be accessible by StartTasks.
+     * which could impact other tasks.
      */
     @Generated
     private AutoUserScope scope;
@@ -42,8 +41,7 @@ public final class AutoUserSpecification implements JsonSerializable<AutoUserSpe
     /**
      * Get the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows a
      * value of Task should be specified if stricter isolation between tasks is required. For example, if the task
-     * mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool
-     * which should not be accessible by normal tasks but should be accessible by StartTasks.
+     * mutates the registry in a way which could impact other tasks.
      *
      * @return the scope value.
      */
@@ -55,8 +53,7 @@ public final class AutoUserSpecification implements JsonSerializable<AutoUserSpe
     /**
      * Set the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows a
      * value of Task should be specified if stricter isolation between tasks is required. For example, if the task
-     * mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool
-     * which should not be accessible by normal tasks but should be accessible by StartTasks.
+     * mutates the registry in a way which could impact other tasks.
      *
      * @param scope the scope value to set.
      * @return the AutoUserSpecification object itself.
