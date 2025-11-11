@@ -20,10 +20,16 @@ import reactor.core.publisher.Mono;
 public class AudiencePolicy implements HttpPipelinePolicy {
 
     private static final String NO_AUDIENCE_ERROR_MESSAGE
-        = "No audience was provided. An audience must be configured to connect to this cloud.";
+        = "Unable to authenticate to Azure App Configuration. No authentication token audience was provided. "
+            + "Please set an Audience in your ConfigurationClientBuilder for the target cloud. "
+            + "For details on how to configure the authentication token audience visit "
+            + "https://aka.ms/appconfig/client-token-audience.";
 
     private static final String INCORRECT_AUDIENCE_ERROR_MESSAGE
-        = "An incorrect audience was provided. Please update the audience to connect to this cloud.";
+        = "Unable to authenticate to Azure App Configuration. An incorrect token audience was provided. "
+            + "Please set the Audience in your ConfigurationClientBuilder to the appropriate audience for this cloud. "
+            + "For details on how to configure the authentication token audience visit "
+            + "https://aka.ms/appconfig/client-token-audience.";
 
     private static final String AAD_AUDIENCE_ERROR_CODE = "AADSTS500011";
 
