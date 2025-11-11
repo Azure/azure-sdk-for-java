@@ -27,6 +27,8 @@ public class VirtualNetworkGatewayTests extends NetworkTests {
         String gatewayName1 = generateRandomResourceName("vngw1", 15);
         String gatewayName2 = generateRandomResourceName("vngw2", 15);
 
+        rgName = group1;
+
         try {
             VirtualNetworkGateway gateway1 = createVirtualNetworkGateway(group1, gatewayName1);
             VirtualNetworkGateway gateway2 = createVirtualNetworkGateway(group2, gatewayName2);
@@ -37,11 +39,7 @@ public class VirtualNetworkGatewayTests extends NetworkTests {
             Set<String> gatewayNames = gatewayList.stream().map(HasName::name).collect(Collectors.toSet());
             Assertions.assertTrue(gatewayNames.containsAll(Arrays.asList(gatewayName1, gatewayName2)));
         } finally {
-            try {
-                resourceManager.resourceGroups().beginDeleteByName(group1);
-            } catch (ManagementException e) {
-                // ignore
-            }
+            // group1 would be deleted in cleanUpResources
             try {
                 resourceManager.resourceGroups().beginDeleteByName(group2);
             } catch (ManagementException e) {
