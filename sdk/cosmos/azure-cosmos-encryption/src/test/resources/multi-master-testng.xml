@@ -22,6 +22,9 @@
   -->
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="multi-master">
+  <listeners>
+    <listener class-name="com.azure.cosmos.encryption.CosmosNettyLeakDetectorFactory"/>
+  </listeners>
   <test name="multi-master" group-by-instances="true">
     <groups>
       <run>

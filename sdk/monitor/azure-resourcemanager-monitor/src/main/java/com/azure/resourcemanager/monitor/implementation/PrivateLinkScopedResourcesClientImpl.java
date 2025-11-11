@@ -68,7 +68,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientPrivate")
+    @ServiceInterface(name = "MonitorClientPrivateLinkScopedResources")
     public interface PrivateLinkScopedResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}")
@@ -875,7 +875,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful
+     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -904,7 +904,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful
+     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

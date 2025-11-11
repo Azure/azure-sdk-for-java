@@ -742,6 +742,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                     + "therefore invalid. Destination: " + destinationRes.getPath()));
         }
 
+        // Apply sas token if present
+        AzureFileSystem fileSystem = (AzureFileSystem) source.getFileSystem();
+        String sasToken
+            = fileSystem.getSasCredential() != null ? "?" + fileSystem.getSasCredential().getSignature() : "";
+        String sourceUrl = sourceRes.getBlobClient().getBlobUrl() + sasToken;
+
         /*
         Try to copy the resource at the source path.
         There is an optimization here where we try to do the copy first and only check for a virtual directory if
@@ -751,8 +757,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         first and then do a copy or createDir, which would always be two requests for all resource types.
          */
         try {
-            SyncPoller<BlobCopyInfo, Void> pollResponse = destinationRes.getBlobClient()
-                .beginCopy(sourceRes.getBlobClient().getBlobUrl(), null, null, null, null, requestConditions, null);
+            SyncPoller<BlobCopyInfo, Void> pollResponse
+                = destinationRes.getBlobClient().beginCopy(sourceUrl, null, null, null, null, requestConditions, null);
             pollResponse.waitForCompletion(Duration.ofSeconds(COPY_TIMEOUT_SECONDS));
         } catch (BlobStorageException e) {
             // If the source was not found, it could be because it's a virtual directory. Check the status.

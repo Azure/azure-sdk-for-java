@@ -864,6 +864,14 @@
         "UBINARY"
       ]
     },
+	{
+      "filename": "/sdk/ai/azure-ai-voicelive/**",
+      "words": [
+        "Dexec",
+        "viseme",
+        "VISEME"
+      ]
+    },
     {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [

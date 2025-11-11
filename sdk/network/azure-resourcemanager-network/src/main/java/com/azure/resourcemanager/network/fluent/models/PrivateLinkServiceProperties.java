@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AccessMode;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesAutoApproval;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesVisibility;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -34,6 +35,11 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
      * The destination IP address of the private link service.
      */
     private String destinationIpAddress;
+
+    /*
+     * The access mode of the private link service.
+     */
+    private AccessMode accessMode;
 
     /*
      * An array of references to the network interfaces created for this private link service.
@@ -142,6 +148,26 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
      */
     public PrivateLinkServiceProperties withDestinationIpAddress(String destinationIpAddress) {
         this.destinationIpAddress = destinationIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the accessMode property: The access mode of the private link service.
+     * 
+     * @return the accessMode value.
+     */
+    public AccessMode accessMode() {
+        return this.accessMode;
+    }
+
+    /**
+     * Set the accessMode property: The access mode of the private link service.
+     * 
+     * @param accessMode the accessMode value to set.
+     * @return the PrivateLinkServiceProperties object itself.
+     */
+    public PrivateLinkServiceProperties withAccessMode(AccessMode accessMode) {
+        this.accessMode = accessMode;
         return this;
     }
 
@@ -299,6 +325,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
         jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("destinationIPAddress", this.destinationIpAddress);
+        jsonWriter.writeStringField("accessMode", this.accessMode == null ? null : this.accessMode.toString());
         jsonWriter.writeJsonField("visibility", this.visibility);
         jsonWriter.writeJsonField("autoApproval", this.autoApproval);
         jsonWriter.writeArrayField("fqdns", this.fqdns, (writer, element) -> writer.writeString(element));
@@ -332,6 +359,8 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
                     deserializedPrivateLinkServiceProperties.ipConfigurations = ipConfigurations;
                 } else if ("destinationIPAddress".equals(fieldName)) {
                     deserializedPrivateLinkServiceProperties.destinationIpAddress = reader.getString();
+                } else if ("accessMode".equals(fieldName)) {
+                    deserializedPrivateLinkServiceProperties.accessMode = AccessMode.fromString(reader.getString());
                 } else if ("networkInterfaces".equals(fieldName)) {
                     List<NetworkInterfaceInner> networkInterfaces
                         = reader.readArray(reader1 -> NetworkInterfaceInner.fromJson(reader1));
