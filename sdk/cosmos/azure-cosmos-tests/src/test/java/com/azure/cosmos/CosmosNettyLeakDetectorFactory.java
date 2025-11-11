@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.StackTraceUtil;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetectorFactory;
@@ -58,7 +59,9 @@ public final class CosmosNettyLeakDetectorFactory extends ResourceLeakDetectorFa
             // install custom reporter
             ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(new CosmosNettyLeakDetectorFactory());
 
-            logger.info("NETTY LEAK detection initialized");
+            logger.info(
+                "NETTY LEAK detection initialized, CosmosClient leak detection enabled: {}",
+                Configs.isClientLeakDetectionEnabled());
             isInitialized = true;
         }
     }
