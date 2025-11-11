@@ -13,6 +13,7 @@ import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -76,7 +77,10 @@ public final class BasicVoiceConversationSample {
         // Configure basic session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful AI assistant.")
-            .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
+            // Voice options:
+            // - OpenAI: new OpenAIVoice(OpenAIVoiceName.ALLOY) - use OpenAIVoiceName enum
+            // - Azure: AzureStandardVoice, AzureCustomVoice, AzurePersonalVoice (all extend AzureVoice)
+            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)

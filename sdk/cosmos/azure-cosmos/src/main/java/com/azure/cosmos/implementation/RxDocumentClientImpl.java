@@ -201,6 +201,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
 
+    private static final Object staticLock = new Object();
+
+    // A map containing the clientId with the callstack from where the Client was initialized.
+    // this can help to identify where clients leak.
+    // The leak detection via System property "COSMOS.CLIENT_LEAK_DETECTION_ENABLED" is disabled by
+    // default - CI pipeline tests will enable it.
+    private final static Map<Integer, String> activeClients = new HashMap<>();
+
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final CosmosItemSerializer defaultCustomSerializer;
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
@@ -506,6 +514,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionRetryOptions = sessionRetryOptions;
         this.defaultCustomSerializer = defaultCustomSerializer;
 
+        this.addToActiveClients();
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
@@ -1367,6 +1376,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
+    }
+
+    private void addToActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            synchronized (staticLock) {
+                activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
+            }
+        }
+    }
+
+    private void removeFromActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            synchronized (staticLock) {
+                activeClients.remove(this.clientId);
+            }
+        }
+    }
+
+    /**
+     * Returns a snapshot of the active clients. The key is the clientId, the value is the callstack showing
+     * where the client was created.
+     * @return a snapshot of the active clients.
+     */
+    public static Map<Integer, String> getActiveClientsSnapshot() {
+        synchronized (staticLock) {
+            return new HashMap<>(activeClients);
+        }
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -6442,6 +6478,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
+            this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
 
