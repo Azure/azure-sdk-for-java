@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public final class LogicAppsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        String responseStr
-            = "{\"properties\":\"datapopikzeb\",\"id\":\"nfywtkq\",\"name\":\"w\",\"type\":\"dlkhczygpm\"}";
+        String responseStr = "{\"id\":\"fbklciichgjsysmv\",\"name\":\"o\",\"type\":\"gwxfkzsi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +29,8 @@ public final class LogicAppsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogicApp response = manager.logicApps()
-            .define("qwdr")
-            .withExistingContainerApp("fgxmbr", "gmwibiosiqsykqf")
-            .withProperties("datatfdaglmrcokz")
+            .define("txqfpjbq")
+            .withExistingContainerApp("qdtadrakgdd", "jkrukizyhgsqtnqs")
             .create();
 
     }

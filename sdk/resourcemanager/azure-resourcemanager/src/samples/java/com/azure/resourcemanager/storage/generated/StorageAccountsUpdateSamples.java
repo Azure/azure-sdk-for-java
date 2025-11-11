@@ -19,6 +19,7 @@ import com.azure.resourcemanager.storage.models.EncryptionIdentity;
 import com.azure.resourcemanager.storage.models.EncryptionService;
 import com.azure.resourcemanager.storage.models.EncryptionServices;
 import com.azure.resourcemanager.storage.models.ExpirationAction;
+import com.azure.resourcemanager.storage.models.GeoPriorityReplicationStatus;
 import com.azure.resourcemanager.storage.models.Identity;
 import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
@@ -51,7 +52,7 @@ import java.util.Map;
  */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
@@ -76,7 +77,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountLeverageIPv6Ability.json
      */
     /**
@@ -100,7 +101,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
@@ -136,7 +137,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdate_placement.json
      */
     /**
@@ -181,7 +182,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountEnableSmbOAuth.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountEnableSmbOAuth.
      * json
      */
     /**
@@ -204,7 +205,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountEnableAD.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
@@ -231,7 +232,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
@@ -271,7 +272,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
@@ -313,7 +314,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountUpdate_zones.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdate_zones.
      * json
      */
     /**
@@ -357,7 +358,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountEnableCMK.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
@@ -383,7 +384,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountUpdate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
@@ -420,12 +421,13 @@ public final class StorageAccountsUpdateSamples {
                     .withAllowBlobPublicAccess(false)
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
-                    .withDefaultToOAuthAuthentication(false),
+                    .withDefaultToOAuthAuthentication(false)
+                    .withGeoPriorityReplicationStatus(new GeoPriorityReplicationStatus().withIsBlobEnabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/
      * StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**

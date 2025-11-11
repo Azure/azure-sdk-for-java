@@ -52,6 +52,7 @@
     <module>sdk/communication</module>
     <module>sdk/compute</module>
     <module>sdk/computefleet</module>
+    <module>sdk/computelimit</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>

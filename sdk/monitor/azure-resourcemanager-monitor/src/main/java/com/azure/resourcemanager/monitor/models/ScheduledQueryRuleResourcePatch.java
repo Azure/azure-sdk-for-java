@@ -21,6 +21,11 @@ import java.util.Map;
 @Fluent
 public final class ScheduledQueryRuleResourcePatch implements JsonSerializable<ScheduledQueryRuleResourcePatch> {
     /*
+     * The identity of the resource.
+     */
+    private Identity identity;
+
+    /*
      * Resource tags
      */
     private Map<String, String> tags;
@@ -34,6 +39,26 @@ public final class ScheduledQueryRuleResourcePatch implements JsonSerializable<S
      * Creates an instance of ScheduledQueryRuleResourcePatch class.
      */
     public ScheduledQueryRuleResourcePatch() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     * 
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the ScheduledQueryRuleResourcePatch object itself.
+     */
+    public ScheduledQueryRuleResourcePatch withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -466,11 +491,39 @@ public final class ScheduledQueryRuleResourcePatch implements JsonSerializable<S
     }
 
     /**
+     * Get the resolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only for
+     * rules of the kind LogAlert.
+     * 
+     * @return the resolveConfiguration value.
+     */
+    public RuleResolveConfiguration resolveConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().resolveConfiguration();
+    }
+
+    /**
+     * Set the resolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only for
+     * rules of the kind LogAlert.
+     * 
+     * @param resolveConfiguration the resolveConfiguration value to set.
+     * @return the ScheduledQueryRuleResourcePatch object itself.
+     */
+    public ScheduledQueryRuleResourcePatch withResolveConfiguration(RuleResolveConfiguration resolveConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledQueryRuleProperties();
+        }
+        this.innerProperties().withResolveConfiguration(resolveConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -482,6 +535,7 @@ public final class ScheduledQueryRuleResourcePatch implements JsonSerializable<S
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
@@ -503,7 +557,9 @@ public final class ScheduledQueryRuleResourcePatch implements JsonSerializable<S
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tags".equals(fieldName)) {
+                if ("identity".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourcePatch.identity = Identity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedScheduledQueryRuleResourcePatch.tags = tags;
                 } else if ("properties".equals(fieldName)) {

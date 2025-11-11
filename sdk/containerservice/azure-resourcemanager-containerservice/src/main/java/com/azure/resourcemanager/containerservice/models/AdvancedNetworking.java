@@ -30,14 +30,9 @@ public final class AdvancedNetworking implements JsonSerializable<AdvancedNetwor
     private AdvancedNetworkingObservability observability;
 
     /*
-     * Security profile to enable security features on cilium-based cluster.
+     * Security profile to enable security features on cilium based cluster.
      */
     private AdvancedNetworkingSecurity security;
-
-    /*
-     * Profile to enable performance-enhancing features on clusters that use Azure CNI powered by Cilium.
-     */
-    private AdvancedNetworkingPerformance performance;
 
     /**
      * Creates an instance of AdvancedNetworking class.
@@ -92,7 +87,7 @@ public final class AdvancedNetworking implements JsonSerializable<AdvancedNetwor
     }
 
     /**
-     * Get the security property: Security profile to enable security features on cilium-based cluster.
+     * Get the security property: Security profile to enable security features on cilium based cluster.
      * 
      * @return the security value.
      */
@@ -101,35 +96,13 @@ public final class AdvancedNetworking implements JsonSerializable<AdvancedNetwor
     }
 
     /**
-     * Set the security property: Security profile to enable security features on cilium-based cluster.
+     * Set the security property: Security profile to enable security features on cilium based cluster.
      * 
      * @param security the security value to set.
      * @return the AdvancedNetworking object itself.
      */
     public AdvancedNetworking withSecurity(AdvancedNetworkingSecurity security) {
         this.security = security;
-        return this;
-    }
-
-    /**
-     * Get the performance property: Profile to enable performance-enhancing features on clusters that use Azure CNI
-     * powered by Cilium.
-     * 
-     * @return the performance value.
-     */
-    public AdvancedNetworkingPerformance performance() {
-        return this.performance;
-    }
-
-    /**
-     * Set the performance property: Profile to enable performance-enhancing features on clusters that use Azure CNI
-     * powered by Cilium.
-     * 
-     * @param performance the performance value to set.
-     * @return the AdvancedNetworking object itself.
-     */
-    public AdvancedNetworking withPerformance(AdvancedNetworkingPerformance performance) {
-        this.performance = performance;
         return this;
     }
 
@@ -145,9 +118,6 @@ public final class AdvancedNetworking implements JsonSerializable<AdvancedNetwor
         if (security() != null) {
             security().validate();
         }
-        if (performance() != null) {
-            performance().validate();
-        }
     }
 
     /**
@@ -159,7 +129,6 @@ public final class AdvancedNetworking implements JsonSerializable<AdvancedNetwor
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeJsonField("observability", this.observability);
         jsonWriter.writeJsonField("security", this.security);
-        jsonWriter.writeJsonField("performance", this.performance);
         return jsonWriter.writeEndObject();
     }
 
@@ -184,8 +153,6 @@ public final class AdvancedNetworking implements JsonSerializable<AdvancedNetwor
                     deserializedAdvancedNetworking.observability = AdvancedNetworkingObservability.fromJson(reader);
                 } else if ("security".equals(fieldName)) {
                     deserializedAdvancedNetworking.security = AdvancedNetworkingSecurity.fromJson(reader);
-                } else if ("performance".equals(fieldName)) {
-                    deserializedAdvancedNetworking.performance = AdvancedNetworkingPerformance.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

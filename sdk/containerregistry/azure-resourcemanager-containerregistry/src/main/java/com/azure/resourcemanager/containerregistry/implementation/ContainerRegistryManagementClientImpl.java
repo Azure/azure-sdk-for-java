@@ -103,6 +103,34 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
     }
 
     /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
+     * The RegistriesClient object to access its operations.
+     */
+    private final RegistriesClient registries;
+
+    /**
+     * Gets the RegistriesClient object to access its operations.
+     * 
+     * @return the RegistriesClient object.
+     */
+    public RegistriesClient getRegistries() {
+        return this.registries;
+    }
+
+    /**
      * The CacheRulesClient object to access its operations.
      */
     private final CacheRulesClient cacheRules;
@@ -142,34 +170,6 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public CredentialSetsClient getCredentialSets() {
         return this.credentialSets;
-    }
-
-    /**
-     * The RegistriesClient object to access its operations.
-     */
-    private final RegistriesClient registries;
-
-    /**
-     * Gets the RegistriesClient object to access its operations.
-     * 
-     * @return the RegistriesClient object.
-     */
-    public RegistriesClient getRegistries() {
-        return this.registries;
-    }
-
-    /**
-     * The OperationsClient object to access its operations.
-     */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     * 
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
     }
 
     /**
@@ -316,11 +316,11 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.operations = new OperationsClientImpl(this);
+        this.registries = new RegistriesClientImpl(this);
         this.cacheRules = new CacheRulesClientImpl(this);
         this.connectedRegistries = new ConnectedRegistriesClientImpl(this);
         this.credentialSets = new CredentialSetsClientImpl(this);
-        this.registries = new RegistriesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.replications = new ReplicationsClientImpl(this);
         this.scopeMaps = new ScopeMapsClientImpl(this);

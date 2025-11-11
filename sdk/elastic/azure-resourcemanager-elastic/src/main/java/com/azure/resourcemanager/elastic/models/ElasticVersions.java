@@ -12,25 +12,27 @@ import com.azure.core.util.Context;
  */
 public interface ElasticVersions {
     /**
-     * Get a list of available versions for a region.
+     * Retrieve a list of all available Elastic versions for a specified region, helping you choose the best version for
+     * your deployment.
      * 
      * @param region Region where elastic deployment will take place.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available versions for a region as paginated response with {@link PagedIterable}.
+     * @return list of elastic versions available in a region as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ElasticVersionListFormat> list(String region);
 
     /**
-     * Get a list of available versions for a region.
+     * Retrieve a list of all available Elastic versions for a specified region, helping you choose the best version for
+     * your deployment.
      * 
      * @param region Region where elastic deployment will take place.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available versions for a region as paginated response with {@link PagedIterable}.
+     * @return list of elastic versions available in a region as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ElasticVersionListFormat> list(String region, Context context);
 }

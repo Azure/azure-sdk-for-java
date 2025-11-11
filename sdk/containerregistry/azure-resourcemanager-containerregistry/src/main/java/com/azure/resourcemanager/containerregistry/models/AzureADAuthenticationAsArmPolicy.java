@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The policy for using ARM audience token for a container registry.
+ * The policy for using Azure Resource Manager audience token for a container registry.
  */
 @Fluent
 public final class AzureADAuthenticationAsArmPolicy implements JsonSerializable<AzureADAuthenticationAsArmPolicy> {

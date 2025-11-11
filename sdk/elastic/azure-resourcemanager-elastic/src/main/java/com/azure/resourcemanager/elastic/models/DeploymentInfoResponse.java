@@ -61,6 +61,20 @@ public interface DeploymentInfoResponse {
     MarketplaceSaaSInfo marketplaceSaasInfo();
 
     /**
+     * Gets the projectType property: Project Type - Applicable for Serverless only.
+     * 
+     * @return the projectType value.
+     */
+    String projectType();
+
+    /**
+     * Gets the configurationType property: ConfigurationType Type - Applicable for Serverless only.
+     * 
+     * @return the configurationType value.
+     */
+    String configurationType();
+
+    /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner object.
      * 
      * @return the inner object.

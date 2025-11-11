@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NamespacesMigrateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Migrate_Assets_Namespace.json
+     * x-ms-original-file: 2025-11-01-preview/Migrate_Assets_Namespace.json
      */
     /**
      * Sample code: Namespace Migrate.

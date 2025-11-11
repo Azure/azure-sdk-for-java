@@ -10,16 +10,70 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.fluent.models.SubscriptionScopeMetricDefinitionInner;
 
 /**
  * An instance of this class provides access to all the operations defined in MetricDefinitionsClient.
  */
 public interface MetricDefinitionsClient {
     /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region,
+        String metricnamespace);
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region);
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScope(String region);
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScope(String region, String metricnamespace,
+        Context context);
+
+    /**
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -56,7 +110,7 @@ public interface MetricDefinitionsClient {
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
