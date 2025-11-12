@@ -4,10 +4,20 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.PhysicalPartitionId;
+import com.azure.resourcemanager.cosmos.models.RetrieveThroughputParameters;
+import com.azure.resourcemanager.cosmos.models.RetrieveThroughputPropertiesResource;
+import java.util.Arrays;
+
 /**
  * Samples for MongoDBResources MongoDBContainerRetrieveThroughputDistribution.
  */
 public final class MongoDBResourcesMongoDBContainerRetrieveThroughputDistributionSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBMongoDBCollectionRetrieveThroughputDistribution.json
+     */
     /**
      * Sample code: CosmosDBMongoDBCollectionRetrieveThroughputDistribution.
      * 
@@ -19,7 +29,10 @@ public final class MongoDBResourcesMongoDBContainerRetrieveThroughputDistributio
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .mongoDBContainerRetrieveThroughputDistribution(null, null, null, null, null,
+            .mongoDBContainerRetrieveThroughputDistribution("rg1", "ddb1", "databaseName", "collectionName",
+                new RetrieveThroughputParameters()
+                    .withResource(new RetrieveThroughputPropertiesResource().withPhysicalPartitionIds(
+                        Arrays.asList(new PhysicalPartitionId().withId("0"), new PhysicalPartitionId().withId("1")))),
                 com.azure.core.util.Context.NONE);
     }
 }

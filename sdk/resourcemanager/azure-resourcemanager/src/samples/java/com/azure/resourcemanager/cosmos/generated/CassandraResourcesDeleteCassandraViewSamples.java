@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources DeleteCassandraView.
  */
 public final class CassandraResourcesDeleteCassandraViewSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBCassandraViewDelete.json
+     */
     /**
      * Sample code: CosmosDBCassandraViewDelete.
      * 
@@ -18,6 +23,6 @@ public final class CassandraResourcesDeleteCassandraViewSamples {
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .deleteCassandraView(null, null, null, null, com.azure.core.util.Context.NONE);
+            .deleteCassandraView("rg1", "ddb1", "keyspacename", "viewname", com.azure.core.util.Context.NONE);
     }
 }

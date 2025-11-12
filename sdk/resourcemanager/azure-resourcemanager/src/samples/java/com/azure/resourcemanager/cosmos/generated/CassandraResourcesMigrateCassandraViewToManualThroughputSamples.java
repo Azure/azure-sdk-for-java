@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources MigrateCassandraViewToManualThroughput.
  */
 public final class CassandraResourcesMigrateCassandraViewToManualThroughputSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBCassandraViewMigrateToManualThroughput.json
+     */
     /**
      * Sample code: CosmosDBCassandraViewMigrateToManualThroughput.
      * 
@@ -19,6 +24,7 @@ public final class CassandraResourcesMigrateCassandraViewToManualThroughputSampl
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .migrateCassandraViewToManualThroughput(null, null, null, null, com.azure.core.util.Context.NONE);
+            .migrateCassandraViewToManualThroughput("rg1", "ddb1", "keyspacename", "viewname",
+                com.azure.core.util.Context.NONE);
     }
 }

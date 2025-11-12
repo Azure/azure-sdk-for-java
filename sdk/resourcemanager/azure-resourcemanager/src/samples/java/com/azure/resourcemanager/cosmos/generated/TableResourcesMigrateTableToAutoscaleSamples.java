@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for TableResources MigrateTableToAutoscale.
  */
 public final class TableResourcesMigrateTableToAutoscaleSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBTableMigrateToAutoscale.json
+     */
     /**
      * Sample code: CosmosDBTableMigrateToAutoscale.
      * 
@@ -18,6 +23,6 @@ public final class TableResourcesMigrateTableToAutoscaleSamples {
             .manager()
             .serviceClient()
             .getTableResources()
-            .migrateTableToAutoscale(null, null, null, com.azure.core.util.Context.NONE);
+            .migrateTableToAutoscale("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

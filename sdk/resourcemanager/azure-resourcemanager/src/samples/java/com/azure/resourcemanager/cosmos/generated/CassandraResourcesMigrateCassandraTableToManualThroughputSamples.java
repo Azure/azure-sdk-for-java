@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources MigrateCassandraTableToManualThroughput.
  */
 public final class CassandraResourcesMigrateCassandraTableToManualThroughputSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBCassandraTableMigrateToManualThroughput.json
+     */
     /**
      * Sample code: CosmosDBCassandraTableMigrateToManualThroughput.
      * 
@@ -19,6 +24,7 @@ public final class CassandraResourcesMigrateCassandraTableToManualThroughputSamp
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .migrateCassandraTableToManualThroughput(null, null, null, null, com.azure.core.util.Context.NONE);
+            .migrateCassandraTableToManualThroughput("rg1", "ddb1", "keyspaceName", "tableName",
+                com.azure.core.util.Context.NONE);
     }
 }

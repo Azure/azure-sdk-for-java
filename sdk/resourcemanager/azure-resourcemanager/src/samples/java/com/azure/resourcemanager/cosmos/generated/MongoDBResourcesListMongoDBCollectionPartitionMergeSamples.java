@@ -4,10 +4,17 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.MergeParameters;
+
 /**
  * Samples for MongoDBResources ListMongoDBCollectionPartitionMerge.
  */
 public final class MongoDBResourcesListMongoDBCollectionPartitionMergeSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBMongoDBCollectionPartitionMerge.json
+     */
     /**
      * Sample code: CosmosDBMongoDBCollectionPartitionMerge.
      * 
@@ -18,6 +25,7 @@ public final class MongoDBResourcesListMongoDBCollectionPartitionMergeSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .listMongoDBCollectionPartitionMerge(null, null, null, null, null, com.azure.core.util.Context.NONE);
+            .listMongoDBCollectionPartitionMerge("rgName", "ddb1", "databaseName", "collectionName",
+                new MergeParameters().withIsDryRun(false), com.azure.core.util.Context.NONE);
     }
 }

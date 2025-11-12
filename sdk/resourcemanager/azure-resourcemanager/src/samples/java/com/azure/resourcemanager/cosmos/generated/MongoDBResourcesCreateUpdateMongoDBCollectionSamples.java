@@ -8,8 +8,12 @@ import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionResource;
+import com.azure.resourcemanager.cosmos.models.MongoIndex;
+import com.azure.resourcemanager.cosmos.models.MongoIndexKeys;
+import com.azure.resourcemanager.cosmos.models.MongoIndexOptions;
 import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +45,35 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
                             .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
                             .withRestoreWithTtlDisabled(false))
                         .withCreateMode(CreateMode.RESTORE))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBMongoDBCollectionCreateUpdate.json
+     */
+    /**
+     * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBMongoDBCollectionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
+                new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new MongoDBCollectionResource().withId("collectionName")
+                        .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
+                        .withIndexes(Arrays.asList(
+                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_ts")))
+                                .withOptions(new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true)),
+                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_id")))))
+                        .withAnalyticalStorageTtl(500))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }

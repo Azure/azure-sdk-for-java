@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for GremlinResources ListGremlinDatabases.
  */
 public final class GremlinResourcesListGremlinDatabasesSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBGremlinDatabaseList.json
+     */
     /**
      * Sample code: CosmosDBGremlinDatabaseList.
      * 
@@ -18,6 +23,6 @@ public final class GremlinResourcesListGremlinDatabasesSamples {
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .listGremlinDatabases(null, null, com.azure.core.util.Context.NONE);
+            .listGremlinDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

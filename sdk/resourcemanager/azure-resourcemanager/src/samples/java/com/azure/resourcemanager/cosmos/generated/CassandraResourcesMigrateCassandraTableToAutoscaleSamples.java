@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources MigrateCassandraTableToAutoscale.
  */
 public final class CassandraResourcesMigrateCassandraTableToAutoscaleSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBCassandraTableMigrateToAutoscale.json
+     */
     /**
      * Sample code: CosmosDBCassandraTableMigrateToAutoscale.
      * 
@@ -18,6 +23,7 @@ public final class CassandraResourcesMigrateCassandraTableToAutoscaleSamples {
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .migrateCassandraTableToAutoscale(null, null, null, null, com.azure.core.util.Context.NONE);
+            .migrateCassandraTableToAutoscale("rg1", "ddb1", "keyspaceName", "tableName",
+                com.azure.core.util.Context.NONE);
     }
 }

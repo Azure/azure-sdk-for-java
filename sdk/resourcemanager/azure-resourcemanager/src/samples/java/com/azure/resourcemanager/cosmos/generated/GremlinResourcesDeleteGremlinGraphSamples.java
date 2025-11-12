@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for GremlinResources DeleteGremlinGraph.
  */
 public final class GremlinResourcesDeleteGremlinGraphSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBGremlinGraphDelete.json
+     */
     /**
      * Sample code: CosmosDBGremlinGraphDelete.
      * 
@@ -18,6 +23,6 @@ public final class GremlinResourcesDeleteGremlinGraphSamples {
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .deleteGremlinGraph(null, null, null, null, com.azure.core.util.Context.NONE);
+            .deleteGremlinGraph("rg1", "ddb1", "databaseName", "graphName", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources GetCassandraView.
  */
 public final class CassandraResourcesGetCassandraViewSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBCassandraViewGet.json
+     */
     /**
      * Sample code: CosmosDBCassandraViewGet.
      * 
@@ -18,6 +23,6 @@ public final class CassandraResourcesGetCassandraViewSamples {
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .getCassandraViewWithResponse(null, null, null, null, com.azure.core.util.Context.NONE);
+            .getCassandraViewWithResponse("rg1", "ddb1", "keyspacename", "viewname", com.azure.core.util.Context.NONE);
     }
 }

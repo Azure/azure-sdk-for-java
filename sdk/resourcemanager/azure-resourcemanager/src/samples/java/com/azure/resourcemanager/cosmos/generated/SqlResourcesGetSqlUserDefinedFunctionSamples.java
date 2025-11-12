@@ -8,6 +8,11 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for SqlResources GetSqlUserDefinedFunction.
  */
 public final class SqlResourcesGetSqlUserDefinedFunctionSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBSqlUserDefinedFunctionGet.json
+     */
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionGet.
      * 
@@ -18,6 +23,7 @@ public final class SqlResourcesGetSqlUserDefinedFunctionSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .getSqlUserDefinedFunctionWithResponse(null, null, null, null, null, com.azure.core.util.Context.NONE);
+            .getSqlUserDefinedFunctionWithResponse("rgName", "ddb1", "databaseName", "containerName",
+                "userDefinedFunctionName", com.azure.core.util.Context.NONE);
     }
 }

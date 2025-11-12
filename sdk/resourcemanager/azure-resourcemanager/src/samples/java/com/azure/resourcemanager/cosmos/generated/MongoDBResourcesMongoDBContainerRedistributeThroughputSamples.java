@@ -4,10 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.PhysicalPartitionThroughputInfoResource;
+import com.azure.resourcemanager.cosmos.models.RedistributeThroughputParameters;
+import com.azure.resourcemanager.cosmos.models.RedistributeThroughputPropertiesResource;
+import com.azure.resourcemanager.cosmos.models.ThroughputPolicyType;
+import java.util.Arrays;
+
 /**
  * Samples for MongoDBResources MongoDBContainerRedistributeThroughput.
  */
 public final class MongoDBResourcesMongoDBContainerRedistributeThroughputSamples {
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBMongoDBCollectionRedistributeThroughput.json
+     */
     /**
      * Sample code: CosmosDBMongoDBCollectionRedistributeThroughput.
      * 
@@ -19,6 +30,15 @@ public final class MongoDBResourcesMongoDBContainerRedistributeThroughputSamples
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .mongoDBContainerRedistributeThroughput(null, null, null, null, null, com.azure.core.util.Context.NONE);
+            .mongoDBContainerRedistributeThroughput("rg1", "ddb1", "databaseName", "collectionName",
+                new RedistributeThroughputParameters().withResource(new RedistributeThroughputPropertiesResource()
+                    .withThroughputPolicy(ThroughputPolicyType.CUSTOM)
+                    .withTargetPhysicalPartitionThroughputInfo(
+                        Arrays.asList(new PhysicalPartitionThroughputInfoResource().withId("0").withThroughput(5000.0D),
+                            new PhysicalPartitionThroughputInfoResource().withId("1").withThroughput(5000.0D)))
+                    .withSourcePhysicalPartitionThroughputInfo(
+                        Arrays.asList(new PhysicalPartitionThroughputInfoResource().withId("2").withThroughput(5000.0D),
+                            new PhysicalPartitionThroughputInfoResource().withId("3")))),
+                com.azure.core.util.Context.NONE);
     }
 }

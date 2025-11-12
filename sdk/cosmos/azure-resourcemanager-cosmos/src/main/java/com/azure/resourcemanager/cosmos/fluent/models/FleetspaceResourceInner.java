@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,6 +26,11 @@ public final class FleetspaceResourceInner extends ProxyResource {
      * Properties to update Azure Cosmos DB Fleetspace.
      */
     private FleetspaceProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -54,6 +60,15 @@ public final class FleetspaceResourceInner extends ProxyResource {
      */
     private FleetspaceProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -249,6 +264,8 @@ public final class FleetspaceResourceInner extends ProxyResource {
                     deserializedFleetspaceResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedFleetspaceResourceInner.innerProperties = FleetspaceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFleetspaceResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
