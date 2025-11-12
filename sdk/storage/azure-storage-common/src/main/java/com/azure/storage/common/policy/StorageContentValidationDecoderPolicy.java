@@ -85,8 +85,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
-            // Track how many bytes were pending before we process
-            int previousPendingBytes = (state.pendingBuffer != null) ? state.pendingBuffer.remaining() : 0;
+            // Track the NEW bytes received from the network (before combining with pending)
+            int newBytesReceived = encodedBuffer.remaining();
+            state.totalEncodedBytesProcessed.addAndGet(newBytesReceived);
 
             // Combine with pending data if any
             ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
@@ -104,14 +105,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 // Calculate how much of the input buffer was consumed by checking the duplicate's position
                 int bytesConsumed = duplicateForDecode.position() - initialPosition;
                 int bytesRemaining = availableSize - bytesConsumed;
-
-                // Track the newly consumed encoded bytes (excluding previously pending bytes)
-                // The consumed bytes include both old pending bytes and new bytes from this buffer
-                // We only want to add the NEW bytes that were consumed
-                int newBytesConsumed = bytesConsumed - previousPendingBytes;
-                if (newBytesConsumed > 0) {
-                    state.totalEncodedBytesProcessed.addAndGet(newBytesConsumed);
-                }
 
                 // Save only unconsumed portion to pending
                 if (bytesRemaining > 0) {
