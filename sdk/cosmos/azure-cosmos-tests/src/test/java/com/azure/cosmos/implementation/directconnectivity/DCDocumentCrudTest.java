@@ -229,9 +229,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(-1);
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
-        QueryFeedOperationState dummyState = TestUtils
-            .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
-
+        QueryFeedOperationState dummyState =
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
         try {
             Flux<FeedResponse<Document>> results = client.queryDocuments(
                 getCollectionLink(),
@@ -245,6 +244,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
             validateQuerySuccess(results, validator, QUERY_TIMEOUT);
             validateNoDocumentQueryOperationThroughGateway();
+
             // validates only the first query for fetching query plan goes to gateway.
             assertThat(client.getCapturedRequests().stream().filter(r -> r.getResourceType() == ResourceType.Document)).hasSize(1);
         } finally {

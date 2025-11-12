@@ -137,8 +137,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        QueryFeedOperationState dummyState = TestUtils
-            .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
         try {
             client.queryDocuments(
                 collectionLink,
@@ -175,7 +174,6 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         );
 
         try {
-
             assertThatThrownBy(() -> client
                 .queryDocuments(collectionLink, query, state, Document.class)
                 .blockLast())

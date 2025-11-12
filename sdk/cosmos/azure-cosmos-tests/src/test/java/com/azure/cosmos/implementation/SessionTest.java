@@ -203,132 +203,129 @@ public class SessionTest extends TestSuiteBase {
             spyClient
         );
 
-        try {
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests()).hasSize(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
 
-            spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
-            assertThat(getSessionTokensInRequests()).hasSize(1);
-            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
-            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        // Session token validation for cross partition query
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
 
-            // Session token validation for cross partition query
+        safeClose(dummyState);
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for feed ranges query
+        spyClient.clearCapturedRequests();
+        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased), true).block();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        queryRequestOptions.setFeedRange(feedRanges.get(0));
+        safeClose(dummyState);
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for readAll with partition query
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        safeClose(dummyState);
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.readAllDocuments(
+            getCollectionLink(isNameBased),
+            new PartitionKey(documentCreated.getId()),
+            dummyState,
+            Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for readAll with cross partition
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+
+        safeClose(dummyState);
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            queryRequestOptions,
+            spyClient
+        );
+
+        spyClient.readDocuments(getCollectionLink(isNameBased), dummyState, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for readMany with cross partition
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        cosmosItemIdentities.add(cosmosItemIdentity);
+        safeClose(dummyState);
+        dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient);
+        spyClient.readMany(
+            cosmosItemIdentities,
+            getCollectionLink(isNameBased),
+            dummyState,
+            InternalObjectNode.class).block();
+        assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        // session token
+
+        // Session token validation for create in Batch
+        if(isNameBased) { // Batch only work with name based url
             spyClient.clearCapturedRequests();
-            queryRequestOptions = new CosmosQueryRequestOptions();
-            safeClose(dummyState);
-            dummyState = TestUtils.createDummyQueryFeedOperationState(
-                ResourceType.Document,
-                OperationType.Query,
-                queryRequestOptions,
-                spyClient
-            );
-            spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
-            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
-            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
-            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+            Document document = newDocument();
+            document.set("mypk", document.getId());
+            ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
+                documentCreated.getId(), new PartitionKey(documentCreated.getId()), new RequestOptions(), document);
+            List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
+            itemBatchOperations.add(itemBatchOperation);
 
-            // Session token validation for feed ranges query
-            spyClient.clearCapturedRequests();
-            List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased), true).block();
-            queryRequestOptions = new CosmosQueryRequestOptions();
-            queryRequestOptions.setFeedRange(feedRanges.get(0));
-            safeClose(dummyState);
-            dummyState = TestUtils.createDummyQueryFeedOperationState(
-                ResourceType.Document,
-                OperationType.Query,
-                queryRequestOptions,
-                spyClient
-            );
-            spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
-            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
-            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
-            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
-
-            // Session token validation for readAll with partition query
-            spyClient.clearCapturedRequests();
-            queryRequestOptions = new CosmosQueryRequestOptions();
-            safeClose(dummyState);
-            dummyState = TestUtils.createDummyQueryFeedOperationState(
-                ResourceType.Document,
-                OperationType.ReadFeed,
-                queryRequestOptions,
-                spyClient
-            );
-            spyClient.readAllDocuments(
-                getCollectionLink(isNameBased),
-                new PartitionKey(documentCreated.getId()),
-                dummyState,
-                Document.class).blockFirst();
+            Method method = SinglePartitionKeyServerBatchRequest.class.getDeclaredMethod("createBatchRequest",
+                PartitionKey.class,
+                List.class);
+            method.setAccessible(true);
+            SinglePartitionKeyServerBatchRequest serverBatchRequest =
+                (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(document.getId()),
+                    itemBatchOperations);
+            spyClient
+                .executeBatchRequest(
+                    getCollectionLink(isNameBased),
+                    serverBatchRequest,
+                    new RequestOptions(),
+                    false,
+                    true)
+                .block();
             assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
             assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
-
-            // Session token validation for readAll with cross partition
-            spyClient.clearCapturedRequests();
-            queryRequestOptions = new CosmosQueryRequestOptions();
-
-            safeClose(dummyState);
-            dummyState = TestUtils.createDummyQueryFeedOperationState(
-                ResourceType.Document,
-                OperationType.ReadFeed,
-                queryRequestOptions,
-                spyClient
-            );
-
-            spyClient.readDocuments(getCollectionLink(isNameBased), dummyState, Document.class).blockFirst();
-            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
-            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
-            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
-
-            // Session token validation for readMany with cross partition
-            spyClient.clearCapturedRequests();
-            queryRequestOptions = new CosmosQueryRequestOptions();
-            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
-            List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
-            cosmosItemIdentities.add(cosmosItemIdentity);
-            safeClose(dummyState);
-            dummyState = TestUtils
-                .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient);
-            spyClient.readMany(
-                cosmosItemIdentities,
-                getCollectionLink(isNameBased),
-                dummyState,
-                InternalObjectNode.class).block();
-            assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
-            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
-            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
-            // session token
-
-            // Session token validation for create in Batch
-            if (isNameBased) { // Batch only work with name based url
-                spyClient.clearCapturedRequests();
-                Document document = newDocument();
-                document.set("mypk", document.getId());
-                ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
-                    documentCreated.getId(), new PartitionKey(documentCreated.getId()), new RequestOptions(), document);
-                List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
-                itemBatchOperations.add(itemBatchOperation);
-
-                Method method = SinglePartitionKeyServerBatchRequest.class.getDeclaredMethod("createBatchRequest",
-                    PartitionKey.class,
-                    List.class);
-                method.setAccessible(true);
-                SinglePartitionKeyServerBatchRequest serverBatchRequest =
-                    (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(document.getId()),
-                        itemBatchOperations);
-                spyClient
-                    .executeBatchRequest(
-                        getCollectionLink(isNameBased),
-                        serverBatchRequest,
-                        new RequestOptions(),
-                        false,
-                        true)
-                    .block();
-                assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
-                assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
-                assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
-            }
-        } finally {
-            safeClose(dummyState);
         }
+
+        safeClose(dummyState);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")

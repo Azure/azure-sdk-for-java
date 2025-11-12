@@ -483,11 +483,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             queryRequestOptions.setPartitionKey(partitionKey);
 
             dummyState = TestUtils
-                .createDummyQueryFeedOperationState(
-                    ResourceType.Document,
-                    OperationType.Query,
-                    queryRequestOptions,
-                    asyncClientResourceToken);
+                .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, asyncClientResourceToken);
 
             Flux<FeedResponse<Document>> queryObservable =
                 asyncClientResourceToken.queryDocuments(
@@ -503,8 +499,8 @@ public class ResourceTokenTest extends TestSuiteBase {
 
             validateQuerySuccess(queryObservable, validator);
         } finally {
-            safeClose(dummyState);
             safeClose(asyncClientResourceToken);
+            safeClose(dummyState);
         }
     }
 
