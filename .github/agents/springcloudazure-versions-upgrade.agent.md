@@ -29,12 +29,15 @@ Steps (existing flow):
 
 2) Generate managed external dependencies:
    - Run:
+     pip install termcolor
      python ./sdk/spring/scripts/get_spring_boot_managed_external_dependencies.py -b ${SPRING_BOOT_VERSION} -c ${SPRING_CLOUD_VERSION}
    - Output file:
      ./sdk/spring/scripts/spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt
 
 3) Sync external dependencies:
    - Run:
+     pip install termcolor
+     pip install in_place
      python ./sdk/spring/scripts/sync_external_dependencies.py -b ${SPRING_BOOT_VERSION} -sbmvn 3
    - Target file:
      ./eng/versioning/external_dependencies.txt
@@ -42,6 +45,7 @@ Steps (existing flow):
 4) Update version aggregation:
    - Run:
      python ./eng/versioning/update_versions.py --sr
+   - Target file: all pom.xml under ./sdk/spring
 
 5) Update Spring changelog:
    - Run:
@@ -72,11 +76,9 @@ Open a PR with this description structure (Markdown):
 6. Checklist:
    - [ ] Generated & synced spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt
    - [ ] Updated eng/versioning/external_dependencies.txt
-   - [ ] Updated version aggregation (ran update_versions.py --sr or manual equivalent)
+   - [ ] Updated all versions under ./sdk/spring
    - [ ] Updated sdk/spring/CHANGELOG.md
    - [ ] Removed old spring_boot_*_managed_external_dependencies.txt
-   - [ ] Build files aligned to BOM (if applicable)
    - [ ] Milestone/Snapshot repositories added (if applicable)
 
 Please create the branch, run the commands above (or produce equivalent edits if execution is not possible), and open the PR with the specified description and labels.
-``
