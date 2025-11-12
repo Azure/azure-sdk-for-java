@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.54.0-beta.1 (2025-11-06)
+
+### Other Changes
+
+- Updated `api-version` of metric alert to `2024-03-01-preview`.
+- Updated `api-version` of metric definitions to `2021-05-01`.
+- Updated `api-version` of metrics to `2021-05-01`.
+- Updated `api-version` of scheduled query rule to `2023-12-01`.
+- Updated `api-version` of data collection to `2024-03-11`.
+
+## 2.53.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.3 (2025-09-24)
 

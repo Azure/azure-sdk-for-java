@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.1.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.3` to version `1.4.4`.
+
 ## 1.1.0 (2025-10-08)
 
 ### Features Added

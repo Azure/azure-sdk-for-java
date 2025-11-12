@@ -18,6 +18,13 @@ public class KeyVaultCustomization extends Customization {
         // change base class from `ProxyResource` to `Resource`, to avoid breaking changes and compilation errors
         customizeResourceBaseClass(fluentModelsPackage.getClass("VaultInner"));
         customizeResourceBaseClass(fluentModelsPackage.getClass("ManagedHsmInner"));
+        customizeResourceBaseClass(fluentModelsPackage.getClass("KeyInner"));
+        customizeResourceBaseClass(fluentModelsPackage.getClass("SecretInner"));
+        customizeResourceBaseClass(fluentModelsPackage.getClass("PrivateEndpointConnectionInner"));
+
+        PackageCustomization modelsPackage = customization.getPackage("com.azure.resourcemanager.keyvault.models");
+
+        addBackClientDefaultValueForSku(modelsPackage.getClass("Sku"));
     }
 
     /**
@@ -32,6 +39,23 @@ public class KeyVaultCustomization extends Customization {
                 ast.addImport(resourceClassName);
                 clazz.getExtendedTypes().clear();
                 clazz.addExtendedType(new ClassOrInterfaceType(null, "Resource"));
+            });
+        });
+    }
+
+    /**
+     * Add back client-default-value for Sku.SkuFamily.
+     */
+    private void addBackClientDefaultValueForSku(ClassCustomization customization) {
+        customization.customizeAst(ast -> {
+            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+                clazz.getFieldByName("family").ifPresent(skuFamily -> {
+                    skuFamily.getVariables().forEach(var -> {
+                        if (var.getNameAsString().equals("family")) {
+                            var.setInitializer("SkuFamily.A");
+                        }
+                    });
+                });
             });
         });
     }

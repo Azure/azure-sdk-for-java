@@ -27,9 +27,19 @@ public final class NamespaceDiscoveredAssetUpdateProperties
     private DeviceRef deviceRef;
 
     /*
+     * Human-readable display name.
+     */
+    private String displayName;
+
+    /*
      * URIs or type definition IDs.
      */
     private List<String> assetTypeRefs;
+
+    /*
+     * Human-readable description of the asset.
+     */
+    private String description;
 
     /*
      * Identifier used to detect changes in the asset.
@@ -131,9 +141,9 @@ public final class NamespaceDiscoveredAssetUpdateProperties
     private List<NamespaceDiscoveredDataset> datasets;
 
     /*
-     * Array of events that are part of the asset. Each event can have per-event configuration.
+     * Array of event groups that are part of the asset. Each event group can have per-event group configuration.
      */
-    private List<NamespaceDiscoveredEvent> events;
+    private List<NamespaceDiscoveredEventGroup> eventGroups;
 
     /*
      * Array of streams that are part of the asset. Each stream can have a per-stream configuration.
@@ -174,6 +184,26 @@ public final class NamespaceDiscoveredAssetUpdateProperties
     }
 
     /**
+     * Get the displayName property: Human-readable display name.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: Human-readable display name.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the NamespaceDiscoveredAssetUpdateProperties object itself.
+     */
+    public NamespaceDiscoveredAssetUpdateProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the assetTypeRefs property: URIs or type definition IDs.
      * 
      * @return the assetTypeRefs value.
@@ -190,6 +220,26 @@ public final class NamespaceDiscoveredAssetUpdateProperties
      */
     public NamespaceDiscoveredAssetUpdateProperties withAssetTypeRefs(List<String> assetTypeRefs) {
         this.assetTypeRefs = assetTypeRefs;
+        return this;
+    }
+
+    /**
+     * Get the description property: Human-readable description of the asset.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Human-readable description of the asset.
+     * 
+     * @param description the description value to set.
+     * @return the NamespaceDiscoveredAssetUpdateProperties object itself.
+     */
+    public NamespaceDiscoveredAssetUpdateProperties withDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -596,22 +646,24 @@ public final class NamespaceDiscoveredAssetUpdateProperties
     }
 
     /**
-     * Get the events property: Array of events that are part of the asset. Each event can have per-event configuration.
+     * Get the eventGroups property: Array of event groups that are part of the asset. Each event group can have
+     * per-event group configuration.
      * 
-     * @return the events value.
+     * @return the eventGroups value.
      */
-    public List<NamespaceDiscoveredEvent> events() {
-        return this.events;
+    public List<NamespaceDiscoveredEventGroup> eventGroups() {
+        return this.eventGroups;
     }
 
     /**
-     * Set the events property: Array of events that are part of the asset. Each event can have per-event configuration.
+     * Set the eventGroups property: Array of event groups that are part of the asset. Each event group can have
+     * per-event group configuration.
      * 
-     * @param events the events value to set.
+     * @param eventGroups the eventGroups value to set.
      * @return the NamespaceDiscoveredAssetUpdateProperties object itself.
      */
-    public NamespaceDiscoveredAssetUpdateProperties withEvents(List<NamespaceDiscoveredEvent> events) {
-        this.events = events;
+    public NamespaceDiscoveredAssetUpdateProperties withEventGroups(List<NamespaceDiscoveredEventGroup> eventGroups) {
+        this.eventGroups = eventGroups;
         return this;
     }
 
@@ -667,8 +719,10 @@ public final class NamespaceDiscoveredAssetUpdateProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("deviceRef", this.deviceRef);
+        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeArrayField("assetTypeRefs", this.assetTypeRefs,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("discoveryId", this.discoveryId);
         jsonWriter.writeNumberField("version", this.version);
         jsonWriter.writeStringField("manufacturer", this.manufacturer);
@@ -692,7 +746,7 @@ public final class NamespaceDiscoveredAssetUpdateProperties
         jsonWriter.writeArrayField("defaultStreamsDestinations", this.defaultStreamsDestinations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventGroups", this.eventGroups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("streams", this.streams, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("managementGroups", this.managementGroups,
             (writer, element) -> writer.writeJson(element));
@@ -717,9 +771,13 @@ public final class NamespaceDiscoveredAssetUpdateProperties
 
                 if ("deviceRef".equals(fieldName)) {
                     deserializedNamespaceDiscoveredAssetUpdateProperties.deviceRef = DeviceRef.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredAssetUpdateProperties.displayName = reader.getString();
                 } else if ("assetTypeRefs".equals(fieldName)) {
                     List<String> assetTypeRefs = reader.readArray(reader1 -> reader1.getString());
                     deserializedNamespaceDiscoveredAssetUpdateProperties.assetTypeRefs = assetTypeRefs;
+                } else if ("description".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredAssetUpdateProperties.description = reader.getString();
                 } else if ("discoveryId".equals(fieldName)) {
                     deserializedNamespaceDiscoveredAssetUpdateProperties.discoveryId = reader.getString();
                 } else if ("version".equals(fieldName)) {
@@ -776,10 +834,10 @@ public final class NamespaceDiscoveredAssetUpdateProperties
                     List<NamespaceDiscoveredDataset> datasets
                         = reader.readArray(reader1 -> NamespaceDiscoveredDataset.fromJson(reader1));
                     deserializedNamespaceDiscoveredAssetUpdateProperties.datasets = datasets;
-                } else if ("events".equals(fieldName)) {
-                    List<NamespaceDiscoveredEvent> events
-                        = reader.readArray(reader1 -> NamespaceDiscoveredEvent.fromJson(reader1));
-                    deserializedNamespaceDiscoveredAssetUpdateProperties.events = events;
+                } else if ("eventGroups".equals(fieldName)) {
+                    List<NamespaceDiscoveredEventGroup> eventGroups
+                        = reader.readArray(reader1 -> NamespaceDiscoveredEventGroup.fromJson(reader1));
+                    deserializedNamespaceDiscoveredAssetUpdateProperties.eventGroups = eventGroups;
                 } else if ("streams".equals(fieldName)) {
                     List<NamespaceDiscoveredStream> streams
                         = reader.readArray(reader1 -> NamespaceDiscoveredStream.fromJson(reader1));
