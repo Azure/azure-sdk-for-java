@@ -166,6 +166,49 @@ public interface SyncPoller<T, U> {
     }
 
     /**
+     * Serializes the current state of the poller into a continuation token that can be used to resume the
+     * long-running operation at a later time or in a different process.
+     * <p>
+     * The continuation token captures the current state of the polling operation, including the operation URL,
+     * current status, and other necessary metadata. This token can be stored (e.g., in a database or file) and
+     * later used to recreate a poller that continues from the same point.
+     * <p>
+     * <strong>Example: Exporting and resuming a long-running operation</strong>
+     * <pre>{@code
+     * // Start a long-running operation
+     * SyncPoller<PollResult<MyResource>, MyResource> poller = client.beginCreateResource(params);
+     * 
+     * // Export the continuation token (e.g., before process shutdown)
+     * String token = poller.serializeContinuationToken();
+     * // Store token in persistent storage...
+     * 
+     * // Later, in a different process or after restart:
+     * // Retrieve token from persistent storage...
+     * SyncPoller<PollResult<MyResource>, MyResource> resumedPoller = 
+     *     client.resumeCreateResource(token);
+     * 
+     * // Continue polling until completion
+     * MyResource result = resumedPoller.getFinalResult();
+     * }</pre>
+     * <p>
+     * <strong>Security Note:</strong> The continuation token may contain sensitive information such as
+     * operation URLs. Ensure tokens are stored securely and transmitted over secure channels.
+     * <p>
+     * <strong>Compatibility Note:</strong> The token format is internal to the SDK and may change between
+     * versions. Tokens should only be used with the same SDK version that generated them.
+     *
+     * @return A continuation token string that represents the current state of the poller.
+     * @throws UnsupportedOperationException if this poller implementation does not support continuation tokens.
+     *         This may occur for pollers that don't maintain sufficient state to be resumed, or for
+     *         operations that cannot be polled externally.
+     */
+    default String serializeContinuationToken() {
+        throw new UnsupportedOperationException("This poller does not support continuation tokens. "
+            + "Continuation tokens are only supported for Azure Resource Manager long-running operations "
+            + "created via SyncPollerFactory.");
+    }
+
+    /**
      * Creates default SyncPoller.
      *
      * @param pollInterval the polling interval.

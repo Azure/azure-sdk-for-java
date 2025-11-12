@@ -12,12 +12,12 @@ public class FooWithProvisioningState {
     public FooWithProvisioningState() {
     }
 
-    FooWithProvisioningState(String state) {
+    public FooWithProvisioningState(String state) {
         this.properties = new Properties();
         this.properties.provisioningState = state;
     }
 
-    FooWithProvisioningState(String state, String resourceId) {
+    public FooWithProvisioningState(String state, String resourceId) {
         this.properties = new Properties();
         this.properties.provisioningState = state;
         this.properties.resourceId = resourceId;

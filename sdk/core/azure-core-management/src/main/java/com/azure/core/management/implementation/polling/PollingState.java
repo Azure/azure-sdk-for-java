@@ -170,6 +170,81 @@ public final class PollingState implements JsonSerializable<PollingState> {
     }
 
     /**
+     * Serializes the current PollingState into a continuation token string that can be used to resume
+     * the long-running operation at a later time or in a different process.
+     * <p>
+     * The continuation token is a Base64-encoded JSON representation of the polling state. It contains
+     * all necessary information to reconstruct the poller and continue polling the operation, including:
+     * <ul>
+     * <li>Operation URL and HTTP method</li>
+     * <li>Current provisioning state</li>
+     * <li>Polling URLs (Azure-AsyncOperation, Location headers, etc.)</li>
+     * <li>Last known response data</li>
+     * </ul>
+     * <p>
+     * <strong>Security Note:</strong> The continuation token contains the operation URL. Ensure tokens
+     * are stored securely and transmitted over secure channels.
+     * <p>
+     * <strong>Compatibility Note:</strong> The token format is internal and may change between SDK versions.
+     * Tokens should only be used with the same version of the SDK that generated them.
+     *
+     * @return A Base64-encoded continuation token string representing the current polling state.
+     * @throws RuntimeException if the state cannot be serialized into a token.
+     */
+    public String toContinuationToken() {
+        try {
+            String jsonState = this.serializerAdapter.serialize(this, SerializerEncoding.JSON);
+            return java.util.Base64.getEncoder()
+                .encodeToString(jsonState.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        } catch (IOException ioe) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Failed to serialize PollingState to continuation token.", ioe));
+        }
+    }
+
+    /**
+     * Deserializes a continuation token string into a PollingState object that can be used to resume
+     * a long-running operation.
+     * <p>
+     * This method is the counterpart to {@link #toContinuationToken()} and reconstructs a PollingState
+     * from a previously serialized token. The reconstructed state can then be used to create a new
+     * SyncPoller that continues polling from where the previous poller left off.
+     *
+     * @param continuationToken The Base64-encoded continuation token string, previously obtained from
+     *                          {@link #toContinuationToken()}.
+     * @param serializerAdapter The serializer for decoding the token. This should be the same serializer
+     *                          type used by the service client.
+     * @return A PollingState object reconstructed from the continuation token.
+     * @throws IllegalArgumentException if the {@code continuationToken} or {@code serializerAdapter} is null or empty.
+     * @throws RuntimeException if the token cannot be decoded or deserialized. This may occur if:
+     *         <ul>
+     *         <li>The token is malformed or corrupted</li>
+     *         <li>The token was created with a different SDK version</li>
+     *         <li>The token format has changed</li>
+     *         </ul>
+     */
+    public static PollingState fromContinuationToken(String continuationToken, SerializerAdapter serializerAdapter) {
+        Objects.requireNonNull(continuationToken, "'continuationToken' cannot be null.");
+        Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
+
+        if (continuationToken.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'continuationToken' cannot be empty."));
+        }
+
+        try {
+            byte[] decodedBytes = java.util.Base64.getDecoder().decode(continuationToken);
+            String jsonState = new String(decodedBytes, java.nio.charset.StandardCharsets.UTF_8);
+            return PollingState.from(serializerAdapter, jsonState);
+        } catch (IllegalArgumentException iae) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Failed to decode continuation token. The token may be malformed or corrupted.", iae));
+        } catch (RuntimeException re) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize continuation token. "
+                + "The token may have been created with a different SDK version.", re));
+        }
+    }
+
+    /**
      * @return the current status of the long-running-operation.
      */
     public LongRunningOperationStatus getOperationStatus() {
@@ -277,7 +352,7 @@ public final class PollingState implements JsonSerializable<PollingState> {
     /**
      * @return the last response body this PollingState received
      */
-    String getLastResponseBody() {
+    public String getLastResponseBody() {
         return this.lastResponseBody;
     }
 
