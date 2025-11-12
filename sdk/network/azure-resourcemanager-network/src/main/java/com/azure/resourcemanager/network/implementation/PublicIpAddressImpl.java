@@ -229,7 +229,9 @@ class PublicIpAddressImpl
     }
 
     private void ensureStaticForStandardSku() {
-        if (this.sku() != null && this.sku() != PublicIPSkuType.BASIC) {
+        if (this.sku() != null
+            && this.sku() != PublicIPSkuType.BASIC
+            && this.innerModel().publicIpAllocationMethod() == null) {
             this.withStaticIP();
         }
     }

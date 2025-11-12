@@ -22,12 +22,10 @@ public class VirtualNetworkGatewayTests extends NetworkTests {
 
     @Test
     public void testListBySubscription() {
-        String group1 = generateRandomResourceName("rg1", 15);
+        String group1 = rgName;
         String group2 = generateRandomResourceName("rg2", 15);
         String gatewayName1 = generateRandomResourceName("vngw1", 15);
         String gatewayName2 = generateRandomResourceName("vngw2", 15);
-
-        rgName = group1;
 
         try {
             VirtualNetworkGateway gateway1 = createVirtualNetworkGateway(group1, gatewayName1);
