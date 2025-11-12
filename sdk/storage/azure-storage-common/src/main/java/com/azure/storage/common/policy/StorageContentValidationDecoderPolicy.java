@@ -299,6 +299,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          * Gets the offset to use for retry requests.
          * This uses the decoder's last complete segment boundary to ensure retries
          * resume from a valid segment boundary, not mid-segment.
+         * 
+         * Also clears the pending buffer and resets decoder state to align with
+         * the segment boundary.
          *
          * @return The offset for retry requests (last complete segment boundary).
          */
@@ -306,6 +309,19 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             // Use the decoder's last complete segment start as the retry offset
             // This ensures we resume from a segment boundary, not mid-segment
             long retryOffset = decoder.getLastCompleteSegmentStart();
+
+            // Reset decoder to the last complete segment boundary
+            // This ensures messageOffset and segment state match the retry offset
+            decoder.resetToLastCompleteSegment();
+
+            // Clear pending buffer since we're restarting from the segment boundary
+            // Any bytes in pending are from after this boundary and will be re-fetched
+            if (pendingBuffer != null && pendingBuffer.hasRemaining()) {
+                LOGGER.verbose("Clearing {} pending bytes for retry from segment boundary {}",
+                    pendingBuffer.remaining(), retryOffset);
+                pendingBuffer = null;
+            }
+
             LOGGER.verbose("Retry offset calculated: {} (last complete segment boundary)", retryOffset);
             return retryOffset;
         }

@@ -69,6 +69,22 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Resets the decoder position to the last complete segment boundary.
+     * This is used during smart retry to ensure the decoder is in sync with
+     * the data being provided from the retry offset.
+     */
+    public void resetToLastCompleteSegment() {
+        if (messageOffset != lastCompleteSegmentStart) {
+            LOGGER.verbose("Resetting decoder from offset {} to last complete segment boundary {}", messageOffset,
+                lastCompleteSegmentStart);
+            messageOffset = lastCompleteSegmentStart;
+            // Reset current segment state - next decode will read the segment header
+            currentSegmentContentOffset = 0;
+            currentSegmentContentLength = 0;
+        }
+    }
+
+    /**
      * Reads the message header from the given buffer.
      *
      * @param buffer The buffer containing the message header.
