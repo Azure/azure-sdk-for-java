@@ -23,7 +23,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private NetworkPlugin networkPlugin;
 
     /*
-     * Network plugin mode used for building the Kubernetes network.
+     * The mode the network plugin should use.
      */
     private NetworkPluginMode networkPluginMode;
 
@@ -42,6 +42,12 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      * Network dataplane used in the Kubernetes cluster.
      */
     private NetworkDataplane networkDataplane;
+
+    /*
+     * Advanced Networking profile for enabling observability and security feature suite on a cluster. For more
+     * information see aka.ms/aksadvancednetworking.
+     */
+    private AdvancedNetworking advancedNetworking;
 
     /*
      * A CIDR notation IP range from which to assign pod IPs when kubenet is used.
@@ -108,25 +114,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      */
     private List<IpFamily> ipFamilies;
 
-    /*
-     * Defines access to special link local addresses (Azure Instance Metadata Service, aka IMDS) for pods with
-     * hostNetwork=false. if not specified, the default is 'IMDS'.
-     */
-    private PodLinkLocalAccess podLinkLocalAccess;
-
-    /*
-     * Holds configuration customizations for kube-proxy. Any values not defined will use the kube-proxy defaulting
-     * behavior. See https://v<version>.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * <version> is represented by a <major version>-<minor version> string. Kubernetes version 1.23 would be '1-23'.
-     */
-    private ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig;
-
-    /*
-     * Advanced Networking profile for enabling observability and security feature suite on a cluster. For more
-     * information see aka.ms/aksadvancednetworking.
-     */
-    private AdvancedNetworking advancedNetworking;
-
     /**
      * Creates an instance of ContainerServiceNetworkProfile class.
      */
@@ -154,7 +141,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the networkPluginMode property: Network plugin mode used for building the Kubernetes network.
+     * Get the networkPluginMode property: The mode the network plugin should use.
      * 
      * @return the networkPluginMode value.
      */
@@ -163,7 +150,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the networkPluginMode property: Network plugin mode used for building the Kubernetes network.
+     * Set the networkPluginMode property: The mode the network plugin should use.
      * 
      * @param networkPluginMode the networkPluginMode value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -232,6 +219,28 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      */
     public ContainerServiceNetworkProfile withNetworkDataplane(NetworkDataplane networkDataplane) {
         this.networkDataplane = networkDataplane;
+        return this;
+    }
+
+    /**
+     * Get the advancedNetworking property: Advanced Networking profile for enabling observability and security feature
+     * suite on a cluster. For more information see aka.ms/aksadvancednetworking.
+     * 
+     * @return the advancedNetworking value.
+     */
+    public AdvancedNetworking advancedNetworking() {
+        return this.advancedNetworking;
+    }
+
+    /**
+     * Set the advancedNetworking property: Advanced Networking profile for enabling observability and security feature
+     * suite on a cluster. For more information see aka.ms/aksadvancednetworking.
+     * 
+     * @param advancedNetworking the advancedNetworking value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withAdvancedNetworking(AdvancedNetworking advancedNetworking) {
+        this.advancedNetworking = advancedNetworking;
         return this;
     }
 
@@ -484,84 +493,14 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the podLinkLocalAccess property: Defines access to special link local addresses (Azure Instance Metadata
-     * Service, aka IMDS) for pods with hostNetwork=false. if not specified, the default is 'IMDS'.
-     * 
-     * @return the podLinkLocalAccess value.
-     */
-    public PodLinkLocalAccess podLinkLocalAccess() {
-        return this.podLinkLocalAccess;
-    }
-
-    /**
-     * Set the podLinkLocalAccess property: Defines access to special link local addresses (Azure Instance Metadata
-     * Service, aka IMDS) for pods with hostNetwork=false. if not specified, the default is 'IMDS'.
-     * 
-     * @param podLinkLocalAccess the podLinkLocalAccess value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withPodLinkLocalAccess(PodLinkLocalAccess podLinkLocalAccess) {
-        this.podLinkLocalAccess = podLinkLocalAccess;
-        return this;
-    }
-
-    /**
-     * Get the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
-     * use the kube-proxy defaulting behavior. See
-     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
-     * would be '1-23'.
-     * 
-     * @return the kubeProxyConfig value.
-     */
-    public ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig() {
-        return this.kubeProxyConfig;
-    }
-
-    /**
-     * Set the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
-     * use the kube-proxy defaulting behavior. See
-     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
-     * would be '1-23'.
-     * 
-     * @param kubeProxyConfig the kubeProxyConfig value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile
-        withKubeProxyConfig(ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig) {
-        this.kubeProxyConfig = kubeProxyConfig;
-        return this;
-    }
-
-    /**
-     * Get the advancedNetworking property: Advanced Networking profile for enabling observability and security feature
-     * suite on a cluster. For more information see aka.ms/aksadvancednetworking.
-     * 
-     * @return the advancedNetworking value.
-     */
-    public AdvancedNetworking advancedNetworking() {
-        return this.advancedNetworking;
-    }
-
-    /**
-     * Set the advancedNetworking property: Advanced Networking profile for enabling observability and security feature
-     * suite on a cluster. For more information see aka.ms/aksadvancednetworking.
-     * 
-     * @param advancedNetworking the advancedNetworking value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withAdvancedNetworking(AdvancedNetworking advancedNetworking) {
-        this.advancedNetworking = advancedNetworking;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (advancedNetworking() != null) {
+            advancedNetworking().validate();
+        }
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
         }
@@ -570,12 +509,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         }
         if (staticEgressGatewayProfile() != null) {
             staticEgressGatewayProfile().validate();
-        }
-        if (kubeProxyConfig() != null) {
-            kubeProxyConfig().validate();
-        }
-        if (advancedNetworking() != null) {
-            advancedNetworking().validate();
         }
     }
 
@@ -592,6 +525,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeStringField("networkMode", this.networkMode == null ? null : this.networkMode.toString());
         jsonWriter.writeStringField("networkDataplane",
             this.networkDataplane == null ? null : this.networkDataplane.toString());
+        jsonWriter.writeJsonField("advancedNetworking", this.advancedNetworking);
         jsonWriter.writeStringField("podCidr", this.podCidr);
         jsonWriter.writeStringField("serviceCidr", this.serviceCidr);
         jsonWriter.writeStringField("dnsServiceIP", this.dnsServiceIp);
@@ -605,10 +539,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ipFamilies", this.ipFamilies,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("podLinkLocalAccess",
-            this.podLinkLocalAccess == null ? null : this.podLinkLocalAccess.toString());
-        jsonWriter.writeJsonField("kubeProxyConfig", this.kubeProxyConfig);
-        jsonWriter.writeJsonField("advancedNetworking", this.advancedNetworking);
         return jsonWriter.writeEndObject();
     }
 
@@ -642,6 +572,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("networkDataplane".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.networkDataplane
                         = NetworkDataplane.fromString(reader.getString());
+                } else if ("advancedNetworking".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.advancedNetworking = AdvancedNetworking.fromJson(reader);
                 } else if ("podCidr".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.podCidr = reader.getString();
                 } else if ("serviceCidr".equals(fieldName)) {
@@ -672,14 +604,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("ipFamilies".equals(fieldName)) {
                     List<IpFamily> ipFamilies = reader.readArray(reader1 -> IpFamily.fromString(reader1.getString()));
                     deserializedContainerServiceNetworkProfile.ipFamilies = ipFamilies;
-                } else if ("podLinkLocalAccess".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.podLinkLocalAccess
-                        = PodLinkLocalAccess.fromString(reader.getString());
-                } else if ("kubeProxyConfig".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.kubeProxyConfig
-                        = ContainerServiceNetworkProfileKubeProxyConfig.fromJson(reader);
-                } else if ("advancedNetworking".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.advancedNetworking = AdvancedNetworking.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

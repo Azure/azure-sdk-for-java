@@ -81,12 +81,6 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
      */
     private Integer podMaxPids;
 
-    /*
-     * Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be used by
-     * default.
-     */
-    private SeccompDefault seccompDefault;
-
     /**
      * Creates an instance of KubeletConfig class.
      */
@@ -338,28 +332,6 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
-     * Get the seccompDefault property: Specifies the default seccomp profile applied to all workloads. If not
-     * specified, 'Unconfined' will be used by default.
-     * 
-     * @return the seccompDefault value.
-     */
-    public SeccompDefault seccompDefault() {
-        return this.seccompDefault;
-    }
-
-    /**
-     * Set the seccompDefault property: Specifies the default seccomp profile applied to all workloads. If not
-     * specified, 'Unconfined' will be used by default.
-     * 
-     * @param seccompDefault the seccompDefault value to set.
-     * @return the KubeletConfig object itself.
-     */
-    public KubeletConfig withSeccompDefault(SeccompDefault seccompDefault) {
-        this.seccompDefault = seccompDefault;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -385,8 +357,6 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
         jsonWriter.writeNumberField("containerLogMaxSizeMB", this.containerLogMaxSizeMB);
         jsonWriter.writeNumberField("containerLogMaxFiles", this.containerLogMaxFiles);
         jsonWriter.writeNumberField("podMaxPids", this.podMaxPids);
-        jsonWriter.writeStringField("seccompDefault",
-            this.seccompDefault == null ? null : this.seccompDefault.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -428,8 +398,6 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
                     deserializedKubeletConfig.containerLogMaxFiles = reader.getNullable(JsonReader::getInt);
                 } else if ("podMaxPids".equals(fieldName)) {
                     deserializedKubeletConfig.podMaxPids = reader.getNullable(JsonReader::getInt);
-                } else if ("seccompDefault".equals(fieldName)) {
-                    deserializedKubeletConfig.seccompDefault = SeccompDefault.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

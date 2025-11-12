@@ -21,7 +21,7 @@ import java.util.Map;
 @Fluent
 public class MultiMetricCriteria implements JsonSerializable<MultiMetricCriteria> {
     /*
-     * Specifies the type of threshold criteria
+     * Specifies the type of threshold criteria. Previously undocumented values might be returned
      */
     private CriterionType criterionType = CriterionType.fromString("MultiMetricCriteria");
 
@@ -41,7 +41,7 @@ public class MultiMetricCriteria implements JsonSerializable<MultiMetricCriteria
     private String metricNamespace;
 
     /*
-     * the criteria time aggregation types.
+     * The criteria time aggregation types. Previously undocumented values might be returned
      */
     private AggregationTypeEnum timeAggregation;
 
@@ -68,7 +68,8 @@ public class MultiMetricCriteria implements JsonSerializable<MultiMetricCriteria
     }
 
     /**
-     * Get the criterionType property: Specifies the type of threshold criteria.
+     * Get the criterionType property: Specifies the type of threshold criteria. Previously undocumented values might be
+     * returned.
      * 
      * @return the criterionType value.
      */
@@ -137,7 +138,8 @@ public class MultiMetricCriteria implements JsonSerializable<MultiMetricCriteria
     }
 
     /**
-     * Get the timeAggregation property: the criteria time aggregation types.
+     * Get the timeAggregation property: The criteria time aggregation types. Previously undocumented values might be
+     * returned.
      * 
      * @return the timeAggregation value.
      */
@@ -146,7 +148,8 @@ public class MultiMetricCriteria implements JsonSerializable<MultiMetricCriteria
     }
 
     /**
-     * Set the timeAggregation property: the criteria time aggregation types.
+     * Set the timeAggregation property: The criteria time aggregation types. Previously undocumented values might be
+     * returned.
      * 
      * @param timeAggregation the timeAggregation value to set.
      * @return the MultiMetricCriteria object itself.

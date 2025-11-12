@@ -57,6 +57,7 @@ com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.1.7;1.2.0-beta.1
 com.azure:azure-ai-translation-document;1.0.6;1.1.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-ai-voicelive;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
@@ -276,15 +277,15 @@ com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.4;2.54.0-beta
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.54.1;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.5;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.53.4;2.54.0
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.55.1;2.56.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.54.0;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.56.0;2.57.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.4;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-keyvault;2.53.4;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.4;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-keyvault;2.54.0;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.4;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.53.4;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-network;2.54.1;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-network;2.55.0;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources;2.53.4;2.54.0-beta.1
@@ -512,6 +513,7 @@ com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2
@@ -549,7 +551,6 @@ unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
-unreleased_com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.54.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -559,4 +560,3 @@ unreleased_com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.5
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.2.0-beta.1
-com.azure:azure-ai-voicelive;1.0.0-beta.1;1.0.0-beta.1
