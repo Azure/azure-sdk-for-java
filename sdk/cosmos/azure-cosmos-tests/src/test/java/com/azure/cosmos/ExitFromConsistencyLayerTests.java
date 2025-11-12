@@ -84,8 +84,24 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @DataProvider(name = "headFailureScenarios")
-    public static Object[][] headFailureScenarios() {
+/**
+      * The data provider generates combinations of:
+      * <ul>
+      *   <li><b>headFailureCount</b>: Number of head failures to simulate</li>
+      *   <li><b>operationTypeForWhichBarrierFlowIsTriggered</b>: Operation type (Create/Read) for which barrier flow is triggered</li>
+      *   <li><b>enterPostQuorumSelectionOnlyBarrierLoop</b>: Whether to enter post quorum selection only barrier loop</li>
+      *   <li><b>successfulHeadRequestsWhichDontMeetBarrier</b>: Number of successful head requests which don't meet the barrier condition</li>
+      * </ul>
+      *
+      * <p>This helps cover scenarios where:</p>
+      * <ul>
+      *   <li>Enough head failures occur that the encapsulated document operation cannot succeed or has to be retried in a different region</li>
+      *   <li>Head failures occur in the first phase of quorum selection</li>
+      *   <li>Head failures occur in the second phase of quorum selection where the quorum was selected but not met</li>
+      * </ul>
+      */
+    @DataProvider(name = "headRequestLeaseNotFoundScenarios")
+    public static Object[][] headRequestLeaseNotFoundScenarios() {
         return new Object[][]{
             // headFailureCount, operationType, successfulHeadRequestsWhichDontMeetBarrier
             { 1, OperationType.Create, false, 0 },
@@ -107,8 +123,8 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "headFailureScenarios" , timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void validateGCLSNBarrierWithHeadFailures(
+    @Test(groups = {"multi-region"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void validateHeadRequestLeaseNotFoundBailout(
         int headFailureCount,
         OperationType operationTypeForWhichBarrierFlowIsTriggered,
         boolean enterPostQuorumSelectionOnlyBarrierLoop,
@@ -202,7 +218,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     // Perform the operation
                     CosmosItemResponse<?> response = targetContainer.createItem(testObject).block();
 
-                    // For Create, Head can only fail up to 2 times
+                    // For Create, Head can only fail up to 2 times before Create fails with a timeout
                     if (headFailureCount <= 1) {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
@@ -225,6 +241,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     CosmosItemResponse<TestObject> response
                         = targetContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class).block();
 
+                    // for Read, Head can fail up to 3 times and still succeed from the same region after which read has to go to another region
                     if (headFailureCount <= 3) {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
@@ -241,7 +258,6 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(response).isNotNull();
                         assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
 
-                        // Check diagnostics - should have contacted only one region for create
                         CosmosDiagnostics diagnostics = response.getDiagnostics();
                         assertThat(diagnostics).isNotNull();
 
