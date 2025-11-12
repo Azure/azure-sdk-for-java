@@ -1,8 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-
-### Other Changes
+## 1.0.0-beta.4 (2025-11-12)
 
 
 Please note, this package has been deprecated and will no longer be maintained after January 31, 2025. We encourage you to migrate your workloads to [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric), and use `azure-resourcemanager-fabric` to continue receiving updates. Refer to service retirement announcement (https://azure.microsoft.com/updates?id=azure-hdinsight-on-aks-retirement) and SDK deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
