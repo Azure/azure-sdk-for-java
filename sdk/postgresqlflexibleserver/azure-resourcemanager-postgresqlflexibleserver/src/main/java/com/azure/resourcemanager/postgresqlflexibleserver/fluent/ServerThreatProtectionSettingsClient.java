@@ -6,14 +6,12 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerThreatProtectionSettingsModelInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.AdvancedThreatProtectionSettingsModelInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -24,224 +22,115 @@ import reactor.core.publisher.Mono;
  */
 public interface ServerThreatProtectionSettingsClient {
     /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServerThreatProtectionSettingsModelInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName, String serverName,
-        Context context);
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
-        String serverName, ThreatProtectionName threatProtectionName);
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerThreatProtectionSettingsModelInner> getAsync(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName);
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerThreatProtectionSettingsModelInner> getWithResponse(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, Context context);
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerThreatProtectionSettingsModelInner get(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName);
-
-    /**
      * Creates or updates a server's Advanced Threat Protection settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters);
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of server's Advanced Threat Protection settings.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters);
+    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of server's Advanced Threat Protection settings.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters);
+    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of server's Advanced Threat Protection settings.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters, Context context);
-
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters);
-
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters);
-
-    /**
-     * Creates or updates a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters,
+    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters,
         Context context);
+
+    /**
+     * Creates or updates a server's Advanced Threat Protection settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters);
+
+    /**
+     * Creates or updates a server's Advanced Threat Protection settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void createOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+        AdvancedThreatProtectionSettingsModelInner parameters);
+
+    /**
+     * Creates or updates a server's Advanced Threat Protection settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void createOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+        AdvancedThreatProtectionSettingsModelInner parameters, Context context);
 }

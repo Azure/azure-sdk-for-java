@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettingsModel;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.AdvancedThreatProtectionSettingsModelInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionName;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionState;
 
@@ -14,20 +14,19 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
 public final class ServerThreatProtectionSettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerThreatProtectionSettingsCreateOrUpdate.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * AdvancedThreatProtectionSettingsCreateOrUpdate.json
      */
     /**
-     * Sample code: Update a server's Threat Protection settings.
+     * Sample code: Update the advanced threat protection settings of a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void updateAServerSThreatProtectionSettings(
+    public static void updateTheAdvancedThreatProtectionSettingsOfAServer(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        ServerThreatProtectionSettingsModel resource = manager.serverThreatProtectionSettings()
-            .getWithResponse("threatprotection-4799", "threatprotection-6440", ThreatProtectionName.DEFAULT,
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withState(ThreatProtectionState.ENABLED).apply();
+        manager.serverThreatProtectionSettings()
+            .createOrUpdate("exampleresourcegroup", "exampleserver", ThreatProtectionName.DEFAULT,
+                new AdvancedThreatProtectionSettingsModelInner().withState(ThreatProtectionState.ENABLED),
+                com.azure.core.util.Context.NONE);
     }
 }

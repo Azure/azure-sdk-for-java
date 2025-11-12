@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
 
 public final class ConfigurationsImpl implements Configurations {
@@ -59,42 +60,24 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Configuration getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "configurations");
-        if (configurationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE).getValue();
+    public void update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters) {
+        this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters);
     }
 
-    public Response<Configuration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "configurations");
-        if (configurationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, serverName, configurationName, context);
+    public void update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters, Context context) {
+        this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters, context);
+    }
+
+    public void put(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters) {
+        this.serviceClient().put(resourceGroupName, serverName, configurationName, parameters);
+    }
+
+    public void put(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters, Context context) {
+        this.serviceClient().put(resourceGroupName, serverName, configurationName, parameters, context);
     }
 
     private ConfigurationsClient serviceClient() {
@@ -103,9 +86,5 @@ public final class ConfigurationsImpl implements Configurations {
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    public ConfigurationImpl define(String name) {
-        return new ConfigurationImpl(name, this.manager());
     }
 }

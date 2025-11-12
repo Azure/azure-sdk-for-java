@@ -13,7 +13,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointResourceInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResourceForPatch;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -24,254 +24,235 @@ import reactor.core.publisher.Mono;
  */
 public interface VirtualEndpointsClient {
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, VirtualEndpointResourceInner parameters);
+        String virtualEndpointName, VirtualEndpointInner parameters);
 
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a virtual endpoint for a server.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceInner parameters);
+    PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointInner parameters);
 
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a virtual endpoint for a server.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreate(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceInner parameters);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointInner parameters);
 
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a virtual endpoint for a server.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreate(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceInner parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointInner parameters, Context context);
 
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualEndpointResourceInner> createAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, VirtualEndpointResourceInner parameters);
+    Mono<Void> createAsync(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointInner parameters);
 
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner create(String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceInner parameters);
+    void create(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointInner parameters);
 
     /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * Creates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to create or update a pair of virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner create(String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceInner parameters, Context context);
+    void create(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointInner parameters, Context context);
 
     /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
+     * Updates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointResourceForPatch parameters);
 
     /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
+     * Updates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a virtual endpoint for a server.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters);
-
-    /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a virtual endpoint for a server.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdate(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters);
-
-    /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a virtual endpoint for a server.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdate(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters, Context context);
-
-    /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualEndpointResourceInner> updateAsync(String resourceGroupName, String serverName,
+    PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointResourceForPatch parameters);
 
     /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
+     * Updates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner update(String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceForPatch parameters);
 
     /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
+     * Updates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner update(String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceForPatch parameters, Context context);
 
     /**
-     * Deletes a virtual endpoint.
+     * Updates a pair of virtual endpoints for a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateAsync(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceForPatch parameters);
+
+    /**
+     * Updates a pair of virtual endpoints for a server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceForPatch parameters);
+
+    /**
+     * Updates a pair of virtual endpoints for a server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
+     * @param parameters Parameters required to update a pair of virtual endpoints.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceForPatch parameters, Context context);
+
+    /**
+     * Deletes a pair of virtual endpoints.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -282,11 +263,11 @@ public interface VirtualEndpointsClient {
         String virtualEndpointName);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,11 +278,11 @@ public interface VirtualEndpointsClient {
         String virtualEndpointName);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -312,11 +293,11 @@ public interface VirtualEndpointsClient {
         String virtualEndpointName);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -328,11 +309,11 @@ public interface VirtualEndpointsClient {
         String virtualEndpointName, Context context);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -342,11 +323,11 @@ public interface VirtualEndpointsClient {
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String virtualEndpointName);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,11 +336,11 @@ public interface VirtualEndpointsClient {
     void delete(String resourceGroupName, String serverName, String virtualEndpointName);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -369,94 +350,93 @@ public interface VirtualEndpointsClient {
     void delete(String resourceGroupName, String serverName, String virtualEndpointName, Context context);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response} on successful completion of
+     * @return information about a pair of virtual endpoints along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualEndpointResourceInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+    Mono<Response<VirtualEndpointInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String virtualEndpointName);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint on successful completion of {@link Mono}.
+     * @return information about a pair of virtual endpoints on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualEndpointResourceInner> getAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName);
+    Mono<VirtualEndpointInner> getAsync(String resourceGroupName, String serverName, String virtualEndpointName);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response}.
+     * @return information about a pair of virtual endpoints along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualEndpointResourceInner> getWithResponse(String resourceGroupName, String serverName,
+    Response<VirtualEndpointInner> getWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint.
+     * @return information about a pair of virtual endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner get(String resourceGroupName, String serverName, String virtualEndpointName);
+    VirtualEndpointInner get(String resourceGroupName, String serverName, String virtualEndpointName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists pair of virtual endpoints associated to a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints as paginated response with {@link PagedFlux}.
+     * @return list of virtual endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualEndpointResourceInner> listByServerAsync(String resourceGroupName, String serverName);
+    PagedFlux<VirtualEndpointInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists pair of virtual endpoints associated to a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints as paginated response with {@link PagedIterable}.
+     * @return list of virtual endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualEndpointResourceInner> listByServer(String resourceGroupName, String serverName);
+    PagedIterable<VirtualEndpointInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists pair of virtual endpoints associated to a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -464,9 +444,8 @@ public interface VirtualEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints as paginated response with {@link PagedIterable}.
+     * @return list of virtual endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualEndpointResourceInner> listByServer(String resourceGroupName, String serverName,
-        Context context);
+    PagedIterable<VirtualEndpointInner> listByServer(String resourceGroupName, String serverName, Context context);
 }

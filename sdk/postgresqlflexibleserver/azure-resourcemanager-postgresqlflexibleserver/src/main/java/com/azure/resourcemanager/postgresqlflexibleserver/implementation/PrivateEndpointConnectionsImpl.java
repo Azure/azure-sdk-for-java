@@ -50,6 +50,25 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
+    public void update(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters) {
+        this.serviceClient().update(resourceGroupName, serverName, privateEndpointConnectionName, parameters);
+    }
+
+    public void update(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context) {
+        this.serviceClient().update(resourceGroupName, serverName, privateEndpointConnectionName, parameters, context);
+    }
+
+    public void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName) {
+        this.serviceClient().delete(resourceGroupName, serverName, privateEndpointConnectionName);
+    }
+
+    public void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, serverName, privateEndpointConnectionName, context);
+    }
+
     public PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().listByServer(resourceGroupName, serverName);

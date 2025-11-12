@@ -13,19 +13,20 @@ import com.azure.core.util.Context;
  */
 public interface Configurations {
     /**
-     * List all the configurations in a given server.
+     * Lists all configurations (also known as server parameters) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations as paginated response with {@link PagedIterable}.
+     * @return list of configurations (also known as server parameters) as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the configurations in a given server.
+     * Lists all configurations (also known as server parameters) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -33,66 +34,100 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations as paginated response with {@link PagedIterable}.
+     * @return list of configurations (also known as server parameters) as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a configuration of server.
+     * Gets information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server along with {@link Response}.
+     * @return information about a specific configuration (also known as server parameter) of a server along with
+     * {@link Response}.
      */
     Response<Configuration> getWithResponse(String resourceGroupName, String serverName, String configurationName,
         Context context);
 
     /**
-     * Gets information about a configuration of server.
+     * Gets information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
+     * @return information about a specific configuration (also known as server parameter) of a server.
      */
     Configuration get(String resourceGroupName, String serverName, String configurationName);
 
     /**
-     * Gets information about a configuration of server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
-     * @param id the resource ID.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server along with {@link Response}.
      */
-    Configuration getById(String id);
+    void update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters);
 
     /**
-     * Gets information about a configuration of server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
-     * @param id the resource ID.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server along with {@link Response}.
      */
-    Response<Configuration> getByIdWithResponse(String id, Context context);
+    void update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters, Context context);
 
     /**
-     * Begins definition for a new Configuration resource.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
-     * @param name resource name.
-     * @return the first stage of the new Configuration definition.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    Configuration.DefinitionStages.Blank define(String name);
+    void put(String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+
+    /**
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void put(String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters,
+        Context context);
 }

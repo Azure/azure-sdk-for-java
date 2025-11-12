@@ -4,27 +4,27 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FirewallRuleInner;
+
 /**
  * Samples for FirewallRules CreateOrUpdate.
  */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * FirewallRuleCreate.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * FirewallRulesCreateOrUpdate.json
      */
     /**
-     * Sample code: FirewallRuleCreate.
+     * Sample code: Create a new firewall rule or update an existing firewall rule.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void
-        firewallRuleCreate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void createANewFirewallRuleOrUpdateAnExistingFirewallRule(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.firewallRules()
-            .define("rule1")
-            .withExistingFlexibleServer("testrg", "testserver")
-            .withStartIpAddress("0.0.0.0")
-            .withEndIpAddress("255.255.255.255")
-            .create();
+            .createOrUpdate("exampleresourcegroup", "exampleserver", "examplefirewallrule",
+                new FirewallRuleInner().withStartIpAddress("0.0.0.0").withEndIpAddress("255.255.255.255"),
+                com.azure.core.util.Context.NONE);
     }
 }

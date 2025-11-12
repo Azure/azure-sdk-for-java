@@ -4,15 +4,11 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerThreatProtectionSettingsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerThreatProtectionSettingsModelInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.AdvancedThreatProtectionSettingsModelInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettings;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettingsModel;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionName;
 
 public final class ServerThreatProtectionSettingsImpl implements ServerThreatProtectionSettings {
@@ -28,85 +24,14 @@ public final class ServerThreatProtectionSettingsImpl implements ServerThreatPro
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ServerThreatProtectionSettingsModel> listByServer(String resourceGroupName,
-        String serverName) {
-        PagedIterable<ServerThreatProtectionSettingsModelInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ServerThreatProtectionSettingsModelImpl(inner1, this.manager()));
+    public void createOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+        AdvancedThreatProtectionSettingsModelInner parameters) {
+        this.serviceClient().createOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters);
     }
 
-    public PagedIterable<ServerThreatProtectionSettingsModel> listByServer(String resourceGroupName, String serverName,
-        Context context) {
-        PagedIterable<ServerThreatProtectionSettingsModelInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ServerThreatProtectionSettingsModelImpl(inner1, this.manager()));
-    }
-
-    public Response<ServerThreatProtectionSettingsModel> getWithResponse(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, Context context) {
-        Response<ServerThreatProtectionSettingsModelInner> inner
-            = this.serviceClient().getWithResponse(resourceGroupName, serverName, threatProtectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ServerThreatProtectionSettingsModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ServerThreatProtectionSettingsModel get(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName) {
-        ServerThreatProtectionSettingsModelInner inner
-            = this.serviceClient().get(resourceGroupName, serverName, threatProtectionName);
-        if (inner != null) {
-            return new ServerThreatProtectionSettingsModelImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public ServerThreatProtectionSettingsModel getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String threatProtectionNameLocal
-            = ResourceManagerUtils.getValueFromIdByName(id, "advancedThreatProtectionSettings");
-        if (threatProtectionNameLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'advancedThreatProtectionSettings'.", id)));
-        }
-        ThreatProtectionName threatProtectionName = ThreatProtectionName.fromString(threatProtectionNameLocal);
-        return this.getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE).getValue();
-    }
-
-    public Response<ServerThreatProtectionSettingsModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String threatProtectionNameLocal
-            = ResourceManagerUtils.getValueFromIdByName(id, "advancedThreatProtectionSettings");
-        if (threatProtectionNameLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'advancedThreatProtectionSettings'.", id)));
-        }
-        ThreatProtectionName threatProtectionName = ThreatProtectionName.fromString(threatProtectionNameLocal);
-        return this.getWithResponse(resourceGroupName, serverName, threatProtectionName, context);
+    public void createOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+        AdvancedThreatProtectionSettingsModelInner parameters, Context context) {
+        this.serviceClient().createOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, context);
     }
 
     private ServerThreatProtectionSettingsClient serviceClient() {
@@ -115,9 +40,5 @@ public final class ServerThreatProtectionSettingsImpl implements ServerThreatPro
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    public ServerThreatProtectionSettingsModelImpl define(ThreatProtectionName name) {
-        return new ServerThreatProtectionSettingsModelImpl(name, this.manager());
     }
 }

@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"pzhz\",\"display\":{\"provider\":\"sjcitdigsxc\",\"resource\":\"l\",\"operation\":\"lkeuac\",\"description\":\"omflrytswfp\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"yslu\":\"datanmskwhqj\"}}]}";
+            = "{\"value\":[{\"name\":\"dyb\",\"display\":{\"provider\":\"bdvibidmhmwffpl\",\"resource\":\"u\",\"operation\":\"pckc\",\"description\":\"rv\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"oshbragapyy\":\"datayukphaimmoiroq\",\"opfppdbwnupgah\":\"datamfsvbpav\",\"jcaacfdmmcpugm\":\"datakuma\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertFalse(response.iterator().next().isDataAction());
     }
 }

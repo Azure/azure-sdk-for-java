@@ -24,33 +24,34 @@ import reactor.core.publisher.Mono;
  */
 public interface ConfigurationsClient {
     /**
-     * List all the configurations in a given server.
+     * Lists all configurations (also known as server parameters) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations as paginated response with {@link PagedFlux}.
+     * @return list of configurations (also known as server parameters) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ConfigurationInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * List all the configurations in a given server.
+     * Lists all configurations (also known as server parameters) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations as paginated response with {@link PagedIterable}.
+     * @return list of configurations (also known as server parameters) as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the configurations in a given server.
+     * Lists all configurations (also known as server parameters) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -58,296 +59,315 @@ public interface ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations as paginated response with {@link PagedIterable}.
+     * @return list of configurations (also known as server parameters) as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationInner> listByServer(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a configuration of server.
+     * Gets information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about a specific configuration (also known as server parameter) of a server along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ConfigurationInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String configurationName);
 
     /**
-     * Gets information about a configuration of server.
+     * Gets information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server on successful completion of {@link Mono}.
+     * @return information about a specific configuration (also known as server parameter) of a server on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ConfigurationInner> getAsync(String resourceGroupName, String serverName, String configurationName);
 
     /**
-     * Gets information about a configuration of server.
+     * Gets information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server along with {@link Response}.
+     * @return information about a specific configuration (also known as server parameter) of a server along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConfigurationInner> getWithResponse(String resourceGroupName, String serverName, String configurationName,
         Context context);
 
     /**
-     * Gets information about a configuration of server.
+     * Gets information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
+     * @return information about a specific configuration (also known as server parameter) of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigurationInner get(String resourceGroupName, String serverName, String configurationName);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String configurationName, ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a Configuration.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(String resourceGroupName,
-        String serverName, String configurationName, ConfigurationForUpdate parameters);
+    PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Configuration.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(String resourceGroupName,
-        String serverName, String configurationName, ConfigurationForUpdate parameters);
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Configuration.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(String resourceGroupName,
-        String serverName, String configurationName, ConfigurationForUpdate parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationForUpdate parameters, Context context);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConfigurationInner> updateAsync(String resourceGroupName, String serverName, String configurationName,
+    Mono<Void> updateAsync(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner update(String resourceGroupName, String serverName, String configurationName,
+    void update(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner update(String resourceGroupName, String serverName, String configurationName,
+    void update(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters, Context context);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(String resourceGroupName, String serverName,
-        String configurationName, ConfigurationInner parameters);
+        String configurationName, ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a Configuration.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginPutAsync(String resourceGroupName,
-        String serverName, String configurationName, ConfigurationInner parameters);
+    PollerFlux<PollResult<Void>, Void> beginPutAsync(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Configuration.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(String resourceGroupName, String serverName,
-        String configurationName, ConfigurationInner parameters);
+    SyncPoller<PollResult<Void>, Void> beginPut(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Configuration.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(String resourceGroupName, String serverName,
-        String configurationName, ConfigurationInner parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPut(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters, Context context);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConfigurationInner> putAsync(String resourceGroupName, String serverName, String configurationName,
-        ConfigurationInner parameters);
+    Mono<Void> putAsync(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner put(String resourceGroupName, String serverName, String configurationName,
-        ConfigurationInner parameters);
+    void put(String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
 
     /**
-     * Updates a configuration of a server.
+     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
+     * parameter) of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @param parameters The required parameters for updating a server configuration.
+     * @param configurationName Name of the configuration (also known as server parameter).
+     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
+     * server parameter).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner put(String resourceGroupName, String serverName, String configurationName,
-        ConfigurationInner parameters, Context context);
+    void put(String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters,
+        Context context);
 }

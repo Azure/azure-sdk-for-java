@@ -6,7 +6,6 @@ package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
@@ -18,10 +17,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -33,8 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerThreatProtectionSettingsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerThreatProtectionSettingsModelInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.AdvancedThreatProtectionSettingsModelInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -70,371 +64,29 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientServerThreatProtectionSettings")
     public interface ServerThreatProtectionSettingsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerThreatProtectionListResult>> listByServer(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerThreatProtectionListResult> listByServerSync(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerThreatProtectionSettingsModelInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("threatProtectionName") ThreatProtectionName threatProtectionName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerThreatProtectionSettingsModelInner> getSync(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("threatProtectionName") ThreatProtectionName threatProtectionName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("threatProtectionName") ThreatProtectionName threatProtectionName,
-            @BodyParam("application/json") ServerThreatProtectionSettingsModelInner parameters,
+            @BodyParam("application/json") AdvancedThreatProtectionSettingsModelInner parameters,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("threatProtectionName") ThreatProtectionName threatProtectionName,
-            @BodyParam("application/json") ServerThreatProtectionSettingsModelInner parameters,
+            @BodyParam("application/json") AdvancedThreatProtectionSettingsModelInner parameters,
             @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerThreatProtectionListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerThreatProtectionListResult> listByServerNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-    }
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>>
-        listByServerSinglePageAsync(String resourceGroupName, String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByServer(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context))
-            .<PagedResponse<ServerThreatProtectionSettingsModelInner>>map(
-                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                    res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerThreatProtectionSettingsModelInner> listByServerAsync(String resourceGroupName,
-        String serverName) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ServerThreatProtectionSettingsModelInner> listByServerSinglePage(String resourceGroupName,
-        String serverName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ServerThreatProtectionListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ServerThreatProtectionSettingsModelInner> listByServerSinglePage(String resourceGroupName,
-        String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ServerThreatProtectionListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName,
-        String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
-    }
-
-    /**
-     * Get a list of server's Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName,
-        String serverName, Context context) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
-        String serverName, ThreatProtectionName threatProtectionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (threatProtectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter threatProtectionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, threatProtectionName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerThreatProtectionSettingsModelInner> getAsync(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName) {
-        return getWithResponseAsync(resourceGroupName, serverName, threatProtectionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerThreatProtectionSettingsModelInner> getWithResponse(String resourceGroupName,
-        String serverName, ThreatProtectionName threatProtectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (threatProtectionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter threatProtectionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, serverName, threatProtectionName, accept, context);
-    }
-
-    /**
-     * Get a server's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's Advanced Threat Protection settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerThreatProtectionSettingsModelInner get(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName) {
-        return getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE).getValue();
     }
 
     /**
@@ -442,17 +94,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters) {
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -490,16 +141,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters) {
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -539,17 +190,17 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -590,23 +241,20 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of server's Advanced Threat Protection settings.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, serverName, threatProtectionName, parameters);
-        return this.client
-            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(mono,
-                this.client.getHttpPipeline(), ServerThreatProtectionSettingsModelInner.class,
-                ServerThreatProtectionSettingsModelInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -614,23 +262,19 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of server's Advanced Threat Protection settings.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, serverName, threatProtectionName, parameters);
-        return this.client
-            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(response,
-                ServerThreatProtectionSettingsModelInner.class, ServerThreatProtectionSettingsModelInner.class,
-                Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -638,24 +282,21 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of server's Advanced Threat Protection settings.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters,
+        Context context) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, serverName, threatProtectionName, parameters, context);
-        return this.client
-            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(response,
-                ServerThreatProtectionSettingsModelInner.class, ServerThreatProtectionSettingsModelInner.class,
-                context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -663,17 +304,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(String resourceGroupName,
-        String serverName, ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters) {
+    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, AdvancedThreatProtectionSettingsModelInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -683,17 +323,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters).getFinalResult();
+    public void createOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+        AdvancedThreatProtectionSettingsModelInner parameters) {
+        beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters).getFinalResult();
     }
 
     /**
@@ -701,105 +340,17 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param threatProtectionName The name of the Threat Protection state.
-     * @param parameters The Advanced Threat Protection state for the flexible server.
+     * @param threatProtectionName Name of the advanced threat protection settings.
+     * @param parameters The Advanced Threat Protection state for the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
-        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters,
-        Context context) {
-        return beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, context)
-            .getFinalResult();
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection settings along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>>
-        listByServerNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerThreatProtectionSettingsModelInner>>map(
-                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                    res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection settings along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ServerThreatProtectionSettingsModelInner> listByServerNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ServerThreatProtectionListResult> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection settings along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ServerThreatProtectionSettingsModelInner> listByServerNextSinglePage(String nextLink,
-        Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ServerThreatProtectionListResult> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+    public void createOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+        AdvancedThreatProtectionSettingsModelInner parameters, Context context) {
+        beginCreateOrUpdate(resourceGroupName, serverName, threatProtectionName, parameters, context).getFinalResult();
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerThreatProtectionSettingsClientImpl.class);

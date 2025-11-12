@@ -27,6 +27,15 @@ public final class DatabasesImpl implements Databases {
         this.serviceManager = serviceManager;
     }
 
+    public void create(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        this.serviceClient().create(resourceGroupName, serverName, databaseName, parameters);
+    }
+
+    public void create(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters,
+        Context context) {
+        this.serviceClient().create(resourceGroupName, serverName, databaseName, parameters, context);
+    }
+
     public void delete(String resourceGroupName, String serverName, String databaseName) {
         this.serviceClient().delete(resourceGroupName, serverName, databaseName);
     }
@@ -66,91 +75,11 @@ public final class DatabasesImpl implements Databases {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
-    public Database getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
-    }
-
-    public Response<Database> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, serverName, databaseName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
-        this.delete(resourceGroupName, serverName, databaseName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
-        this.delete(resourceGroupName, serverName, databaseName, context);
-    }
-
     private DatabasesClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    public DatabaseImpl define(String name) {
-        return new DatabaseImpl(name, this.manager());
     }
 }

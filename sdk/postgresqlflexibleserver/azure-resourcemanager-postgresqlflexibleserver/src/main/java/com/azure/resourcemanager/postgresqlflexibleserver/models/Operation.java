@@ -12,28 +12,28 @@ import java.util.Map;
  */
 public interface Operation {
     /**
-     * Gets the name property: The name of the operation being performed on this particular object.
+     * Gets the name property: Name of the operation being performed on this particular object.
      * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the display property: The localized display information for this particular operation or action.
+     * Gets the display property: Localized display information for this particular operation or action.
      * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
-     * Gets the isDataAction property: Indicates whether the operation is a data action.
+     * Gets the isDataAction property: Indicates if the operation is a data action.
      * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
-     * Gets the origin property: The intended executor of the operation.
+     * Gets the origin property: Intended executor of the operation.
      * 
      * @return the origin value.
      */

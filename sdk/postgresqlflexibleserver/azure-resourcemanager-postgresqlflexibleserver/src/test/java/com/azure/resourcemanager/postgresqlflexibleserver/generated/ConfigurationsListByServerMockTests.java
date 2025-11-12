@@ -22,7 +22,7 @@ public final class ConfigurationsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"ouwtl\",\"description\":\"jyuojqtobaxkjeyt\",\"defaultValue\":\"lbfjkwr\",\"dataType\":\"Integer\",\"allowedValues\":\"qbhsyrq\",\"source\":\"jqhden\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"d\",\"documentationLink\":\"fmjnnawtqa\"},\"id\":\"xuckpggqoweyir\",\"name\":\"hlisngw\",\"type\":\"lqqmpiz\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"mgbzahgxqdlyrtl\",\"description\":\"ap\",\"defaultValue\":\"tz\",\"dataType\":\"Boolean\",\"allowedValues\":\"hjm\",\"source\":\"nbsoqeqalarv\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"febwlnbmhyreeudz\",\"documentationLink\":\"vbpdqmjxlyyzglgo\"},\"id\":\"tlmj\",\"name\":\"yuojqtobaxk\",\"type\":\"eytu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ConfigurationsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Configuration> response
-            = manager.configurations().listByServer("nbmhyree", "dzqavbpdqmjxlyyz", com.azure.core.util.Context.NONE);
+            = manager.configurations().listByServer("aosrxuz", "oamktcq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ouwtl", response.iterator().next().value());
-        Assertions.assertEquals("jqhden", response.iterator().next().source());
+        Assertions.assertEquals("mgbzahgxqdlyrtl", response.iterator().next().value());
+        Assertions.assertEquals("nbsoqeqalarv", response.iterator().next().source());
     }
 }

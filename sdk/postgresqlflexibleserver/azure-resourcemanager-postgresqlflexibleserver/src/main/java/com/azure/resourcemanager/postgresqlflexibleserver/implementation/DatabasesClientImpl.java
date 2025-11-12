@@ -35,7 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.DatabaseInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.DatabaseListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.DatabaseList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,11 +70,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientDatabases")
     public interface DatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -84,7 +84,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> createSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -94,7 +94,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -103,7 +103,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases/{databaseName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -132,7 +132,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseListResult>> listByServer(@HostParam("$host") String endpoint,
+        Mono<Response<DatabaseList>> listByServer(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
@@ -141,7 +141,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/databases")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<DatabaseListResult> listByServerSync(@HostParam("$host") String endpoint,
+        Response<DatabaseList> listByServerSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
@@ -150,30 +150,29 @@ public final class DatabasesClientImpl implements DatabasesClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DatabaseList>> listByServerNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<DatabaseListResult> listByServerNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<DatabaseList> listByServerNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
@@ -208,16 +207,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName, String databaseName,
@@ -257,17 +257,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName, String databaseName,
@@ -306,130 +307,132 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a Database.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(String resourceGroupName,
-        String serverName, String databaseName, DatabaseInner parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String serverName,
+        String databaseName, DatabaseInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Database.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName, String serverName,
+    public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String serverName,
         String databaseName, DatabaseInner parameters) {
         Response<BinaryData> response = createWithResponse(resourceGroupName, serverName, databaseName, parameters);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(response, DatabaseInner.class,
-            DatabaseInner.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Database.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName, String serverName,
+    public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String serverName,
         String databaseName, DatabaseInner parameters, Context context) {
         Response<BinaryData> response
             = createWithResponse(resourceGroupName, serverName, databaseName, parameters, context);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(response, DatabaseInner.class,
-            DatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseInner> createAsync(String resourceGroupName, String serverName, String databaseName,
+    public Mono<Void> createAsync(String resourceGroupName, String serverName, String databaseName,
         DatabaseInner parameters) {
         return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner create(String resourceGroupName, String serverName, String databaseName,
-        DatabaseInner parameters) {
-        return beginCreate(resourceGroupName, serverName, databaseName, parameters).getFinalResult();
+    public void create(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        beginCreate(resourceGroupName, serverName, databaseName, parameters).getFinalResult();
     }
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner create(String resourceGroupName, String serverName, String databaseName,
-        DatabaseInner parameters, Context context) {
-        return beginCreate(resourceGroupName, serverName, databaseName, parameters, context).getFinalResult();
+    public void create(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters,
+        Context context) {
+        beginCreate(resourceGroupName, serverName, databaseName, parameters, context).getFinalResult();
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,11 +467,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -504,11 +508,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -546,11 +551,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -565,11 +571,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -583,11 +590,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -602,11 +610,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -619,11 +628,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -634,11 +644,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -650,15 +661,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about an existing database along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String serverName,
@@ -689,15 +702,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database on successful completion of {@link Mono}.
+     * @return information about an existing database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -706,16 +720,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database along with {@link Response}.
+     * @return information about an existing database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
@@ -748,15 +763,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
+     * @return information about an existing database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
@@ -764,14 +780,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of all databases in a server along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(String resourceGroupName,
@@ -801,14 +818,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases as paginated response with {@link PagedFlux}.
+     * @return list of all databases in a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -817,14 +834,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases along with {@link PagedResponse}.
+     * @return list of all databases in a server along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseInner> listByServerSinglePage(String resourceGroupName, String serverName) {
@@ -847,15 +864,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<DatabaseListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
+        Response<DatabaseList> res = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -863,7 +879,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases along with {@link PagedResponse}.
+     * @return list of all databases in a server along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseInner> listByServerSinglePage(String resourceGroupName, String serverName,
@@ -887,22 +903,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<DatabaseListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
+        Response<DatabaseList> res = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases as paginated response with {@link PagedIterable}.
+     * @return list of all databases in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
@@ -911,7 +926,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -919,7 +934,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases as paginated response with {@link PagedIterable}.
+     * @return list of all databases in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Context context) {
@@ -934,7 +949,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of all databases in a server along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -960,7 +976,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases along with {@link PagedResponse}.
+     * @return list of all databases in a server along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseInner> listByServerNextSinglePage(String nextLink) {
@@ -974,7 +990,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<DatabaseListResult> res
+        Response<DatabaseList> res
             = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -988,7 +1004,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases along with {@link PagedResponse}.
+     * @return list of all databases in a server along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseInner> listByServerNextSinglePage(String nextLink, Context context) {
@@ -1002,8 +1018,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<DatabaseListResult> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<DatabaseList> res = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

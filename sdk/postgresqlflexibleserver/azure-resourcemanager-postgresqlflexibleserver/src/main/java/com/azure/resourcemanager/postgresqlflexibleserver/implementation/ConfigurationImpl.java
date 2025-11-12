@@ -5,16 +5,20 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationDataType;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationForUpdate;
 
-public final class ConfigurationImpl implements Configuration, Configuration.Definition, Configuration.Update {
+public final class ConfigurationImpl implements Configuration {
     private ConfigurationInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+
+    ConfigurationImpl(ConfigurationInner innerObject,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -76,118 +80,11 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         return this.innerModel().documentationLink();
     }
 
-    public String resourceGroupName() {
-        return resourceGroupName;
-    }
-
     public ConfigurationInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String serverName;
-
-    private String configurationName;
-
-    private ConfigurationForUpdate updateParameters;
-
-    public ConfigurationImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
-        this.resourceGroupName = resourceGroupName;
-        this.serverName = serverName;
-        return this;
-    }
-
-    public Configuration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .put(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public Configuration create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .put(resourceGroupName, serverName, configurationName, this.innerModel(), context);
-        return this;
-    }
-
-    ConfigurationImpl(String name,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = new ConfigurationInner();
-        this.serviceManager = serviceManager;
-        this.configurationName = name;
-    }
-
-    public ConfigurationImpl update() {
-        this.updateParameters = new ConfigurationForUpdate();
-        return this;
-    }
-
-    public Configuration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .update(resourceGroupName, serverName, configurationName, updateParameters, Context.NONE);
-        return this;
-    }
-
-    public Configuration apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .update(resourceGroupName, serverName, configurationName, updateParameters, context);
-        return this;
-    }
-
-    ConfigurationImpl(ConfigurationInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.configurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurations");
-    }
-
-    public Configuration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public Configuration refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .getWithResponse(resourceGroupName, serverName, configurationName, context)
-            .getValue();
-        return this;
-    }
-
-    public ConfigurationImpl withValue(String value) {
-        if (isInCreateMode()) {
-            this.innerModel().withValue(value);
-            return this;
-        } else {
-            this.updateParameters.withValue(value);
-            return this;
-        }
-    }
-
-    public ConfigurationImpl withSource(String source) {
-        if (isInCreateMode()) {
-            this.innerModel().withSource(source);
-            return this;
-        } else {
-            this.updateParameters.withSource(source);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

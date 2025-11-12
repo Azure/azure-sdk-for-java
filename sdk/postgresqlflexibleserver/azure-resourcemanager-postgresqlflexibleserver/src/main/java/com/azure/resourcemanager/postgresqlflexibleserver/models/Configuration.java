@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
 
 /**
@@ -41,88 +40,89 @@ public interface Configuration {
     SystemData systemData();
 
     /**
-     * Gets the value property: Value of the configuration. Required to update the configuration.
+     * Gets the value property: Value of the configuration (also known as server parameter). Required to update the
+     * value assigned to a specific modifiable configuration.
      * 
      * @return the value value.
      */
     String value();
 
     /**
-     * Gets the description property: Description of the configuration.
+     * Gets the description property: Description of the configuration (also known as server parameter).
      * 
      * @return the description value.
      */
     String description();
 
     /**
-     * Gets the defaultValue property: Default value of the configuration.
+     * Gets the defaultValue property: Value assigned by default to the configuration (also known as server parameter).
      * 
      * @return the defaultValue value.
      */
     String defaultValue();
 
     /**
-     * Gets the dataType property: Data type of the configuration.
+     * Gets the dataType property: Data type of the configuration (also known as server parameter).
      * 
      * @return the dataType value.
      */
     ConfigurationDataType dataType();
 
     /**
-     * Gets the allowedValues property: Allowed values of the configuration.
+     * Gets the allowedValues property: Allowed values of the configuration (also known as server parameter).
      * 
      * @return the allowedValues value.
      */
     String allowedValues();
 
     /**
-     * Gets the source property: Source of the configuration. Required to update the configuration.
+     * Gets the source property: Source of the value assigned to the configuration (also known as server parameter).
+     * Required to update the value assigned to a specific modifiable configuration.
      * 
      * @return the source value.
      */
     String source();
 
     /**
-     * Gets the isDynamicConfig property: Configuration dynamic or static.
+     * Gets the isDynamicConfig property: Indicates if it's a dynamic (true) or static (false) configuration (also known
+     * as server parameter). Static server parameters require a server restart after changing the value assigned to
+     * them, for the change to take effect. Dynamic server parameters do not require a server restart after changing the
+     * value assigned to them, for the change to take effect.
      * 
      * @return the isDynamicConfig value.
      */
     Boolean isDynamicConfig();
 
     /**
-     * Gets the isReadOnly property: Configuration read-only or not.
+     * Gets the isReadOnly property: Indicates if it's a read-only (true) or modifiable (false) configuration (also
+     * known as server parameter).
      * 
      * @return the isReadOnly value.
      */
     Boolean isReadOnly();
 
     /**
-     * Gets the isConfigPendingRestart property: Configuration is pending restart or not.
+     * Gets the isConfigPendingRestart property: Indicates if the value assigned to the configuration (also known as
+     * server parameter) is pending a server restart for it to take effect.
      * 
      * @return the isConfigPendingRestart value.
      */
     Boolean isConfigPendingRestart();
 
     /**
-     * Gets the unit property: Configuration unit.
+     * Gets the unit property: Units in which the configuration (also known as server parameter) value is expressed.
      * 
      * @return the unit value.
      */
     String unit();
 
     /**
-     * Gets the documentationLink property: Configuration documentation link.
+     * Gets the documentationLink property: Link pointing to the documentation of the configuration (also known as
+     * server parameter).
      * 
      * @return the documentationLink value.
      */
     String documentationLink();
-
-    /**
-     * Gets the name of the resource group.
-     * 
-     * @return the name of the resource group.
-     */
-    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner object.
@@ -130,156 +130,4 @@ public interface Configuration {
      * @return the inner object.
      */
     ConfigurationInner innerModel();
-
-    /**
-     * The entirety of the Configuration definition.
-     */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
-    }
-
-    /**
-     * The Configuration definition stages.
-     */
-    interface DefinitionStages {
-        /**
-         * The first stage of the Configuration definition.
-         */
-        interface Blank extends WithParentResource {
-        }
-
-        /**
-         * The stage of the Configuration definition allowing to specify parent resource.
-         */
-        interface WithParentResource {
-            /**
-             * Specifies resourceGroupName, serverName.
-             * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param serverName The name of the server.
-             * @return the next definition stage.
-             */
-            WithCreate withExistingFlexibleServer(String resourceGroupName, String serverName);
-        }
-
-        /**
-         * The stage of the Configuration definition which contains all the minimum required properties for the resource
-         * to be created, but also allows for any other optional properties to be specified.
-         */
-        interface WithCreate extends DefinitionStages.WithValue, DefinitionStages.WithSource {
-            /**
-             * Executes the create request.
-             * 
-             * @return the created resource.
-             */
-            Configuration create();
-
-            /**
-             * Executes the create request.
-             * 
-             * @param context The context to associate with this operation.
-             * @return the created resource.
-             */
-            Configuration create(Context context);
-        }
-
-        /**
-         * The stage of the Configuration definition allowing to specify value.
-         */
-        interface WithValue {
-            /**
-             * Specifies the value property: Value of the configuration. Required to update the configuration..
-             * 
-             * @param value Value of the configuration. Required to update the configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withValue(String value);
-        }
-
-        /**
-         * The stage of the Configuration definition allowing to specify source.
-         */
-        interface WithSource {
-            /**
-             * Specifies the source property: Source of the configuration. Required to update the configuration..
-             * 
-             * @param source Source of the configuration. Required to update the configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withSource(String source);
-        }
-    }
-
-    /**
-     * Begins update for the Configuration resource.
-     * 
-     * @return the stage of resource update.
-     */
-    Configuration.Update update();
-
-    /**
-     * The template for Configuration update.
-     */
-    interface Update extends UpdateStages.WithValue, UpdateStages.WithSource {
-        /**
-         * Executes the update request.
-         * 
-         * @return the updated resource.
-         */
-        Configuration apply();
-
-        /**
-         * Executes the update request.
-         * 
-         * @param context The context to associate with this operation.
-         * @return the updated resource.
-         */
-        Configuration apply(Context context);
-    }
-
-    /**
-     * The Configuration update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the Configuration update allowing to specify value.
-         */
-        interface WithValue {
-            /**
-             * Specifies the value property: Value of the configuration. Required to update the configuration..
-             * 
-             * @param value Value of the configuration. Required to update the configuration.
-             * @return the next definition stage.
-             */
-            Update withValue(String value);
-        }
-
-        /**
-         * The stage of the Configuration update allowing to specify source.
-         */
-        interface WithSource {
-            /**
-             * Specifies the source property: Source of the configuration. Required to update the configuration..
-             * 
-             * @param source Source of the configuration. Required to update the configuration.
-             * @return the next definition stage.
-             */
-            Update withSource(String source);
-        }
-    }
-
-    /**
-     * Refreshes the resource to sync with Azure.
-     * 
-     * @return the refreshed resource.
-     */
-    Configuration refresh();
-
-    /**
-     * Refreshes the resource to sync with Azure.
-     * 
-     * @param context The context to associate with this operation.
-     * @return the refreshed resource.
-     */
-    Configuration refresh(Context context);
 }

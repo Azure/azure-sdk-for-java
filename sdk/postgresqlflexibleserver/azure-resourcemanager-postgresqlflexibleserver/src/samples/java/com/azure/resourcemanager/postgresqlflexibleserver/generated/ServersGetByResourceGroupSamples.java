@@ -10,44 +10,51 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ServersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerGetWithPrivateEndpoints.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersGetWithPrivateEndpoints.json
      */
     /**
-     * Sample code: ServerGetWithPrivateEndpoints.
+     * Sample code: Get information about an existing server that isn't integrated into a virtual network provided by
+     * customer and has private endpoint connections.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        serverGetWithPrivateEndpoints(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc2", com.azure.core.util.Context.NONE);
+        getInformationAboutAnExistingServerThatIsnTIntegratedIntoAVirtualNetworkProvidedByCustomerAndHasPrivateEndpointConnections(
+            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/ServerGet
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ServersGetWithVnet
      * .json
      */
     /**
-     * Sample code: ServerGet.
+     * Sample code: Get information about an existing server that is integrated into a virtual network provided by
+     * customer.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().getByResourceGroupWithResponse("testrg", "testpgflex", com.azure.core.util.Context.NONE);
+    public static void getInformationAboutAnExistingServerThatIsIntegratedIntoAVirtualNetworkProvidedByCustomer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerGetWithVnet.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ServersGet.json
      */
     /**
-     * Sample code: ServerGetWithVnet.
+     * Sample code: Get information about an existing server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverGetWithVnet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().getByResourceGroupWithResponse("testrg", "testpgflex", com.azure.core.util.Context.NONE);
+    public static void getInformationAboutAnExistingServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 }

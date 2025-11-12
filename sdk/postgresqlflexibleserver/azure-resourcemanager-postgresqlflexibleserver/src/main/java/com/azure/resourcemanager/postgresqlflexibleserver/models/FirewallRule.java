@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FirewallRuleInner;
 
 /**
@@ -41,25 +40,20 @@ public interface FirewallRule {
     SystemData systemData();
 
     /**
-     * Gets the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
+     * Gets the startIpAddress property: IP address defining the start of the range of addresses of a firewall rule.
+     * Must be expressed in IPv4 format.
      * 
      * @return the startIpAddress value.
      */
     String startIpAddress();
 
     /**
-     * Gets the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
+     * Gets the endIpAddress property: IP address defining the end of the range of addresses of a firewall rule. Must be
+     * expressed in IPv4 format.
      * 
      * @return the endIpAddress value.
      */
     String endIpAddress();
-
-    /**
-     * Gets the name of the resource group.
-     * 
-     * @return the name of the resource group.
-     */
-    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FirewallRuleInner object.
@@ -67,160 +61,4 @@ public interface FirewallRule {
      * @return the inner object.
      */
     FirewallRuleInner innerModel();
-
-    /**
-     * The entirety of the FirewallRule definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
-        DefinitionStages.WithStartIpAddress, DefinitionStages.WithEndIpAddress, DefinitionStages.WithCreate {
-    }
-
-    /**
-     * The FirewallRule definition stages.
-     */
-    interface DefinitionStages {
-        /**
-         * The first stage of the FirewallRule definition.
-         */
-        interface Blank extends WithParentResource {
-        }
-
-        /**
-         * The stage of the FirewallRule definition allowing to specify parent resource.
-         */
-        interface WithParentResource {
-            /**
-             * Specifies resourceGroupName, serverName.
-             * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param serverName The name of the server.
-             * @return the next definition stage.
-             */
-            WithStartIpAddress withExistingFlexibleServer(String resourceGroupName, String serverName);
-        }
-
-        /**
-         * The stage of the FirewallRule definition allowing to specify startIpAddress.
-         */
-        interface WithStartIpAddress {
-            /**
-             * Specifies the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4
-             * format..
-             * 
-             * @param startIpAddress The start IP address of the server firewall rule. Must be IPv4 format.
-             * @return the next definition stage.
-             */
-            WithEndIpAddress withStartIpAddress(String startIpAddress);
-        }
-
-        /**
-         * The stage of the FirewallRule definition allowing to specify endIpAddress.
-         */
-        interface WithEndIpAddress {
-            /**
-             * Specifies the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4
-             * format..
-             * 
-             * @param endIpAddress The end IP address of the server firewall rule. Must be IPv4 format.
-             * @return the next definition stage.
-             */
-            WithCreate withEndIpAddress(String endIpAddress);
-        }
-
-        /**
-         * The stage of the FirewallRule definition which contains all the minimum required properties for the resource
-         * to be created, but also allows for any other optional properties to be specified.
-         */
-        interface WithCreate {
-            /**
-             * Executes the create request.
-             * 
-             * @return the created resource.
-             */
-            FirewallRule create();
-
-            /**
-             * Executes the create request.
-             * 
-             * @param context The context to associate with this operation.
-             * @return the created resource.
-             */
-            FirewallRule create(Context context);
-        }
-    }
-
-    /**
-     * Begins update for the FirewallRule resource.
-     * 
-     * @return the stage of resource update.
-     */
-    FirewallRule.Update update();
-
-    /**
-     * The template for FirewallRule update.
-     */
-    interface Update extends UpdateStages.WithStartIpAddress, UpdateStages.WithEndIpAddress {
-        /**
-         * Executes the update request.
-         * 
-         * @return the updated resource.
-         */
-        FirewallRule apply();
-
-        /**
-         * Executes the update request.
-         * 
-         * @param context The context to associate with this operation.
-         * @return the updated resource.
-         */
-        FirewallRule apply(Context context);
-    }
-
-    /**
-     * The FirewallRule update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the FirewallRule update allowing to specify startIpAddress.
-         */
-        interface WithStartIpAddress {
-            /**
-             * Specifies the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4
-             * format..
-             * 
-             * @param startIpAddress The start IP address of the server firewall rule. Must be IPv4 format.
-             * @return the next definition stage.
-             */
-            Update withStartIpAddress(String startIpAddress);
-        }
-
-        /**
-         * The stage of the FirewallRule update allowing to specify endIpAddress.
-         */
-        interface WithEndIpAddress {
-            /**
-             * Specifies the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4
-             * format..
-             * 
-             * @param endIpAddress The end IP address of the server firewall rule. Must be IPv4 format.
-             * @return the next definition stage.
-             */
-            Update withEndIpAddress(String endIpAddress);
-        }
-    }
-
-    /**
-     * Refreshes the resource to sync with Azure.
-     * 
-     * @return the refreshed resource.
-     */
-    FirewallRule refresh();
-
-    /**
-     * Refreshes the resource to sync with Azure.
-     * 
-     * @param context The context to associate with this operation.
-     * @return the refreshed resource.
-     */
-    FirewallRule refresh(Context context);
 }

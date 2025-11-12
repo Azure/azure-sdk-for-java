@@ -13,6 +13,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
 
 public final class ServersImpl implements Servers {
@@ -26,6 +27,22 @@ public final class ServersImpl implements Servers {
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public void createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters) {
+        this.serviceClient().createOrUpdate(resourceGroupName, serverName, parameters);
+    }
+
+    public void createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters, Context context) {
+        this.serviceClient().createOrUpdate(resourceGroupName, serverName, parameters, context);
+    }
+
+    public void update(String resourceGroupName, String serverName, ServerForPatch parameters) {
+        this.serviceClient().update(resourceGroupName, serverName, parameters);
+    }
+
+    public void update(String resourceGroupName, String serverName, ServerForPatch parameters, Context context) {
+        this.serviceClient().update(resourceGroupName, serverName, parameters, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String serverName) {
@@ -101,71 +118,11 @@ public final class ServersImpl implements Servers {
         this.serviceClient().stop(resourceGroupName, serverName, context);
     }
 
-    public Server getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE).getValue();
-    }
-
-    public Response<Server> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, serverName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        this.delete(resourceGroupName, serverName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        this.delete(resourceGroupName, serverName, context);
-    }
-
     private ServersClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    public ServerImpl define(String name) {
-        return new ServerImpl(name, this.manager());
     }
 }

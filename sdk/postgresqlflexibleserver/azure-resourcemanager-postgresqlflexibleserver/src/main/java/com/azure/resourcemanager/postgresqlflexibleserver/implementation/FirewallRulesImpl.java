@@ -27,6 +27,16 @@ public final class FirewallRulesImpl implements FirewallRules {
         this.serviceManager = serviceManager;
     }
 
+    public void createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
+        FirewallRuleInner parameters) {
+        this.serviceClient().createOrUpdate(resourceGroupName, serverName, firewallRuleName, parameters);
+    }
+
+    public void createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
+        FirewallRuleInner parameters, Context context) {
+        this.serviceClient().createOrUpdate(resourceGroupName, serverName, firewallRuleName, parameters, context);
+    }
+
     public void delete(String resourceGroupName, String serverName, String firewallRuleName) {
         this.serviceClient().delete(resourceGroupName, serverName, firewallRuleName);
     }
@@ -67,91 +77,11 @@ public final class FirewallRulesImpl implements FirewallRules {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
     }
 
-    public FirewallRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE).getValue();
-    }
-
-    public Response<FirewallRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, serverName, firewallRuleName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
-        this.delete(resourceGroupName, serverName, firewallRuleName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (serverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
-        if (firewallRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
-        }
-        this.delete(resourceGroupName, serverName, firewallRuleName, context);
-    }
-
     private FirewallRulesClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    public FirewallRuleImpl define(String name) {
-        return new FirewallRuleImpl(name, this.manager());
     }
 }

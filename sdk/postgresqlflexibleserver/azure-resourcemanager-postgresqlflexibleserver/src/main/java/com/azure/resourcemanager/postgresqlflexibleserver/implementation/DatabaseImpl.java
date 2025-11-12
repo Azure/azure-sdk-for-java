@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Database;
 
-public final class DatabaseImpl implements Database, Database.Definition {
+public final class DatabaseImpl implements Database {
     private DatabaseInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
@@ -50,63 +49,5 @@ public final class DatabaseImpl implements Database, Database.Definition {
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String serverName;
-
-    private String databaseName;
-
-    public DatabaseImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
-        this.resourceGroupName = resourceGroupName;
-        this.serverName = serverName;
-        return this;
-    }
-
-    public Database create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .create(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public Database create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .create(resourceGroupName, serverName, databaseName, this.innerModel(), context);
-        return this;
-    }
-
-    DatabaseImpl(String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = new DatabaseInner();
-        this.serviceManager = serviceManager;
-        this.databaseName = name;
-    }
-
-    public Database refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public Database refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatabases()
-            .getWithResponse(resourceGroupName, serverName, databaseName, context)
-            .getValue();
-        return this;
-    }
-
-    public DatabaseImpl withCharset(String charset) {
-        this.innerModel().withCharset(charset);
-        return this;
-    }
-
-    public DatabaseImpl withCollation(String collation) {
-        this.innerModel().withCollation(collation);
-        return this;
     }
 }

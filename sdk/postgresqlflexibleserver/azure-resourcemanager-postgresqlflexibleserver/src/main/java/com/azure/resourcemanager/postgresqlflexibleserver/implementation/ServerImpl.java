@@ -4,28 +4,23 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
@@ -35,10 +30,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class ServerImpl implements Server, Server.Definition, Server.Update {
+public final class ServerImpl implements Server {
     private ServerInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+
+    ServerImpl(ServerInner innerObject,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -85,7 +86,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().administratorLoginPassword();
     }
 
-    public ServerVersion version() {
+    public PostgresMajorVersion version() {
         return this.innerModel().version();
     }
 
@@ -172,310 +173,11 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().cluster();
     }
 
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
-    }
-
-    public String resourceGroupName() {
-        return resourceGroupName;
-    }
-
     public ServerInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String serverName;
-
-    private ServerForUpdate updateParameters;
-
-    public ServerImpl withExistingResourceGroup(String resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    public Server create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public Server create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .create(resourceGroupName, serverName, this.innerModel(), context);
-        return this;
-    }
-
-    ServerImpl(String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = new ServerInner();
-        this.serviceManager = serviceManager;
-        this.serverName = name;
-    }
-
-    public ServerImpl update() {
-        this.updateParameters = new ServerForUpdate();
-        return this;
-    }
-
-    public Server apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
-        return this;
-    }
-
-    public Server apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .update(resourceGroupName, serverName, updateParameters, context);
-        return this;
-    }
-
-    ServerImpl(ServerInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-    }
-
-    public Server refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public Server refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getServers()
-            .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
-            .getValue();
-        return this;
-    }
-
-    public void restart() {
-        serviceManager.servers().restart(resourceGroupName, serverName);
-    }
-
-    public void restart(RestartParameter parameters, Context context) {
-        serviceManager.servers().restart(resourceGroupName, serverName, parameters, context);
-    }
-
-    public void start() {
-        serviceManager.servers().start(resourceGroupName, serverName);
-    }
-
-    public void start(Context context) {
-        serviceManager.servers().start(resourceGroupName, serverName, context);
-    }
-
-    public void stop() {
-        serviceManager.servers().stop(resourceGroupName, serverName);
-    }
-
-    public void stop(Context context) {
-        serviceManager.servers().stop(resourceGroupName, serverName, context);
-    }
-
-    public ServerImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public ServerImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public ServerImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
-    }
-
-    public ServerImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
-            return this;
-        }
-    }
-
-    public ServerImpl withIdentity(UserAssignedIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateParameters.withIdentity(identity);
-            return this;
-        }
-    }
-
-    public ServerImpl withAdministratorLogin(String administratorLogin) {
-        if (isInCreateMode()) {
-            this.innerModel().withAdministratorLogin(administratorLogin);
-            return this;
-        } else {
-            this.updateParameters.withAdministratorLogin(administratorLogin);
-            return this;
-        }
-    }
-
-    public ServerImpl withAdministratorLoginPassword(String administratorLoginPassword) {
-        if (isInCreateMode()) {
-            this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
-            return this;
-        } else {
-            this.updateParameters.withAdministratorLoginPassword(administratorLoginPassword);
-            return this;
-        }
-    }
-
-    public ServerImpl withVersion(ServerVersion version) {
-        if (isInCreateMode()) {
-            this.innerModel().withVersion(version);
-            return this;
-        } else {
-            this.updateParameters.withVersion(version);
-            return this;
-        }
-    }
-
-    public ServerImpl withStorage(Storage storage) {
-        if (isInCreateMode()) {
-            this.innerModel().withStorage(storage);
-            return this;
-        } else {
-            this.updateParameters.withStorage(storage);
-            return this;
-        }
-    }
-
-    public ServerImpl withAuthConfig(AuthConfig authConfig) {
-        if (isInCreateMode()) {
-            this.innerModel().withAuthConfig(authConfig);
-            return this;
-        } else {
-            this.updateParameters.withAuthConfig(authConfig);
-            return this;
-        }
-    }
-
-    public ServerImpl withDataEncryption(DataEncryption dataEncryption) {
-        if (isInCreateMode()) {
-            this.innerModel().withDataEncryption(dataEncryption);
-            return this;
-        } else {
-            this.updateParameters.withDataEncryption(dataEncryption);
-            return this;
-        }
-    }
-
-    public ServerImpl withBackup(Backup backup) {
-        if (isInCreateMode()) {
-            this.innerModel().withBackup(backup);
-            return this;
-        } else {
-            this.updateParameters.withBackup(backup);
-            return this;
-        }
-    }
-
-    public ServerImpl withNetwork(Network network) {
-        if (isInCreateMode()) {
-            this.innerModel().withNetwork(network);
-            return this;
-        } else {
-            this.updateParameters.withNetwork(network);
-            return this;
-        }
-    }
-
-    public ServerImpl withHighAvailability(HighAvailability highAvailability) {
-        if (isInCreateMode()) {
-            this.innerModel().withHighAvailability(highAvailability);
-            return this;
-        } else {
-            this.updateParameters.withHighAvailability(highAvailability);
-            return this;
-        }
-    }
-
-    public ServerImpl withSourceServerResourceId(String sourceServerResourceId) {
-        this.innerModel().withSourceServerResourceId(sourceServerResourceId);
-        return this;
-    }
-
-    public ServerImpl withPointInTimeUtc(OffsetDateTime pointInTimeUtc) {
-        this.innerModel().withPointInTimeUtc(pointInTimeUtc);
-        return this;
-    }
-
-    public ServerImpl withAvailabilityZone(String availabilityZone) {
-        this.innerModel().withAvailabilityZone(availabilityZone);
-        return this;
-    }
-
-    public ServerImpl withReplicationRole(ReplicationRole replicationRole) {
-        if (isInCreateMode()) {
-            this.innerModel().withReplicationRole(replicationRole);
-            return this;
-        } else {
-            this.updateParameters.withReplicationRole(replicationRole);
-            return this;
-        }
-    }
-
-    public ServerImpl withCreateMode(CreateMode createMode) {
-        this.innerModel().withCreateMode(createMode);
-        return this;
-    }
-
-    public ServerImpl withCluster(Cluster cluster) {
-        if (isInCreateMode()) {
-            this.innerModel().withCluster(cluster);
-            return this;
-        } else {
-            this.updateParameters.withCluster(cluster);
-            return this;
-        }
-    }
-
-    public ServerImpl withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
-        this.updateParameters.withMaintenanceWindow(maintenanceWindow);
-        return this;
-    }
-
-    public ServerImpl withCreateMode(CreateModeForUpdate createMode) {
-        this.updateParameters.withCreateMode(createMode);
-        return this;
-    }
-
-    public ServerImpl withReplica(Replica replica) {
-        this.updateParameters.withReplica(replica);
-        return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

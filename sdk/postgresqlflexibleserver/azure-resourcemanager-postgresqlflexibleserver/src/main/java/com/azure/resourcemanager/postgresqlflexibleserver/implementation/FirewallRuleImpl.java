@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRule;
 
-public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Definition, FirewallRule.Update {
+public final class FirewallRuleImpl implements FirewallRule {
     private FirewallRuleInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+
+    FirewallRuleImpl(FirewallRuleInner innerObject,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -38,100 +43,11 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this.innerModel().endIpAddress();
     }
 
-    public String resourceGroupName() {
-        return resourceGroupName;
-    }
-
     public FirewallRuleInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String serverName;
-
-    private String firewallRuleName;
-
-    public FirewallRuleImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
-        this.resourceGroupName = resourceGroupName;
-        this.serverName = serverName;
-        return this;
-    }
-
-    public FirewallRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public FirewallRule create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), context);
-        return this;
-    }
-
-    FirewallRuleImpl(String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = new FirewallRuleInner();
-        this.serviceManager = serviceManager;
-        this.firewallRuleName = name;
-    }
-
-    public FirewallRuleImpl update() {
-        return this;
-    }
-
-    public FirewallRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public FirewallRule apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), context);
-        return this;
-    }
-
-    FirewallRuleImpl(FirewallRuleInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
-    }
-
-    public FirewallRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public FirewallRule refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .getWithResponse(resourceGroupName, serverName, firewallRuleName, context)
-            .getValue();
-        return this;
-    }
-
-    public FirewallRuleImpl withStartIpAddress(String startIpAddress) {
-        this.innerModel().withStartIpAddress(startIpAddress);
-        return this;
-    }
-
-    public FirewallRuleImpl withEndIpAddress(String endIpAddress) {
-        this.innerModel().withEndIpAddress(endIpAddress);
-        return this;
     }
 }

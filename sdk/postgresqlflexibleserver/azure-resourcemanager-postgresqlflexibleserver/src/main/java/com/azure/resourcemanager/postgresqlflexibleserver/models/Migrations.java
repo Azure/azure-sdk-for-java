@@ -7,151 +7,157 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityInner;
 
 /**
  * Resource collection API of Migrations.
  */
 public interface Migrations {
     /**
-     * Gets details of a migration.
+     * Gets information about a migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration along with {@link Response}.
+     * @return information about a migration along with {@link Response}.
      */
-    Response<MigrationResource> getWithResponse(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, Context context);
+    Response<Migration> getWithResponse(String resourceGroupName, String serverName, String migrationName,
+        Context context);
 
     /**
-     * Gets details of a migration.
+     * Gets information about a migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration.
+     * @return information about a migration.
      */
-    MigrationResource get(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName);
+    Migration get(String resourceGroupName, String serverName, String migrationName);
 
     /**
-     * Deletes a migration.
+     * Cancels an active migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return properties of a migration along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName, Context context);
+    Response<Migration> cancelWithResponse(String resourceGroupName, String serverName, String migrationName,
+        Context context);
 
     /**
-     * Deletes a migration.
+     * Cancels an active migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a migration.
      */
-    void delete(String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    Migration cancel(String resourceGroupName, String serverName, String migrationName);
 
     /**
-     * List all the migrations on a given target server.
+     * Lists all migrations of a target flexible server.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of migration resources as paginated response with {@link PagedIterable}.
+     * @return list of migrations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
-        String targetDbServerName);
+    PagedIterable<Migration> listByTargetServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the migrations on a given target server.
+     * Lists all migrations of a target flexible server.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationListFilter Migration list filter. Retrieves either active migrations or all migrations.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationListFilter Migration list filter. Indicates if the request should retrieve only active migrations
+     * or all migrations. Defaults to Active.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of migration resources as paginated response with {@link PagedIterable}.
+     * @return list of migrations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, MigrationListFilter migrationListFilter, Context context);
+    PagedIterable<Migration> listByTargetServer(String resourceGroupName, String serverName,
+        MigrationListFilter migrationListFilter, Context context);
 
     /**
-     * Gets details of a migration.
+     * Check the validity and availability of the given name, to assign it to a new migration.
+     * 
+     * Checks if a proposed migration name is valid and available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Parameters required to check if a migration name is valid and available.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return availability of a migration name along with {@link Response}.
+     */
+    Response<MigrationNameAvailability> checkNameAvailabilityWithResponse(String resourceGroupName, String serverName,
+        MigrationNameAvailabilityInner parameters, Context context);
+
+    /**
+     * Check the validity and availability of the given name, to assign it to a new migration.
+     * 
+     * Checks if a proposed migration name is valid and available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Parameters required to check if a migration name is valid and available.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return availability of a migration name.
+     */
+    MigrationNameAvailability checkNameAvailability(String resourceGroupName, String serverName,
+        MigrationNameAvailabilityInner parameters);
+
+    /**
+     * Gets information about a migration.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration along with {@link Response}.
+     * @return information about a migration along with {@link Response}.
      */
-    MigrationResource getById(String id);
+    Migration getById(String id);
 
     /**
-     * Gets details of a migration.
+     * Gets information about a migration.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration along with {@link Response}.
+     * @return information about a migration along with {@link Response}.
      */
-    Response<MigrationResource> getByIdWithResponse(String id, Context context);
+    Response<Migration> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a migration.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Deletes a migration.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new MigrationResource resource.
+     * Begins definition for a new Migration resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new MigrationResource definition.
+     * @return the first stage of the new Migration definition.
      */
-    MigrationResource.DefinitionStages.Blank define(String name);
+    Migration.DefinitionStages.Blank define(String name);
 }

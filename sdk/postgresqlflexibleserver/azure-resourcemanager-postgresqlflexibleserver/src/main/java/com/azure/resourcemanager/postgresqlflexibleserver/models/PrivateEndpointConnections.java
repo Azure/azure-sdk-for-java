@@ -7,6 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateEndpointConnectionInner;
 
 /**
  * Resource collection API of PrivateEndpointConnections.
@@ -41,19 +42,73 @@ public interface PrivateEndpointConnections {
     PrivateEndpointConnection get(String resourceGroupName, String serverName, String privateEndpointConnectionName);
 
     /**
-     * Gets all private endpoint connections on a server.
+     * Approves or rejects a private endpoint connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters Parameters required to update a private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void update(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
+
+    /**
+     * Approves or rejects a private endpoint connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters Parameters required to update a private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void update(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context);
+
+    /**
+     * Deletes a private endpoint connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName);
+
+    /**
+     * Deletes a private endpoint connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Lists all private endpoint connections on a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
+     * @return list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * Gets all private endpoint connections on a server.
+     * Lists all private endpoint connections on a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -61,7 +116,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
+     * @return list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName, Context context);
 }
