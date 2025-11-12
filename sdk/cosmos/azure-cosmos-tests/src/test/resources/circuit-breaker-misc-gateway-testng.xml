@@ -22,6 +22,9 @@
   -->
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="circuit-breaker-misc-gateway">
+  <listeners>
+    <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+  </listeners>
   <test name="circuit-breaker-misc-gateway" group-by-instances="true">
     <groups>
       <run>

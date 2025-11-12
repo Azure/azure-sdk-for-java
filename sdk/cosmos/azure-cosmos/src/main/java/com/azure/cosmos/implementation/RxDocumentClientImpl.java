@@ -204,6 +204,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
 
+    private static final Object staticLock = new Object();
+
+    // A map containing the clientId with the callstack from where the Client was initialized.
+    // this can help to identify where clients leak.
+    // The leak detection via System property "COSMOS.CLIENT_LEAK_DETECTION_ENABLED" is disabled by
+    // default - CI pipeline tests will enable it.
+    private final static Map<Integer, String> activeClients = new HashMap<>();
+
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final CosmosItemSerializer defaultCustomSerializer;
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
@@ -1371,36 +1379,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
-    }
-
-    private void addToActiveClients() {
-        synchronized (staticLock) {
-            activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
-        }
-    }
-
-    private void removeFromActiveClients() {
-        synchronized (staticLock) {
-            activeClients.remove(this.clientId);
-        }
-    }
-
-    public static String getActiveClientCallstacks() {
-        StringBuilder sb = new StringBuilder();
-        synchronized (staticLock) {
-            boolean isFirst = true;
-            for (int clientId : activeClients.keySet()) {
-                if (!isFirst) {
-                    sb.append(System.lineSeparator());
-                } else {
-                    isFirst = false;
-                }
-                sb.append("Client [").append(clientId).append("]").append(System.lineSeparator());
-                sb.append(activeClients.get(clientId)).append(System.lineSeparator());
-            }
-        }
-
-        return sb.toString();
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -6477,6 +6455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.info("Attempting to close client {}", this.clientId);
         this.removeFromActiveClients();
         if (!closed.getAndSet(true)) {
+            this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
 

@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.CustomNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -76,8 +77,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
@@ -113,13 +112,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
-    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
@@ -164,13 +161,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static {
-        // Must run before any Netty ByteBuf is allocated
-        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
-        // sample every allocation
-        System.setProperty("io.netty.leakDetection.samplingInterval", "1");
-        // install custom reporter
-        CustomNettyLeakDetectorFactory.setResourceLeakDetectorFactory(new CustomNettyLeakDetectorFactory());
-
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -257,7 +248,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
+    public void parallelizeUnitTests(ITestContext context) {
         // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
 //        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
