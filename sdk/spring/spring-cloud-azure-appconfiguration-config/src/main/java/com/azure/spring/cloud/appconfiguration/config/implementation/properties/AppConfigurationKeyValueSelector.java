@@ -81,7 +81,7 @@ public final class AppConfigurationKeyValueSelector {
      *         latter label has higher priority
      */
     public String[] getLabelFilter(List<String> profiles) {
-         if (StringUtils.hasText(snapshotName)) {
+        if (StringUtils.hasText(snapshotName)) {
             return new String[0];
         }
         if (labelFilter == null && !profiles.isEmpty()) {

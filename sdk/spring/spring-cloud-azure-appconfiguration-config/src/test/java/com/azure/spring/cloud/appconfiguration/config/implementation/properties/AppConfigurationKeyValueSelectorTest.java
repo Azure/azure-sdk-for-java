@@ -179,7 +179,7 @@ public class AppConfigurationKeyValueSelectorTest {
         
         assertThrows(IllegalArgumentException.class, () -> {
             selector.validateAndInit();
-    });
+        });
     }
 
     @Test
