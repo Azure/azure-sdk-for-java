@@ -1139,11 +1139,6 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public URI serverKeyUsedAsActualRemoteAddress() {
-            return this.remoteURI;
-        }
-
-        @Override
         public void injectConnectionErrors(String ruleId, double threshold, Class<?> eventType) {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
