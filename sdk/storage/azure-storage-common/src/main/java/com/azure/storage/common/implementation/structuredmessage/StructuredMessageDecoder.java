@@ -214,6 +214,7 @@ public class StructuredMessageDecoder {
         // Mark that this segment is complete - update the last complete segment boundary
         // This is the position where we can safely resume if a retry occurs
         lastCompleteSegmentStart = messageOffset;
+        LOGGER.verbose("Segment {} complete at byte offset {}", currentSegmentNumber, lastCompleteSegmentStart);
 
         if (currentSegmentNumber == numSegments) {
             readMessageFooter(buffer);

@@ -305,7 +305,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         public long getRetryOffset() {
             // Use the decoder's last complete segment start as the retry offset
             // This ensures we resume from a segment boundary, not mid-segment
-            return decoder.getLastCompleteSegmentStart();
+            long retryOffset = decoder.getLastCompleteSegmentStart();
+            LOGGER.verbose("Retry offset calculated: {} (last complete segment boundary)", retryOffset);
+            return retryOffset;
         }
 
         /**

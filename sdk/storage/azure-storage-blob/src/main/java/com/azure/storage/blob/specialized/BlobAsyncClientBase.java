@@ -1413,6 +1413,10 @@ public class BlobAsyncClientBase {
                                 long remainingCount = finalCount - encodedOffset;
                                 retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
 
+                                LOGGER.info(
+                                    "Structured message smart retry: resuming from offset {} (initial={}, encoded={})",
+                                    initialOffset + encodedOffset, initialOffset, encodedOffset);
+
                                 // Preserve the decoder state for the retry
                                 retryContext = retryContext
                                     .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
