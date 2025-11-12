@@ -562,8 +562,6 @@ public final class AIProjectClientBuilder
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        // Currently the service produces a `500` response when this header is included
-        builder.replaceHeaders("Accept-Encoding", "");
         builder.replaceHeaders("User-Agent", getUserAgent());
         if (this.serviceVersion != null) {
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
@@ -578,8 +576,6 @@ public final class AIProjectClientBuilder
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        // Currently the service produces a `500` response when this header is included
-        builder.replaceHeaders("Accept-Encoding", "");
         builder.replaceHeaders("User-Agent", getUserAgent());
         if (this.serviceVersion != null) {
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
