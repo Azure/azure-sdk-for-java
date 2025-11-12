@@ -163,6 +163,10 @@ Licensed under the MIT License.
               <name>surefire.testng.verbose</name>
               <value>2</value>
             </property>
+            <property>
+              <name>listener</name>
+              <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+            </property>
           </properties>
           <skipTests>true</skipTests>
         </configuration>

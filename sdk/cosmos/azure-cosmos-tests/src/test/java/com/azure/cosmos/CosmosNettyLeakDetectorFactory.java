@@ -16,6 +16,7 @@ import org.testng.IExecutionListener;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestClass;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.management.BufferPoolMXBean;
@@ -70,7 +71,7 @@ public final class CosmosNettyLeakDetectorFactory
 
     @Override
     public void onAfterClass(ITestClass testClass) {
-        // Unfortunately can't use this in TestNG 7.51 because execution is not symmetric
+        // Unfortunately can't use this consistently in TestNG 7.51 because execution is not symmetric
         // IClassListener.onBeforeClass
         // TestClassBase.@BeforeClass
         // TestClass.@BeforeClass
@@ -81,14 +82,32 @@ public final class CosmosNettyLeakDetectorFactory
         // -Dtestng.listener.execution.symmetric=true allows, but this is only available
         // in TestNG 7.7.1 - which requires Java11
         // So, this class simulates this behavior by hooking into IInvokedMethodListener
+        // If the test class itself does not have @afterClass we execute the logic here
+
+        ITestNGMethod[] afterClassMethods = testClass.getAfterClassMethods();
+        boolean testClassHasAfterClassMethods = afterClassMethods != null && afterClassMethods.length > 0;
+        if (!testClassHasAfterClassMethods) {
+            try {
+                this.onAfterClassCore(testClass);
+            } catch (Throwable t) {
+                // decide if you want to fail the suite or just log
+                System.err.println("Symmetric afterClass failed for " + testClass.getRealClass().getCanonicalName());
+                t.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void afterInvocation(IInvokedMethod method, ITestResult result) {
-        if (method.isConfigurationMethod()
+        ITestClass testClass = (ITestClass)result.getTestClass();
+        ITestNGMethod[] afterClassMethods = testClass.getAfterClassMethods();
+        boolean testClassHasAfterClassMethods = afterClassMethods != null && afterClassMethods.length > 0;
+
+        if (testClassHasAfterClassMethods
+            && method.isConfigurationMethod()
             && method.getTestMethod().isAfterClassConfiguration()) {
-            // <-- This point is guaranteed to be AFTER the class’s @AfterClass ran
-            ITestClass testClass = (ITestClass)result.getTestClass();
+
+            // <-- This point is guaranteed to be AFTER the class’s @AfterClass ran if any existed
             try {
                 this.onAfterClassCore(testClass);
             } catch (Throwable t) {

@@ -706,6 +706,16 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
+              <properties>
+                <property>
+                  <name>surefire.testng.verbose</name>
+                  <value>2</value>
+                </property>
+                <property>
+                  <name>listener</name>
+                  <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+                </property>
+              </properties>
             </configuration>
           </plugin>
           <!-- To use the ScalaTest Maven plugin, SureFire needs to be disabled and ScalaTest enabled -->

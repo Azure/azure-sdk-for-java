@@ -793,18 +793,6 @@ public abstract class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
-    static protected void safeCloseAsync(CosmosAsyncClient client) {
-        if (client != null) {
-            new Thread(() -> {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    logger.error("failed to close client", e);
-                }
-            }).start();
-        }
-    }
-
     static protected void safeClose(CosmosAsyncClient client) {
         if (client != null) {
             try {

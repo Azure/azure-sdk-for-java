@@ -63,14 +63,17 @@ public class OfferQueryTest extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         QueryFeedOperationState dummyState = TestUtils
             .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
+        QueryFeedOperationState dummyState2 = null;
         try {
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
             Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
                 query,
                 dummyState);
 
+            dummyState2 = TestUtils
+                .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client);
             List<Offer> allOffers = client
-                .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client))
+                .readOffers(dummyState2)
                 .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
             List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
 
@@ -90,6 +93,7 @@ public class OfferQueryTest extends TestSuiteBase {
             validateQuerySuccess(queryObservable, validator, 10000);
         } finally {
             safeClose(dummyState);
+            safeClose(dummyState2);
         }
     }
 
@@ -105,13 +109,16 @@ public class OfferQueryTest extends TestSuiteBase {
 
         QueryFeedOperationState dummyState = TestUtils
             .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
+        QueryFeedOperationState dummyState2 = null;
         try {
             Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
                 query,
                 dummyState);
 
+            dummyState2 = TestUtils
+                .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client);
             List<Offer> expectedOffers = client
-                .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client))
+                .readOffers(dummyState2)
                 .flatMap(f -> Flux.fromIterable(f.getResults()))
                 .collectList()
                 .single().block()
@@ -134,6 +141,7 @@ public class OfferQueryTest extends TestSuiteBase {
             validateQuerySuccess(queryObservable, validator, 10000);
         } finally {
             safeClose(dummyState);
+            safeClose(dummyState2);
         }
     }
 
@@ -142,30 +150,35 @@ public class OfferQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+        try(CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient();
-        QueryFeedOperationState dummyState = new QueryFeedOperationState(
-            cosmosClient,
-            "SomeSpanName",
-            "SomeDBName",
-            "SomeContainerName",
-            ResourceType.Document,
-            OperationType.Query,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
-        );
-        Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
+            .buildAsyncClient()) {
+            QueryFeedOperationState dummyState = new QueryFeedOperationState(
+                cosmosClient,
+                "SomeSpanName",
+                "SomeDBName",
+                "SomeContainerName",
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            try {
+                Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
 
-        FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
-                .containsExactly(new ArrayList<>())
-                .numberOfPages(1)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
+                FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
+                    .containsExactly(new ArrayList<>())
+                    .numberOfPages(1)
+                    .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+                    .build();
+                validateQuerySuccess(queryObservable, validator);
+            } finally {
+                safeClose(dummyState);
+            }
+        }
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
