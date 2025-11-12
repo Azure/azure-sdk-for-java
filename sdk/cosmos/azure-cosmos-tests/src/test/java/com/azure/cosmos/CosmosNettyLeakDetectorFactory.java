@@ -166,7 +166,7 @@ public final class CosmosNettyLeakDetectorFactory
                     }
 
                     String msg = "NETTY LEAKS detected in test class: "
-                        + this.getClass().getCanonicalName()
+                        + testClassName
                         + sb;
 
                     logger.error(msg);
