@@ -1380,6 +1380,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void addToActiveClients() {
         if (Configs.isClientLeakDetectionEnabled()) {
+            logger.warn(
+                "Cosmos Client leak detection is enabled - "
+                + "this will impact performance negatively - disable it in production scenarios.");
             synchronized (staticLock) {
                 activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
             }

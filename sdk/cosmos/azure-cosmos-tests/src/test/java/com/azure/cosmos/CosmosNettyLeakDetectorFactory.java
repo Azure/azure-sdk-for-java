@@ -206,11 +206,12 @@ public final class CosmosNettyLeakDetectorFactory
                 return;
             }
 
-            // Must run before any Netty ByteBuf is allocated
-            ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
             // sample every allocation
             System.setProperty("io.netty.leakDetection.samplingInterval", "1");
             System.setProperty("io.netty.leakDetection.targetRecords", "256");
+            // Must run before any Netty ByteBuf is allocated
+            ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
+
             // install custom reporter
             ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(new CosmosNettyLeakDetectorFactory());
 
