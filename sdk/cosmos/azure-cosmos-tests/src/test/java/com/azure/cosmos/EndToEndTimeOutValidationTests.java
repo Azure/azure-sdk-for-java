@@ -25,6 +25,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -60,12 +61,19 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .getClientBuilder()
             .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
             .buildAsyncClient();
-        createdContainer = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdContainer);
 
-        createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+        try {
+            createdContainer = getSharedMultiPartitionCosmosContainer(client);
+            truncateCollection(createdContainer);
 
-        return client;
+            createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+
+            return client;
+        } catch (Throwable t) {
+            safeClose(client);
+
+            throw t;
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)

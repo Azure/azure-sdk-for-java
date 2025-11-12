@@ -78,21 +78,26 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setOfferThroughput(20000); //Making sure we have 4 physical partitions
 
-        createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.getId(),
+        AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
+        try {
+            createdCollection = createCollection(asynClient, createdDatabase.getId(),
                 collection, requestOptions);
-        houseKeepingClient = clientBuilder().build();
-        connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
+            houseKeepingClient = clientBuilder().build();
+            connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
 
-        if (connectionMode == ConnectionMode.DIRECT) {
-            spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
-        } else {
-            // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
-            ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
-            connectionPolicy.setMultipleWriteRegionsEnabled(true);
-            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+            if (connectionMode == ConnectionMode.DIRECT) {
+                spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
+            } else {
+                // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
+                ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
+                connectionPolicy.setMultipleWriteRegionsEnabled(true);
+                spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+            }
+            options = new RequestOptions();
+            options.setPartitionKey(PartitionKey.NONE);
+        } finally {
+            asynClient.close();
         }
-        options = new RequestOptions();
-        options.setPartitionKey(PartitionKey.NONE);
     }
 
     @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

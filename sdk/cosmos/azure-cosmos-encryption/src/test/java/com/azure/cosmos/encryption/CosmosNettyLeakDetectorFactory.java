@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.assertj.core.api.Fail.fail;
+
 public final class CosmosNettyLeakDetectorFactory
     extends ResourceLeakDetectorFactory implements IExecutionListener, IInvokedMethodListener, IClassListener {
 
@@ -131,6 +133,7 @@ public final class CosmosNettyLeakDetectorFactory
 
             int remainingInstanceCount = instanceCountSnapshot.decrementAndGet();
             if (remainingInstanceCount == 0) {
+                String failMessage = "";
                 logger.info("LEAK DETECTION EVALUATION for test class {}", testClassName);
                 Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
                 StringBuilder sb = new StringBuilder();
@@ -149,13 +152,10 @@ public final class CosmosNettyLeakDetectorFactory
                 }
 
                 if (sb.length() > 0) {
-                    String msg = "COSMOS CLIENT LEAKS detected in test class: "
+                    failMessage = "COSMOS CLIENT LEAKS detected in test class: "
                         + testClassName
                         + "\n\n"
                         + sb;
-
-                    logger.error(msg);
-                    // fail(msg);
                 }
 
                 List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
@@ -165,13 +165,22 @@ public final class CosmosNettyLeakDetectorFactory
                         sb.append(leak).append("\n");
                     }
 
-                    String msg = "NETTY LEAKS detected in test class: "
+                    if (failMessage.length() > 0) {
+                        failMessage += "\n\n";
+                    }
+
+                    failMessage += "NETTY LEAKS detected in test class: "
                         + testClassName
+                        + "\n\n"
                         + sb;
 
-                    logger.error(msg);
-                    // fail(msg);
                 }
+
+                if (failMessage.length() > 0) {
+                    logger.error(failMessage);
+                    fail(failMessage);
+                }
+
                 this.logMemoryUsage("AFTER CLASS", testClassName);
             }
         }
