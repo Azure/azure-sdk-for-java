@@ -137,7 +137,6 @@ public class QuorumReader {
         final MutableVolatile<Boolean> includePrimary = new MutableVolatile<>(false);
         final MutableVolatile<CosmosException> cosmosExceptionValueHolder = new MutableVolatile<>(null);
         final MutableVolatile<Boolean> bailOnBarrierValueHolder = new MutableVolatile<>(false);
-        final AtomicInteger iterations = new AtomicInteger(0);
 
         return Flux.defer(
             // the following will be repeated till the repeat().takeUntil(.) condition is satisfied.
@@ -192,8 +191,7 @@ public class QuorumReader {
                                         secondaryQuorumReadResult.globalCommittedSelectedLsn,
                                         readMode,
                                         cosmosExceptionValueHolder,
-                                        bailOnBarrierValueHolder,
-                                        iterations);
+                                        bailOnBarrierValueHolder);
 
                                             return readBarrierObs.flux().flatMap(
                                         readBarrier -> {
@@ -342,7 +340,7 @@ public class QuorumReader {
                 Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, entity, this.authorizationTokenProvider, readLsn, globalCommittedLSN);
                 return barrierRequestObs.flatMap(
                     barrierRequest -> {
-                        Mono<Boolean> waitForObs = this.waitForReadBarrierAsync(barrierRequest, false, readQuorum, readLsn, globalCommittedLSN, readMode, cosmosExceptionValueHolder, bailOnBarrierValueHolder, new AtomicInteger(0));
+                        Mono<Boolean> waitForObs = this.waitForReadBarrierAsync(barrierRequest, false, readQuorum, readLsn, globalCommittedLSN, readMode, cosmosExceptionValueHolder, bailOnBarrierValueHolder);
                         return waitForObs.flatMap(
                             waitFor -> {
 
@@ -645,19 +643,13 @@ public class QuorumReader {
         final long targetGlobalCommittedLSN,
         ReadMode readMode,
         MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromReadBarrierLoopValueHolder,
-        AtomicInteger iterations) {
+        MutableVolatile<Boolean> bailFromReadBarrierLoopValueHolder) {
         AtomicInteger readBarrierRetryCount = new AtomicInteger(maxNumberOfReadBarrierReadRetries);
         AtomicInteger readBarrierRetryCountMultiRegion = new AtomicInteger(maxBarrierRetriesForMultiRegion);
 
         AtomicLong maxGlobalCommittedLsn = new AtomicLong(0);
-        AtomicLong repetitions = new AtomicLong(0);
 
         return Flux.defer(() -> {
-
-            iterations.incrementAndGet();
-
-            logger.warn("Iteration Count : {}", iterations.get());
 
             if (barrierRequest.requestContext.timeoutHelper.isElapsed()) {
                 return Flux.error(new GoneException());
@@ -745,12 +737,34 @@ public class QuorumReader {
                                         return Flux.error(new GoneException());
                                    }
 
-                                   Mono<List<StoreResult>> responsesObs = this.storeReader.readMultipleReplicaAsync(
-                                       barrierRequest, allowPrimary, readQuorum,
-                                       true /*required valid LSN*/, false /*useSessionToken*/, readMode, false /*checkMinLSN*/, true /*forceReadAll*/);
+                                    Mono<List<StoreResult>> responsesObs = this.storeReader.readMultipleReplicaAsync(
+                                        barrierRequest, allowPrimary, readQuorum,
+                                        true /*required valid LSN*/, false /*useSessionToken*/, readMode, false /*checkMinLSN*/, true /*forceReadAll*/);
 
                                     return responsesObs.flux().flatMap(
                                        responses -> {
+
+                                           boolean isAvoidQuorumSelectionStoreResult = false;
+                                           CosmosException cosmosExceptionFromStoreResult = null;
+
+                                           for (StoreResult storeResult : responses) {
+                                               if (storeResult.isAvoidQuorumSelectionException) {
+                                                   isAvoidQuorumSelectionStoreResult = true;
+                                                   cosmosExceptionFromStoreResult = storeResult.getException();
+                                                   break;
+                                               }
+                                           }
+
+                                           if (isAvoidQuorumSelectionStoreResult) {
+                                               return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
+                                                   barrierRequest,
+                                                   readBarrierLsn,
+                                                   targetGlobalCommittedLSN,
+                                                   cosmosExceptionValueHolder,
+                                                   bailFromReadBarrierLoopValueHolder,
+                                                   cosmosExceptionFromStoreResult);
+                                           }
+
                                            long maxGlobalCommittedLsnInResponses = responses.size() > 0 ? responses.stream()
                                                                                                                    .mapToLong(response -> response.globalCommittedLSN).max().getAsLong() : 0;
 

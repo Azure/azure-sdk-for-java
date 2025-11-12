@@ -15,7 +15,6 @@ import java.util.function.BiFunction;
 public class StoreResponseInterceptorUtils {
 
     public static BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> forceBarrierFollowedByBarrierFailure(
-        OperationType operationType,
         String regionName,
         int maxAllowedFailureCount,
         AtomicInteger failureCount,
@@ -30,6 +29,8 @@ public class StoreResponseInterceptorUtils {
                 long manipulatedGCLSN = localLsn - 1;
 
                 storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGCLSN));
+
+                return storeResponse;
             }
 
             if (OperationType.Read.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
@@ -39,9 +40,55 @@ public class StoreResponseInterceptorUtils {
                 long manipulatedGCLSN = Math.min(localLsn, itemLsn) - 1;
 
                 storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGCLSN));
+
+                return storeResponse;
             }
 
             if (OperationType.Head.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
+                if (failureCount.incrementAndGet() <= maxAllowedFailureCount) {
+                    throw Utils.createCosmosException(statusCode, subStatusCode, new Exception("An intercepted exception occurred. Check status and substatus code for details."), null);
+                }
+            }
+
+            return storeResponse;
+        };
+    }
+
+    public static BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(String regionName,
+                                                                                                                                                               int allowedSuccessfulHeadRequestsWithoutBarrierBeingMet,
+                                                                                                                                                               AtomicInteger successfulHeadRequestCount,
+                                                                                                                                                               int maxAllowedFailureCount,
+                                                                                                                                                               AtomicInteger failureCount,
+                                                                                                                                                               int statusCode,
+                                                                                                                                                               int subStatusCode) {
+        return (request, storeResponse) -> {
+
+            if (OperationType.Read.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
+
+                long localLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN));
+                long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
+                long manipulatedGCLSN = Math.min(localLsn, itemLsn) - 1;
+
+                storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGCLSN));
+
+                return storeResponse;
+            }
+
+            if (OperationType.Head.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
+
+                if (successfulHeadRequestCount.incrementAndGet() <= allowedSuccessfulHeadRequestsWithoutBarrierBeingMet) {
+
+                    System.out.println("Allowing successful barrier for head request number: " + successfulHeadRequestCount.get());
+
+                    long localLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN));
+                    long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
+                    long manipulatedGCLSN = Math.min(localLsn, itemLsn) - 1;
+
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGCLSN));
+
+                    return storeResponse;
+                }
+
                 if (failureCount.incrementAndGet() <= maxAllowedFailureCount) {
                     throw Utils.createCosmosException(statusCode, subStatusCode, new Exception("An intercepted exception occurred. Check status and substatus code for details."), null);
                 }

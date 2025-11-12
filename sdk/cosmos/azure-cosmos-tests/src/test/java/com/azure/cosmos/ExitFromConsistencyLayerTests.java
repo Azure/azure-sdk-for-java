@@ -20,6 +20,8 @@ import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClie
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -85,19 +87,32 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     @DataProvider(name = "headFailureScenarios")
     public static Object[][] headFailureScenarios() {
         return new Object[][]{
-            // headFailureCount, operationType
-            { 1, OperationType.Create },
-            { 2, OperationType.Create },
-            { 3, OperationType.Create },
-            { 4, OperationType.Create },
-            { 1, OperationType.Read },
-            { 2, OperationType.Read },
-            { 4, OperationType.Read },
+            // headFailureCount, operationType, successfulHeadRequestsWhichDontMeetBarrier
+            { 1, OperationType.Create, false, 0 },
+            { 2, OperationType.Create, false, 0 },
+            { 3, OperationType.Create, false, 0 },
+            { 4, OperationType.Create, false, 0 },
+            { 1, OperationType.Read, false, 0 },
+            { 2, OperationType.Read, false, 0 },
+            { 3, OperationType.Read, false, 0 },
+            { 4, OperationType.Read, false, 0 },
+            { 1, OperationType.Read, true, 18 },
+            { 2, OperationType.Read, true, 18 },
+            { 3, OperationType.Read, true, 18 },
+            { 4, OperationType.Read, true, 18 },
+            { 1, OperationType.Read, true, 108 },
+            { 2, OperationType.Read, true, 108 },
+            { 3, OperationType.Read, true, 108 },
+            { 4, OperationType.Read, true, 108 }
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "headFailureScenarios" , timeOut = 2 * TIMEOUT)
-    public void validateGCLSNBarrierWithHeadFailures(int headFailureCount, OperationType operationTypeForWhichBarrierFlowIsTriggered) throws Exception {
+    @Test(groups = {"multi-region"}, dataProvider = "headFailureScenarios" , timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void validateGCLSNBarrierWithHeadFailures(
+        int headFailureCount,
+        OperationType operationTypeForWhichBarrierFlowIsTriggered,
+        boolean enterPostQuorumSelectionOnlyBarrierLoop,
+        int successfulHeadRequestCountWhichDontMeetBarrier) throws Exception {
 
         CosmosAsyncClient targetClient = getClientBuilder()
             .preferredRegions(this.preferredRegions)
@@ -118,13 +133,15 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
             ConnectionMode.DIRECT)) {
 
             safeClose(targetClient);
+
             throw new SkipException("Skipping test for arguments: " +
                 " OperationType: " + operationTypeForWhichBarrierFlowIsTriggered +
                 " ConsistencyLevel: " + effectiveConsistencyLevel +
                 " ConnectionMode: " + connectionModeOfClientUnderTest);
         }
 
-        AtomicInteger failureCountTracker = new AtomicInteger();
+        AtomicInteger successfulHeadCountTracker = new AtomicInteger();
+        AtomicInteger failedHeadCountTracker = new AtomicInteger();
         Utils.ValueHolder<RntbdTransportClient> originalRntbdTransportClientHolder = new Utils.ValueHolder<>();
 
         RntbdTransportClientWithStoreResponseInterceptor interceptorClient = createClientWithInterceptor(targetClient, originalRntbdTransportClientHolder);
@@ -134,28 +151,43 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
             // Setup test data
             TestObject testObject = TestObject.create();
 
-            if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Create) {
-                interceptorClient
-                    .setResponseInterceptor(
-                        StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
-                            operationTypeForWhichBarrierFlowIsTriggered,
-                            this.regionNameToEndpoint.get(this.preferredRegions.get(1)),
-                            headFailureCount,
-                            failureCountTracker,
-                            HttpConstants.StatusCodes.GONE,
-                            HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
-                        ));
-            } else if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Read) {
-                interceptorClient
-                    .setResponseInterceptor(
-                        StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
-                            operationTypeForWhichBarrierFlowIsTriggered,
-                            this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
-                            headFailureCount,
-                            failureCountTracker,
-                            HttpConstants.StatusCodes.GONE,
-                            HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
-                        ));
+            if (enterPostQuorumSelectionOnlyBarrierLoop) {
+                if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Read) {
+                    interceptorClient
+                        .setResponseInterceptor(
+                            StoreResponseInterceptorUtils.forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(
+                                this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
+                                successfulHeadRequestCountWhichDontMeetBarrier,
+                                successfulHeadCountTracker,
+                                headFailureCount,
+                                failedHeadCountTracker,
+                                HttpConstants.StatusCodes.GONE,
+                                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
+                            ));
+                }
+            } else {
+
+                if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Create) {
+                    interceptorClient
+                        .setResponseInterceptor(
+                            StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
+                                this.regionNameToEndpoint.get(this.preferredRegions.get(1)),
+                                headFailureCount,
+                                failedHeadCountTracker,
+                                HttpConstants.StatusCodes.GONE,
+                                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
+                            ));
+                } else if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Read) {
+                    interceptorClient
+                        .setResponseInterceptor(
+                            StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
+                                this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
+                                headFailureCount,
+                                failedHeadCountTracker,
+                                HttpConstants.StatusCodes.GONE,
+                                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
+                            ));
+                }
             }
 
             try {
@@ -181,7 +213,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(diagnostics).isNotNull();
 
                         validateContactedRegions(diagnostics, 1);
-                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 2);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 2, (2 + successfulHeadRequestCountWhichDontMeetBarrier));
                     } else {
                         // Should timeout with 408
                         fail("Should have thrown timeout exception");
@@ -193,7 +225,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     CosmosItemResponse<TestObject> response
                         = targetContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class).block();
 
-                    if (headFailureCount <= 2) {
+                    if (headFailureCount <= 3) {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
                         assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
@@ -203,7 +235,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(diagnostics).isNotNull();
 
                         validateContactedRegions(diagnostics, 1);
-                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4, (4 + successfulHeadRequestCountWhichDontMeetBarrier));
                     } else {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
@@ -214,7 +246,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         assertThat(diagnostics).isNotNull();
 
                         validateContactedRegions(diagnostics, 2);
-                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4, (4 + successfulHeadRequestCountWhichDontMeetBarrier));
                     }
                 }
 
@@ -231,7 +263,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = e.getDiagnostics();
 
                         validateContactedRegions(diagnostics, 1);
-                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 2);
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 2, (2 + successfulHeadRequestCountWhichDontMeetBarrier));
                     }
                 }
 
@@ -286,6 +318,23 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     private void validateContactedRegions(CosmosDiagnostics diagnostics, int expectedRegionsContactedCount) {
 
         CosmosDiagnosticsContext cosmosDiagnosticsContext = diagnostics.getDiagnosticsContext();
+        Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection
+            = diagnostics.getClientSideRequestStatistics();
+
+        for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseDiagnosticsList
+                = clientSideRequestStatistics.getResponseStatisticsList();
+
+            for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseDiagnosticsList) {
+                if (storeResponseStatistics.getRequestOperationType() == OperationType.Create || storeResponseStatistics.getRequestOperationType() == OperationType.Read) {
+
+                    if (storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getStatusCode() == 410) {
+                        fail("Should not have encountered 410 for Create/Read operation");
+                    }
+                }
+            }
+        }
 
         assertThat(cosmosDiagnosticsContext).isNotNull();
         assertThat(cosmosDiagnosticsContext.getContactedRegionNames()).isNotNull();
@@ -295,35 +344,65 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
     private void validateHeadRequestsInCosmosDiagnostics(
         CosmosDiagnostics diagnostics,
+        int expectedHeadRequestCountWithFailures,
         int expectedHeadRequestCount) {
 
-        int headRequestCount = 0;
+        int actualHeadRequestCountWithLeaseNotFoundErrors = 0;
+        int actualHeadRequestCount = 0;
         boolean primaryReplicaContacted = false;
 
         Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection
             = diagnostics.getClientSideRequestStatistics();
 
         for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+
             Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseDiagnosticsList
-                = clientSideRequestStatistics.getSupplementalResponseStatisticsList();
+                = clientSideRequestStatistics.getResponseStatisticsList();
 
             for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseDiagnosticsList) {
+                if (storeResponseStatistics.getRequestOperationType() == OperationType.Create || storeResponseStatistics.getRequestOperationType() == OperationType.Read) {
+
+                    if (storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getStatusCode() == 410) {
+                        fail("Should not have encountered 410 for Create/Read operation");
+                    }
+                }
+            }
+
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> supplementalResponseStatisticsList
+                = clientSideRequestStatistics.getSupplementalResponseStatisticsList();
+
+            for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : supplementalResponseStatisticsList) {
                 if (storeResponseStatistics.getRequestOperationType() == OperationType.Head) {
+
+                    StoreResultDiagnostics storeResultDiagnostics = storeResponseStatistics.getStoreResult();
+
+                    assertThat(storeResultDiagnostics).isNotNull();
+
                     String storePhysicalAddressContacted
-                        = storeResponseStatistics.getStoreResult().getStorePhysicalAddressAsString();
+                        = storeResultDiagnostics.getStorePhysicalAddressAsString();
+
+                    StoreResponseDiagnostics storeResponseDiagnostics
+                        = storeResultDiagnostics.getStoreResponseDiagnostics();
+
+                    assertThat(storeResponseDiagnostics).isNotNull();
+
+                    actualHeadRequestCount++;
+
+                    if (storeResponseDiagnostics.getStatusCode() == HttpConstants.StatusCodes.GONE && storeResponseDiagnostics.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND) {;
+                        actualHeadRequestCountWithLeaseNotFoundErrors++;
+                    }
 
                     if (isPrimaryReplicaEndpoint(storePhysicalAddressContacted)) {
                         primaryReplicaContacted = true;
                     }
-
-                    headRequestCount++;
                 }
             }
         }
 
         assertThat(primaryReplicaContacted).isTrue();
-        assertThat(headRequestCount).isGreaterThan(0);
-        assertThat(headRequestCount).isLessThanOrEqualTo(expectedHeadRequestCount);
+        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).isGreaterThan(0);
+        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).isLessThanOrEqualTo(expectedHeadRequestCountWithFailures);
+        assertThat(actualHeadRequestCount).isGreaterThanOrEqualTo(expectedHeadRequestCount);
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
