@@ -148,10 +148,8 @@ public class AppConfigurationKeyValueSelectorTest {
         
         String[] result = selector.getLabelFilter(profiles);
         
-        // Empty strings should be converted to EMPTY_LABEL
-        assertTrue(Arrays.asList(result).contains(EMPTY_LABEL));
-        assertTrue(Arrays.asList(result).contains("dev"));
-        assertTrue(Arrays.asList(result).contains("prod"));
+        // Should match the expected order and duplicates, including EMPTY_LABEL
+        assertArrayEquals(new String[]{EMPTY_LABEL, "prod", EMPTY_LABEL, "dev"}, result);
     }
 
     @Test
