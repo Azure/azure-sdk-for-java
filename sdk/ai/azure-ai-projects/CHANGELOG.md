@@ -9,14 +9,12 @@
 
 ### Breaking Changes
 
+- Agents subclients where split into their own package `azure-ai-agents`
+- `Telemetry` and `Inference` subclient was removed.
+
 ### Bugs Fixed
 
 - Projects Client: Get Azure OpenAI should use the parent resource unless caller provides a connection name
-
-### Other Changes
-
-- Agents subclients were split into their own package `azure-ai-agents`
-- `Telemetry` and `Inference` subclients were removed.
 
 ## 1.0.0-beta.2 (2025-06-17)
 
