@@ -12,7 +12,7 @@ public final class SvmPeerCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SvmPeerCommandResponseInner model
-            = BinaryData.fromString("{\"svmPeeringCommand\":\"hhvh\"}").toObject(SvmPeerCommandResponseInner.class);
-        Assertions.assertEquals("hhvh", model.svmPeeringCommand());
+            = BinaryData.fromString("{\"svmPeeringCommand\":\"xwak\"}").toObject(SvmPeerCommandResponseInner.class);
+        Assertions.assertEquals("xwak", model.svmPeeringCommand());
     }
 }

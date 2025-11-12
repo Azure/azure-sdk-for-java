@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -51,6 +52,22 @@ public final class ListReplications implements JsonSerializable<ListReplications
     public String nextLink() {
         return this.nextLink;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ListReplications"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ListReplications.class);
 
     /**
      * {@inheritDoc}

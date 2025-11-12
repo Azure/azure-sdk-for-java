@@ -51,7 +51,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
      * manual qosType volume
      */
-    private Double throughputMibps;
+    private Float throughputMibps;
 
     /*
      * DataProtection type volumes include an object containing details of the replication
@@ -224,7 +224,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * 
      * @return the throughputMibps value.
      */
-    public Double throughputMibps() {
+    public Float throughputMibps() {
         return this.throughputMibps;
     }
 
@@ -235,7 +235,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumePatchProperties object itself.
      */
-    public VolumePatchProperties withThroughputMibps(Double throughputMibps) {
+    public VolumePatchProperties withThroughputMibps(Float throughputMibps) {
         this.throughputMibps = throughputMibps;
         return this;
     }
@@ -521,6 +521,20 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (exportPolicy() != null) {
+            exportPolicy().validate();
+        }
+        if (dataProtection() != null) {
+            dataProtection().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -576,7 +590,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                     List<String> protocolTypes = reader.readArray(reader1 -> reader1.getString());
                     deserializedVolumePatchProperties.protocolTypes = protocolTypes;
                 } else if ("throughputMibps".equals(fieldName)) {
-                    deserializedVolumePatchProperties.throughputMibps = reader.getNullable(JsonReader::getDouble);
+                    deserializedVolumePatchProperties.throughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("dataProtection".equals(fieldName)) {
                     deserializedVolumePatchProperties.dataProtection
                         = VolumePatchPropertiesDataProtection.fromJson(reader);

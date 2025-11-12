@@ -38,6 +38,17 @@ public final class OperationProperties implements JsonSerializable<OperationProp
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (serviceSpecification() != null) {
+            serviceSpecification().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

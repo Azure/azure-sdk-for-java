@@ -40,7 +40,7 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
     /*
      * Percentage of used size compared to total size.
      */
-    private Double percentageUsed;
+    private Float percentageUsed;
 
     /*
      * Flag to indicate whether the quota is derived from default quota.
@@ -96,7 +96,7 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
      * 
      * @return the percentageUsed value.
      */
-    public Double percentageUsed() {
+    public Float percentageUsed() {
         return this.percentageUsed;
     }
 
@@ -107,6 +107,14 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
      */
     public Boolean isDerivedQuota() {
         return this.isDerivedQuota;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 
     /**
@@ -148,7 +156,7 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
                 } else if ("quotaLimitTotalInKiBs".equals(fieldName)) {
                     deserializedQuotaReport.quotaLimitTotalInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("percentageUsed".equals(fieldName)) {
-                    deserializedQuotaReport.percentageUsed = reader.getNullable(JsonReader::getDouble);
+                    deserializedQuotaReport.percentageUsed = reader.getNullable(JsonReader::getFloat);
                 } else if ("isDerivedQuota".equals(fieldName)) {
                     deserializedQuotaReport.isDerivedQuota = reader.getNullable(JsonReader::getBoolean);
                 } else {

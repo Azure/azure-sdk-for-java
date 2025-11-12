@@ -100,14 +100,14 @@ public interface CapacityPool {
      * 
      * @return the totalThroughputMibps value.
      */
-    Double totalThroughputMibps();
+    Float totalThroughputMibps();
 
     /**
      * Gets the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
      * 
      * @return the utilizedThroughputMibps value.
      */
-    Double utilizedThroughputMibps();
+    Float utilizedThroughputMibps();
 
     /**
      * Gets the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this

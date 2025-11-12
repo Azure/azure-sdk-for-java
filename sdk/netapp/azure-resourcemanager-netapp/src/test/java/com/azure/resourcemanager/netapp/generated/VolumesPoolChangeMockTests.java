@@ -29,8 +29,8 @@ public final class VolumesPoolChangeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .poolChange("rrqwexjk", "fxapjwogqqnobpu", "cdabtqwpwya", "bzasqbucljgkyexa",
-                new PoolChangeRequest().withNewPoolResourceId("guyaip"), com.azure.core.util.Context.NONE);
+            .poolChange("cgegydcwbo", "jumvqqolihrraio", "aubrjtloq", "fuojrngif",
+                new PoolChangeRequest().withNewPoolResourceId("rzpasccbiuimzdly"), com.azure.core.util.Context.NONE);
 
     }
 }

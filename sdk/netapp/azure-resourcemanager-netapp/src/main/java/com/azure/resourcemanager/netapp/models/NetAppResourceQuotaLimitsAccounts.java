@@ -24,7 +24,7 @@ public interface NetAppResourceQuotaLimitsAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default, current and usages account quota limit along with {@link Response}.
      */
-    Response<QuotaItem> getWithResponse(String resourceGroupName, String accountName, String quotaLimitName,
+    Response<SubscriptionQuotaItem> getWithResponse(String resourceGroupName, String accountName, String quotaLimitName,
         Context context);
 
     /**
@@ -38,7 +38,7 @@ public interface NetAppResourceQuotaLimitsAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default, current and usages account quota limit.
      */
-    QuotaItem get(String resourceGroupName, String accountName, String quotaLimitName);
+    SubscriptionQuotaItem get(String resourceGroupName, String accountName, String quotaLimitName);
 
     /**
      * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
@@ -51,7 +51,7 @@ public interface NetAppResourceQuotaLimitsAccounts {
      * @return a list of quota limits for all quotas that are under account as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<QuotaItem> list(String resourceGroupName, String accountName);
+    PagedIterable<SubscriptionQuotaItem> list(String resourceGroupName, String accountName);
 
     /**
      * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
@@ -65,5 +65,5 @@ public interface NetAppResourceQuotaLimitsAccounts {
      * @return a list of quota limits for all quotas that are under account as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<QuotaItem> list(String resourceGroupName, String accountName, Context context);
+    PagedIterable<SubscriptionQuotaItem> list(String resourceGroupName, String accountName, Context context);
 }

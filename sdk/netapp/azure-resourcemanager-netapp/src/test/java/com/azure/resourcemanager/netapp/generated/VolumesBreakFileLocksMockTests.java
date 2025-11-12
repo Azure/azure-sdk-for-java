@@ -29,8 +29,8 @@ public final class VolumesBreakFileLocksMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .breakFileLocks("eyzihgrky", "i", "absnmfpp", "ojeevy",
-                new BreakFileLocksRequest().withClientIp("hsgz").withConfirmRunningDisruptiveOperation(true),
+            .breakFileLocks("nkjpdnjzha", "oylhjlmuoyxprimr", "opteecj", "eislstvasylwx",
+                new BreakFileLocksRequest().withClientIp("aumweoohguufu").withConfirmRunningDisruptiveOperation(true),
                 com.azure.core.util.Context.NONE);
 
     }

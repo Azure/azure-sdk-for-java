@@ -11,7 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.QuotaItem;
+import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public final class NetAppResourceQuotaLimitsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"current\":1162604826,\"default\":405632211,\"usage\":322305993},\"id\":\"hecbvopwndyq\",\"name\":\"eallklmtkhlo\",\"type\":\"kxxpvbrd\"}]}";
+            = "{\"value\":[{\"properties\":{\"current\":1526356750,\"default\":1405354444,\"usage\":117712322},\"id\":\"voxczytpr\",\"name\":\"nwvroevytlyokrr\",\"type\":\"o\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class NetAppResourceQuotaLimitsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<QuotaItem> response
-            = manager.netAppResourceQuotaLimits().list("gwe", com.azure.core.util.Context.NONE);
+        PagedIterable<SubscriptionQuotaItem> response
+            = manager.netAppResourceQuotaLimits().list("huytxzvtzn", com.azure.core.util.Context.NONE);
 
     }
 }

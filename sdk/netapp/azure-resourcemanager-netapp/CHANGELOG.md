@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0 (2025-11-10)
+## 1.10.0 (2025-11-12)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -24,8 +24,6 @@
 
 #### `models.CapacityPoolList` was removed
 
-#### `models.SubscriptionQuotaItem` was removed
-
 #### `models.NetAppAccountList` was removed
 
 #### `models.SnapshotPoliciesList` was removed
@@ -47,23 +45,22 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withDimensions(java.util.List)` was removed
-* `withSupportedTimeGrainTypes(java.util.List)` was removed
-* `withDisplayName(java.lang.String)` was removed
-* `withIsInternal(java.lang.Boolean)` was removed
-* `withDisplayDescription(java.lang.String)` was removed
 * `withResourceIdDimensionNameOverride(java.lang.String)` was removed
+* `withInternalMetricName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
 * `withAggregationType(java.lang.String)` was removed
-* `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
 * `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
 * `withSourceMdmAccount(java.lang.String)` was removed
+* `withSupportedAggregationTypes(java.util.List)` was removed
 * `withCategory(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
-* `validate()` was removed
-* `withSupportedAggregationTypes(java.util.List)` was removed
-* `withUnit(java.lang.String)` was removed
-* `withSourceMdmNamespace(java.lang.String)` was removed
-* `withInternalMetricName(java.lang.String)` was removed
 
 #### `models.ReplicationStatus` was modified
 
@@ -72,67 +69,18 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `validate()` was removed
-* `withResource(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
-
-#### `models.Volume$Update` was modified
-
-* `withThroughputMibps(java.lang.Float)` was removed
-
-#### `models.VolumePatchPropertiesExportPolicy` was modified
-
-* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
 
 #### `models.VolumeGroupDetails$Definition` was modified
 
 * `withGroupMetadata(models.VolumeGroupMetadata)` was removed
 
-#### `models.SnapshotPolicyPatch` was modified
-
-* `validate()` was removed
-
-#### `models.HourlySchedule` was modified
-
-* `validate()` was removed
-
-#### `models.ActiveDirectory` was modified
-
-* `validate()` was removed
-
-#### `models.BackupVaultPatch` was modified
-
-* `validate()` was removed
-
-#### `models.PlacementKeyValuePairs` was modified
-
-* `validate()` was removed
-
-#### `models.VolumeGroupMetadata` was modified
-
-* `validate()` was removed
-
-#### `models.MonthlySchedule` was modified
-
-* `validate()` was removed
-
 #### `models.CapacityPool$Update` was modified
 
 * `withCustomThroughputMibps(java.lang.Float)` was removed
-
-#### `models.ResourceNameAvailabilityRequest` was modified
-
-* `validate()` was removed
-
-#### `models.GetGroupIdListForLdapUserRequest` was modified
-
-* `validate()` was removed
-
-#### `models.VolumeRelocationProperties` was modified
-
-* `validate()` was removed
 
 #### `models.VolumeGroupDetails` was modified
 
@@ -141,141 +89,49 @@
 #### `models.CapacityPool` was modified
 
 * `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
-* `java.lang.Float totalThroughputMibps()` -> `java.lang.Double totalThroughputMibps()`
-* `java.lang.Float utilizedThroughputMibps()` -> `java.lang.Double utilizedThroughputMibps()`
-
-#### `models.Volume$Definition` was modified
-
-* `withThroughputMibps(java.lang.Float)` was removed
-
-#### `models.RemotePath` was modified
-
-* `validate()` was removed
-
-#### `models.VolumeSnapshotProperties` was modified
-
-* `validate()` was removed
-
-#### `models.KeyVaultPrivateEndpoint` was modified
-
-* `validate()` was removed
-
-#### `models.UpdateNetworkSiblingSetRequest` was modified
-
-* `validate()` was removed
-
-#### `models.ReplicationObject` was modified
-
-* `validate()` was removed
-
-#### `models.BackupRestoreFiles` was modified
-
-* `validate()` was removed
 
 #### `models.NetAppAccountPatch` was modified
 
-* `validate()` was removed
-* `withTags(java.util.Map)` was removed
 * `withLocation(java.lang.String)` was removed
-
-#### `models.VolumeRevert` was modified
-
-* `validate()` was removed
-
-#### `models.ChangeKeyVault` was modified
-
-* `validate()` was removed
-
-#### `models.AuthorizeRequest` was modified
-
-* `validate()` was removed
+* `withTags(java.util.Map)` was removed
 
 #### `models.RegionInfoAvailabilityZoneMappingsItem` was modified
 
 * `RegionInfoAvailabilityZoneMappingsItem()` was changed to private access
-* `validate()` was removed
 * `withAvailabilityZone(java.lang.String)` was removed
 * `withIsAvailable(java.lang.Boolean)` was removed
 
-#### `models.BreakReplicationRequest` was modified
-
-* `validate()` was removed
-
-#### `models.QueryNetworkSiblingSetRequest` was modified
-
-* `validate()` was removed
-
-#### `models.WeeklySchedule` was modified
-
-* `validate()` was removed
-
 #### `models.CapacityPoolPatch` was modified
 
-* `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
-* `withTags(java.util.Map)` was removed
 * `withCustomThroughputMibps(java.lang.Float)` was removed
-* `validate()` was removed
+* `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
 * `withLocation(java.lang.String)` was removed
-
-#### `models.LdapSearchScopeOpt` was modified
-
-* `validate()` was removed
-
-#### `models.VolumeGroupVolumeProperties` was modified
-
-* `java.lang.Float throughputMibps()` -> `java.lang.Double throughputMibps()`
-* `validate()` was removed
-* `withThroughputMibps(java.lang.Float)` was removed
-* `java.lang.Float actualThroughputMibps()` -> `java.lang.Double actualThroughputMibps()`
+* `withTags(java.util.Map)` was removed
 
 #### `models.Dimension` was modified
 
 * `Dimension()` was changed to private access
-* `validate()` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
 
 #### `models.VolumeQuotaRule` was modified
 
 * `models.ProvisioningState provisioningState()` -> `models.NetAppProvisioningState provisioningState()`
 
-#### `models.QuotaAvailabilityRequest` was modified
-
-* `validate()` was removed
-
 #### `models.VolumeQuotaRulePatch` was modified
 
 * `models.ProvisioningState provisioningState()` -> `models.NetAppProvisioningState provisioningState()`
-* `validate()` was removed
 
 #### `models.UserAssignedIdentity` was modified
 
-* `validate()` was removed
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
-
-#### `models.AccountEncryption` was modified
-
-* `validate()` was removed
-
-#### `models.VolumeBackupProperties` was modified
-
-* `validate()` was removed
-
-#### `models.PoolChangeRequest` was modified
-
-* `validate()` was removed
-
-#### `models.ReestablishReplicationRequest` was modified
-
-* `validate()` was removed
 
 #### `models.ServiceSpecification` was modified
 
 * `ServiceSpecification()` was changed to private access
-* `withLogSpecifications(java.util.List)` was removed
-* `validate()` was removed
 * `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
 
 #### `models.BackupStatus` was modified
 
@@ -283,29 +139,12 @@
 
 #### `models.Volume` was modified
 
-* `java.lang.Float throughputMibps()` -> `java.lang.Double throughputMibps()`
-* `java.lang.Float actualThroughputMibps()` -> `java.lang.Double actualThroughputMibps()`
 * `listReplications(com.azure.core.util.Context)` was removed
 
 #### `models.VolumePatch` was modified
 
-* `withThroughputMibps(java.lang.Float)` was removed
-* `withLocation(java.lang.String)` was removed
-* `validate()` was removed
 * `withTags(java.util.Map)` was removed
-* `java.lang.Float throughputMibps()` -> `java.lang.Double throughputMibps()`
-
-#### `models.KeyVaultProperties` was modified
-
-* `validate()` was removed
-
-#### `models.PeerClusterForVolumeMigrationRequest` was modified
-
-* `validate()` was removed
-
-#### `models.BreakFileLocksRequest` was modified
-
-* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
 
 #### `models.CapacityPool$Definition` was modified
 
@@ -314,86 +153,40 @@
 #### `models.UsageName` was modified
 
 * `UsageName()` was changed to private access
-* `withLocalizedValue(java.lang.String)` was removed
 * `withValue(java.lang.String)` was removed
-* `validate()` was removed
+* `withLocalizedValue(java.lang.String)` was removed
 
 #### `models.ManagedServiceIdentity` was modified
 
-* `validate()` was removed
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 
 #### `models.LogSpecification` was modified
 
 * `LogSpecification()` was changed to private access
-* `validate()` was removed
-* `withName(java.lang.String)` was removed
 * `withDisplayName(java.lang.String)` was removed
-
-#### `models.VolumePropertiesDataProtection` was modified
-
-* `validate()` was removed
-
-#### `models.BackupsMigrationRequest` was modified
-
-* `validate()` was removed
-
-#### `models.EncryptionIdentity` was modified
-
-* `validate()` was removed
-
-#### `models.DailySchedule` was modified
-
-* `validate()` was removed
-
-#### `models.RelocateVolumeRequest` was modified
-
-* `validate()` was removed
-
-#### `models.EncryptionTransitionRequest` was modified
-
-* `validate()` was removed
-
-#### `models.NetAppResourceQuotaLimits` was modified
-
-* `models.SubscriptionQuotaItem get(java.lang.String,java.lang.String)` -> `models.QuotaItem get(java.lang.String,java.lang.String)`
+* `withName(java.lang.String)` was removed
 
 #### `models.NicInfo` was modified
 
 * `NicInfo()` was changed to private access
 * `withVolumeResourceIds(java.util.List)` was removed
-* `validate()` was removed
-
-#### `models.VolumePatchPropertiesDataProtection` was modified
-
-* `validate()` was removed
 
 #### `models.VolumeBackups` was modified
 
 * `VolumeBackups()` was changed to private access
-* `withVolumeResourceId(java.lang.String)` was removed
-* `validate()` was removed
 * `withPolicyEnabled(java.lang.Boolean)` was removed
-* `withBackupsCount(java.lang.Integer)` was removed
 * `withVolumeName(java.lang.String)` was removed
-
-#### `models.ExportPolicyRule` was modified
-
-* `validate()` was removed
-
-#### `models.VolumePropertiesExportPolicy` was modified
-
-* `validate()` was removed
+* `withVolumeResourceId(java.lang.String)` was removed
+* `withBackupsCount(java.lang.Integer)` was removed
 
 #### `models.DestinationReplication` was modified
 
 * `DestinationReplication()` was changed to private access
-* `withResourceId(java.lang.String)` was removed
-* `validate()` was removed
-* `withRegion(java.lang.String)` was removed
 * `withReplicationType(models.ReplicationType)` was removed
 * `withZone(java.lang.String)` was removed
+* `withResourceId(java.lang.String)` was removed
+* `withRegion(java.lang.String)` was removed
 
 #### `models.RestoreStatus` was modified
 
@@ -402,28 +195,11 @@
 #### `models.BackupPolicyPatch` was modified
 
 * `withTags(java.util.Map)` was removed
-* `validate()` was removed
 * `withLocation(java.lang.String)` was removed
 
 #### `models.Volumes` was modified
 
 * `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-
-#### `models.SubvolumePatchRequest` was modified
-
-* `validate()` was removed
-
-#### `models.FilePathAvailabilityRequest` was modified
-
-* `validate()` was removed
-
-#### `models.SnapshotRestoreFiles` was modified
-
-* `validate()` was removed
-
-#### `models.BackupPatch` was modified
-
-* `validate()` was removed
 
 #### `models.Snapshots` was modified
 
@@ -456,8 +232,6 @@
 
 * `models.VolumeReplicationRelationshipStatus` was added
 
-* `models.QuotaItem` was added
-
 * `models.ExternalReplicationSetupStatus` was added
 
 * `models.VolumeBackupRelationshipStatus` was added
@@ -471,10 +245,6 @@
 #### `models.SnapshotPolicyVolumeList` was modified
 
 * `nextLink()` was added
-
-#### `models.Volume$Update` was modified
-
-* `withThroughputMibps(java.lang.Double)` was added
 
 #### `models.VolumeGroupDetails$Definition` was modified
 
@@ -492,21 +262,20 @@
 #### `models.Volume$Definition` was modified
 
 * `withLanguage(models.VolumeLanguage)` was added
-* `withThroughputMibps(java.lang.Double)` was added
 * `withLdapServerType(models.LdapServerType)` was added
 
 #### `models.ReplicationObject` was modified
 
-* `externalReplicationSetupInfo()` was added
 * `externalReplicationSetupStatus()` was added
 * `mirrorState()` was added
 * `relationshipStatus()` was added
+* `externalReplicationSetupInfo()` was added
 
 #### `models.NetAppAccountPatch` was modified
 
+* `location()` was added
 * `tags()` was added
 * `ldapConfiguration()` was added
-* `location()` was added
 * `withLdapConfiguration(models.LdapConfiguration)` was added
 
 #### `models.NetAppAccount$Update` was modified
@@ -515,37 +284,39 @@
 
 #### `models.CapacityPoolPatch` was modified
 
-* `tags()` was added
-* `location()` was added
 * `withCustomThroughputMibps(java.lang.Integer)` was added
+* `location()` was added
+* `tags()` was added
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `ldapServerType()` was added
 * `language()` was added
-* `withLanguage(models.VolumeLanguage)` was added
 * `withLdapServerType(models.LdapServerType)` was added
-* `withThroughputMibps(java.lang.Double)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `ldapServerType()` was added
 
 #### `models.Replication` was modified
 
+* `mirrorState()` was added
 * `replicationDeletionTime()` was added
 * `replicationCreationTime()` was added
-* `mirrorState()` was added
+
+#### `models.SubscriptionQuotaItem` was modified
+
+* `usage()` was added
 
 #### `models.Volume` was modified
 
 * `language()` was added
 * `ldapServerType()` was added
-* `listReplications(models.ListReplicationsRequest,com.azure.core.util.Context)` was added
 * `listQuotaReport()` was added
 * `listQuotaReport(com.azure.core.util.Context)` was added
+* `listReplications(models.ListReplicationsRequest,com.azure.core.util.Context)` was added
 
 #### `models.VolumePatch` was modified
 
-* `location()` was added
-* `withThroughputMibps(java.lang.Double)` was added
 * `tags()` was added
+* `location()` was added
 
 #### `models.CapacityPool$Definition` was modified
 

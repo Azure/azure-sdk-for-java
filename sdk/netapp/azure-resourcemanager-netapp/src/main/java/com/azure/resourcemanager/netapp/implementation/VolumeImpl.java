@@ -220,11 +220,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().smbContinuouslyAvailable();
     }
 
-    public Double throughputMibps() {
+    public Float throughputMibps() {
         return this.innerModel().throughputMibps();
     }
 
-    public Double actualThroughputMibps() {
+    public Float actualThroughputMibps() {
         return this.innerModel().actualThroughputMibps();
     }
 
@@ -800,7 +800,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withThroughputMibps(Double throughputMibps) {
+    public VolumeImpl withThroughputMibps(Float throughputMibps) {
         if (isInCreateMode()) {
             this.innerModel().withThroughputMibps(throughputMibps);
             return this;

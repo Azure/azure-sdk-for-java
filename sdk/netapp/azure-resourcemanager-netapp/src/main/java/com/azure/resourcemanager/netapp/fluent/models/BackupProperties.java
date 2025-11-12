@@ -6,6 +6,7 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -267,6 +268,21 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     public Boolean isLargeVolume() {
         return this.isLargeVolume;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (volumeResourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property volumeResourceId in model BackupProperties"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupProperties.class);
 
     /**
      * {@inheritDoc}

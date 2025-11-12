@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -96,6 +97,28 @@ public final class RemotePath implements JsonSerializable<RemotePath> {
         this.volumeName = volumeName;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (externalHostname() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property externalHostname in model RemotePath"));
+        }
+        if (serverName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property serverName in model RemotePath"));
+        }
+        if (volumeName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property volumeName in model RemotePath"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RemotePath.class);
 
     /**
      * {@inheritDoc}

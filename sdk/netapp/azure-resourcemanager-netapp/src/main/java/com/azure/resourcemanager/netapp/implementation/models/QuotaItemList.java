@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.netapp.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public final class QuotaItemList implements JsonSerializable<QuotaItemList> {
     /*
      * The QuotaItem items on this page
      */
-    private List<QuotaItemInner> value;
+    private List<SubscriptionQuotaItemInner> value;
 
     /*
      * The link to the next page of items
@@ -39,7 +40,7 @@ public final class QuotaItemList implements JsonSerializable<QuotaItemList> {
      * 
      * @return the value value.
      */
-    public List<QuotaItemInner> value() {
+    public List<SubscriptionQuotaItemInner> value() {
         return this.value;
     }
 
@@ -51,6 +52,22 @@ public final class QuotaItemList implements JsonSerializable<QuotaItemList> {
     public String nextLink() {
         return this.nextLink;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model QuotaItemList"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaItemList.class);
 
     /**
      * {@inheritDoc}
@@ -80,7 +97,8 @@ public final class QuotaItemList implements JsonSerializable<QuotaItemList> {
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<QuotaItemInner> value = reader.readArray(reader1 -> QuotaItemInner.fromJson(reader1));
+                    List<SubscriptionQuotaItemInner> value
+                        = reader.readArray(reader1 -> SubscriptionQuotaItemInner.fromJson(reader1));
                     deserializedQuotaItemList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedQuotaItemList.nextLink = reader.getString();

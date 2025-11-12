@@ -13,23 +13,23 @@ public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNameAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"levufuztcktyhj\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"edcg\"}")
+            "{\"name\":\"loazuruocbgoo\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"te\"}")
             .toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("levufuztcktyhj", model.name());
+        Assertions.assertEquals("loazuruocbgoo", model.name());
         Assertions.assertEquals(
             CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
-        Assertions.assertEquals("edcg", model.resourceGroup());
+        Assertions.assertEquals("te", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("levufuztcktyhj")
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("loazuruocbgoo")
             .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
-            .withResourceGroup("edcg");
+            .withResourceGroup("te");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("levufuztcktyhj", model.name());
+        Assertions.assertEquals("loazuruocbgoo", model.name());
         Assertions.assertEquals(
             CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
-        Assertions.assertEquals("edcg", model.resourceGroup());
+        Assertions.assertEquals("te", model.resourceGroup());
     }
 }

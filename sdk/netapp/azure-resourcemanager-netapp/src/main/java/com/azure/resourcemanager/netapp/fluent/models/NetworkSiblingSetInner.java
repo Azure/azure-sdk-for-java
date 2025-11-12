@@ -118,6 +118,17 @@ public final class NetworkSiblingSetInner implements JsonSerializable<NetworkSib
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (nicInfoList() != null) {
+            nicInfoList().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

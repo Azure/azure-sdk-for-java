@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class VolumesListGetGroupIdListForLdapUserMockTests {
     @Test
     public void testListGetGroupIdListForLdapUser() throws Exception {
-        String responseStr = "{\"groupIdsForLdapUser\":[\"ehjku\"]}";
+        String responseStr = "{\"groupIdsForLdapUser\":[\"mwmqtibx\",\"ijddtvqc\",\"tad\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,9 @@ public final class VolumesListGetGroupIdListForLdapUserMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GetGroupIdListForLdapUserResponse response = manager.volumes()
-            .listGetGroupIdListForLdapUser("bgomfgbegl", "gleohi", "etnluankrrfx", "eebtijvacvb",
-                new GetGroupIdListForLdapUserRequest().withUsername("qzbqqxlajrnwxa"),
-                com.azure.core.util.Context.NONE);
+            .listGetGroupIdListForLdapUser("yjathwtzo", "b", "emwmdxmebwjs", "jpahlxvea",
+                new GetGroupIdListForLdapUserRequest().withUsername("f"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ehjku", response.groupIdsForLdapUser().get(0));
+        Assertions.assertEquals("mwmqtibx", response.groupIdsForLdapUser().get(0));
     }
 }

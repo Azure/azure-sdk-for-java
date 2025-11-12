@@ -26,7 +26,7 @@ public final class VolumesListReplicationsMockTests {
     @Test
     public void testListReplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"replicationId\":\"vpbdbzqgq\",\"endpointType\":\"dst\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"svqwthmkyibc\",\"remoteVolumeRegion\":\"ihsgq\",\"mirrorState\":\"Broken\",\"replicationCreationTime\":\"2021-08-30T04:21:25Z\",\"replicationDeletionTime\":\"2021-02-10T08:48:23Z\"}]}";
+            = "{\"value\":[{\"replicationId\":\"jeamurv\",\"endpointType\":\"src\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"uanashcxlp\",\"remoteVolumeRegion\":\"erbdk\",\"mirrorState\":\"Mirrored\",\"replicationCreationTime\":\"2021-06-28T18:00:54Z\",\"replicationDeletionTime\":\"2021-12-03T21:14:10Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,12 +36,12 @@ public final class VolumesListReplicationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Replication> response = manager.volumes()
-            .listReplications("undmbx", "ugcmjkavlgorb", "ftpmdtzfjltfv", "zcyjtot",
-                new ListReplicationsRequest().withExclude(Exclude.NONE), com.azure.core.util.Context.NONE);
+            .listReplications("lrpiqywnc", "jtszcof", "zehtdhgb", "k",
+                new ListReplicationsRequest().withExclude(Exclude.DELETED), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("svqwthmkyibc", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("ihsgq", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals(EndpointType.SRC, response.iterator().next().endpointType());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, response.iterator().next().replicationSchedule());
+        Assertions.assertEquals("uanashcxlp", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("erbdk", response.iterator().next().remoteVolumeRegion());
     }
 }

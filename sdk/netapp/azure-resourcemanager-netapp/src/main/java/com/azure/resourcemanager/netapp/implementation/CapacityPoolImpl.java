@@ -70,11 +70,11 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this.innerModel().provisioningState();
     }
 
-    public Double totalThroughputMibps() {
+    public Float totalThroughputMibps() {
         return this.innerModel().totalThroughputMibps();
     }
 
-    public Double utilizedThroughputMibps() {
+    public Float utilizedThroughputMibps() {
         return this.innerModel().utilizedThroughputMibps();
     }
 

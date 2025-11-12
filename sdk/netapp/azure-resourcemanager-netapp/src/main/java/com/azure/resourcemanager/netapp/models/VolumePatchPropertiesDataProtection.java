@@ -74,6 +74,20 @@ public final class VolumePatchPropertiesDataProtection
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backup() != null) {
+            backup().validate();
+        }
+        if (snapshot() != null) {
+            snapshot().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

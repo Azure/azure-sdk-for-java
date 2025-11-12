@@ -12,24 +12,24 @@ public final class BackupPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyProperties model = BinaryData.fromString(
-            "{\"backupPolicyId\":\"ncckw\",\"provisioningState\":\"zqwhxxbuyqaxzfeq\",\"dailyBackupsToKeep\":1560492687,\"weeklyBackupsToKeep\":802122315,\"monthlyBackupsToKeep\":80294620,\"volumesAssigned\":2094175875,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"tolmncwsobqw\",\"volumeResourceId\":\"dbnw\",\"backupsCount\":301965904,\"policyEnabled\":true},{\"volumeName\":\"qdpfuvglsbjjca\",\"volumeResourceId\":\"xbvtvudu\",\"backupsCount\":1320056895,\"policyEnabled\":true}]}")
+            "{\"backupPolicyId\":\"ky\",\"provisioningState\":\"beddgssofw\",\"dailyBackupsToKeep\":1153520576,\"weeklyBackupsToKeep\":1521931041,\"monthlyBackupsToKeep\":1862326594,\"volumesAssigned\":1473869810,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"xacqqudfnbyx\",\"volumeResourceId\":\"aabjyvayffimrz\",\"backupsCount\":1007625802,\"policyEnabled\":true},{\"volumeName\":\"gsexne\",\"volumeResourceId\":\"dnw\",\"backupsCount\":2059840008,\"policyEnabled\":true}]}")
             .toObject(BackupPolicyProperties.class);
-        Assertions.assertEquals(1560492687, model.dailyBackupsToKeep());
-        Assertions.assertEquals(802122315, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(80294620, model.monthlyBackupsToKeep());
-        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(1153520576, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1521931041, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1862326594, model.monthlyBackupsToKeep());
+        Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyProperties model = new BackupPolicyProperties().withDailyBackupsToKeep(1560492687)
-            .withWeeklyBackupsToKeep(802122315)
-            .withMonthlyBackupsToKeep(80294620)
-            .withEnabled(true);
+        BackupPolicyProperties model = new BackupPolicyProperties().withDailyBackupsToKeep(1153520576)
+            .withWeeklyBackupsToKeep(1521931041)
+            .withMonthlyBackupsToKeep(1862326594)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(BackupPolicyProperties.class);
-        Assertions.assertEquals(1560492687, model.dailyBackupsToKeep());
-        Assertions.assertEquals(802122315, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(80294620, model.monthlyBackupsToKeep());
-        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(1153520576, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1521931041, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1862326594, model.monthlyBackupsToKeep());
+        Assertions.assertFalse(model.enabled());
     }
 }

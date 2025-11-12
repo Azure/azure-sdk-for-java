@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -724,7 +725,7 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
      * 
      * @return the throughputMibps value.
      */
-    public Double throughputMibps() {
+    public Float throughputMibps() {
         return this.innerProperties() == null ? null : this.innerProperties().throughputMibps();
     }
 
@@ -735,7 +736,7 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeGroupVolumeProperties object itself.
      */
-    public VolumeGroupVolumeProperties withThroughputMibps(Double throughputMibps) {
+    public VolumeGroupVolumeProperties withThroughputMibps(Float throughputMibps) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeProperties();
         }
@@ -749,7 +750,7 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
      * 
      * @return the actualThroughputMibps value.
      */
-    public Double actualThroughputMibps() {
+    public Float actualThroughputMibps() {
         return this.innerProperties() == null ? null : this.innerProperties().actualThroughputMibps();
     }
 
@@ -1351,6 +1352,23 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
         this.innerProperties().withLanguage(language);
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VolumeGroupVolumeProperties"));
+        } else {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeGroupVolumeProperties.class);
 
     /**
      * {@inheritDoc}

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -189,12 +190,12 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
      * manual qosType volume
      */
-    private Double throughputMibps;
+    private Float throughputMibps;
 
     /*
      * Actual throughput in MiB/s for auto qosType volumes calculated based on size and serviceLevel
      */
-    private Double actualThroughputMibps;
+    private Float actualThroughputMibps;
 
     /*
      * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource =
@@ -890,7 +891,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * 
      * @return the throughputMibps value.
      */
-    public Double throughputMibps() {
+    public Float throughputMibps() {
         return this.throughputMibps;
     }
 
@@ -901,7 +902,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeProperties object itself.
      */
-    public VolumeProperties withThroughputMibps(Double throughputMibps) {
+    public VolumeProperties withThroughputMibps(Float throughputMibps) {
         this.throughputMibps = throughputMibps;
         return this;
     }
@@ -912,7 +913,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * 
      * @return the actualThroughputMibps value.
      */
-    public Double actualThroughputMibps() {
+    public Float actualThroughputMibps() {
         return this.actualThroughputMibps;
     }
 
@@ -1455,6 +1456,36 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (creationToken() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property creationToken in model VolumeProperties"));
+        }
+        if (exportPolicy() != null) {
+            exportPolicy().validate();
+        }
+        if (subnetId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subnetId in model VolumeProperties"));
+        }
+        if (mountTargets() != null) {
+            mountTargets().forEach(e -> e.validate());
+        }
+        if (dataProtection() != null) {
+            dataProtection().validate();
+        }
+        if (placementRules() != null) {
+            placementRules().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeProperties.class);
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1597,9 +1628,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                 } else if ("smbContinuouslyAvailable".equals(fieldName)) {
                     deserializedVolumeProperties.smbContinuouslyAvailable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("throughputMibps".equals(fieldName)) {
-                    deserializedVolumeProperties.throughputMibps = reader.getNullable(JsonReader::getDouble);
+                    deserializedVolumeProperties.throughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("actualThroughputMibps".equals(fieldName)) {
-                    deserializedVolumeProperties.actualThroughputMibps = reader.getNullable(JsonReader::getDouble);
+                    deserializedVolumeProperties.actualThroughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("encryptionKeySource".equals(fieldName)) {
                     deserializedVolumeProperties.encryptionKeySource
                         = EncryptionKeySource.fromString(reader.getString());

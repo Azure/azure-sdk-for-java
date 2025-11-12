@@ -7,6 +7,7 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -759,7 +760,7 @@ public final class VolumeInner extends Resource {
      * 
      * @return the throughputMibps value.
      */
-    public Double throughputMibps() {
+    public Float throughputMibps() {
         return this.innerProperties() == null ? null : this.innerProperties().throughputMibps();
     }
 
@@ -770,7 +771,7 @@ public final class VolumeInner extends Resource {
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeInner object itself.
      */
-    public VolumeInner withThroughputMibps(Double throughputMibps) {
+    public VolumeInner withThroughputMibps(Float throughputMibps) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeProperties();
         }
@@ -784,7 +785,7 @@ public final class VolumeInner extends Resource {
      * 
      * @return the actualThroughputMibps value.
      */
-    public Double actualThroughputMibps() {
+    public Float actualThroughputMibps() {
         return this.innerProperties() == null ? null : this.innerProperties().actualThroughputMibps();
     }
 
@@ -1385,6 +1386,22 @@ public final class VolumeInner extends Resource {
         this.innerProperties().withLanguage(language);
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
+        } else {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeInner.class);
 
     /**
      * {@inheritDoc}

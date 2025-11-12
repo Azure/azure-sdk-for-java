@@ -150,6 +150,14 @@ public final class MonthlySchedule implements JsonSerializable<MonthlySchedule> 
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

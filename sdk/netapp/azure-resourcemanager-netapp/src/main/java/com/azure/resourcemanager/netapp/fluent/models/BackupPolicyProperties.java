@@ -181,6 +181,17 @@ public final class BackupPolicyProperties implements JsonSerializable<BackupPoli
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (volumeBackups() != null) {
+            volumeBackups().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

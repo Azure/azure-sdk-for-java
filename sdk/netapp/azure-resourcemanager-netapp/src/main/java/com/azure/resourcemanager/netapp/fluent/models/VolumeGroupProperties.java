@@ -90,6 +90,20 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (groupMetaData() != null) {
+            groupMetaData().validate();
+        }
+        if (volumes() != null) {
+            volumes().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

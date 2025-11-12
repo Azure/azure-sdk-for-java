@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -127,6 +128,31 @@ public final class ChangeKeyVault implements JsonSerializable<ChangeKeyVault> {
         this.keyVaultPrivateEndpoints = keyVaultPrivateEndpoints;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keyVaultUri() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyVaultUri in model ChangeKeyVault"));
+        }
+        if (keyName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyName in model ChangeKeyVault"));
+        }
+        if (keyVaultPrivateEndpoints() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultPrivateEndpoints in model ChangeKeyVault"));
+        } else {
+            keyVaultPrivateEndpoints().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ChangeKeyVault.class);
 
     /**
      * {@inheritDoc}

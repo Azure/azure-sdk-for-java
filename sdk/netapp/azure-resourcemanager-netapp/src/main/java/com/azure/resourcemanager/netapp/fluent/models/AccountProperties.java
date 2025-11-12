@@ -174,6 +174,23 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (activeDirectories() != null) {
+            activeDirectories().forEach(e -> e.validate());
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (ldapConfiguration() != null) {
+            ldapConfiguration().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

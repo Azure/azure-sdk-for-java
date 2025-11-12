@@ -13,27 +13,27 @@ public final class LdapConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LdapConfiguration model = BinaryData.fromString(
-            "{\"domain\":\"bdhqxvcxgf\",\"ldapServers\":[\"sofbshrn\",\"vbuswd\",\"z\"],\"ldapOverTLS\":true,\"serverCACertificate\":\"cnunvjsr\",\"certificateCNHost\":\"f\"}")
+            "{\"domain\":\"svfycxzbfv\",\"ldapServers\":[\"vrvmtgjqppyost\",\"on\"],\"ldapOverTLS\":true,\"serverCACertificate\":\"gfipnsxk\",\"certificateCNHost\":\"waekrrjreafxtsgu\"}")
             .toObject(LdapConfiguration.class);
-        Assertions.assertEquals("bdhqxvcxgf", model.domain());
-        Assertions.assertEquals("sofbshrn", model.ldapServers().get(0));
+        Assertions.assertEquals("svfycxzbfv", model.domain());
+        Assertions.assertEquals("vrvmtgjqppyost", model.ldapServers().get(0));
         Assertions.assertTrue(model.ldapOverTLS());
-        Assertions.assertEquals("cnunvjsr", model.serverCACertificate());
-        Assertions.assertEquals("f", model.certificateCNHost());
+        Assertions.assertEquals("gfipnsxk", model.serverCACertificate());
+        Assertions.assertEquals("waekrrjreafxtsgu", model.certificateCNHost());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LdapConfiguration model = new LdapConfiguration().withDomain("bdhqxvcxgf")
-            .withLdapServers(Arrays.asList("sofbshrn", "vbuswd", "z"))
+        LdapConfiguration model = new LdapConfiguration().withDomain("svfycxzbfv")
+            .withLdapServers(Arrays.asList("vrvmtgjqppyost", "on"))
             .withLdapOverTLS(true)
-            .withServerCACertificate("cnunvjsr")
-            .withCertificateCNHost("f");
+            .withServerCACertificate("gfipnsxk")
+            .withCertificateCNHost("waekrrjreafxtsgu");
         model = BinaryData.fromObject(model).toObject(LdapConfiguration.class);
-        Assertions.assertEquals("bdhqxvcxgf", model.domain());
-        Assertions.assertEquals("sofbshrn", model.ldapServers().get(0));
+        Assertions.assertEquals("svfycxzbfv", model.domain());
+        Assertions.assertEquals("vrvmtgjqppyost", model.ldapServers().get(0));
         Assertions.assertTrue(model.ldapOverTLS());
-        Assertions.assertEquals("cnunvjsr", model.serverCACertificate());
-        Assertions.assertEquals("f", model.certificateCNHost());
+        Assertions.assertEquals("gfipnsxk", model.serverCACertificate());
+        Assertions.assertEquals("waekrrjreafxtsgu", model.certificateCNHost());
     }
 }

@@ -84,6 +84,17 @@ public final class SubvolumePatchRequest implements JsonSerializable<SubvolumePa
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

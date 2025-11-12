@@ -234,6 +234,20 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (remotePath() != null) {
+            remotePath().validate();
+        }
+        if (destinationReplications() != null) {
+            destinationReplications().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

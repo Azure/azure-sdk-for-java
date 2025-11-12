@@ -48,6 +48,14 @@ public final class ReestablishReplicationRequest implements JsonSerializable<Ree
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

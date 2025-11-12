@@ -166,6 +166,26 @@ public final class SnapshotPolicyProperties implements JsonSerializable<Snapshot
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (hourlySchedule() != null) {
+            hourlySchedule().validate();
+        }
+        if (dailySchedule() != null) {
+            dailySchedule().validate();
+        }
+        if (weeklySchedule() != null) {
+            weeklySchedule().validate();
+        }
+        if (monthlySchedule() != null) {
+            monthlySchedule().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

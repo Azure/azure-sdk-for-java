@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -79,6 +80,26 @@ public final class QueryNetworkSiblingSetRequest implements JsonSerializable<Que
         this.subnetId = subnetId;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkSiblingSetId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetId in model QueryNetworkSiblingSetRequest"));
+        }
+        if (subnetId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model QueryNetworkSiblingSetRequest"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryNetworkSiblingSetRequest.class);
 
     /**
      * {@inheritDoc}

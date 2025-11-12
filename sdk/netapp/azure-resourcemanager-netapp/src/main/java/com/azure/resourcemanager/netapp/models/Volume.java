@@ -297,7 +297,7 @@ public interface Volume {
      * 
      * @return the throughputMibps value.
      */
-    Double throughputMibps();
+    Float throughputMibps();
 
     /**
      * Gets the actualThroughputMibps property: Actual throughput in MiB/s for auto qosType volumes calculated based on
@@ -305,7 +305,7 @@ public interface Volume {
      * 
      * @return the actualThroughputMibps value.
      */
-    Double actualThroughputMibps();
+    Float actualThroughputMibps();
 
     /**
      * Gets the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
@@ -1001,7 +1001,7 @@ public interface Volume {
              * accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
-            WithCreate withThroughputMibps(Double throughputMibps);
+            WithCreate withThroughputMibps(Float throughputMibps);
         }
 
         /**
@@ -1435,7 +1435,7 @@ public interface Volume {
              * accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
-            Update withThroughputMibps(Double throughputMibps);
+            Update withThroughputMibps(Float throughputMibps);
         }
 
         /**

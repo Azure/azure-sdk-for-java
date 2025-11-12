@@ -1935,7 +1935,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
@@ -1963,7 +1963,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
@@ -1991,7 +1991,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
@@ -2019,7 +2019,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
@@ -2047,7 +2047,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withProximityPlacementGroup(
@@ -2096,7 +2096,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data1"),
@@ -2123,7 +2123,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data2"),
@@ -2150,7 +2150,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data3"),
@@ -2177,7 +2177,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data4"),
@@ -2204,7 +2204,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data5"),
@@ -2231,7 +2231,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data6"),
@@ -2258,7 +2258,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data7"),
@@ -2285,7 +2285,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-data8"),
@@ -2312,7 +2312,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-log"),
@@ -2339,7 +2339,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-log-mirror"),
@@ -2366,7 +2366,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-binary"),
@@ -2393,7 +2393,7 @@ public final class VolumeGroupsCreateSamples {
                     .withProtocolTypes(Arrays.asList("NFSv4.1"))
                     .withSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                    .withThroughputMibps(10.0D)
+                    .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                     .withVolumeSpecName("ora-backup")))

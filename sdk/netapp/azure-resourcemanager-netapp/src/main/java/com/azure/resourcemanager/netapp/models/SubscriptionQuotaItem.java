@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 
 /**
- * An immutable client-side representation of QuotaItem.
+ * An immutable client-side representation of SubscriptionQuotaItem.
  */
-public interface QuotaItem {
+public interface SubscriptionQuotaItem {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -61,9 +61,9 @@ public interface QuotaItem {
     Integer usage();
 
     /**
-     * Gets the inner com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner object.
+     * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner object.
      * 
      * @return the inner object.
      */
-    QuotaItemInner innerModel();
+    SubscriptionQuotaItemInner innerModel();
 }

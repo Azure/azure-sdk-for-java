@@ -248,6 +248,17 @@ public final class MetricSpecification implements JsonSerializable<MetricSpecifi
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

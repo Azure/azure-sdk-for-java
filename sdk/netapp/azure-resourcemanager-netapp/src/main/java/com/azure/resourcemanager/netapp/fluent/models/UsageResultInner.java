@@ -93,6 +93,20 @@ public final class UsageResultInner implements JsonSerializable<UsageResultInner
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

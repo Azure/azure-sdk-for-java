@@ -123,6 +123,26 @@ public final class VolumePropertiesDataProtection implements JsonSerializable<Vo
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backup() != null) {
+            backup().validate();
+        }
+        if (replication() != null) {
+            replication().validate();
+        }
+        if (snapshot() != null) {
+            snapshot().validate();
+        }
+        if (volumeRelocation() != null) {
+            volumeRelocation().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

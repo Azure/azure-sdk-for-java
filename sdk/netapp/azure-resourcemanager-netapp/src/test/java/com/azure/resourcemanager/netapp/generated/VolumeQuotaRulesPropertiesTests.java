@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":4820100600000743353,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"frl\"}")
+            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":5853519584065251254,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"wpfhpagmhrskd\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(4820100600000743353L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(5853519584065251254L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("frl", model.quotaTarget());
+        Assertions.assertEquals("wpfhpagmhrskd", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(4820100600000743353L)
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(5853519584065251254L)
             .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-            .withQuotaTarget("frl");
+            .withQuotaTarget("wpfhpagmhrskd");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(4820100600000743353L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(5853519584065251254L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("frl", model.quotaTarget());
+        Assertions.assertEquals("wpfhpagmhrskd", model.quotaTarget());
     }
 }

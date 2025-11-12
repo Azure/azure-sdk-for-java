@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -43,12 +44,12 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     /*
      * Total throughput of pool in MiB/s
      */
-    private Double totalThroughputMibps;
+    private Float totalThroughputMibps;
 
     /*
      * Utilized throughput of pool in MiB/s
      */
-    private Double utilizedThroughputMibps;
+    private Float utilizedThroughputMibps;
 
     /*
      * Maximum throughput in MiB/s that can be achieved by this pool and this will be accepted as input only for manual
@@ -143,7 +144,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the totalThroughputMibps value.
      */
-    public Double totalThroughputMibps() {
+    public Float totalThroughputMibps() {
         return this.totalThroughputMibps;
     }
 
@@ -152,7 +153,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the utilizedThroughputMibps value.
      */
-    public Double utilizedThroughputMibps() {
+    public Float utilizedThroughputMibps() {
         return this.utilizedThroughputMibps;
     }
 
@@ -241,6 +242,20 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (serviceLevel() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PoolProperties.class);
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -281,9 +296,9 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPoolProperties.provisioningState = reader.getString();
                 } else if ("totalThroughputMibps".equals(fieldName)) {
-                    deserializedPoolProperties.totalThroughputMibps = reader.getNullable(JsonReader::getDouble);
+                    deserializedPoolProperties.totalThroughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("utilizedThroughputMibps".equals(fieldName)) {
-                    deserializedPoolProperties.utilizedThroughputMibps = reader.getNullable(JsonReader::getDouble);
+                    deserializedPoolProperties.utilizedThroughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("customThroughputMibps".equals(fieldName)) {
                     deserializedPoolProperties.customThroughputMibps = reader.getNullable(JsonReader::getInt);
                 } else if ("qosType".equals(fieldName)) {

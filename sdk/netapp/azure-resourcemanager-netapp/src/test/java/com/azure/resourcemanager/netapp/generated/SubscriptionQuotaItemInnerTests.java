@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 
-public final class QuotaItemInnerTests {
+public final class SubscriptionQuotaItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaItemInner model = BinaryData.fromString(
+        SubscriptionQuotaItemInner model = BinaryData.fromString(
             "{\"properties\":{\"current\":15253955,\"default\":1671923466,\"usage\":2029322855},\"id\":\"dudgwdslfhot\",\"name\":\"mcy\",\"type\":\"pwlbjnpg\"}")
-            .toObject(QuotaItemInner.class);
+            .toObject(SubscriptionQuotaItemInner.class);
     }
 }

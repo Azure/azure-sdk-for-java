@@ -16,7 +16,7 @@ import java.io.IOException;
  * Information regarding Quota Item.
  */
 @Immutable
-public final class QuotaItemInner extends ProxyResource {
+public final class SubscriptionQuotaItemInner extends ProxyResource {
     /*
      * QuotaItem properties
      */
@@ -43,9 +43,9 @@ public final class QuotaItemInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of QuotaItemInner class.
+     * Creates an instance of SubscriptionQuotaItemInner class.
      */
-    private QuotaItemInner() {
+    private SubscriptionQuotaItemInner() {
     }
 
     /**
@@ -124,6 +124,17 @@ public final class QuotaItemInner extends ProxyResource {
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -134,37 +145,37 @@ public final class QuotaItemInner extends ProxyResource {
     }
 
     /**
-     * Reads an instance of QuotaItemInner from the JsonReader.
+     * Reads an instance of SubscriptionQuotaItemInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of QuotaItemInner if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of SubscriptionQuotaItemInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the QuotaItemInner.
+     * @throws IOException If an error occurs while reading the SubscriptionQuotaItemInner.
      */
-    public static QuotaItemInner fromJson(JsonReader jsonReader) throws IOException {
+    public static SubscriptionQuotaItemInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            QuotaItemInner deserializedQuotaItemInner = new QuotaItemInner();
+            SubscriptionQuotaItemInner deserializedSubscriptionQuotaItemInner = new SubscriptionQuotaItemInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedQuotaItemInner.id = reader.getString();
+                    deserializedSubscriptionQuotaItemInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedQuotaItemInner.name = reader.getString();
+                    deserializedSubscriptionQuotaItemInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedQuotaItemInner.type = reader.getString();
+                    deserializedSubscriptionQuotaItemInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedQuotaItemInner.innerProperties = QuotaItemProperties.fromJson(reader);
+                    deserializedSubscriptionQuotaItemInner.innerProperties = QuotaItemProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedQuotaItemInner.systemData = SystemData.fromJson(reader);
+                    deserializedSubscriptionQuotaItemInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedQuotaItemInner;
+            return deserializedSubscriptionQuotaItemInner;
         });
     }
 }

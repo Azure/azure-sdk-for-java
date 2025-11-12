@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 
 /**
  * An instance of this class provides access to all the operations defined in NetAppResourceQuotaLimitsAccountsClient.
@@ -28,8 +28,8 @@ public interface NetAppResourceQuotaLimitsAccountsClient {
      * @return the default, current and usages account quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaItemInner> getWithResponse(String resourceGroupName, String accountName, String quotaLimitName,
-        Context context);
+    Response<SubscriptionQuotaItemInner> getWithResponse(String resourceGroupName, String accountName,
+        String quotaLimitName, Context context);
 
     /**
      * Get the default, current and usages account quota limit.
@@ -43,7 +43,7 @@ public interface NetAppResourceQuotaLimitsAccountsClient {
      * @return the default, current and usages account quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaItemInner get(String resourceGroupName, String accountName, String quotaLimitName);
+    SubscriptionQuotaItemInner get(String resourceGroupName, String accountName, String quotaLimitName);
 
     /**
      * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
@@ -57,7 +57,7 @@ public interface NetAppResourceQuotaLimitsAccountsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QuotaItemInner> list(String resourceGroupName, String accountName);
+    PagedIterable<SubscriptionQuotaItemInner> list(String resourceGroupName, String accountName);
 
     /**
      * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
@@ -72,5 +72,5 @@ public interface NetAppResourceQuotaLimitsAccountsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QuotaItemInner> list(String resourceGroupName, String accountName, Context context);
+    PagedIterable<SubscriptionQuotaItemInner> list(String resourceGroupName, String accountName, Context context);
 }

@@ -13,13 +13,13 @@ public final class ListQuotaReportResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListQuotaReportResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"bxwakbog\",\"quotaLimitUsedInKiBs\":3591916684499053606,\"quotaLimitTotalInKiBs\":389744531539649860,\"percentageUsed\":27.675789919647386,\"isDerivedQuota\":false},{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"bpodxunkbebxm\",\"quotaLimitUsedInKiBs\":5789185793221344217,\"quotaLimitTotalInKiBs\":6919538775379955334,\"percentageUsed\":46.729428955175365,\"isDerivedQuota\":true}]}")
+            "{\"value\":[{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"wlrbqtkoievseo\",\"quotaLimitUsedInKiBs\":617716940799332801,\"quotaLimitTotalInKiBs\":5547103587081358827,\"percentageUsed\":2.299893,\"isDerivedQuota\":true},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"zizxbmpgcj\",\"quotaLimitUsedInKiBs\":367607290034890001,\"quotaLimitTotalInKiBs\":4123846884146341556,\"percentageUsed\":73.7088,\"isDerivedQuota\":false}]}")
             .toObject(ListQuotaReportResponseInner.class);
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.value().get(0).quotaType());
-        Assertions.assertEquals("bxwakbog", model.value().get(0).quotaTarget());
-        Assertions.assertEquals(3591916684499053606L, model.value().get(0).quotaLimitUsedInKiBs());
-        Assertions.assertEquals(389744531539649860L, model.value().get(0).quotaLimitTotalInKiBs());
-        Assertions.assertEquals(27.675789919647386D, model.value().get(0).percentageUsed());
-        Assertions.assertFalse(model.value().get(0).isDerivedQuota());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.value().get(0).quotaType());
+        Assertions.assertEquals("wlrbqtkoievseo", model.value().get(0).quotaTarget());
+        Assertions.assertEquals(617716940799332801L, model.value().get(0).quotaLimitUsedInKiBs());
+        Assertions.assertEquals(5547103587081358827L, model.value().get(0).quotaLimitTotalInKiBs());
+        Assertions.assertEquals(2.299893F, model.value().get(0).percentageUsed());
+        Assertions.assertTrue(model.value().get(0).isDerivedQuota());
     }
 }

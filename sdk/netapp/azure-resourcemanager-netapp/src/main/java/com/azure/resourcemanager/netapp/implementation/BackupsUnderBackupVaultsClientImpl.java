@@ -24,6 +24,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
@@ -103,6 +104,33 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreFilesWithResponseAsync(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupRestoreFiles body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.restoreFiles(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -127,6 +155,37 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreFilesWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupRestoreFiles body) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String contentType = "application/json";
         return service.restoreFilesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, accountName, backupVaultName, backupName, contentType,
@@ -150,6 +209,37 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreFilesWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupRestoreFiles body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String contentType = "application/json";
         return service.restoreFilesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, accountName, backupVaultName, backupName, contentType,
@@ -277,4 +367,6 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
         BackupRestoreFiles body, Context context) {
         beginRestoreFiles(resourceGroupName, accountName, backupVaultName, backupName, body, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupsUnderBackupVaultsClientImpl.class);
 }

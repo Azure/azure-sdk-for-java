@@ -52,6 +52,20 @@ public final class ServiceSpecification implements JsonSerializable<ServiceSpeci
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metricSpecifications() != null) {
+            metricSpecifications().forEach(e -> e.validate());
+        }
+        if (logSpecifications() != null) {
+            logSpecifications().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

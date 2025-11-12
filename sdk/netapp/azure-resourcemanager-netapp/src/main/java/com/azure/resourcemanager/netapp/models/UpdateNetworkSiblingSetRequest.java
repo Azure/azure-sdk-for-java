@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -131,6 +132,36 @@ public final class UpdateNetworkSiblingSetRequest implements JsonSerializable<Up
         this.networkFeatures = networkFeatures;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkSiblingSetId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetId in model UpdateNetworkSiblingSetRequest"));
+        }
+        if (subnetId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model UpdateNetworkSiblingSetRequest"));
+        }
+        if (networkSiblingSetStateId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetStateId in model UpdateNetworkSiblingSetRequest"));
+        }
+        if (networkFeatures() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFeatures in model UpdateNetworkSiblingSetRequest"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateNetworkSiblingSetRequest.class);
 
     /**
      * {@inheritDoc}

@@ -235,7 +235,7 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
      * 
      * @return the throughputMibps value.
      */
-    public Double throughputMibps() {
+    public Float throughputMibps() {
         return this.innerProperties() == null ? null : this.innerProperties().throughputMibps();
     }
 
@@ -246,7 +246,7 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumePatch object itself.
      */
-    public VolumePatch withThroughputMibps(Double throughputMibps) {
+    public VolumePatch withThroughputMibps(Float throughputMibps) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumePatchProperties();
         }
@@ -568,6 +568,17 @@ public final class VolumePatch implements JsonSerializable<VolumePatch> {
         }
         this.innerProperties().withSmbNonBrowsable(smbNonBrowsable);
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 
     /**

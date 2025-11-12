@@ -98,6 +98,14 @@ public final class VolumeBackupProperties implements JsonSerializable<VolumeBack
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
