@@ -1395,31 +1395,28 @@ public class BlobAsyncClientBase {
                         Context retryContext = firstRangeContext;
                         BlobRange retryRange;
 
-                        // If structured message decoding is enabled, we need to calculate the retry offset
-                        // based on the encoded bytes processed, not the decoded bytes
+                        // If structured message decoding is enabled, we need to restart from the beginning
+                        // because the decoder must parse the complete structured message from the start
                         if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            // Get the decoder state to determine how many encoded bytes were processed
+                            // Get the decoder state to determine how many decoded bytes were already emitted
                             Object decoderStateObj
                                 = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
                                     .orElse(null);
 
+                            // For structured message validation, we must restart from the beginning
+                            // because the message has headers and sequential segment numbers that must
+                            // be parsed in order. We cannot resume parsing mid-stream.
+                            retryRange = new BlobRange(initialOffset, finalCount);
+
+                            // DO NOT preserve decoder state - create a fresh decoder for the retry
+                            // The policy will track how many decoded bytes to skip
                             if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
                                 DecoderState decoderState = (DecoderState) decoderStateObj;
-
-                                // Use totalEncodedBytesProcessed to request NEW bytes from the server
-                                // The pending buffer already contains bytes we've received, so we request
-                                // starting from the next byte after what we've already received
-                                long encodedOffset = decoderState.getTotalEncodedBytesProcessed();
-                                long remainingCount = finalCount - encodedOffset;
-                                retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
-
-                                // Preserve the decoder state for the retry
-                                retryContext = retryContext
-                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                            } else {
-                                // No decoder state yet, use the normal retry logic
-                                retryRange = new BlobRange(initialOffset + offset, newCount);
+                                // Add the current decoded offset so the policy knows how many bytes to skip
+                                retryContext = retryContext.addData(
+                                    Constants.STRUCTURED_MESSAGE_DECODED_BYTES_TO_SKIP_CONTEXT_KEY,
+                                    decoderState.getTotalBytesDecoded());
                             }
                         } else {
                             // For non-structured downloads, use smart retry from the interrupted offset

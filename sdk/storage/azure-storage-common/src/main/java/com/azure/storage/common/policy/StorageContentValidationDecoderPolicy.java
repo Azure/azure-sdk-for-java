@@ -60,8 +60,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             Long contentLength = getContentLength(httpResponse.getHeaders());
 
             if (contentLength != null && contentLength > 0 && validationOptions != null) {
-                // Get or create decoder with state tracking
-                DecoderState decoderState = getOrCreateDecoderState(context, contentLength);
+                // Check if this is a retry - if so, get the number of decoded bytes to skip
+                long bytesToSkip = context.getData(Constants.STRUCTURED_MESSAGE_DECODED_BYTES_TO_SKIP_CONTEXT_KEY)
+                    .filter(value -> value instanceof Long)
+                    .map(value -> (Long) value)
+                    .orElse(0L);
+
+                // Always create a fresh decoder for each request
+                // This is necessary because structured messages must be parsed from the beginning
+                DecoderState decoderState = new DecoderState(contentLength, bytesToSkip);
 
                 // Decode using the stateful decoder
                 Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoderState);
@@ -102,10 +109,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 // Decode - this advances duplicateForDecode's position
                 ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
 
-                // Track decoded bytes
-                int decodedBytes = decodedData.remaining();
-                state.totalBytesDecoded.addAndGet(decodedBytes);
-
                 // Calculate how much of the input buffer was consumed by checking the duplicate's position
                 int bytesConsumed = duplicateForDecode.position() - initialPosition;
                 int bytesRemaining = availableSize - bytesConsumed;
@@ -121,9 +124,33 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     state.pendingBuffer = null;
                 }
 
-                // Return decoded data if any
+                // Handle skipping bytes for retries and tracking decoded bytes
+                int decodedBytes = decodedData.remaining();
                 if (decodedBytes > 0) {
-                    return Flux.just(decodedData);
+                    // Track total decoded bytes
+                    long totalDecoded = state.totalBytesDecoded.addAndGet(decodedBytes);
+
+                    // If we need to skip bytes (retry scenario), adjust the buffer
+                    if (state.bytesToSkip > 0) {
+                        long currentPosition = totalDecoded - decodedBytes; // Where we were before adding these bytes
+
+                        if (currentPosition + decodedBytes <= state.bytesToSkip) {
+                            // All these bytes should be skipped
+                            return Flux.empty();
+                        } else if (currentPosition < state.bytesToSkip) {
+                            // Some bytes should be skipped
+                            int skipAmount = (int) (state.bytesToSkip - currentPosition);
+                            decodedData.position(decodedData.position() + skipAmount);
+                        }
+                        // else: no bytes need to be skipped, emit all
+                    }
+
+                    // Return decoded data if any remains after skipping
+                    if (decodedData.hasRemaining()) {
+                        return Flux.just(decodedData);
+                    } else {
+                        return Flux.empty();
+                    }
                 } else {
                     return Flux.empty();
                 }
@@ -200,20 +227,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
-     * Gets or creates a decoder state from context.
-     *
-     * @param context The pipeline call context.
-     * @param contentLength The content length.
-     * @return The decoder state.
-     */
-    private DecoderState getOrCreateDecoderState(HttpPipelineCallContext context, long contentLength) {
-        return context.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-            .filter(value -> value instanceof DecoderState)
-            .map(value -> (DecoderState) value)
-            .orElseGet(() -> new DecoderState(contentLength));
-    }
-
-    /**
      * Checks if the response is a download response.
      *
      * @param httpResponse The HTTP response.
@@ -233,18 +246,21 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         private final long expectedContentLength;
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
+        private final long bytesToSkip;
         private ByteBuffer pendingBuffer;
 
         /**
          * Creates a new decoder state.
          *
          * @param expectedContentLength The expected length of the encoded content.
+         * @param bytesToSkip The number of decoded bytes to skip (for retry scenarios).
          */
-        public DecoderState(long expectedContentLength) {
+        public DecoderState(long expectedContentLength, long bytesToSkip) {
             this.expectedContentLength = expectedContentLength;
             this.decoder = new StructuredMessageDecoder(expectedContentLength);
             this.totalBytesDecoded = new AtomicLong(0);
             this.totalEncodedBytesProcessed = new AtomicLong(0);
+            this.bytesToSkip = bytesToSkip;
             this.pendingBuffer = null;
         }
 

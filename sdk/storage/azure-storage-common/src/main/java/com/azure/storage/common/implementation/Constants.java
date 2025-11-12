@@ -111,6 +111,14 @@ public final class Constants {
     public static final String STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY
         = "azure-storage-structured-message-decoder-state";
 
+    /**
+     * Context key used to pass the number of decoded bytes to skip on retry.
+     * When a retry occurs with structured message validation, we restart from the beginning
+     * and skip bytes that were already emitted to avoid duplication.
+     */
+    public static final String STRUCTURED_MESSAGE_DECODED_BYTES_TO_SKIP_CONTEXT_KEY
+        = "azure-storage-structured-message-decoded-bytes-to-skip";
+
     private Constants() {
     }
 
