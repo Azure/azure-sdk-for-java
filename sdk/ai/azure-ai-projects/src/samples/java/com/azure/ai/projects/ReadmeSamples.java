@@ -4,9 +4,32 @@
 
 package com.azure.ai.projects;
 
+import com.openai.services.blocking.EvalService;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.projects.readme
         // END: com.azure.ai.projects.readme
+
+        // BEGIN: com.azure.ai.projects.clientInitialization
+        AIProjectClientBuilder builder = new AIProjectClientBuilder();
+
+        ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+        DatasetsClient datasetsClient = builder.buildDatasetsClient();
+        DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
+        EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+        EvaluationsClient evaluationsClient = builder.buildEvaluationsClient();
+        EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
+        EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
+        IndexesClient indexesClient = builder.buildIndexesClient();
+        InsightsClient insightsClient = builder.buildInsightsClient();
+        RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
+        SchedulesClient schedulesClient = builder.buildSchedulesClient();
+        // END: com.azure.ai.projects.clientInitialization
+
+        // BEGIN: com.azure.ai.projects.evaluationsClientInit
+        EvalService evalService = evaluationsClient.getOpenAIClient();
+        // END: com.azure.ai.projects.evaluationsClientInit
+
     }
 }

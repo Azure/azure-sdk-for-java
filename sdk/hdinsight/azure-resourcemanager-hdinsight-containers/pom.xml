@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-hdinsight-containers</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for HDInsightContainers Management</name>
-  <description>This package contains Microsoft Azure SDK for HDInsightContainers Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. HDInsight Containers Management Client. Package tag package-preview-2024-05.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after January 31, 2025. We encourage you to migrate your workloads to [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric), and use `azure-resourcemanager-fabric` to continue receiving updates. Refer to service retirement announcement (https://azure.microsoft.com/updates?id=azure-hdinsight-on-aks-retirement) and SDK deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

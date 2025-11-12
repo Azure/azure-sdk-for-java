@@ -14,6 +14,22 @@
 
 - Updated `api-version` to `2025-01-01`.
 
+#### Features Added
+
+- Added `STANDARD_V2` to `PublicIPSkuType`.
+
+#### Bugs Fixed
+
+- Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
+- Improved `VirtualNetworkGateway` to create Public IP Address with Standard SKU (unless the gateway is Basic SKU).
+- Improved `PublicIpAddress` to set the public IP allocation method to Static (unless the Public IP Address is Basic SKU).
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-09-01`.
+
 ## 2.56.0 (2025-10-31)
 
 ### azure-resourcemanager-containerservice
