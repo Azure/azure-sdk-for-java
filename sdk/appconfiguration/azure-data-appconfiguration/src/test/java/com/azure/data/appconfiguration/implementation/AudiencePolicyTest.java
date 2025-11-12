@@ -4,7 +4,6 @@
 package com.azure.data.appconfiguration.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -135,88 +134,27 @@ public class AudiencePolicyTest {
     }
 
     @Test
-    public void handleAudienceExceptionWithNullMessage() {
+    public void processWithNullMessageException() {
         AudiencePolicy audiencePolicy = new AudiencePolicy(ConfigurationAudience.AZURE_PUBLIC_CLOUD);
 
-        HttpResponseException originalException
-            = new HttpResponseException(null, new MockHttpResponse(new HttpRequest(HttpMethod.GET, LOCAL_HOST), 401));
+        HttpPipelinePolicy exceptionPolicy = (context, next) -> {
+            HttpResponseException ex
+                = new HttpResponseException(null, new MockHttpResponse(context.getHttpRequest(), 401));
+            return Mono.error(ex);
+        };
 
-        // Use reflection to access the private method for testing
-        try {
-            java.lang.reflect.Method method
-                = AudiencePolicy.class.getDeclaredMethod("handleAudienceException", HttpResponseException.class);
-            method.setAccessible(true);
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(audiencePolicy, exceptionPolicy)
+            .build();
 
-            HttpResponseException result = (HttpResponseException) method.invoke(audiencePolicy, originalException);
-            assertSame(originalException, result, "Should return original exception when message is null");
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to test handleAudienceException with null message", e);
-        }
-    }
+        StepVerifier.create(sendRequest(pipeline))
+            .expectErrorMatches(
+                throwable -> throwable instanceof HttpResponseException && throwable.getMessage() == null)
+            .verify();
 
-    @Test
-    public void handleAudienceExceptionWithoutErrorCode() {
-        AudiencePolicy audiencePolicy = new AudiencePolicy(ConfigurationAudience.AZURE_PUBLIC_CLOUD);
-
-        HttpResponseException originalException = new HttpResponseException("Some other error",
-            new MockHttpResponse(new HttpRequest(HttpMethod.GET, LOCAL_HOST), 401));
-
-        // Use reflection to access the private method for testing
-        try {
-            java.lang.reflect.Method method
-                = AudiencePolicy.class.getDeclaredMethod("handleAudienceException", HttpResponseException.class);
-            method.setAccessible(true);
-
-            HttpResponseException result = (HttpResponseException) method.invoke(audiencePolicy, originalException);
-            assertSame(originalException, result, "Should return original exception when error code is not found");
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to test handleAudienceException without error code", e);
-        }
-    }
-
-    @Test
-    public void handleAudienceExceptionWithErrorCodeNullAudience() {
-        AudiencePolicy audiencePolicy = new AudiencePolicy(null);
-
-        HttpResponseException originalException
-            = new HttpResponseException("Error " + AAD_AUDIENCE_ERROR_CODE + " occurred",
-                new MockHttpResponse(new HttpRequest(HttpMethod.GET, LOCAL_HOST), 401));
-
-        // Use reflection to access the private method for testing
-        try {
-            java.lang.reflect.Method method
-                = AudiencePolicy.class.getDeclaredMethod("handleAudienceException", HttpResponseException.class);
-            method.setAccessible(true);
-
-            HttpResponseException result = (HttpResponseException) method.invoke(audiencePolicy, originalException);
-            assertEquals(NO_AUDIENCE_ERROR_MESSAGE, result.getMessage());
-            assertSame(originalException.getResponse(), result.getResponse());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to test handleAudienceException with error code and null audience", e);
-        }
-    }
-
-    @Test
-    public void handleAudienceExceptionWithErrorCodeConfiguredAudience() {
-        AudiencePolicy audiencePolicy = new AudiencePolicy(ConfigurationAudience.AZURE_PUBLIC_CLOUD);
-
-        HttpResponseException originalException
-            = new HttpResponseException("Error " + AAD_AUDIENCE_ERROR_CODE + " occurred",
-                new MockHttpResponse(new HttpRequest(HttpMethod.GET, LOCAL_HOST), 401));
-
-        // Use reflection to access the private method for testing
-        try {
-            java.lang.reflect.Method method
-                = AudiencePolicy.class.getDeclaredMethod("handleAudienceException", HttpResponseException.class);
-            method.setAccessible(true);
-
-            HttpResponseException result = (HttpResponseException) method.invoke(audiencePolicy, originalException);
-            assertEquals(INCORRECT_AUDIENCE_ERROR_MESSAGE, result.getMessage());
-            assertSame(originalException.getResponse(), result.getResponse());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to test handleAudienceException with error code and configured audience",
-                e);
-        }
+        // Test sync version
+        HttpResponseException thrown = assertThrows(HttpResponseException.class, () -> sendRequestSync(pipeline));
+        assertEquals(null, thrown.getMessage(), "Should return original exception when message is null");
     }
 
     private Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {

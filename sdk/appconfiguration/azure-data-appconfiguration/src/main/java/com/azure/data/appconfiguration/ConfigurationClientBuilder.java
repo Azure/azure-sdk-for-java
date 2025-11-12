@@ -3,6 +3,14 @@
 
 package com.azure.data.appconfiguration;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -33,30 +41,21 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import static com.azure.core.util.CoreUtils.getApplicationId;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.data.appconfiguration.implementation.AudiencePolicy;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
-import com.azure.data.appconfiguration.implementation.AudiencePolicy;
 import com.azure.data.appconfiguration.implementation.QueryParamPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationAudience;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static com.azure.core.util.CoreUtils.getApplicationId;
-import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -268,9 +267,6 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         // Add query parameter reordering policy
         policies.add(new QueryParamPolicy());
 
-        // Add policy to provide better error messages for AAD audience authentication failures
-        policies.add(new AudiencePolicy(audience));
-
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -292,6 +288,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         }
         policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
+
+        // Add policy to provide better error messages for AAD audience authentication failures
+        policies.add(new AudiencePolicy(audience));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
         localClientOptions.getHeaders()
