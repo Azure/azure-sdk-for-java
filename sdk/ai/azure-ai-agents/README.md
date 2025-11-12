@@ -89,6 +89,29 @@ ConversationsClient conversationsClient = builder.buildConversationsClient();
 ConversationService conversationService = conversationsClient.getOpenAIClient();
 ```
 
+### Using OpenAI's official library
+
+If you prefer using the [OpenAI official Java client library][openai_java_sdk] instead, you can do so by including that dependency in your project instead and following the instructions in the linked repository. Additionally, you will have to set up your `OpenAIClient` as shown below:
+
+```java com.azure.ai.agents.openai_official_library
+OpenAIClient client = OpenAIOkHttpClient.builder()
+    .baseUrl(endpoint.endsWith("/") ? endpoint + "openai" : endpoint + "/openai")
+    .azureUrlPathMode(AzureUrlPathMode.UNIFIED)
+    .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
+            new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
+    .azureServiceVersion(AzureOpenAIServiceVersion.fromString("2025-11-15-preview"))
+    .build();
+
+ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
+    .input("Hello, how can you help me?")
+    .model(model)
+    .build();
+
+Response result = client.responses().create(responseRequest);
+```
+
+Remember to adjust your value for the `AzureOpenAIServiceVersion` in the builder and to postpend to your `endpoint`'s path `openai` (if it's not already there) like it's shown in the above code snippet.
+
 ## Examples
 
 ### Prompt Agent

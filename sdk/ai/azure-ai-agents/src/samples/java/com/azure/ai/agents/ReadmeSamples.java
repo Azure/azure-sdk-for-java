@@ -7,13 +7,24 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.identity.AuthenticationUtil;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.azure.AzureOpenAIServiceVersion;
+import com.openai.azure.AzureUrlPathMode;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.credential.BearerTokenCredential;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
+        String endpoint = "my-resource-url";
+        String model = "model";
+
         AgentsClientBuilder builder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = builder.buildAgentsClient();
@@ -49,5 +60,22 @@ public final class ReadmeSamples {
         AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
         Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
         // END: com.azure.ai.agents.create_response
+
+        // BEGIN: com.azure.ai.agents.openai_official_library
+        OpenAIClient client = OpenAIOkHttpClient.builder()
+            .baseUrl(endpoint.endsWith("/") ? endpoint + "openai" : endpoint + "/openai")
+            .azureUrlPathMode(AzureUrlPathMode.UNIFIED)
+            .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
+                    new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
+            .azureServiceVersion(AzureOpenAIServiceVersion.fromString("2025-11-15-preview"))
+            .build();
+
+        ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
+            .input("Hello, how can you help me?")
+            .model(model)
+            .build();
+
+        Response result = client.responses().create(responseRequest);
+        // END: com.azure.ai.agents.openai_official_library
     }
 }
