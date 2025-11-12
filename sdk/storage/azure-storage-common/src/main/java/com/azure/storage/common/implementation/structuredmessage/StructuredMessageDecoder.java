@@ -27,14 +27,18 @@ public class StructuredMessageDecoder {
     private int numSegments;
     private final long expectedContentLength;
 
-    private int messageOffset = 0;
+    private long messageOffset = 0;
     private int currentSegmentNumber = 0;
-    private int currentSegmentContentLength = 0;
-    private int currentSegmentContentOffset = 0;
+    private long currentSegmentContentLength = 0;
+    private long currentSegmentContentOffset = 0;
 
     private long messageCrc64 = 0;
     private long segmentCrc64 = 0;
     private final Map<Integer, Long> segmentCrcs = new HashMap<>();
+
+    // Track the last complete segment boundary for smart retry
+    private long lastCompleteSegmentStart = 0;
+    private long currentSegmentStart = 0;
 
     /**
      * Constructs a new StructuredMessageDecoder.
@@ -43,6 +47,25 @@ public class StructuredMessageDecoder {
      */
     public StructuredMessageDecoder(long expectedContentLength) {
         this.expectedContentLength = expectedContentLength;
+    }
+
+    /**
+     * Gets the byte offset where the last complete segment ended.
+     * This is used for smart retry to resume from a segment boundary.
+     *
+     * @return The byte offset of the last complete segment boundary.
+     */
+    public long getLastCompleteSegmentStart() {
+        return lastCompleteSegmentStart;
+    }
+
+    /**
+     * Gets the current message offset (total bytes consumed from the structured message).
+     *
+     * @return The current message offset.
+     */
+    public long getMessageOffset() {
+        return messageOffset;
     }
 
     /**
@@ -90,10 +113,16 @@ public class StructuredMessageDecoder {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Segment header is incomplete."));
         }
 
-        int segmentNum = Short.toUnsignedInt(buffer.getShort());
-        int segmentSize = (int) buffer.getLong();
+        // Mark the start of this segment (before reading the header)
+        currentSegmentStart = messageOffset;
 
-        if (segmentSize < 0 || segmentSize > buffer.remaining()) {
+        int segmentNum = Short.toUnsignedInt(buffer.getShort());
+
+        // Read segment size as long (8 bytes)
+        long segmentSize = buffer.getLong();
+
+        // Validate segment size
+        if (segmentSize < 0L || segmentSize > buffer.remaining()) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Invalid segment size detected: " + segmentSize));
         }
@@ -126,8 +155,8 @@ public class StructuredMessageDecoder {
      * @throws IllegalArgumentException if there is a segment size mismatch.
      */
     private void readSegmentContent(ByteBuffer buffer, ByteArrayOutputStream output, int size) {
-        int toRead = Math.min(buffer.remaining(), currentSegmentContentLength - currentSegmentContentOffset);
-        toRead = Math.min(toRead, size);
+        long remaining = currentSegmentContentLength - currentSegmentContentOffset;
+        int toRead = (int) Math.min(buffer.remaining(), Math.min(remaining, size));
 
         if (toRead == 0) {
             return;
@@ -182,10 +211,12 @@ public class StructuredMessageDecoder {
             messageOffset += CRC64_LENGTH;
         }
 
+        // Mark that this segment is complete - update the last complete segment boundary
+        // This is the position where we can safely resume if a retry occurs
+        lastCompleteSegmentStart = messageOffset;
+
         if (currentSegmentNumber == numSegments) {
             readMessageFooter(buffer);
-        } else {
-            readSegmentHeader(buffer);
         }
     }
 

@@ -297,15 +297,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
         /**
          * Gets the offset to use for retry requests.
-         * This is the total encoded bytes processed minus any bytes in the pending buffer,
-         * since pending bytes have already been counted but haven't been successfully processed yet.
+         * This uses the decoder's last complete segment boundary to ensure retries
+         * resume from a valid segment boundary, not mid-segment.
          *
-         * @return The offset for retry requests.
+         * @return The offset for retry requests (last complete segment boundary).
          */
         public long getRetryOffset() {
-            long processed = totalEncodedBytesProcessed.get();
-            int pending = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
-            return processed - pending;
+            // Use the decoder's last complete segment start as the retry offset
+            // This ensures we resume from a segment boundary, not mid-segment
+            return decoder.getLastCompleteSegmentStart();
         }
 
         /**
