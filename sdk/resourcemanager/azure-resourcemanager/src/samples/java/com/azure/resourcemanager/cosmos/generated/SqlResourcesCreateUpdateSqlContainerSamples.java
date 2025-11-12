@@ -10,9 +10,14 @@ import com.azure.resourcemanager.cosmos.models.ComputedProperty;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionMode;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionPolicy;
 import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
+import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
+import com.azure.resourcemanager.cosmos.models.DataMaskingPolicy;
+import com.azure.resourcemanager.cosmos.models.DataMaskingPolicyExcludedPathsItem;
+import com.azure.resourcemanager.cosmos.models.DataMaskingPolicyIncludedPathsItem;
 import com.azure.resourcemanager.cosmos.models.DataType;
 import com.azure.resourcemanager.cosmos.models.DistanceFunction;
+import com.azure.resourcemanager.cosmos.models.FullTextIndexPath;
 import com.azure.resourcemanager.cosmos.models.FullTextPath;
 import com.azure.resourcemanager.cosmos.models.FullTextPolicy;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
@@ -20,7 +25,9 @@ import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.Indexes;
 import com.azure.resourcemanager.cosmos.models.IndexingMode;
 import com.azure.resourcemanager.cosmos.models.IndexingPolicy;
+import com.azure.resourcemanager.cosmos.models.MaterializedViewDefinition;
 import com.azure.resourcemanager.cosmos.models.PartitionKind;
+import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerResource;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
@@ -30,6 +37,7 @@ import com.azure.resourcemanager.cosmos.models.VectorEmbedding;
 import com.azure.resourcemanager.cosmos.models.VectorEmbeddingPolicy;
 import com.azure.resourcemanager.cosmos.models.VectorIndex;
 import com.azure.resourcemanager.cosmos.models.VectorIndexType;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +47,48 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBSqlMaterializedViewCreateUpdate.json
+     */
+    /**
+     * Sample code: CosmosDBSqlMaterializedViewCreateUpdate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBSqlMaterializedViewCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "mvContainerName",
+                new SqlContainerCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new SqlContainerResource().withId("mvContainerName")
+                        .withIndexingPolicy(new IndexingPolicy().withAutomatic(true)
+                            .withIndexingMode(IndexingMode.CONSISTENT)
+                            .withIncludedPaths(Arrays.asList(new IncludedPath().withPath("/*")
+                                .withIndexes(Arrays.asList(
+                                    new Indexes().withDataType(DataType.STRING)
+                                        .withPrecision(-1)
+                                        .withKind(IndexKind.RANGE),
+                                    new Indexes().withDataType(DataType.NUMBER)
+                                        .withPrecision(-1)
+                                        .withKind(IndexKind.RANGE)))))
+                            .withExcludedPaths(Arrays.asList()))
+                        .withPartitionKey(
+                            new ContainerPartitionKey().withPaths(Arrays.asList("/mvpk")).withKind(PartitionKind.HASH))
+                        .withMaterializedViewDefinition(
+                            new MaterializedViewDefinition().withSourceCollectionId("sourceContainerName")
+                                .withDefinition("select * from ROOT")
+                                .withThroughputBucketForBuild(1)))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
      * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
@@ -71,7 +120,10 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                 .withVectorIndexes(Arrays.asList(
                                     new VectorIndex().withPath("/vectorPath1").withType(VectorIndexType.FLAT),
                                     new VectorIndex().withPath("/vectorPath2").withType(VectorIndexType.QUANTIZED_FLAT),
-                                    new VectorIndex().withPath("/vectorPath3").withType(VectorIndexType.DISK_ANN))))
+                                    new VectorIndex().withPath("/vectorPath3").withType(VectorIndexType.DISK_ANN)))
+                                .withFullTextIndexes(Arrays.asList(new FullTextIndexPath().withPath("/ftPath1"),
+                                    new FullTextIndexPath().withPath("/ftPath2"),
+                                    new FullTextIndexPath().withPath("/ftPath3"))))
                             .withPartitionKey(new ContainerPartitionKey().withPaths(Arrays.asList("/AccountNumber"))
                                 .withKind(PartitionKind.HASH))
                             .withDefaultTtl(100)
@@ -105,7 +157,44 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                 .withFullTextPaths(
                                     Arrays.asList(new FullTextPath().withPath("/ftPath1").withLanguage("en-US"),
                                         new FullTextPath().withPath("/ftPath2").withLanguage("fr-FR"),
-                                        new FullTextPath().withPath("/ftPath3").withLanguage("de-DE")))))
+                                        new FullTextPath().withPath("/ftPath3").withLanguage("de-DE"))))
+                            .withDataMaskingPolicy(new DataMaskingPolicy()
+                                .withIncludedPaths(Arrays.asList(new DataMaskingPolicyIncludedPathsItem().withPath("/"),
+                                    new DataMaskingPolicyIncludedPathsItem().withPath("/contact/phones")
+                                        .withStrategy("MaskSubstring")
+                                        .withStartPosition(3)
+                                        .withLength(10)))
+                                .withExcludedPaths(
+                                    Arrays.asList(new DataMaskingPolicyExcludedPathsItem().withPath("/id")))
+                                .withIsPolicyEnabled(true)))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * CosmosDBSqlContainerRestore.json
+     */
+    /**
+     * Sample code: CosmosDBSqlContainerRestore.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBSqlContainerRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "containerName",
+                new SqlContainerCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new SqlContainerResource().withId("containerName")
+                        .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
+                            "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
+                            .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
+                            .withRestoreWithTtlDisabled(true))
+                        .withCreateMode(CreateMode.RESTORE))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }

@@ -5,24 +5,29 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ClusterResourceProperties;
-import com.azure.resourcemanager.cosmos.models.ManagedCassandraArmResourceProperties;
-import com.azure.resourcemanager.cosmos.models.ManagedCassandraManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * Representation of a managed Cassandra cluster.
+ * Representation of a Garnet cache cluster.
  */
 @Fluent
-public final class ClusterResourceInner extends ManagedCassandraArmResourceProperties {
+public final class ClusterResourceInner extends Resource {
     /*
-     * Properties of a managed Cassandra cluster.
+     * Properties of a Garnet cache cluster.
      */
     private ClusterResourceProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -46,7 +51,7 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
     }
 
     /**
-     * Get the properties property: Properties of a managed Cassandra cluster.
+     * Get the properties property: Properties of a Garnet cache cluster.
      * 
      * @return the properties value.
      */
@@ -55,7 +60,7 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
     }
 
     /**
-     * Set the properties property: Properties of a managed Cassandra cluster.
+     * Set the properties property: Properties of a Garnet cache cluster.
      * 
      * @param properties the properties value to set.
      * @return the ClusterResourceInner object itself.
@@ -63,6 +68,15 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
     public ClusterResourceInner withProperties(ClusterResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -99,15 +113,6 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
      * {@inheritDoc}
      */
     @Override
-    public ClusterResourceInner withIdentity(ManagedCassandraManagedServiceIdentity identity) {
-        super.withIdentity(identity);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ClusterResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -127,13 +132,9 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (properties() != null) {
             properties().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
         }
     }
 
@@ -145,7 +146,6 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -177,11 +177,10 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedClusterResourceInner.withTags(tags);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedClusterResourceInner
-                        .withIdentity(ManagedCassandraManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterResourceInner.properties = ClusterResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

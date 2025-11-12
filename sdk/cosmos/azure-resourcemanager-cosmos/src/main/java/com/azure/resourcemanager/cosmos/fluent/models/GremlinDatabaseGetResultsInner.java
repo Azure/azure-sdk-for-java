@@ -11,6 +11,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesResource;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
@@ -88,6 +89,15 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
      * {@inheritDoc}
      */
     @Override
+    public GremlinDatabaseGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GremlinDatabaseGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -158,6 +168,9 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -168,6 +181,7 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -200,6 +214,8 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedGremlinDatabaseGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGremlinDatabaseGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedGremlinDatabaseGetResultsInner.innerProperties
                         = GremlinDatabaseGetProperties.fromJson(reader);

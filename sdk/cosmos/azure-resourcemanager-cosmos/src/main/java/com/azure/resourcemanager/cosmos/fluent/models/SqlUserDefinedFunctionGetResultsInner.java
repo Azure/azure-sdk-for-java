@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetPropertiesResource;
 import java.io.IOException;
 import java.util.Map;
@@ -87,6 +88,15 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
      * {@inheritDoc}
      */
     @Override
+    public SqlUserDefinedFunctionGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlUserDefinedFunctionGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -134,6 +144,9 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -144,6 +157,7 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -176,6 +190,9 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlUserDefinedFunctionGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSqlUserDefinedFunctionGetResultsInner
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedSqlUserDefinedFunctionGetResultsInner.innerProperties
                         = SqlUserDefinedFunctionGetProperties.fromJson(reader);

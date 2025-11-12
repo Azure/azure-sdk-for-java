@@ -4,6 +4,6 @@
 
 /**
  * Package containing the classes for CosmosDBManagementClient.
- * Azure Cosmos DB Database Service Resource Provider REST API.
+ * Azure Cosmos DB Role Based Access Control Resource Provider REST API.
  */
 package com.azure.resourcemanager.cosmos;

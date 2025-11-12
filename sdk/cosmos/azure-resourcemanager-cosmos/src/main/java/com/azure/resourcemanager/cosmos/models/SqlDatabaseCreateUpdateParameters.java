@@ -87,6 +87,15 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
      * {@inheritDoc}
      */
     @Override
+    public SqlDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -163,6 +172,9 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlDatabaseCreateUpdateParameters.class);
@@ -175,6 +187,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -207,6 +220,8 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlDatabaseCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSqlDatabaseCreateUpdateParameters.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedSqlDatabaseCreateUpdateParameters.innerProperties
                         = SqlDatabaseCreateUpdateProperties.fromJson(reader);

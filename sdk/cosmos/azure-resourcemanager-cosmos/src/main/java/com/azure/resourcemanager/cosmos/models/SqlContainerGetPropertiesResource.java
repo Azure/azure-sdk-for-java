@@ -161,6 +161,35 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      * {@inheritDoc}
      */
     @Override
+    public SqlContainerGetPropertiesResource
+        withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withMaterializedViews(List<MaterializedViewDetails> materializedViews) {
+        super.withMaterializedViews(materializedViews);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource
+        withMaterializedViewsProperties(MaterializedViewsProperties materializedViewsProperties) {
+        super.withMaterializedViewsProperties(materializedViewsProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlContainerGetPropertiesResource withComputedProperties(List<ComputedProperty> computedProperties) {
         super.withComputedProperties(computedProperties);
         return this;
@@ -181,6 +210,15 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     @Override
     public SqlContainerGetPropertiesResource withFullTextPolicy(FullTextPolicy fullTextPolicy) {
         super.withFullTextPolicy(fullTextPolicy);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withDataMaskingPolicy(DataMaskingPolicy dataMaskingPolicy) {
+        super.withDataMaskingPolicy(dataMaskingPolicy);
         return this;
     }
 
@@ -214,6 +252,15 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         if (restoreParameters() != null) {
             restoreParameters().validate();
         }
+        if (materializedViewDefinition() != null) {
+            materializedViewDefinition().validate();
+        }
+        if (materializedViews() != null) {
+            materializedViews().forEach(e -> e.validate());
+        }
+        if (materializedViewsProperties() != null) {
+            materializedViewsProperties().validate();
+        }
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());
         }
@@ -222,6 +269,9 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         }
         if (fullTextPolicy() != null) {
             fullTextPolicy().validate();
+        }
+        if (dataMaskingPolicy() != null) {
+            dataMaskingPolicy().validate();
         }
     }
 
@@ -243,10 +293,15 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         jsonWriter.writeNumberField("analyticalStorageTtl", analyticalStorageTtl());
         jsonWriter.writeJsonField("restoreParameters", restoreParameters());
         jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeJsonField("materializedViewDefinition", materializedViewDefinition());
+        jsonWriter.writeArrayField("materializedViews", materializedViews(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("materializedViewsProperties", materializedViewsProperties());
         jsonWriter.writeArrayField("computedProperties", computedProperties(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("vectorEmbeddingPolicy", vectorEmbeddingPolicy());
         jsonWriter.writeJsonField("fullTextPolicy", fullTextPolicy());
+        jsonWriter.writeJsonField("dataMaskingPolicy", dataMaskingPolicy());
         return jsonWriter.writeEndObject();
     }
 
@@ -294,6 +349,16 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
                 } else if ("createMode".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource
                         .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("materializedViewDefinition".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withMaterializedViewDefinition(MaterializedViewDefinition.fromJson(reader));
+                } else if ("materializedViews".equals(fieldName)) {
+                    List<MaterializedViewDetails> materializedViews
+                        = reader.readArray(reader1 -> MaterializedViewDetails.fromJson(reader1));
+                    deserializedSqlContainerGetPropertiesResource.withMaterializedViews(materializedViews);
+                } else if ("materializedViewsProperties".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withMaterializedViewsProperties(MaterializedViewsProperties.fromJson(reader));
                 } else if ("computedProperties".equals(fieldName)) {
                     List<ComputedProperty> computedProperties
                         = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
@@ -303,6 +368,9 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
                         .withVectorEmbeddingPolicy(VectorEmbeddingPolicy.fromJson(reader));
                 } else if ("fullTextPolicy".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource.withFullTextPolicy(FullTextPolicy.fromJson(reader));
+                } else if ("dataMaskingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withDataMaskingPolicy(DataMaskingPolicy.fromJson(reader));
                 } else if ("_rid".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource.rid = reader.getString();
                 } else if ("_ts".equals(fieldName)) {
