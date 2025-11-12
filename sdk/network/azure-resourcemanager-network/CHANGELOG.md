@@ -2,6 +2,10 @@
 
 ## 2.56.0 (2025-11-12)
 
+### Features Added
+
+- Added `STANDARD_V2` to `PublicIPSkuType`.
+
 ### Bugs Fixed
 
 - Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.

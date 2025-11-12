@@ -14,6 +14,10 @@
 
 - Updated `api-version` to `2025-01-01`.
 
+#### Features Added
+
+- Added `STANDARD_V2` to `PublicIPSkuType`.
+
 #### Bugs Fixed
 
 - Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
