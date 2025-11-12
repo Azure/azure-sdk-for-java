@@ -57,6 +57,13 @@ Steps (existing flow):
    - Remove previous ./sdk/spring/scripts/spring_boot_*_managed_external_dependencies.txt files, keep only the current ${SPRING_BOOT_VERSION}.
    - List removed files in the PR.
 
+7) Run command from repo root to validate the Spring SDK module build after the upgrade:
+   - Run:
+     mvn clean install -Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipTests -Dspotbugs.skip=true -Pdev -T 4 -ntp -f sdk/spring/pom.xml
+   - If the build FAILS:
+     * Capture and paste the **root cause** from the logs
+     * Provide **at least two remediation options** for reviewers to choose from
+
 Build file alignment (if present):
 - For pom.xml:
   - Align to official BOMs (Spring Boot BOM and Spring Cloud BOM if applicable), remove redundant explicit versions.
@@ -79,6 +86,7 @@ Open a PR with this description structure (Markdown):
    - [ ] Updated all versions under ./sdk/spring
    - [ ] Updated sdk/spring/CHANGELOG.md
    - [ ] Removed old spring_boot_*_managed_external_dependencies.txt
+   - [ ] Run command from repo root to validate the Spring SDK module build after the upgrade
    - [ ] Milestone/Snapshot repositories added (if applicable)
 
 Please create the branch, run the commands above (or produce equivalent edits if execution is not possible), and open the PR with the specified description and labels.
