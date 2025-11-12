@@ -18,8 +18,8 @@ import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourc
 public final class ServiceCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/services/
-     * sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
+     * services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceCreate.
@@ -39,7 +39,8 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
      * CosmosDBDataTransferServiceCreate.json
      */
     /**
@@ -60,7 +61,8 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
      * CosmosDBMaterializedViewsBuilderServiceCreate.json
      */
     /**
@@ -82,7 +84,8 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/
      * CosmosDBGraphAPIComputeServiceCreate.json
      */
     /**

@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for MongoDBResources DeleteMongoDBCollection.
  */
 public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBMongoDBCollectionDelete.json
-     */
     /**
      * Sample code: CosmosDBMongoDBCollectionDelete.
      * 
@@ -22,6 +18,6 @@ public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .deleteMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName", com.azure.core.util.Context.NONE);
+            .deleteMongoDBCollection(null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

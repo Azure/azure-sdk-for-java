@@ -87,6 +87,15 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
      * {@inheritDoc}
      */
     @Override
+    public TableCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public TableCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -163,6 +172,9 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TableCreateUpdateParameters.class);
@@ -175,6 +187,7 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -206,6 +219,8 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedTableCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTableCreateUpdateParameters.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedTableCreateUpdateParameters.innerProperties
                         = TableCreateUpdateProperties.fromJson(reader);

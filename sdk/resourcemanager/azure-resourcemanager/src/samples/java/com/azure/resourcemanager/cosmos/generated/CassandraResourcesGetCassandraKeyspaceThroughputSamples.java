@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources GetCassandraKeyspaceThroughput.
  */
 public final class CassandraResourcesGetCassandraKeyspaceThroughputSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBCassandraKeyspaceThroughputGet.json
-     */
     /**
      * Sample code: CosmosDBCassandraKeyspaceThroughputGet.
      * 
@@ -22,7 +18,6 @@ public final class CassandraResourcesGetCassandraKeyspaceThroughputSamples {
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .getCassandraKeyspaceThroughputWithResponse("rg1", "ddb1", "keyspaceName",
-                com.azure.core.util.Context.NONE);
+            .getCassandraKeyspaceThroughputWithResponse(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

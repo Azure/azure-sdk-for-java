@@ -4,18 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureResource;
-
 /**
  * Samples for SqlResources CreateUpdateSqlStoredProcedure.
  */
 public final class SqlResourcesCreateUpdateSqlStoredProcedureSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBSqlStoredProcedureCreateUpdate.json
-     */
     /**
      * Sample code: CosmosDBSqlStoredProcedureCreateUpdate.
      * 
@@ -26,10 +18,6 @@ public final class SqlResourcesCreateUpdateSqlStoredProcedureSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .createUpdateSqlStoredProcedure("rg1", "ddb1", "databaseName", "containerName", "storedProcedureName",
-                new SqlStoredProcedureCreateUpdateParameters()
-                    .withResource(new SqlStoredProcedureResource().withId("storedProcedureName").withBody("body"))
-                    .withOptions(new CreateUpdateOptions()),
-                com.azure.core.util.Context.NONE);
+            .createUpdateSqlStoredProcedure(null, null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

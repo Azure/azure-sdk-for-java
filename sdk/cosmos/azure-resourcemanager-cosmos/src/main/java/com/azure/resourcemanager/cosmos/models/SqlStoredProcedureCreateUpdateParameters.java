@@ -87,6 +87,15 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
      * {@inheritDoc}
      */
     @Override
+    public SqlStoredProcedureCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlStoredProcedureCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -163,6 +172,9 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlStoredProcedureCreateUpdateParameters.class);
@@ -175,6 +187,7 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -207,6 +220,9 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlStoredProcedureCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSqlStoredProcedureCreateUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedSqlStoredProcedureCreateUpdateParameters.innerProperties
                         = SqlStoredProcedureCreateUpdateProperties.fromJson(reader);

@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for GremlinResources MigrateGremlinGraphToManualThroughput.
  */
 public final class GremlinResourcesMigrateGremlinGraphToManualThroughputSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBGremlinGraphMigrateToManualThroughput.json
-     */
     /**
      * Sample code: CosmosDBGremlinGraphMigrateToManualThroughput.
      * 
@@ -23,7 +19,6 @@ public final class GremlinResourcesMigrateGremlinGraphToManualThroughputSamples 
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .migrateGremlinGraphToManualThroughput("rg1", "ddb1", "databaseName", "graphName",
-                com.azure.core.util.Context.NONE);
+            .migrateGremlinGraphToManualThroughput(null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

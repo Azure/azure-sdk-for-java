@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for CassandraResources MigrateCassandraKeyspaceToManualThroughput.
  */
 public final class CassandraResourcesMigrateCassandraKeyspaceToManualThroughputSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
-     */
     /**
      * Sample code: CosmosDBCassandraKeyspaceMigrateToManualThroughput.
      * 
@@ -23,7 +19,6 @@ public final class CassandraResourcesMigrateCassandraKeyspaceToManualThroughputS
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .migrateCassandraKeyspaceToManualThroughput("rg1", "ddb1", "keyspaceName",
-                com.azure.core.util.Context.NONE);
+            .migrateCassandraKeyspaceToManualThroughput(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

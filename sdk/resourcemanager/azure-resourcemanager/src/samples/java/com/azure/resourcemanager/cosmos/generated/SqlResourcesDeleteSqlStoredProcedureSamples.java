@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for SqlResources DeleteSqlStoredProcedure.
  */
 public final class SqlResourcesDeleteSqlStoredProcedureSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBSqlStoredProcedureDelete.json
-     */
     /**
      * Sample code: CosmosDBSqlStoredProcedureDelete.
      * 
@@ -22,7 +18,6 @@ public final class SqlResourcesDeleteSqlStoredProcedureSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlStoredProcedure("rg1", "ddb1", "databaseName", "containerName", "storedProcedureName",
-                com.azure.core.util.Context.NONE);
+            .deleteSqlStoredProcedure(null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

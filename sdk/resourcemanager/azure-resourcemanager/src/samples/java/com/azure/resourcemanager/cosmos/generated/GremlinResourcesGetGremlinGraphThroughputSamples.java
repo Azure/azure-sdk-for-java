@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for GremlinResources GetGremlinGraphThroughput.
  */
 public final class GremlinResourcesGetGremlinGraphThroughputSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBGremlinGraphThroughputGet.json
-     */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputGet.
      * 
@@ -22,7 +18,6 @@ public final class GremlinResourcesGetGremlinGraphThroughputSamples {
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .getGremlinGraphThroughputWithResponse("rg1", "ddb1", "databaseName", "graphName",
-                com.azure.core.util.Context.NONE);
+            .getGremlinGraphThroughputWithResponse(null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

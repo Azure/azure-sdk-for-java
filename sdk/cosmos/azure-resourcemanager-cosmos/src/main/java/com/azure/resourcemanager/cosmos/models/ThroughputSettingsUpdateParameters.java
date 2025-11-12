@@ -87,6 +87,15 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
      * {@inheritDoc}
      */
     @Override
+    public ThroughputSettingsUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ThroughputSettingsUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -138,6 +147,9 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThroughputSettingsUpdateParameters.class);
@@ -150,6 +162,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -182,6 +195,9 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedThroughputSettingsUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedThroughputSettingsUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedThroughputSettingsUpdateParameters.innerProperties
                         = ThroughputSettingsUpdateProperties.fromJson(reader);

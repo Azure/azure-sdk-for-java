@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for Locations Get.
  */
 public final class LocationsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBLocationGet.json
-     */
     /**
      * Sample code: CosmosDBLocationGet.
      * 
@@ -22,6 +18,6 @@ public final class LocationsGetSamples {
             .manager()
             .serviceClient()
             .getLocations()
-            .getWithResponse("westus", com.azure.core.util.Context.NONE);
+            .getWithResponse(null, com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.GremlinRoleAssignmentResourceInner;
+import com.azure.resourcemanager.cosmos.fluent.models.GremlinRoleDefinitionResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseCreateUpdateParameters;
@@ -1556,6 +1558,674 @@ public interface GremlinResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ThroughputSettingsGetResultsInner migrateGremlinGraphToManualThroughput(String resourceGroupName,
         String accountName, String databaseName, String graphName, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Definition with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<GremlinRoleDefinitionResourceInner>> getGremlinRoleDefinitionWithResponseAsync(
+        String resourceGroupName, String accountName, String roleDefinitionId);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Definition with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GremlinRoleDefinitionResourceInner> getGremlinRoleDefinitionAsync(String resourceGroupName, String accountName,
+        String roleDefinitionId);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Definition with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GremlinRoleDefinitionResourceInner> getGremlinRoleDefinitionWithResponse(String resourceGroupName,
+        String accountName, String roleDefinitionId, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Definition with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinRoleDefinitionResourceInner getGremlinRoleDefinition(String resourceGroupName, String accountName,
+        String roleDefinitionId);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinRoleDefinitionWithResponseAsync(String resourceGroupName,
+        String accountName, String roleDefinitionId,
+        GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of parameters to create and update an Azure Cosmos DB Gremlin Role
+     * Definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GremlinRoleDefinitionResourceInner>, GremlinRoleDefinitionResourceInner>
+        beginCreateUpdateGremlinRoleDefinitionAsync(String resourceGroupName, String accountName,
+            String roleDefinitionId, GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Gremlin Role
+     * Definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GremlinRoleDefinitionResourceInner>, GremlinRoleDefinitionResourceInner>
+        beginCreateUpdateGremlinRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
+            GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Gremlin Role
+     * Definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GremlinRoleDefinitionResourceInner>, GremlinRoleDefinitionResourceInner>
+        beginCreateUpdateGremlinRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
+            GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters, Context context);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GremlinRoleDefinitionResourceInner> createUpdateGremlinRoleDefinitionAsync(String resourceGroupName,
+        String accountName, String roleDefinitionId,
+        GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinition(String resourceGroupName, String accountName,
+        String roleDefinitionId, GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param createUpdateGremlinRoleDefinitionParameters The properties required to create or update a Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinition(String resourceGroupName, String accountName,
+        String roleDefinitionId, GremlinRoleDefinitionResourceInner createUpdateGremlinRoleDefinitionParameters,
+        Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteGremlinRoleDefinitionWithResponseAsync(String resourceGroupName,
+        String accountName, String roleDefinitionId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteGremlinRoleDefinitionAsync(String resourceGroupName,
+        String accountName, String roleDefinitionId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinRoleDefinition(String resourceGroupName, String accountName,
+        String roleDefinitionId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinRoleDefinition(String resourceGroupName, String accountName,
+        String roleDefinitionId, Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteGremlinRoleDefinitionAsync(String resourceGroupName, String accountName, String roleDefinitionId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteGremlinRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleDefinitionId The GUID for the Role Definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteGremlinRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
+        Context context);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB Gremlin Role Definitions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Definitions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<GremlinRoleDefinitionResourceInner> listGremlinRoleDefinitionsAsync(String resourceGroupName,
+        String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB Gremlin Role Definitions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Definitions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GremlinRoleDefinitionResourceInner> listGremlinRoleDefinitions(String resourceGroupName,
+        String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB Gremlin Role Definitions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Definitions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GremlinRoleDefinitionResourceInner> listGremlinRoleDefinitions(String resourceGroupName,
+        String accountName, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Assignment with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<GremlinRoleAssignmentResourceInner>> getGremlinRoleAssignmentWithResponseAsync(
+        String resourceGroupName, String accountName, String roleAssignmentId);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Assignment with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GremlinRoleAssignmentResourceInner> getGremlinRoleAssignmentAsync(String resourceGroupName, String accountName,
+        String roleAssignmentId);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Assignment with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GremlinRoleAssignmentResourceInner> getGremlinRoleAssignmentWithResponse(String resourceGroupName,
+        String accountName, String roleAssignmentId, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Assignment with the given Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinRoleAssignmentResourceInner getGremlinRoleAssignment(String resourceGroupName, String accountName,
+        String roleAssignmentId);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinRoleAssignmentWithResponseAsync(String resourceGroupName,
+        String accountName, String roleAssignmentId,
+        GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of parameters to create and update an Azure Cosmos DB Gremlin Role
+     * Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GremlinRoleAssignmentResourceInner>, GremlinRoleAssignmentResourceInner>
+        beginCreateUpdateGremlinRoleAssignmentAsync(String resourceGroupName, String accountName,
+            String roleAssignmentId, GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Gremlin Role
+     * Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GremlinRoleAssignmentResourceInner>, GremlinRoleAssignmentResourceInner>
+        beginCreateUpdateGremlinRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
+            GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB Gremlin Role
+     * Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GremlinRoleAssignmentResourceInner>, GremlinRoleAssignmentResourceInner>
+        beginCreateUpdateGremlinRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
+            GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters, Context context);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GremlinRoleAssignmentResourceInner> createUpdateGremlinRoleAssignmentAsync(String resourceGroupName,
+        String accountName, String roleAssignmentId,
+        GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignment(String resourceGroupName, String accountName,
+        String roleAssignmentId, GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters);
+
+    /**
+     * Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param createUpdateGremlinRoleAssignmentParameters The properties required to create or update a Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters to create and update an Azure Cosmos DB Gremlin Role Assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignment(String resourceGroupName, String accountName,
+        String roleAssignmentId, GremlinRoleAssignmentResourceInner createUpdateGremlinRoleAssignmentParameters,
+        Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteGremlinRoleAssignmentWithResponseAsync(String resourceGroupName,
+        String accountName, String roleAssignmentId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteGremlinRoleAssignmentAsync(String resourceGroupName,
+        String accountName, String roleAssignmentId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinRoleAssignment(String resourceGroupName, String accountName,
+        String roleAssignmentId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinRoleAssignment(String resourceGroupName, String accountName,
+        String roleAssignmentId, Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteGremlinRoleAssignmentAsync(String resourceGroupName, String accountName, String roleAssignmentId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteGremlinRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param roleAssignmentId The GUID for the Role Assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteGremlinRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
+        Context context);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB Gremlin Role Assignments.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<GremlinRoleAssignmentResourceInner> listGremlinRoleAssignmentsAsync(String resourceGroupName,
+        String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB Gremlin Role Assignments.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GremlinRoleAssignmentResourceInner> listGremlinRoleAssignments(String resourceGroupName,
+        String accountName);
+
+    /**
+     * Retrieves the list of all Azure Cosmos DB Gremlin Role Assignments.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relevant Role Assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GremlinRoleAssignmentResourceInner> listGremlinRoleAssignments(String resourceGroupName,
+        String accountName, Context context);
 
     /**
      * Retrieves continuous backup information for a gremlin graph.

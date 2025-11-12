@@ -18,6 +18,11 @@ import java.util.List;
 @Fluent
 public final class Permission implements JsonSerializable<Permission> {
     /*
+     * The id for the permission.
+     */
+    private String id;
+
+    /*
      * An array of data actions that are allowed.
      */
     private List<String> dataActions;
@@ -31,6 +36,26 @@ public final class Permission implements JsonSerializable<Permission> {
      * Creates an instance of Permission class.
      */
     public Permission() {
+    }
+
+    /**
+     * Get the id property: The id for the permission.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: The id for the permission.
+     * 
+     * @param id the id value to set.
+     * @return the Permission object itself.
+     */
+    public Permission withId(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -87,6 +112,7 @@ public final class Permission implements JsonSerializable<Permission> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeArrayField("dataActions", this.dataActions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("notDataActions", this.notDataActions,
             (writer, element) -> writer.writeString(element));
@@ -108,7 +134,9 @@ public final class Permission implements JsonSerializable<Permission> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataActions".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    deserializedPermission.id = reader.getString();
+                } else if ("dataActions".equals(fieldName)) {
                     List<String> dataActions = reader.readArray(reader1 -> reader1.getString());
                     deserializedPermission.dataActions = dataActions;
                 } else if ("notDataActions".equals(fieldName)) {

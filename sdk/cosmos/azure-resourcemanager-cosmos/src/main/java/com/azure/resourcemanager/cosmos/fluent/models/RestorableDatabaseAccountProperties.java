@@ -34,14 +34,14 @@ public final class RestorableDatabaseAccountProperties
     private OffsetDateTime creationTime;
 
     /*
-     * The time at which the restorable database account has been deleted (ISO-8601 format).
-     */
-    private OffsetDateTime deletionTime;
-
-    /*
      * The least recent time at which the database account can be restored to (ISO-8601 format).
      */
     private OffsetDateTime oldestRestorableTime;
+
+    /*
+     * The time at which the restorable database account has been deleted (ISO-8601 format).
+     */
+    private OffsetDateTime deletionTime;
 
     /*
      * The API type of the restorable database account.
@@ -100,28 +100,6 @@ public final class RestorableDatabaseAccountProperties
     }
 
     /**
-     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     * 
-     * @return the deletionTime value.
-     */
-    public OffsetDateTime deletionTime() {
-        return this.deletionTime;
-    }
-
-    /**
-     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     * 
-     * @param deletionTime the deletionTime value to set.
-     * @return the RestorableDatabaseAccountProperties object itself.
-     */
-    public RestorableDatabaseAccountProperties withDeletionTime(OffsetDateTime deletionTime) {
-        this.deletionTime = deletionTime;
-        return this;
-    }
-
-    /**
      * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
      * (ISO-8601 format).
      * 
@@ -140,6 +118,28 @@ public final class RestorableDatabaseAccountProperties
      */
     public RestorableDatabaseAccountProperties withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
         this.oldestRestorableTime = oldestRestorableTime;
+        return this;
+    }
+
+    /**
+     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     * 
+     * @return the deletionTime value.
+     */
+    public OffsetDateTime deletionTime() {
+        return this.deletionTime;
+    }
+
+    /**
+     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     * 
+     * @param deletionTime the deletionTime value to set.
+     * @return the RestorableDatabaseAccountProperties object itself.
+     */
+    public RestorableDatabaseAccountProperties withDeletionTime(OffsetDateTime deletionTime) {
+        this.deletionTime = deletionTime;
         return this;
     }
 
@@ -181,12 +181,12 @@ public final class RestorableDatabaseAccountProperties
         jsonWriter.writeStringField("accountName", this.accountName);
         jsonWriter.writeStringField("creationTime",
             this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
-        jsonWriter.writeStringField("deletionTime",
-            this.deletionTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletionTime));
         jsonWriter.writeStringField("oldestRestorableTime",
             this.oldestRestorableTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRestorableTime));
+        jsonWriter.writeStringField("deletionTime",
+            this.deletionTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletionTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -211,11 +211,11 @@ public final class RestorableDatabaseAccountProperties
                 } else if ("creationTime".equals(fieldName)) {
                     deserializedRestorableDatabaseAccountProperties.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("deletionTime".equals(fieldName)) {
-                    deserializedRestorableDatabaseAccountProperties.deletionTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("oldestRestorableTime".equals(fieldName)) {
                     deserializedRestorableDatabaseAccountProperties.oldestRestorableTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionTime".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountProperties.deletionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("apiType".equals(fieldName)) {
                     deserializedRestorableDatabaseAccountProperties.apiType = ApiType.fromString(reader.getString());

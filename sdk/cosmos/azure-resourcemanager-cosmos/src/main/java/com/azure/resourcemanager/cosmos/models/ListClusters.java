@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,14 +14,19 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * List of managed Cassandra clusters.
+ * List of Garnet clusters.
  */
-@Fluent
+@Immutable
 public final class ListClusters implements JsonSerializable<ListClusters> {
     /*
      * Container for the array of clusters.
      */
     private List<ClusterResourceInner> value;
+
+    /*
+     * The link used to get the next page of results.
+     */
+    private String nextLink;
 
     /**
      * Creates an instance of ListClusters class.
@@ -39,14 +44,12 @@ public final class ListClusters implements JsonSerializable<ListClusters> {
     }
 
     /**
-     * Set the value property: Container for the array of clusters.
+     * Get the nextLink property: The link used to get the next page of results.
      * 
-     * @param value the value value to set.
-     * @return the ListClusters object itself.
+     * @return the nextLink value.
      */
-    public ListClusters withValue(List<ClusterResourceInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -66,7 +69,6 @@ public final class ListClusters implements JsonSerializable<ListClusters> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -89,6 +91,8 @@ public final class ListClusters implements JsonSerializable<ListClusters> {
                     List<ClusterResourceInner> value
                         = reader.readArray(reader1 -> ClusterResourceInner.fromJson(reader1));
                     deserializedListClusters.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListClusters.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -25,11 +25,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     private DatabaseAccountKind kind;
 
     /*
-     * Identity for the resource.
-     */
-    private ManagedServiceIdentity identity;
-
-    /*
      * Properties to create and update Azure Cosmos DB database accounts.
      */
     private DatabaseAccountCreateUpdateProperties innerProperties = new DatabaseAccountCreateUpdateProperties();
@@ -76,26 +71,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the identity property: Identity for the resource.
-     * 
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: Identity for the resource.
-     * 
-     * @param identity the identity value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB database accounts.
      * 
      * @return the innerProperties value.
@@ -132,6 +107,15 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DatabaseAccountCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /**
@@ -712,6 +696,32 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -785,6 +795,54 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityMode();
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withCapacityMode(CapacityMode capacityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withCapacityMode(capacityMode);
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: This property is ignored during the update/create operation, as the metadata is
      * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      * 
@@ -820,33 +878,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @return the minimalTlsVersion value.
-     */
-    public MinimalTlsVersion minimalTlsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
-    }
-
-    /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @param minimalTlsVersion the minimalTlsVersion value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
-        return this;
-    }
-
-    /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
-     * account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -855,8 +888,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
-     * account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -866,6 +899,31 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
         this.innerProperties().withEnableBurstCapacity(enableBurstCapacity);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * 
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * 
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
@@ -895,8 +953,59 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
-     * PerRegionPerPartitionAutoscale feature on the account.
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePriorityBasedExecution();
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnablePriorityBasedExecution(enablePriorityBasedExecution);
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPriorityLevel();
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withDefaultPriorityLevel(defaultPriorityLevel);
+        return this;
+    }
+
+    /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of Per-Region
+     * Per-partition autoscale Preview feature on the account.
      * 
      * @return the enablePerRegionPerPartitionAutoscale value.
      */
@@ -905,8 +1014,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
-     * PerRegionPerPartitionAutoscale feature on the account.
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of Per-Region
+     * Per-partition autoscale Preview feature on the account.
      * 
      * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -921,21 +1030,47 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     */
+    public Boolean enableAllVersionsAndDeletesChangeFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAllVersionsAndDeletesChangeFeed();
+    }
+
+    /**
+     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnableAllVersionsAndDeletesChangeFeed(enableAllVersionsAndDeletesChangeFeed);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
         } else {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -949,9 +1084,9 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -983,15 +1118,15 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDatabaseAccountCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedDatabaseAccountCreateUpdateParameters.innerProperties
                         = DatabaseAccountCreateUpdateProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedDatabaseAccountCreateUpdateParameters.kind
                         = DatabaseAccountKind.fromString(reader.getString());
-                } else if ("identity".equals(fieldName)) {
-                    deserializedDatabaseAccountCreateUpdateParameters.identity
-                        = ManagedServiceIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

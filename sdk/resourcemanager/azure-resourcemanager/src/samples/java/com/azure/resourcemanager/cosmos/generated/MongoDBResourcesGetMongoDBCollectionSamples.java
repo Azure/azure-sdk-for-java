@@ -8,10 +8,6 @@ package com.azure.resourcemanager.cosmos.generated;
  * Samples for MongoDBResources GetMongoDBCollection.
  */
 public final class MongoDBResourcesGetMongoDBCollectionSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBMongoDBCollectionGet.json
-     */
     /**
      * Sample code: CosmosDBMongoDBCollectionGet.
      * 
@@ -22,7 +18,6 @@ public final class MongoDBResourcesGetMongoDBCollectionSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .getMongoDBCollectionWithResponse("rgName", "ddb1", "databaseName", "collectionName",
-                com.azure.core.util.Context.NONE);
+            .getMongoDBCollectionWithResponse(null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

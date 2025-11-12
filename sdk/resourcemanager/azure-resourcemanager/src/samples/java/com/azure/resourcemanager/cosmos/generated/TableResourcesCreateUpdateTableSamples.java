@@ -4,20 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.TableResource;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Samples for TableResources CreateUpdateTable.
  */
 public final class TableResourcesCreateUpdateTableSamples {
-    /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
-     * CosmosDBTableCreateUpdate.json
-     */
     /**
      * Sample code: CosmosDBTableReplace.
      * 
@@ -28,23 +18,6 @@ public final class TableResourcesCreateUpdateTableSamples {
             .manager()
             .serviceClient()
             .getTableResources()
-            .createUpdateTable("rg1", "ddb1", "tableName",
-                new TableCreateUpdateParameters().withLocation("West US")
-                    .withTags(mapOf())
-                    .withResource(new TableResource().withId("tableName"))
-                    .withOptions(new CreateUpdateOptions()),
-                com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+            .createUpdateTable(null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
