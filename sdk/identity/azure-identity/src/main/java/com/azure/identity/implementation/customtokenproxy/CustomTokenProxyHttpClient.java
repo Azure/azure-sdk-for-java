@@ -21,6 +21,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -86,9 +87,6 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         HttpsURLConnection connection = (HttpsURLConnection) updatedUrl.openConnection();
         try {
             SSLSocketFactory sslSocketFactory = getSSLSocketFactory();
-            if (!CoreUtils.isNullOrEmpty(sniName)) {
-                sslSocketFactory = new SniSslSocketFactory(sslSocketFactory, sniName);
-            }
             connection.setSSLSocketFactory(sslSocketFactory);
             connection.setHostnameVerifier(sniAwareVerifier(sniName, proxyUrl));
         } catch (Exception e) {
@@ -150,7 +148,11 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         if (cachedSslSocketFactory == null) {
             synchronized (this) {
                 if (cachedSslSocketFactory == null) {
-                    cachedSslSocketFactory = sslContext.getSocketFactory();
+                    SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                    if (!CoreUtils.isNullOrEmpty(sniName)) {
+                        sslSocketFactory = new SniSslSocketFactory(sslSocketFactory, sniName);
+                    }
+                    cachedSslSocketFactory = sslSocketFactory;
                 }
             }
         }
@@ -206,7 +208,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
 
                 if (cachedSSLContext == null
                     || currentLength != cachedFileContentLength
-                    || !MessageDigest.isEqual(currentHash, cachedFileContentHash)) {
+                    || !Arrays.equals(currentHash, cachedFileContentHash)) {
                     cachedSSLContext = createSslContextFromBytes(currentContent);
                     cachedFileContentLength = currentLength;
                     cachedFileContentHash = currentHash;

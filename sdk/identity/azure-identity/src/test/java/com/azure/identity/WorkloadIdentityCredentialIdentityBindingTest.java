@@ -558,8 +558,6 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         InetSocketAddress socketAddress = (InetSocketAddress) serverChannel.localAddress();
         int port = socketAddress.getPort();
         serverBaseUrl = "https://localhost:" + port;
-
-        System.out.println("Netty HTTPS server (OpenSSL) started at: " + serverBaseUrl);
     }
 
     private class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
