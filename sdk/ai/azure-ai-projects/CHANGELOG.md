@@ -15,7 +15,7 @@
 
 ### Other Changes
 
-- Agents subclients where split into their own package `azure-ai-agents`
+- Agents subclients were split into their own package `azure-ai-agents`
 - `Telemetry` and `Inference` subclients were removed.
 
 ## 1.0.0-beta.2 (2025-06-17)
