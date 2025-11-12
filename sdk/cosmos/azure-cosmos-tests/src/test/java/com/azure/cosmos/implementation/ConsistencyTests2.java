@@ -233,6 +233,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
+
         QueryFeedOperationState dummyState = null;
         try {
             // CREATE collection

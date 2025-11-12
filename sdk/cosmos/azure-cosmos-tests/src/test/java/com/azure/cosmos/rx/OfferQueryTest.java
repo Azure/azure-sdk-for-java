@@ -61,19 +61,20 @@ public class OfferQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        QueryFeedOperationState dummyState = TestUtils
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
+
+        QueryFeedOperationState queryDummyState = TestUtils
             .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
-        QueryFeedOperationState dummyState2 = null;
+        QueryFeedOperationState offerDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client);
+
         try {
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
             Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
                 query,
-                dummyState);
+                queryDummyState);
 
-            dummyState2 = TestUtils
-                .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client);
             List<Offer> allOffers = client
-                .readOffers(dummyState2)
+                .readOffers(offerDummyState)
                 .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
             List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
 
@@ -92,8 +93,8 @@ public class OfferQueryTest extends TestSuiteBase {
 
             validateQuerySuccess(queryObservable, validator, 10000);
         } finally {
-            safeClose(dummyState);
-            safeClose(dummyState2);
+            safeClose(queryDummyState);
+            safeClose(offerDummyState);
         }
     }
 
@@ -107,18 +108,20 @@ public class OfferQueryTest extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
 
-        QueryFeedOperationState dummyState = TestUtils
+        QueryFeedOperationState queryDummyState = TestUtils
             .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
-        QueryFeedOperationState dummyState2 = null;
+
+        QueryFeedOperationState offerDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client);
+
         try {
+
             Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
                 query,
-                dummyState);
+                queryDummyState);
 
-            dummyState2 = TestUtils
-                .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client);
             List<Offer> expectedOffers = client
-                .readOffers(dummyState2)
+                .readOffers(offerDummyState)
                 .flatMap(f -> Flux.fromIterable(f.getResults()))
                 .collectList()
                 .single().block()
@@ -140,8 +143,8 @@ public class OfferQueryTest extends TestSuiteBase {
 
             validateQuerySuccess(queryObservable, validator, 10000);
         } finally {
-            safeClose(dummyState);
-            safeClose(dummyState2);
+            safeClose(queryDummyState);
+            safeClose(offerDummyState);
         }
     }
 
@@ -150,35 +153,30 @@ public class OfferQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        try(CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient()) {
-            QueryFeedOperationState dummyState = new QueryFeedOperationState(
-                cosmosClient,
-                "SomeSpanName",
-                "SomeDBName",
-                "SomeContainerName",
-                ResourceType.Document,
-                OperationType.Query,
-                null,
-                options,
-                new CosmosPagedFluxOptions()
-            );
-            try {
-                Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
+            .buildAsyncClient();
+        QueryFeedOperationState dummyState = new QueryFeedOperationState(
+            cosmosClient,
+            "SomeSpanName",
+            "SomeDBName",
+            "SomeContainerName",
+            ResourceType.Document,
+            OperationType.Query,
+            null,
+            options,
+            new CosmosPagedFluxOptions()
+        );
+        Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
 
-                FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
-                    .containsExactly(new ArrayList<>())
-                    .numberOfPages(1)
-                    .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
+        FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
+                .containsExactly(new ArrayList<>())
+                .numberOfPages(1)
+                .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
-                    .build();
-                validateQuerySuccess(queryObservable, validator);
-            } finally {
-                safeClose(dummyState);
-            }
-        }
+                .build();
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)

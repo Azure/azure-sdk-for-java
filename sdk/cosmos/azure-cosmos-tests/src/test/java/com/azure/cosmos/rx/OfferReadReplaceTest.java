@@ -43,14 +43,15 @@ public class OfferReadReplaceTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readAndReplaceOffer() {
 
-        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+        QueryFeedOperationState offerDummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Offer,
             OperationType.ReadFeed,
             new CosmosQueryRequestOptions(),
             client);
+
         try {
             List<Offer> offers = client
-                .readOffers(dummyState)
+                .readOffers(offerDummyState)
                 .map(FeedResponse::getResults)
                 .flatMap(list -> Flux.fromIterable(list)).collectList().block();
 
@@ -87,7 +88,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
             validateSuccess(replaceObservable, validatorForReplace);
         } finally {
-            safeClose(dummyState);
+            safeClose(offerDummyState);
         }
     }
 

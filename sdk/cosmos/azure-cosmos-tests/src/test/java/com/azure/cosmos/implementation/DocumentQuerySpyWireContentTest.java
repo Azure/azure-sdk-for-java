@@ -95,8 +95,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        QueryFeedOperationState dummyState = TestUtils
-            .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
         try {
             Flux<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(
@@ -148,6 +147,11 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
+        SpyClientUnderTestFactory.ClientUnderTest oldSnapshot = client;
+        if (oldSnapshot != null) {
+            oldSnapshot.close();
+        }
+
         client = new SpyClientBuilder(this.clientBuilder()).build();
 
         createdDatabase = SHARED_DATABASE;
@@ -177,18 +181,14 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             options,
             client
         );
-        try {
 
-            // do the query once to ensure the collection is cached.
-            client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
-                  .then().block();
+        // do the query once to ensure the collection is cached.
+        client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
+            .then().block();
 
-            // do the query once to ensure the collection is cached.
-            client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
-                  .then().block();
-        } finally {
-            safeClose(state);
-        }
+        // do the query once to ensure the collection is cached.
+        client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
+              .then().block();
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
