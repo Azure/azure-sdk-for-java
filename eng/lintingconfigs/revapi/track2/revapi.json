@@ -748,6 +748,11 @@
           "code": ".*",
           "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
           "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
+          "justification" : "Not a break."
         }
       ]
     }
