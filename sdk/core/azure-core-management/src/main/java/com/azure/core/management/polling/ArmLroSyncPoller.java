@@ -12,8 +12,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.time.Duration;
 import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Azure Resource Manager (ARM) Long-Running Operation SyncPoller implementation with continuation token support.
