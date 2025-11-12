@@ -52,7 +52,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      * 
      * @param configStore the configuration store settings containing endpoint, selectors, and other options
      * @param profiles the Spring Boot profiles for conditional configuration loading
-     * @param startup boolean for if this is startup or refresh
+     * @param startup true if this is a startup load operation, false if it is a refresh operation
      * @param refreshInterval the interval at which configuration should be refreshed
      */
     AzureAppConfigDataResource(boolean appConfigEnabled, ConfigStore configStore, Profiles profiles, boolean startup,

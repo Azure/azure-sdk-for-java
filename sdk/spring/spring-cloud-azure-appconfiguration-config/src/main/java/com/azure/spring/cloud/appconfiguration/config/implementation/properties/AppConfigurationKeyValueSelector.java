@@ -86,7 +86,9 @@ public final class AppConfigurationKeyValueSelector {
         }
         if (labelFilter == null && !profiles.isEmpty()) {
             List<String> mutableProfiles = new ArrayList<>(profiles);
-            // We've seen an issue where profiles is immutable in some unknown cases
+            // Defensive copy: profiles may be immutable when provided by certain Spring Boot contexts,
+            // such as when obtained from Environment.getActiveProfiles(). See
+            // https://github.com/Azure/azure-sdk-for-java/issues/32708 for details.
             Collections.reverse(mutableProfiles);
             return mutableProfiles.toArray(new String[mutableProfiles.size()]);
         } 
