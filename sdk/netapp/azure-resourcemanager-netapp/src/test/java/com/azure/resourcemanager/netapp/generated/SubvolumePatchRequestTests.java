@@ -12,17 +12,17 @@ public final class SubvolumePatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumePatchRequest model
-            = BinaryData.fromString("{\"properties\":{\"size\":6936371557896321077,\"path\":\"xps\"}}")
+            = BinaryData.fromString("{\"properties\":{\"size\":8484446413664727337,\"path\":\"ssxmojms\"}}")
                 .toObject(SubvolumePatchRequest.class);
-        Assertions.assertEquals(6936371557896321077L, model.size());
-        Assertions.assertEquals("xps", model.path());
+        Assertions.assertEquals(8484446413664727337L, model.size());
+        Assertions.assertEquals("ssxmojms", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumePatchRequest model = new SubvolumePatchRequest().withSize(6936371557896321077L).withPath("xps");
+        SubvolumePatchRequest model = new SubvolumePatchRequest().withSize(8484446413664727337L).withPath("ssxmojms");
         model = BinaryData.fromObject(model).toObject(SubvolumePatchRequest.class);
-        Assertions.assertEquals(6936371557896321077L, model.size());
-        Assertions.assertEquals("xps", model.path());
+        Assertions.assertEquals(8484446413664727337L, model.size());
+        Assertions.assertEquals("ssxmojms", model.path());
     }
 }

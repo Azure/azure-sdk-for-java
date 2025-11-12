@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SubvolumePatchParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubvolumePatchParams model = BinaryData.fromString("{\"size\":7816879352665514868,\"path\":\"ulfgslqu\"}")
+        SubvolumePatchParams model = BinaryData.fromString("{\"size\":6590100508658600492,\"path\":\"rvkwc\"}")
             .toObject(SubvolumePatchParams.class);
-        Assertions.assertEquals(7816879352665514868L, model.size());
-        Assertions.assertEquals("ulfgslqu", model.path());
+        Assertions.assertEquals(6590100508658600492L, model.size());
+        Assertions.assertEquals("rvkwc", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumePatchParams model = new SubvolumePatchParams().withSize(7816879352665514868L).withPath("ulfgslqu");
+        SubvolumePatchParams model = new SubvolumePatchParams().withSize(6590100508658600492L).withPath("rvkwc");
         model = BinaryData.fromObject(model).toObject(SubvolumePatchParams.class);
-        Assertions.assertEquals(7816879352665514868L, model.size());
-        Assertions.assertEquals("ulfgslqu", model.path());
+        Assertions.assertEquals(6590100508658600492L, model.size());
+        Assertions.assertEquals("rvkwc", model.path());
     }
 }

@@ -23,7 +23,7 @@ public final class NetAppResourceRegionInfosListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"d\",\"isAvailable\":false},{\"availabilityZone\":\"dmhm\",\"isAvailable\":false},{\"availabilityZone\":\"lfmu\",\"isAvailable\":false},{\"availabilityZone\":\"kccrrvwey\",\"isAvailable\":false}]},\"id\":\"yukphaimmoiroq\",\"name\":\"oshbragapyy\",\"type\":\"mfsvbpav\"}]}";
+            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"rwahzjmucftbyr\",\"isAvailable\":true},{\"availabilityZone\":\"hkpigqfusuckzmkw\",\"isAvailable\":true}]},\"id\":\"oxaxm\",\"name\":\"e\",\"type\":\"alhhjnhgwydyynfs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,12 @@ public final class NetAppResourceRegionInfosListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RegionInfoResource> response
-            = manager.netAppResourceRegionInfos().list("zb", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceRegionInfos().list("g", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2AND_ACROSS_T2,
             response.iterator().next().storageToNetworkProximity());
-        Assertions.assertEquals("d", response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertFalse(response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("rwahzjmucftbyr",
+            response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertTrue(response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
     }
 }

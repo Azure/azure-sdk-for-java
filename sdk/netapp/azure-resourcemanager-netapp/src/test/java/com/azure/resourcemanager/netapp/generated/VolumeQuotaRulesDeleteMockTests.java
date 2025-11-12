@@ -28,8 +28,7 @@ public final class VolumeQuotaRulesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumeQuotaRules()
-            .delete("zpofoiyjwpfilk", "kkholvdndvia", "ogphuartvtiu", "yefchnm", "ahmnxhkxjqirw",
-                com.azure.core.util.Context.NONE);
+            .delete("psw", "kmvkhl", "gdhbe", "zqkzszuwi", "tglxx", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -29,7 +29,7 @@ public final class VolumeGroupsCreateSamples {
             .define("group1")
             .withExistingNetAppAccount("myRG", "account1")
             .withRegion("westus")
-            .withGroupMetaData(new VolumeGroupMetadata().withGroupDescription("Volume group")
+            .withGroupMetadata(new VolumeGroupMetadata().withGroupDescription("Volume group")
                 .withApplicationType(ApplicationType.SAP_HANA)
                 .withApplicationIdentifier("SH9"))
             .withVolumes(Arrays.asList(
@@ -189,7 +189,7 @@ public final class VolumeGroupsCreateSamples {
             .define("group1")
             .withExistingNetAppAccount("myRG", "account1")
             .withRegion("westus")
-            .withGroupMetaData(new VolumeGroupMetadata().withGroupDescription("Volume group")
+            .withGroupMetadata(new VolumeGroupMetadata().withGroupDescription("Volume group")
                 .withApplicationType(ApplicationType.ORACLE)
                 .withApplicationIdentifier("OR2"))
             .withVolumes(Arrays.asList(

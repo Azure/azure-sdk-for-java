@@ -68,7 +68,7 @@ public final class VolumeQuotaRulePatch implements JsonSerializable<VolumeQuotaR
      * 
      * @return the provisioningState value.
      */
-    public NetAppProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

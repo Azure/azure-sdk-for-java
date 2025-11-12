@@ -13,23 +13,23 @@ public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNameAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"loazuruocbgoo\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"te\"}")
+            "{\"name\":\"orwmduvwpklv\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"mygdxpgpqch\"}")
             .toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("loazuruocbgoo", model.name());
+        Assertions.assertEquals("orwmduvwpklv", model.name());
         Assertions.assertEquals(
             CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
-        Assertions.assertEquals("te", model.resourceGroup());
+        Assertions.assertEquals("mygdxpgpqch", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("loazuruocbgoo")
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("orwmduvwpklv")
             .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
-            .withResourceGroup("te");
+            .withResourceGroup("mygdxpgpqch");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("loazuruocbgoo", model.name());
+        Assertions.assertEquals("orwmduvwpklv", model.name());
         Assertions.assertEquals(
             CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
-        Assertions.assertEquals("te", model.resourceGroup());
+        Assertions.assertEquals("mygdxpgpqch", model.resourceGroup());
     }
 }

@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.models.NetAppProvisioningState;
+import com.azure.resourcemanager.netapp.models.ProvisioningState;
 import com.azure.resourcemanager.netapp.models.Type;
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
     /*
      * Gets the status of the VolumeQuotaRule at the time the operation was called.
      */
-    private NetAppProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Size of quota
@@ -50,7 +50,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
      * 
      * @return the provisioningState value.
      */
-    public NetAppProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -155,7 +155,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedVolumeQuotaRulesProperties.provisioningState
-                        = NetAppProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("quotaSizeInKiBs".equals(fieldName)) {
                     deserializedVolumeQuotaRulesProperties.quotaSizeInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("quotaType".equals(fieldName)) {

@@ -16,18 +16,17 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"jglikkxwslolb\",\"tenantId\":\"vuzlm\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pn\":{\"principalId\":\"ktgplcr\",\"clientId\":\"jxeznoigbrnjwmw\"},\"augzxnfaazpxdtn\":{\"principalId\":\"azej\",\"clientId\":\"qkagfhsxt\"},\"ou\":{\"principalId\":\"mkqjj\",\"clientId\":\"uenvrkp\"},\"kixqtnqtt\":{\"principalId\":\"bre\",\"clientId\":\"aays\"}}}")
+            "{\"principalId\":\"0c470208-d0b1-4200-84a0-4f3cf5c35d25\",\"tenantId\":\"1df5e6fa-9426-43e5-8cd9-8408f9a76611\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"xwslolbqpv\":{\"principalId\":\"da8f1599-c629-4ecb-ac65-b6c220f40169\",\"clientId\":\"b674f1ee-de83-4886-a395-5d4ec9828272\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("pn", new UserAssignedIdentity(), "augzxnfaazpxdtn",
-                new UserAssignedIdentity(), "ou", new UserAssignedIdentity(), "kixqtnqtt", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("xwslolbqpv", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

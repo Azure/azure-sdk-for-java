@@ -27,7 +27,7 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
     /*
      * Volume group details
      */
-    private VolumeGroupMetadata groupMetaData;
+    private VolumeGroupMetadata groupMetadata;
 
     /*
      * List of volumes from group
@@ -50,22 +50,22 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
     }
 
     /**
-     * Get the groupMetaData property: Volume group details.
+     * Get the groupMetadata property: Volume group details.
      * 
-     * @return the groupMetaData value.
+     * @return the groupMetadata value.
      */
-    public VolumeGroupMetadata groupMetaData() {
-        return this.groupMetaData;
+    public VolumeGroupMetadata groupMetadata() {
+        return this.groupMetadata;
     }
 
     /**
-     * Set the groupMetaData property: Volume group details.
+     * Set the groupMetadata property: Volume group details.
      * 
-     * @param groupMetaData the groupMetaData value to set.
+     * @param groupMetadata the groupMetadata value to set.
      * @return the VolumeGroupProperties object itself.
      */
-    public VolumeGroupProperties withGroupMetaData(VolumeGroupMetadata groupMetaData) {
-        this.groupMetaData = groupMetaData;
+    public VolumeGroupProperties withGroupMetadata(VolumeGroupMetadata groupMetadata) {
+        this.groupMetadata = groupMetadata;
         return this;
     }
 
@@ -95,8 +95,8 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (groupMetaData() != null) {
-            groupMetaData().validate();
+        if (groupMetadata() != null) {
+            groupMetadata().validate();
         }
         if (volumes() != null) {
             volumes().forEach(e -> e.validate());
@@ -109,7 +109,7 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("groupMetaData", this.groupMetaData);
+        jsonWriter.writeJsonField("groupMetaData", this.groupMetadata);
         jsonWriter.writeArrayField("volumes", this.volumes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -132,7 +132,7 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
                 if ("provisioningState".equals(fieldName)) {
                     deserializedVolumeGroupProperties.provisioningState = reader.getString();
                 } else if ("groupMetaData".equals(fieldName)) {
-                    deserializedVolumeGroupProperties.groupMetaData = VolumeGroupMetadata.fromJson(reader);
+                    deserializedVolumeGroupProperties.groupMetadata = VolumeGroupMetadata.fromJson(reader);
                 } else if ("volumes".equals(fieldName)) {
                     List<VolumeGroupVolumeProperties> volumes
                         = reader.readArray(reader1 -> VolumeGroupVolumeProperties.fromJson(reader1));

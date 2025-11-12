@@ -49,8 +49,8 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
         return this.innerModel().provisioningState();
     }
 
-    public VolumeGroupMetadata groupMetaData() {
-        return this.innerModel().groupMetaData();
+    public VolumeGroupMetadata groupMetadata() {
+        return this.innerModel().groupMetadata();
     }
 
     public List<VolumeGroupVolumeProperties> volumes() {
@@ -136,8 +136,8 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
         return this;
     }
 
-    public VolumeGroupDetailsImpl withGroupMetaData(VolumeGroupMetadata groupMetaData) {
-        this.innerModel().withGroupMetaData(groupMetaData);
+    public VolumeGroupDetailsImpl withGroupMetadata(VolumeGroupMetadata groupMetadata) {
+        this.innerModel().withGroupMetadata(groupMetadata);
         return this;
     }
 

@@ -21,7 +21,7 @@ public final class NetAppResourceQuotaLimitsAccountsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"current\":966273213,\"default\":1305858117,\"usage\":272678412},\"id\":\"qovekqvgqou\",\"name\":\"ifzmpjwyivqi\",\"type\":\"f\"}]}";
+            = "{\"value\":[{\"properties\":{\"current\":595382657,\"default\":612330611,\"usage\":1709399278},\"id\":\"dvfvfcjnaeoi\",\"name\":\"rvhmgor\",\"type\":\"fukiscvwmzhw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class NetAppResourceQuotaLimitsAccountsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SubscriptionQuotaItem> response = manager.netAppResourceQuotaLimitsAccounts()
-            .list("hlhzdsqtzbsrgno", "cjhfgmvecactxmw", com.azure.core.util.Context.NONE);
+        PagedIterable<SubscriptionQuotaItem> response
+            = manager.netAppResourceQuotaLimitsAccounts().list("ud", "cxgkmoyxcdyui", com.azure.core.util.Context.NONE);
 
     }
 }

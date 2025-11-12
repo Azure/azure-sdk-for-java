@@ -61,7 +61,7 @@ public interface VolumeQuotaRule {
      * 
      * @return the provisioningState value.
      */
-    NetAppProvisioningState provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the quotaSizeInKiBs property: Size of quota.

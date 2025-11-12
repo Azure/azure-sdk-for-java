@@ -13,24 +13,24 @@ public final class PoolPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolPatchProperties model = BinaryData.fromString(
-            "{\"size\":1536558276780267484,\"qosType\":\"Manual\",\"coolAccess\":true,\"customThroughputMibps\":1562008045}")
+            "{\"size\":2544407581840449875,\"qosType\":\"Manual\",\"coolAccess\":true,\"customThroughputMibps\":1782319370}")
             .toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(1536558276780267484L, model.size());
+        Assertions.assertEquals(2544407581840449875L, model.size());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(1562008045, model.customThroughputMibps());
+        Assertions.assertEquals(1782319370, model.customThroughputMibps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolPatchProperties model = new PoolPatchProperties().withSize(1536558276780267484L)
+        PoolPatchProperties model = new PoolPatchProperties().withSize(2544407581840449875L)
             .withQosType(QosType.MANUAL)
             .withCoolAccess(true)
-            .withCustomThroughputMibps(1562008045);
+            .withCustomThroughputMibps(1782319370);
         model = BinaryData.fromObject(model).toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(1536558276780267484L, model.size());
+        Assertions.assertEquals(2544407581840449875L, model.size());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(1562008045, model.customThroughputMibps());
+        Assertions.assertEquals(1782319370, model.customThroughputMibps());
     }
 }

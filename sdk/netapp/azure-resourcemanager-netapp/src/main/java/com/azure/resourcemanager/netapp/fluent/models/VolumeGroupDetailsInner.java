@@ -134,25 +134,25 @@ public final class VolumeGroupDetailsInner extends ProxyResource {
     }
 
     /**
-     * Get the groupMetaData property: Volume group details.
+     * Get the groupMetadata property: Volume group details.
      * 
-     * @return the groupMetaData value.
+     * @return the groupMetadata value.
      */
-    public VolumeGroupMetadata groupMetaData() {
-        return this.innerProperties() == null ? null : this.innerProperties().groupMetaData();
+    public VolumeGroupMetadata groupMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupMetadata();
     }
 
     /**
-     * Set the groupMetaData property: Volume group details.
+     * Set the groupMetadata property: Volume group details.
      * 
-     * @param groupMetaData the groupMetaData value to set.
+     * @param groupMetadata the groupMetadata value to set.
      * @return the VolumeGroupDetailsInner object itself.
      */
-    public VolumeGroupDetailsInner withGroupMetaData(VolumeGroupMetadata groupMetaData) {
+    public VolumeGroupDetailsInner withGroupMetadata(VolumeGroupMetadata groupMetadata) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeGroupProperties();
         }
-        this.innerProperties().withGroupMetaData(groupMetaData);
+        this.innerProperties().withGroupMetadata(groupMetadata);
         return this;
     }
 

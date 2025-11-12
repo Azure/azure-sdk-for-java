@@ -57,11 +57,11 @@ public interface VolumeGroupDetails {
     String provisioningState();
 
     /**
-     * Gets the groupMetaData property: Volume group details.
+     * Gets the groupMetadata property: Volume group details.
      * 
-     * @return the groupMetaData value.
+     * @return the groupMetadata value.
      */
-    VolumeGroupMetadata groupMetaData();
+    VolumeGroupMetadata groupMetadata();
 
     /**
      * Gets the volumes property: List of volumes from group.
@@ -127,7 +127,7 @@ public interface VolumeGroupDetails {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithGroupMetaData, DefinitionStages.WithVolumes {
+            extends DefinitionStages.WithLocation, DefinitionStages.WithGroupMetadata, DefinitionStages.WithVolumes {
             /**
              * Executes the create request.
              * 
@@ -166,16 +166,16 @@ public interface VolumeGroupDetails {
         }
 
         /**
-         * The stage of the VolumeGroupDetails definition allowing to specify groupMetaData.
+         * The stage of the VolumeGroupDetails definition allowing to specify groupMetadata.
          */
-        interface WithGroupMetaData {
+        interface WithGroupMetadata {
             /**
-             * Specifies the groupMetaData property: Volume group details.
+             * Specifies the groupMetadata property: Volume group details.
              * 
-             * @param groupMetaData Volume group details.
+             * @param groupMetadata Volume group details.
              * @return the next definition stage.
              */
-            WithCreate withGroupMetaData(VolumeGroupMetadata groupMetaData);
+            WithCreate withGroupMetadata(VolumeGroupMetadata groupMetadata);
         }
 
         /**
