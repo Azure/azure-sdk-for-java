@@ -62,6 +62,8 @@ parameters:
     default: true
   - name: release_azureaiagents
     displayName: 'azure-ai-agents'
+    type: boolean
+    default: true
   - name: release_azureaivoicelive
     displayName: 'azure-ai-voicelive'
     type: boolean
