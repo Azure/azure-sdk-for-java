@@ -1407,10 +1407,9 @@ public class BlobAsyncClientBase {
                             if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
                                 DecoderState decoderState = (DecoderState) decoderStateObj;
 
-                                // Use totalEncodedBytesProcessed to request NEW bytes from the server
-                                // The pending buffer already contains bytes we've received, so we request
-                                // starting from the next byte after what we've already received
-                                long encodedOffset = decoderState.getTotalEncodedBytesProcessed();
+                                // Use getRetryOffset() to get the correct offset for retry
+                                // This accounts for pending bytes that have been received but not yet consumed
+                                long encodedOffset = decoderState.getRetryOffset();
                                 long remainingCount = finalCount - encodedOffset;
                                 retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
 
