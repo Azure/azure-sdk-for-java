@@ -85,6 +85,8 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.DecoderState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1339,10 +1341,8 @@ public class BlobAsyncClientBase {
 
         // Add structured message decoding context if enabled
         final Context firstRangeContext;
-        if (contentValidationOptions != null
-            && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-            firstRangeContext = initialContext
-                .addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+        if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+            firstRangeContext = initialContext.addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
                 .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions);
         } else {
             firstRangeContext = initialContext;
@@ -1393,30 +1393,47 @@ public class BlobAsyncClientBase {
                     try {
                         // For retry context, preserve decoder state if structured message validation is enabled
                         Context retryContext = firstRangeContext;
-                        
-                        // If structured message decoding is enabled, we need to include the decoder state
-                        // so the retry can continue from where we left off
-                        if (contentValidationOptions != null 
+                        BlobRange retryRange;
+
+                        // If structured message decoding is enabled, we need to calculate the retry offset
+                        // based on the encoded bytes processed, not the decoded bytes
+                        if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            // The decoder state will be set by the policy during processing
-                            // We preserve it in the context for the retry request
-                            Object decoderState = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-                                .orElse(null);
-                            if (decoderState != null) {
-                                retryContext = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                            // Get the decoder state to determine how many encoded bytes were processed
+                            Object decoderStateObj
+                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+                                    .orElse(null);
+
+                            if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
+                                DecoderState decoderState = (DecoderState) decoderStateObj;
+
+                                // Use totalEncodedBytesProcessed to request NEW bytes from the server
+                                // The pending buffer already contains bytes we've received, so we request
+                                // starting from the next byte after what we've already received
+                                long encodedOffset = decoderState.getTotalEncodedBytesProcessed();
+                                long remainingCount = finalCount - encodedOffset;
+                                retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
+
+                                // Preserve the decoder state for the retry
+                                retryContext = retryContext
+                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                            } else {
+                                // No decoder state yet, use the normal retry logic
+                                retryRange = new BlobRange(initialOffset + offset, newCount);
                             }
+                        } else {
+                            // For non-structured downloads, use smart retry from the interrupted offset
+                            retryRange = new BlobRange(initialOffset + offset, newCount);
                         }
-                        
-                        return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, finalGetMD5, retryContext);
+
+                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, retryContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
 
                 // Structured message decoding is now handled by StructuredMessageDecoderPolicy
-                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume,
-                    finalOptions);
+                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
     }
 

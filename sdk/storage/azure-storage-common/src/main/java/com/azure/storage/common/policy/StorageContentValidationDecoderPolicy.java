@@ -62,13 +62,13 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             if (contentLength != null && contentLength > 0 && validationOptions != null) {
                 // Get or create decoder with state tracking
                 DecoderState decoderState = getOrCreateDecoderState(context, contentLength);
-                
+
                 // Decode using the stateful decoder
                 Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoderState);
-                
+
                 // Update context with decoder state for potential retries
                 context.setData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                
+
                 return new DecodedResponse(httpResponse, decodedStream, decoderState);
             }
 
@@ -85,26 +85,39 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
-            try {
-                // Combine with pending data if any
-                ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
-                
-                // Track encoded bytes
-                int encodedBytesInBuffer = encodedBuffer.remaining();
-                state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
+            // Combine with pending data if any
+            ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
 
+            // Track encoded bytes
+            int encodedBytesInBuffer = encodedBuffer.remaining();
+            state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
+
+            try {
                 // Try to decode what we have - decoder handles partial data
+                // Create duplicate for decoder - it will advance the duplicate's position as it reads
                 int availableSize = dataToProcess.remaining();
-                ByteBuffer decodedData = state.decoder.decode(dataToProcess.duplicate(), availableSize);
+                ByteBuffer duplicateForDecode = dataToProcess.duplicate();
+                int initialPosition = duplicateForDecode.position();
                 
+                // Decode - this advances duplicateForDecode's position
+                ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
+
                 // Track decoded bytes
                 int decodedBytes = decodedData.remaining();
                 state.totalBytesDecoded.addAndGet(decodedBytes);
 
-                // Store any remaining unprocessed data for next iteration
-                if (dataToProcess.hasRemaining()) {
-                    state.updatePendingBuffer(dataToProcess);
+                // Calculate how much of the input buffer was consumed by checking the duplicate's position
+                int bytesConsumed = duplicateForDecode.position() - initialPosition;
+                int bytesRemaining = availableSize - bytesConsumed;
+
+                // Save only unconsumed portion to pending
+                if (bytesRemaining > 0) {
+                    // Position the original buffer to skip consumed bytes, then slice to get unconsumed
+                    dataToProcess.position(bytesConsumed);
+                    ByteBuffer unconsumed = dataToProcess.slice();
+                    state.updatePendingBuffer(unconsumed);
                 } else {
+                    // All data was consumed
                     state.pendingBuffer = null;
                 }
 
@@ -113,6 +126,20 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     return Flux.just(decodedData);
                 } else {
                     return Flux.empty();
+                }
+            } catch (IllegalArgumentException e) {
+                // Handle decoder exceptions - check if it's due to incomplete data
+                String errorMsg = e.getMessage();
+                if (errorMsg != null && (errorMsg.contains("not long enough") || errorMsg.contains("is incomplete"))) {
+                    // Not enough data to decode yet - preserve all data in pending buffer
+                    state.updatePendingBuffer(dataToProcess);
+
+                    // Don't fail - just return empty and wait for more data
+                    return Flux.empty();
+                } else {
+                    // Other errors should propagate
+                    LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
+                    return Flux.error(e);
                 }
             } catch (Exception e) {
                 LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
@@ -266,6 +293,19 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          */
         public long getTotalEncodedBytesProcessed() {
             return totalEncodedBytesProcessed.get();
+        }
+
+        /**
+         * Gets the offset to use for retry requests.
+         * This is the total encoded bytes processed minus any bytes in the pending buffer,
+         * since pending bytes have already been counted but haven't been successfully processed yet.
+         *
+         * @return The offset for retry requests.
+         */
+        public long getRetryOffset() {
+            long processed = totalEncodedBytesProcessed.get();
+            int pending = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
+            return processed - pending;
         }
 
         /**
