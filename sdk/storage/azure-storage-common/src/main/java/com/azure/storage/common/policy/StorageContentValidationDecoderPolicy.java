@@ -98,7 +98,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 int availableSize = dataToProcess.remaining();
                 ByteBuffer duplicateForDecode = dataToProcess.duplicate();
                 int initialPosition = duplicateForDecode.position();
-                
+
                 // Decode - this advances duplicateForDecode's position
                 ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
 
