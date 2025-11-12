@@ -655,14 +655,6 @@
           "justification": "Non-breaking change as class is final."
         },
         {
-          "code": "java.field.enumConstantOrderChanged",
-          "old": {
-            "matcher": "regex",
-            "match": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)"
-          },
-          "justification": "Add Accepted to ProvisioningState."
-        },
-        {
           "code": "java.method.varargOverloadsOnlyDifferInVarargParameter",
           "old": {
             "matcher": "regex",
@@ -712,6 +704,63 @@
             "match": "field com\\.azure\\.resourcemanager\\.appservice\\.models\\.ManagedServiceIdentityType\\..*"
           },
           "justification": "Enum constant order change is not a breaking change."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*Resource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.keyvault.models.ProxyResourceWithoutSystemData",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
+          "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
+          "justification" : "Not a break."
         }
       ]
     }

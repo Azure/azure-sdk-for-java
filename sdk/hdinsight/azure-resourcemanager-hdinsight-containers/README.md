@@ -1,5 +1,9 @@
 # Azure Resource Manager HDInsightContainers client library for Java
 
+## Deprecation Notice
+
+Please note, this package has been deprecated and will no longer be maintained after January 31, 2025. We encourage you to migrate your workloads to [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric), and use `azure-resourcemanager-fabric` to continue receiving updates. Refer to service retirement announcement (https://azure.microsoft.com/updates?id=azure-hdinsight-on-aks-retirement) and SDK deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager HDInsightContainers client library for Java.
 
 This package contains Microsoft Azure SDK for HDInsightContainers Management SDK. HDInsight Containers Management Client. Package tag package-preview-2024-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
