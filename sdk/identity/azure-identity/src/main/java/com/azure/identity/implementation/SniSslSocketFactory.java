@@ -78,7 +78,7 @@ public final class SniSslSocketFactory extends SSLSocketFactory {
         }
     }
 
-    private final class RawSniServerName extends SNIServerName {
+    private static final class RawSniServerName extends SNIServerName {
         RawSniServerName(String sniHost) {
             super(0, sniHost.getBytes(StandardCharsets.UTF_8));
         }
