@@ -832,6 +832,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         siteUpdate.withHttpsOnly(siteInner.httpsOnly());
         siteUpdate.withRedundancyMode(siteInner.redundancyMode());
         siteUpdate.withPublicNetworkAccess(siteInner.publicNetworkAccess());
+        siteUpdate.withDnsConfiguration(siteInner.dnsConfiguration());
+        siteUpdate.withClientAffinityProxyEnabled(siteInner.clientAffinityProxyEnabled());
+        siteUpdate.withClientCertMode(siteInner.clientCertMode());
+        siteUpdate.withCustomDomainVerificationId(siteInner.customDomainVerificationId());
+        siteUpdate.withStorageAccountRequired(siteInner.storageAccountRequired());
+        siteUpdate.withKeyVaultReferenceIdentity(siteInner.keyVaultReferenceIdentity());
+        siteUpdate.withVirtualNetworkSubnetId(siteInner.virtualNetworkSubnetId());
+        // this code need to be updated when api-version upgrade
 
         this.webAppMsiHandler.handleExternalIdentities(siteUpdate);
         return submitSite(siteUpdate).map(siteInner1 -> {
