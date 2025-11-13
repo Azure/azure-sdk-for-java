@@ -132,7 +132,7 @@ public class AdvancedTranscriptionSample {
 
             // BEGIN: com.azure.ai.speech.transcription.advanced.transcription-options
             // Configure advanced transcription options
-            TranscriptionOptions options = new TranscriptionOptions()
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
                 // Set specific locale(s) for transcription
                 .setLocales(Arrays.asList("en-US", "es-ES"))
                 // Control profanity handling: MASKED, REMOVED, RAW, or TAGS
@@ -142,7 +142,6 @@ public class AdvancedTranscriptionSample {
             // END: com.azure.ai.speech.transcription.advanced.transcription-options
 
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             System.out.println("Configured options:");
@@ -189,11 +188,10 @@ public class AdvancedTranscriptionSample {
                 .setFilename(audioFilePath);
 
             // Enable diarization for speaker identification
-            TranscriptionOptions options = new TranscriptionOptions()
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
                 .setDiarizationOptions(new TranscriptionDiarizationOptions());
 
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             TranscriptionResult result = client.transcribe(requestContent);

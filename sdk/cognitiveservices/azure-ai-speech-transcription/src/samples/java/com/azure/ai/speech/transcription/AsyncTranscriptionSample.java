@@ -97,9 +97,9 @@ public class AsyncTranscriptionSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
 
-            TranscriptionOptions options = new TranscriptionOptions();
+            // Use the AudioFileDetails constructor for cleaner code
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             System.out.println("Starting async transcription with subscribe()...");
@@ -170,9 +170,9 @@ public class AsyncTranscriptionSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
 
-            TranscriptionOptions options = new TranscriptionOptions();
+            // Use the AudioFileDetails constructor
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             System.out.println("Starting async transcription with block()...");
@@ -217,9 +217,9 @@ public class AsyncTranscriptionSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
 
-            TranscriptionOptions options = new TranscriptionOptions();
+            // Use the AudioFileDetails constructor
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             System.out.println("Starting async transcription with timeout and error handling...");

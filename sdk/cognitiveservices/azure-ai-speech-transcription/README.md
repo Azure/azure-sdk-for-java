@@ -139,11 +139,10 @@ try {
         .setFilename("audio.wav");
 
     // Create transcription options
-    TranscriptionOptions options = new TranscriptionOptions();
+    TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
     // Create transcribe request content
     TranscriptionContent requestContent = new TranscriptionContent()
-        .setAudio(audioFileDetails)
         .setOptions(options);
 
     // Transcribe audio
@@ -157,6 +156,66 @@ try {
 } catch (Exception e) {
     System.err.println("Error during transcription: " + e.getMessage());
 }
+```
+
+### Transcribe using audio URL
+
+You can transcribe audio directly from a URL without downloading the file first:
+
+```java readme-sample-transcribeWithAudioUrl
+TranscriptionClient client = new TranscriptionClientBuilder()
+    .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+    .credential(new KeyCredential("<your-api-key>"))
+    .buildClient();
+
+// Create transcription options with audio URL
+TranscriptionOptions options = new TranscriptionOptions("https://example.com/audio.wav");
+
+// Create transcribe request content
+TranscriptionContent requestContent = new TranscriptionContent()
+    .setOptions(options);
+
+// Transcribe audio
+TranscriptionResult result = client.transcribe(requestContent);
+
+// Process results
+result.getCombinedPhrases().forEach(phrase -> {
+    System.out.println(phrase.getText());
+});
+```
+
+### Transcribe using AudioFileDetails constructor
+
+You can also create `TranscriptionOptions` directly with `AudioFileDetails`:
+
+```java readme-sample-transcribeWithAudioFileDetails
+TranscriptionClient client = new TranscriptionClientBuilder()
+    .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+    .credential(new KeyCredential("<your-api-key>"))
+    .buildClient();
+
+// Read audio file
+byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+// Create audio file details
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+    .setFilename("audio.wav")
+    .setContentType("audio/wav");
+
+// Create transcription options with AudioFileDetails
+TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
+
+// Create transcribe request content
+TranscriptionContent requestContent = new TranscriptionContent()
+    .setOptions(options);
+
+// Transcribe audio
+TranscriptionResult result = client.transcribe(requestContent);
+
+// Process results
+result.getCombinedPhrases().forEach(phrase -> {
+    System.out.println(phrase.getText());
+});
 ```
 
 ### Use enhanced mode for improved transcription quality
@@ -174,12 +233,11 @@ AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(au
 // Enable enhanced mode for improved transcription quality
 EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
 
-TranscriptionOptions options = new TranscriptionOptions()
+TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setLocales(java.util.Arrays.asList("en-US"))
     .setEnhancedModeOptions(enhancedMode);
 
 TranscriptionContent requestContent = new TranscriptionContent()
-    .setAudio(audioFileDetails)
     .setOptions(options);
 
 TranscriptionResult result = client.transcribe(requestContent);
@@ -203,12 +261,11 @@ EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
         "Patient symptoms and treatment plan"
     ));
 
-TranscriptionOptions options = new TranscriptionOptions()
+TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setLocales(java.util.Arrays.asList("en-US"))
     .setEnhancedModeOptions(enhancedMode);
 
 TranscriptionContent requestContent = new TranscriptionContent()
-    .setAudio(audioFileDetails)
     .setOptions(options);
 
 TranscriptionResult result = client.transcribe(requestContent);
@@ -228,12 +285,11 @@ AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(au
 EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
     .setTargetLanguage("en-US"); // Translate to English
 
-TranscriptionOptions options = new TranscriptionOptions()
+TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
     .setEnhancedModeOptions(enhancedMode);
 
 TranscriptionContent requestContent = new TranscriptionContent()
-    .setAudio(audioFileDetails)
     .setOptions(options);
 
 TranscriptionResult result = client.transcribe(requestContent);

@@ -73,12 +73,11 @@ public class TranscriptionClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
 
-        // Create transcription options with default settings
-        TranscriptionOptions options = new TranscriptionOptions();
+        // Create transcription options using the AudioFileDetails constructor
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         // Create transcribe request
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         // Transcribe audio
@@ -108,13 +107,12 @@ public class TranscriptionClientJavaDocCodeSnippets {
             .setFilename("sample.wav");
 
         // Configure advanced transcription options
-        TranscriptionOptions options = new TranscriptionOptions()
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(Arrays.asList("en-US", "es-ES"))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
             .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5));
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
@@ -140,9 +138,8 @@ public class TranscriptionClientJavaDocCodeSnippets {
 
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
-        TranscriptionOptions options = new TranscriptionOptions();
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
         TranscriptionResult result = client.transcribe(requestContent);
 

@@ -80,8 +80,7 @@ public class ErrorHandlingSample {
             byte[] dummyAudio = new byte[1024];
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
-                .setOptions(new TranscriptionOptions());
+                .setOptions(new TranscriptionOptions(audioFileDetails));
 
             client.transcribe(requestContent);
 
@@ -121,8 +120,7 @@ public class ErrorHandlingSample {
             byte[] dummyAudio = new byte[1024];
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
-                .setOptions(new TranscriptionOptions());
+                .setOptions(new TranscriptionOptions(audioFileDetails));
 
             client.transcribe(requestContent);
 
@@ -176,8 +174,7 @@ public class ErrorHandlingSample {
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
-                .setOptions(new TranscriptionOptions());
+                .setOptions(new TranscriptionOptions(audioFileDetails));
 
             client.transcribe(requestContent);
 
@@ -220,8 +217,7 @@ public class ErrorHandlingSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(invalidAudio))
                 .setFilename("invalid.wav");
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
-                .setOptions(new TranscriptionOptions());
+                .setOptions(new TranscriptionOptions(audioFileDetails));
 
             client.transcribe(requestContent);
 
@@ -301,9 +297,8 @@ public class ErrorHandlingSample {
             // Step 4: Prepare transcription request
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
-            TranscriptionOptions options = new TranscriptionOptions();
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
             System.out.println("✓ Request prepared");
 

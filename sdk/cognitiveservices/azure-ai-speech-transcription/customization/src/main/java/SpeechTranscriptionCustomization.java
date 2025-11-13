@@ -4,12 +4,22 @@
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.azure.autorest.customization.ClassCustomization;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.JavadocBlockTag;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.time.Duration;
 
 import static com.github.javaparser.StaticJavaParser.parseBlock;
+import static com.github.javaparser.StaticJavaParser.parseStatement;
 import static com.github.javaparser.javadoc.description.JavadocDescription.parseText;
 
 /**
@@ -43,6 +53,14 @@ public class SpeechTranscriptionCustomization extends Customization {
         // Customize TranscriptionDiarizationOptions to properly serialize enabled field
         logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
         customizeDiarizationOptionsToJson(models);
+
+        // Add AudioFileDetails field and constructors to TranscriptionOptions, make setAudioUrl private
+        logger.info("Customizing TranscriptionOptions to add AudioFileDetails support and String audioUrl constructor");
+        customizeTranscriptionOptions(models);
+
+        // Customize TranscriptionContent.getAudio() to retrieve audio from options when needed
+        logger.info("Customizing TranscriptionContent.getAudio() to support audio from TranscriptionOptions");
+        customizeTranscriptionContent(models);
     }
 
     /**
@@ -79,5 +97,97 @@ public class SpeechTranscriptionCustomization extends Customization {
                         "{ jsonWriter.writeStartObject(); if (this.maxSpeakers != null) { jsonWriter.writeBooleanField(\"enabled\", true); jsonWriter.writeNumberField(\"maxSpeakers\", this.maxSpeakers); } return jsonWriter.writeEndObject(); }"));
                 }));
         });
+    }
+
+    /**
+     * Customize TranscriptionOptions to:
+     * 1. Add AudioFileDetails field
+     * 2. Add constructor with String audioUrl parameter
+     * 3. Add constructor with AudioFileDetails parameter
+     * 4. Make setAudioUrl() private instead of public
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeTranscriptionOptions(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("TranscriptionOptions").customizeAst(ast -> {
+            ast.getClassByName("TranscriptionOptions").ifPresent(clazz -> {
+                // Add the AudioFileDetails field
+                clazz.addFieldWithInitializer(
+                    "AudioFileDetails",
+                    "audioFileDetails",
+                    null,
+                    com.github.javaparser.ast.Modifier.Keyword.PRIVATE
+                );
+
+                // Add constructor with String audioUrl parameter
+                ConstructorDeclaration audioUrlConstructor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
+                audioUrlConstructor.addParameter("String", "audioUrl");
+                audioUrlConstructor.setBody(parseBlock("{ this.audioUrl = audioUrl; }"));
+                audioUrlConstructor.setJavadocComment(new Javadoc(parseText(
+                    "Creates an instance of TranscriptionOptions class with audio URL."))
+                    .addBlockTag("param", "audioUrl the URL of the audio to be transcribed"));
+
+                // Add constructor with AudioFileDetails parameter
+                ConstructorDeclaration fileDetailsConstructor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
+                fileDetailsConstructor.addParameter("AudioFileDetails", "fileDetails");
+                fileDetailsConstructor.setBody(parseBlock("{ this.audioFileDetails = fileDetails; }"));
+                fileDetailsConstructor.setJavadocComment(new Javadoc(parseText(
+                    "Creates an instance of TranscriptionOptions class with audio file details."))
+                    .addBlockTag("param", "fileDetails the audio file details"));
+
+                // Make setAudioUrl() private
+                clazz.getMethodsByName("setAudioUrl").forEach(method -> {
+                    method.getModifiers().clear();
+                    method.addModifier(Modifier.Keyword.PRIVATE);
+                });
+            });
+        });
+    }
+
+    /**
+     * Customize TranscriptionContent to:
+     * 1. Override getAudio() to return audio from options.audioFileDetails if audio field is null
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeTranscriptionContent(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("TranscriptionContent").customizeAst(ast -> {
+            ast.getClassByName("TranscriptionContent").ifPresent(clazz -> {
+                // Replace the getAudio() method to check options.audioFileDetails
+                clazz.getMethodsByName("getAudio").forEach(method -> {
+                    method.setBody(parseBlock(
+                        "{ if (this.audio != null) { return this.audio; } " +
+                        "if (this.options != null) { " +
+                        "try { " +
+                        "java.lang.reflect.Field field = this.options.getClass().getDeclaredField(\"audioFileDetails\"); " +
+                        "field.setAccessible(true); " +
+                        "return (AudioFileDetails) field.get(this.options); " +
+                        "} catch (Exception e) { return null; } " +
+                        "} return null; }"));
+                });
+            });
+        });
+    }
+
+    /**
+     * Find the position to insert constructors (after existing constructors).
+     *
+     * @param clazz the class declaration
+     * @return the position to insert constructors
+     */
+    private int getConstructorPosition(com.github.javaparser.ast.body.ClassOrInterfaceDeclaration clazz) {
+        int constructorIndex = 0;
+        NodeList<BodyDeclaration<?>> members = clazz.getMembers();
+        for (int i = 0; i < members.size(); i++) {
+            BodyDeclaration<?> member = members.get(i);
+            if (member.isFieldDeclaration()) {
+                constructorIndex = i + 1;
+            } else if (member.isConstructorDeclaration()) {
+                constructorIndex = i + 1;
+            } else if (member.isMethodDeclaration()) {
+                return constructorIndex;
+            }
+        }
+        return constructorIndex;
     }
 }

@@ -58,19 +58,6 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
-     * Set the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
-     * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
-     *
-     * @param audioUrl the audioUrl value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setAudioUrl(String audioUrl) {
-        this.audioUrl = audioUrl;
-        return this;
-    }
-
-    /**
      * Get the locales property: A list of possible locales for the transcription. If not specified, the locale of the
      * speech in the audio is detected automatically from all supported locales.
      *
@@ -322,6 +309,43 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     public TranscriptionOptions setLocaleModelMapping(Map<String, String> localeModelMapping) {
         this.localeModelMapping = localeModelMapping;
+        return this;
+    }
+
+    // BEGIN: Manual customization - AudioFileDetails field and constructors
+    @SuppressWarnings("unused")
+    private AudioFileDetails audioFileDetails;
+
+    /**
+     * Creates an instance of TranscriptionOptions class with audio file details.
+     *
+     * @param fileDetails the audio file details
+     */
+    public TranscriptionOptions(AudioFileDetails fileDetails) {
+        this.audioFileDetails = fileDetails;
+    }
+
+    /**
+     * Creates an instance of TranscriptionOptions class with audio URL.
+     * MANUAL EDIT: This constructor is manually added and preserved via partial-update.
+     * TypeSpec emitter filters constructors for schema-defined fields during code generation.
+     *
+     * @param audioUrl the URL of the audio to be transcribed
+     */
+    public TranscriptionOptions(String audioUrl) {
+        this.audioUrl = audioUrl;
+    }
+
+    /**
+     * Set the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
+     * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
+     *
+     * @param audioUrl the audioUrl value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    private TranscriptionOptions setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
         return this;
     }
 }

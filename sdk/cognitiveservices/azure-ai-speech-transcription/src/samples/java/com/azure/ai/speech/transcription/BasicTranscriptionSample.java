@@ -36,7 +36,7 @@ public class BasicTranscriptionSample {
      */
     public static void main(String[] args) {
         // PREREQUISITE: Set environment variables for authentication
-        // 
+        //
         // Option 1: API Key Authentication
         // set SPEECH_ENDPOINT=https://your-resource-name.cognitiveservices.azure.com/
         // set SPEECH_API_KEY=your-api-key
@@ -60,7 +60,7 @@ public class BasicTranscriptionSample {
 
         // Create the transcription client with appropriate authentication
         TranscriptionClient client;
-        
+
         if (apiKey != null && !apiKey.isEmpty()) {
             // BEGIN: com.azure.ai.speech.transcription.basic.create-client.apikey
             // Option 1: Use API Key authentication
@@ -111,12 +111,11 @@ public class BasicTranscriptionSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
 
-            // Create transcription options (using defaults)
-            TranscriptionOptions options = new TranscriptionOptions();
+            // Create transcription options using the AudioFileDetails constructor
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
             // Create the transcribe request
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             System.out.println("Starting transcription...");

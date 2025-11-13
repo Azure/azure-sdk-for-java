@@ -41,11 +41,10 @@ public final class ReadmeSamples {
                 .setFilename("audio.wav");
 
             // Create transcription options
-            TranscriptionOptions options = new TranscriptionOptions();
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
             // Create transcribe request content
             TranscriptionContent requestContent = new TranscriptionContent()
-                .setAudio(audioFileDetails)
                 .setOptions(options);
 
             // Transcribe audio
@@ -101,10 +100,9 @@ public final class ReadmeSamples {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("audio.wav");
 
-        TranscriptionOptions options = new TranscriptionOptions();
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
@@ -131,10 +129,9 @@ public final class ReadmeSamples {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("audio.wav");
 
-        TranscriptionOptions options = new TranscriptionOptions();
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         asyncClient.transcribe(requestContent)
@@ -163,14 +160,13 @@ public final class ReadmeSamples {
             .setFilename("audio.wav");
 
         // Configure advanced options
-        TranscriptionOptions options = new TranscriptionOptions()
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(java.util.Arrays.asList("en-US", "es-ES"))  // Specify candidate locales
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)     // Mask profanity
             .setDiarizationOptions(new TranscriptionDiarizationOptions()   // Enable speaker diarization
                 .setMaxSpeakers(5));
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
@@ -219,8 +215,7 @@ public final class ReadmeSamples {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("audio.wav");
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
-            .setOptions(new TranscriptionOptions());
+            .setOptions(new TranscriptionOptions(audioFileDetails));
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionresult.detailed
         TranscriptionResult result = client.transcribe(requestContent);
@@ -267,12 +262,11 @@ public final class ReadmeSamples {
         // Enable enhanced mode for improved transcription quality
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
 
-        TranscriptionOptions options = new TranscriptionOptions()
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(java.util.Arrays.asList("en-US"))
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
@@ -302,12 +296,11 @@ public final class ReadmeSamples {
                 "Patient symptoms and treatment plan"
             ));
 
-        TranscriptionOptions options = new TranscriptionOptions()
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(java.util.Arrays.asList("en-US"))
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
@@ -333,16 +326,77 @@ public final class ReadmeSamples {
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
             .setTargetLanguage("en-US"); // Translate to English
 
-        TranscriptionOptions options = new TranscriptionOptions()
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionContent requestContent = new TranscriptionContent()
-            .setAudio(audioFileDetails)
             .setOptions(options);
 
         TranscriptionResult result = client.transcribe(requestContent);
         // END: readme-sample-enhancedModeWithTranslation
+    }
+
+    /**
+     * Sample for transcribing audio using audio URL constructor.
+     */
+    public void transcribeWithAudioUrl() {
+        // BEGIN: readme-sample-transcribeWithAudioUrl
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // Create transcription options with audio URL
+        TranscriptionOptions options = new TranscriptionOptions("https://example.com/audio.wav");
+
+        // Create transcribe request content
+        TranscriptionContent requestContent = new TranscriptionContent()
+            .setOptions(options);
+
+        // Transcribe audio
+        TranscriptionResult result = client.transcribe(requestContent);
+
+        // Process results
+        result.getCombinedPhrases().forEach(phrase -> {
+            System.out.println(phrase.getText());
+        });
+        // END: readme-sample-transcribeWithAudioUrl
+    }
+
+    /**
+     * Sample for transcribing audio using AudioFileDetails constructor.
+     */
+    public void transcribeWithAudioFileDetails() throws Exception {
+        // BEGIN: readme-sample-transcribeWithAudioFileDetails
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // Read audio file
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        // Create audio file details
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav")
+            .setContentType("audio/wav");
+
+        // Create transcription options with AudioFileDetails
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
+
+        // Create transcribe request content
+        TranscriptionContent requestContent = new TranscriptionContent()
+            .setOptions(options);
+
+        // Transcribe audio
+        TranscriptionResult result = client.transcribe(requestContent);
+
+        // Process results
+        result.getCombinedPhrases().forEach(phrase -> {
+            System.out.println(phrase.getText());
+        });
+        // END: readme-sample-transcribeWithAudioFileDetails
     }
 }
 
