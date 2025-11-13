@@ -68,7 +68,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowTriggers")
     public interface WorkflowTriggersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers")
@@ -164,10 +164,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, this.client.getApiVersion(), top, filter, accept, context))
+                resourceGroupName, name, workflowName, apiVersion, top, filter, accept, context))
             .<PagedResponse<WorkflowTriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -208,11 +209,12 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                this.client.getApiVersion(), top, filter, accept, context)
+                apiVersion, top, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -351,10 +353,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, triggerName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -395,10 +398,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, triggerName, this.client.getApiVersion(), accept, context);
+            workflowName, triggerName, apiVersion, accept, context);
     }
 
     /**
@@ -493,10 +497,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, triggerName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -538,10 +543,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            name, workflowName, triggerName, this.client.getApiVersion(), accept, context);
+            name, workflowName, triggerName, apiVersion, accept, context);
     }
 
     /**
@@ -636,10 +642,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.run(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, triggerName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -680,10 +687,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.run(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, triggerName, this.client.getApiVersion(), accept, context);
+            workflowName, triggerName, apiVersion, accept, context);
     }
 
     /**
@@ -874,10 +882,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSchemaJson(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, triggerName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -918,10 +927,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSchemaJson(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            name, workflowName, triggerName, this.client.getApiVersion(), accept, context);
+            name, workflowName, triggerName, apiVersion, accept, context);
     }
 
     /**
@@ -987,7 +997,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowTriggerInner>> listNextSinglePageAsync(String nextLink) {
@@ -1013,7 +1023,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowTriggerInner>> listNextSinglePageAsync(String nextLink, Context context) {
