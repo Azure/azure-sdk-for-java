@@ -170,11 +170,6 @@
 
 * `models.RelationshipStatus relationshipStatus()` -> `models.VolumeRestoreRelationshipStatus relationshipStatus()`
 
-#### `models.BackupPolicyPatch` was modified
-
-* `withLocation(java.lang.String)` was removed
-* `withTags(java.util.Map)` was removed
-
 #### `models.Volumes` was modified
 
 * `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
@@ -300,11 +295,6 @@
 #### `NetAppFilesManager` was modified
 
 * `netAppResourceQuotaLimitsAccounts()` was added
-
-#### `models.BackupPolicyPatch` was modified
-
-* `tags()` was added
-* `location()` was added
 
 #### `models.Volumes` was modified
 
