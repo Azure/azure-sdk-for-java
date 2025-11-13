@@ -76,15 +76,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class KnowledgeBaseTests extends SearchTestBase {
-    private static final String HOTEL_INDEX_NAME = "shared-knowledge-agent-index";
-    private static final String HOTEL_KNOWLEDGE_SOURCE_NAME = "shared-knowledge-agent-source";
-    private static final KnowledgeBaseAzureOpenAIModel OPEN_AI_AGENT_MODEL = new KnowledgeBaseAzureOpenAIModel(
+    private static final String HOTEL_INDEX_NAME = "shared-knowledge-knowledgebase-index";
+    private static final String HOTEL_KNOWLEDGE_SOURCE_NAME = "shared-knowledge-knowledgebase-source";
+    private static final String KNOWLEDGEBASE_DEPLOYMENT_NAME = "search-knowledge-base-model";
+    private static final KnowledgeBaseAzureOpenAIModel OPEN_AI_KNOWLEDGEBASE_MODEL = new KnowledgeBaseAzureOpenAIModel(
         new AzureOpenAIVectorizerParameters().setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
-            .setDeploymentName(OPENAI_DEPLOYMENT_NAME)
+            .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
             .setResourceUrl(OPENAI_ENDPOINT)
             .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)));
-    private static final List<KnowledgeBaseModel> KNOWLEDGE_AGENT_MODELS
-        = Collections.singletonList(OPEN_AI_AGENT_MODEL);
+    private static final List<KnowledgeBaseModel> KNOWLEDGE_BASE_MODELS
+        = Collections.singletonList(OPEN_AI_KNOWLEDGEBASE_MODEL);
     private static final List<KnowledgeSourceReference> KNOWLEDGE_SOURCE_REFERENCES
         = Collections.singletonList(new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME));
 
@@ -123,7 +124,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
         if (TEST_MODE != TestMode.PLAYBACK) {
             // Delete Knowledge Bases created during tests.
             searchIndexClient.listKnowledgeBases()
-                .forEach(agent -> searchIndexClient.deleteKnowledgeBase(agent.getName()));
+                .forEach(knowledgebase -> searchIndexClient.deleteKnowledgeBase(knowledgebase.getName()));
         }
     }
 
@@ -133,7 +134,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
         if (TEST_MODE != TestMode.PLAYBACK) {
             // Delete all knowledge knowledgebases.
             searchIndexClient.listKnowledgeBases()
-                .forEach(agent -> searchIndexClient.deleteKnowledgeBase(agent.getName()));
+                .forEach(knowledgebase -> searchIndexClient.deleteKnowledgeBase(knowledgebase.getName()));
 
             // Delete the knowledge source created for the tests.
             searchIndexClient.deleteKnowledgeSource(HOTEL_KNOWLEDGE_SOURCE_NAME);
@@ -150,10 +151,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void createKnowledgeBaseSync() {
-        // Test creating a knowledge agent.
+        // Test creating a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         assertEquals(knowledgeBase.getName(), created.getName());
@@ -162,11 +163,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseAzureOpenAIModel createdModel
             = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, created.getModels().get(0));
         if (interceptorManager.isLiveMode()) {
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+            assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                 createdModel.getAzureOpenAIParameters().getDeploymentName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+            assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getModelName(),
                 createdModel.getAzureOpenAIParameters().getModelName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+            assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getResourceUrl(),
                 createdModel.getAzureOpenAIParameters().getResourceUrl());
         }
 
@@ -176,10 +177,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void createKnowledgeBaseAsync() {
-        // Test creating a knowledge agent.
+        // Test creating a knowledge knowledgebase.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
 
         StepVerifier.create(searchIndexClient.createKnowledgeBase(knowledgeBase)).assertNext(created -> {
             assertEquals(knowledgeBase.getName(), created.getName());
@@ -188,11 +189,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
             KnowledgeBaseAzureOpenAIModel createdModel
                 = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, created.getModels().get(0));
             if (interceptorManager.isLiveMode()) {
-                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+                assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                     createdModel.getAzureOpenAIParameters().getDeploymentName());
-                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+                assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getModelName(),
                     createdModel.getAzureOpenAIParameters().getModelName());
-                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+                assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getResourceUrl(),
                     createdModel.getAzureOpenAIParameters().getResourceUrl());
             }
 
@@ -203,10 +204,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void getKnowledgeBaseSync() {
-        // Test getting a knowledge agent.
+        // Test getting a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         KnowledgeBase retrieved = searchIndexClient.getKnowledgeBase(knowledgeBase.getName());
@@ -216,11 +217,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseAzureOpenAIModel retrievedModel
             = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, retrieved.getModels().get(0));
         if (interceptorManager.isLiveMode()) {
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+            assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                 retrievedModel.getAzureOpenAIParameters().getDeploymentName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+            assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getModelName(),
                 retrievedModel.getAzureOpenAIParameters().getModelName());
-            assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+            assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getResourceUrl(),
                 retrievedModel.getAzureOpenAIParameters().getResourceUrl());
         }
 
@@ -230,10 +231,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void getKnowledgeBaseAsync() {
-        // Test getting a knowledge agent.
+        // Test getting a knowledge knowledgebase.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
 
         Mono<KnowledgeBase> createAndGet = searchIndexClient.createKnowledgeBase(knowledgeBase)
             .flatMap(created -> searchIndexClient.getKnowledgeBase(created.getName()));
@@ -245,11 +246,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
             KnowledgeBaseAzureOpenAIModel retrievedModel
                 = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, retrieved.getModels().get(0));
             if (interceptorManager.isLiveMode()) {
-                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
+                assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                     retrievedModel.getAzureOpenAIParameters().getDeploymentName());
-                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getModelName(),
+                assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getModelName(),
                     retrievedModel.getAzureOpenAIParameters().getModelName());
-                assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getResourceUrl(),
+                assertEquals(OPEN_AI_KNOWLEDGEBASE_MODEL.getAzureOpenAIParameters().getResourceUrl(),
                     retrievedModel.getAzureOpenAIParameters().getResourceUrl());
             }
 
@@ -264,9 +265,9 @@ public class KnowledgeBaseTests extends SearchTestBase {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         long currentCount = searchIndexClient.listKnowledgeBases().stream().count();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         KnowledgeBase knowledgeBase2 = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
         searchIndexClient.createKnowledgeBase(knowledgeBase2);
         Map<String, KnowledgeBase> knowledgeBasesByName = searchIndexClient.listKnowledgeBases()
@@ -274,10 +275,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
             .collect(Collectors.toMap(KnowledgeBase::getName, Function.identity()));
 
         assertEquals(2, knowledgeBasesByName.size() - currentCount);
-        KnowledgeBase listedAgent1 = knowledgeBasesByName.get(knowledgeBase.getName());
-        assertNotNull(listedAgent1);
-        KnowledgeBase listedAgent2 = knowledgeBasesByName.get(knowledgeBase2.getName());
-        assertNotNull(listedAgent2);
+        KnowledgeBase listedKnowledgeBase1 = knowledgeBasesByName.get(knowledgeBase.getName());
+        assertNotNull(listedKnowledgeBase1);
+        KnowledgeBase listedKnowledgeBase2 = knowledgeBasesByName.get(knowledgeBase2.getName());
+        assertNotNull(listedKnowledgeBase2);
     }
 
     @Test
@@ -285,9 +286,9 @@ public class KnowledgeBaseTests extends SearchTestBase {
         // Test listing knowledge knowledgebases.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         KnowledgeBase knowledgeBase2 = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
 
         Mono<Tuple2<Long, Map<String, KnowledgeBase>>> tuple2Mono = searchIndexClient.listKnowledgeBases()
             .count()
@@ -300,19 +301,19 @@ public class KnowledgeBaseTests extends SearchTestBase {
         StepVerifier.create(tuple2Mono).assertNext(tuple -> {
             Map<String, KnowledgeBase> knowledgeBasesByName = tuple.getT2();
             assertEquals(2, knowledgeBasesByName.size() - tuple.getT1());
-            KnowledgeBase listedAgent1 = knowledgeBasesByName.get(knowledgeBase.getName());
-            assertNotNull(listedAgent1);
-            KnowledgeBase listedAgent2 = knowledgeBasesByName.get(knowledgeBase2.getName());
-            assertNotNull(listedAgent2);
+            KnowledgeBase listedKnowledgeBase1 = knowledgeBasesByName.get(knowledgeBase.getName());
+            assertNotNull(listedKnowledgeBase1);
+            KnowledgeBase listedKnowledgeBase2 = knowledgeBasesByName.get(knowledgeBase2.getName());
+            assertNotNull(listedKnowledgeBase2);
         }).verifyComplete();
     }
 
     @Test
     public void deleteKnowledgeBaseSync() {
-        // Test deleting a knowledge agent.
+        // Test deleting a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         assertEquals(knowledgeBase.getName(), searchIndexClient.getKnowledgeBase(knowledgeBase.getName()).getName());
@@ -322,10 +323,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void deleteKnowledgeBaseAsync() {
-        // Test deleting a knowledge agent.
+        // Test deleting a knowledge base.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
 
         Mono<KnowledgeBase> createAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
             .flatMap(created -> searchIndexClient.getKnowledgeBase(created.getName()));
@@ -342,10 +343,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void updateKnowledgeBaseSync() {
-        // Test updating a knowledge agent.
+        // Test updating a knowledge base.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
         String newDescription = "Updated description";
         knowledgeBase.setDescription(newDescription);
@@ -356,10 +357,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void updateKnowledgeBaseAsync() {
-        // Test updating a knowledge agent.
+        // Test updating a knowledge base.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         String newDescription = "Updated description";
 
         Mono<KnowledgeBase> createUpdateAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
@@ -374,10 +375,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @Test
     @Disabled("Requires further resource deployment")
     public void basicRetrievalSync() {
-        // Test knowledge agent retrieval functionality.
+        // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         SearchKnowledgeBaseClient knowledgeBaseClient
@@ -398,10 +399,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @Test
     @Disabled("Requires further resource deployment")
     public void basicRetrievalAsync() {
-        // Test knowledge agent retrieval functionality.
+        // Test knowledge base retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
 
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
@@ -428,11 +429,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @Test
     @Disabled("Requires further resource deployment")
     public void answerSynthesisRetrievalSync() {
-        // Test knowledge agent retrieval functionality.
+        // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS)
-            .setRetrievalInstructions("Only include well reviewed hotels.");
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_BASE_MODELS)
+                .setRetrievalInstructions("Only include well reviewed hotels.");
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         SearchKnowledgeBaseClient knowledgeBaseClient
@@ -454,11 +455,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @Test
     @Disabled("Requires further resource deployment")
     public void answerSynthesisRetrievalAsync() {
-        // Test knowledge agent retrieval functionality.
+        // Test knowledge base retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS)
-            .setRetrievalInstructions("Only include well reviewed hotels.");
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_BASE_MODELS)
+                .setRetrievalInstructions("Only include well reviewed hotels.");
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 SearchKnowledgeBaseAsyncClient knowledgeBaseClient
@@ -486,12 +487,16 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void knowledgeBaseObjectHasNoAgentReferences() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCES)
-            .setModels(KNOWLEDGE_AGENT_MODELS);
+            .setModels(KNOWLEDGE_BASE_MODELS);
 
         KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
         String KBJson = BinaryData.fromObject(created).toString();
 
-        assertFalse(KBJson.toLowerCase().contains("agent"), "KB JSON should not contain 'agent' references");
+        // Filter out the name field which may contain the test method name with "agent"
+        String jsonWithoutName = KBJson.replaceAll("\"name\":\"[^\"]*\"", "\"name\":\"FILTERED\"");
+
+        assertFalse(jsonWithoutName.toLowerCase().contains("agent"),
+            "KB JSON should not contain 'agent' references (excluding KB name)");
         assertFalse(KBJson.toLowerCase().contains("ka"), "KB JSON should not contain 'KA' abbreviation");
     }
 
@@ -503,7 +508,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         String kbName = randomKnowledgeBaseName();
         KnowledgeBase knowledgeBase
-            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_AGENT_MODELS);
+            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_BASE_MODELS);
 
         client.createKnowledgeBase(knowledgeBase);
 
@@ -542,7 +547,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         String kbName = randomKnowledgeBaseName();
         KnowledgeBase knowledgeBase
-            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_AGENT_MODELS);
+            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_BASE_MODELS);
 
         KnowledgeBase created = client.createKnowledgeBase(knowledgeBase);
 
@@ -560,7 +565,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         String kbName = randomKnowledgeBaseName();
         KnowledgeBase knowledgeBase
-            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_AGENT_MODELS);
+            = new KnowledgeBase(kbName, KNOWLEDGE_SOURCE_REFERENCES).setModels(KNOWLEDGE_BASE_MODELS);
 
         KnowledgeBase created = client.createKnowledgeBase(knowledgeBase);
 
@@ -589,6 +594,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 sourceRefClassName.toLowerCase().contains("knowledgebase")
                     || sourceRefClassName.toLowerCase().contains("knowledge"),
                 "Source reference class should contain proper terminology: " + sourceRefClassName);
+
         }
     }
 
@@ -610,8 +616,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     private String randomKnowledgeBaseName() {
-        // Generate a random name for the knowledge agent.
-        return testResourceNamer.randomName("knowledge-agent-", 63);
+        // Generate a random name for the knowledge base.
+        return testResourceNamer.randomName("knowledge-base-", 63);
     }
 
     private static SearchIndexClient setupIndex() {

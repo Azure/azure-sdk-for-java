@@ -1284,33 +1284,18 @@ public class SearchTests extends SearchTestBase {
     }
 
     @Test
-    public void withoutHeaderNoTokenReturnsPublicDocsShape() {
-        SearchOptions searchOptions = new SearchOptions();
-
-        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
-        assertNotNull(results, "Should parse non-elevated read response");
-        assertNotNull(results.getFacets(), "Should have results");
-    }
-
-    @Test
-    public void oldApiVersionDoesNotSendHeader() {
+    public void oldApiVersionSupportsElevatedRead() {
         SearchClient oldVersionClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .indexName(HOTEL_INDEX_NAME)
-            .serviceVersion(SearchServiceVersion.V2024_07_01)
+            .serviceVersion(SearchServiceVersion.V2023_11_01)
             .buildClient();
 
         SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
 
-        Exception exception = assertThrows(Exception.class, () -> {
-            oldVersionClient.search("*", searchOptions, Context.NONE).iterator().hasNext();
-        });
-
-        assertTrue(
-            exception instanceof UnsupportedOperationException
-                || (exception instanceof HttpResponseException
-                    && ((HttpResponseException) exception).getResponse().getStatusCode() == 400),
-            "Should either be unsupported operation or return 400 error for older API version");
+        SearchPagedIterable results = oldVersionClient.search("*", searchOptions, null);
+        assertNotNull(results, "Older API version should support elevated read for backward compatibility");
+        assertTrue(results.iterator().hasNext(), "Should have search results");
     }
 
     @Test

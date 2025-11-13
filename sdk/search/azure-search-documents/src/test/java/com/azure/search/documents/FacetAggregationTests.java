@@ -8,7 +8,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -27,10 +26,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -39,12 +34,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.loadResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -125,8 +117,7 @@ public class FacetAggregationTests extends SearchTestBase {
         List<FacetResult> ratingFacets = facets.get("Rating");
         assertNotNull(ratingFacets, "Rating facet results should not be null");
 
-        boolean hasMinMetric
-            = ratingFacets.stream().anyMatch(facet -> facet.getAdditionalProperties().containsKey("min"));
+        boolean hasMinMetric = ratingFacets.stream().anyMatch(facet -> facet.getMin() != null);
         assertTrue(hasMinMetric, "Min metric should be present in facets response");
     }
 
@@ -143,8 +134,7 @@ public class FacetAggregationTests extends SearchTestBase {
         List<FacetResult> ratingFacets = facets.get("Rating");
         assertNotNull(ratingFacets, "Rating facet results should not be null");
 
-        boolean hasMaxMetric
-            = ratingFacets.stream().anyMatch(facet -> facet.getAdditionalProperties().containsKey("max"));
+        boolean hasMaxMetric = ratingFacets.stream().anyMatch(facet -> facet.getMax() != null);
         assertTrue(hasMaxMetric, "Max metric should be present in facets response");
     }
 
@@ -161,8 +151,7 @@ public class FacetAggregationTests extends SearchTestBase {
         List<FacetResult> ratingFacets = facets.get("Rating");
         assertNotNull(ratingFacets, "Rating facet results should not be null");
 
-        boolean hasAvgMetric
-            = ratingFacets.stream().anyMatch(facet -> facet.getAdditionalProperties().containsKey("avg"));
+        boolean hasAvgMetric = ratingFacets.stream().anyMatch(facet -> facet.getAvg() != null);
         assertTrue(hasAvgMetric, "Avg metric should be present in facets response");
     }
 
@@ -179,8 +168,7 @@ public class FacetAggregationTests extends SearchTestBase {
         List<FacetResult> categoryFacets = facets.get("Category");
         assertNotNull(categoryFacets, "Category facet results should not be null");
 
-        boolean hasCardinalityMetric
-            = categoryFacets.stream().anyMatch(facet -> facet.getAdditionalProperties().containsKey("cardinality"));
+        boolean hasCardinalityMetric = categoryFacets.stream().anyMatch(facet -> facet.getCardinality() != null);
         assertTrue(hasCardinalityMetric, "Cardinality metric should be present in facets response");
     }
 
@@ -197,9 +185,9 @@ public class FacetAggregationTests extends SearchTestBase {
 
         List<FacetResult> ratingFacets = facets.get("Rating");
 
-        boolean hasMin = ratingFacets.stream().anyMatch(f -> f.getAdditionalProperties().containsKey("min"));
-        boolean hasMax = ratingFacets.stream().anyMatch(f -> f.getAdditionalProperties().containsKey("max"));
-        boolean hasAvg = ratingFacets.stream().anyMatch(f -> f.getAdditionalProperties().containsKey("avg"));
+        boolean hasMin = ratingFacets.stream().anyMatch(f -> f.getMin() != null);
+        boolean hasMax = ratingFacets.stream().anyMatch(f -> f.getMax() != null);
+        boolean hasAvg = ratingFacets.stream().anyMatch(f -> f.getAvg() != null);
 
         assertTrue(hasMin, "Min metric should be present");
         assertTrue(hasMax, "Max metric should be present");
@@ -219,14 +207,10 @@ public class FacetAggregationTests extends SearchTestBase {
         assertNotNull(defaultResults.getFacets().get("Category"));
         assertNotNull(maxResults.getFacets().get("Category"));
 
-        boolean defaultHasCardinality = defaultResults.getFacets()
-            .get("Category")
-            .stream()
-            .anyMatch(f -> f.getAdditionalProperties().containsKey("cardinality"));
-        boolean maxHasCardinality = maxResults.getFacets()
-            .get("Category")
-            .stream()
-            .anyMatch(f -> f.getAdditionalProperties().containsKey("cardinality"));
+        boolean defaultHasCardinality
+            = defaultResults.getFacets().get("Category").stream().anyMatch(f -> f.getCardinality() != null);
+        boolean maxHasCardinality
+            = maxResults.getFacets().get("Category").stream().anyMatch(f -> f.getCardinality() != null);
 
         assertTrue(defaultHasCardinality, "Default threshold should return cardinality");
         assertTrue(maxHasCardinality, "Max threshold should return cardinality");
@@ -245,13 +229,9 @@ public class FacetAggregationTests extends SearchTestBase {
         assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
         assertTrue(facets.containsKey("Category"), "Category facet should be present");
 
-        boolean hasRatingMetrics = facets.get("Rating")
-            .stream()
-            .anyMatch(facet -> facet.getAdditionalProperties().containsKey("min")
-                || facet.getAdditionalProperties().containsKey("max"));
-        boolean hasCategoryMetrics = facets.get("Category")
-            .stream()
-            .anyMatch(facet -> facet.getAdditionalProperties().containsKey("cardinality"));
+        boolean hasRatingMetrics
+            = facets.get("Rating").stream().anyMatch(facet -> facet.getMin() != null || facet.getMax() != null);
+        boolean hasCategoryMetrics = facets.get("Category").stream().anyMatch(facet -> facet.getCardinality() != null);
 
         assertTrue(hasRatingMetrics, "Rating metrics should work with semantic query");
         assertTrue(hasCategoryMetrics, "Category metrics should work with semantic query");
@@ -269,10 +249,13 @@ public class FacetAggregationTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min");
 
-        Exception exception = assertThrows(HttpResponseException.class, () -> {
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
             prevVersionClient.search("*", searchOptions, null).iterator().hasNext();
         });
-        assertTrue(exception.getMessage().contains("facet metrics") || exception.getMessage().contains("unsupported"),
+
+        assertEquals(400, exception.getResponse().getStatusCode(), "Should return 400 Bad Request");
+        assertTrue(
+            exception.getMessage().contains("'metric' faceting") || exception.getMessage().contains("not supported"),
             "Should fail due to unsupported facet metrics in previous API version");
 
     }
@@ -306,12 +289,11 @@ public class FacetAggregationTests extends SearchTestBase {
     private static void uploadTestDocuments() {
         try {
             // Upload diverse test data to properly test aggregations
-            List<Map<String, Object>> hotels = Arrays.asList(createHotel("1", 4.5, "Luxury", "Grand Hotel"),
-                createHotel("2", 3.8, "Budget", "Economy Inn"),
-                createHotel("3", 4.2, "Business", "Business Center Hotel"),
-                createHotel("4", 5.0, "Resort", "Paradise Resort"), createHotel("5", 2.9, "Budget", "Basic Hotel"),
+            List<Map<String, Object>> hotels = Arrays.asList(createHotel("1", 4, "Luxury", "Grand Hotel"),
+                createHotel("2", 3, "Budget", "Economy Inn"), createHotel("3", 4, "Business", "Business Center Hotel"),
+                createHotel("4", 5, "Resort", "Paradise Resort"), createHotel("5", 2, "Budget", "Basic Hotel"),
                 createHotel("6", null, "Boutique", "Missing Rating Hotel"), // Missing rating for default value testing
-                createHotel("7", 4.1, null, "Missing Category Hotel") // Missing category for default value testing
+                createHotel("7", 4, null, "Missing Category Hotel") // Missing category for default value testing
             );
 
             searchClient.uploadDocuments(hotels);
@@ -323,7 +305,7 @@ public class FacetAggregationTests extends SearchTestBase {
         }
     }
 
-    private static Map<String, Object> createHotel(String id, Double rating, String category, String name) {
+    private static Map<String, Object> createHotel(String id, Integer rating, String category, String name) {
         Map<String, Object> hotel = new HashMap<>();
         hotel.put("HotelId", id);
         hotel.put("HotelName", name);
@@ -333,16 +315,6 @@ public class FacetAggregationTests extends SearchTestBase {
         if (category != null)
             hotel.put("Category", category);
         return hotel;
-    }
-
-    private int countOccurrences(String text, String substring) {
-        int count = 0;
-        int index = 0;
-        while ((index = text.indexOf(substring, index)) != -1) {
-            count++;
-            index += substring.length();
-        }
-        return count;
     }
 
 }

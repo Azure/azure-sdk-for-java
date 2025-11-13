@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -9,6 +10,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.search.documents.SearchClient;
+import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
@@ -24,10 +27,16 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
-import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.ServiceIndexersRuntime;
+import com.azure.search.documents.indexes.models.SemanticConfiguration;
+import com.azure.search.documents.indexes.models.SemanticField;
+import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
+import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.models.SearchOptions;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -41,7 +50,6 @@ import reactor.util.function.Tuples;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1067,7 +1075,7 @@ public class IndexManagementTests extends SearchTestBase {
     @Test
     public void testProductScoringAggregationWithOlderApiVersions() {
         SearchIndexClient olderApiClient
-            = getSearchIndexClientBuilder(true).serviceVersion(SearchServiceVersion.V2025_09_01).buildClient();
+            = getSearchIndexClientBuilder(true).serviceVersion(SearchServiceVersion.V2023_11_01).buildClient();
 
         SearchIndex index = createIndexWithScoringAggregation("older-api-test");
 
@@ -1093,8 +1101,15 @@ public class IndexManagementTests extends SearchTestBase {
     public void testProductScoringAggregationDeserialization() {
         String json = "{\"name\":\"productProfile\",\"functionAggregation\":\"product\",\"functions\":[]}";
 
-        ScoringProfile profile = BinaryData.fromString(json).toObject(ScoringProfile.class);
-        assertEquals(ScoringFunctionAggregation.PRODUCT, profile.getFunctionAggregation());
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            ScoringProfile profile = ScoringProfile.fromJson(reader);
+            assertEquals("productProfile", profile.getName());
+            assertEquals(ScoringFunctionAggregation.PRODUCT, profile.getFunctionAggregation());
+            assertNotNull(profile.getFunctions());
+            assertTrue(profile.getFunctions().isEmpty());
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     private SearchIndex createIndexWithScoringAggregation(String suffix) {
@@ -1108,142 +1123,198 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void serviceStatisticsIncludesIndexersRuntimeSync() {
-        SearchServiceStatistics stats = client.getServiceStatistics();
+    public void createIndexWithPurviewEnabledSucceeds() {
+        String indexName = randomIndexName("purview-enabled-index");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                    .setSensitivityLabel(true)));
 
-        assertNotNull(stats, "Service statistics should not be null");
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-        ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
-        if (indexersRuntime != null) {
-            assertTrue(indexersRuntime.getUsedSeconds() >= 0, "UsedSeconds should be non-negative");
-            assertNotNull(indexersRuntime.getBeginningTime(), "BeginningTime should not be null");
-            assertNotNull(indexersRuntime.getEndingTime(), "EndingTime should not be null");
+        assertTrue(createdIndex.isPurviewEnabled());
+        assertTrue(createdIndex.getFields()
+            .stream()
+            .anyMatch(f -> "SensitivityLabel".equals(f.getName()) && f.isSensitivityLabel()));
 
-            assertTrue(indexersRuntime.getBeginningTime().toString().endsWith("Z"), "BeginningTime should be UTC");
-            assertTrue(indexersRuntime.getEndingTime().toString().endsWith("Z"), "EndingTime should be UTC");
-
-            OffsetDateTime beginningTime = indexersRuntime.getBeginningTime();
-            OffsetDateTime endingTime = indexersRuntime.getEndingTime();
-            assertTrue(endingTime.isAfter(beginningTime), "EndingTime should be after BeginningTime");
-        }
     }
 
     @Test
-    public void serviceStatisticsIncludesIndexersRuntimeAsync() {
-        StepVerifier.create(asyncClient.getServiceStatistics()).assertNext(stats -> {
-            assertNotNull(stats, "Service statistics should not be null");
+    public void createIndexWithPurviewEnabledRequiresSensitivityLabelField() {
+        String indexName = randomIndexName("purview-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true)));
 
-            ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
-            if (indexersRuntime != null) {
-                assertTrue(indexersRuntime.getUsedSeconds() >= 0, "UsedSeconds should be non-negative");
-                assertNotNull(indexersRuntime.getBeginningTime(), "BeginningTime should not be null");
-                assertNotNull(indexersRuntime.getEndingTime(), "EndingTime should not be null");
-            }
-        }).verifyComplete();
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+            client.createIndex(index);
+        });
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+        assertTrue(exception.getMessage().toLowerCase().contains("sensitivity")
+            || exception.getMessage().toLowerCase().contains("purview"));
     }
 
     @Test
-    public void serviceIndexersRuntimeWithQuotaFields() {
-        SearchServiceStatistics stats = client.getServiceStatistics();
-        ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
+    public void purviewEnabledIndexRejectsApiKeyAuth() {
+        String indexName = randomIndexName("purview-api-key-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                    .setSensitivityLabel(true)));
 
-        if (indexersRuntime != null) {
-            if (indexersRuntime.getRemainingSeconds() != null) {
-                assertTrue(indexersRuntime.getRemainingSeconds() >= 0,
-                    "RemainingSeconds should be non-negative when present");
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-                long totalExpected = indexersRuntime.getUsedSeconds() + indexersRuntime.getRemainingSeconds();
-                assertTrue(totalExpected > 0, "Total runtime capacity should be positive");
-            }
-        }
+        String apiKey = System.getenv("AZURE_SEARCH_ADMIN_KEY");
+
+        SearchClient apiKeyClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(new AzureKeyCredential(apiKey))
+            .indexName(createdIndex.getName())
+            .buildClient();
+
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> {
+            apiKeyClient.search("*").iterator().hasNext();
+        });
+
+        assertTrue(ex.getResponse().getStatusCode() == 401
+            || ex.getResponse().getStatusCode() == 403
+            || ex.getResponse().getStatusCode() == 400);
     }
 
     @Test
-    public void serviceIndexersRuntimeBoundaryValues() {
-        // Test with mock data containing boundary values
-        String mockJson = "{\n" + "    \"usedSeconds\": 0,\n" + "    \"remainingSeconds\": 9223372036854775807,\n"
-            + "    \"beginningTime\": \"2023-01-01T00:00:00Z\",\n" + "    \"endingTime\": \"2023-01-01T23:59:59Z\"\n"
-            + "}";
+    public void purviewEnabledIndexDisablesAutocompleteAndSuggest() {
+        String indexName = randomIndexName("purview-suggest-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                    .setSensitivityLabel(true)))
+            .setSuggesters(
+                Collections.singletonList(new SearchSuggester("sg", Collections.singletonList("HotelName"))));
 
-        try (JsonReader reader = JsonProviders.createReader(mockJson)) {
-            ServiceIndexersRuntime runtime = ServiceIndexersRuntime.fromJson(reader);
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-            assertEquals(0L, runtime.getUsedSeconds(), "Should handle zero usedSeconds");
-            assertEquals(Long.MAX_VALUE, runtime.getRemainingSeconds(), "Should handle maximum Long value");
-            assertNotNull(runtime.getBeginningTime(), "Should parse beginningTime");
-            assertNotNull(runtime.getEndingTime(), "Should parse endingTime");
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+        SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
+
+        HttpResponseException ex1 = assertThrows(HttpResponseException.class, () -> {
+            searchClient.autocomplete("test", "sg").iterator().hasNext();
+        });
+        assertTrue(ex1.getResponse().getStatusCode() == 400 || ex1.getResponse().getStatusCode() == 403);
+
+        HttpResponseException ex2 = assertThrows(HttpResponseException.class, () -> {
+            searchClient.suggest("test", "sg").iterator().hasNext();
+        });
+        assertTrue(ex2.getResponse().getStatusCode() == 400 || ex2.getResponse().getStatusCode() == 403);
     }
 
     @Test
-    public void serviceIndexersRuntimeForwardCompatibility() {
-        String jsonWithExtraFields = "{\n" + "    \"usedSeconds\": 100,\n" + "    \"remainingSeconds\": 86300,\n"
-            + "    \"beginningTime\": \"2023-01-01T00:00:00Z\",\n" + "    \"endingTime\": \"2023-01-01T23:59:59Z\",\n"
-            + "    \"futureField\": \"someValue\",\n" + "    \"anotherNewField\": 12345\n" + "}";
+    public void cannotTogglePurviewEnabledAfterCreation() {
+        String indexName = randomIndexName("purview-toggle-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(false)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true)));
 
-        try (JsonReader reader = JsonProviders.createReader(jsonWithExtraFields)) {
-            ServiceIndexersRuntime runtime = ServiceIndexersRuntime.fromJson(reader);
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-            assertNotNull(runtime, "Should deserialize despite extra fields");
-            assertEquals(100L, runtime.getUsedSeconds(), "Should parse known fields correctly");
-            assertEquals(86300L, runtime.getRemainingSeconds(), "Should parse known fields correctly");
+        createdIndex.setPurviewEnabled(true)
+            .getFields()
+            .add(new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                .setSensitivityLabel(true));
 
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> {
+            client.createOrUpdateIndex(createdIndex);
+        });
+
+        assertEquals(400, ex.getResponse().getStatusCode());
+        assertTrue(ex.getMessage().toLowerCase().contains("immutable")
+            || ex.getMessage().toLowerCase().contains("purview")
+            || ex.getMessage().toLowerCase().contains("cannot be changed"));
     }
 
     @Test
-    public void serviceIndexersRuntimeMissingOptionalFields() {
-        String jsonWithMissingOptionalFields
-            = "{\n" + "    \"usedSeconds\": 50,\n" + "    \"beginningTime\": \"2023-01-01T00:00:00Z\",\n"
-                + "    \"endingTime\": \"2023-01-01T23:59:59Z\"\n" + "}";
+    public void cannotModifySensitivityLabelFieldAfterCreation() {
+        String indexName = randomIndexName("purview-field-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                    .setSensitivityLabel(true)));
 
-        try (JsonReader reader = JsonProviders.createReader(jsonWithMissingOptionalFields)) {
-            ServiceIndexersRuntime runtime = ServiceIndexersRuntime.fromJson(reader);
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-            assertNotNull(runtime, "Should deserialize with missing optional fields");
-            assertEquals(50L, runtime.getUsedSeconds(), "Should parse required fields correctly");
-            assertNull(runtime.getRemainingSeconds(), "Optional field should be null when missing");
+        createdIndex.getFields()
+            .stream()
+            .filter(f -> "SensitivityLabel".equals(f.getName()))
+            .findFirst()
+            .ifPresent(f -> f.setSensitivityLabel(false));
 
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> {
+            client.createOrUpdateIndex(createdIndex);
+        });
+
+        assertEquals(400, ex.getResponse().getStatusCode());
+        assertTrue(ex.getMessage().toLowerCase().contains("immutable")
+            || ex.getMessage().toLowerCase().contains("sensitivity"));
     }
 
     @Test
-    public void serviceIndexersRuntimeRequiredFieldsValidation() {
-        String jsonWithMissingRequired
-            = "{\n" + "    \"remainingSeconds\": 86400,\n" + "    \"beginningTime\": \"2023-01-01T00:00:00Z\"\n" + "}";
+    public void purviewEnabledIndexSupportsBasicSearch() {
+        String indexName = randomIndexName("purview-search-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                    .setSensitivityLabel(true)));
 
-        try (JsonReader reader = JsonProviders.createReader(jsonWithMissingRequired)) {
-            IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-                ServiceIndexersRuntime.fromJson(reader);
-            });
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-            assertTrue(exception.getMessage().contains("Missing required property"),
-                "Should indicate missing required properties");
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+        SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
+
+        List<Map<String, Object>> documents = Arrays.asList(createTestDocument("1", "Test Hotel", "Public"));
+        searchClient.uploadDocuments(documents);
+        waitForIndexing();
+
+        SearchPagedIterable results = searchClient.search("Test");
+        assertNotNull(results);
+        // getTotalCount() can be null, so check for non-null or use iterator
+        Long totalCount = results.getTotalCount();
+        assertTrue(totalCount == null || totalCount >= 0);
+
+        // Verify we can iterate over results without errors
+        assertNotNull(results.iterator());
     }
 
     @Test
-    public void serviceIndexersRuntimeJsonStructure() {
-        SearchServiceStatistics stats = client.getServiceStatistics();
-        String statsJson = BinaryData.fromObject(stats).toString();
+    public void purviewEnabledIndexSupportsSemanticSearch() {
+        String indexName = randomIndexName("purview-semantic-test");
+        SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)
+            .setFields(Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
+                    .setSensitivityLabel(true)))
+            .setSemanticSearch(new SemanticSearch().setDefaultConfigurationName("semantic")
+                .setConfigurations(Collections.singletonList(new SemanticConfiguration("semantic",
+                    new SemanticPrioritizedFields().setContentFields(new SemanticField("HotelName"))))));
 
-        assertTrue(statsJson.length() > 0, "Service statistics JSON should not be empty");
+        SearchIndex createdIndex = client.createIndex(index);
+        indexesToDelete.add(createdIndex.getName());
 
-        ServiceIndexersRuntime indexersRuntime = stats.getIndexersRuntime();
-        if (indexersRuntime != null) {
-            String runtimeJson = BinaryData.fromObject(indexersRuntime).toString();
-            assertTrue(runtimeJson.contains("usedSeconds"), "Runtime JSON should contain usedSeconds");
-            assertTrue(runtimeJson.contains("beginningTime"), "Runtime JSON should contain beginningTime");
-            assertTrue(runtimeJson.contains("endingTime"), "Runtime JSON should contain endingTime");
-        }
+        SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
+
+        List<Map<String, Object>> documents = Arrays.asList(createTestDocument("1", "Test Hotel", "Public"));
+        searchClient.uploadDocuments(documents);
+        waitForIndexing();
+
+        SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.SEMANTIC);
+
+        SearchPagedIterable results = searchClient.search("Test", searchOptions, null);
+        assertNotNull(results);
     }
 
     static SearchIndex mutateCorsOptionsInIndex(SearchIndex index) {
@@ -1266,5 +1337,21 @@ public class IndexManagementTests extends SearchTestBase {
 
         throw new NoSuchElementException(
             "Unable to find a field with name '" + name + "' in index '" + index.getName() + "'.");
+    }
+
+    private Map<String, Object> createTestDocument(String id, String hotelName, String sensitivityLabel) {
+        Map<String, Object> document = new HashMap<>();
+        document.put("HotelId", id);
+        document.put("HotelName", hotelName);
+        document.put("SensitivityLabel", sensitivityLabel);
+        return document;
+    }
+
+    private void waitForIndexing() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

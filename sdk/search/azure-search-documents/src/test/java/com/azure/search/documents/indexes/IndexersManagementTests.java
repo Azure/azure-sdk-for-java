@@ -1131,6 +1131,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void canCreateIndexerWithAllowSkillsetToReadFileDataSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+            .setSkillsetName(sharedSkillset.getName())
             .setParameters(new IndexingParameters()
                 .setConfiguration(Collections.singletonMap("allowSkillsetToReadFileData", true)));
 
@@ -1141,6 +1142,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void canCreateIndexerWithAllowSkillsetToReadFileDataAsync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+            .setSkillsetName(sharedSkillset.getName())
             .setParameters(new IndexingParameters()
                 .setConfiguration(Collections.singletonMap("allowSkillsetToReadFileData", true)));
 
