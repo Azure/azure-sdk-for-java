@@ -5,6 +5,8 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.resourcemanager.appservice.models.DeployOptions;
+import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -34,33 +36,26 @@ public class WarDeployTests extends AppServiceTest {
 
     @Test
     public void canDeployWar() throws Exception {
+        // Create web app
+        WebApp webApp = appServiceManager.webApps()
+            .define(webappName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewWindowsPlan(PricingTier.PREMIUM_P1V3)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
+            .create();
+        Assertions.assertNotNull(webApp);
+
         if (!isPlaybackMode()) {
-            // webApp.warDeploy method randomly fails in playback mode with error java.net.UnknownHostException,
-            // Run this only in live mode ignore in playback until we find the root cause
-            // https://api.travis-ci.org/v3/job/427936160/log.txt
-            //
-            // Create web app
-            WebApp webApp = appServiceManager.webApps()
-                .define(webappName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
-                .create();
-            Assertions.assertNotNull(webApp);
+            webApp.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"));
+            ResourceManagerUtils.sleep(Duration.ofSeconds(60));
 
-            webApp.warDeploy(warFile);
-
-            if (!isPlaybackMode()) {
-                ResourceManagerUtils.sleep(Duration.ofSeconds(30));
-
-                Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
-                Assertions.assertEquals(200, response.getStatusCode());
-                String body = response.getValue();
-                Assertions.assertNotNull(body);
-                Assertions.assertTrue(body.contains("Azure Samples Hello World"));
-            }
+            Response<String> response = curl("https://" + webappName + "." + "azurewebsites.net");
+            Assertions.assertEquals(200, response.getStatusCode());
+            String body = response.getValue();
+            Assertions.assertNotNull(body);
+            Assertions.assertTrue(body.contains("Azure Samples Hello World"));
         }
     }
 
@@ -69,29 +64,29 @@ public class WarDeployTests extends AppServiceTest {
         // Create web app
         WebApp webApp = appServiceManager.webApps()
             .define(webappName)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withNewWindowsPlan(PricingTier.STANDARD_S1)
+            .withNewWindowsPlan(PricingTier.PREMIUM_P1V3)
             .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
             .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
             .create();
         Assertions.assertNotNull(webApp);
 
         if (!isPlaybackMode()) {
-            webApp.warDeploy(warFile);
+            webApp.deploy(DeployType.WAR, warFile, new DeployOptions().withPath("webapps/ROOT"));
             try (InputStream is = new FileInputStream(warFile)) {
-                webApp.warDeploy(is, warFile.length(), "app2");
+                webApp.deploy(DeployType.WAR, is, warFile.length(), new DeployOptions().withPath("webapps/app2"));
             }
 
-            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+            ResourceManagerUtils.sleep(Duration.ofSeconds(60));
 
-            Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
+            Response<String> response = curl("https://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
             Assertions.assertTrue(body.contains("Azure Samples Hello World"));
 
-            response = curl("http://" + webappName + "." + "azurewebsites.net/app2/");
+            response = curl("https://" + webappName + "." + "azurewebsites.net/app2/");
             Assertions.assertEquals(200, response.getStatusCode());
             body = response.getValue();
             Assertions.assertNotNull(body);

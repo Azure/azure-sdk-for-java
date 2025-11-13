@@ -23,6 +23,11 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     private AppServicePlanPatchResourceProperties innerProperties;
 
     /*
+     * Managed service identity.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * The type of the resource.
      */
     private String type;
@@ -50,6 +55,26 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     private AppServicePlanPatchResourceProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Managed service identity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -546,6 +571,9 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -556,6 +584,7 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -586,6 +615,8 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedAppServicePlanPatchResource.innerProperties
                         = AppServicePlanPatchResourceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResource.identity = ManagedServiceIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

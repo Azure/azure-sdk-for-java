@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The restriction level applied to the cluster's node resource group.
+ * The restriction level applied to the cluster's node resource group. If not specified, the default is 'Unrestricted'.
  */
 public final class RestrictionLevel extends ExpandableStringEnum<RestrictionLevel> {
     /**
