@@ -220,33 +220,6 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     }
 
     @Test
-    public void testAksProxyWithCaFileButNoSni() {
-        Configuration configuration = TestUtils
-            .createTestConfiguration(new TestConfigurationSource().put("AZURE_KUBERNETES_TOKEN_PROXY", serverBaseUrl)
-                .put("AZURE_KUBERNETES_CA_FILE", caCertFilePath.toString())
-                .put(Configuration.PROPERTY_AZURE_CLIENT_ID, TEST_CLIENT_ID)
-                .put(Configuration.PROPERTY_AZURE_TENANT_ID, TEST_TENANT_ID)
-                .put("AZURE_FEDERATED_TOKEN_FILE", tokenFilePath.toString()));
-
-        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId(TEST_TENANT_ID)
-            .clientId(TEST_CLIENT_ID)
-            .tokenFilePath(tokenFilePath.toString())
-            .configuration(configuration)
-            .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
-            .disableInstanceDiscovery()
-            .build();
-
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
-
-        AccessToken token = credential.getTokenSync(request);
-
-        assertNotNull(token, "Access token should not be null");
-        assertEquals(MOCK_ACCESS_TOKEN, token.getToken(), "Token value should match mock response");
-        assertEquals(1, tokenRequestCount.get(), "Server should have received exactly one token request");
-    }
-
-    @Test
     public void testAksProxyWithInvalidTokenFile() {
         Path nonExistentTokenFile = tempDir.resolve("non-existent-token.jwt");
 
@@ -456,6 +429,48 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         assertEquals(MOCK_ACCESS_TOKEN, token.getToken(), "Token value should match mock token");
         assertTrue(token.getExpiresAt().isAfter(OffsetDateTime.now()), "Token should not be expired");
         assertEquals(1, tokenRequestCount.get(), "Token request should be made once");
+    }
+
+    @Test
+    public void testAksProxyWithCaFileButNoSni() throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        try (InputStream keyStoreStream = getClass().getResourceAsStream("/test-aks-cert-no-sni.p12")) {
+            assertNotNull(keyStoreStream, "Mismatched certificate not found: /test-aks-cert-no-sni.p12");
+            keyStore.load(keyStoreStream, "password".toCharArray());
+        }
+
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("test-cert", "password".toCharArray());
+        X509Certificate certificate = (X509Certificate) keyStore.getCertificate("test-cert");
+
+        String noSniCertPemData = toPemFormat(certificate);
+        Path noSniCaCertFile = tempDir.resolve("ca-cert-no-sni.pem");
+        Files.write(noSniCaCertFile, noSniCertPemData.getBytes(StandardCharsets.UTF_8));
+
+        startNettyHttpsServer(privateKey, certificate);
+
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put("AZURE_KUBERNETES_TOKEN_PROXY", serverBaseUrl)
+                .put("AZURE_KUBERNETES_CA_FILE", noSniCaCertFile.toString())
+                .put(Configuration.PROPERTY_AZURE_CLIENT_ID, TEST_CLIENT_ID)
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, TEST_TENANT_ID)
+                .put("AZURE_FEDERATED_TOKEN_FILE", tokenFilePath.toString()));
+
+        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId(TEST_TENANT_ID)
+            .clientId(TEST_CLIENT_ID)
+            .tokenFilePath(tokenFilePath.toString())
+            .configuration(configuration)
+            .authorityHost(serverBaseUrl)
+            .enableAzureTokenProxy()
+            .disableInstanceDiscovery()
+            .build();
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+
+        AccessToken token = credential.getTokenSync(request);
+
+        assertNotNull(token, "Access token should not be null");
+        assertEquals(MOCK_ACCESS_TOKEN, token.getToken(), "Token value should match mock response");
+        assertEquals(1, tokenRequestCount.get(), "Server should have received exactly one token request");
     }
 
     @Test

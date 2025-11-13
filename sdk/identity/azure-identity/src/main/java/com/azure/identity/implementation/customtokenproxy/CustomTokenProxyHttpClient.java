@@ -88,7 +88,9 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         try {
             SSLSocketFactory sslSocketFactory = getSSLSocketFactory();
             connection.setSSLSocketFactory(sslSocketFactory);
-            connection.setHostnameVerifier(sniAwareVerifier(sniName, proxyUrl));
+            if (!CoreUtils.isNullOrEmpty(sniName)) {
+                connection.setHostnameVerifier(sniAwareVerifier(sniName, proxyUrl));
+            }
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set up SSL context for token proxy", e));
         }
