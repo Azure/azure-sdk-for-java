@@ -106,6 +106,11 @@ public final class CassandraClusterPublicStatusDataCentersItemNode
      */
     private Double cpuUsage;
 
+    /*
+     * If node has been updated to latest model
+     */
+    private Boolean isLatestModel;
+
     /**
      * Creates an instance of CassandraClusterPublicStatusDataCentersItemNode class.
      */
@@ -459,6 +464,26 @@ public final class CassandraClusterPublicStatusDataCentersItemNode
     }
 
     /**
+     * Get the isLatestModel property: If node has been updated to latest model.
+     * 
+     * @return the isLatestModel value.
+     */
+    public Boolean isLatestModel() {
+        return this.isLatestModel;
+    }
+
+    /**
+     * Set the isLatestModel property: If node has been updated to latest model.
+     * 
+     * @param isLatestModel the isLatestModel value to set.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
+     */
+    public CassandraClusterPublicStatusDataCentersItemNode withIsLatestModel(Boolean isLatestModel) {
+        this.isLatestModel = isLatestModel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -489,6 +514,7 @@ public final class CassandraClusterPublicStatusDataCentersItemNode
         jsonWriter.writeNumberField("memoryFreeKB", this.memoryFreeKB);
         jsonWriter.writeNumberField("memoryTotalKB", this.memoryTotalKB);
         jsonWriter.writeNumberField("cpuUsage", this.cpuUsage);
+        jsonWriter.writeBooleanField("isLatestModel", this.isLatestModel);
         return jsonWriter.writeEndObject();
     }
 
@@ -553,6 +579,9 @@ public final class CassandraClusterPublicStatusDataCentersItemNode
                 } else if ("cpuUsage".equals(fieldName)) {
                     deserializedCassandraClusterPublicStatusDataCentersItemNode.cpuUsage
                         = reader.getNullable(JsonReader::getDouble);
+                } else if ("isLatestModel".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.isLatestModel
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

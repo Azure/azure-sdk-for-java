@@ -87,6 +87,15 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
      * {@inheritDoc}
      */
     @Override
+    public GremlinDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GremlinDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -163,6 +172,9 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GremlinDatabaseCreateUpdateParameters.class);
@@ -175,6 +187,7 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -207,6 +220,9 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedGremlinDatabaseCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGremlinDatabaseCreateUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedGremlinDatabaseCreateUpdateParameters.innerProperties
                         = GremlinDatabaseCreateUpdateProperties.fromJson(reader);

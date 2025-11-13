@@ -11,6 +11,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesResource;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
@@ -88,6 +89,15 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
      * {@inheritDoc}
      */
     @Override
+    public CassandraKeyspaceGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public CassandraKeyspaceGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -158,6 +168,9 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -168,6 +181,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -200,6 +214,8 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCassandraKeyspaceGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCassandraKeyspaceGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedCassandraKeyspaceGetResultsInner.innerProperties
                         = CassandraKeyspaceGetProperties.fromJson(reader);

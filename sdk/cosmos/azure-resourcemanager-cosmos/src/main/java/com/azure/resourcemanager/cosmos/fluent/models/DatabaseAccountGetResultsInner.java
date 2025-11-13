@@ -15,6 +15,8 @@ import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.Capacity;
+import com.azure.resourcemanager.cosmos.models.CapacityMode;
+import com.azure.resourcemanager.cosmos.models.CapacityModeChangeTransitionState;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
@@ -22,6 +24,8 @@ import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -44,11 +48,6 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * Indicates the type of database account. This can only be set at database account creation.
      */
     private DatabaseAccountKind kind;
-
-    /*
-     * Identity for the resource.
-     */
-    private ManagedServiceIdentity identity;
 
     /*
      * Properties for the database account.
@@ -98,26 +97,6 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      */
     public DatabaseAccountGetResultsInner withKind(DatabaseAccountKind kind) {
         this.kind = kind;
-        return this;
-    }
-
-    /**
-     * Get the identity property: Identity for the resource.
-     * 
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: Identity for the resource.
-     * 
-     * @param identity the identity value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
         return this;
     }
 
@@ -173,6 +152,15 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * {@inheritDoc}
      */
     @Override
+    public DatabaseAccountGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DatabaseAccountGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -188,12 +176,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
-     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
-     * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
-     * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
-     * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
-     * 'DeletionFailed' – the Cosmos DB account deletion failed.
+     * Get the provisioningState property: The provisioning state of the resource.
      * 
      * @return the provisioningState value.
      */
@@ -821,6 +804,31 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -871,6 +879,80 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityMode();
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCapacityMode(CapacityMode capacityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCapacityMode(capacityMode);
+        return this;
+    }
+
+    /**
+     * Get the capacityModeChangeTransitionState property: The object that represents the migration state for the
+     * CapacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityModeChangeTransitionState value.
+     */
+    public CapacityModeChangeTransitionState capacityModeChangeTransitionState() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityModeChangeTransitionState();
+    }
+
+    /**
+     * Set the capacityModeChangeTransitionState property: The object that represents the migration state for the
+     * CapacityMode of the Cosmos DB account.
+     * 
+     * @param capacityModeChangeTransitionState the capacityModeChangeTransitionState value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withCapacityModeChangeTransitionState(CapacityModeChangeTransitionState capacityModeChangeTransitionState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCapacityModeChangeTransitionState(capacityModeChangeTransitionState);
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: The object that represents the metadata for the Account Keys of the Cosmos DB
      * account.
      * 
@@ -906,33 +988,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @return the minimalTlsVersion value.
-     */
-    public MinimalTlsVersion minimalTlsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
-    }
-
-    /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @param minimalTlsVersion the minimalTlsVersion value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
-        return this;
-    }
-
-    /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
-     * account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -941,8 +998,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
-     * account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
@@ -952,6 +1009,31 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
             this.innerProperties = new DatabaseAccountGetProperties();
         }
         this.innerProperties().withEnableBurstCapacity(enableBurstCapacity);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * 
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * 
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
@@ -981,8 +1063,68 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
-     * PerRegionPerPartitionAutoscale feature on the account.
+     * Get the keyVaultKeyUriVersion property: The version of the Customer Managed Key currently being used by the
+     * account.
+     * 
+     * @return the keyVaultKeyUriVersion value.
+     */
+    public String keyVaultKeyUriVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultKeyUriVersion();
+    }
+
+    /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePriorityBasedExecution();
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnablePriorityBasedExecution(enablePriorityBasedExecution);
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPriorityLevel();
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDefaultPriorityLevel(defaultPriorityLevel);
+        return this;
+    }
+
+    /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of Per-Region
+     * Per-partition autoscale Preview feature on the account.
      * 
      * @return the enablePerRegionPerPartitionAutoscale value.
      */
@@ -991,8 +1133,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
-     * PerRegionPerPartitionAutoscale feature on the account.
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of Per-Region
+     * Per-partition autoscale Preview feature on the account.
      * 
      * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
@@ -1007,17 +1149,99 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
+     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     */
+    public Boolean enableAllVersionsAndDeletesChangeFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAllVersionsAndDeletesChangeFeed();
+    }
+
+    /**
+     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableAllVersionsAndDeletesChangeFeed(enableAllVersionsAndDeletesChangeFeed);
+        return this;
+    }
+
+    /**
+     * Get the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
+     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
+     * and dedicated throughput containers in the account for 1 region. READ ONLY.
+     * 
+     * @return the throughputPoolDedicatedRUs value.
+     */
+    public Long throughputPoolDedicatedRUs() {
+        return this.innerProperties() == null ? null : this.innerProperties().throughputPoolDedicatedRUs();
+    }
+
+    /**
+     * Set the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
+     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
+     * and dedicated throughput containers in the account for 1 region. READ ONLY.
+     * 
+     * @param throughputPoolDedicatedRUs the throughputPoolDedicatedRUs value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withThroughputPoolDedicatedRUs(Long throughputPoolDedicatedRUs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withThroughputPoolDedicatedRUs(throughputPoolDedicatedRUs);
+        return this;
+    }
+
+    /**
+     * Get the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
+     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
+     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
+     * ONLY.
+     * 
+     * @return the throughputPoolMaxConsumableRUs value.
+     */
+    public Long throughputPoolMaxConsumableRUs() {
+        return this.innerProperties() == null ? null : this.innerProperties().throughputPoolMaxConsumableRUs();
+    }
+
+    /**
+     * Set the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
+     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
+     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
+     * ONLY.
+     * 
+     * @param throughputPoolMaxConsumableRUs the throughputPoolMaxConsumableRUs value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withThroughputPoolMaxConsumableRUs(Long throughputPoolMaxConsumableRUs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withThroughputPoolMaxConsumableRUs(throughputPoolMaxConsumableRUs);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -1029,8 +1253,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -1063,11 +1287,11 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDatabaseAccountGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("kind".equals(fieldName)) {
                     deserializedDatabaseAccountGetResultsInner.kind
                         = DatabaseAccountKind.fromString(reader.getString());
-                } else if ("identity".equals(fieldName)) {
-                    deserializedDatabaseAccountGetResultsInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDatabaseAccountGetResultsInner.innerProperties
                         = DatabaseAccountGetProperties.fromJson(reader);

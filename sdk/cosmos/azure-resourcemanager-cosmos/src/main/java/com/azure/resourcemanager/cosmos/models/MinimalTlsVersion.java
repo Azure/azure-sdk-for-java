@@ -8,8 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls
- * 1.2.
+ * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only
+ * work with Tls 1.2.
  */
 public final class MinimalTlsVersion extends ExpandableStringEnum<MinimalTlsVersion> {
     /**
