@@ -29,15 +29,21 @@ public class ReactorNettyHttpClientTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyHttpClientTest.class);
     private HttpClient reactorNettyHttpClient;
+    private volatile AutoCloseable disableNettyLeakDetectionScope;
 
     @BeforeClass(groups = "unit")
     public void before_ReactorNettyHttpClientTest() {
         this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(new Configs()));
+        this.disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope();
     }
 
     @AfterClass(groups = "unit", alwaysRun = true)
-    public void after_ReactorNettyHttpClientTest() {
+    public void after_ReactorNettyHttpClientTest() throws Exception {
+
         LifeCycleUtils.closeQuietly(reactorNettyHttpClient);
+        if (this.disableNettyLeakDetectionScope != null) {
+            this.disableNettyLeakDetectionScope.close();
+        }
     }
 
     @Test(groups = "unit")
