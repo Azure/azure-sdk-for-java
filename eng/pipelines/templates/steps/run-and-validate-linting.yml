@@ -21,19 +21,6 @@ parameters:
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
   - task: Maven@4
-    displayName: 'Effective pom'
-    inputs:
-      mavenPomFile: pom.xml
-      options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList) -am'
-      goals: 'help:effective-pom'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-    continueOnError: true
-
-  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Build and Run SpotBugs and Checkstyle'
     ${{ else }}:
