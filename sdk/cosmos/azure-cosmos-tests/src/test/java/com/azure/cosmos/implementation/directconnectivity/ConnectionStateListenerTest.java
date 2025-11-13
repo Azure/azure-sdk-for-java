@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -88,82 +89,84 @@ public class ConnectionStateListenerTest {
         boolean isTcpConnectionEndpointRediscoveryEnabled,
         RequestResponseType responseType,
         boolean markUnhealthy,
-        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException, URISyntaxException {
+        boolean markUnhealthyWhenServerShutdown) throws Exception {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setTcpConnectionEndpointRediscoveryEnabled(isTcpConnectionEndpointRediscoveryEnabled);
+        try (AutoCloseable disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope()) {
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            connectionPolicy.setTcpConnectionEndpointRediscoveryEnabled(isTcpConnectionEndpointRediscoveryEnabled);
 
-        GlobalAddressResolver addressResolver = Mockito.mock(GlobalAddressResolver.class);
+            GlobalAddressResolver addressResolver = Mockito.mock(GlobalAddressResolver.class);
 
-        SslContext sslContext = SslContextUtils.CreateSslContext("client.jks", false);
+            SslContext sslContext = SslContextUtils.CreateSslContext("client.jks", false);
 
-        Configs config = Mockito.mock(Configs.class);
-        Mockito.doReturn(sslContext).when(config).getSslContext(false, false);
+            Configs config = Mockito.mock(Configs.class);
+            Mockito.doReturn(sslContext).when(config).getSslContext(false, false);
 
-        ClientTelemetry clientTelemetry = Mockito.mock(ClientTelemetry.class);
-        ClientTelemetryInfo clientTelemetryInfo = new ClientTelemetryInfo(
-            "testMachine",
-            "testClient",
-            "testProcess",
-            "testApp",
-            ConnectionMode.DIRECT,
-            "test-cdb-account",
-            "Test Region 1",
-            "Linux",
-            false,
-            Arrays.asList("Test Region 1", "Test Region 2"));
+            ClientTelemetry clientTelemetry = Mockito.mock(ClientTelemetry.class);
+            ClientTelemetryInfo clientTelemetryInfo = new ClientTelemetryInfo(
+                "testMachine",
+                "testClient",
+                "testProcess",
+                "testApp",
+                ConnectionMode.DIRECT,
+                "test-cdb-account",
+                "Test Region 1",
+                "Linux",
+                false,
+                Arrays.asList("Test Region 1", "Test Region 2"));
 
-        Mockito.when(clientTelemetry.getClientTelemetryInfo()).thenReturn(clientTelemetryInfo);
+            Mockito.when(clientTelemetry.getClientTelemetryInfo()).thenReturn(clientTelemetryInfo);
 
-        RntbdTransportClient client = new RntbdTransportClient(
-            config,
-            connectionPolicy,
-            new UserAgentContainer(),
-            addressResolver,
-            clientTelemetry,
-            null);
+            RntbdTransportClient client = new RntbdTransportClient(
+                config,
+                connectionPolicy,
+                new UserAgentContainer(),
+                addressResolver,
+                clientTelemetry,
+                null);
 
-        RxDocumentServiceRequest req =
-            RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
-                "dbs/fakedb/colls/fakeColls",
-                getDocumentDefinition(), new HashMap<>());
-        req.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost:8080"));
+            RxDocumentServiceRequest req =
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
+                    "dbs/fakedb/colls/fakeColls",
+                    getDocumentDefinition(), new HashMap<>());
+            req.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost:8080"));
 
-        req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
+            req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId", "fakePartitionKeyRangeId"));
 
-        // Validate connectionStateListener will always track the latest Uri
-        List<Uri> targetUris = new ArrayList<>();
-        int serverPort = port + randomPort.getAndIncrement();
-        String serverAddress = serverAddressPrefix + serverPort;
+            // Validate connectionStateListener will always track the latest Uri
+            List<Uri> targetUris = new ArrayList<>();
+            int serverPort = port + randomPort.getAndIncrement();
+            String serverAddress = serverAddressPrefix + serverPort;
 
-        targetUris.add(new Uri(serverAddress));
-        targetUris.add(new Uri(serverAddress));
+            targetUris.add(new Uri(serverAddress));
+            targetUris.add(new Uri(serverAddress));
 
-        for (Uri uri : targetUris) {
-            // using a random generated server port
-            TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
-            // Inject fake response
-            server.injectServerResponse(responseType);
+            for (Uri uri : targetUris) {
+                // using a random generated server port
+                TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
+                // Inject fake response
+                server.injectServerResponse(responseType);
 
-            try {
-                client.invokeResourceOperationAsync(uri, req).block();
-            } catch (Exception e) {
-                //  no op here
-            }
+                try {
+                    client.invokeResourceOperationAsync(uri, req).block();
+                } catch (Exception e) {
+                    //  no op here
+                }
 
-            if (markUnhealthy) {
-                assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
-                TcpServerFactory.shutdownRntbdServer(server);
-                assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
-
-            } else {
-                assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
-
-                TcpServerFactory.shutdownRntbdServer(server);
-                if (markUnhealthyWhenServerShutdown) {
+                if (markUnhealthy) {
                     assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+                    TcpServerFactory.shutdownRntbdServer(server);
+                    assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+
                 } else {
                     assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+
+                    TcpServerFactory.shutdownRntbdServer(server);
+                    if (markUnhealthyWhenServerShutdown) {
+                        assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+                    } else {
+                        assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+                    }
                 }
             }
         }

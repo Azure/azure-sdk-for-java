@@ -238,7 +238,7 @@ public final class CosmosNettyLeakDetectorFactory
 
     public static AutoCloseable createDisableLeakDetectionScope() {
         synchronized (staticLock) {
-            logger.info("Disabling Leak detection: {}", StackTraceUtil.currentCallStack());
+            logger.warn("Disabling Leak detection:");
             isLeakDetectionDisabled = true;
 
             return new DisableLeakDetectionScope();
