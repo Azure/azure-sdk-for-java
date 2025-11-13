@@ -606,6 +606,8 @@ public interface ResourceProvidersClient {
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -614,7 +616,7 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GeoRegionInner> listGeoRegionsAsync(SkuName sku, Boolean linuxWorkersEnabled, Boolean xenonWorkersEnabled,
-        Boolean linuxDynamicWorkersEnabled);
+        Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled);
 
     /**
      * Get a list of available geographical regions.
@@ -654,6 +656,8 @@ public interface ResourceProvidersClient {
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -663,7 +667,7 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoRegionInner> listGeoRegions(SkuName sku, Boolean linuxWorkersEnabled, Boolean xenonWorkersEnabled,
-        Boolean linuxDynamicWorkersEnabled, Context context);
+        Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled, Context context);
 
     /**
      * List all apps that are assigned to a hostname.
