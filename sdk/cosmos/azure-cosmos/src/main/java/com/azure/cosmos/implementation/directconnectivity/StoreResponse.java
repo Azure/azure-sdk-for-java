@@ -71,12 +71,12 @@ public class StoreResponse {
         if (contentStream != null) {
             try {
                 this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
-            }
-            finally {
+            } finally {
                 try {
                     contentStream.close();
-                } catch (IOException e) {
-                    logger.debug("Could not successfully close content stream.", e);
+                } catch (Throwable e) {
+                    // Log as warning instead of debug to make ByteBuf leak issues more visible
+                    logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
                 }
             }
         } else {
