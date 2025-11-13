@@ -26,6 +26,7 @@ import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -43,6 +44,7 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -796,7 +798,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> T getDocument(String key, Class<T> modelClass) {
-        return getDocumentWithResponse(key, modelClass, null, Context.NONE).getValue();
+        return getDocumentWithResponse(key, modelClass, (List<String>) null, Context.NONE).getValue();
     }
 
     /**
@@ -832,7 +834,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
-        return getDocumentWithResponse(key, modelClass, selectedFields, null, context);
+        return getDocumentWithResponseInternal(key, modelClass, selectedFields, null, null, context);
     }
 
     /**
@@ -870,10 +872,36 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         String querySourceAuthorization, Context context) {
+        return getDocumentWithResponseInternal(key, modelClass, selectedFields, querySourceAuthorization, null,
+            context);
+    }
+
+    /**
+     * Retrieves a document from the Azure AI Search index.
+     * <p>
+     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
+     * constructing valid document keys.
+     *
+     * @param options Additional options for retrieving the document.
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @param <T> Convert document to the generic type.
+     * @return response containing a document object
+     * @throws NullPointerException If {@code options} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Response<T> getDocumentWithResponse(GetDocumentOptions<T> options, Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        return getDocumentWithResponseInternal(options.getKey(), options.getModelClass(), options.getSelectedFields(),
+            null, options.isElevatedReadEnabled(), context);
+    }
+
+    private <T> Response<T> getDocumentWithResponseInternal(String key, Class<T> modelClass,
+        List<String> selectedFields, String querySourceAuthorization, Boolean enableElevatedRead, Context context) {
 
         try {
             Response<Map<String, Object>> response = restClient.getDocuments()
-                .getWithResponse(key, selectedFields, querySourceAuthorization, null, null, context);
+                .getWithResponse(key, selectedFields, querySourceAuthorization, enableElevatedRead, null, context);
 
             return new SimpleResponse<>(response, serializer
                 .deserializeFromBytes(serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));

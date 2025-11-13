@@ -7,16 +7,13 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
-import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionParameters;
 import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceStatus;
@@ -25,8 +22,6 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
-import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
-import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
@@ -37,7 +32,6 @@ import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -288,7 +282,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void statusPayload_mapsToModels_withNullables() throws IOException {
+    public void statusPayloadMapsToModelsWithNullables() throws IOException {
         // Sample status payload with nullables for first sync
         String statusJson = "{\n" + "    \"synchronizationStatus\": \"creating\",\n"
             + "    \"synchronizationInterval\": \"PT24H\",\n" + "    \"currentSynchronizationState\": null,\n"
@@ -412,7 +406,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void knowledgeSourceParameters_setsFieldsCorrectly() {
+    public void knowledgeSourceParametersSetsFieldsCorrectly() {
         SearchIndexKnowledgeSourceParameters params = new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME);
 
         assertEquals(HOTEL_INDEX_NAME, params.getSearchIndexName());
@@ -437,7 +431,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void permissionOptions_enumValuesExist() {
+    public void permissionOptionsEnumValuesExist() {
         assertNotNull(KnowledgeSourceIngestionPermissionOption.USER_IDS);
         assertNotNull(KnowledgeSourceIngestionPermissionOption.GROUP_IDS);
         assertNotNull(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE);

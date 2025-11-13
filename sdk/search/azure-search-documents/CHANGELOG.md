@@ -1,6 +1,6 @@
 # Release History
 
-## 11.9.0-beta.1 (2025-10-23)
+## 11.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -130,7 +130,7 @@
 
 ### Features Added
 
-- Added new `KnowledgeAgentt` apis to index clients and introduced new `SearcKnowledgeAgentntClient` for managing and querying Knowledge Agents,
+- Added new `KnowledgeAgent` apis to index clients and introduced new `SearchKnowledgeAgentClient` for managing and querying Knowledge Agents,
 enabling multi-index grounding for agentic retrieval.
 - Added a method overloads for search client operations to include the `querySourceAuthentication` parameter, allowing users to specify the authentication method for the query source.
 - Added a `resync` method to indexer clients to resync selective options from the data source to be re-ingested by the indexer.
