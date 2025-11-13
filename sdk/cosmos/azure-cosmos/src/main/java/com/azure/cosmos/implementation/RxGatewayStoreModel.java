@@ -36,6 +36,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -422,7 +423,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     if (buf.refCnt() > 0) {
                         // there could be a race with the catch in the .map operator below
                         // so, use safeRelease
-                        io.netty.util.ReferenceCountUtil.safeRelease(buf);
+                        ReferenceCountUtil.safeRelease(buf);
                     }
                 });
 
@@ -469,7 +470,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         if (content.refCnt() > 0) {
                             // Unwrap failed before StoreResponse took ownership -> release our retain
                             // there could be a race with the doOnDiscard above - so, use safeRelease
-                            io.netty.util.ReferenceCountUtil.safeRelease(content);
+                            ReferenceCountUtil.safeRelease(content);
                         }
 
                         throw t;
