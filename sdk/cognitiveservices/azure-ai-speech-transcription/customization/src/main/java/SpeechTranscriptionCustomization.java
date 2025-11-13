@@ -35,28 +35,44 @@ public class SpeechTranscriptionCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing Speech Transcription SDK - changing Duration getters");
-        PackageCustomization models = customization.getPackage("com.azure.ai.speech.transcription.models");
+        logger.info("Customizing Speech Transcription SDK");
 
-        // Customize TranscriptionResult.getDuration() to return Duration instead of int
-        logger.info("Customizing TranscriptionResult.getDuration()");
-        customizeDurationGetter(models, "TranscriptionResult");
+        // Check if models package exists before attempting customization
+        try {
+            PackageCustomization models = customization.getPackage("com.azure.ai.speech.transcription.models");
 
-        // Customize TranscribedPhrase.getDuration() to return Duration instead of int
-        logger.info("Customizing TranscribedPhrase.getDuration()");
-        customizeDurationGetter(models, "TranscribedPhrase");
+            logger.info("Models package found - applying model customizations");
 
-        // Customize TranscribedWord.getDuration() to return Duration instead of int
-        logger.info("Customizing TranscribedWord.getDuration()");
-        customizeDurationGetter(models, "TranscribedWord");
+            // Customize TranscriptionResult.getDuration() to return Duration instead of int
+            logger.info("Customizing TranscriptionResult.getDuration()");
+            customizeDurationGetter(models, "TranscriptionResult");
 
-        // Customize TranscriptionDiarizationOptions to properly serialize enabled field
-        logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
-        customizeDiarizationOptionsToJson(models);
+            // Customize TranscribedPhrase.getDuration() to return Duration instead of int
+            logger.info("Customizing TranscribedPhrase.getDuration()");
+            customizeDurationGetter(models, "TranscribedPhrase");
 
-        // Add AudioFileDetails field and constructors to TranscriptionOptions, make setAudioUrl private
-        logger.info("Customizing TranscriptionOptions to add AudioFileDetails support and String audioUrl constructor");
-        customizeTranscriptionOptions(models);
+            // Customize TranscribedWord.getDuration() to return Duration instead of int
+            logger.info("Customizing TranscribedWord.getDuration()");
+            customizeDurationGetter(models, "TranscribedWord");
+
+            // Customize TranscriptionDiarizationOptions to properly serialize enabled field
+            logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
+            customizeDiarizationOptionsToJson(models);
+
+            // Add AudioFileDetails field and constructors to TranscriptionOptions, make setAudioUrl private
+            logger.info(
+                "Customizing TranscriptionOptions to add AudioFileDetails support and String audioUrl constructor");
+            customizeTranscriptionOptions(models);
+        } catch (IllegalArgumentException e) {
+            logger.warn("Models package not found or empty - skipping model customizations: " + e.getMessage());
+        }
+
+        // Make transcribe(TranscriptionContent) package-private in clients
+        logger.info("Customizing TranscriptionClient to make transcribe(TranscriptionContent) package-private");
+        customizeTranscriptionClient(customization.getPackage("com.azure.ai.speech.transcription"));
+
+        logger.info("Customizing TranscriptionAsyncClient to make transcribe(TranscriptionContent) package-private");
+        customizeTranscriptionAsyncClient(customization.getPackage("com.azure.ai.speech.transcription"));
     }
 
     /**
@@ -109,16 +125,13 @@ public class SpeechTranscriptionCustomization extends Customization {
         packageCustomization.getClass("TranscriptionOptions").customizeAst(ast -> {
             ast.getClassByName("TranscriptionOptions").ifPresent(clazz -> {
                 // Add the AudioFileDetails field as final
-                clazz.addFieldWithInitializer(
-                    "AudioFileDetails",
-                    "audioFileDetails",
-                    null,
+                clazz.addFieldWithInitializer("AudioFileDetails", "audioFileDetails", null,
                     com.github.javaparser.ast.Modifier.Keyword.PRIVATE,
-                    com.github.javaparser.ast.Modifier.Keyword.FINAL
-                );
+                    com.github.javaparser.ast.Modifier.Keyword.FINAL);
 
                 // Update default constructor to initialize audioFileDetails
-                clazz.getConstructors().stream()
+                clazz.getConstructors()
+                    .stream()
                     .filter(c -> c.getParameters().isEmpty())
                     .findFirst()
                     .ifPresent(defaultConstructor -> {
@@ -130,17 +143,17 @@ public class SpeechTranscriptionCustomization extends Customization {
                 ConstructorDeclaration audioUrlConstructor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
                 audioUrlConstructor.addParameter("String", "audioUrl");
                 audioUrlConstructor.setBody(parseBlock("{ this.audioUrl = audioUrl; this.audioFileDetails = null; }"));
-                audioUrlConstructor.setJavadocComment(new Javadoc(parseText(
-                    "Creates an instance of TranscriptionOptions class with audio URL."))
-                    .addBlockTag("param", "audioUrl the URL of the audio to be transcribed"));
+                audioUrlConstructor.setJavadocComment(
+                    new Javadoc(parseText("Creates an instance of TranscriptionOptions class with audio URL."))
+                        .addBlockTag("param", "audioUrl the URL of the audio to be transcribed"));
 
                 // Add constructor with AudioFileDetails parameter
                 ConstructorDeclaration fileDetailsConstructor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
                 fileDetailsConstructor.addParameter("AudioFileDetails", "fileDetails");
                 fileDetailsConstructor.setBody(parseBlock("{ this.audioFileDetails = fileDetails; }"));
-                fileDetailsConstructor.setJavadocComment(new Javadoc(parseText(
-                    "Creates an instance of TranscriptionOptions class with audio file details."))
-                    .addBlockTag("param", "fileDetails the audio file details"));
+                fileDetailsConstructor.setJavadocComment(
+                    new Javadoc(parseText("Creates an instance of TranscriptionOptions class with audio file details."))
+                        .addBlockTag("param", "fileDetails the audio file details"));
 
                 // Make setAudioUrl() private
                 clazz.getMethodsByName("setAudioUrl").forEach(method -> {
@@ -149,25 +162,56 @@ public class SpeechTranscriptionCustomization extends Customization {
                 });
             });
         });
-    }    /**
-     * Find the position to insert constructors (after existing constructors).
+    }
+
+    /**
+     * Customize TranscriptionClient to add public transcribe(TranscriptionOptions) method
+     * that hides TranscriptionContent construction.
      *
-     * @param clazz the class declaration
-     * @return the position to insert constructors
+     * @param packageCustomization the package customization
      */
-    private int getConstructorPosition(com.github.javaparser.ast.body.ClassOrInterfaceDeclaration clazz) {
-        int constructorIndex = 0;
-        NodeList<BodyDeclaration<?>> members = clazz.getMembers();
-        for (int i = 0; i < members.size(); i++) {
-            BodyDeclaration<?> member = members.get(i);
-            if (member.isFieldDeclaration()) {
-                constructorIndex = i + 1;
-            } else if (member.isConstructorDeclaration()) {
-                constructorIndex = i + 1;
-            } else if (member.isMethodDeclaration()) {
-                return constructorIndex;
-            }
-        }
-        return constructorIndex;
+    private void customizeTranscriptionClient(PackageCustomization packageCustomization) {
+        ClassCustomization classCustomization = packageCustomization.getClass("TranscriptionClient");
+        classCustomization.customizeAst(ast -> {
+            ast.getClassByName("TranscriptionClient").ifPresent(clazz -> {
+                // Make the generated transcribe(TranscriptionContent) package-private (internal)
+                // Only modify methods that have @Generated annotation to avoid affecting manual customizations
+                clazz.getMethodsByName("transcribe").forEach(method -> {
+                    if (method.getParameters().size() == 1
+                        && "TranscriptionContent".equals(method.getParameter(0).getType().asString())
+                        && method.getAnnotationByName("Generated").isPresent()) {
+                        // Remove public modifier, making it package-private (no modifiers = package-private)
+                        method.setModifiers();
+                        // Remove @Generated annotation to prevent overwriting
+                        method.getAnnotationByName("Generated").ifPresent(com.github.javaparser.ast.Node::remove);
+                    }
+                });
+            });
+        });
+    }
+
+    /**
+     * Customize TranscriptionAsyncClient to make transcribe(TranscriptionContent) package-private (internal).
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeTranscriptionAsyncClient(PackageCustomization packageCustomization) {
+        ClassCustomization classCustomization = packageCustomization.getClass("TranscriptionAsyncClient");
+        classCustomization.customizeAst(ast -> {
+            ast.getClassByName("TranscriptionAsyncClient").ifPresent(clazz -> {
+                // Make the generated transcribe(TranscriptionContent) package-private (internal)
+                // Only modify methods that have @Generated annotation to avoid affecting manual customizations
+                clazz.getMethodsByName("transcribe").forEach(method -> {
+                    if (method.getParameters().size() == 1
+                        && "TranscriptionContent".equals(method.getParameter(0).getType().asString())
+                        && method.getAnnotationByName("Generated").isPresent()) {
+                        // Remove public modifier, making it package-private (no modifiers = package-private)
+                        method.setModifiers();
+                        // Remove @Generated annotation to prevent overwriting
+                        method.getAnnotationByName("Generated").ifPresent(com.github.javaparser.ast.Node::remove);
+                    }
+                });
+            });
+        });
     }
 }

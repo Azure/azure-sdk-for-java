@@ -20,6 +20,12 @@ import java.util.List;
 public final class TranscriptionResult implements JsonSerializable<TranscriptionResult> {
 
     /*
+     * The duration of the audio in milliseconds.
+     */
+    @Generated
+    private final int duration;
+
+    /*
      * The full transcript for each channel.
      */
     @Generated
@@ -44,6 +50,16 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
         this.duration = duration;
         this.combinedPhrases = combinedPhrases;
         this.phrases = phrases;
+    }
+
+    /**
+     * Get the duration property: The duration in milliseconds.
+     *
+     * @return the duration value as Duration.
+     */
+    @Generated
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
     }
 
     /**
@@ -110,21 +126,5 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
             }
             return new TranscriptionResult(duration, combinedPhrases, phrases);
         });
-    }
-
-    /*
-     * The duration of the audio in milliseconds.
-     */
-    @Generated
-    private final int duration;
-
-    /**
-     * Get the duration property: The duration in milliseconds.
-     *
-     * @return the duration value as Duration.
-     */
-    @Generated
-    public Duration getDuration() {
-        return Duration.ofMillis(this.duration);
     }
 }

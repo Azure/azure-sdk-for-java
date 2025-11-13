@@ -8,7 +8,6 @@ import com.azure.ai.speech.transcription.TranscriptionAsyncClient;
 import com.azure.ai.speech.transcription.TranscriptionClientBuilder;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
@@ -56,13 +55,11 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.subscribe
         CountDownLatch latch = new CountDownLatch(1);
 
-        asyncClient.transcribe(requestContent)
+        asyncClient.transcribe(options)
             .subscribe(
                 // onNext: Process result
                 result -> {
@@ -100,12 +97,10 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.block
         // Use block() to convert async call to sync
-        TranscriptionResult result = asyncClient.transcribe(requestContent).block();
+        TranscriptionResult result = asyncClient.transcribe(options).block();
 
         if (result != null) {
             System.out.println("Duration: " + result.getDuration() + " ms");
@@ -134,11 +129,8 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
             .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5));
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
         // Transcribe asynchronously
-        Mono<TranscriptionResult> resultMono = asyncClient.transcribe(requestContent);
+        Mono<TranscriptionResult> resultMono = asyncClient.transcribe(options);
 
         // Process result
         resultMono.subscribe(result -> {
@@ -165,11 +157,9 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("sample.wav");
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.timeout
-        Mono<TranscriptionResult> resultMono = asyncClient.transcribe(requestContent)
+        Mono<TranscriptionResult> resultMono = asyncClient.transcribe(options)
             .timeout(Duration.ofMinutes(2))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .onErrorResume(error -> {
@@ -193,11 +183,9 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.results.detailed
-        asyncClient.transcribe(requestContent)
+        asyncClient.transcribe(options)
             .subscribe(result -> {
                 // Access combined phrases
                 if (result.getCombinedPhrases() != null) {

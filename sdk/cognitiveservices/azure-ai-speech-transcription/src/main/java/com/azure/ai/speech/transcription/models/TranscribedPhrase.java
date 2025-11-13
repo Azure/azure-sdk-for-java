@@ -33,6 +33,18 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     private Integer speaker;
 
     /*
+     * The start offset of the phrase in milliseconds.
+     */
+    @Generated
+    private final int offset;
+
+    /*
+     * The duration of the phrase in milliseconds.
+     */
+    @Generated
+    private final int duration;
+
+    /*
      * The transcribed text of the phrase.
      */
     @Generated
@@ -91,6 +103,26 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     @Generated
     public Integer getSpeaker() {
         return this.speaker;
+    }
+
+    /**
+     * Get the offset property: The start offset of the phrase in milliseconds.
+     *
+     * @return the offset value.
+     */
+    @Generated
+    public int getOffset() {
+        return this.offset;
+    }
+
+    /**
+     * Get the duration property: The duration in milliseconds.
+     *
+     * @return the duration value as Duration.
+     */
+    @Generated
+    public Duration getDuration() {
+        return Duration.ofMillis(this.duration);
     }
 
     /**
@@ -201,37 +233,5 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
             deserializedTranscribedPhrase.locale = locale;
             return deserializedTranscribedPhrase;
         });
-    }
-
-    /*
-     * The start offset of the phrase in milliseconds.
-     */
-    @Generated
-    private final int offset;
-
-    /*
-     * The duration of the phrase in milliseconds.
-     */
-    @Generated
-    private final int duration;
-
-    /**
-     * Get the offset property: The start offset of the phrase in milliseconds.
-     *
-     * @return the offset value.
-     */
-    @Generated
-    public int getOffset() {
-        return this.offset;
-    }
-
-    /**
-     * Get the duration property: The duration in milliseconds.
-     *
-     * @return the duration value as Duration.
-     */
-    @Generated
-    public Duration getDuration() {
-        return Duration.ofMillis(this.duration);
     }
 }

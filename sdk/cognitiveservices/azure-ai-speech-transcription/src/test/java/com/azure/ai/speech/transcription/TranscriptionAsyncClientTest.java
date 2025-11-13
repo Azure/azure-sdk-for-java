@@ -3,9 +3,6 @@
 
 package com.azure.ai.speech.transcription;
 
-import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
-import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.api.Test;

@@ -4,13 +4,6 @@
 
 package com.azure.ai.speech.transcription;
 
-import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.EnhancedModeOptions;
-import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
-import com.azure.ai.speech.transcription.models.TranscriptionOptions;
-import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;

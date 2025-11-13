@@ -6,7 +6,6 @@ package com.azure.ai.speech.transcription;
 // BEGIN: com.azure.ai.speech.transcription.enhancedmode.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.EnhancedModeOptions;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -95,12 +94,9 @@ public class EnhancedModeSample {
                 .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.basic
 
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             System.out.println("Transcribing with enhanced mode enabled...");
 
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             System.out.println("✓ Enhanced mode enabled");
             System.out.println("Duration: " + result.getDuration() + " ms");
@@ -155,12 +151,9 @@ public class EnhancedModeSample {
                 .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.prompts
 
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             System.out.println("Transcribing with custom prompts...");
 
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             System.out.println("✓ Enhanced mode with custom prompts");
             System.out.println("Prompts used:");
@@ -214,12 +207,9 @@ public class EnhancedModeSample {
                 .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.translation
 
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             System.out.println("Transcribing and translating...");
 
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             System.out.println("✓ Enhanced mode with translation");
             System.out.println("Source language: es-ES");
@@ -276,12 +266,9 @@ public class EnhancedModeSample {
                 .setEnhancedModeOptions(enhancedMode);
             // END: com.azure.ai.speech.transcription.enhancedmode.taskspecific
 
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             System.out.println("Transcribing with task-specific configuration...");
 
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             System.out.println("✓ Enhanced mode with task-specific configuration");
             System.out.println("Task type: " + enhancedMode.getTask());
@@ -329,11 +316,8 @@ public class EnhancedModeSample {
             .setLocales(Arrays.asList("en-US"))
             .setEnhancedModeOptions(enhancedMode);
 
-        // Create request and transcribe
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        return client.transcribe(requestContent);
+        // Transcribe with all enhanced mode features
+        return client.transcribe(options);
     }
     // END: com.azure.ai.speech.transcription.enhancedmode.complete
 }

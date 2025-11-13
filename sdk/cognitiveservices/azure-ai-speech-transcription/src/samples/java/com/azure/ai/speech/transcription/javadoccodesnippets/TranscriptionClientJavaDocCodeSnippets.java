@@ -8,7 +8,6 @@ import com.azure.ai.speech.transcription.TranscriptionClient;
 import com.azure.ai.speech.transcription.TranscriptionClientBuilder;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
@@ -76,12 +75,8 @@ public class TranscriptionClientJavaDocCodeSnippets {
         // Create transcription options using the AudioFileDetails constructor
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-        // Create transcribe request
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
         // Transcribe audio
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // Process results
         System.out.println("Duration: " + result.getDuration() + " ms");
@@ -112,10 +107,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
             .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5));
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // Access detailed results
         if (result.getPhrases() != null) {
@@ -139,9 +131,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionclient.results.detailed
         // Access sentence-level combined phrases

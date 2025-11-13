@@ -7,7 +7,6 @@ package com.azure.ai.speech.transcription;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.ChannelCombinedPhrases;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscribedPhrase;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
@@ -141,16 +140,13 @@ public class AdvancedTranscriptionSample {
                 .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5)); // Max number of speakers (2-36)
             // END: com.azure.ai.speech.transcription.advanced.transcription-options
 
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             System.out.println("Configured options:");
             System.out.println("  - Locales: en-US, es-ES");
             System.out.println("  - Profanity filter: MASKED");
             System.out.println("  - Speaker diarization: up to 5 speakers");
             System.out.println("\nTranscribing...");
 
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             System.out.println("\n✓ Transcription completed with advanced options");
             System.out.println("  Duration: " + result.getDuration() + " ms\n");
@@ -191,10 +187,7 @@ public class AdvancedTranscriptionSample {
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
                 .setDiarizationOptions(new TranscriptionDiarizationOptions());
 
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             // BEGIN: com.azure.ai.speech.transcription.advanced.detailed-results
             // Process combined phrases (sentence-level results)

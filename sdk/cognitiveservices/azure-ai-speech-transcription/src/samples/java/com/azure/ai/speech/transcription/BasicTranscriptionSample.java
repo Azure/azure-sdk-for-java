@@ -5,7 +5,6 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.basic.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -114,14 +113,10 @@ public class BasicTranscriptionSample {
             // Create transcription options using the AudioFileDetails constructor
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-            // Create the transcribe request
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             System.out.println("Starting transcription...");
 
             // Transcribe the audio
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
             // END: com.azure.ai.speech.transcription.basic.transcribe
 
             // BEGIN: com.azure.ai.speech.transcription.basic.process-results

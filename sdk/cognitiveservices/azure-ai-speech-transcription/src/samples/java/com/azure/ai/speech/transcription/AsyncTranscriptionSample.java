@@ -5,7 +5,6 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.async.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -99,8 +98,6 @@ public class AsyncTranscriptionSample {
 
             // Use the AudioFileDetails constructor for cleaner code
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
 
             System.out.println("Starting async transcription with subscribe()...");
 
@@ -110,7 +107,7 @@ public class AsyncTranscriptionSample {
             CountDownLatch latch = new CountDownLatch(1);
 
             // Subscribe to the Mono with success and error callbacks
-            asyncClient.transcribe(requestContent)
+            asyncClient.transcribe(options)
                 .doOnSubscribe(subscription ->
                     System.out.println("  → Subscribed to transcription operation"))
                 .doOnNext(result ->
@@ -172,15 +169,13 @@ public class AsyncTranscriptionSample {
 
             // Use the AudioFileDetails constructor
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
 
             System.out.println("Starting async transcription with block()...");
 
             // BEGIN: com.azure.ai.speech.transcription.async.block-pattern
             // block() waits for the operation to complete and returns the result
             // This is useful when integrating async client with synchronous code
-            TranscriptionResult result = asyncClient.transcribe(requestContent).block();
+            TranscriptionResult result = asyncClient.transcribe(options).block();
             // END: com.azure.ai.speech.transcription.async.block-pattern
 
             if (result != null) {
@@ -219,13 +214,11 @@ public class AsyncTranscriptionSample {
 
             // Use the AudioFileDetails constructor
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
 
             System.out.println("Starting async transcription with timeout and error handling...");
 
             // BEGIN: com.azure.ai.speech.transcription.async.timeout-error-handling
-            Mono<TranscriptionResult> transcriptionMono = asyncClient.transcribe(requestContent)
+            Mono<TranscriptionResult> transcriptionMono = asyncClient.transcribe(options)
                 // Set a timeout for the operation
                 .timeout(Duration.ofMinutes(2))
                 // Handle errors

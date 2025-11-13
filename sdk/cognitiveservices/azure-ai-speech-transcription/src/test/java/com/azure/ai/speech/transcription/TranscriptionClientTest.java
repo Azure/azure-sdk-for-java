@@ -4,6 +4,7 @@
 package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.core.http.HttpHeaderName;
@@ -178,7 +179,7 @@ class TranscriptionClientTest extends TranscriptionClientTestBase {
 
         // Test that null request content throws appropriate exception
         assertThrows(NullPointerException.class, () -> {
-            getClient().transcribe(null);
+            getClient().transcribe((TranscriptionContent) null);
         }, "Transcribe should throw NullPointerException when request content is null");
     }
 

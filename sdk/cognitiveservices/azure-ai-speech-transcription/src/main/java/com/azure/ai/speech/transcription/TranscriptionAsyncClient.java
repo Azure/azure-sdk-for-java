@@ -6,6 +6,7 @@ package com.azure.ai.speech.transcription;
 import com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper;
 import com.azure.ai.speech.transcription.implementation.TranscriptionClientImpl;
 import com.azure.ai.speech.transcription.models.TranscriptionContent;
+import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -108,9 +109,8 @@ public final class TranscriptionAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the transcribe operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TranscriptionResult> transcribe(TranscriptionContent body) {
+    final Mono<TranscriptionResult> transcribe(TranscriptionContent body) {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
@@ -122,5 +122,24 @@ public final class TranscriptionAsyncClient {
                 .getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(TranscriptionResult.class));
+    }
+
+    /**
+     * Transcribes the provided audio stream with the specified options.
+     *
+     * @param options the transcription options including audio file details or audio URL
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the transcribe operation on successful completion of Mono.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TranscriptionResult> transcribe(TranscriptionOptions options) {
+        TranscriptionContent requestContent = new TranscriptionContent();
+        requestContent.setOptions(options);
+        return transcribe(requestContent);
     }
 }

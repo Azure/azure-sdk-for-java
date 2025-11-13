@@ -34,10 +34,42 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     private List<String> locales;
 
     /*
+     * Maps some or all candidate locales to a model URI to be used for transcription. If no mapping is given, the
+     * default model for the locale is used.
+     */
+    @Generated
+    private Map<String, String> localeModelMapping;
+
+    /*
      * Mode of profanity filtering.
      */
     @Generated
     private ProfanityFilterMode profanityFilterMode;
+
+    /*
+     * Mode of diarization.
+     */
+    @Generated
+    private TranscriptionDiarizationOptions diarizationOptions;
+
+    /*
+     * The 0-based indices of the channels to be transcribed separately. If not specified, multiple channels are merged
+     * and transcribed jointly. Only up to two channels are supported.
+     */
+    @Generated
+    private List<Integer> activeChannels;
+
+    /*
+     * Enhanced mode properties.
+     */
+    @Generated
+    private EnhancedModeOptions enhancedModeOptions;
+
+    /*
+     * Phrase list properties.
+     */
+    @Generated
+    private PhraseListOptions phraseListOptions;
 
     /**
      * Creates an instance of TranscriptionOptions class.
@@ -56,6 +88,19 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     public String getAudioUrl() {
         return this.audioUrl;
+    }
+
+    /**
+     * Set the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
+     * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
+     *
+     * @param audioUrl the audioUrl value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    private TranscriptionOptions setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
+        return this;
     }
 
     /**
@@ -83,6 +128,30 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
+     * Get the localeModelMapping property: Maps some or all candidate locales to a model URI to be used for
+     * transcription. If no mapping is given, the default model for the locale is used.
+     *
+     * @return the localeModelMapping value.
+     */
+    @Generated
+    public Map<String, String> getLocaleModelMapping() {
+        return this.localeModelMapping;
+    }
+
+    /**
+     * Set the localeModelMapping property: Maps some or all candidate locales to a model URI to be used for
+     * transcription. If no mapping is given, the default model for the locale is used.
+     *
+     * @param localeModelMapping the localeModelMapping value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setLocaleModelMapping(Map<String, String> localeModelMapping) {
+        this.localeModelMapping = localeModelMapping;
+        return this;
+    }
+
+    /**
      * Get the profanityFilterMode property: Mode of profanity filtering.
      *
      * @return the profanityFilterMode value.
@@ -101,6 +170,96 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     public TranscriptionOptions setProfanityFilterMode(ProfanityFilterMode profanityFilterMode) {
         this.profanityFilterMode = profanityFilterMode;
+        return this;
+    }
+
+    /**
+     * Get the diarizationOptions property: Mode of diarization.
+     *
+     * @return the diarizationOptions value.
+     */
+    @Generated
+    public TranscriptionDiarizationOptions getDiarizationOptions() {
+        return this.diarizationOptions;
+    }
+
+    /**
+     * Set the diarizationOptions property: Mode of diarization.
+     *
+     * @param diarizationOptions the diarizationOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setDiarizationOptions(TranscriptionDiarizationOptions diarizationOptions) {
+        this.diarizationOptions = diarizationOptions;
+        return this;
+    }
+
+    /**
+     * Get the activeChannels property: The 0-based indices of the channels to be transcribed separately. If not
+     * specified, multiple channels are merged and transcribed jointly. Only up to two channels are supported.
+     *
+     * @return the activeChannels value.
+     */
+    @Generated
+    public List<Integer> getActiveChannels() {
+        return this.activeChannels;
+    }
+
+    /**
+     * Set the activeChannels property: The 0-based indices of the channels to be transcribed separately. If not
+     * specified, multiple channels are merged and transcribed jointly. Only up to two channels are supported.
+     *
+     * @param activeChannels the activeChannels value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setActiveChannels(List<Integer> activeChannels) {
+        this.activeChannels = activeChannels;
+        return this;
+    }
+
+    /**
+     * Get the enhancedModeOptions property: Enhanced mode properties.
+     *
+     * @return the enhancedModeOptions value.
+     */
+    @Generated
+    public EnhancedModeOptions getEnhancedModeOptions() {
+        return this.enhancedModeOptions;
+    }
+
+    /**
+     * Set the enhancedModeOptions property: Enhanced mode properties.
+     *
+     * @param enhancedModeOptions the enhancedModeOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setEnhancedModeOptions(EnhancedModeOptions enhancedModeOptions) {
+        this.enhancedModeOptions = enhancedModeOptions;
+        return this;
+    }
+
+    /**
+     * Get the phraseListOptions property: Phrase list properties.
+     *
+     * @return the phraseListOptions value.
+     */
+    @Generated
+    public PhraseListOptions getPhraseListOptions() {
+        return this.phraseListOptions;
+    }
+
+    /**
+     * Set the phraseListOptions property: Phrase list properties.
+     *
+     * @param phraseListOptions the phraseListOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    @Generated
+    public TranscriptionOptions setPhraseListOptions(PhraseListOptions phraseListOptions) {
+        this.phraseListOptions = phraseListOptions;
         return this;
     }
 
@@ -167,169 +326,10 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
         });
     }
 
-    /*
-     * Mode of diarization.
-     */
-    @Generated
-    private TranscriptionDiarizationOptions diarizationOptions;
-
-    /*
-     * The 0-based indices of the channels to be transcribed separately. If not specified, multiple channels are merged
-     * and transcribed jointly. Only up to two channels are supported.
-     */
-    @Generated
-    private List<Integer> activeChannels;
-
-    /**
-     * Get the diarizationOptions property: Mode of diarization.
-     *
-     * @return the diarizationOptions value.
-     */
-    @Generated
-    public TranscriptionDiarizationOptions getDiarizationOptions() {
-        return this.diarizationOptions;
-    }
-
-    /**
-     * Set the diarizationOptions property: Mode of diarization.
-     *
-     * @param diarizationOptions the diarizationOptions value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setDiarizationOptions(TranscriptionDiarizationOptions diarizationOptions) {
-        this.diarizationOptions = diarizationOptions;
-        return this;
-    }
-
-    /**
-     * Get the activeChannels property: The 0-based indices of the channels to be transcribed separately. If not
-     * specified, multiple channels are merged and transcribed jointly. Only up to two channels are supported.
-     *
-     * @return the activeChannels value.
-     */
-    @Generated
-    public List<Integer> getActiveChannels() {
-        return this.activeChannels;
-    }
-
-    /**
-     * Set the activeChannels property: The 0-based indices of the channels to be transcribed separately. If not
-     * specified, multiple channels are merged and transcribed jointly. Only up to two channels are supported.
-     *
-     * @param activeChannels the activeChannels value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setActiveChannels(List<Integer> activeChannels) {
-        this.activeChannels = activeChannels;
-        return this;
-    }
-
-    /*
-     * Enhanced mode properties.
-     */
-    @Generated
-    private EnhancedModeOptions enhancedModeOptions;
-
-    /*
-     * Phrase list properties.
-     */
-    @Generated
-    private PhraseListOptions phraseListOptions;
-
-    /**
-     * Get the enhancedModeOptions property: Enhanced mode properties.
-     *
-     * @return the enhancedModeOptions value.
-     */
-    @Generated
-    public EnhancedModeOptions getEnhancedModeOptions() {
-        return this.enhancedModeOptions;
-    }
-
-    /**
-     * Set the enhancedModeOptions property: Enhanced mode properties.
-     *
-     * @param enhancedModeOptions the enhancedModeOptions value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setEnhancedModeOptions(EnhancedModeOptions enhancedModeOptions) {
-        this.enhancedModeOptions = enhancedModeOptions;
-        return this;
-    }
-
-    /**
-     * Get the phraseListOptions property: Phrase list properties.
-     *
-     * @return the phraseListOptions value.
-     */
-    @Generated
-    public PhraseListOptions getPhraseListOptions() {
-        return this.phraseListOptions;
-    }
-
-    /**
-     * Set the phraseListOptions property: Phrase list properties.
-     *
-     * @param phraseListOptions the phraseListOptions value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setPhraseListOptions(PhraseListOptions phraseListOptions) {
-        this.phraseListOptions = phraseListOptions;
-        return this;
-    }
-
-    /*
-     * Maps some or all candidate locales to a model URI to be used for transcription. If no mapping is given, the
-     * default model for the locale is used.
-     */
-    @Generated
-    private Map<String, String> localeModelMapping;
-
-    /**
-     * Get the localeModelMapping property: Maps some or all candidate locales to a model URI to be used for
-     * transcription. If no mapping is given, the default model for the locale is used.
-     *
-     * @return the localeModelMapping value.
-     */
-    @Generated
-    public Map<String, String> getLocaleModelMapping() {
-        return this.localeModelMapping;
-    }
-
-    /**
-     * Set the localeModelMapping property: Maps some or all candidate locales to a model URI to be used for
-     * transcription. If no mapping is given, the default model for the locale is used.
-     *
-     * @param localeModelMapping the localeModelMapping value to set.
-     * @return the TranscriptionOptions object itself.
-     */
-    @Generated
-    public TranscriptionOptions setLocaleModelMapping(Map<String, String> localeModelMapping) {
-        this.localeModelMapping = localeModelMapping;
-        return this;
-    }
-
-    // BEGIN: Manual customization - AudioFileDetails field and constructors
-    @SuppressWarnings("unused")
     private final AudioFileDetails audioFileDetails;
 
     /**
-     * Creates an instance of TranscriptionOptions class with audio file details.
-     *
-     * @param fileDetails the audio file details
-     */
-    public TranscriptionOptions(AudioFileDetails fileDetails) {
-        this.audioFileDetails = fileDetails;
-    }
-
-    /**
      * Creates an instance of TranscriptionOptions class with audio URL.
-     * MANUAL EDIT: This constructor is manually added and preserved via partial-update.
-     * TypeSpec emitter filters constructors for schema-defined fields during code generation.
      *
      * @param audioUrl the URL of the audio to be transcribed
      */
@@ -339,15 +339,11 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     }
 
     /**
-     * Set the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
-     * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
+     * Creates an instance of TranscriptionOptions class with audio file details.
      *
-     * @param audioUrl the audioUrl value to set.
-     * @return the TranscriptionOptions object itself.
+     * @param fileDetails the audio file details
      */
-    @Generated
-    private TranscriptionOptions setAudioUrl(String audioUrl) {
-        this.audioUrl = audioUrl;
-        return this;
+    public TranscriptionOptions(AudioFileDetails fileDetails) {
+        this.audioFileDetails = fileDetails;
     }
 }

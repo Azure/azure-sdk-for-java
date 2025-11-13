@@ -6,6 +6,7 @@ package com.azure.ai.speech.transcription;
 import com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper;
 import com.azure.ai.speech.transcription.implementation.TranscriptionClientImpl;
 import com.azure.ai.speech.transcription.models.TranscriptionContent;
+import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -44,7 +45,7 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -106,8 +107,7 @@ public final class TranscriptionClient {
      * @return the result of the transcribe operation.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranscriptionResult transcribe(TranscriptionContent body) {
+    TranscriptionResult transcribe(TranscriptionContent body) {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
@@ -119,4 +119,25 @@ public final class TranscriptionClient {
                 .getRequestBody(),
             requestOptions).getValue().toObject(TranscriptionResult.class);
     }
+
+    // BEGIN: Manual customization - Public transcribe(TranscriptionOptions) convenience method
+    /**
+     * Transcribes the provided audio stream with the specified options.
+     *
+     * @param options the transcription options including audio file details or audio URL
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the transcribe operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TranscriptionResult transcribe(TranscriptionOptions options) {
+        TranscriptionContent requestContent = new TranscriptionContent();
+        requestContent.setOptions(options);
+        return transcribe(requestContent);
+    }
+    // END: Manual customization
 }

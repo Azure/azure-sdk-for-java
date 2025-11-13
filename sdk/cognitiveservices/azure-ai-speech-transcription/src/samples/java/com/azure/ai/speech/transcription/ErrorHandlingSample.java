@@ -5,7 +5,6 @@ package com.azure.ai.speech.transcription;
 
 // BEGIN: com.azure.ai.speech.transcription.error.imports
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -79,10 +78,9 @@ public class ErrorHandlingSample {
             // This will fail with authentication error
             byte[] dummyAudio = new byte[1024];
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(new TranscriptionOptions(audioFileDetails));
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-            client.transcribe(requestContent);
+            client.transcribe(options);
 
         } catch (ClientAuthenticationException e) {
             // Specific exception for authentication failures
@@ -119,10 +117,9 @@ public class ErrorHandlingSample {
             // Attempt to transcribe (may fail if Azure AD not configured)
             byte[] dummyAudio = new byte[1024];
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(new TranscriptionOptions(audioFileDetails));
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-            client.transcribe(requestContent);
+            client.transcribe(options);
 
         } catch (CredentialUnavailableException e) {
             // No Azure AD credential sources are available
@@ -173,10 +170,9 @@ public class ErrorHandlingSample {
         try {
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(new TranscriptionOptions(audioFileDetails));
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-            client.transcribe(requestContent);
+            client.transcribe(options);
 
         } catch (IOException e) {
             // Handle file I/O errors
@@ -216,10 +212,9 @@ public class ErrorHandlingSample {
             byte[] invalidAudio = new byte[10]; // Too small to be valid audio
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(invalidAudio))
                 .setFilename("invalid.wav");
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(new TranscriptionOptions(audioFileDetails));
+            TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-            client.transcribe(requestContent);
+            client.transcribe(options);
 
         // BEGIN: com.azure.ai.speech.transcription.error.service-errors
         } catch (HttpResponseException e) {
@@ -298,8 +293,6 @@ public class ErrorHandlingSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
                 .setFilename(audioFilePath);
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
             System.out.println("✓ Request prepared");
 
             // BEGIN: com.azure.ai.speech.transcription.error.retry-logic
@@ -311,7 +304,7 @@ public class ErrorHandlingSample {
             while (retryCount < maxRetries) {
                 try {
                     System.out.println("  Attempting transcription (attempt " + (retryCount + 1) + "/" + maxRetries + ")...");
-                    result = client.transcribe(requestContent);
+                    result = client.transcribe(options);
                     break; // Success, exit retry loop
                 } catch (HttpResponseException e) {
                     if (e.getResponse().getStatusCode() == 429 || e.getResponse().getStatusCode() >= 500) {
