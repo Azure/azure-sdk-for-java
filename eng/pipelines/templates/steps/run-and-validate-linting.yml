@@ -21,6 +21,19 @@ parameters:
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
   - task: Maven@4
+    displayName: 'Effective pom'
+    inputs:
+      mavenPomFile: pom.xml
+      options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList) -am'
+      goals: 'help:effective-pom'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    continueOnError: true
+
+  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Build and Run SpotBugs and Checkstyle'
     ${{ else }}:
@@ -28,9 +41,9 @@ steps:
     inputs:
       mavenPomFile: pom.xml
       ${{ if ne(parameters.SDKType, 'client') }}:
-        options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.skip=true -pl $(ProjectList) -am'
+        options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.skip=true -pl $(ProjectList) -am'
       ${{ else }}:
-        options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList) -am'
+        options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList) -am'
       goals: 'install'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
@@ -39,6 +52,11 @@ steps:
       publishJUnitResults: false
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+
+  - script: |
+      ls $(Build.SourcesDirectory)/sdk/netapp/azure-resourcemanager-netapp/target
+    displayName: 'List target 2'
+    continueOnError: true
 
   - task: PowerShell@2
     inputs:

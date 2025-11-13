@@ -414,6 +414,11 @@ jobs:
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
 
+      - script: |
+          ls $(Build.SourcesDirectory)/sdk/netapp/azure-resourcemanager-netapp/target
+        displayName: 'List target 1'
+        continueOnError: true
+
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
@@ -421,7 +426,7 @@ jobs:
           BuildParallelization: ${{ parameters.BuildParallelization }}
           RunLinting: true
           SDKType: ${{ parameters.SDKType }}
-
+      
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
