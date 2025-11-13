@@ -135,7 +135,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             payloadBuf
                         );
 
-                        if (payloadBuf != content) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
                             // payload is a slice/derived view; super() owns payload, we still own the container
                             // this includes scenarios where payloadBuf == EMPTY_BUFFER
                             ReferenceCountUtil.safeRelease(content);
@@ -143,7 +143,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
                         return storeResponse;
                     } catch (Throwable t){
-                        if (payloadBuf != content) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
                             // payload is a slice/derived view; super() owns payload, we still own the container
                             // this includes scenarios where payloadBuf == EMPTY_BUFFER
                             ReferenceCountUtil.safeRelease(content);
