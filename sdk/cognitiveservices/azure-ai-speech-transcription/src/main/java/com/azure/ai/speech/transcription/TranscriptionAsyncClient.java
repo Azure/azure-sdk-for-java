@@ -110,7 +110,7 @@ public final class TranscriptionAsyncClient {
      * @return the result of the transcribe operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    final Mono<TranscriptionResult> transcribe(TranscriptionContent body) {
+    Mono<TranscriptionResult> transcribe(TranscriptionContent body) {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(

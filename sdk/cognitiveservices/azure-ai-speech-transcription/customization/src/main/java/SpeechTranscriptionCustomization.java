@@ -180,8 +180,8 @@ public class SpeechTranscriptionCustomization extends Customization {
                     if (method.getParameters().size() == 1
                         && "TranscriptionContent".equals(method.getParameter(0).getType().asString())
                         && method.getAnnotationByName("Generated").isPresent()) {
-                        // Remove public modifier, making it package-private (no modifiers = package-private)
-                        method.setModifiers();
+                        // Remove all modifiers (including final), making it package-private
+                        method.getModifiers().clear();
                         // Remove @Generated annotation to prevent overwriting
                         method.getAnnotationByName("Generated").ifPresent(com.github.javaparser.ast.Node::remove);
                     }
@@ -205,8 +205,8 @@ public class SpeechTranscriptionCustomization extends Customization {
                     if (method.getParameters().size() == 1
                         && "TranscriptionContent".equals(method.getParameter(0).getType().asString())
                         && method.getAnnotationByName("Generated").isPresent()) {
-                        // Remove public modifier, making it package-private (no modifiers = package-private)
-                        method.setModifiers();
+                        // Remove all modifiers (including final), making it package-private
+                        method.getModifiers().clear();
                         // Remove @Generated annotation to prevent overwriting
                         method.getAnnotationByName("Generated").ifPresent(com.github.javaparser.ast.Node::remove);
                     }
