@@ -62,7 +62,7 @@ function Get-MavenArtifactInfo {
     }
 }
 
-# Function to get the latest released stable version from Maven Central
+# Function to get the latest released stable version, if none, take latest (beta) version from Maven Central
 function Get-LatestReleasedStableVersion {
     param(
         [string]$GroupId,
@@ -95,7 +95,7 @@ function Get-LatestReleasedStableVersion {
         return $latestVersion
     }
     catch {
-        Write-Warning "Could not retrieve metadata from Maven Central. Package may not be released yet or only beta version released."
+        Write-Warning "Could not retrieve metadata from Maven Central. Package may not be released yet."
         return $null
     }
 }
@@ -308,7 +308,7 @@ try {
     Write-Host "  Artifact ID: $($artifactInfo.ArtifactId)"
     Write-Host ""
     
-    Write-Host "Step 2: Fetching latest released version from Maven Central..."
+    Write-Host "Step 2: Fetching latest stable released version, if none, take latest (beta) version from Maven Central..."
     $latestVersion = Get-LatestReleasedStableVersion -GroupId $artifactInfo.GroupId -ArtifactId $artifactInfo.ArtifactId
     
     if ($null -eq $latestVersion) {
