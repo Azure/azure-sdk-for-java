@@ -62,7 +62,7 @@ public final class ResourceHealthMetadatasClientImpl
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientResourceHealthMetadatas")
     public interface ResourceHealthMetadatasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata")
@@ -170,10 +170,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -201,11 +202,10 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -298,10 +298,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -335,11 +336,12 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -443,10 +445,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -484,11 +487,12 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySite(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+            .listBySite(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -598,10 +602,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBySite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -637,10 +642,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBySite(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -731,10 +737,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceHealthMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -776,11 +783,12 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -900,10 +908,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -943,10 +952,11 @@ public final class ResourceHealthMetadatasClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBySiteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1007,6 +1017,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1033,6 +1045,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1060,6 +1074,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1088,6 +1104,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1116,6 +1134,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1143,6 +1163,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1171,6 +1193,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1198,6 +1222,8 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
