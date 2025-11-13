@@ -64,6 +64,8 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -94,6 +96,19 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private IRetryPolicy retryPolicy;
     private RxDocumentServiceRequest serviceRequest;
     private AddressSelector addressSelector;
+    private volatile AutoCloseable disableNettyLeakDetectionScope;
+
+    @BeforeClass(groups = "unit")
+    public void beforeClass_DisableNettyLeakDetection() {
+        this.disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope();
+    }
+
+    @AfterClass(groups = "unit", alwaysRun = true)
+    public void afterClass_ReactivateNettyLeakDetection() throws Exception {
+        if (this.disableNettyLeakDetectionScope != null) {
+            this.disableNettyLeakDetectionScope.close();
+        }
+    }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     public void backoffRetryUtilityExecuteRetry() throws Exception {
