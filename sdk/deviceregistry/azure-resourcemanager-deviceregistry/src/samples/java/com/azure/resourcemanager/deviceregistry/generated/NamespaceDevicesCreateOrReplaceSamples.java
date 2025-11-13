@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_x509.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
      */
     /**
      * Sample code: Create edge enabled device with x509 inbound authentication.
@@ -72,7 +72,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
      */
     /**
      * Sample code: Create edge enabled device with anonymous host authentication.
@@ -103,7 +103,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
      */
     /**
      * Sample code: Create edge enabled device with UsernamesPassword inbound authentication.
@@ -136,7 +136,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDevices.

@@ -43,6 +43,9 @@ public final class PagedConverter {
 
     /**
      * Applies map transform to elements of PagedFlux.
+     * <p>
+     * Do not use it over PagedFlux generated from mergePagedFlux, as the continuationToken in that case cannot be used
+     * to continue the outer PagedFlux.
      *
      * @param pagedFlux the input of PagedFlux.
      * @param mapper the map transform of element T to element S.

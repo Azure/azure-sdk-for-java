@@ -38,14 +38,14 @@ public class DeploymentSlotsTests extends AppServiceTest {
         // Create web app
         WebApp webApp = appServiceManager.webApps()
             .define(webappName)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.STANDARD_S2)
             .withJavaVersion(JavaVersion.JAVA_1_7_0_51)
             .withWebContainer(WebContainer.TOMCAT_7_0_50)
             .create();
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_WEST, webApp.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp.region());
 
         // Create a deployment slot with web app's config
         DeploymentSlot slot2 = webApp.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
@@ -107,7 +107,7 @@ public class DeploymentSlotsTests extends AppServiceTest {
     public void canCreateAndUpdatePublicNetworkAccess() {
         WebApp webApp = appServiceManager.webApps()
             .define(webappName)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.STANDARD_S2)
             .withJavaVersion(JavaVersion.JAVA_1_7_0_51)

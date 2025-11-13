@@ -1,12 +1,20 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0 (2025-11-13)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
+- Updated `api-version` of AppService to `2025-03-01`.
+
+## 2.53.5 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.4 (2025-09-25)
 

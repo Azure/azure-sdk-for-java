@@ -59,6 +59,11 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat
     private Boolean pickHostnameFromBackendAddress;
 
     /*
+     * Whether to send Proxy Protocol header to backend servers over TCP or TLS protocols. Default value is false.
+     */
+    private Boolean enableL4ClientIpPreservation;
+
+    /*
      * The provisioning state of the backend HTTP settings resource.
      */
     private ProvisioningState provisioningState;
@@ -216,6 +221,29 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat
     }
 
     /**
+     * Get the enableL4ClientIpPreservation property: Whether to send Proxy Protocol header to backend servers over TCP
+     * or TLS protocols. Default value is false.
+     * 
+     * @return the enableL4ClientIpPreservation value.
+     */
+    public Boolean enableL4ClientIpPreservation() {
+        return this.enableL4ClientIpPreservation;
+    }
+
+    /**
+     * Set the enableL4ClientIpPreservation property: Whether to send Proxy Protocol header to backend servers over TCP
+     * or TLS protocols. Default value is false.
+     * 
+     * @param enableL4ClientIpPreservation the enableL4ClientIpPreservation value to set.
+     * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
+     */
+    public ApplicationGatewayBackendSettingsPropertiesFormat
+        withEnableL4ClientIpPreservation(Boolean enableL4ClientIpPreservation) {
+        this.enableL4ClientIpPreservation = enableL4ClientIpPreservation;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
      * 
      * @return the provisioningState value.
@@ -246,6 +274,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("hostName", this.hostname);
         jsonWriter.writeBooleanField("pickHostNameFromBackendAddress", this.pickHostnameFromBackendAddress);
+        jsonWriter.writeBooleanField("enableL4ClientIpPreservation", this.enableL4ClientIpPreservation);
         return jsonWriter.writeEndObject();
     }
 
@@ -285,6 +314,9 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat
                     deserializedApplicationGatewayBackendSettingsPropertiesFormat.hostname = reader.getString();
                 } else if ("pickHostNameFromBackendAddress".equals(fieldName)) {
                     deserializedApplicationGatewayBackendSettingsPropertiesFormat.pickHostnameFromBackendAddress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableL4ClientIpPreservation".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.enableL4ClientIpPreservation
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayBackendSettingsPropertiesFormat.provisioningState

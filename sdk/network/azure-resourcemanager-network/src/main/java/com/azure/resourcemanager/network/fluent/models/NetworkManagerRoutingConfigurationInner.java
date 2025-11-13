@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RouteTableUsageMode;
 import java.io.IOException;
 
 /**
@@ -151,6 +152,31 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
      */
     public String resourceGuid() {
         return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Get the routeTableUsageMode property: Route table usage mode defines which route table will be used by the
+     * configuration. If not defined, this will default to 'ManagedOnly'.
+     * 
+     * @return the routeTableUsageMode value.
+     */
+    public RouteTableUsageMode routeTableUsageMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().routeTableUsageMode();
+    }
+
+    /**
+     * Set the routeTableUsageMode property: Route table usage mode defines which route table will be used by the
+     * configuration. If not defined, this will default to 'ManagedOnly'.
+     * 
+     * @param routeTableUsageMode the routeTableUsageMode value to set.
+     * @return the NetworkManagerRoutingConfigurationInner object itself.
+     */
+    public NetworkManagerRoutingConfigurationInner withRouteTableUsageMode(RouteTableUsageMode routeTableUsageMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkManagerRoutingConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withRouteTableUsageMode(routeTableUsageMode);
+        return this;
     }
 
     /**

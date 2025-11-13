@@ -65,7 +65,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientLogProf")
+    @ServiceInterface(name = "MonitorClientLogProfiles")
     public interface LogProfilesService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}")

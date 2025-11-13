@@ -28,7 +28,7 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     private DatasetType type = DatasetType.fromString("DatasetVersion");
 
     /*
-     * URI of the data. Example: https://go.microsoft.com/fwlink/?linkid=2202330
+     * URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330))
      */
     @Generated
     private String dataUri;
@@ -39,6 +39,13 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
      */
     @Generated
     private Boolean isReference;
+
+    /*
+     * The Azure Storage Account connection name. Required if startPendingUploadVersion was not called before creating
+     * the Dataset
+     */
+    @Generated
+    private String connectionName;
 
     /*
      * Asset ID, a unique identifier for the asset
@@ -158,7 +165,7 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     }
 
     /**
-     * Get the dataUri property: URI of the data. Example: https://go.microsoft.com/fwlink/?linkid=2202330.
+     * Get the dataUri property: URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330)).
      *
      * @return the dataUri value.
      */
@@ -168,7 +175,7 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     }
 
     /**
-     * Set the dataUri property: URI of the data. Example: https://go.microsoft.com/fwlink/?linkid=2202330.
+     * Set the dataUri property: URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330)).
      * <p>Required when create the resource.</p>
      *
      * @param dataUri the dataUri value to set.
@@ -190,6 +197,31 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     @Generated
     public Boolean isReference() {
         return this.isReference;
+    }
+
+    /**
+     * Get the connectionName property: The Azure Storage Account connection name. Required if startPendingUploadVersion
+     * was not called before creating the Dataset.
+     *
+     * @return the connectionName value.
+     */
+    @Generated
+    public String getConnectionName() {
+        return this.connectionName;
+    }
+
+    /**
+     * Set the connectionName property: The Azure Storage Account connection name. Required if startPendingUploadVersion
+     * was not called before creating the Dataset.
+     *
+     * @param connectionName the connectionName value to set.
+     * @return the DatasetVersion object itself.
+     */
+    @Generated
+    public DatasetVersion setConnectionName(String connectionName) {
+        this.connectionName = connectionName;
+        this.updatedProperties.add("connectionName");
+        return this;
     }
 
     /**
@@ -398,37 +430,5 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
             }
             return deserializedDatasetVersion;
         });
-    }
-
-    /*
-     * The Azure Storage Account connection name. Required if startPendingUploadVersion was not called before creating
-     * the Dataset
-     */
-    @Generated
-    private String connectionName;
-
-    /**
-     * Get the connectionName property: The Azure Storage Account connection name. Required if startPendingUploadVersion
-     * was not called before creating the Dataset.
-     *
-     * @return the connectionName value.
-     */
-    @Generated
-    public String getConnectionName() {
-        return this.connectionName;
-    }
-
-    /**
-     * Set the connectionName property: The Azure Storage Account connection name. Required if startPendingUploadVersion
-     * was not called before creating the Dataset.
-     *
-     * @param connectionName the connectionName value to set.
-     * @return the DatasetVersion object itself.
-     */
-    @Generated
-    public DatasetVersion setConnectionName(String connectionName) {
-        this.connectionName = connectionName;
-        this.updatedProperties.add("connectionName");
-        return this;
     }
 }
