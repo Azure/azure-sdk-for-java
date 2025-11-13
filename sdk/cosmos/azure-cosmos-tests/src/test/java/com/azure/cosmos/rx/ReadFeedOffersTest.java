@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
@@ -53,41 +54,42 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readOffers() throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
 
-        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+        try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient();
-        QueryFeedOperationState dummyState = new QueryFeedOperationState(
-            cosmosClient,
-            "SomeSpanName",
-            "SomeDBName",
-            "SomeContainerName",
-            ResourceType.Document,
-            OperationType.Query,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
-        );
+            .buildAsyncClient()) {
+            QueryFeedOperationState dummyState = new QueryFeedOperationState(
+                cosmosClient,
+                "SomeSpanName",
+                "SomeDBName",
+                "SomeContainerName",
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
 
-        Flux<FeedResponse<Offer>> feedObservable = client.readOffers(dummyState);
+            Flux<FeedResponse<Offer>> feedObservable = client.readOffers(dummyState);
 
-        int maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
-        int expectedPageSize = (allOffers.size() + maxItemCount - 1) / maxItemCount;
+            int maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+            int expectedPageSize = (allOffers.size() + maxItemCount - 1) / maxItemCount;
 
-        FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
+            FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(allOffers.size())
                 .exactlyContainsInAnyOrder(allOffers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<Offer>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                    .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+            validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        }
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)

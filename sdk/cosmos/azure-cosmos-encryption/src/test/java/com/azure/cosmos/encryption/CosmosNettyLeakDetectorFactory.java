@@ -89,13 +89,7 @@ public final class CosmosNettyLeakDetectorFactory
         ITestNGMethod[] afterClassMethods = testClass.getAfterClassMethods();
         boolean testClassHasAfterClassMethods = afterClassMethods != null && afterClassMethods.length > 0;
         if (!testClassHasAfterClassMethods) {
-            try {
-                this.onAfterClassCore(testClass);
-            } catch (Throwable t) {
-                // decide if you want to fail the suite or just log
-                System.err.println("Symmetric afterClass failed for " + testClass.getRealClass().getCanonicalName());
-                t.printStackTrace();
-            }
+            this.onAfterClassCore(testClass);
         }
     }
 
@@ -110,13 +104,7 @@ public final class CosmosNettyLeakDetectorFactory
             && method.getTestMethod().isAfterClassConfiguration()) {
 
             // <-- This point is guaranteed to be AFTER the class’s @AfterClass ran if any existed
-            try {
-                this.onAfterClassCore(testClass);
-            } catch (Throwable t) {
-                // decide if you want to fail the suite or just log
-                System.err.println("Symmetric afterClass failed for " + testClass.getRealClass().getCanonicalName());
-                t.printStackTrace();
-            }
+            this.onAfterClassCore(testClass);
         }
     }
 
