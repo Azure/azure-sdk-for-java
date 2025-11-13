@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequ
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.util.ReferenceCountUtil;
 
 import java.util.List;
 
@@ -39,7 +40,14 @@ public class ServerRntbdContextRequestDecoder extends ByteToMessageDecoder {
                 return;
             }
         }
-        context.fireChannelRead(message);
+        
+        // When bypassing the parent's decode logic, we must release the ByteBuf
+        // as context.fireChannelRead() doesn't automatically manage reference counts
+        try {
+            context.fireChannelRead(message);
+        } finally {
+            ReferenceCountUtil.safeRelease(message);
+        }
     }
 
     /**
