@@ -1,14 +1,2417 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-11-13)
 
-### Features Added
+- Azure Resource Manager fileshares client library for Java. This package contains Microsoft Azure SDK for fileshares Management SDK. Self service experience for Azure Network Fabric API. Package api-version 2024-06-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.NetworkPacketBrokersListResult` was removed
 
-### Other Changes
+#### `models.InternalNetworkPatchableProperties` was removed
+
+#### `models.IpCommunityAddOperationProperties` was removed
+
+#### `models.NetworkDevicesListResult` was removed
+
+#### `models.OptionAProperties` was removed
+
+#### `models.L3OptionAProperties` was removed
+
+#### `models.VpnConfigurationPatchablePropertiesOptionAProperties` was removed
+
+#### `models.ExternalNetworksList` was removed
+
+#### `models.IpCommunityDeleteOperationProperties` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ExtensionEnumProperty` was removed
+
+#### `models.NetworkTapPropertiesDestinationsItem` was removed
+
+#### `models.IpExtendedCommunitySetOperationProperties` was removed
+
+#### `models.IpAddressType` was removed
+
+#### `ManagedNetworkFabricManager` was removed
+
+#### `models.NeighborGroupsListResult` was removed
+
+#### `models.NetworkTapRulePatchableProperties` was removed
+
+#### `models.NetworkDeviceSkusListResult` was removed
+
+#### `models.NetworkTapRulesListResult` was removed
+
+#### `models.L3IsolationDomainPatchableProperties` was removed
+
+#### `models.AnnotationResource` was removed
+
+#### `models.L3IsolationDomainsListResult` was removed
+
+#### `models.InternalNetworkPropertiesBgpConfiguration` was removed
+
+#### `models.OptionBProperties` was removed
+
+#### `models.IpPrefixesListResult` was removed
+
+#### `models.TerminalServerPatchableProperties` was removed
+
+#### `models.NetworkFabricPatchableProperties` was removed
+
+#### `models.InternalNetworkPropertiesStaticRouteConfiguration` was removed
+
+#### `models.IpExtendedCommunityListResult` was removed
+
+#### `models.NetworkTapPatchableParametersDestinationsItem` was removed
+
+#### `models.ExternalNetworkPatchableProperties` was removed
+
+#### `models.IpCommunitiesListResult` was removed
+
+#### `models.IpExtendedCommunityPatchableProperties` was removed
+
+#### `ManagedNetworkFabricManager$Configurable` was removed
+
+#### `models.EnableDisableOnResources` was removed
+
+#### `models.AccessControlListPatchableProperties` was removed
+
+#### `models.NetworkRacksListResult` was removed
+
+#### `models.NetworkFabricsListResult` was removed
+
+#### `models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration` was removed
+
+#### `models.NeighborGroupPatchableProperties` was removed
+
+#### `models.TagsUpdate` was removed
+
+#### `models.VpnConfigurationPropertiesOptionAProperties` was removed
+
+#### `models.NetworkFabricPatchablePropertiesTerminalServerConfiguration` was removed
+
+#### `models.InternetGatewayRulesListResult` was removed
+
+#### `models.ManagementNetworkConfigurationPatchableProperties` was removed
+
+#### `models.NetworkFabricSkusListResult` was removed
+
+#### `models.NetworkToNetworkInterconnectsList` was removed
+
+#### `models.CommonMatchConditions` was removed
+
+#### `models.RoutePoliciesListResult` was removed
+
+#### `models.L2IsolationDomainsListResult` was removed
+
+#### `models.IpPrefixPatchableProperties` was removed
+
+#### `models.InternetGatewaysListResult` was removed
+
+#### `models.IpCommunitySetOperationProperties` was removed
+
+#### `models.NetworkInterfacesList` was removed
+
+#### `models.AccessControlListsListResult` was removed
+
+#### `models.IpExtendedCommunityDeleteOperationProperties` was removed
+
+#### `models.Layer3IpPrefixProperties` was removed
+
+#### `models.InternalNetworksList` was removed
+
+#### `models.NetworkFabricControllersListResult` was removed
+
+#### `models.NetworkDevicePatchableProperties` was removed
+
+#### `models.NetworkTapsListResult` was removed
+
+#### `models.IpExtendedCommunityAddOperationProperties` was removed
+
+#### `models.NetworkRack$DefinitionStages` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed in stage 3
+
+#### `models.NetworkDevice$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.InternalNetwork$DefinitionStages` was modified
+
+* `withVlanId(int)` was removed in stage 2
+
+#### `models.IpCommunity$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.IpExtendedCommunity$DefinitionStages` was modified
+
+* `withIpExtendedCommunityRules(java.util.List)` was removed in stage 3
+
+#### `models.NetworkFabricController$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.NetworkFabric$DefinitionStages` was modified
+
+* `withNetworkFabricSku(java.lang.String)` was removed in stage 3
+
+#### `models.NetworkTapRule$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.InternetGatewayRule$DefinitionStages` was modified
+
+* `withRuleProperties(models.RuleProperties)` was removed in stage 3
+
+#### `models.NetworkToNetworkInterconnect$DefinitionStages` was modified
+
+* `withUseOptionB(models.BooleanEnumProperty)` was removed in stage 2
+
+#### `models.NeighborGroup$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.RoutePolicy$DefinitionStages` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed in stage 3
+
+#### `models.NetworkInterface$DefinitionStages` was modified
+
+* Required stage 2 was added
+
+#### `models.L3IsolationDomain$DefinitionStages` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed in stage 3
+
+#### `models.ExternalNetwork$DefinitionStages` was modified
+
+* `withPeeringOption(models.PeeringOption)` was removed in stage 2
+
+#### `models.IpPrefix$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.L2IsolationDomain$DefinitionStages` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed in stage 3
+
+#### `models.NetworkPacketBroker$DefinitionStages` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed in stage 3
+
+#### `models.NetworkTap$DefinitionStages` was modified
+
+* `withNetworkPacketBrokerId(java.lang.String)` was removed in stage 3
+
+#### `models.AccessControlList$DefinitionStages` was modified
+
+* Required stage 3 was added
+
+#### `models.InternetGateway$DefinitionStages` was modified
+
+* `withTypePropertiesType(models.GatewayType)` was removed in stage 3
+
+#### `models.InternalNetwork$Definition` was modified
+
+* `withBgpConfiguration(models.InternalNetworkPropertiesBgpConfiguration)` was removed
+* `withEgressAclId(java.lang.String)` was removed
+* `withConnectedIPv4Subnets(java.util.List)` was removed
+* `withExtension(models.Extension)` was removed
+* `withIsMonitoringEnabled(models.IsMonitoringEnabled)` was removed
+* `withVlanId(int)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+* `withIngressAclId(java.lang.String)` was removed
+* `withMtu(java.lang.Integer)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withStaticRouteConfiguration(models.InternalNetworkPropertiesStaticRouteConfiguration)` was removed
+* `withConnectedIPv6Subnets(java.util.List)` was removed
+
+#### `models.ImportRoutePolicyInformation` was modified
+
+* `validate()` was removed
+
+#### `models.IpPrefix$Update` was modified
+
+* `withIpPrefixRules(java.util.List)` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.L3IsolationDomainPatch` was modified
+
+* `aggregateRouteConfiguration()` was removed
+* `connectedSubnetRoutePolicy()` was removed
+* `withTags(java.util.Map)` was removed
+* `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicy)` was removed
+* `withRedistributeConnectedSubnets(models.RedistributeConnectedSubnets)` was removed
+* `annotation()` was removed
+* `redistributeStaticRoutes()` was removed
+* `withRedistributeStaticRoutes(models.RedistributeStaticRoutes)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
+* `redistributeConnectedSubnets()` was removed
+* `validate()` was removed
+
+#### `models.ExportRoutePolicyInformation` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkTapRuleAction` was modified
+
+* `validate()` was removed
+
+#### `models.IpGroupProperties` was modified
+
+* `models.IpAddressType ipAddressType()` -> `models.IPAddressType ipAddressType()`
+* `validate()` was removed
+* `withIpAddressType(models.IpAddressType)` was removed
+
+#### `models.NetworkInterfacePatch` was modified
+
+* `annotation()` was removed
+* `validate()` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.NetworkPacketBroker$Definition` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed
+
+#### `models.DestinationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TerminalServerConfiguration` was modified
+
+* `withUsername(java.lang.String)` was removed
+* `validate()` was removed
+* `withPassword(java.lang.String)` was removed
+* `withSerialNumber(java.lang.String)` was removed
+
+#### `models.NetworkTapRuleMatchCondition` was modified
+
+* `withIpCondition(models.IpMatchCondition)` was removed
+* `withProtocolTypes(java.util.List)` was removed
+* `validate()` was removed
+* `withVlanMatchCondition(models.VlanMatchCondition)` was removed
+
+#### `models.RebootProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkDevice$Update` was modified
+
+* `withHostname(java.lang.String)` was removed
+* `withSerialNumber(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.VpnConfigurationPatchableProperties` was modified
+
+* `models.OptionBProperties optionBProperties()` -> `models.VpnOptionBPatchProperties optionBProperties()`
+* `validate()` was removed
+* `models.VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties()` -> `models.VpnOptionAPatchProperties optionAProperties()`
+* `withOptionBProperties(models.OptionBProperties)` was removed
+* `withOptionAProperties(models.VpnConfigurationPatchablePropertiesOptionAProperties)` was removed
+
+#### `models.ExternalNetworkPatch` was modified
+
+* `withOptionAProperties(models.ExternalNetworkPatchPropertiesOptionAProperties)` was removed
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was removed
+* `withPeeringOption(models.PeeringOption)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `exportRoutePolicyId()` was removed
+* `importRoutePolicyId()` was removed
+* `optionAProperties()` was removed
+* `withOptionBProperties(models.L3OptionBProperties)` was removed
+* `importRoutePolicy()` was removed
+* `peeringOption()` was removed
+* `exportRoutePolicy()` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
+* `optionBProperties()` was removed
+* `annotation()` was removed
+* `validate()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+* `networkToNetworkInterconnectId()` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+
+#### `models.SupportedVersionProperties` was modified
+
+* `SupportedVersionProperties()` was changed to private access
+* `withIsDefault(models.BooleanEnumProperty)` was removed
+* `withVendorOsVersion(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
+* `withVendorFirmwareVersion(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ActionIpCommunityProperties` was modified
+
+* `validate()` was removed
+* `withAdd(models.IpCommunityIdList)` was removed
+
+#### `models.IpExtendedCommunity` was modified
+
+* `ipExtendedCommunityRules()` was removed
+* `annotation()` was removed
+* `administrativeState()` was removed
+* `configurationState()` was removed
+* `provisioningState()` was removed
+
+#### `models.IpPrefixPatch` was modified
+
+* `annotation()` was removed
+* `validate()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `ipPrefixRules()` was removed
+* `withIpPrefixRules(java.util.List)` was removed
+
+#### `models.NetworkInterface` was modified
+
+* `administrativeState()` was removed
+* `interfaceType()` was removed
+* `provisioningState()` was removed
+* `physicalIdentifier()` was removed
+* `ipv6Address()` was removed
+* `connectedTo()` was removed
+* `annotation()` was removed
+* `ipv4Address()` was removed
+
+#### `models.NetworkInterface$Update` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.InternetGatewayRulePatch` was modified
+
+* `withTags(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.ExternalNetworks` was modified
+
+* `updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` was removed
+
+#### `models.ExternalNetwork$Update` was modified
+
+* `withOptionBProperties(models.L3OptionBProperties)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was removed
+* `withOptionAProperties(models.ExternalNetworkPatchPropertiesOptionAProperties)` was removed
+* `withPeeringOption(models.PeeringOption)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+
+#### `models.PortGroupProperties` was modified
+
+* `validate()` was removed
+
+#### `models.L3IsolationDomain` was modified
+
+* `annotation()` was removed
+* `networkFabricId()` was removed
+* `redistributeStaticRoutes()` was removed
+* `redistributeConnectedSubnets()` was removed
+* `provisioningState()` was removed
+* `connectedSubnetRoutePolicy()` was removed
+* `aggregateRouteConfiguration()` was removed
+* `configurationState()` was removed
+* `administrativeState()` was removed
+
+#### `models.NetworkFabricController$Update` was modified
+
+* `withInfrastructureExpressRouteConnections(java.util.List)` was removed
+* `withWorkloadExpressRouteConnections(java.util.List)` was removed
+
+#### `models.VlanMatchCondition` was modified
+
+* `validate()` was removed
+
+#### `models.NeighborGroup$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withDestination(models.NeighborGroupDestination)` was removed
+
+#### `models.NeighborAddress` was modified
+
+* `validate()` was removed
+
+#### `models.AccessControlList$Update` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withDefaultAction(models.CommunityActionTypes)` was removed
+* `withMatchConfigurations(java.util.List)` was removed
+* `withConfigurationType(models.ConfigurationType)` was removed
+* `withDynamicMatchConfigurations(java.util.List)` was removed
+* `withAclsUrl(java.lang.String)` was removed
+
+#### `models.NetworkDeviceSku` was modified
+
+* `supportedVersions()` was removed
+* `model()` was removed
+* `manufacturer()` was removed
+* `provisioningState()` was removed
+* `interfaces()` was removed
+* `supportedRoleTypes()` was removed
+
+#### `models.InternalNetworks` was modified
+
+* `updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` was removed
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` was removed
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+
+#### `models.ExternalNetworkPropertiesOptionAProperties` was modified
+
+* `peerAsn()` was removed
+* `withPeerAsn(java.lang.Long)` was removed
+* `withVlanId(java.lang.Integer)` was removed
+* `java.lang.Integer vlanId()` -> `int vlanId()`
+* `withPrimaryIpv6Prefix(java.lang.String)` was removed
+* `withSecondaryIpv4Prefix(java.lang.String)` was removed
+* `withPrimaryIpv4Prefix(java.lang.String)` was removed
+* `fabricAsn()` was removed
+* `withSecondaryIpv6Prefix(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.AccessControlListMatchCondition` was modified
+
+* `withIpCondition(models.IpMatchCondition)` was removed
+* `withProtocolTypes(java.util.List)` was removed
+* `validate()` was removed
+* `withVlanMatchCondition(models.VlanMatchCondition)` was removed
+
+#### `models.ManagedResourceGroupConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.InternalNetwork$Update` was modified
+
+* `withStaticRouteConfiguration(models.StaticRouteConfiguration)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withIsMonitoringEnabled(models.IsMonitoringEnabled)` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+* `withBgpConfiguration(models.BgpConfiguration)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+* `withConnectedIPv4Subnets(java.util.List)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
+* `withIngressAclId(java.lang.String)` was removed
+* `withConnectedIPv6Subnets(java.util.List)` was removed
+* `withEgressAclId(java.lang.String)` was removed
+* `withMtu(java.lang.Integer)` was removed
+
+#### `models.NetworkTapRule$Definition` was modified
+
+* `withMatchConfigurations(java.util.List)` was removed
+* `withConfigurationType(models.ConfigurationType)` was removed
+* `withPollingIntervalInSeconds(models.PollingIntervalInSeconds)` was removed
+* `withTapRulesUrl(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withDynamicMatchConfigurations(java.util.List)` was removed
+
+#### `models.L3OptionBProperties` was modified
+
+* `validate()` was removed
+
+#### `models.InternetGatewayRule$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withRuleProperties(models.RuleProperties)` was removed
+
+#### `models.NetworkTapRule$Update` was modified
+
+* `withMatchConfigurations(java.util.List)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withTapRulesUrl(java.lang.String)` was removed
+* `withDynamicMatchConfigurations(java.util.List)` was removed
+* `withConfigurationType(models.ConfigurationType)` was removed
+
+#### `models.UpgradeNetworkFabricProperties` was modified
+
+* `withVersion(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.L2IsolationDomain$Definition` was modified
+
+* `withMtu(java.lang.Integer)` was removed
+* `withNetworkFabricId(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withVlanId(int)` was removed
+
+#### `models.L3ExportRoutePolicy` was modified
+
+* `validate()` was removed
+
+#### `models.IpCommunity$Update` was modified
+
+* `withIpCommunityRules(java.util.List)` was removed
+
+#### `models.InternetGateway$Definition` was modified
+
+* `withNetworkFabricControllerId(java.lang.String)` was removed
+* `withInternetGatewayRuleId(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withTypePropertiesType(models.GatewayType)` was removed
+
+#### `models.RuleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.InternalNetworkPatch` was modified
+
+* `exportRoutePolicy()` was removed
+* `withConnectedIPv4Subnets(java.util.List)` was removed
+* `mtu()` was removed
+* `connectedIPv6Subnets()` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+* `withMtu(java.lang.Integer)` was removed
+* `withStaticRouteConfiguration(models.StaticRouteConfiguration)` was removed
+* `bgpConfiguration()` was removed
+* `connectedIPv4Subnets()` was removed
+* `staticRouteConfiguration()` was removed
+* `exportRoutePolicyId()` was removed
+* `importRoutePolicy()` was removed
+* `withBgpConfiguration(models.BgpConfiguration)` was removed
+* `withIsMonitoringEnabled(models.IsMonitoringEnabled)` was removed
+* `importRoutePolicyId()` was removed
+* `withIngressAclId(java.lang.String)` was removed
+* `withEgressAclId(java.lang.String)` was removed
+* `isMonitoringEnabled()` was removed
+* `annotation()` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `egressAclId()` was removed
+* `validate()` was removed
+* `ingressAclId()` was removed
+* `withConnectedIPv6Subnets(java.util.List)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+
+#### `models.RoutePolicyPatch` was modified
+
+* `defaultAction()` was removed
+* `withStatements(java.util.List)` was removed
+* `withDefaultAction(models.CommunityActionTypes)` was removed
+* `statements()` was removed
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.AccessControlListPatch` was modified
+
+* `validate()` was removed
+* `aclsUrl()` was removed
+* `withAclsUrl(java.lang.String)` was removed
+* `defaultAction()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withDynamicMatchConfigurations(java.util.List)` was removed
+* `dynamicMatchConfigurations()` was removed
+* `withConfigurationType(models.ConfigurationType)` was removed
+* `withTags(java.util.Map)` was removed
+* `annotation()` was removed
+* `configurationType()` was removed
+* `withMatchConfigurations(java.util.List)` was removed
+* `withDefaultAction(models.CommunityActionTypes)` was removed
+* `matchConfigurations()` was removed
+
+#### `models.IpPrefix` was modified
+
+* `ipPrefixRules()` was removed
+* `provisioningState()` was removed
+* `annotation()` was removed
+* `administrativeState()` was removed
+* `configurationState()` was removed
+
+#### `models.InternetGateway` was modified
+
+* `internetGatewayRuleId()` was removed
+* `annotation()` was removed
+* `provisioningState()` was removed
+* `port()` was removed
+* `networkFabricControllerId()` was removed
+* `typePropertiesType()` was removed
+* `ipv4Address()` was removed
+
+#### `models.NetworkFabricController$Definition` was modified
+
+* `withInfrastructureExpressRouteConnections(java.util.List)` was removed
+* `withIpv6AddressSpace(java.lang.String)` was removed
+* `withNfcSku(models.NfcSku)` was removed
+* `withManagedResourceGroupConfiguration(models.ManagedResourceGroupConfiguration)` was removed
+* `withIsWorkloadManagementNetworkEnabled(models.IsWorkloadManagementNetworkEnabled)` was removed
+* `withIpv4AddressSpace(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withWorkloadExpressRouteConnections(java.util.List)` was removed
+
+#### `models.AccessControlListMatchConfiguration` was modified
+
+* `models.IpAddressType ipAddressType()` -> `models.IPAddressType ipAddressType()`
+* `validate()` was removed
+* `withIpAddressType(models.IpAddressType)` was removed
+
+#### `models.InternalNetwork` was modified
+
+* `connectedIPv4Subnets()` was removed
+* `isMonitoringEnabled()` was removed
+* `bgpConfiguration()` was removed
+* `connectedIPv6Subnets()` was removed
+* `egressAclId()` was removed
+* `provisioningState()` was removed
+* `configurationState()` was removed
+* `ingressAclId()` was removed
+* `extension()` was removed
+* `updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` was removed
+* `exportRoutePolicy()` was removed
+* `staticRouteConfiguration()` was removed
+* `mtu()` was removed
+* `updateBgpAdministrativeState(models.UpdateAdministrativeState)` was removed
+* `updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `updateBgpAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `exportRoutePolicyId()` was removed
+* `importRoutePolicy()` was removed
+* `annotation()` was removed
+* `importRoutePolicyId()` was removed
+* `vlanId()` was removed
+* `administrativeState()` was removed
+
+#### `models.IpCommunityIdList` was modified
+
+* `validate()` was removed
+
+#### `models.IpExtendedCommunity$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withIpExtendedCommunityRules(java.util.List)` was removed
+
+#### `models.NetworkRack` was modified
+
+* `provisioningState()` was removed
+* `networkFabricId()` was removed
+* `annotation()` was removed
+* `networkRackType()` was removed
+* `networkDevices()` was removed
+
+#### `models.CommonDynamicMatchConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkDevice$Definition` was modified
+
+* `withSerialNumber(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withHostname(java.lang.String)` was removed
+* `withNetworkDeviceSku(java.lang.String)` was removed
+
+#### `models.NeighborGroupDestination` was modified
+
+* `validate()` was removed
+
+#### `models.InternetGateway$Update` was modified
+
+* `withInternetGatewayRuleId(java.lang.String)` was removed
+
+#### `models.ValidateConfigurationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkFabric$Definition` was modified
+
+* `withFabricVersion(java.lang.String)` was removed
+* `withTerminalServerConfiguration(models.TerminalServerConfiguration)` was removed
+* `withServerCountPerRack(int)` was removed
+* `withIpv6Prefix(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withManagementNetworkConfiguration(models.ManagementNetworkConfigurationProperties)` was removed
+* `withIpv4Prefix(java.lang.String)` was removed
+* `withNetworkFabricControllerId(java.lang.String)` was removed
+* `withRackCount(java.lang.Integer)` was removed
+* `withFabricAsn(long)` was removed
+* `withNetworkFabricSku(java.lang.String)` was removed
+
+#### `models.NetworkDevice` was modified
+
+* `version()` was removed
+* `annotation()` was removed
+* `serialNumber()` was removed
+* `administrativeState()` was removed
+* `hostname()` was removed
+* `networkRackId()` was removed
+* `managementIpv6Address()` was removed
+* `networkDeviceRole()` was removed
+* `provisioningState()` was removed
+* `managementIpv4Address()` was removed
+* `configurationState()` was removed
+* `networkDeviceSku()` was removed
+
+#### `models.NetworkFabricController` was modified
+
+* `annotation()` was removed
+* `infrastructureExpressRouteConnections()` was removed
+* `provisioningState()` was removed
+* `infrastructureServices()` was removed
+* `workloadExpressRouteConnections()` was removed
+* `workloadServices()` was removed
+* `ipv6AddressSpace()` was removed
+* `managedResourceGroupConfiguration()` was removed
+* `nfcSku()` was removed
+* `tenantInternetGatewayIds()` was removed
+* `isWorkloadManagementNetworkEnabled()` was removed
+* `networkFabricIds()` was removed
+* `workloadManagementNetwork()` was removed
+* `ipv4AddressSpace()` was removed
+
+#### `models.ActionIpExtendedCommunityProperties` was modified
+
+* `validate()` was removed
+* `withAdd(models.IpExtendedCommunityIdList)` was removed
+
+#### `models.NetworkPacketBrokerPatch` was modified
+
+* `withTags(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.IpCommunityPatch` was modified
+
+* `withIpCommunityRules(java.util.List)` was removed
+* `ipCommunityRules()` was removed
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.NetworkInterface$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.IpExtendedCommunity$Update` was modified
+
+* `withIpExtendedCommunityRules(java.util.List)` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.UpdateAdministrativeState` was modified
+
+* `validate()` was removed
+* `withResourceIds(java.util.List)` was removed
+
+#### `models.VpnConfigurationProperties` was modified
+
+* `models.VpnConfigurationPropertiesOptionAProperties optionAProperties()` -> `models.VpnOptionAProperties optionAProperties()`
+* `withOptionBProperties(models.OptionBProperties)` was removed
+* `withOptionAProperties(models.VpnConfigurationPropertiesOptionAProperties)` was removed
+* `validate()` was removed
+* `models.OptionBProperties optionBProperties()` -> `models.VpnOptionBProperties optionBProperties()`
+
+#### `models.RoutePolicy$Definition` was modified
+
+* `withNetworkFabricId(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withDefaultAction(models.CommunityActionTypes)` was removed
+* `withAddressFamilyType(models.AddressFamilyType)` was removed
+* `withStatements(java.util.List)` was removed
+
+#### `models.IpPrefix$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withIpPrefixRules(java.util.List)` was removed
+
+#### `models.UpdateDeviceAdministrativeState` was modified
+
+* `validate()` was removed
+* `withResourceIds(java.util.List)` was removed
+
+#### `models.AccessControlList` was modified
+
+* `provisioningState()` was removed
+* `dynamicMatchConfigurations()` was removed
+* `lastSyncedTime()` was removed
+* `matchConfigurations()` was removed
+* `aclsUrl()` was removed
+* `annotation()` was removed
+* `configurationState()` was removed
+* `administrativeState()` was removed
+* `configurationType()` was removed
+* `defaultAction()` was removed
+
+#### `models.DeviceInterfaceProperties` was modified
+
+* `DeviceInterfaceProperties()` was changed to private access
+* `withInterfaceType(java.lang.String)` was removed
+* `withSupportedConnectorTypes(java.util.List)` was removed
+* `validate()` was removed
+* `withIdentifier(java.lang.String)` was removed
+
+#### `models.ConnectedSubnet` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.NetworkFabricControllerPatch` was modified
+
+* `withTags(java.util.Map)` was removed
+* `infrastructureExpressRouteConnections()` was removed
+* `withInfrastructureExpressRouteConnections(java.util.List)` was removed
+* `validate()` was removed
+* `workloadExpressRouteConnections()` was removed
+* `withWorkloadExpressRouteConnections(java.util.List)` was removed
+
+#### `models.StaticRouteConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.RoutePolicyStatementProperties` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.NetworkTap$Update` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withDestinationsForUpdate(java.util.List)` was removed
+* `withPollingType(models.PollingType)` was removed
+
+#### `models.NetworkToNetworkInterconnect` was modified
+
+* `importRoutePolicy()` was removed
+* `layer2Configuration()` was removed
+* `administrativeState()` was removed
+* `useOptionB()` was removed
+* `nniType()` was removed
+* `egressAclId()` was removed
+* `updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `isManagementType()` was removed
+* `provisioningState()` was removed
+* `exportRoutePolicy()` was removed
+* `ingressAclId()` was removed
+* `updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` was removed
+* `npbStaticRouteConfiguration()` was removed
+* `optionBLayer3Configuration()` was removed
+* `configurationState()` was removed
+
+#### `models.NetworkTapRule` was modified
+
+* `provisioningState()` was removed
+* `configurationType()` was removed
+* `dynamicMatchConfigurations()` was removed
+* `matchConfigurations()` was removed
+* `lastSyncedTime()` was removed
+* `configurationState()` was removed
+* `tapRulesUrl()` was removed
+* `networkTapId()` was removed
+* `administrativeState()` was removed
+* `annotation()` was removed
+* `pollingIntervalInSeconds()` was removed
+
+#### `models.NetworkToNetworkInterconnectPatch` was modified
+
+* `layer2Configuration()` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicyInformation)` was removed
+* `exportRoutePolicy()` was removed
+* `optionBLayer3Configuration()` was removed
+* `withEgressAclId(java.lang.String)` was removed
+* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfiguration)` was removed
+* `ingressAclId()` was removed
+* `name()` was removed
+* `withIngressAclId(java.lang.String)` was removed
+* `withLayer2Configuration(models.Layer2Configuration)` was removed
+* `egressAclId()` was removed
+* `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was removed
+* `npbStaticRouteConfiguration()` was removed
+* `validate()` was removed
+* `importRoutePolicy()` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicyInformation)` was removed
+
+#### `models.NetworkFabricSku` was modified
+
+* `details()` was removed
+* `typePropertiesType()` was removed
+* `provisioningState()` was removed
+* `maxComputeRacks()` was removed
+* `maximumServerCount()` was removed
+* `supportedVersions()` was removed
+
+#### `models.IpCommunity$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withIpCommunityRules(java.util.List)` was removed
+
+#### `models.NpbStaticRouteConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.L3IsolationDomain$Update` was modified
+
+* `withRedistributeStaticRoutes(models.RedistributeStaticRoutes)` was removed
+* `withRedistributeConnectedSubnets(models.RedistributeConnectedSubnets)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
+* `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicy)` was removed
+
+#### `models.ConnectedSubnetRoutePolicy` was modified
+
+* `exportRoutePolicyId()` was removed
+* `validate()` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+
+#### `models.NetworkRack$Definition` was modified
+
+* `withNetworkRackType(models.NetworkRackType)` was removed
+* `withNetworkFabricId(java.lang.String)` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.IpCommunity` was modified
+
+* `ipCommunityRules()` was removed
+* `provisioningState()` was removed
+* `configurationState()` was removed
+* `administrativeState()` was removed
+* `annotation()` was removed
+
+#### `models.StaticRouteProperties` was modified
+
+* `validate()` was removed
+
+#### `models.IpExtendedCommunityPatch` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `annotation()` was removed
+* `withIpExtendedCommunityRules(java.util.List)` was removed
+* `withTags(java.util.Map)` was removed
+* `ipExtendedCommunityRules()` was removed
+* `validate()` was removed
+
+#### `models.RoutePolicy` was modified
+
+* `configurationState()` was removed
+* `defaultAction()` was removed
+* `annotation()` was removed
+* `addressFamilyType()` was removed
+* `administrativeState()` was removed
+* `networkFabricId()` was removed
+* `provisioningState()` was removed
+* `statements()` was removed
+
+#### `models.NetworkToNetworkInterconnect$Definition` was modified
+
+* `withLayer2Configuration(models.Layer2Configuration)` was removed
+* `withIngressAclId(java.lang.String)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicyInformation)` was removed
+* `withIsManagementType(models.IsManagementType)` was removed
+* `withOptionBLayer3Configuration(models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicyInformation)` was removed
+* `withEgressAclId(java.lang.String)` was removed
+* `withUseOptionB(models.BooleanEnumProperty)` was removed
+* `withNniType(models.NniType)` was removed
+* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfiguration)` was removed
+
+#### `models.VlanGroupProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkTap$Definition` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withPollingType(models.PollingType)` was removed
+* `withNetworkPacketBrokerId(java.lang.String)` was removed
+* `withDestinations(java.util.List)` was removed
+
+#### `models.BgpConfiguration` was modified
+
+* `peerAsn()` was removed
+* `withPeerAsn(java.lang.Long)` was removed
+* `validate()` was removed
+* `fabricAsn()` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.NetworkFabricPatch` was modified
+
+* `ipv4Prefix()` was removed
+* `ipv6Prefix()` was removed
+* `withManagementNetworkConfiguration(models.ManagementNetworkConfigurationPatchableProperties)` was removed
+* `annotation()` was removed
+* `withTags(java.util.Map)` was removed
+* `withIpv6Prefix(java.lang.String)` was removed
+* `withRackCount(java.lang.Integer)` was removed
+* `managementNetworkConfiguration()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withTerminalServerConfiguration(models.NetworkFabricPatchablePropertiesTerminalServerConfiguration)` was removed
+* `serverCountPerRack()` was removed
+* `validate()` was removed
+* `withServerCountPerRack(java.lang.Integer)` was removed
+* `rackCount()` was removed
+* `withIpv4Prefix(java.lang.String)` was removed
+* `fabricAsn()` was removed
+* `withFabricAsn(java.lang.Long)` was removed
+* `terminalServerConfiguration()` was removed
+
+#### `models.AccessControlListPortCondition` was modified
+
+* `withPortGroupNames(java.util.List)` was removed
+* `withPorts(java.util.List)` was removed
+* `validate()` was removed
+* `withPortType(models.PortType)` was removed
+* `withLayer4Protocol(models.Layer4Protocol)` was removed
+
+#### `models.IpPrefixRule` was modified
+
+* `validate()` was removed
+
+#### `models.NeighborGroup$Update` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withDestination(models.NeighborGroupDestination)` was removed
+
+#### `models.AccessControlList$Definition` was modified
+
+* `withDynamicMatchConfigurations(java.util.List)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withConfigurationType(models.ConfigurationType)` was removed
+* `withAclsUrl(java.lang.String)` was removed
+* `withMatchConfigurations(java.util.List)` was removed
+* `withDefaultAction(models.CommunityActionTypes)` was removed
+
+#### `models.AggregateRouteConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.L3IsolationDomain$Definition` was modified
+
+* `withRedistributeStaticRoutes(models.RedistributeStaticRoutes)` was removed
+* `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicy)` was removed
+* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
+* `withNetworkFabricId(java.lang.String)` was removed
+* `withRedistributeConnectedSubnets(models.RedistributeConnectedSubnets)` was removed
+* `withAnnotation(java.lang.String)` was removed
+
+#### `models.IsolationDomainProperties` was modified
+
+* `validate()` was removed
+
+#### `models.StatementActionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PortCondition` was modified
+
+* `validate()` was removed
+
+#### `models.ControllerServices` was modified
+
+* `ControllerServices()` was changed to private access
+* `withIpv4AddressSpaces(java.util.List)` was removed
+* `validate()` was removed
+* `withIpv6AddressSpaces(java.util.List)` was removed
+
+#### `models.NetworkTapRuleMatchConfiguration` was modified
+
+* `validate()` was removed
+* `withIpAddressType(models.IpAddressType)` was removed
+* `models.IpAddressType ipAddressType()` -> `models.IPAddressType ipAddressType()`
+
+#### `models.L2IsolationDomain$Update` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `withMtu(java.lang.Integer)` was removed
+
+#### `models.L2IsolationDomain` was modified
+
+* `networkFabricId()` was removed
+* `provisioningState()` was removed
+* `configurationState()` was removed
+* `annotation()` was removed
+* `mtu()` was removed
+* `vlanId()` was removed
+* `administrativeState()` was removed
+
+#### `models.NetworkFabric` was modified
+
+* `l3IsolationDomains()` was removed
+* `l2IsolationDomains()` was removed
+* `routerIds()` was removed
+* `racks()` was removed
+* `serverCountPerRack()` was removed
+* `ipv6Prefix()` was removed
+* `managementNetworkConfiguration()` was removed
+* `rackCount()` was removed
+* `annotation()` was removed
+* `terminalServerConfiguration()` was removed
+* `networkFabricControllerId()` was removed
+* `configurationState()` was removed
+* `provisioningState()` was removed
+* `networkFabricSku()` was removed
+* `fabricAsn()` was removed
+* `administrativeState()` was removed
+* `ipv4Prefix()` was removed
+* `fabricVersion()` was removed
+
+#### `models.IpCommunityRule` was modified
+
+* `validate()` was removed
+
+#### `models.ExternalNetwork` was modified
+
+* `exportRoutePolicy()` was removed
+* `provisioningState()` was removed
+* `configurationState()` was removed
+* `optionAProperties()` was removed
+* `importRoutePolicyId()` was removed
+* `annotation()` was removed
+* `optionBProperties()` was removed
+* `administrativeState()` was removed
+* `updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` was removed
+* `importRoutePolicy()` was removed
+* `peeringOption()` was removed
+* `networkToNetworkInterconnectId()` was removed
+* `exportRoutePolicyId()` was removed
+
+#### `models.UpdateVersion` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkFabric$Update` was modified
+
+* `withTerminalServerConfiguration(models.NetworkFabricPatchablePropertiesTerminalServerConfiguration)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withIpv6Prefix(java.lang.String)` was removed
+* `withManagementNetworkConfiguration(models.ManagementNetworkConfigurationPatchableProperties)` was removed
+* `withServerCountPerRack(java.lang.Integer)` was removed
+* `withFabricAsn(java.lang.Long)` was removed
+* `withRackCount(java.lang.Integer)` was removed
+* `withIpv4Prefix(java.lang.String)` was removed
+
+#### `models.NetworkToNetworkInterconnect$Update` was modified
+
+* `withIngressAclId(java.lang.String)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicyInformation)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicyInformation)` was removed
+* `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was removed
+* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfiguration)` was removed
+* `withLayer2Configuration(models.Layer2Configuration)` was removed
+* `withEgressAclId(java.lang.String)` was removed
+
+#### `models.NetworkDevicePatchParameters` was modified
+
+* `validate()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withHostname(java.lang.String)` was removed
+* `hostname()` was removed
+* `annotation()` was removed
+* `withTags(java.util.Map)` was removed
+* `serialNumber()` was removed
+* `withSerialNumber(java.lang.String)` was removed
+
+#### `models.ManagementNetworkConfigurationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkTap` was modified
+
+* `networkPacketBrokerId()` was removed
+* `destinations()` was removed
+* `annotation()` was removed
+* `provisioningState()` was removed
+* `pollingType()` was removed
+* `configurationState()` was removed
+* `administrativeState()` was removed
+* `sourceTapRuleId()` was removed
+
+#### `models.ExportRoutePolicy` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkToNetworkInterconnects` was modified
+
+* `updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` was removed
+* `updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+
+#### `models.NeighborGroup` was modified
+
+* `provisioningState()` was removed
+* `networkTapRuleIds()` was removed
+* `destination()` was removed
+* `networkTapIds()` was removed
+* `annotation()` was removed
+
+#### `models.RoutePolicy$Update` was modified
+
+* `withStatements(java.util.List)` was removed
+* `withDefaultAction(models.CommunityActionTypes)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.IpExtendedCommunityIdList` was modified
+
+* `validate()` was removed
+
+#### `models.ExternalNetwork$Definition` was modified
+
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+* `withOptionAProperties(models.ExternalNetworkPropertiesOptionAProperties)` was removed
+* `withPeeringOption(models.PeeringOption)` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
+* `withOptionBProperties(models.L3OptionBProperties)` was removed
+* `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+
+#### `models.NeighborGroupPatch` was modified
+
+* `withDestination(models.NeighborGroupDestination)` was removed
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+* `annotation()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `destination()` was removed
+
+#### `models.Layer2Configuration` was modified
+
+* `validate()` was removed
+
+#### `models.L2IsolationDomainPatch` was modified
+
+* `withAnnotation(java.lang.String)` was removed
+* `annotation()` was removed
+* `mtu()` was removed
+* `withTags(java.util.Map)` was removed
+* `validate()` was removed
+* `withMtu(java.lang.Integer)` was removed
+
+#### `models.RouteTargetInformation` was modified
+
+* `validate()` was removed
+
+#### `models.ExpressRouteConnectionInformation` was modified
+
+* `validate()` was removed
+
+#### `models.InternetGatewayRule` was modified
+
+* `internetGatewayIds()` was removed
+* `provisioningState()` was removed
+* `ruleProperties()` was removed
+* `annotation()` was removed
+
+#### `models.BfdConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ImportRoutePolicy` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkPacketBroker` was modified
+
+* `networkDeviceIds()` was removed
+* `provisioningState()` was removed
+* `sourceInterfaceIds()` was removed
+* `neighborGroupIds()` was removed
+* `networkTapIds()` was removed
+* `networkFabricId()` was removed
+
+#### `models.IpExtendedCommunityRule` was modified
+
+* `validate()` was removed
+
+#### `models.ExternalNetworkPatchPropertiesOptionAProperties` was modified
+
+* `withPrimaryIpv4Prefix(java.lang.String)` was removed
+* `withSecondaryIpv4Prefix(java.lang.String)` was removed
+* `withPrimaryIpv6Prefix(java.lang.String)` was removed
+* `withPeerAsn(java.lang.Long)` was removed
+* `peerAsn()` was removed
+* `withSecondaryIpv6Prefix(java.lang.String)` was removed
+* `fabricAsn()` was removed
+* `models.BfdConfiguration bfdConfiguration()` -> `models.BfdPatchConfiguration bfdConfiguration()`
+* `validate()` was removed
+* `withBfdConfiguration(models.BfdConfiguration)` was removed
+
+#### `models.AccessControlListAction` was modified
+
+* `validate()` was removed
+
+#### `models.SupportedConnectorProperties` was modified
+
+* `SupportedConnectorProperties()` was changed to private access
+* `withConnectorType(java.lang.String)` was removed
+* `withMaxSpeedInMbps(java.lang.Integer)` was removed
+* `validate()` was removed
+
+#### `models.NetworkTapRulePatch` was modified
+
+* `withConfigurationType(models.ConfigurationType)` was removed
+* `matchConfigurations()` was removed
+* `withMatchConfigurations(java.util.List)` was removed
+* `withTags(java.util.Map)` was removed
+* `dynamicMatchConfigurations()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `validate()` was removed
+* `withTapRulesUrl(java.lang.String)` was removed
+* `configurationType()` was removed
+* `tapRulesUrl()` was removed
+* `annotation()` was removed
+* `withDynamicMatchConfigurations(java.util.List)` was removed
+
+#### `models.NetworkTapPatch` was modified
+
+* `validate()` was removed
+* `withAnnotation(java.lang.String)` was removed
+* `withPollingType(models.PollingType)` was removed
+* `annotation()` was removed
+* `pollingType()` was removed
+* `withDestinations(java.util.List)` was removed
+* `withTags(java.util.Map)` was removed
+* `destinations()` was removed
+
+#### `models.AggregateRoute` was modified
+
+* `validate()` was removed
+
+#### `models.StatementConditionProperties` was modified
+
+* `withIpCommunityIds(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.InternetGatewayPatch` was modified
+
+* `internetGatewayRuleId()` was removed
+* `validate()` was removed
+* `withInternetGatewayRuleId(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.OptionBLayer3Configuration` was modified
+
+* `fabricAsn()` was removed
+* `withSecondaryIpv6Prefix(java.lang.String)` was removed
+* `peerAsn()` was removed
+* `java.lang.Integer vlanId()` -> `int vlanId()`
+* `withPeerAsn(java.lang.Long)` was removed
+* `withPrimaryIpv4Prefix(java.lang.String)` was removed
+* `withSecondaryIpv4Prefix(java.lang.String)` was removed
+* `validate()` was removed
+* `withPrimaryIpv6Prefix(java.lang.String)` was removed
+* `withVlanId(java.lang.Integer)` was removed
+
+#### `models.IpMatchCondition` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.IpCommunityPatchableProperties` was added
+
+* `models.NetworkFabricProperties` was added
+
+* `models.HeaderAddressProperties` was added
+
+* `models.ExternalNetworkPatchProperties` was added
+
+* `models.RouteType` was added
+
+* `models.VpnOptionBProperties` was added
+
+* `models.ExternalNetworkProperties` was added
+
+* `models.InternalNetworkBmpProperties` was added
+
+* `models.NetworkMonitor$Definition` was added
+
+* `models.NeighborGroupPatchProperties` was added
+
+* `models.ExternalNetworkBmpProperties` was added
+
+* `models.L3OptionBPatchProperties` was added
+
+* `models.NeighborGroupDestinationPatch` was added
+
+* `models.VlanGroupPatchProperties` was added
+
+* `models.IpExtendedCommunityProperties` was added
+
+* `models.BgpAdministrativeState` was added
+
+* `models.StatementActionPatchProperties` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.NetworkDeviceSkuProperties` was added
+
+* `models.IcmpConfigurationPatchProperties` was added
+
+* `models.VlanMatchConditionPatch` was added
+
+* `models.BfdPatchConfiguration` was added
+
+* `models.StaticRouteRoutePolicy` was added
+
+* `models.NetworkDevicePatchParametersProperties` was added
+
+* `models.IcmpConfigurationProperties` was added
+
+* `models.InternalNetworkBgpAdministrativeStateRequest` was added
+
+* `models.NniStaticRouteConfiguration` was added
+
+* `models.VpnOptionBPatchProperties` was added
+
+* `models.NetworkToNetworkInterconnectProperties` was added
+
+* `models.ExternalNetworkStaticRouteConfiguration` was added
+
+* `models.ImportRoutePolicyInformationPatch` was added
+
+* `models.NetworkFabricLockAction` was added
+
+* `models.GlobalNetworkTapRuleActionPatchProperties` was added
+
+* `models.L3IsolationDomainProperties` was added
+
+* `models.UniqueRouteDistinguisherPatchProperties` was added
+
+* `models.ExternalNetworkBmpPatchProperties` was added
+
+* `models.ConditionalDefaultRouteProperties` was added
+
+* `models.ArmConfigurationDiffResponse` was added
+
+* `models.BmpConfigurationPatchProperties` was added
+
+* `models.NeighborGroupProperties` was added
+
+* `models.ManagedServiceIdentityPatch` was added
+
+* `models.Layer2ConfigurationPatch` was added
+
+* `models.NetworkInterfacePatchProperties` was added
+
+* `models.InternalNetworkBgpAdministrativeStateResponse` was added
+
+* `models.NetworkFabricLockRequest` was added
+
+* `models.BitRateUnit` was added
+
+* `models.NetworkFabricPatchProperties` was added
+
+* `models.BurstSizeUnit` was added
+
+* `models.ExternalNetworkBfdAdministrativeStateResponse` was added
+
+* `models.NetworkTapRuleProperties` was added
+
+* `models.L3IsolationDomainPatchProperties` was added
+
+* `models.NetworkMonitorPatchProperties` was added
+
+* `models.DestinationPatchProperties` was added
+
+* `models.ExternalNetworkStaticRoutePatchConfiguration` was added
+
+* `models.NetworkTapRuleActionPatch` was added
+
+* `models.StorageAccountConfiguration` was added
+
+* `models.NetworkFabricLockType` was added
+
+* `models.L2IsolationDomainProperties` was added
+
+* `models.NetworkRackPatch` was added
+
+* `models.DiscardCommitBatchResponse` was added
+
+* `models.StaticRoutePatchConfiguration` was added
+
+* `models.BmpMonitoredAddressFamily` was added
+
+* `models.RoutePolicyProperties` was added
+
+* `models.NetworkDeviceProperties` was added
+
+* `models.NativeIpv6PrefixLimitPatchProperties` was added
+
+* `models.OptionBLayer3PrefixLimitProperties` was added
+
+* `models.StorageAccountPatchConfiguration` was added
+
+* `models.NetworkMonitor` was added
+
+* `models.AccessControlListProperties` was added
+
+* `models.InternalNetworkRouteType` was added
+
+* `models.StationConnectionMode` was added
+
+* `models.StationConfigurationState` was added
+
+* `models.CommonPostActionResponseForDeviceROCommands` was added
+
+* `models.L3UniqueRouteDistinguisherProperties` was added
+
+* `models.DeviceRole` was added
+
+* `models.V4OverV6BgpSessionState` was added
+
+* `models.RoutePrefixLimitPatchProperties` was added
+
+* `models.BgpPatchConfiguration` was added
+
+* `models.PrefixLimitProperties` was added
+
+* `models.GlobalAccessControlListActionPatchProperties` was added
+
+* `models.ExternalNetworkRouteType` was added
+
+* `models.AccessControlListPatchProperties` was added
+
+* `models.BurstSize` was added
+
+* `models.GlobalAccessControlListActionProperties` was added
+
+* `models.InternalNetworkPatchProperties` was added
+
+* `models.BmpConfigurationState` was added
+
+* `models.NativeIpv4PrefixLimitProperties` was added
+
+* `models.NetworkMonitors` was added
+
+* `models.InternetGatewayRuleProperties` was added
+
+* `models.InternetGatewayPatchProperties` was added
+
+* `models.StationConnectionProperties` was added
+
+* `FilesharesManager` was added
+
+* `models.IdentitySelectorPatch` was added
+
+* `models.CommitBatchState` was added
+
+* `FilesharesManager$Configurable` was added
+
+* `models.ExternalNetworkBfdAdministrativeStateRequest` was added
+
+* `models.AccessControlListMatchConfigurationPatch` was added
+
+* `models.NetworkMonitorProperties` was added
+
+* `models.ManagementNetworkPatchConfiguration` was added
+
+* `models.IsolationDomainPatchProperties` was added
+
+* `models.NetworkTapPatchProperties` was added
+
+* `models.InternalNetworkBmpPatchProperties` was added
+
+* `models.PrefixLimitPatchProperties` was added
+
+* `models.RoutePolicyPatchableProperties` was added
+
+* `models.AccessControlListPortConditionPatch` was added
+
+* `models.ExtendedVlan` was added
+
+* `models.ExportRoutePolicyPatch` was added
+
+* `models.RuleCondition` was added
+
+* `models.BmpConfigurationProperties` was added
+
+* `models.CommonDynamicMatchConfigurationPatch` was added
+
+* `models.NniStaticRoutePatchConfiguration` was added
+
+* `models.NetworkPacketBrokerProperties` was added
+
+* `models.IpPrefixPatchProperties` was added
+
+* `models.ImportRoutePolicyPatch` was added
+
+* `models.NetworkToNetworkInterconnectPatchProperties` was added
+
+* `models.OptionBLayer3PrefixLimitPatchProperties` was added
+
+* `models.NetworkTapRuleMatchConditionPatch` was added
+
+* `models.StaticRoutePatchProperties` was added
+
+* `models.NniBfdAdministrativeStateRequest` was added
+
+* `models.OptionBLayer3ConfigurationPatchProperties` was added
+
+* `models.NniBmpPatchProperties` was added
+
+* `models.PortConditionPatch` was added
+
+* `models.RouteTargetPatchInformation` was added
+
+* `models.StationConnectionPatchProperties` was added
+
+* `models.IpGroupPatchProperties` was added
+
+* `models.IpCommunityProperties` was added
+
+* `models.IpPrefixProperties` was added
+
+* `models.NetworkRackProperties` was added
+
+* `models.InternetGatewayProperties` was added
+
+* `models.IpMatchConditionPatch` was added
+
+* `models.FabricLockProperties` was added
+
+* `models.DiscardCommitBatchRequest` was added
+
+* `models.NetworkMonitorPatch` was added
+
+* `models.VpnOptionAProperties` was added
+
+* `models.InternalNetworkBfdAdministrativeStateResponse` was added
+
+* `models.NativeIpv6PrefixLimitProperties` was added
+
+* `models.RoutePolicyStatementPatchProperties` was added
+
+* `models.ConnectedSubnetRoutePolicyPatch` was added
+
+* `models.NeighborAddressBgpAdministrativeStatus` was added
+
+* `models.BitRate` was added
+
+* `models.StaticRouteRoutePolicyPatch` was added
+
+* `models.StatementConditionPatchProperties` was added
+
+* `models.NpbStaticRouteConfigurationPatch` was added
+
+* `models.BmpExportPolicy` was added
+
+* `models.CommonPostActionResponseForDeviceROCommandsOperationStatusResult` was added
+
+* `models.AccessControlListMatchConditionPatch` was added
+
+* `models.AccessControlListActionPatch` was added
+
+* `models.IpExtendedCommunityPatchProperties` was added
+
+* `models.UniqueRouteDistinguisherProperties` was added
+
+* `models.UniqueRouteDistinguisherConfigurationState` was added
+
+* `models.L2IsolationDomainPatchProperties` was added
+
+* `models.InternalNetworkProperties` was added
+
+* `models.NNIDerivedUniqueRouteDistinguisherConfigurationState` was added
+
+* `models.NetworkTapProperties` was added
+
+* `models.CommitBatchStatusResponse` was added
+
+* `models.NetworkMonitor$DefinitionStages` was added
+
+* `models.NniBfdAdministrativeStateResponse` was added
+
+* `models.ViewDeviceConfigurationResponse` was added
+
+* `models.VpnOptionAPatchProperties` was added
+
+* `models.PortGroupPatchProperties` was added
+
+* `models.LastOperationProperties` was added
+
+* `models.CommonPostActionResponseForDeviceRWCommands` was added
+
+* `models.CommitBatchStatusRequest` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.LockConfigurationState` was added
+
+* `models.DeviceRwCommand` was added
+
+* `models.DeviceRoCommand` was added
+
+* `models.V6OverV4BgpSessionState` was added
+
+* `models.ActionIpExtendedCommunityPatchProperties` was added
+
+* `models.MicroBfdState` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.AclType` was added
+
+* `models.IPAddressType` was added
+
+* `models.RoutePrefixLimitProperties` was added
+
+* `models.NativeIpv4PrefixLimitPatchProperties` was added
+
+* `models.ActionIpCommunityPatchProperties` was added
+
+* `models.L3ExportRoutePolicyPatch` was added
+
+* `models.AggregateRoutePatchConfiguration` was added
+
+* `models.PoliceRateConfigurationProperties` was added
+
+* `models.NetworkFabricControllerPatchProperties` was added
+
+* `models.NetworkMonitor$Update` was added
+
+* `models.NeighborAddressBfdAdministrativeStatus` was added
+
+* `models.NetworkFabricControllerProperties` was added
+
+* `models.TerminalServerPatchConfiguration` was added
+
+* `models.FeatureFlagProperties` was added
+
+* `models.NniBmpProperties` was added
+
+* `models.NetworkInterfaceProperties` was added
+
+* `models.ExportRoutePolicyInformationPatch` was added
+
+* `models.NetworkTapRulePatchProperties` was added
+
+* `models.NetworkFabricSkuProperties` was added
+
+* `models.ManagedServiceIdentitySelectorType` was added
+
+* `models.GlobalNetworkTapRuleActionProperties` was added
+
+* `models.NeighborAddressPatch` was added
+
+* `models.IdentitySelector` was added
+
+* `models.NetworkTapRuleMatchConfigurationPatch` was added
+
+* `models.NetworkMonitor$UpdateStages` was added
+
+* `models.InternalNetworkBfdAdministrativeStateRequest` was added
+
+* `models.CommitBatchDetails` was added
+
+* `models.ConnectedSubnetPatch` was added
+
+#### `models.InternalNetwork$Definition` was modified
+
+* `withProperties(models.InternalNetworkProperties)` was added
+
+#### `models.IpPrefix$Update` was modified
+
+* `withProperties(models.IpPrefixPatchProperties)` was added
+
+#### `models.L3IsolationDomainPatch` was modified
+
+* `properties()` was added
+* `tags()` was added
+* `withProperties(models.L3IsolationDomainPatchProperties)` was added
+
+#### `models.IpGroupProperties` was modified
+
+* `withIpAddressType(models.IPAddressType)` was added
+
+#### `models.NetworkInterfacePatch` was modified
+
+* `properties()` was added
+* `withProperties(models.NetworkInterfacePatchProperties)` was added
+
+#### `models.NetworkPacketBroker$Definition` was modified
+
+* `withProperties(models.NetworkPacketBrokerProperties)` was added
+
+#### `models.TerminalServerConfiguration` was modified
+
+* `password()` was added
+* `username()` was added
+* `serialNumber()` was added
+
+#### `models.NetworkTapRuleMatchCondition` was modified
+
+* `vlanMatchCondition()` was added
+* `ipCondition()` was added
+* `protocolTypes()` was added
+
+#### `models.NetworkDevice$Update` was modified
+
+* `withProperties(models.NetworkDevicePatchParametersProperties)` was added
+
+#### `models.VpnConfigurationPatchableProperties` was modified
+
+* `withOptionAProperties(models.VpnOptionAPatchProperties)` was added
+* `withOptionBProperties(models.VpnOptionBPatchProperties)` was added
+
+#### `models.ExternalNetworkPatch` was modified
+
+* `withProperties(models.ExternalNetworkPatchProperties)` was added
+* `properties()` was added
+
+#### `models.ActionIpCommunityProperties` was modified
+
+* `add()` was added
+
+#### `models.IpExtendedCommunity` was modified
+
+* `properties()` was added
+
+#### `models.IpPrefixPatch` was modified
+
+* `tags()` was added
+* `properties()` was added
+* `withProperties(models.IpPrefixPatchProperties)` was added
+
+#### `models.NetworkInterface` was modified
+
+* `properties()` was added
+
+#### `models.NetworkInterface$Update` was modified
+
+* `withProperties(models.NetworkInterfacePatchProperties)` was added
+
+#### `models.InternetGatewayRulePatch` was modified
+
+* `tags()` was added
+
+#### `models.ExternalNetworks` was modified
+
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.ExternalNetworkBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.ExternalNetworkBfdAdministrativeStateRequest)` was added
+
+#### `models.ExternalNetwork$Update` was modified
+
+* `withProperties(models.ExternalNetworkPatchProperties)` was added
+
+#### `models.L3IsolationDomain` was modified
+
+* `properties()` was added
+
+#### `models.NetworkFabricController$Update` was modified
+
+* `withProperties(models.NetworkFabricControllerPatchProperties)` was added
+
+#### `models.NeighborGroup$Definition` was modified
+
+* `withProperties(models.NeighborGroupProperties)` was added
+
+#### `models.NeighborAddress` was modified
+
+* `bgpAdministrativeState()` was added
+* `bfdAdministrativeState()` was added
+
+#### `models.AccessControlList$Update` was modified
+
+* `withProperties(models.AccessControlListPatchProperties)` was added
+
+#### `models.NetworkDeviceSku` was modified
+
+* `properties()` was added
+
+#### `models.InternalNetworks` was modified
+
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkBgpAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkBfdAdministrativeStateRequest)` was added
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkBgpAdministrativeStateRequest)` was added
+
+#### `models.ExternalNetworkPropertiesOptionAProperties` was modified
+
+* `nativeIpv6PrefixLimit()` was added
+* `secondaryIpv6Prefix()` was added
+* `peerASN()` was added
+* `withPeerASN(long)` was added
+* `withVlanId(int)` was added
+* `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
+* `v6OverV4BgpSession()` was added
+* `secondaryIpv4Prefix()` was added
+* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
+* `v4OverV6BgpSession()` was added
+* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitProperties)` was added
+* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitProperties)` was added
+* `nativeIpv4PrefixLimit()` was added
+* `primaryIpv6Prefix()` was added
+* `bmpConfiguration()` was added
+* `fabricASN()` was added
+* `primaryIpv4Prefix()` was added
+* `withBmpConfiguration(models.ExternalNetworkBmpProperties)` was added
+
+#### `models.AccessControlListMatchCondition` was modified
+
+* `vlanMatchCondition()` was added
+* `ipCondition()` was added
+* `withIcmpConfiguration(models.IcmpConfigurationProperties)` was added
+* `protocolNeighbors()` was added
+* `icmpConfiguration()` was added
+* `withProtocolNeighbors(java.util.List)` was added
+* `protocolTypes()` was added
+
+#### `models.InternalNetwork$Update` was modified
+
+* `withProperties(models.InternalNetworkPatchProperties)` was added
+
+#### `models.NetworkDevices` was modified
+
+* `runRwCommand(java.lang.String,java.lang.String,models.DeviceRwCommand)` was added
+* `runRoCommand(java.lang.String,java.lang.String,models.DeviceRoCommand,com.azure.core.util.Context)` was added
+* `runRwCommand(java.lang.String,java.lang.String,models.DeviceRwCommand,com.azure.core.util.Context)` was added
+* `runRoCommand(java.lang.String,java.lang.String,models.DeviceRoCommand)` was added
+
+#### `models.NetworkTapRule$Definition` was modified
+
+* `withProperties(models.NetworkTapRuleProperties)` was added
+
+#### `models.InternetGatewayRule$Definition` was modified
+
+* `withProperties(models.InternetGatewayRuleProperties)` was added
+
+#### `models.NetworkTapRule$Update` was modified
+
+* `withProperties(models.NetworkTapRulePatchProperties)` was added
+
+#### `models.UpgradeNetworkFabricProperties` was modified
+
+* `version()` was added
+
+#### `models.L2IsolationDomain$Definition` was modified
+
+* `withProperties(models.L2IsolationDomainProperties)` was added
+
+#### `models.IpCommunity$Update` was modified
+
+* `withProperties(models.IpCommunityPatchableProperties)` was added
+
+#### `models.InternetGateway$Definition` was modified
+
+* `withProperties(models.InternetGatewayProperties)` was added
+
+#### `models.RuleProperties` was modified
+
+* `withDestinationAddressList(java.util.List)` was added
+* `sourceAddressList()` was added
+* `withSourceAddressList(java.util.List)` was added
+* `condition()` was added
+* `destinationAddressList()` was added
+* `withCondition(models.RuleCondition)` was added
+* `headerAddressList()` was added
+* `withHeaderAddressList(java.util.List)` was added
+
+#### `models.InternalNetworkPatch` was modified
+
+* `properties()` was added
+* `withProperties(models.InternalNetworkPatchProperties)` was added
+
+#### `models.RoutePolicyPatch` was modified
+
+* `properties()` was added
+* `tags()` was added
+* `withProperties(models.RoutePolicyPatchableProperties)` was added
+
+#### `models.AccessControlListPatch` was modified
+
+* `tags()` was added
+* `properties()` was added
+* `withProperties(models.AccessControlListPatchProperties)` was added
+
+#### `models.IpPrefix` was modified
+
+* `properties()` was added
+
+#### `models.InternetGateway` was modified
+
+* `properties()` was added
+
+#### `models.NetworkFabricController$Definition` was modified
+
+* `withProperties(models.NetworkFabricControllerProperties)` was added
+
+#### `models.AccessControlListMatchConfiguration` was modified
+
+* `withIpAddressType(models.IPAddressType)` was added
+
+#### `models.InternalNetwork` was modified
+
+* `updateBfdAdministrativeState(models.InternalNetworkBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBgpAdministrativeState(models.InternalNetworkBgpAdministrativeStateRequest)` was added
+* `updateBfdAdministrativeState(models.InternalNetworkBfdAdministrativeStateRequest)` was added
+* `updateBgpAdministrativeState(models.InternalNetworkBgpAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `properties()` was added
+
+#### `models.IpExtendedCommunity$Definition` was modified
+
+* `withProperties(models.IpExtendedCommunityProperties)` was added
+
+#### `models.NetworkRack` was modified
+
+* `properties()` was added
+
+#### `models.NetworkDevice$Definition` was modified
+
+* `withProperties(models.NetworkDeviceProperties)` was added
+
+#### `models.InternetGateway$Update` was modified
+
+* `withProperties(models.InternetGatewayPatchProperties)` was added
+
+#### `models.NetworkFabric$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withProperties(models.NetworkFabricProperties)` was added
+
+#### `models.NetworkFabrics` was modified
+
+* `commitBatchStatus(java.lang.String,java.lang.String,models.CommitBatchStatusRequest)` was added
+* `armConfigurationDiff(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `lockFabric(java.lang.String,java.lang.String,models.NetworkFabricLockRequest)` was added
+* `discardCommitBatch(java.lang.String,java.lang.String,models.DiscardCommitBatchRequest)` was added
+* `armConfigurationDiff(java.lang.String,java.lang.String)` was added
+* `lockFabric(java.lang.String,java.lang.String,models.NetworkFabricLockRequest,com.azure.core.util.Context)` was added
+* `commitBatchStatus(java.lang.String,java.lang.String,models.CommitBatchStatusRequest,com.azure.core.util.Context)` was added
+* `viewDeviceConfiguration(java.lang.String,java.lang.String)` was added
+* `discardCommitBatch(java.lang.String,java.lang.String,models.DiscardCommitBatchRequest,com.azure.core.util.Context)` was added
+* `viewDeviceConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NetworkDevice` was modified
+
+* `runRwCommand(models.DeviceRwCommand,com.azure.core.util.Context)` was added
+* `runRwCommand(models.DeviceRwCommand)` was added
+* `runRoCommand(models.DeviceRoCommand,com.azure.core.util.Context)` was added
+* `runRoCommand(models.DeviceRoCommand)` was added
+* `properties()` was added
+
+#### `models.NetworkFabricController` was modified
+
+* `properties()` was added
+
+#### `models.ActionIpExtendedCommunityProperties` was modified
+
+* `add()` was added
+
+#### `models.NetworkPacketBrokerPatch` was modified
+
+* `tags()` was added
+
+#### `models.IpCommunityPatch` was modified
+
+* `properties()` was added
+* `withProperties(models.IpCommunityPatchableProperties)` was added
+* `tags()` was added
+
+#### `models.NetworkInterface$Definition` was modified
+
+* `withProperties(models.NetworkInterfaceProperties)` was added
+
+#### `models.IpExtendedCommunity$Update` was modified
+
+* `withProperties(models.IpExtendedCommunityPatchProperties)` was added
+
+#### `models.UpdateAdministrativeState` was modified
+
+* `resourceIds()` was added
+
+#### `models.VpnConfigurationProperties` was modified
+
+* `withOptionAProperties(models.VpnOptionAProperties)` was added
+* `withOptionBProperties(models.VpnOptionBProperties)` was added
+
+#### `models.RoutePolicy$Definition` was modified
+
+* `withProperties(models.RoutePolicyProperties)` was added
+
+#### `models.IpPrefix$Definition` was modified
+
+* `withProperties(models.IpPrefixProperties)` was added
+
+#### `models.UpdateDeviceAdministrativeState` was modified
+
+* `resourceIds()` was added
+
+#### `models.AccessControlList` was modified
+
+* `properties()` was added
+
+#### `models.ConnectedSubnet` was modified
+
+* `annotation()` was added
+
+#### `models.NetworkFabricControllerPatch` was modified
+
+* `tags()` was added
+* `withProperties(models.NetworkFabricControllerPatchProperties)` was added
+* `properties()` was added
+
+#### `models.StaticRouteConfiguration` was modified
+
+* `extension()` was added
+* `withExtension(models.Extension)` was added
+
+#### `models.RoutePolicyStatementProperties` was modified
+
+* `annotation()` was added
+
+#### `models.NetworkTap$Update` was modified
+
+* `withProperties(models.NetworkTapPatchProperties)` was added
+
+#### `models.NetworkToNetworkInterconnect` was modified
+
+* `updateBfdAdministrativeState(models.NniBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `properties()` was added
+* `updateBfdAdministrativeState(models.NniBfdAdministrativeStateRequest)` was added
+
+#### `models.NetworkTapRule` was modified
+
+* `properties()` was added
+
+#### `models.NetworkToNetworkInterconnectPatch` was modified
+
+* `properties()` was added
+* `withProperties(models.NetworkToNetworkInterconnectPatchProperties)` was added
+
+#### `models.NetworkFabricSku` was modified
+
+* `properties()` was added
+
+#### `models.IpCommunity$Definition` was modified
+
+* `withProperties(models.IpCommunityProperties)` was added
+
+#### `models.L3IsolationDomain$Update` was modified
+
+* `withProperties(models.L3IsolationDomainPatchProperties)` was added
+
+#### `models.NetworkRack$Definition` was modified
+
+* `withProperties(models.NetworkRackProperties)` was added
+
+#### `models.IpCommunity` was modified
+
+* `properties()` was added
+
+#### `models.IpExtendedCommunityPatch` was modified
+
+* `withProperties(models.IpExtendedCommunityPatchProperties)` was added
+* `tags()` was added
+* `properties()` was added
+
+#### `models.RoutePolicy` was modified
+
+* `properties()` was added
+
+#### `models.NetworkToNetworkInterconnect$Definition` was modified
+
+* `withProperties(models.NetworkToNetworkInterconnectProperties)` was added
+
+#### `models.NetworkTap$Definition` was modified
+
+* `withProperties(models.NetworkTapProperties)` was added
+
+#### `models.BgpConfiguration` was modified
+
+* `withBmpConfiguration(models.InternalNetworkBmpProperties)` was added
+* `v4OverV6BgpSession()` was added
+* `bmpConfiguration()` was added
+* `v6OverV4BgpSession()` was added
+* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
+* `withPeerASN(long)` was added
+* `annotation()` was added
+* `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
+* `fabricASN()` was added
+* `peerASN()` was added
+
+#### `models.NetworkFabricPatch` was modified
+
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `withProperties(models.NetworkFabricPatchProperties)` was added
+* `identity()` was added
+* `tags()` was added
+* `properties()` was added
+
+#### `models.AccessControlListPortCondition` was modified
+
+* `portType()` was added
+* `ports()` was added
+* `portGroupNames()` was added
+* `layer4Protocol()` was added
+
+#### `models.NeighborGroup$Update` was modified
+
+* `withProperties(models.NeighborGroupPatchProperties)` was added
+
+#### `models.AccessControlList$Definition` was modified
+
+* `withProperties(models.AccessControlListProperties)` was added
+
+#### `models.L3IsolationDomain$Definition` was modified
+
+* `withProperties(models.L3IsolationDomainProperties)` was added
+
+#### `models.NetworkTapRuleMatchConfiguration` was modified
+
+* `withIpAddressType(models.IPAddressType)` was added
+
+#### `models.L2IsolationDomain$Update` was modified
+
+* `withProperties(models.L2IsolationDomainPatchProperties)` was added
+
+#### `models.PollingIntervalInSeconds` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.L2IsolationDomain` was modified
+
+* `properties()` was added
+
+#### `models.NetworkFabric` was modified
+
+* `viewDeviceConfiguration()` was added
+* `properties()` was added
+* `armConfigurationDiff(com.azure.core.util.Context)` was added
+* `viewDeviceConfiguration(com.azure.core.util.Context)` was added
+* `discardCommitBatch(models.DiscardCommitBatchRequest,com.azure.core.util.Context)` was added
+* `commitBatchStatus(models.CommitBatchStatusRequest,com.azure.core.util.Context)` was added
+* `identity()` was added
+* `discardCommitBatch(models.DiscardCommitBatchRequest)` was added
+* `commitBatchStatus(models.CommitBatchStatusRequest)` was added
+* `lockFabric(models.NetworkFabricLockRequest,com.azure.core.util.Context)` was added
+* `lockFabric(models.NetworkFabricLockRequest)` was added
+* `armConfigurationDiff()` was added
+
+#### `models.ExternalNetwork` was modified
+
+* `updateBfdAdministrativeState(models.ExternalNetworkBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `properties()` was added
+* `updateBfdAdministrativeState(models.ExternalNetworkBfdAdministrativeStateRequest)` was added
+
+#### `models.NetworkFabric$Update` was modified
+
+* `withProperties(models.NetworkFabricPatchProperties)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
+
+#### `models.NetworkToNetworkInterconnect$Update` was modified
+
+* `withProperties(models.NetworkToNetworkInterconnectPatchProperties)` was added
+
+#### `models.NetworkDevicePatchParameters` was modified
+
+* `withProperties(models.NetworkDevicePatchParametersProperties)` was added
+* `properties()` was added
+* `tags()` was added
+
+#### `models.NetworkTap` was modified
+
+* `properties()` was added
+
+#### `models.NetworkToNetworkInterconnects` was modified
+
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.NniBfdAdministrativeStateRequest)` was added
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.NniBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+
+#### `models.NeighborGroup` was modified
+
+* `properties()` was added
+
+#### `models.RoutePolicy$Update` was modified
+
+* `withProperties(models.RoutePolicyPatchableProperties)` was added
+
+#### `models.ExternalNetwork$Definition` was modified
+
+* `withProperties(models.ExternalNetworkProperties)` was added
+
+#### `models.NeighborGroupPatch` was modified
+
+* `properties()` was added
+* `tags()` was added
+* `withProperties(models.NeighborGroupPatchProperties)` was added
+
+#### `models.L2IsolationDomainPatch` was modified
+
+* `tags()` was added
+* `properties()` was added
+* `withProperties(models.L2IsolationDomainPatchProperties)` was added
+
+#### `models.InternetGatewayRule` was modified
+
+* `properties()` was added
+
+#### `models.NetworkPacketBroker` was modified
+
+* `properties()` was added
+
+#### `models.ExternalNetworkPatchPropertiesOptionAProperties` was modified
+
+* `withBfdConfiguration(models.BfdPatchConfiguration)` was added
+* `v4OverV6BgpSession()` was added
+* `peerASN()` was added
+* `bmpConfiguration()` was added
+* `primaryIpv4Prefix()` was added
+* `nativeIpv6PrefixLimit()` was added
+* `primaryIpv6Prefix()` was added
+* `fabricASN()` was added
+* `v6OverV4BgpSession()` was added
+* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitPatchProperties)` was added
+* `withBmpConfiguration(models.ExternalNetworkBmpPatchProperties)` was added
+* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
+* `secondaryIpv6Prefix()` was added
+* `withPeerASN(java.lang.Long)` was added
+* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
+* `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
+* `secondaryIpv4Prefix()` was added
+* `nativeIpv4PrefixLimit()` was added
+
+#### `models.AccessControlListAction` was modified
+
+* `policeRateConfiguration()` was added
+* `withRemarkComment(java.lang.String)` was added
+* `withPoliceRateConfiguration(models.PoliceRateConfigurationProperties)` was added
+* `remarkComment()` was added
+
+#### `models.NetworkTapRulePatch` was modified
+
+* `properties()` was added
+* `withProperties(models.NetworkTapRulePatchProperties)` was added
+* `tags()` was added
+
+#### `models.NetworkTapPatch` was modified
+
+* `tags()` was added
+* `withProperties(models.NetworkTapPatchProperties)` was added
+* `properties()` was added
+
+#### `models.StatementConditionProperties` was modified
+
+* `ipCommunityIds()` was added
+
+#### `models.InternetGatewayPatch` was modified
+
+* `properties()` was added
+* `withProperties(models.InternetGatewayPatchProperties)` was added
+* `tags()` was added
+
+#### `models.OptionBLayer3Configuration` was modified
+
+* `withPeerASN(long)` was added
+* `withVlanId(int)` was added
+* `withBmpConfiguration(models.NniBmpProperties)` was added
+* `prefixLimits()` was added
+* `primaryIpv6Prefix()` was added
+* `peLoopbackIpAddress()` was added
+* `primaryIpv4Prefix()` was added
+* `withPrefixLimits(java.util.List)` was added
+* `bmpConfiguration()` was added
+* `peerASN()` was added
+* `withPeLoopbackIpAddress(java.util.List)` was added
+* `secondaryIpv4Prefix()` was added
+* `secondaryIpv6Prefix()` was added
+* `fabricASN()` was added
 
 ## 1.1.0 (2024-12-11)
 
