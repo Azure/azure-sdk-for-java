@@ -31,6 +31,13 @@ public final class RntbdResponseDecoder extends ByteToMessageDecoder {
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
         decodeStartTime.compareAndSet(null, Instant.now());
+        
+        // BREADCRUMB: Track buffer at decode entry
+        if (logger.isTraceEnabled()) {
+            in.touch("RntbdResponseDecoder.decode: entry");
+            logger.trace("{} RntbdResponseDecoder.decode: ByteBuf refCnt={}, readableBytes={}", 
+                context.channel(), in.refCnt(), in.readableBytes());
+        }
 
         if (RntbdFramer.canDecodeHead(in)) {
 
@@ -41,9 +48,41 @@ public final class RntbdResponseDecoder extends ByteToMessageDecoder {
                 response.setDecodeStartTime(decodeStartTime.getAndSet(null));
 
                 logger.debug("{} DECODE COMPLETE: {}", context.channel(), response);
+                
+                // BREADCRUMB: Track buffer before discard
+                if (logger.isTraceEnabled()) {
+                    in.touch("RntbdResponseDecoder.decode: before discardReadBytes");
+                    logger.trace("{} RntbdResponseDecoder: discarding read bytes, response refCnt={}", 
+                        context.channel(), response.refCnt());
+                }
+                
                 in.discardReadBytes();
+                
+                // BREADCRUMB: Track response before adding to output
+                if (logger.isTraceEnabled()) {
+                    response.touch("RntbdResponseDecoder.decode: before retain and adding to output");
+                }
+                
                 out.add(response.retain());
+                
+                if (logger.isTraceEnabled()) {
+                    logger.trace("{} RntbdResponseDecoder: response added to output, refCnt={}", 
+                        context.channel(), response.refCnt());
+                }
+            } else if (logger.isTraceEnabled()) {
+                logger.trace("{} RntbdResponseDecoder: response is null, not enough data to decode yet", 
+                    context.channel());
             }
+        } else if (logger.isTraceEnabled()) {
+            logger.trace("{} RntbdResponseDecoder: cannot decode head yet, readableBytes={}", 
+                context.channel(), in.readableBytes());
         }
+    }
+    
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        // BREADCRUMB: Track exceptions that might lead to leaked buffers
+        logger.warn("{} RntbdResponseDecoder.exceptionCaught: {}", ctx.channel(), cause.getMessage(), cause);
+        super.exceptionCaught(ctx, cause);
     }
 }
