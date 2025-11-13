@@ -27,6 +27,13 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
+        // BREADCRUMB: Track buffer at decode entry
+        if (logger.isTraceEnabled()) {
+            in.touch("RntbdContextDecoder.decode: entry");
+            logger.trace("{} RntbdContextDecoder.decode: ByteBuf refCnt={}, readableBytes={}", 
+                context.channel(), in.refCnt(), in.readableBytes());
+        }
+
         if (RntbdFramer.canDecodeHead(in)) {
 
             Object result;
@@ -35,14 +42,37 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
                 final RntbdContext rntbdContext = RntbdContext.decode(in);
                 context.fireUserEventTriggered(rntbdContext);
                 result = rntbdContext;
+                
+                if (logger.isTraceEnabled()) {
+                    logger.trace("{} RntbdContextDecoder: decoded RntbdContext successfully", context.channel());
+                }
             } catch (RntbdContextException error) {
                 context.fireUserEventTriggered(error);
                 result = error;
+                
+                if (logger.isTraceEnabled()) {
+                    logger.trace("{} RntbdContextDecoder: caught RntbdContextException", context.channel(), error);
+                }
             } finally {
+                // BREADCRUMB: Track buffer before discard
+                if (logger.isTraceEnabled()) {
+                    in.touch("RntbdContextDecoder.decode: before discardReadBytes in finally block");
+                    logger.trace("{} RntbdContextDecoder: discarding read bytes in finally block", context.channel());
+                }
                 in.discardReadBytes();
             }
 
             logger.debug("{} DECODE COMPLETE: {}", context.channel(), result);
+        } else if (logger.isTraceEnabled()) {
+            logger.trace("{} RntbdContextDecoder: cannot decode head yet, readableBytes={}", 
+                context.channel(), in.readableBytes());
         }
+    }
+    
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        // BREADCRUMB: Track exceptions that might lead to leaked buffers
+        logger.warn("{} RntbdContextDecoder.exceptionCaught: {}", ctx.channel(), cause.getMessage(), cause);
+        super.exceptionCaught(ctx, cause);
     }
 }
