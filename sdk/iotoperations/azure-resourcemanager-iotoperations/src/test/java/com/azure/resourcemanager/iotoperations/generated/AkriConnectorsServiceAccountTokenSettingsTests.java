@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AkriConnectorsServiceAccountTokenSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AkriConnectorsServiceAccountTokenSettings model = BinaryData.fromString("{\"audience\":\"orfmluiqt\"}")
+        AkriConnectorsServiceAccountTokenSettings model = BinaryData.fromString("{\"audience\":\"ttezlw\"}")
             .toObject(AkriConnectorsServiceAccountTokenSettings.class);
-        Assertions.assertEquals("orfmluiqt", model.audience());
+        Assertions.assertEquals("ttezlw", model.audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorsServiceAccountTokenSettings model
-            = new AkriConnectorsServiceAccountTokenSettings().withAudience("orfmluiqt");
+            = new AkriConnectorsServiceAccountTokenSettings().withAudience("ttezlw");
         model = BinaryData.fromObject(model).toObject(AkriConnectorsServiceAccountTokenSettings.class);
-        Assertions.assertEquals("orfmluiqt", model.audience());
+        Assertions.assertEquals("ttezlw", model.audience());
     }
 }
