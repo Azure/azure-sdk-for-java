@@ -12,7 +12,8 @@ import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmRes
 public final class StaticSitesCreateZipDeploymentForStaticSiteBuildSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/StaticSiteBuildZipDeploy.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/StaticSiteBuildZipDeploy.
+     * json
      */
     /**
      * Sample code: Deploy a site from a zipped package to a particular static site build.
@@ -28,9 +29,9 @@ public final class StaticSitesCreateZipDeploymentForStaticSiteBuildSamples {
             .createZipDeploymentForStaticSiteBuild("rg", "testStaticSite0", "12",
                 new StaticSiteZipDeploymentArmResource()
                     .withAppZipUrl(
-                        "https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip")
+                        "https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip")
                     .withApiZipUrl(
-                        "https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip")
+                        "https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip")
                     .withDeploymentTitle("Update index.html")
                     .withProvider("testProvider")
                     .withFunctionLanguage("testFunctionLanguage"),

@@ -14,7 +14,8 @@ import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
 public final class StaticSitesCreateOrUpdateStaticSiteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateStaticSite.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/CreateOrUpdateStaticSite.
+     * json
      */
     /**
      * Sample code: Create or update a static site.
