@@ -61,8 +61,22 @@ Steps (existing flow):
    - Run:
      mvn clean install -Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipTests -Dspotbugs.skip=true -Pdev -T 4 -ntp -f sdk/spring/pom.xml
    - If the build FAILS:
-     * Capture and paste the **root cause** from the logs
-     * Provide **at least two remediation options** for reviewers to choose from
+     - Do NOT modify repository files yet. Do NOT commit any changes.
+     - Capture and paste the root cause from the logs (first failing module, key exception, dependency conflict).
+     - Provide at least two remediation options. For each option include:
+      - scope of changes (files, dependencies, BOM/exclusions, or code migrations)
+      - pros/cons and risk level
+      - a preview patch (unapplied unified diff) if file edits are involved
+    - Post the analysis as a PR comment under the section “Build Failure Analysis”.
+    - WAIT for explicit approval before proceeding. Only act after a reviewer comments:
+      - APPROVE OPTION 1
+      - APPROVE OPTION 2
+      - APPROVE OPTION <N> WITH NOTES: <free text>
+    - After approval:
+      - Implement ONLY the approved option.
+      - Commit and push changes.
+      - Update the PR description: add “Applied Remediation” with the chosen option and rationale.
+      - Re-run the build command and post the result.
 
 Build file alignment (if present):
 - For pom.xml:
