@@ -45,7 +45,7 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -106,7 +106,7 @@ public final class TranscriptionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the transcribe operation.
      */
-    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     TranscriptionResult transcribe(TranscriptionContent body) {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -120,7 +120,6 @@ public final class TranscriptionClient {
             requestOptions).getValue().toObject(TranscriptionResult.class);
     }
 
-    // BEGIN: Manual customization - Public transcribe(TranscriptionOptions) convenience method
     /**
      * Transcribes the provided audio stream with the specified options.
      *
@@ -139,5 +138,4 @@ public final class TranscriptionClient {
         requestContent.setOptions(options);
         return transcribe(requestContent);
     }
-    // END: Manual customization
 }
