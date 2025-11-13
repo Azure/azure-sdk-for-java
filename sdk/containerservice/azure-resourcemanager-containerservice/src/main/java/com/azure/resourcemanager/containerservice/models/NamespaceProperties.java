@@ -42,13 +42,16 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
 
     /*
      * The default resource quota enforced upon the namespace. Customers can have other Kubernetes resource quota
-     * objects under the namespace. All the resource quotas will be enforced.
+     * objects under the namespace. Resource quotas are additive; if multiple resource quotas are applied to a given
+     * namespace, then the effective limit will be one such that all quotas on the namespace can be satisfied.
      */
     private ResourceQuota defaultResourceQuota;
 
     /*
      * The default network policy enforced upon the namespace. Customers can have other Kubernetes network policy
-     * objects under the namespace. All the network policies will be enforced.
+     * objects under the namespace. Network policies are additive; if a policy or policies apply to a given pod for a
+     * given direction, the connections allowed in that direction for the pod is the union of what all applicable
+     * policies allow.
      */
     private NetworkPolicies defaultNetworkPolicy;
 
@@ -131,7 +134,9 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
 
     /**
      * Get the defaultResourceQuota property: The default resource quota enforced upon the namespace. Customers can have
-     * other Kubernetes resource quota objects under the namespace. All the resource quotas will be enforced.
+     * other Kubernetes resource quota objects under the namespace. Resource quotas are additive; if multiple resource
+     * quotas are applied to a given namespace, then the effective limit will be one such that all quotas on the
+     * namespace can be satisfied.
      * 
      * @return the defaultResourceQuota value.
      */
@@ -141,7 +146,9 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
 
     /**
      * Set the defaultResourceQuota property: The default resource quota enforced upon the namespace. Customers can have
-     * other Kubernetes resource quota objects under the namespace. All the resource quotas will be enforced.
+     * other Kubernetes resource quota objects under the namespace. Resource quotas are additive; if multiple resource
+     * quotas are applied to a given namespace, then the effective limit will be one such that all quotas on the
+     * namespace can be satisfied.
      * 
      * @param defaultResourceQuota the defaultResourceQuota value to set.
      * @return the NamespaceProperties object itself.
@@ -153,7 +160,9 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
 
     /**
      * Get the defaultNetworkPolicy property: The default network policy enforced upon the namespace. Customers can have
-     * other Kubernetes network policy objects under the namespace. All the network policies will be enforced.
+     * other Kubernetes network policy objects under the namespace. Network policies are additive; if a policy or
+     * policies apply to a given pod for a given direction, the connections allowed in that direction for the pod is the
+     * union of what all applicable policies allow.
      * 
      * @return the defaultNetworkPolicy value.
      */
@@ -163,7 +172,9 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
 
     /**
      * Set the defaultNetworkPolicy property: The default network policy enforced upon the namespace. Customers can have
-     * other Kubernetes network policy objects under the namespace. All the network policies will be enforced.
+     * other Kubernetes network policy objects under the namespace. Network policies are additive; if a policy or
+     * policies apply to a given pod for a given direction, the connections allowed in that direction for the pod is the
+     * union of what all applicable policies allow.
      * 
      * @param defaultNetworkPolicy the defaultNetworkPolicy value to set.
      * @return the NamespaceProperties object itself.
