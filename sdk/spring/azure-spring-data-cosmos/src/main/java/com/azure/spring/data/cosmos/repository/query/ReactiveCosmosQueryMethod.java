@@ -20,6 +20,7 @@ import java.util.Optional;
 /**
  * Inherit from QueryMethod class to execute a finder query.
  */
+@SuppressWarnings("deprecation")
 public class ReactiveCosmosQueryMethod extends QueryMethod {
 
     private ReactiveCosmosEntityMetadata<?> metadata;

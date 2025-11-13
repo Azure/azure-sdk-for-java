@@ -82,6 +82,7 @@ import java.util.stream.Collectors;
 /**
  * Template class for cosmos db
  */
+@SuppressWarnings("deprecation")
 public class CosmosTemplate implements CosmosOperations, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);

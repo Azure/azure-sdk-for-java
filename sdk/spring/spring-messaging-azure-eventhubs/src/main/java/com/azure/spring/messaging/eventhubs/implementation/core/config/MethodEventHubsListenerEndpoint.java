@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
  * an incoming message for this endpoint.
  *
  */
+@SuppressWarnings("deprecation")
 public class MethodEventHubsListenerEndpoint extends AbstractEventHubsListenerEndpoint
     implements MethodAzureListenerEndpoint {
 

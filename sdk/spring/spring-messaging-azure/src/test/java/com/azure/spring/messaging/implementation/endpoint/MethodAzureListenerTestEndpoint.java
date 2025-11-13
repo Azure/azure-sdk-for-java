@@ -20,6 +20,7 @@ import org.springframework.util.StringValueResolver;
 
 import java.lang.reflect.Method;
 
+@SuppressWarnings("deprecation")
 public class MethodAzureListenerTestEndpoint extends AbstractAzureListenerEndpoint
     implements MethodAzureListenerEndpoint {
 

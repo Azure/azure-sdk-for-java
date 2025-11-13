@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 /**
  * Interface for processing cosmosDB response
  */
+@SuppressWarnings("deprecation")
 public interface ResponseDiagnosticsProcessor {
 
     /**

@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Class of criteria
  */
+@SuppressWarnings("deprecation")
 public final class Criteria {
 
     private String subject;
