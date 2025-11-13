@@ -48,9 +48,9 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                 .warn(
                     "WebExceptionRetryPolicy() No retries because client is not initialized yet. - "
                     + "operationType = {}, count = {}, isAddressRefresh = {}",
-                    this.request.getOperationType(),
+                    this.request != null ? this.request.getOperationType() : "n/a",
                     this.retryCount,
-                    this.request.isAddressRefresh());
+                    this.request != null ? this.request.isAddressRefresh() : "n/a");
 
             return Mono.just(ShouldRetryResult.noRetry());
         }
