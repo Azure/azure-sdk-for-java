@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.StackTraceUtil;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetectorFactory;
@@ -16,12 +15,14 @@ import org.testng.IExecutionListener;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestClass;
+import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.management.BufferPoolMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,26 +85,28 @@ public final class CosmosNettyLeakDetectorFactory
         // -Dtestng.listener.execution.symmetric=true allows, but this is only available
         // in TestNG 7.7.1 - which requires Java11
         // So, this class simulates this behavior by hooking into IInvokedMethodListener
-        // If the test class itself does not have @afterClass we execute the logic here
-
-        ITestNGMethod[] afterClassMethods = testClass.getAfterClassMethods();
-        boolean testClassHasAfterClassMethods = afterClassMethods != null && afterClassMethods.length > 0;
-        if (!testClassHasAfterClassMethods) {
-            this.onAfterClassCore(testClass);
-        }
     }
 
     @Override
-    public void afterInvocation(IInvokedMethod method, ITestResult result) {
+    public void afterInvocation(IInvokedMethod method, ITestResult result, ITestContext ctx) {
         ITestClass testClass = (ITestClass)result.getTestClass();
         ITestNGMethod[] afterClassMethods = testClass.getAfterClassMethods();
         boolean testClassHasAfterClassMethods = afterClassMethods != null && afterClassMethods.length > 0;
 
-        if (testClassHasAfterClassMethods
+        boolean isImplementedAfterClassMethod = testClassHasAfterClassMethods
             && method.isConfigurationMethod()
-            && method.getTestMethod().isAfterClassConfiguration()) {
+            && method.getTestMethod().isAfterClassConfiguration();
 
-            // <-- This point is guaranteed to be AFTER the class’s @AfterClass ran if any existed
+        ITestNGMethod[] testMethods = ctx.getAllTestMethods();
+
+        boolean isLastTestMethodOnTestClassWithoutAfterClassMethod = !testClassHasAfterClassMethods
+            && method.isTestMethod()
+            && method.getTestMethod().isTest()
+            && method.getTestMethod().getEnabled()
+            && testMethods.length > 0
+            && method.getTestMethod() == testMethods[testMethods.length - 1];
+
+        if (isImplementedAfterClassMethod || isLastTestMethodOnTestClassWithoutAfterClassMethod) {
             this.onAfterClassCore(testClass);
         }
     }
