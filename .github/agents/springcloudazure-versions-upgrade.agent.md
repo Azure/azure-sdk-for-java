@@ -63,7 +63,7 @@ Steps (existing flow):
    - If the build FAILS:
      - Do NOT modify repository files yet. Do NOT commit any changes.
      - Capture and paste the root cause from the logs (first failing module, key exception, dependency conflict).
-     - Provide at least two remediation options. For each option include:
+     - Provide at least three remediation options. For each option include:
       - scope of changes (files, dependencies, BOM/exclusions, or code migrations)
       - pros/cons and risk level
       - a preview patch (unapplied unified diff) if file edits are involved
@@ -76,7 +76,12 @@ Steps (existing flow):
       - Implement ONLY the approved option.
       - Commit and push changes.
       - Update the PR description: add “Applied Remediation” with the chosen option and rationale.
-      - Re-run the build command and post the result.
+      - Re-run the build command (same as above).
+    - Repeat until no errors:
+      - If the rebuild still fails, REPEAT the failure analysis and approval cycle described above (do not apply changes without approval).
+      - Continue this loop until the build succeeds with no errors.
+      - Once the build passes, mark the PR status update accordingly in the “Build Verification” section.
+
 
 Build file alignment (if present):
 - For pom.xml:
