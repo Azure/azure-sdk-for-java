@@ -44,6 +44,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      */
     @Generated
     public TranscriptionOptions() {
+        this.audioFileDetails = null;
     }
 
     /**
@@ -314,7 +315,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     // BEGIN: Manual customization - AudioFileDetails field and constructors
     @SuppressWarnings("unused")
-    private AudioFileDetails audioFileDetails;
+    private final AudioFileDetails audioFileDetails;
 
     /**
      * Creates an instance of TranscriptionOptions class with audio file details.
@@ -334,6 +335,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      */
     public TranscriptionOptions(String audioUrl) {
         this.audioUrl = audioUrl;
+        this.audioFileDetails = null;
     }
 
     /**

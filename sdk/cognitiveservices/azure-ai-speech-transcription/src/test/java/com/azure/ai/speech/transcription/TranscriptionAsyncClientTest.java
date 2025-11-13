@@ -156,20 +156,18 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         // Test with audio URL option
         createClient(true, true, sync);
 
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US"))
-            .setAudioUrl("https://example.com/sample.wav");
-
         // Note: This test is commented out because it requires:
         // 1. A valid, publicly accessible URL in live/record mode
         // 2. Proper recording of the service response
         // 3. The audio file at the URL must be in a supported format
         // To enable this test:
         // - Provide a valid audio URL
-        // - Uncomment the line below
+        // - Uncomment the lines below
         // - Run in RECORD mode to capture the interaction
+        // String methodName = new Object() {
+        // }.getClass().getEnclosingMethod().getName();
+        // TranscriptionOptions options = new TranscriptionOptions("https://example.com/sample.wav");
+        // options.setLocales(Arrays.asList("en-US"));
         // doTranscription(methodName, sync, false, audioFile, options, null);
     }
 
@@ -229,12 +227,10 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     public void testTranscribeAsyncWithInvalidLanguageCode() {
         createClient(true, true, sync);
 
-        // Test with invalid language code
-        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("invalid-locale"));
-
         // Note: This test requires actual service call to verify behavior
         // In PLAYBACK mode, this would replay the recorded error response
         // Example implementation with StepVerifier:
+        // TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("invalid-locale"));
         // StepVerifier.create(getAsyncClient().transcribe(requestContentWithInvalidLocale))
         //     .expectErrorMatches(throwable -> throwable instanceof HttpResponseException
         //         && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400)
@@ -247,13 +243,12 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
 
         // Test that async operations can be cancelled properly
         // This verifies that the reactive streams support cancellation
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options = new TranscriptionOptions();
 
         // Note: Cancellation testing would typically involve subscribing and then cancelling
         // Example pattern (commented out as it requires specific test setup):
+        // String methodName = new Object() {
+        // }.getClass().getEnclosingMethod().getName();
+        // TranscriptionOptions options = new TranscriptionOptions();
         // Disposable subscription = getAsyncClient().transcribe(requestContent).subscribe();
         // subscription.dispose();
         // Verify that resources are cleaned up appropriately
