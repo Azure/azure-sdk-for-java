@@ -105,15 +105,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         String rawJson = "{\"id\":\"" + responseText + "\"}";
-        ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
 
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes())));
+            .thenReturn(Mono.fromCallable(() -> StoreResponseBuilder.create()
+                .withContent(rawJson)
+                .withStatus(200)
+                .build()));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -156,14 +153,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<StoreResponse> exceptionMono = Mono.error(exception);
         String rawJson = "{\"id\":\"" + responseText + "\"}";
-        ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes())));
+            .thenReturn(Mono.fromCallable(() -> StoreResponseBuilder.create()
+                .withContent(rawJson)
+                .withStatus(200)
+                .build()));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,
