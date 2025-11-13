@@ -328,6 +328,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
+        # get the stable version and current version from version_client.txt, current version in version_client will be updated if the release type is GA. 
+        # e.g. If current version is 1.2.0-beta.1 and the release type is GA, then current version will be updated to 1.2.0
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, preview=release_beta_sdk)
         update_parameters(None)
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
@@ -338,7 +340,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         if succeeded:
             if is_mgmt_premium(module):
                 move_premium_samples(sdk_root, service, module)
-                update_azure_resourcemanager_pom(sdk_root, module, current_version)
+                update_azure_resourcemanager_pom(sdk_root, service, module)
+            # For output breaking changes, useful in sdk validation pipeline
             logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
@@ -349,6 +352,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 module,
             )
             logging.info("[Changelog] Complete breaking change detection for SDK automation.")
+            # For changelog content update
             logging.info("[Changelog] Start generating changelog.")
             compare_with_maven_package(
                 sdk_root,
