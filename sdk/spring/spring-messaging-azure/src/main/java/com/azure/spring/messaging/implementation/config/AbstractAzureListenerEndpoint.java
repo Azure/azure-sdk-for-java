@@ -13,6 +13,7 @@ import org.springframework.lang.Nullable;
  * Base model for a Azure listener endpoint.
  *
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndpoint {
 
     protected String id = "";

@@ -77,6 +77,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
      * Gets the annotated query or returns null
      * @return the annotated query String or null
      */
+    @SuppressWarnings("deprecation")
     @Nullable
     public String getQueryAnnotation() {
         return annotatedQueryValue;

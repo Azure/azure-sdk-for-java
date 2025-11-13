@@ -17,6 +17,7 @@ import org.springframework.lang.Nullable;
  * rely on innerException for any retriable logic, or for more details on the failure of
  * the operation.
  */
+@SuppressWarnings("deprecation")
 public class CosmosAccessException extends DataAccessException {
 
     /**

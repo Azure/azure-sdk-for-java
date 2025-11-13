@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
+@SuppressWarnings("deprecation")
 public class ProjectRepositoryIT {
 
     private static final String ID_0 = "id-0";

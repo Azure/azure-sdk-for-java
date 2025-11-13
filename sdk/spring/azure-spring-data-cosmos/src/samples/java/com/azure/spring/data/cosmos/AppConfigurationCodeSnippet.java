@@ -24,6 +24,7 @@ import java.time.Duration;
 
 @Configuration
 @EnableCosmosRepositories
+@SuppressWarnings("deprecation")
 public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationCodeSnippet.class);
