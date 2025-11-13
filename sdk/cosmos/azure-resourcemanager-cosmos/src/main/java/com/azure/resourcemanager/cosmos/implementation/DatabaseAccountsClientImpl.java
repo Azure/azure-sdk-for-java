@@ -89,7 +89,7 @@ public final class DatabaseAccountsClientImpl implements InnerSupportsGet<Databa
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientDatabaseAccounts")
     public interface DatabaseAccountsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}")

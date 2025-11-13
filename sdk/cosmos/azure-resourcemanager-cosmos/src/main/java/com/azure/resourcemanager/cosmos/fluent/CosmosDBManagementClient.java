@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface CosmosDBManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -45,6 +45,27 @@ public interface CosmosDBManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the CassandraResourcesClient object to access its operations.
+     * 
+     * @return the CassandraResourcesClient object.
+     */
+    CassandraResourcesClient getCassandraResources();
+
+    /**
+     * Gets the ChaosFaultsClient object to access its operations.
+     * 
+     * @return the ChaosFaultsClient object.
+     */
+    ChaosFaultsClient getChaosFaults();
+
+    /**
+     * Gets the CopyJobsClient object to access its operations.
+     * 
+     * @return the CopyJobsClient object.
+     */
+    CopyJobsClient getCopyJobs();
 
     /**
      * Gets the DatabaseAccountsClient object to access its operations.
@@ -138,6 +159,13 @@ public interface CosmosDBManagementClient {
     PartitionKeyRangeIdRegionsClient getPartitionKeyRangeIdRegions();
 
     /**
+     * Gets the GraphResourcesClient object to access its operations.
+     * 
+     * @return the GraphResourcesClient object.
+     */
+    GraphResourcesClient getGraphResources();
+
+    /**
      * Gets the SqlResourcesClient object to access its operations.
      * 
      * @return the SqlResourcesClient object.
@@ -159,13 +187,6 @@ public interface CosmosDBManagementClient {
     TableResourcesClient getTableResources();
 
     /**
-     * Gets the CassandraResourcesClient object to access its operations.
-     * 
-     * @return the CassandraResourcesClient object.
-     */
-    CassandraResourcesClient getCassandraResources();
-
-    /**
      * Gets the GremlinResourcesClient object to access its operations.
      * 
      * @return the GremlinResourcesClient object.
@@ -180,6 +201,48 @@ public interface CosmosDBManagementClient {
     LocationsClient getLocations();
 
     /**
+     * Gets the DataTransferJobsClient object to access its operations.
+     * 
+     * @return the DataTransferJobsClient object.
+     */
+    DataTransferJobsClient getDataTransferJobs();
+
+    /**
+     * Gets the FleetsClient object to access its operations.
+     * 
+     * @return the FleetsClient object.
+     */
+    FleetsClient getFleets();
+
+    /**
+     * Gets the FleetAnalyticsClient object to access its operations.
+     * 
+     * @return the FleetAnalyticsClient object.
+     */
+    FleetAnalyticsClient getFleetAnalytics();
+
+    /**
+     * Gets the FleetspacesClient object to access its operations.
+     * 
+     * @return the FleetspacesClient object.
+     */
+    FleetspacesClient getFleetspaces();
+
+    /**
+     * Gets the FleetspaceAccountsClient object to access its operations.
+     * 
+     * @return the FleetspaceAccountsClient object.
+     */
+    FleetspaceAccountsClient getFleetspaceAccounts();
+
+    /**
+     * Gets the GarnetClustersClient object to access its operations.
+     * 
+     * @return the GarnetClustersClient object.
+     */
+    GarnetClustersClient getGarnetClusters();
+
+    /**
      * Gets the CassandraClustersClient object to access its operations.
      * 
      * @return the CassandraClustersClient object.
@@ -192,6 +255,20 @@ public interface CosmosDBManagementClient {
      * @return the CassandraDataCentersClient object.
      */
     CassandraDataCentersClient getCassandraDataCenters();
+
+    /**
+     * Gets the MongoMIResourcesClient object to access its operations.
+     * 
+     * @return the MongoMIResourcesClient object.
+     */
+    MongoMIResourcesClient getMongoMIResources();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 
     /**
      * Gets the NotebookWorkspacesClient object to access its operations.
@@ -304,4 +381,32 @@ public interface CosmosDBManagementClient {
      * @return the ServicesClient object.
      */
     ServicesClient getServices();
+
+    /**
+     * Gets the ThroughputPoolsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolsClient object.
+     */
+    ThroughputPoolsClient getThroughputPools();
+
+    /**
+     * Gets the ThroughputPoolOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolOperationsClient object.
+     */
+    ThroughputPoolOperationsClient getThroughputPoolOperations();
+
+    /**
+     * Gets the ThroughputPoolAccountsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountsClient object.
+     */
+    ThroughputPoolAccountsClient getThroughputPoolAccounts();
+
+    /**
+     * Gets the ThroughputPoolAccountOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountOperationsClient object.
+     */
+    ThroughputPoolAccountOperationsClient getThroughputPoolAccountOperations();
 }

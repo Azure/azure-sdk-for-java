@@ -87,6 +87,15 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
      * {@inheritDoc}
      */
     @Override
+    public SqlTriggerCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlTriggerCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -163,6 +172,9 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlTriggerCreateUpdateParameters.class);
@@ -175,6 +187,7 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -207,6 +220,8 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlTriggerCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSqlTriggerCreateUpdateParameters.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedSqlTriggerCreateUpdateParameters.innerProperties
                         = SqlTriggerCreateUpdateProperties.fromJson(reader);

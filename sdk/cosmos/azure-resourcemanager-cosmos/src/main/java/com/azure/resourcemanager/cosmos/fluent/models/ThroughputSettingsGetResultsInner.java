@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesResource;
 import java.io.IOException;
 import java.util.Map;
@@ -87,6 +88,15 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
      * {@inheritDoc}
      */
     @Override
+    public ThroughputSettingsGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ThroughputSettingsGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -134,6 +144,9 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -144,6 +157,7 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -176,6 +190,8 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedThroughputSettingsGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedThroughputSettingsGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedThroughputSettingsGetResultsInner.innerProperties
                         = ThroughputSettingsGetProperties.fromJson(reader);
