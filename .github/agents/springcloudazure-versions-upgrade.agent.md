@@ -16,6 +16,7 @@ Requirements:
 - Run the repository’s Python scripts(use `python3`).
 - In the PR, state the compatibility conclusion (compatible / not compatible / conditionally compatible) and include official reference links to the Spring Cloud release train ↔ Spring Boot compatibility.
 - If execution is not possible, fall back to directly editing files to produce the expected outputs, and note this in the PR.
+- Do not
 
 Milestone/Snapshot rule:
 - If either target version is a Milestone (contains `-M` or `-RC`) or a Snapshot (contains `-SNAPSHOT`), add Spring milestone (and optionally snapshot) repositories to the build files (Maven) for dependency resolution.
@@ -33,6 +34,7 @@ Steps (existing flow):
      python ./sdk/spring/scripts/get_spring_boot_managed_external_dependencies.py -b ${SPRING_BOOT_VERSION} -c ${SPRING_CLOUD_VERSION}
    - Output file:
      ./sdk/spring/scripts/spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt
+   - Do not edit other files
 
 3) Sync external dependencies:
    - Run:
@@ -41,21 +43,25 @@ Steps (existing flow):
      python ./sdk/spring/scripts/sync_external_dependencies.py -b ${SPRING_BOOT_VERSION} -sbmvn 3
    - Target file:
      ./eng/versioning/external_dependencies.txt
+   - Do not edit other files
 
 4) Update version aggregation:
    - Run:
      python ./eng/versioning/update_versions.py --sr
    - Target file: all pom.xml under ./sdk/spring
+   - Do not edit other files
 
 5) Update Spring changelog:
    - Run:
      python ./sdk/spring/scripts/update_changelog.py -b ${SPRING_BOOT_VERSION} -c ${SPRING_CLOUD_VERSION}
    - Target file:
      ./sdk/spring/CHANGELOG.md (add a new entry: date, versions, brief notes)
+   - Do not edit other files
 
 6) Cleanup old files:
    - Remove previous ./sdk/spring/scripts/spring_boot_*_managed_external_dependencies.txt files, keep only the current ${SPRING_BOOT_VERSION}.
    - List removed files in the PR.
+   - Do not edit other files
 
 7) Run command from repo root to validate the Spring SDK module build after the upgrade:
    - Run:
