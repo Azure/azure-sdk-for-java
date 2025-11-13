@@ -8,6 +8,12 @@
 
 - Updated `api-version` to `2025-11-01`.
 
+### azure-resourcemanager-appservice
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-03-01`.
+
 ### azure-resourcemanager-network
 
 #### Dependency Updates

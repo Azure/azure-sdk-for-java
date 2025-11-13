@@ -63,7 +63,7 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowRunActionRepetitions")
     public interface WorkflowRunActionRepetitionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions")
@@ -156,11 +156,11 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, runName, actionName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
             .<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -210,11 +210,12 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, actionName, this.client.getApiVersion(), accept, context)
+                runName, actionName, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -344,11 +345,12 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, actionName, repetitionName, this.client.getApiVersion(),
-                accept, context))
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    name, workflowName, runName, actionName, repetitionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -397,10 +399,11 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context);
+            workflowName, runName, actionName, repetitionName, apiVersion, accept, context);
     }
 
     /**
@@ -511,11 +514,12 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listExpressionTraces(this.client.getEndpoint(),
                 this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName,
-                repetitionName, this.client.getApiVersion(), accept, context))
+                repetitionName, apiVersion, accept, context))
             .<PagedResponse<ExpressionRoot>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().inputs(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -566,11 +570,12 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-                workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context)
+                workflowName, runName, actionName, repetitionName, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().inputs(), res.getValue().nextLink(), null));
     }
@@ -669,8 +674,8 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of workflow run action repetitions along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all of a workflow run action repetitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>> listNextSinglePageAsync(String nextLink) {
@@ -697,8 +702,8 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of workflow run action repetitions along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all of a workflow run action repetitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>> listNextSinglePageAsync(String nextLink,
