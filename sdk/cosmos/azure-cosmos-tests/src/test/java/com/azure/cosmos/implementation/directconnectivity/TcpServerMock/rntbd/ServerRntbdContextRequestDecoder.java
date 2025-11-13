@@ -46,7 +46,7 @@ public class ServerRntbdContextRequestDecoder extends ByteToMessageDecoder {
         try {
             context.fireChannelRead(message);
         } finally {
-            ReferenceCountUtil.release(message);
+            ReferenceCountUtil.safeRelease(message);
         }
     }
 
