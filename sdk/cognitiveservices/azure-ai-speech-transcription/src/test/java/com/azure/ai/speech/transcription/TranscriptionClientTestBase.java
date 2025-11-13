@@ -3,6 +3,10 @@
 
 package com.azure.ai.speech.transcription;
 
+import com.azure.ai.speech.transcription.models.AudioFileDetails;
+import com.azure.ai.speech.transcription.models.TranscriptionContent;
+import com.azure.ai.speech.transcription.models.TranscriptionOptions;
+import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpRequest;
