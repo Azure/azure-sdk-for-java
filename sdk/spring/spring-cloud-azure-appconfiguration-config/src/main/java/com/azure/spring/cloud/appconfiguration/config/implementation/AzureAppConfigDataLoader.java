@@ -185,6 +185,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 } catch (Exception e) {
                     // Store the exception to potentially use if all replicas fail
                     lastException = e; // Log the specific replica failure with context
+                    replicaClientFactory.backoffClient(resource.getEndpoint(), currentClient.getEndpoint());
                     AppConfigurationReplicaClient nextClient = replicaClientFactory
                         .getNextActiveClient(resource.getEndpoint(), false);
                     logReplicaFailure(currentClient, "exception", nextClient != null, e);
