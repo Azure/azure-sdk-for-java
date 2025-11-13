@@ -112,6 +112,8 @@ public class ConversationRequestItem implements JsonSerializable<ConversationReq
                     return FunctionCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return FunctionCallOutputItem.fromJson(readerToUse.reset());
+                } else if ("mcp_approval_response".equals(discriminatorValue)) {
+                    return MCPApprovalResponseRequestItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -261,4 +261,66 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
     public static Collection<ServerEventType> values() {
         return values(ServerEventType.class);
     }
+
+    /**
+     * Static value mcp_list_tools.in_progress for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType MCP_LIST_TOOLS_IN_PROGRESS = fromString("mcp_list_tools.in_progress");
+
+    /**
+     * Static value mcp_list_tools.completed for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType MCP_LIST_TOOLS_COMPLETED = fromString("mcp_list_tools.completed");
+
+    /**
+     * Static value mcp_list_tools.failed for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType MCP_LIST_TOOLS_FAILED = fromString("mcp_list_tools.failed");
+
+    /**
+     * Static value response.mcp_call_arguments.delta for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_MCP_CALL_ARGUMENTS_DELTA
+        = fromString("response.mcp_call_arguments.delta");
+
+    /**
+     * Static value response.mcp_call_arguments.done for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_MCP_CALL_ARGUMENTS_DONE
+        = fromString("response.mcp_call_arguments.done");
+
+    /**
+     * Static value mcp_approval_request for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType MCP_APPROVAL_REQUEST = fromString("mcp_approval_request");
+
+    /**
+     * Static value mcp_approval_response for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
+
+    /**
+     * Static value response.mcp_call.in_progress for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_MCP_CALL_IN_PROGRESS = fromString("response.mcp_call.in_progress");
+
+    /**
+     * Static value response.mcp_call.completed for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_MCP_CALL_COMPLETED = fromString("response.mcp_call.completed");
+
+    /**
+     * Static value response.mcp_call.failed for ServerEventType.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_MCP_CALL_FAILED = fromString("response.mcp_call.failed");
 }
