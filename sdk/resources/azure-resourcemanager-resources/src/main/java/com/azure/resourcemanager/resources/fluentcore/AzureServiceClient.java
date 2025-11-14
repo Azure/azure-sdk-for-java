@@ -10,8 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,6 +31,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
@@ -39,12 +40,12 @@ public abstract class AzureServiceClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private final String sdkVersion;
-
     private final SerializerAdapter serializerAdapter;
     private final HttpPipeline httpPipeline;
 
-    private final String sdkName;
+    // A holder to record "service client instance class -> version of the library where it belongs".
+    private static final Map<Class<? extends AzureServiceClient>, String> SDK_VERSION_MAP = new ConcurrentHashMap<>();
+    private static final String UNKNOWN_VERSION = "UnknownVersion";
 
     /**
      * Creates a new instance of {@link AzureServiceClient}.
@@ -58,20 +59,8 @@ public abstract class AzureServiceClient {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
 
-        String packageName = this.getClass().getPackage().getName();
-        String implementationSegment = ".implementation";
-        if (packageName.endsWith(implementationSegment)) {
-            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
-        }
-        this.sdkName = packageName;
-        if (packageName.startsWith("com.")) {
-            // com.azure.resourcemanager.compute -> azure-resourcemanager-compute.properties
-            String artifactId = packageName.substring("com.".length()).replace(".", "-");
-            Map<String, String> properties = CoreUtils.getProperties(artifactId + ".properties");
-            sdkVersion = properties.getOrDefault("version", "UnknownVersion");
-        } else {
-            sdkVersion = "UnknownVersion";
-        }
+        // register SDK info during initialization, speed up future retrievals
+        readSdkVersionFromPropertiesFileIfAbsent(this.getClass());
     }
 
     /**
@@ -105,7 +94,8 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        return new Context("Sdk-Name", sdkName).addData("Sdk-Version", sdkVersion);
+        return new Context("Sdk-Name", getSdkName(getClass())).addData("Sdk-Version",
+            readSdkVersionFromPropertiesFileIfAbsent(getClass()));
     }
 
     /**
@@ -182,6 +172,43 @@ public abstract class AzureServiceClient {
         } else {
             return response.getFinalResult();
         }
+    }
+
+    /**
+     * Gets the SDK version of the provided service client instance class.
+     * If not cached, read from properties file.
+     *
+     * @param serviceClientClazz the service client instance class
+     * @return the sdk info of the provided service client instance class
+     */
+    private String readSdkVersionFromPropertiesFileIfAbsent(Class<? extends AzureServiceClient> serviceClientClazz) {
+        return SDK_VERSION_MAP.computeIfAbsent(serviceClientClazz, ignored -> {
+            String sdkName = getSdkName(serviceClientClazz);
+            if (sdkName.startsWith("com.")) {
+                // com.azure.resourcemanager.compute -> azure-resourcemanager-compute.properties
+                String artifactId = sdkName.substring("com.".length()).replace(".", "-");
+                Map<String, String> properties = CoreUtils.getProperties(artifactId + ".properties");
+                return properties.getOrDefault("version", UNKNOWN_VERSION);
+            } else {
+                return UNKNOWN_VERSION;
+            }
+        });
+    }
+
+    /**
+     * Gets the sdk name where current service client instance class belongs.
+     *
+     * @param serviceClientClazz service client instance class
+     * @return the sdk name where current service client instance class belongs.
+     */
+    private static String getSdkName(Class<? extends AzureServiceClient> serviceClientClazz) {
+        String packageName = serviceClientClazz.getPackage().getName();
+
+        String implementationSegment = ".implementation";
+        if (packageName.endsWith(implementationSegment)) {
+            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
+        }
+        return packageName;
     }
 
     private static class HttpResponseImpl extends HttpResponse {
