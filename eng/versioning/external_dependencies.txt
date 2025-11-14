@@ -370,6 +370,7 @@ springboot3_org.springframework.boot:spring-boot-autoconfigure;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-configuration-metadata;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-configuration-processor;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-docker-compose;4.0.0-RC2
+springboot3_org.springframework.boot:spring-boot-persistence;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter-actuator;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter-data-jdbc;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter-integration;4.0.0-RC2

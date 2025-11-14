@@ -98,6 +98,11 @@
       <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-expression;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-persistence</artifactId> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-persistence;external_dependency} -->
+      <version>4.0.0-RC2</version>
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.75.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
