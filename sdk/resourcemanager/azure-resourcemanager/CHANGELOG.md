@@ -36,6 +36,12 @@
 
 - Updated `api-version` to `2025-09-01`.
 
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.56.0 (2025-10-31)
 
 ### azure-resourcemanager-containerservice
@@ -84,7 +90,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-05-01`.
+- Updated `api-version` to `2025-04-01`.
 
 ### azure-resourcemanager-containerservice
 
