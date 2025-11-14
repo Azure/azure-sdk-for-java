@@ -789,5 +789,26 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- tests which target a multi-region strong Cosmos DB account -->
+      <id>multi-region-strong</id>
+      <properties>
+        <test.groups>multi-region-strong</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/multi-region-strong.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
