@@ -73,7 +73,7 @@ function Get-LatestReleasedStableVersion {
     $metadataUrl = "https://repo1.maven.org/maven2/$groupPath/$ArtifactId/maven-metadata.xml"
     
     try {
-        $response = Invoke-WebRequest -Uri $metadataUrl -UseBasicParsing -ErrorAction Stop
+        $response = Invoke-WebRequest -Uri $metadataUrl -MaximumRetryCount 3 -UseBasicParsing -ErrorAction Stop
         [xml]$metadata = $response.Content
         
         # Get all versions and reverse to get latest first
@@ -171,8 +171,7 @@ function Invoke-ChangelogGeneration {
     
     Write-Host "Running changelog generation tool..."
     
-    # Determine the correct Maven command based on OS
-    $mvnCmd = if ($IsWindows -or $env:OS -match "Windows") { "mvn.cmd" } else { "mvn" }
+    $mvnCmd = "mvn"
     
     # Try to find Maven in PATH
     $mvnPath = Get-Command $mvnCmd -ErrorAction SilentlyContinue
