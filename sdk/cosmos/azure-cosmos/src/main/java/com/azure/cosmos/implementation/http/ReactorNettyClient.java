@@ -354,9 +354,11 @@ public class ReactorNettyClient implements HttpClient {
                     bodyIntern().doOnDiscard(
                         ByteBuf.class,
                         buf -> {
-                            if (leakDetectionDebuggingEnabled && buf.refCnt() > 0) {
+                            if (leakDetectionDebuggingEnabled) {
                                 buf.touch("ReactorNettyHttpResponse.body - onDiscard - refCnt: " + buf.refCnt());
                                 logger.info("ReactorNettyHttpResponse.body - onDiscard - refCnt: {}", buf.refCnt());
+                            }
+                            if (buf.refCnt() > 0) {
                                 ReferenceCountUtil.safeRelease(buf);
                             }
                         })
@@ -417,14 +419,14 @@ public class ReactorNettyClient implements HttpClient {
                 }
 
                 body()
-                    .map(buf -> {
-                        if (leakDetectionDebuggingEnabled && buf.refCnt() > 0) {
+                    .doOnNext(buf -> {
+                        if (leakDetectionDebuggingEnabled) {
                             buf.touch("ReactorNettyHttpResponse.releaseOnNotSubscribedResponse - refCnt: " + buf.refCnt());
                             logger.info("ReactorNettyHttpResponse.releaseOnNotSubscribedResponse - refCnt: {}", buf.refCnt());
+                        }
+                        if (buf.refCnt() > 0) {
                             ReferenceCountUtil.safeRelease(buf);
                         }
-
-                        return buf;
                     })
                     .subscribe(v -> {}, ex -> {}, () -> {});
             }
