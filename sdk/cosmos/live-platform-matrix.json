@@ -176,6 +176,20 @@
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Strong\"]",
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "ArmConfig": {
+        "MultiRegion_Strong": {
+          "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pfast" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
     }
   ]
 }

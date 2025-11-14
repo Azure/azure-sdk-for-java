@@ -53,7 +53,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     private List<String> preferredRegions;
     private Map<String, String> regionNameToEndpoint;
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"fast"})
     public void beforeClass() {
 
         try (CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient()) {
@@ -123,7 +123,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void validateHeadRequestLeaseNotFoundBailout(
         int headFailureCount,
         OperationType operationTypeForWhichBarrierFlowIsTriggered,
@@ -479,6 +479,6 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {}
 }
