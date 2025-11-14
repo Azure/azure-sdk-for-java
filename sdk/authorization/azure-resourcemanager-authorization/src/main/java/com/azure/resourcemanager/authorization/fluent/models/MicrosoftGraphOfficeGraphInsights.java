@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * officeGraphInsights.
+ * Represents an office graph insights.
  */
 @Fluent
 public final class MicrosoftGraphOfficeGraphInsights extends MicrosoftGraphEntity {

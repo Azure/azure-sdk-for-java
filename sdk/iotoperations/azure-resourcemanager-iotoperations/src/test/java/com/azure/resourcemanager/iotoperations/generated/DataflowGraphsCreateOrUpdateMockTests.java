@@ -31,7 +31,7 @@ public final class DataflowGraphsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"mode\":\"Enabled\",\"requestDiskPersistence\":\"Enabled\",\"nodes\":[{\"nodeType\":\"DataflowGraphNode\",\"name\":\"tugsresmkssjh\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"iftxfkf\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"egprhptil\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"ucb\"}],\"nodeConnections\":[{\"from\":{\"name\":\"tgdqohmcwsldriz\",\"schema\":{}},\"to\":{\"name\":\"pwbralllibphbqz\"}},{\"from\":{\"name\":\"izakak\",\"schema\":{}},\"to\":{\"name\":\"kjpdnjzhajo\"}},{\"from\":{\"name\":\"lhjlmuoyxprimr\",\"schema\":{}},\"to\":{\"name\":\"pteecjme\"}}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"tvasy\",\"type\":\"CustomLocation\"},\"id\":\"dzaumweooh\",\"name\":\"uufuz\",\"type\":\"oyjathwtzol\"}";
+            = "{\"properties\":{\"mode\":\"Disabled\",\"requestDiskPersistence\":\"Disabled\",\"nodes\":[{\"nodeType\":\"DataflowGraphNode\",\"name\":\"qyrp\"}],\"nodeConnections\":[{\"from\":{\"name\":\"obrltt\",\"schema\":{}},\"to\":{\"name\":\"sjnygqdnfwqzdzgt\"}},{\"from\":{\"name\":\"la\",\"schema\":{}},\"to\":{\"name\":\"nfhqlyvijouwivk\"}},{\"from\":{\"name\":\"oyzunbixxr\",\"schema\":{}},\"to\":{\"name\":\"kvcpwpgclr\"}}],\"provisioningState\":\"Succeeded\",\"healthState\":\"Degraded\"},\"extendedLocation\":{\"name\":\"xfrk\",\"type\":\"CustomLocation\"},\"id\":\"pmyyefrpmpdnqq\",\"name\":\"ka\",\"type\":\"ao\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,38 +41,36 @@ public final class DataflowGraphsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataflowGraphResource response = manager.dataflowGraphs()
-            .define("aeranokqgukkjqnv")
-            .withExistingDataflowProfile("cgcckknhxkizvyt", "rzvul", "r")
-            .withProperties(new DataflowGraphProperties().withMode(OperationalMode.DISABLED)
-                .withRequestDiskPersistence(OperationalMode.ENABLED)
-                .withNodes(Arrays.asList(new DataflowGraphNode().withName("xulcdisdos"),
-                    new DataflowGraphNode().withName("jbjsvgjrwh")))
+            .define("juhdqazkmtgguwpi")
+            .withExistingDataflowProfile("h", "cporxvxcjz", "qizxfpxtgqscjavf")
+            .withProperties(new DataflowGraphProperties().withMode(OperationalMode.ENABLED)
+                .withRequestDiskPersistence(OperationalMode.DISABLED)
+                .withNodes(Arrays.asList(new DataflowGraphNode().withName("m"),
+                    new DataflowGraphNode().withName("ghfcfiwrxgkneuvy"), new DataflowGraphNode().withName("nzqodfvpg"),
+                    new DataflowGraphNode().withName("hoxgsgbpf")))
                 .withNodeConnections(Arrays.asList(
                     new DataflowGraphNodeConnection()
-                        .withFrom(new DataflowGraphConnectionInput().withName("vyc")
+                        .withFrom(new DataflowGraphConnectionInput().withName("djtxvzflbq")
                             .withSchema(new DataflowGraphConnectionSchemaSettings()))
-                        .withTo(new DataflowGraphConnectionOutput().withName("dclxgc")),
+                        .withTo(new DataflowGraphConnectionOutput().withName("aqvlgafcqusr")),
                     new DataflowGraphNodeConnection()
-                        .withFrom(new DataflowGraphConnectionInput().withName("knfnwmbtmvpdv")
+                        .withFrom(new DataflowGraphConnectionInput().withName("vetnwsdtutn")
                             .withSchema(new DataflowGraphConnectionSchemaSettings()))
-                        .withTo(new DataflowGraphConnectionOutput().withName("httz")),
+                        .withTo(new DataflowGraphConnectionOutput().withName("duy")),
                     new DataflowGraphNodeConnection()
-                        .withFrom(new DataflowGraphConnectionInput().withName("efedxihchrphkm")
+                        .withFrom(new DataflowGraphConnectionInput().withName("vuzhyr")
                             .withSchema(new DataflowGraphConnectionSchemaSettings()))
-                        .withTo(new DataflowGraphConnectionOutput().withName("jdqnsdfzpbgt")),
-                    new DataflowGraphNodeConnection()
-                        .withFrom(new DataflowGraphConnectionInput().withName("kylkdghrj")
-                            .withSchema(new DataflowGraphConnectionSchemaSettings()))
-                        .withTo(new DataflowGraphConnectionOutput().withName("utlwxezwzhok")))))
-            .withExtendedLocation(new ExtendedLocation().withName("hh").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                        .withTo(new DataflowGraphConnectionOutput().withName("wipmvekdxuk")))))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("xundxgk").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals(OperationalMode.ENABLED, response.properties().mode());
-        Assertions.assertEquals(OperationalMode.ENABLED, response.properties().requestDiskPersistence());
-        Assertions.assertEquals("tugsresmkssjh", response.properties().nodes().get(0).name());
-        Assertions.assertEquals("tgdqohmcwsldriz", response.properties().nodeConnections().get(0).from().name());
-        Assertions.assertEquals("pwbralllibphbqz", response.properties().nodeConnections().get(0).to().name());
-        Assertions.assertEquals("tvasy", response.extendedLocation().name());
+        Assertions.assertEquals(OperationalMode.DISABLED, response.properties().mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, response.properties().requestDiskPersistence());
+        Assertions.assertEquals("qyrp", response.properties().nodes().get(0).name());
+        Assertions.assertEquals("obrltt", response.properties().nodeConnections().get(0).from().name());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", response.properties().nodeConnections().get(0).to().name());
+        Assertions.assertEquals("xfrk", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

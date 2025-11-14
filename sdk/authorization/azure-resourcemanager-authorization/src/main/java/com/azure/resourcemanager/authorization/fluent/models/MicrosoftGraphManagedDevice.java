@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * managedDevice
- * 
+ * Represents a managed device.
+ * <p>
  * Devices that are managed or pre-enrolled through Intune.
  */
 @Fluent

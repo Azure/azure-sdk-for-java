@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * resourceVisualization.
+ * Represents a resource visualization.
  */
 @Fluent
 public final class MicrosoftGraphResourceVisualization

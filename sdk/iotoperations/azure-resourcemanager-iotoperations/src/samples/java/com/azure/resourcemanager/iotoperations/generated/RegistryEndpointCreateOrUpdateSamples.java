@@ -9,13 +9,16 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
 import com.azure.resourcemanager.iotoperations.models.RegistryEndpointAnonymousAuthentication;
 import com.azure.resourcemanager.iotoperations.models.RegistryEndpointAnonymousSettings;
 import com.azure.resourcemanager.iotoperations.models.RegistryEndpointProperties;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointTrustedSigningKeyConfigMap;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointTrustedSigningKeySecret;
+import java.util.Arrays;
 
 /**
  * Samples for RegistryEndpoint CreateOrUpdate.
  */
 public final class RegistryEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_CreateOrUpdate_MaximumSet.
@@ -29,7 +32,10 @@ public final class RegistryEndpointCreateOrUpdateSamples {
             .withExistingInstance("rgiotoperations", "resource-123")
             .withProperties(new RegistryEndpointProperties().withHost("contoso.azurecr.io")
                 .withAuthentication(new RegistryEndpointAnonymousAuthentication()
-                    .withAnonymousSettings(new RegistryEndpointAnonymousSettings())))
+                    .withAnonymousSettings(new RegistryEndpointAnonymousSettings()))
+                .withCodeSigningCas(
+                    Arrays.asList(new RegistryEndpointTrustedSigningKeySecret().withSecretRef("fakeTokenPlaceholder"),
+                        new RegistryEndpointTrustedSigningKeyConfigMap().withConfigMapRef("my-configmap"))))
             .withExtendedLocation(new ExtendedLocation().withName(
                 "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
                 .withType(ExtendedLocationType.CUSTOM_LOCATION))

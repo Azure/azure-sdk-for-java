@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * calendarGroup.
+ * Represents a calendar group.
  */
 @Fluent
 public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
