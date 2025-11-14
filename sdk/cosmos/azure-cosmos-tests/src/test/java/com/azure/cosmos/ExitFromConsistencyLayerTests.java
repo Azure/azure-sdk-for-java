@@ -123,6 +123,38 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         };
     }
 
+    /**
+     * Validates that the consistency layer properly handles LEASE_NOT_FOUND (410-1022) failures during head requests
+     * in the barrier flow for strong consistency scenarios across multiple regions.
+     * 
+     * <p>This test simulates various failure scenarios where head requests fail with LEASE_NOT_FOUND errors
+     * during the barrier protocol, which is used to ensure strong consistency guarantees. The test verifies
+     * that the client can properly bail out and retry when too many head failures occur, or successfully
+     * complete operations when head failures are within acceptable thresholds.</p>
+     * 
+     * <p><b>Test Scenarios:</b></p>
+     * <ul>
+     *   <li>For <b>Create operations</b>: Head can fail up to 1 time before the operation times out (408-1022)</li>
+     *   <li>For <b>Read operations</b>: Head can fail up to 3 times and still succeed from the same region;
+     *       with 4 failures, the operation fails over to another region</li>
+     *   <li>Tests both pre-quorum and post-quorum selection barrier failure scenarios</li>
+     * </ul>
+     * 
+     * <p><b>Verification Points:</b></p>
+     * <ul>
+     *   <li>Correct HTTP status codes (201 for Create, 200 for Read, 408 for timeouts)</li>
+     *   <li>Proper region contact behavior (single region vs. failover to second region)</li>
+     *   <li>Head request counts in diagnostics match expectations</li>
+     *   <li>Primary replica is contacted during barrier protocol</li>
+     *   <li>No 410 errors surface for Create/Read operations (should be handled internally)</li>
+     * </ul>
+     * 
+     * @param headFailureCount Number of head requests that should fail with LEASE_NOT_FOUND
+     * @param operationTypeForWhichBarrierFlowIsTriggered The operation type (Create or Read) that triggers the barrier flow
+     * @param enterPostQuorumSelectionOnlyBarrierLoop Whether to simulate failures in the post-quorum selection phase
+     * @param successfulHeadRequestCountWhichDontMeetBarrier Number of successful head requests that don't meet the barrier condition
+     * @throws Exception if the test setup or execution fails
+     */
     @Test(groups = {"multi-region-strong"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void validateHeadRequestLeaseNotFoundBailout(
         int headFailureCount,
