@@ -13,10 +13,10 @@ public final class CheckAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckAvailabilityResponseInner model
-            = BinaryData.fromString("{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"nb\"}")
+            = BinaryData.fromString("{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"npkc\"}")
                 .toObject(CheckAvailabilityResponseInner.class);
         Assertions.assertFalse(model.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
-        Assertions.assertEquals("nb", model.message());
+        Assertions.assertEquals("npkc", model.message());
     }
 }

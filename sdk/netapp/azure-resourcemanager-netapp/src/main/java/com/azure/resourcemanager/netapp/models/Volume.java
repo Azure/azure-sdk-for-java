@@ -332,13 +332,6 @@ public interface Volume {
     Boolean ldapEnabled();
 
     /**
-     * Gets the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    LdapServerType ldapServerType();
-
-    /**
      * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -539,13 +532,6 @@ public interface Volume {
     Long inheritedSizeInBytes();
 
     /**
-     * Gets the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    VolumeLanguage language();
-
-    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -689,14 +675,14 @@ public interface Volume {
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
             DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
             DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess,
-            DefinitionStages.WithCoolnessPeriod, DefinitionStages.WithCoolAccessRetrievalPolicy,
-            DefinitionStages.WithCoolAccessTieringPolicy, DefinitionStages.WithUnixPermissions,
-            DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
-            DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
-            DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
-            DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
-            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume, DefinitionStages.WithLanguage {
+            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
+            DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
+            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
+            DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
+            DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
+            DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
+            DefinitionStages.WithIsLargeVolume {
             /**
              * Executes the create request.
              * 
@@ -1051,19 +1037,6 @@ public interface Volume {
         }
 
         /**
-         * The stage of the Volume definition allowing to specify ldapServerType.
-         */
-        interface WithLdapServerType {
-            /**
-             * Specifies the ldapServerType property: Specifies the type of LDAP server for a given NFS volume..
-             * 
-             * @param ldapServerType Specifies the type of LDAP server for a given NFS volume.
-             * @return the next definition stage.
-             */
-            WithCreate withLdapServerType(LdapServerType ldapServerType);
-        }
-
-        /**
          * The stage of the Volume definition allowing to specify coolAccess.
          */
         interface WithCoolAccess {
@@ -1298,19 +1271,6 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
-        }
-
-        /**
-         * The stage of the Volume definition allowing to specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Specifies the language property: Language supported for volume..
-             * 
-             * @param language Language supported for volume.
-             * @return the next definition stage.
-             */
-            WithCreate withLanguage(VolumeLanguage language);
         }
     }
 
@@ -2074,24 +2034,4 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void revertRelocation(Context context);
-
-    /**
-     * A long-running resource action.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    ListQuotaReportResponse listQuotaReport();
-
-    /**
-     * A long-running resource action.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    ListQuotaReportResponse listQuotaReport(Context context);
 }

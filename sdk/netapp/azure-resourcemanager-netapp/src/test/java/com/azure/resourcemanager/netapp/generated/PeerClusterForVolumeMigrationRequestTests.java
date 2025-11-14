@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PeerClusterForVolumeMigrationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeerClusterForVolumeMigrationRequest model
-            = BinaryData.fromString("{\"peerIpAddresses\":[\"z\",\"nsikvmkqzeqqkdl\",\"fzxmhhvhgureodkw\"]}")
-                .toObject(PeerClusterForVolumeMigrationRequest.class);
-        Assertions.assertEquals("z", model.peerIpAddresses().get(0));
+        PeerClusterForVolumeMigrationRequest model = BinaryData.fromString("{\"peerIpAddresses\":[\"erscdntne\"]}")
+            .toObject(PeerClusterForVolumeMigrationRequest.class);
+        Assertions.assertEquals("erscdntne", model.peerIpAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeerClusterForVolumeMigrationRequest model = new PeerClusterForVolumeMigrationRequest()
-            .withPeerIpAddresses(Arrays.asList("z", "nsikvmkqzeqqkdl", "fzxmhhvhgureodkw"));
+        PeerClusterForVolumeMigrationRequest model
+            = new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(Arrays.asList("erscdntne"));
         model = BinaryData.fromObject(model).toObject(PeerClusterForVolumeMigrationRequest.class);
-        Assertions.assertEquals("z", model.peerIpAddresses().get(0));
+        Assertions.assertEquals("erscdntne", model.peerIpAddresses().get(0));
     }
 }

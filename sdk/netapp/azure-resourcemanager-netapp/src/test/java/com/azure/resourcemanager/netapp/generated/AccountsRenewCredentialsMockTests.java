@@ -27,7 +27,7 @@ public final class AccountsRenewCredentialsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.accounts().renewCredentials("nafvvkyfedev", "bo", com.azure.core.util.Context.NONE);
+        manager.accounts().renewCredentials("jmvl", "yzgib", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -21,7 +21,7 @@ public final class SubvolumesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"path\":\"sinuqtljqobbpih\",\"size\":8338540391958911880,\"parentPath\":\"ybmrqbrjbbmp\",\"provisioningState\":\"Succeeded\"},\"id\":\"s\",\"name\":\"qwjksghudgz\",\"type\":\"xog\"}";
+            = "{\"properties\":{\"path\":\"kympqanxrjkixtw\",\"size\":6067956593612748016,\"parentPath\":\"pnyghs\",\"provisioningState\":\"Succeeded\"},\"id\":\"gmnsghpxy\",\"name\":\"phdrw\",\"type\":\"jkhvyomacluzvxnq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class SubvolumesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SubvolumeInfo response = manager.subvolumes()
-            .define("lkeuac")
-            .withExistingVolume("z", "rfkspzhz", "tk", "jcitdigsxcdglj")
-            .withPath("mflrytswfpfmdgyc")
-            .withSize(2432394852531944937L)
-            .withParentPath("whqjjyslurlpshhk")
+            .define("sx")
+            .withExistingVolume("ey", "swlpaugmrmfj", "rxwtoaukhfkvc", "sizmoae")
+            .withPath("ive")
+            .withSize(5184898420559023748L)
+            .withParentPath("eewxeiqbpsmg")
             .create();
 
-        Assertions.assertEquals("sinuqtljqobbpih", response.path());
-        Assertions.assertEquals(8338540391958911880L, response.size());
-        Assertions.assertEquals("ybmrqbrjbbmp", response.parentPath());
+        Assertions.assertEquals("kympqanxrjkixtw", response.path());
+        Assertions.assertEquals(6067956593612748016L, response.size());
+        Assertions.assertEquals("pnyghs", response.parentPath());
     }
 }

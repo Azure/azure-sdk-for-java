@@ -13,12 +13,12 @@ public final class RegionInfosListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfosList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"rfkbwccsnjvcdwxl\",\"isAvailable\":true}]},\"id\":\"ftnkhtj\",\"name\":\"y\",\"type\":\"ngwfqatm\"}],\"nextLink\":\"htmdvy\"}")
+            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"qyzhf\",\"isAvailable\":false},{\"availabilityZone\":\"gogczhonnxkrlgny\",\"isAvailable\":false}]},\"id\":\"sxkkg\",\"name\":\"h\",\"type\":\"rghxjb\"},{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"gf\",\"isAvailable\":true}]},\"id\":\"ofbshr\",\"name\":\"svbuswdvzyy\",\"type\":\"ycnunvjsrtk\"}],\"nextLink\":\"wnopqgikyzirtx\"}")
             .toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1, model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("rfkbwccsnjvcdwxl",
-            model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertTrue(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("htmdvy", model.nextLink());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT,
+            model.value().get(0).storageToNetworkProximity());
+        Assertions.assertEquals("qyzhf", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("wnopqgikyzirtx", model.nextLink());
     }
 }

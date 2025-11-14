@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":5853519584065251254,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"wpfhpagmhrskd\"}")
+            "{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":7272736071561293881,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"rfzeey\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5853519584065251254L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("wpfhpagmhrskd", model.quotaTarget());
+        Assertions.assertEquals(7272736071561293881L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("rfzeey", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(5853519584065251254L)
-            .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-            .withQuotaTarget("wpfhpagmhrskd");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(7272736071561293881L)
+            .withQuotaType(Type.DEFAULT_USER_QUOTA)
+            .withQuotaTarget("rfzeey");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5853519584065251254L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("wpfhpagmhrskd", model.quotaTarget());
+        Assertions.assertEquals(7272736071561293881L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("rfzeey", model.quotaTarget());
     }
 }

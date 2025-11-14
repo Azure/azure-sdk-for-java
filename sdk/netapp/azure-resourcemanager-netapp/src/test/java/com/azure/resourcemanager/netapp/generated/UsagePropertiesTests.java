@@ -10,8 +10,7 @@ import com.azure.resourcemanager.netapp.fluent.models.UsageProperties;
 public final class UsagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageProperties model
-            = BinaryData.fromString("{\"currentValue\":838821681,\"limit\":15369485,\"unit\":\"yvudtjuewbci\"}")
-                .toObject(UsageProperties.class);
+        UsageProperties model = BinaryData.fromString("{\"currentValue\":19838939,\"limit\":1553526894,\"unit\":\"o\"}")
+            .toObject(UsageProperties.class);
     }
 }

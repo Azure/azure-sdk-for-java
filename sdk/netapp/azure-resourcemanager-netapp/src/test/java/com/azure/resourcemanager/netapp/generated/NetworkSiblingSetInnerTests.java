@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"lywjhh\",\"subnetId\":\"nhxmsi\",\"networkSiblingSetStateId\":\"omi\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Failed\",\"nicInfoList\":[{\"ipAddress\":\"iqndieuzaofj\",\"volumeResourceIds\":[\"cyyysfgdot\"]},{\"ipAddress\":\"biipuip\",\"volumeResourceIds\":[\"onmacjekniz\",\"hqvcimpevfgmblr\"]},{\"ipAddress\":\"lbywdxsm\",\"volumeResourceIds\":[\"wrwfscjfnyns\",\"qujizdvo\"]},{\"ipAddress\":\"tiby\",\"volumeResourceIds\":[\"blgyavutpthj\",\"xoi\",\"msksbp\"]}]}")
+            "{\"networkSiblingSetId\":\"qyikvy\",\"subnetId\":\"uyav\",\"networkSiblingSetStateId\":\"wmn\",\"networkFeatures\":\"Standard_Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"bvpoekrsgsgbdhu\",\"volumeResourceIds\":[\"njdgkynscliq\",\"zvhxnk\",\"mtk\",\"bo\"]},{\"ipAddress\":\"pnvdxz\",\"volumeResourceIds\":[\"hfrbbc\",\"vqagtltdhlf\",\"qojpy\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("lywjhh", model.networkSiblingSetId());
-        Assertions.assertEquals("nhxmsi", model.subnetId());
-        Assertions.assertEquals("omi", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
-        Assertions.assertEquals("cyyysfgdot", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("qyikvy", model.networkSiblingSetId());
+        Assertions.assertEquals("uyav", model.subnetId());
+        Assertions.assertEquals("wmn", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.STANDARD_BASIC, model.networkFeatures());
+        Assertions.assertEquals("njdgkynscliq", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

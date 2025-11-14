@@ -23,7 +23,7 @@ public final class NetAppResourceRegionInfosListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"rwahzjmucftbyr\",\"isAvailable\":true},{\"availabilityZone\":\"hkpigqfusuckzmkw\",\"isAvailable\":true}]},\"id\":\"oxaxm\",\"name\":\"e\",\"type\":\"alhhjnhgwydyynfs\"}]}";
+            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"yzlwh\",\"isAvailable\":true},{\"availabilityZone\":\"hoocl\",\"isAvailable\":false},{\"availabilityZone\":\"qmemc\",\"isAvailable\":true},{\"availabilityZone\":\"mykyujxsglhs\",\"isAvailable\":false}]},\"id\":\"ejylmbkzu\",\"name\":\"nigrfihotjewl\",\"type\":\"xuzzjgnrefq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class NetAppResourceRegionInfosListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RegionInfoResource> response
-            = manager.netAppResourceRegionInfos().list("g", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceRegionInfos().list("bfdpyflubhv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T2AND_ACROSS_T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT,
             response.iterator().next().storageToNetworkProximity());
-        Assertions.assertEquals("rwahzjmucftbyr",
+        Assertions.assertEquals("yzlwh",
             response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertTrue(response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
     }

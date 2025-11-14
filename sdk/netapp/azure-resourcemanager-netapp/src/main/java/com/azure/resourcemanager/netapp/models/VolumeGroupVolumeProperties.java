@@ -830,29 +830,6 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    public LdapServerType ldapServerType() {
-        return this.innerProperties() == null ? null : this.innerProperties().ldapServerType();
-    }
-
-    /**
-     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @param ldapServerType the ldapServerType value to set.
-     * @return the VolumeGroupVolumeProperties object itself.
-     */
-    public VolumeGroupVolumeProperties withLdapServerType(LdapServerType ldapServerType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLdapServerType(ldapServerType);
-        return this;
-    }
-
-    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -1328,29 +1305,6 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
      */
     public Long inheritedSizeInBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.innerProperties() == null ? null : this.innerProperties().language();
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeGroupVolumeProperties object itself.
-     */
-    public VolumeGroupVolumeProperties withLanguage(VolumeLanguage language) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLanguage(language);
-        return this;
     }
 
     /**

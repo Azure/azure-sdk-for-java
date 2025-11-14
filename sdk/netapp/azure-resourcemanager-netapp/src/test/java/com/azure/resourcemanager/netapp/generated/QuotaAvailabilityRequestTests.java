@@ -13,25 +13,25 @@ public final class QuotaAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"uepzl\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"hw\"}")
+            "{\"name\":\"dwdigumb\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"aauzzptjazysd\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("uepzl", model.name());
+        Assertions.assertEquals("dwdigumb", model.name());
         Assertions.assertEquals(
             CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
             model.type());
-        Assertions.assertEquals("hw", model.resourceGroup());
+        Assertions.assertEquals("aauzzptjazysd", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("uepzl")
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("dwdigumb")
             .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-            .withResourceGroup("hw");
+            .withResourceGroup("aauzzptjazysd");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("uepzl", model.name());
+        Assertions.assertEquals("dwdigumb", model.name());
         Assertions.assertEquals(
             CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
             model.type());
-        Assertions.assertEquals("hw", model.resourceGroup());
+        Assertions.assertEquals("aauzzptjazysd", model.resourceGroup());
     }
 }

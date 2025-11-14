@@ -22,8 +22,6 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.LdapServerType;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
@@ -39,7 +37,6 @@ import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
@@ -240,10 +237,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().ldapEnabled();
     }
 
-    public LdapServerType ldapServerType() {
-        return this.innerModel().ldapServerType();
-    }
-
     public Boolean coolAccess() {
         return this.innerModel().coolAccess();
     }
@@ -352,10 +345,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Long inheritedSizeInBytes() {
         return this.innerModel().inheritedSizeInBytes();
-    }
-
-    public VolumeLanguage language() {
-        return this.innerModel().language();
     }
 
     public Region region() {
@@ -640,14 +629,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public ListQuotaReportResponse listQuotaReport() {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
-    }
-
-    public ListQuotaReportResponse listQuotaReport(Context context) {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
-    }
-
     public VolumeImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -825,11 +806,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withLdapServerType(LdapServerType ldapServerType) {
-        this.innerModel().withLdapServerType(ldapServerType);
-        return this;
-    }
-
     public VolumeImpl withCoolAccess(Boolean coolAccess) {
         if (isInCreateMode()) {
             this.innerModel().withCoolAccess(coolAccess);
@@ -942,11 +918,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
-        return this;
-    }
-
-    public VolumeImpl withLanguage(VolumeLanguage language) {
-        this.innerModel().withLanguage(language);
         return this;
     }
 

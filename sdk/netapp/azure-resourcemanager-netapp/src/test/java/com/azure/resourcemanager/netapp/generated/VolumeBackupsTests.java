@@ -12,11 +12,11 @@ public final class VolumeBackupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeBackups model = BinaryData.fromString(
-            "{\"volumeName\":\"syyceuzsoibjud\",\"volumeResourceId\":\"rx\",\"backupsCount\":1839855586,\"policyEnabled\":true}")
+            "{\"volumeName\":\"fatpxllrxcyjmoa\",\"volumeResourceId\":\"uvarmywdmjsjq\",\"backupsCount\":1756269391,\"policyEnabled\":true}")
             .toObject(VolumeBackups.class);
-        Assertions.assertEquals("syyceuzsoibjud", model.volumeName());
-        Assertions.assertEquals("rx", model.volumeResourceId());
-        Assertions.assertEquals(1839855586, model.backupsCount());
+        Assertions.assertEquals("fatpxllrxcyjmoa", model.volumeName());
+        Assertions.assertEquals("uvarmywdmjsjq", model.volumeResourceId());
+        Assertions.assertEquals(1756269391, model.backupsCount());
         Assertions.assertTrue(model.policyEnabled());
     }
 }

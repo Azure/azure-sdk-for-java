@@ -18,7 +18,6 @@ import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
-import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
@@ -26,7 +25,6 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -865,29 +863,6 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    public LdapServerType ldapServerType() {
-        return this.innerProperties() == null ? null : this.innerProperties().ldapServerType();
-    }
-
-    /**
-     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @param ldapServerType the ldapServerType value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLdapServerType(LdapServerType ldapServerType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLdapServerType(ldapServerType);
-        return this;
-    }
-
-    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -1362,29 +1337,6 @@ public final class VolumeInner extends Resource {
      */
     public Long inheritedSizeInBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.innerProperties() == null ? null : this.innerProperties().language();
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLanguage(VolumeLanguage language) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLanguage(language);
-        return this;
     }
 
     /**

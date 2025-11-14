@@ -22,7 +22,7 @@ public final class SnapshotsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"snapshotId\":\"gnljhnmgixhcm\",\"created\":\"2021-04-26T15:04:11Z\",\"provisioningState\":\"foudor\"},\"location\":\"cgyypro\",\"id\":\"ypundmbxhugc\",\"name\":\"jkavl\",\"type\":\"or\"}]}";
+            = "{\"value\":[{\"properties\":{\"snapshotId\":\"kvntjlrigjkskyri\",\"created\":\"2020-12-31T15:34:24Z\",\"provisioningState\":\"idsxwaabzmifry\"},\"location\":\"znmmaxrizkzobgo\",\"id\":\"lhslnelxieixyn\",\"name\":\"lxecwcrojphslh\",\"type\":\"awjutifd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class SnapshotsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Snapshot> response = manager.snapshots()
-            .list("hriypoqeyhlqhy", "prlpy", "nuciqdsmexiit", "fuxtyasiibmiybnn", com.azure.core.util.Context.NONE);
+        PagedIterable<Snapshot> response
+            = manager.snapshots().list("qryxyn", "nzrdpsovwxz", "ptgoeiybbabp", "hv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cgyypro", response.iterator().next().location());
+        Assertions.assertEquals("znmmaxrizkzobgo", response.iterator().next().location());
     }
 }

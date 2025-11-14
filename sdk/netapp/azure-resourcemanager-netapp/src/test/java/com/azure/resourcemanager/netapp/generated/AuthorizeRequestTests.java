@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizeRequest model
-            = BinaryData.fromString("{\"remoteVolumeResourceId\":\"ogaok\"}").toObject(AuthorizeRequest.class);
-        Assertions.assertEquals("ogaok", model.remoteVolumeResourceId());
+        AuthorizeRequest model = BinaryData.fromString("{\"remoteVolumeResourceId\":\"ylpstdbhhxsrzdz\"}")
+            .toObject(AuthorizeRequest.class);
+        Assertions.assertEquals("ylpstdbhhxsrzdz", model.remoteVolumeResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizeRequest model = new AuthorizeRequest().withRemoteVolumeResourceId("ogaok");
+        AuthorizeRequest model = new AuthorizeRequest().withRemoteVolumeResourceId("ylpstdbhhxsrzdz");
         model = BinaryData.fromObject(model).toObject(AuthorizeRequest.class);
-        Assertions.assertEquals("ogaok", model.remoteVolumeResourceId());
+        Assertions.assertEquals("ylpstdbhhxsrzdz", model.remoteVolumeResourceId());
     }
 }

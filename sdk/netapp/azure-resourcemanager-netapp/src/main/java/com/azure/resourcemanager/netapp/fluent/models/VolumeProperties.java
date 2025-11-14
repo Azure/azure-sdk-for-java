@@ -17,7 +17,6 @@ import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
-import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
@@ -25,7 +24,6 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -215,11 +213,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean ldapEnabled;
 
     /*
-     * Specifies the type of LDAP server for a given NFS volume.
-     */
-    private LdapServerType ldapServerType;
-
-    /*
      * Specifies whether Cool Access(tiering) is enabled for the volume.
      */
     private Boolean coolAccess;
@@ -361,11 +354,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Space shared by short term clone volume with parent volume in bytes.
      */
     private Long inheritedSizeInBytes;
-
-    /*
-     * Language supported for volume.
-     */
-    private VolumeLanguage language;
 
     /**
      * Creates an instance of VolumeProperties class.
@@ -984,26 +972,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    public LdapServerType ldapServerType() {
-        return this.ldapServerType;
-    }
-
-    /**
-     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @param ldapServerType the ldapServerType value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withLdapServerType(LdapServerType ldapServerType) {
-        this.ldapServerType = ldapServerType;
-        return this;
-    }
-
-    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -1436,26 +1404,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withLanguage(VolumeLanguage language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1523,8 +1471,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
         jsonWriter.writeStringField("keyVaultPrivateEndpointResourceId", this.keyVaultPrivateEndpointResourceId);
         jsonWriter.writeBooleanField("ldapEnabled", this.ldapEnabled);
-        jsonWriter.writeStringField("ldapServerType",
-            this.ldapServerType == null ? null : this.ldapServerType.toString());
         jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
         jsonWriter.writeNumberField("coolnessPeriod", this.coolnessPeriod);
         jsonWriter.writeStringField("coolAccessRetrievalPolicy",
@@ -1544,7 +1490,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("enableSubvolumes",
             this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
-        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1638,8 +1583,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.keyVaultPrivateEndpointResourceId = reader.getString();
                 } else if ("ldapEnabled".equals(fieldName)) {
                     deserializedVolumeProperties.ldapEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("ldapServerType".equals(fieldName)) {
-                    deserializedVolumeProperties.ldapServerType = LdapServerType.fromString(reader.getString());
                 } else if ("coolAccess".equals(fieldName)) {
                     deserializedVolumeProperties.coolAccess = reader.getNullable(JsonReader::getBoolean);
                 } else if ("coolnessPeriod".equals(fieldName)) {
@@ -1695,8 +1638,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
                 } else if ("inheritedSizeInBytes".equals(fieldName)) {
                     deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
-                } else if ("language".equals(fieldName)) {
-                    deserializedVolumeProperties.language = VolumeLanguage.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

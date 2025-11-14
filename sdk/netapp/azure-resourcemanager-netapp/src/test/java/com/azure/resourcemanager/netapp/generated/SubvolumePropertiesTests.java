@@ -12,20 +12,21 @@ public final class SubvolumePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumeProperties model = BinaryData.fromString(
-            "{\"path\":\"tduceamt\",\"size\":2466876954065638223,\"parentPath\":\"m\",\"provisioningState\":\"wcw\"}")
+            "{\"path\":\"jplmagstcy\",\"size\":7553431900772779958,\"parentPath\":\"yrkdbdgiogsjkmn\",\"provisioningState\":\"jnobaiyh\"}")
             .toObject(SubvolumeProperties.class);
-        Assertions.assertEquals("tduceamt", model.path());
-        Assertions.assertEquals(2466876954065638223L, model.size());
-        Assertions.assertEquals("m", model.parentPath());
+        Assertions.assertEquals("jplmagstcy", model.path());
+        Assertions.assertEquals(7553431900772779958L, model.size());
+        Assertions.assertEquals("yrkdbdgiogsjkmn", model.parentPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumeProperties model
-            = new SubvolumeProperties().withPath("tduceamt").withSize(2466876954065638223L).withParentPath("m");
+        SubvolumeProperties model = new SubvolumeProperties().withPath("jplmagstcy")
+            .withSize(7553431900772779958L)
+            .withParentPath("yrkdbdgiogsjkmn");
         model = BinaryData.fromObject(model).toObject(SubvolumeProperties.class);
-        Assertions.assertEquals("tduceamt", model.path());
-        Assertions.assertEquals(2466876954065638223L, model.size());
-        Assertions.assertEquals("m", model.parentPath());
+        Assertions.assertEquals("jplmagstcy", model.path());
+        Assertions.assertEquals(7553431900772779958L, model.size());
+        Assertions.assertEquals("yrkdbdgiogsjkmn", model.parentPath());
     }
 }

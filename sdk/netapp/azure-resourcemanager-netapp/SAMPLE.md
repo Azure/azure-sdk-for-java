@@ -148,7 +148,6 @@
 - [Get](#volumes_get)
 - [List](#volumes_list)
 - [ListGetGroupIdListForLdapUser](#volumes_listgetgroupidlistforldapuser)
-- [ListQuotaReport](#volumes_listquotareport)
 - [ListReplications](#volumes_listreplications)
 - [PeerExternalCluster](#volumes_peerexternalcluster)
 - [PerformReplicationTransfer](#volumes_performreplicationtransfer)
@@ -2894,27 +2893,6 @@ public final class VolumesListGetGroupIdListForLdapUserSamples {
         manager.volumes()
             .listGetGroupIdListForLdapUser("myRG", "account1", "pool1", "volume1",
                 new GetGroupIdListForLdapUserRequest().withUsername("user1"), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Volumes_ListQuotaReport
-
-```java
-/**
- * Samples for Volumes ListQuotaReport.
- */
-public final class VolumesListQuotaReportSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/Volumes_ListQuotaReport.json
-     */
-    /**
-     * Sample code: ListQuotaReport.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void listQuotaReport(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().listQuotaReport("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }
 ```
