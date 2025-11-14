@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.53.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;dependency} -->
+      <version>2.53.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
