@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -248,7 +249,7 @@ public class DataLakeFileSystemClient {
      * @return the URL.
      */
     public String getFileSystemUrl() {
-        return azureDataLakeStorage.getUrl() + "/" + fileSystemName;
+        return azureDataLakeStorage.getUrl() + "/" + Utility.urlEncode(fileSystemName);
     }
 
     /**
