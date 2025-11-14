@@ -1139,9 +1139,6 @@ public final class SearchClient {
 
     private SearchPagedResponse search(SearchRequest request, String continuationToken,
         SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return firstPageResponseWrapper.getFirstPageResponse();
-        }
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);

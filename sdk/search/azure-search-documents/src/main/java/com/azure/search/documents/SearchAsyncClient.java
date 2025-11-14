@@ -1313,9 +1313,6 @@ public final class SearchAsyncClient {
     private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
         SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization,
         Boolean enableElevatedRead, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
-        }
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
