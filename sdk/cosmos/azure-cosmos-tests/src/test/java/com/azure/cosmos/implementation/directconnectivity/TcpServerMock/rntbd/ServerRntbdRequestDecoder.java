@@ -35,13 +35,7 @@ public final class ServerRntbdRequestDecoder extends ByteToMessageDecoder {
             }
         }
 
-        // When bypassing the parent's decode logic, we must release the ByteBuf
-        // as context.fireChannelRead() doesn't automatically manage reference counts
-        try {
-            context.fireChannelRead(message);
-        } finally {
-            ReferenceCountUtil.safeRelease(message);
-        }
+        context.fireChannelRead(message);
     }
 
     /**

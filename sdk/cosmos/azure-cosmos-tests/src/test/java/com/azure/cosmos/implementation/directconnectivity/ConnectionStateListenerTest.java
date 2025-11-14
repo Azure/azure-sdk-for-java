@@ -30,34 +30,43 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConnectionStateListenerTest {
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
     private static final AtomicInteger randomPort = new AtomicInteger(1000);
-    private static int port = 8082;
-    private static String serverAddressPrefix = "rntbd://localhost:";
-    private static Random random = new Random();
+    private static final int port = 8082;
+    private static final String serverAddressPrefix = "rntbd://localhost:";
+
+    private volatile AutoCloseable disableNettyLeakDetectionScope;
+
+    @BeforeClass(groups = "unit")
+    public void beforeClass_DisableNettyLeakDetection() {
+        this.disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope();
+    }
+
+    @AfterClass(groups = "unit", alwaysRun = true)
+    public void afterClass_ReactivateNettyLeakDetection() throws Exception {
+        if (this.disableNettyLeakDetectionScope != null) {
+            this.disableNettyLeakDetectionScope.close();
+        }
+    }
 
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
