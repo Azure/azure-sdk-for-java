@@ -98,12 +98,12 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     private AddressSelector addressSelector;
     private volatile AutoCloseable disableNettyLeakDetectionScope;
 
-    @BeforeClass(groups = "unit")
+    @BeforeClass(groups = {"unit", "long-emulator"})
     public void beforeClass_DisableNettyLeakDetection() {
         this.disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope();
     }
 
-    @AfterClass(groups = "unit", alwaysRun = true)
+    @AfterClass(groups = {"unit", "long-emulator"}, alwaysRun = true)
     public void afterClass_ReactivateNettyLeakDetection() throws Exception {
         if (this.disableNettyLeakDetectionScope != null) {
             this.disableNettyLeakDetectionScope.close();

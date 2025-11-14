@@ -211,6 +211,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             retainedContent,
             "Argument 'retainedContent' must not be null - use empty ByteBuf when theres is no payload.");
 
+        if (leakDetectionDebuggingEnabled) {
+            retainedContent.touch(
+                "RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: " + retainedContent.refCnt());
+            logger.info("RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: {}", retainedContent.refCnt());
+        }
+
         // If there is any error in the header response this throws exception
         validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, retainedContent);
 
@@ -218,6 +224,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         if ((size = retainedContent.readableBytes()) > 0) {
             if (leakDetectionDebuggingEnabled) {
                 retainedContent.touch("RxGatewayStoreModel before creating StoreResponse - refCnt: " + retainedContent.refCnt());
+                logger.info("RxGatewayStoreModel before creating StoreResponse - refCnt: {}", retainedContent.refCnt());
             }
 
             return new StoreResponse(
@@ -419,34 +426,40 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
                     .map(bodyByteBuf -> {
                         if (leakDetectionDebuggingEnabled) {
-                            bodyByteBuf.touch("RxGatewayStoreModel - before retain - refCnt: " + bodyByteBuf.refCnt());
+                            bodyByteBuf.touch("RxGatewayStoreModel - buffer after aggregate before retain - refCnt: " + bodyByteBuf.refCnt());
+                            logger.info("RxGatewayStoreModel - buffer after aggregate before retain  - refCnt: {}", bodyByteBuf.refCnt());
                         }
 
-                        // if not empty this is the aggregate result - for which ownership was already transferred
-                        ByteBuf retainedContent = bodyByteBuf.retain();
+                        if (bodyByteBuf != Unpooled.EMPTY_BUFFER) {
+                            bodyByteBuf.retain();                              // +1 for our downstream work
+                        }
+
                         if (leakDetectionDebuggingEnabled) {
-                            retainedContent.touch("RxGatewayStoreModel - after retain - refCnt: " + retainedContent.refCnt());
+                            bodyByteBuf.touch("RxGatewayStoreModel - touch retained buffer  - refCnt: " + bodyByteBuf.refCnt());
+                            logger.info("RxGatewayStoreModel - touch retained buffer  - refCnt: {]", bodyByteBuf.refCnt());
                         }
 
-                        return retainedContent;
+                        return bodyByteBuf;
                     })
-                    .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
                     .doOnDiscard(ByteBuf.class, buf -> {
                         if (buf.refCnt() > 0) {
                             if (leakDetectionDebuggingEnabled) {
                                 buf.touch("RxGatewayStoreModel - doOnDiscard - begin - refCnt: " + buf.refCnt());
+                                logger.info("RxGatewayStoreModel - doOnDiscard - begin - refCnt: {}", buf.refCnt());
                             }
 
                             // there could be a race with the catch in the .map operator below
                             // so, use safeRelease
                             ReferenceCountUtil.safeRelease(buf);
                         }
-                    });
+                    })
+                    .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
                 return contentObservable
                     .map(content -> {
                         if (leakDetectionDebuggingEnabled) {
                             content.touch("RxGatewayStoreModel - before capturing transport timeline - refCnt: " + content.refCnt());
+                            logger.info("RxGatewayStoreModel - before capturing transport timeline - refCnt: {}", content.refCnt());
                         }
 
                         try {
@@ -458,6 +471,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             if (leakDetectionDebuggingEnabled) {
                                 content.touch("RxGatewayStoreModel - before creating StoreResponse - refCnt: " + content.refCnt());
+                                logger.info("RxGatewayStoreModel - before creating StoreResponse - refCnt: {}", content.refCnt());
                             }
                             StoreResponse rsp = request
                                 .getEffectiveHttpTransportSerializer(this)
@@ -489,6 +503,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                             if (content.refCnt() > 0) {
                                 if (leakDetectionDebuggingEnabled) {
                                     content.touch("RxGatewayStoreModel -exception creating StoreResponse - refCnt: " + content.refCnt());
+                                    logger.info("RxGatewayStoreModel -exception creating StoreResponse - refCnt: {}", content.refCnt());
                                 }
                                 // Unwrap failed before StoreResponse took ownership -> release our retain
                                 // there could be a race with the doOnDiscard above - so, use safeRelease

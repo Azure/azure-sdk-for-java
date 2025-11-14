@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.IllegalReferenceCountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,8 +76,10 @@ public class StoreResponse {
                 try {
                     contentStream.close();
                 } catch (Throwable e) {
-                    // Log as warning instead of debug to make ByteBuf leak issues more visible
-                    logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                    if (!(e instanceof IllegalReferenceCountException)) {
+                        // Log as warning instead of debug to make ByteBuf leak issues more visible
+                        logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                    }
                 }
             }
         } else {
