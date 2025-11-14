@@ -60,4 +60,28 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
     public static Collection<ItemType> values() {
         return values(ItemType.class);
     }
+
+    /**
+     * Static value mcp_list_tools for ItemType.
+     */
+    @Generated
+    public static final ItemType MCP_LIST_TOOLS = fromString("mcp_list_tools");
+
+    /**
+     * Static value mcp_call for ItemType.
+     */
+    @Generated
+    public static final ItemType MCP_CALL = fromString("mcp_call");
+
+    /**
+     * Static value mcp_approval_request for ItemType.
+     */
+    @Generated
+    public static final ItemType MCP_APPROVAL_REQUEST = fromString("mcp_approval_request");
+
+    /**
+     * Static value mcp_approval_response for ItemType.
+     */
+    @Generated
+    public static final ItemType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
 }
