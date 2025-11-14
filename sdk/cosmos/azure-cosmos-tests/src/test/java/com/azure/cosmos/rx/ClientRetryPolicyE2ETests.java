@@ -551,52 +551,49 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             .hitLimit(hitLimit)
             .build();
 
-        CosmosAsyncClient testClient = getClientBuilder()
+        try (CosmosAsyncClient testClient = getClientBuilder()
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
             .directMode()
             // required to force a quorum read irrespective of account consistency level
             .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
-            .buildAsyncClient();
+            .buildAsyncClient()) {
 
-        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+            CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
 
-        try {
+            try {
 
-            testContainer.createItem(createdItem).block();
+                testContainer.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
 
-            CosmosDiagnostics cosmosDiagnostics
-                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
-                .block();
+                CosmosDiagnostics cosmosDiagnostics
+                    = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
+                          .block();
 
-            if (shouldRetryCrossRegion) {
-                assertThat(cosmosDiagnostics).isNotNull();
-                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                if (shouldRetryCrossRegion) {
+                    assertThat(cosmosDiagnostics).isNotNull();
+                    assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
-                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                    CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
-                assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
-                assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
-            } else {
-                assertThat(cosmosDiagnostics).isNotNull();
-                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                    assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                    assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                } else {
+                    assertThat(cosmosDiagnostics).isNotNull();
+                    assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
-                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                    CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-                assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
-                assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
-            }
+                    assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                    assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                    assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                }
 
-        } finally {
-            leaseNotFoundFaultRule.disable();
-
-            if (testClient != null) {
+            } finally {
+                leaseNotFoundFaultRule.disable();
                 cleanUpContainer(testContainer);
-                testClient.close();
             }
         }
     }

@@ -305,6 +305,13 @@ public final class CosmosNettyLeakDetectorFactory
         @Override
         public void close() {
             synchronized (staticLock) {
+                CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+                try {
+                    Thread.sleep(10_000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
                 isLeakDetectionDisabled = false;
                 logger.info("Leak detection enabled again.");
             }
