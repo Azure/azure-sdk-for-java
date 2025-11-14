@@ -19,6 +19,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.CustomNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
@@ -32,7 +33,9 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
@@ -66,12 +69,18 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.ResourceLeakDetector;
+import io.netty.util.internal.PlatformDependent;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -80,6 +89,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.management.BufferPoolMXBean;
+import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -203,12 +214,27 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    @BeforeClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void beforeClassTestSuiteBase() {
+        logger.info("beforeClassTestSuiteBase {}", this.getClass().getCanonicalName());
+        logMemoryUsage("beforeClassTestSuiteBase");
+    }
+
+    @AfterClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void afterClassTestSuiteBase() {
+        logger.info("afterClassTestSuiteBase {}", this.getClass().getCanonicalName());
+        logMemoryUsage("afterClassTestSuiteBase");
+    }
+
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
+        logMemoryUsage("beforeSuite");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
@@ -234,6 +260,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public void afterSuite() {
 
         logger.info("afterSuite Started");
+        logMemoryUsage("afterSuite");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             safeDeleteDatabase(SHARED_DATABASE);
@@ -282,7 +309,37 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                     partitionKey = new PartitionKey(null);
                 }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                final PartitionKey pkSnapshot = partitionKey;
+
+                CosmosItemRequestOptions deleteOptions = new CosmosItemRequestOptions();
+                deleteOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .build()
+                );
+
+                return cosmosContainer
+                    .deleteItem(doc.getId(), partitionKey, deleteOptions)
+                    .onErrorResume(t -> {
+                        if (!(t instanceof CosmosException)) {
+                            logger.error("Unexpected failure trying to delete document |{}|/{}", pkSnapshot, doc.getId(), t);
+                            return Mono.error(t);
+                        }
+
+                        CosmosException cosmosError = (CosmosException)t;
+                        if (cosmosError.getStatusCode() == 404 && cosmosError.getSubStatusCode() == 0) {
+                            return Mono.empty();
+                        }
+
+                        if (cosmosError.getStatusCode() == 408
+                            && cosmosError.getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
+
+                            logger.warn("Timeout trying to delete document |{}|/{}", pkSnapshot, doc.getId(), cosmosError);
+                            return Mono.empty();
+                        }
+
+                        logger.error("Failed to delete document |{}|/{}", pkSnapshot, doc.getId(), cosmosError);
+                        return Mono.error(cosmosError);
+                    });
             }).then().block();
     }
 
@@ -946,6 +1003,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    static protected void safeClose(QueryFeedOperationState client) {
+        if (client != null) {
+            safeClose(client.getClient());
+        }
+    }
+
+
     static protected void safeCloseSyncClient(CosmosClient client) {
         if (client != null) {
             try {
@@ -1579,5 +1643,24 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             outputStream.write(b);
         }
         return outputStream.toByteArray();
+    }
+
+    protected void logMemoryUsage(String name) {
+        logger.info("ACTIVE COSMOS CLIENTS");
+        logger.info(RxDocumentClientImpl.getActiveClientCallstacks());
+        long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
+                                                               .directArenas().stream()
+                                                               .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)
+                                                               .sum();
+
+        long used = PlatformDependent.usedDirectMemory();
+        long max  = PlatformDependent.maxDirectMemory();
+        logger.info("MEMORY USAGE: {}:{}", this.getClass().getCanonicalName(), name);
+        logger.info("Netty Direct Memory: {}/{}/{} bytes", used, pooledDirectBytes, max);
+        for (BufferPoolMXBean pool : ManagementFactory.getPlatformMXBeans(BufferPoolMXBean.class)) {
+            logger.info("Pool {}: used={} bytes, capacity={} bytes, count={}",
+                pool.getName(), pool.getMemoryUsed(), pool.getTotalCapacity(), pool.getCount());
+        }
+
     }
 }

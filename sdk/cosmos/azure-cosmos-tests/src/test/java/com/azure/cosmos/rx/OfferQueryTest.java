@@ -62,29 +62,40 @@ public class OfferQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
-        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
-            query,
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client));
 
-        List<Offer> allOffers = client
-            .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client))
-            .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
-        List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
+        QueryFeedOperationState queryDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
+        QueryFeedOperationState offerDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client);
 
-        assertThat(expectedOffers).isNotEmpty();
+        try {
+            Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+                query,
+                queryDummyState);
 
-        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
-        int expectedPageSize = (expectedOffers.size() + maxItemCount - 1) / maxItemCount;
+            List<Offer> allOffers = client
+                .readOffers(offerDummyState)
+                .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
+            List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
 
-        FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
+            assertThat(expectedOffers).isNotEmpty();
+
+            Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+            int expectedPageSize = (expectedOffers.size() + maxItemCount - 1) / maxItemCount;
+
+            FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(expectedOffers.size())
                 .exactlyContainsInAnyOrder(expectedOffers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<Offer>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                    .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } finally {
+            safeClose(queryDummyState);
+            safeClose(offerDummyState);
+        }
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
@@ -97,32 +108,44 @@ public class OfferQueryTest extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
 
-        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
-            query,
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client));
+        QueryFeedOperationState queryDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
 
-        List<Offer> expectedOffers = client
-                .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client))
+        QueryFeedOperationState offerDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client);
+
+        try {
+
+            Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+                query,
+                queryDummyState);
+
+            List<Offer> expectedOffers = client
+                .readOffers(offerDummyState)
                 .flatMap(f -> Flux.fromIterable(f.getResults()))
                 .collectList()
                 .single().block()
                 .stream().filter(o -> collectionResourceIds.contains(o.getOfferResourceId()))
                 .collect(Collectors.toList());
 
-        assertThat(expectedOffers).hasSize(createdCollections.size());
+            assertThat(expectedOffers).hasSize(createdCollections.size());
 
-        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
-        int expectedPageSize = (expectedOffers.size() + maxItemCount- 1) / maxItemCount;
+            Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+            int expectedPageSize = (expectedOffers.size() + maxItemCount - 1) / maxItemCount;
 
-        FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
+            FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(expectedOffers.size())
                 .exactlyContainsInAnyOrder(expectedOffers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<Offer>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                    .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } finally {
+            safeClose(queryDummyState);
+            safeClose(offerDummyState);
+        }
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)

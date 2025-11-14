@@ -154,6 +154,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final static List<RegionalRoutingContext> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
+    private final static Object staticLock = new Object();
+    private final static Map<Integer, String> activeClients = new HashMap<>();
+
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -1376,33 +1379,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
-    }
-
-    private void addToActiveClients() {
-        if (Configs.isClientLeakDetectionEnabled()) {
-            synchronized (staticLock) {
-                activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
-            }
-        }
-    }
-
-    private void removeFromActiveClients() {
-        if (Configs.isClientLeakDetectionEnabled()) {
-            synchronized (staticLock) {
-                activeClients.remove(this.clientId);
-            }
-        }
-    }
-
-    /**
-     * Returns a snapshot of the active clients. The key is the clientId, the value is the callstack showing
-     * where the client was created.
-     * @return a snapshot of the active clients.
-     */
-    public static Map<Integer, String> getActiveClientsSnapshot() {
-        synchronized (staticLock) {
-            return new HashMap<>(activeClients);
-        }
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -6477,6 +6453,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
+        this.removeFromActiveClients();
         if (!closed.getAndSet(true)) {
             this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();

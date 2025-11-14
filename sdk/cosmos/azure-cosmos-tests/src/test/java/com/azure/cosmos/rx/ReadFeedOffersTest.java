@@ -99,19 +99,23 @@ public class ReadFeedOffersTest extends TestSuiteBase {
             createCollections(client);
         }
 
-        allOffers = client.readOffers(
-                              TestUtils.createDummyQueryFeedOperationState(
-                                  ResourceType.Offer,
-                                  OperationType.ReadFeed,
-                                  new CosmosQueryRequestOptions(),
-                                  client
-                              )
-                          )
-                          .map(FeedResponse::getResults)
-                          .collectList()
-                          .map(list -> list.stream().flatMap(Collection::stream).collect(Collectors.toList()))
-                          .single()
-                          .block();
+        QueryFeedOperationState offerDummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Offer,
+            OperationType.ReadFeed,
+            new CosmosQueryRequestOptions(),
+            client
+        );
+
+        try {
+            allOffers = client.readOffers(offerDummyState)
+                              .map(FeedResponse::getResults)
+                              .collectList()
+                              .map(list -> list.stream().flatMap(Collection::stream).collect(Collectors.toList()))
+                              .single()
+                              .block();
+        } finally {
+            safeClose(offerDummyState);
+        }
     }
 
     @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

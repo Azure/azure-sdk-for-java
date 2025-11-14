@@ -317,6 +317,15 @@ public class ReflectionUtils {
         set(storeReader, transportClient, "transportClient");
     }
 
+    public static void setTransportClient(CosmosClient client, TransportClient transportClient) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        set(storeClient, transportClient, "transportClient");
+        ReplicatedResourceClient replicatedResClient = getReplicatedResourceClient(storeClient);
+        ConsistencyWriter writer = getConsistencyWriter(replicatedResClient);
+        set(replicatedResClient, transportClient, "transportClient");
+        set(writer, transportClient, "transportClient");
+    }
+
     public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {
         return get(TransportClient.class, replicatedResourceClient, "transportClient");
     }

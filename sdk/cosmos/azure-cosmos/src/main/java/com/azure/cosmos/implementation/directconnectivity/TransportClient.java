@@ -43,7 +43,7 @@ public abstract class TransportClient implements AutoCloseable {
         return this.invokeStoreInternalAsync(physicalAddress, request);
     }
 
-    protected abstract Mono<StoreResponse> invokeStoreAsync(
+    public abstract Mono<StoreResponse> invokeStoreAsync(
         Uri physicalAddress,
         RxDocumentServiceRequest request);
 

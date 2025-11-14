@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
+import com.azure.cosmos.CustomNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -31,13 +31,18 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.ResourceLeakDetector;
+import io.netty.util.internal.PlatformDependent;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.testng.ITestContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -45,6 +50,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.lang.management.BufferPoolMXBean;
+import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +91,6 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static {
-        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
                 ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -126,7 +132,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 OperationType.Query,
                 new CosmosQueryRequestOptions(),
                 client);
-            return client.queryDatabases(query, state);
+            return client.queryDatabases(query, state).doOnComplete(() -> safeClose(state));
         }
 
         @Override
@@ -140,10 +146,25 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
+    @BeforeClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void beforeClassTestSuiteBase() {
+        logger.info("beforeClassTestSuiteBase {}", this.getClass().getCanonicalName());
+        logMemoryUsage("beforeClassTestSuiteBase");
+    }
+
+    @AfterClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void afterClassTestSuiteBase() {
+        logger.info("afterClassTestSuiteBase {}", this.getClass().getCanonicalName());
+        logMemoryUsage("afterClassTestSuiteBase");
+    }
+
     @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
         logger.info("beforeSuite Started");
+        logMemoryUsage("beforeSuite");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
             DatabaseForTest dbForTest = DatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
@@ -169,6 +190,7 @@ public class TestSuiteBase extends DocumentClientTest {
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
         logger.info("afterSuite Started");
+        logMemoryUsage("afterSuite");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
             safeDeleteDatabase(houseKeepingClient, SHARED_DATABASE);
@@ -181,10 +203,11 @@ public class TestSuiteBase extends DocumentClientTest {
     protected static void truncateCollection(DocumentCollection collection) {
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
+        CosmosAsyncClient cosmosClient = null;
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
-            CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            cosmosClient = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(TestConfigurations.HOST)
                 .buildAsyncClient();
@@ -308,6 +331,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
         } finally {
             houseKeepingClient.close();
+            cosmosClient.close();
         }
 
         logger.info("Finished truncating DocumentCollection {}.", collection.getId());
@@ -560,6 +584,7 @@ public class TestSuiteBase extends DocumentClientTest {
         if (!res.isEmpty()) {
             deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
+        safeClose(state);
     }
 
     public static void deleteCollection(AsyncDocumentClient client, String collectionLink) {
@@ -586,6 +611,7 @@ public class TestSuiteBase extends DocumentClientTest {
         if (!res.isEmpty()) {
             deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
+        safeClose(state);
     }
 
     public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk, String collectionLink) {
@@ -607,6 +633,7 @@ public class TestSuiteBase extends DocumentClientTest {
         if (!res.isEmpty()) {
             deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
         }
+        safeClose(state);
     }
 
     public static void deleteUser(AsyncDocumentClient client, String userLink) {
@@ -648,7 +675,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
                     return client.createDatabase(databaseDefinition, null).map(ResourceResponse::getResource);
                 })
-        ).single().block();
+        ).doOnComplete(() -> safeClose(state)) .single().block();
     }
 
     static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
@@ -683,6 +710,7 @@ public class TestSuiteBase extends DocumentClientTest {
             for (DocumentCollection collection : collections) {
                 client.deleteCollection(collection.getSelfLink(), null).block().getResource();
             }
+            safeClose(state);
         }
     }
 
@@ -724,6 +752,42 @@ public class TestSuiteBase extends DocumentClientTest {
                 e.printStackTrace();
             }
         }
+    }
+
+    static protected void safeClose(CosmosAsyncClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    static protected void safeClose(QueryFeedOperationState client) {
+        if (client != null) {
+            safeClose(client.getClient());
+        }
+    }
+
+    protected void logMemoryUsage(String name) {
+        logger.info("ACTIVE COSMOS CLIENTS");
+        logger.info(RxDocumentClientImpl.getActiveClientCallstacks());
+
+        long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
+                                                               .directArenas().stream()
+                                                               .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)
+                                                               .sum();
+
+        long used = PlatformDependent.usedDirectMemory();
+        long max  = PlatformDependent.maxDirectMemory();
+        logger.info("MEMORY USAGE: {}:{}", this.getClass().getCanonicalName(), name);
+        logger.info("Netty Direct Memory: {}/{}/{} bytes", used, pooledDirectBytes, max);
+        for (BufferPoolMXBean pool : ManagementFactory.getPlatformMXBeans(BufferPoolMXBean.class)) {
+            logger.info("Pool {}: used={} bytes, capacity={} bytes, count={}",
+                pool.getName(), pool.getMemoryUsed(), pool.getTotalCapacity(), pool.getCount());
+        }
+
     }
 
     public <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,

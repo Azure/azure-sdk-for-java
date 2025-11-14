@@ -219,7 +219,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
         RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetry);
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
+        this.poolHandler = new RntbdClientChannelHandler(
+            config,
+            healthChecker,
+            connectionStateListener,
+            serverErrorInjector,
+            endpoint.serverKeyUsedAsActualRemoteAddress());
+
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
         this.serverErrorInjector = serverErrorInjector;
