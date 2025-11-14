@@ -15,10 +15,6 @@
   - New `ToolType.MCP` for MCP-based tool definitions
   - New `ServerEventType` constants for MCP-related events
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
