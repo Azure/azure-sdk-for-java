@@ -51,7 +51,8 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             super.channelRead(ctx, msg);
         } else {
             // Pass the message to the next handler in the pipeline
-            ctx.fireChannelRead(msg);
+            // Use super.channelRead to ensure proper reference counting
+            super.channelRead(ctx, msg);
         }
     }
 }
