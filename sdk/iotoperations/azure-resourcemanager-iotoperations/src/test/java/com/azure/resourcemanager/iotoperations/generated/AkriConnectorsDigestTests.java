@@ -12,15 +12,15 @@ public final class AkriConnectorsDigestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorsDigest model
-            = BinaryData.fromString("{\"tagDigestType\":\"Digest\",\"digest\":\"urisjnhnytxifqj\"}")
+            = BinaryData.fromString("{\"tagDigestType\":\"Digest\",\"digest\":\"mhrixkwmyijejve\"}")
                 .toObject(AkriConnectorsDigest.class);
-        Assertions.assertEquals("urisjnhnytxifqj", model.digest());
+        Assertions.assertEquals("mhrixkwmyijejve", model.digest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AkriConnectorsDigest model = new AkriConnectorsDigest().withDigest("urisjnhnytxifqj");
+        AkriConnectorsDigest model = new AkriConnectorsDigest().withDigest("mhrixkwmyijejve");
         model = BinaryData.fromObject(model).toObject(AkriConnectorsDigest.class);
-        Assertions.assertEquals("urisjnhnytxifqj", model.digest());
+        Assertions.assertEquals("mhrixkwmyijejve", model.digest());
     }
 }

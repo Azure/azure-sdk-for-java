@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * onlineMeetingProviderType.
+ * Represents an online meeting provider type.
  */
 public final class MicrosoftGraphOnlineMeetingProviderType
     extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingProviderType> {

@@ -23,7 +23,7 @@ public final class AkriConnectorsListByTemplateMockTests {
     @Test
     public void testListByTemplate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"gegizvcjfel\",\"type\":\"CustomLocation\"},\"id\":\"jubggbqigkxkb\",\"name\":\"azgakg\",\"type\":\"cyrcmjdmspo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"allocatedDevices\":[{\"deviceInboundEndpointName\":\"gnl\",\"deviceName\":\"zonzlrpiqywnc\"}],\"healthState\":\"Unknown\"},\"extendedLocation\":{\"name\":\"z\",\"type\":\"CustomLocation\"},\"id\":\"izehtdhgbjk\",\"name\":\"reljeamur\",\"type\":\"zmlovuanash\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class AkriConnectorsListByTemplateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AkriConnectorResource> response = manager.akriConnectors()
-            .listByTemplate("pofvwb", "blembnkbwvqvxkd", "vqihebwtswbzuwf", com.azure.core.util.Context.NONE);
+            .listByTemplate("iosrsjuivfcdis", "irnxz", "czexrxzbujrtrhqv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gegizvcjfel", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("z", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

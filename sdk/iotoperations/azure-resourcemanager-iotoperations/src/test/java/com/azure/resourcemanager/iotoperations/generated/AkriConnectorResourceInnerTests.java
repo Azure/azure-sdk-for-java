@@ -15,9 +15,9 @@ public final class AkriConnectorResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"yuqdu\",\"type\":\"CustomLocation\"},\"id\":\"nnrwrbiork\",\"name\":\"alywjhhgdn\",\"type\":\"xmsivfomiloxggdu\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"allocatedDevices\":[{\"deviceInboundEndpointName\":\"jntpsewgioilqu\",\"deviceName\":\"rydxtqm\"}],\"healthState\":\"Available\"},\"extendedLocation\":{\"name\":\"orgguf\",\"type\":\"CustomLocation\"},\"id\":\"omtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}")
             .toObject(AkriConnectorResourceInner.class);
-        Assertions.assertEquals("yuqdu", model.extendedLocation().name());
+        Assertions.assertEquals("orgguf", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
@@ -26,9 +26,9 @@ public final class AkriConnectorResourceInnerTests {
         AkriConnectorResourceInner model
             = new AkriConnectorResourceInner().withProperties(new AkriConnectorProperties())
                 .withExtendedLocation(
-                    new ExtendedLocation().withName("yuqdu").withType(ExtendedLocationType.CUSTOM_LOCATION));
+                    new ExtendedLocation().withName("orgguf").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(AkriConnectorResourceInner.class);
-        Assertions.assertEquals("yuqdu", model.extendedLocation().name());
+        Assertions.assertEquals("orgguf", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 }
