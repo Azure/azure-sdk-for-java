@@ -271,8 +271,10 @@ stages:
 
             - template: /eng/common/pipelines/templates/steps/create-apireview.yml
               parameters:
+                PackageInfoFiles:
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - $(Pipeline.Workspace)/packages-signed/PackageInfo/${{artifact.name}}.json
                 ArtifactPath: $(Pipeline.Workspace)/packages-signed
-                Artifacts: ${{parameters.Artifacts}}
                 ConfigFileDir: $(Pipeline.Workspace)/packages-signed/PackageInfo
                 MarkPackageAsShipped: true
                 ArtifactName: packages-signed
