@@ -1540,6 +1540,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             );
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, testItem, false);
+            logger.info("faultInjection_serverError_barrierRequest cosmosDiagnostics: " + cosmosDiagnostics.toString());
             validateFaultInjectionRuleAppliedForBarrier(
                 cosmosDiagnostics,
                 operationType,
