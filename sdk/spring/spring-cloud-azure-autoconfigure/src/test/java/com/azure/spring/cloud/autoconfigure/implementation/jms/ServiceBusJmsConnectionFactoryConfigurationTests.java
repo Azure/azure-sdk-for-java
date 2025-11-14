@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import jakarta.jms.ConnectionFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -137,6 +138,36 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "standard", "premium" })
+    void cachingConnectionFactoryCachesProducersAndConsumersForSameDestination(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.pool.enabled=false",
+                "spring.jms.cache.producers=true",
+                "spring.jms.cache.consumers=true"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                
+                ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
+                assertThat(connectionFactory).isInstanceOf(CachingConnectionFactory.class);
+                
+                CachingConnectionFactory cachingFactory = (CachingConnectionFactory) connectionFactory;
+                
+                // Verify that producer and consumer caching is enabled
+                // When these properties are true, CachingConnectionFactory will cache and reuse
+                // MessageProducer and MessageConsumer instances for the same destination
+                assertThat(cachingFactory.isCacheProducers())
+                    .as("CachingConnectionFactory should cache MessageProducers for the same destination")
+                    .isTrue();
+                assertThat(cachingFactory.isCacheConsumers())
+                    .as("CachingConnectionFactory should cache MessageConsumers for the same destination")
+                    .isTrue();
             });
     }
 
