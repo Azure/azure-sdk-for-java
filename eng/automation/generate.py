@@ -340,7 +340,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         if succeeded:
             if is_mgmt_premium(module):
                 move_premium_samples(sdk_root, service, module)
-                update_azure_resourcemanager_pom(sdk_root, service, module)
+                update_azure_resourcemanager_pom(sdk_root, module, current_version)
             # For output breaking changes, useful in sdk validation pipeline
             logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
