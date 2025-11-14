@@ -9,7 +9,7 @@
     This script:
     1. Reads the pom.xml from the package path to extract groupId and artifactId
     2. Downloads the latest released JAR from Maven Central
-    3. Builds the current package to generate the new JAR
+    3. Locates the built JAR file from the target directory
     4. Runs the changelog automation tool to compare old vs new JAR
     5. Updates the CHANGELOG.md file with the generated changes
 
