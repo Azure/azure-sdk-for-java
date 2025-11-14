@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * thumbnailSet.
+ * Represents a thumbnail set.
  */
 @Fluent
 public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {

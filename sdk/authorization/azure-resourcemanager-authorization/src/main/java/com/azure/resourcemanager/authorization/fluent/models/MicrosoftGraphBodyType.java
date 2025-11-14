@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * bodyType.
+ * Represents a body type.
  */
 public final class MicrosoftGraphBodyType extends ExpandableStringEnum<MicrosoftGraphBodyType> {
     /**
