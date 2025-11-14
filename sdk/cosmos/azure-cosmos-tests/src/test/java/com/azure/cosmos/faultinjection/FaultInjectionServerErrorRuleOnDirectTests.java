@@ -1528,11 +1528,13 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
 
             // in order to trigger barrier request, we will need to also modify the store response of the original read/write operation so that GCLSN < LSN
+            logger.info("faultInjection_serverError_barrierRequest RegisterTransportClientInterceptor");
             CosmosInterceptorHelper.registerTransportClientInterceptor(
                 newClient,
                 (request, storeResponse) -> {
                     if (request.getResourceType() == ResourceType.Document && request.getOperationType() == operationType) {
                         // Decrement so that GCLSN < LSN to simulate the replication lag
+                        logger.info("faultInjection_serverError_barrierRequest reducing gclsn");
                         storeResponse.setGCLSN(storeResponse.getLSN() - 2L);
                     }
                     return storeResponse;
