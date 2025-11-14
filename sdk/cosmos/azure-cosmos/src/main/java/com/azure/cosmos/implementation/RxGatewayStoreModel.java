@@ -431,7 +431,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         }
 
                         if (bodyByteBuf != Unpooled.EMPTY_BUFFER) {
-                            bodyByteBuf.retain();                              // +1 for our downstream work
+                            // +1 for our downstream work since Reactor Netty (ByteBufFlux) auto-releases buffer
+                            bodyByteBuf.retain();
                         }
 
                         if (leakDetectionDebuggingEnabled) {
