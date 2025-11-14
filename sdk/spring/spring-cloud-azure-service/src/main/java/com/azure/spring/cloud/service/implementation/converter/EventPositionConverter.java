@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 /**
  * Converts a {@link EventProcessorClientProperties.StartPosition} to a {@link EventPosition}.
  */
+@SuppressWarnings("deprecation")
 public final class EventPositionConverter implements Converter<EventProcessorClientProperties.StartPosition, EventPosition> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPositionConverter.class);

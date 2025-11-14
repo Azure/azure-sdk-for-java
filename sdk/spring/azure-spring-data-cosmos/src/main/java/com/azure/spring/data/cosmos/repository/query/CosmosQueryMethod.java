@@ -18,6 +18,7 @@ import java.util.Optional;
 /**
  * Inherit QueryMethod class to generate a method that is designated to execute a finder query.
  */
+@SuppressWarnings("deprecation")
 public class CosmosQueryMethod extends QueryMethod {
 
     private CosmosEntityMetadata<?> metadata;

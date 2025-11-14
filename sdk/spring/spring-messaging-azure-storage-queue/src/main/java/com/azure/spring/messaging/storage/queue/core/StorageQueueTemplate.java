@@ -31,6 +31,7 @@ import java.util.Map;
  * You should checkpoint if message has been processed successfully, otherwise it will be visible again after certain
  * time specified by {@link #receiveAsync(String, Duration)} }.
  */
+@SuppressWarnings("deprecation")
 public class StorageQueueTemplate implements SendOperation {
     private static final Logger LOG = LoggerFactory.getLogger(StorageQueueTemplate.class);
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in storage queue '%s'";

@@ -43,6 +43,7 @@ import static com.azure.spring.messaging.AzureHeaders.PARTITION_KEY;
  * <p>
  * It delegates real operation to {@link SendOperation} which supports synchronous and asynchronous sending.
  */
+@SuppressWarnings("deprecation")
 public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageHandler.class);
     private static final long DEFAULT_SEND_TIMEOUT = 10000;

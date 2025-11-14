@@ -48,6 +48,7 @@ import java.util.function.Consumer;
  * advantage.
  * </p>
  */
+@SuppressWarnings("deprecation")
 public final class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusProcessorFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceProcessorFactory.class);

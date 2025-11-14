@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * description, enabled state, conditions for evaluation, variant allocation,
  * and variant references for feature flags that support multiple variations.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)@SuppressWarnings("deprecation")
 public class FeatureDefinition {
 
     /**

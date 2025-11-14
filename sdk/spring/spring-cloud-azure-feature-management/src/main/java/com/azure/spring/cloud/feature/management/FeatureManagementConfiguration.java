@@ -29,6 +29,8 @@ import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
  */
 @Configuration
 @EnableConfigurationProperties({ FeatureManagementConfigProperties.class, FeatureManagementProperties.class })
+@SuppressWarnings("deprecation")
+
 class FeatureManagementConfiguration implements ApplicationContextAware {
 
     private ApplicationContext appContext;
