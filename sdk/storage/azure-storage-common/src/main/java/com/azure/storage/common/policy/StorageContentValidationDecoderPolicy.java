@@ -85,12 +85,21 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
+            // Track the NEW bytes received from the network (before combining with pending)
+            int newBytesReceived = encodedBuffer.remaining();
+            state.totalEncodedBytesProcessed.addAndGet(newBytesReceived);
+
+            int pendingSize = (state.pendingBuffer != null) ? state.pendingBuffer.remaining() : 0;
+            LOGGER.atInfo()
+                .addKeyValue("newBytes", newBytesReceived)
+                .addKeyValue("pendingBytes", pendingSize)
+                .addKeyValue("totalProcessed", state.totalEncodedBytesProcessed.get())
+                .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
+                .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
+                .log("Received buffer in decodeStream");
+
             // Combine with pending data if any
             ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
-
-            // Track encoded bytes
-            int encodedBytesInBuffer = encodedBuffer.remaining();
-            state.totalEncodedBytesProcessed.addAndGet(encodedBytesInBuffer);
 
             try {
                 // Try to decode what we have - decoder handles partial data
@@ -98,13 +107,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 int availableSize = dataToProcess.remaining();
                 ByteBuffer duplicateForDecode = dataToProcess.duplicate();
                 int initialPosition = duplicateForDecode.position();
-                
+
                 // Decode - this advances duplicateForDecode's position
                 ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
-
-                // Track decoded bytes
-                int decodedBytes = decodedData.remaining();
-                state.totalBytesDecoded.addAndGet(decodedBytes);
 
                 // Calculate how much of the input buffer was consumed by checking the duplicate's position
                 int bytesConsumed = duplicateForDecode.position() - initialPosition;
@@ -120,6 +125,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     // All data was consumed
                     state.pendingBuffer = null;
                 }
+
+                // Track decoded bytes
+                int decodedBytes = decodedData.remaining();
+                state.totalBytesDecoded.addAndGet(decodedBytes);
 
                 // Return decoded data if any
                 if (decodedBytes > 0) {
@@ -297,15 +306,46 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
         /**
          * Gets the offset to use for retry requests.
-         * This is the total encoded bytes processed minus any bytes in the pending buffer,
-         * since pending bytes have already been counted but haven't been successfully processed yet.
+         * This uses the decoder's last complete segment boundary to ensure retries
+         * resume from a valid segment boundary, not mid-segment.
+         * 
+         * Also clears the pending buffer and resets decoder state to align with
+         * the segment boundary.
          *
-         * @return The offset for retry requests.
+         * @return The offset for retry requests (last complete segment boundary).
          */
         public long getRetryOffset() {
-            long processed = totalEncodedBytesProcessed.get();
-            int pending = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
-            return processed - pending;
+            // Use the decoder's last complete segment start as the retry offset
+            // This ensures we resume from a segment boundary, not mid-segment
+            long retryOffset = decoder.getLastCompleteSegmentStart();
+            long decoderOffsetBefore = decoder.getMessageOffset();
+            int pendingSize = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
+
+            LOGGER.atInfo()
+                .addKeyValue("retryOffset", retryOffset)
+                .addKeyValue("decoderOffsetBefore", decoderOffsetBefore)
+                .addKeyValue("pendingBytes", pendingSize)
+                .addKeyValue("totalProcessed", totalEncodedBytesProcessed.get())
+                .log("Computing retry offset");
+
+            // Reset decoder to the last complete segment boundary
+            // This ensures messageOffset and segment state match the retry offset
+            decoder.resetToLastCompleteSegment();
+
+            // Clear pending buffer since we're restarting from the segment boundary
+            // Any bytes in pending are from after this boundary and will be re-fetched
+            if (pendingBuffer != null && pendingBuffer.hasRemaining()) {
+                LOGGER.atInfo()
+                    .addKeyValue("pendingBytes", pendingBuffer.remaining())
+                    .addKeyValue("retryOffset", retryOffset)
+                    .log("Clearing pending bytes for retry from segment boundary");
+                pendingBuffer = null;
+            }
+
+            LOGGER.atInfo()
+                .addKeyValue("retryOffset", retryOffset)
+                .log("Retry offset calculated (last complete segment boundary)");
+            return retryOffset;
         }
 
         /**
