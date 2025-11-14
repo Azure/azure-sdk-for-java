@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookOperationError.
+ * Represents a workbook operation error.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookOperationError

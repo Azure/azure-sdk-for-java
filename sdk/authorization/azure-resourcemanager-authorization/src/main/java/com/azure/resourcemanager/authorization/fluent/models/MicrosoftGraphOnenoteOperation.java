@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * onenoteOperation.
+ * Represents an onenote operation.
  */
 @Fluent
 public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperation {

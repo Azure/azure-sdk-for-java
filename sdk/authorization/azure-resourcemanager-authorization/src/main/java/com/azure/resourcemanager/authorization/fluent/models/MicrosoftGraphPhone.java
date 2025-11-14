@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * phone.
+ * Represents a phone.
  */
 @Fluent
 public final class MicrosoftGraphPhone implements JsonSerializable<MicrosoftGraphPhone> {

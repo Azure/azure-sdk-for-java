@@ -18,8 +18,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * contract
- * 
+ * Represents a contract.
+ * <p>
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
