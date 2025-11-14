@@ -990,7 +990,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<Response<T>> getDocumentWithResponse(GetDocumentOptions<T> options) {
-        return getDocumentWithResponse(options, Context.NONE);
+        return withContext(context -> getDocumentWithResponse(options, context));
     }
 
     <T> Mono<Response<T>> getDocumentWithResponse(GetDocumentOptions<T> options, Context context) {

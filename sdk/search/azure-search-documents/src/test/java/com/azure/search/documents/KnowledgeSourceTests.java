@@ -18,6 +18,8 @@ import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermiss
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceStatus;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
+import com.azure.search.documents.indexes.models.RemoteSharePointKnowledgeSource;
+import com.azure.search.documents.indexes.models.RemoteSharePointKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
@@ -137,27 +139,29 @@ public class KnowledgeSourceTests extends SearchTestBase {
     public void createKnowledgeSourceRemoteSharePointSync() {
         // Test creating a knowledge source.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            new RemoteSharePointKnowledgeSourceParameters());
+        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
+            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
 
         KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
 
         assertEquals(knowledgeSource.getName(), created.getName());
 
-        RemoteSharePointKnowledgeSource createdSource = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+        RemoteSharePointKnowledgeSource createdSource
+            = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
     }
 
     @Test
     public void createKnowledgeSourceRemoteSharePointAsync() {
         // Test creating a knowledge source.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            new RemoteSharePointKnowledgeSourceParameters());
+        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
+            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
 
         StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
             assertEquals(knowledgeSource.getName(), created.getName());
 
-            RemoteSharePointKnowledgeSource createdSource = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+            RemoteSharePointKnowledgeSource createdSource
+                = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
         }).verifyComplete();
     }
 
@@ -165,33 +169,35 @@ public class KnowledgeSourceTests extends SearchTestBase {
     public void createKnowledgeSourceRemoteSharePointCustomParametersSync() {
         // Test creating a knowledge source.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        RemoteSharePointKnowledgeSourceParameters params = new RemoteSharePointKnowledgeSourceParameters()
-            .setFilterExpression("FileExtension:\"docx\"")
-            .setResourceMetadata(Arrays.asList("Author", "CreatedDate"));
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            params);
+        RemoteSharePointKnowledgeSourceParameters params
+            = new RemoteSharePointKnowledgeSourceParameters().setFilterExpression("FileExtension:\"docx\"")
+                .setResourceMetadata(Arrays.asList("Author", "CreatedDate"));
+        KnowledgeSource knowledgeSource
+            = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName()).setRemoteSharePointParameters(params);
 
         KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
 
         assertEquals(knowledgeSource.getName(), created.getName());
 
-        RemoteSharePointKnowledgeSource createdSource = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+        RemoteSharePointKnowledgeSource createdSource
+            = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
     }
 
     @Test
     public void createKnowledgeSourceRemoteSharePointCustomParametersAsync() {
         // Test creating a knowledge source.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        RemoteSharePointKnowledgeSourceParameters params = new RemoteSharePointKnowledgeSourceParameters()
-            .setFilterExpression("FileExtension:\"docx\"")
-            .setResourceMetadata(Arrays.asList("Author", "CreatedDate"));
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            params);
+        RemoteSharePointKnowledgeSourceParameters params
+            = new RemoteSharePointKnowledgeSourceParameters().setFilterExpression("FileExtension:\"docx\"")
+                .setResourceMetadata(Arrays.asList("Author", "CreatedDate"));
+        KnowledgeSource knowledgeSource
+            = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName()).setRemoteSharePointParameters(params);
 
         StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
             assertEquals(knowledgeSource.getName(), created.getName());
 
-            RemoteSharePointKnowledgeSource createdSource = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+            RemoteSharePointKnowledgeSource createdSource
+                = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
         }).verifyComplete();
     }
 
@@ -227,27 +233,28 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals(HOTEL_INDEX_NAME, retrievedSource.getSearchIndexParameters().getSearchIndexName());
         }).verifyComplete();
     }
-    
+
     @Test
     public void getKnowledgeSourceRemoteSharePointSync() {
         // Test getting a knowledge source.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            new RemoteSharePointKnowledgeSourceParameters());
+        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
+            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
         searchIndexClient.createKnowledgeSource(knowledgeSource);
 
         KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
         assertEquals(knowledgeSource.getName(), retrieved.getName());
 
-        RemoteSharePointKnowledgeSource retrievedSource = assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
+        RemoteSharePointKnowledgeSource retrievedSource
+            = assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
     }
 
     @Test
-    public void getKnowledgeSourceSearchIndexAsync() {
+    public void getKnowledgeSourceRemoteSharePointAsync() {
         // Test getting a knowledge source.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            new RemoteSharePointKnowledgeSourceParameters());
+        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
+            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
 
         Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
             .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
@@ -255,7 +262,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
         StepVerifier.create(createAndGetMono).assertNext(retrieved -> {
             assertEquals(knowledgeSource.getName(), retrieved.getName());
 
-            RemoteSharePointKnowledgeSource retrievedSource = assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
+            RemoteSharePointKnowledgeSource retrievedSource
+                = assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
         }).verifyComplete();
     }
 
@@ -373,12 +381,13 @@ public class KnowledgeSourceTests extends SearchTestBase {
             .assertNext(retrieved -> assertEquals(newDescription, retrieved.getDescription()))
             .verifyComplete();
     }
-    
+
+    @Test
     public void updateKnowledgeSourceRemoteSharePointSync() {
         // Test updating a knowledge source.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            new RemoteSharePointKnowledgeSourceParameters());
+        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
+            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
         searchIndexClient.createKnowledgeSource(knowledgeSource);
         String newDescription = "Updated description";
         knowledgeSource.setDescription(newDescription);
@@ -391,8 +400,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
     public void updateKnowledgeSourceRemoteSharePointAsync() {
         // Test updating a knowledge source.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName(),
-            new RemoteSharePointKnowledgeSourceParameters());
+        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
+            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
         String newDescription = "Updated description";
 
         Mono<KnowledgeSource> createUpdateAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)

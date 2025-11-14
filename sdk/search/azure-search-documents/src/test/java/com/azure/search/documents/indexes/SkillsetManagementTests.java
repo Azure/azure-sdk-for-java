@@ -92,6 +92,9 @@ public class SkillsetManagementTests extends SearchTestBase {
         // Disable `("$..source")` sanitizer
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3423");
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..cognitiveServices.key", 
+                                                TestProxyUtils.HOST_NAME_REGEX, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            
         }
         client = getSearchIndexerClientBuilder(true)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
