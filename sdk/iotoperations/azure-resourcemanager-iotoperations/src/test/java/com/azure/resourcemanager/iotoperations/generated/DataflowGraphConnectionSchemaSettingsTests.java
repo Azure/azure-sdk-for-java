@@ -13,19 +13,19 @@ public final class DataflowGraphConnectionSchemaSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphConnectionSchemaSettings model
-            = BinaryData.fromString("{\"serializationFormat\":\"Json\",\"schemaRef\":\"fkifr\"}")
+            = BinaryData.fromString("{\"serializationFormat\":\"Avro\",\"schemaRef\":\"zclewyhmlw\"}")
                 .toObject(DataflowGraphConnectionSchemaSettings.class);
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("fkifr", model.schemaRef());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO, model.serializationFormat());
+        Assertions.assertEquals("zclewyhmlw", model.schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowGraphConnectionSchemaSettings model = new DataflowGraphConnectionSchemaSettings()
-            .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.JSON)
-            .withSchemaRef("fkifr");
+            .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.AVRO)
+            .withSchemaRef("zclewyhmlw");
         model = BinaryData.fromObject(model).toObject(DataflowGraphConnectionSchemaSettings.class);
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("fkifr", model.schemaRef());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO, model.serializationFormat());
+        Assertions.assertEquals("zclewyhmlw", model.schemaRef());
     }
 }
