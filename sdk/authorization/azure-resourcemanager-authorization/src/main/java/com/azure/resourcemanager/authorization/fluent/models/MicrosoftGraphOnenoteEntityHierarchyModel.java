@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * onenoteEntityHierarchyModel.
+ * Represents an onenote entity hierarchy model.
  */
 @Fluent
 public class MicrosoftGraphOnenoteEntityHierarchyModel extends MicrosoftGraphOnenoteEntitySchemaObjectModel {

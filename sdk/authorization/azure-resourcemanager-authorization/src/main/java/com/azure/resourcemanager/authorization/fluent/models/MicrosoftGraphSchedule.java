@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * schedule.
+ * Represents a schedule.
  */
 @Fluent
 public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {

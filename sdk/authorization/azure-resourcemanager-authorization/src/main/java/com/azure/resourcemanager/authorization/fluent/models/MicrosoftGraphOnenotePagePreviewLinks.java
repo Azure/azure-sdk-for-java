@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * onenotePagePreviewLinks.
+ * Represents an onenote page preview links.
  */
 @Fluent
 public final class MicrosoftGraphOnenotePagePreviewLinks
