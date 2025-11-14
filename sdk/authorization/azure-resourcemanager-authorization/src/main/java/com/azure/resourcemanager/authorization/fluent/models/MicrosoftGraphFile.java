@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * file.
+ * Represents a file.
  */
 @Fluent
 public final class MicrosoftGraphFile implements JsonSerializable<MicrosoftGraphFile> {

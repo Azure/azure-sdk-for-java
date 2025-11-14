@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookFilterCriteria.
+ * Represents a workbook filter criteria.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookFilterCriteria
