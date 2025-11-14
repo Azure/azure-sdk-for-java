@@ -273,8 +273,9 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     if (headFailureCount <= 1) {
                         fail("Should have succeeded for create with head failures less than or equal to 2");
                     } else {
-                        // Should get 408 timeout
+                        // Should get 408-1022 timeout
                         assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                        assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
 
                         CosmosDiagnostics diagnostics = e.getDiagnostics();
 
