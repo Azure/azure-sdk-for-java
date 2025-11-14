@@ -75,12 +75,21 @@ public class StructuredMessageDecoder {
      */
     public void resetToLastCompleteSegment() {
         if (messageOffset != lastCompleteSegmentStart) {
-            LOGGER.verbose("Resetting decoder from offset {} to last complete segment boundary {}", messageOffset,
-                lastCompleteSegmentStart);
+            LOGGER.atInfo()
+                .addKeyValue("fromOffset", messageOffset)
+                .addKeyValue("toOffset", lastCompleteSegmentStart)
+                .addKeyValue("currentSegmentNum", currentSegmentNumber)
+                .addKeyValue("currentSegmentContentOffset", currentSegmentContentOffset)
+                .addKeyValue("currentSegmentContentLength", currentSegmentContentLength)
+                .log("Resetting decoder to last complete segment boundary");
             messageOffset = lastCompleteSegmentStart;
             // Reset current segment state - next decode will read the segment header
             currentSegmentContentOffset = 0;
             currentSegmentContentLength = 0;
+        } else {
+            LOGGER.atVerbose()
+                .addKeyValue("offset", messageOffset)
+                .log("Decoder already at last complete segment boundary, no reset needed");
         }
     }
 
@@ -119,6 +128,65 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Converts a ByteBuffer range to hex string for diagnostic purposes.
+     */
+    private static String toHex(ByteBuffer buf, int len) {
+        int pos = buf.position();
+        int peek = Math.min(len, buf.remaining());
+        byte[] out = new byte[peek];
+        buf.get(out, 0, peek);
+        buf.position(pos);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < out.length; i++) {
+            sb.append(String.format("%02X", out[i]));
+            if (i < out.length - 1)
+                sb.append(' ');
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Reads and validates segment length with diagnostic logging.
+     */
+    private long readAndValidateSegmentLength(ByteBuffer buffer, long remaining) {
+        final int SEGMENT_SIZE_BYTES = 8; // segment size is 8 bytes (long)
+        if (buffer.remaining() < SEGMENT_SIZE_BYTES) {
+            LOGGER.error("Not enough bytes to read segment size. pos={}, remaining={}", buffer.position(),
+                buffer.remaining());
+            throw new IllegalStateException("Not enough bytes to read segment size");
+        }
+
+        // Diagnostic: dump first 16 bytes at this position so we can see what's being read
+        LOGGER.atInfo()
+            .addKeyValue("decoderOffset", messageOffset)
+            .addKeyValue("bufferPos", buffer.position())
+            .addKeyValue("bufferRemaining", buffer.remaining())
+            .addKeyValue("peek16", toHex(buffer, 16))
+            .addKeyValue("lastCompleteSegment", lastCompleteSegmentStart)
+            .log("Decoder about to read segment length");
+
+        long segmentLength = buffer.getLong();
+
+        if (segmentLength < 0 || segmentLength > remaining) {
+            // Peek next bytes for extra detail
+            String peekNext = toHex(buffer, 16);
+            LOGGER.error(
+                "Invalid segment length read: segmentLength={}, remaining={}, decoderOffset={}, "
+                    + "lastCompleteSegment={}, bufferPos={}, peek-next-bytes={}",
+                segmentLength, remaining, messageOffset, lastCompleteSegmentStart, buffer.position(), peekNext);
+            throw new IllegalArgumentException("Invalid segment size detected: " + segmentLength + " (remaining="
+                + remaining + ", decoderOffset=" + messageOffset + ")");
+        }
+
+        LOGGER.atVerbose()
+            .addKeyValue("segmentLength", segmentLength)
+            .addKeyValue("decoderOffset", messageOffset)
+            .log("Valid segment length read");
+
+        return segmentLength;
+    }
+
+    /**
      * Reads the segment header from the given buffer.
      *
      * @param buffer The buffer containing the segment header.
@@ -134,14 +202,8 @@ public class StructuredMessageDecoder {
 
         int segmentNum = Short.toUnsignedInt(buffer.getShort());
 
-        // Read segment size as long (8 bytes)
-        long segmentSize = buffer.getLong();
-
-        // Validate segment size
-        if (segmentSize < 0L || segmentSize > buffer.remaining()) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Invalid segment size detected: " + segmentSize));
-        }
+        // Read segment size with validation and diagnostics
+        long segmentSize = readAndValidateSegmentLength(buffer, buffer.remaining());
 
         if (segmentNum != currentSegmentNumber + 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected segment number."));
@@ -230,7 +292,11 @@ public class StructuredMessageDecoder {
         // Mark that this segment is complete - update the last complete segment boundary
         // This is the position where we can safely resume if a retry occurs
         lastCompleteSegmentStart = messageOffset;
-        LOGGER.verbose("Segment {} complete at byte offset {}", currentSegmentNumber, lastCompleteSegmentStart);
+        LOGGER.atInfo()
+            .addKeyValue("segmentNum", currentSegmentNumber)
+            .addKeyValue("offset", lastCompleteSegmentStart)
+            .addKeyValue("segmentLength", currentSegmentContentLength)
+            .log("Segment complete at byte offset");
 
         if (currentSegmentNumber == numSegments) {
             readMessageFooter(buffer);

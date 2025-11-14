@@ -89,6 +89,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             int newBytesReceived = encodedBuffer.remaining();
             state.totalEncodedBytesProcessed.addAndGet(newBytesReceived);
 
+            int pendingSize = (state.pendingBuffer != null) ? state.pendingBuffer.remaining() : 0;
+            LOGGER.atInfo()
+                .addKeyValue("newBytes", newBytesReceived)
+                .addKeyValue("pendingBytes", pendingSize)
+                .addKeyValue("totalProcessed", state.totalEncodedBytesProcessed.get())
+                .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
+                .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
+                .log("Received buffer in decodeStream");
+
             // Combine with pending data if any
             ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
 
@@ -309,6 +318,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             // Use the decoder's last complete segment start as the retry offset
             // This ensures we resume from a segment boundary, not mid-segment
             long retryOffset = decoder.getLastCompleteSegmentStart();
+            long decoderOffsetBefore = decoder.getMessageOffset();
+            int pendingSize = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
+
+            LOGGER.atInfo()
+                .addKeyValue("retryOffset", retryOffset)
+                .addKeyValue("decoderOffsetBefore", decoderOffsetBefore)
+                .addKeyValue("pendingBytes", pendingSize)
+                .addKeyValue("totalProcessed", totalEncodedBytesProcessed.get())
+                .log("Computing retry offset");
 
             // Reset decoder to the last complete segment boundary
             // This ensures messageOffset and segment state match the retry offset
@@ -317,12 +335,16 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             // Clear pending buffer since we're restarting from the segment boundary
             // Any bytes in pending are from after this boundary and will be re-fetched
             if (pendingBuffer != null && pendingBuffer.hasRemaining()) {
-                LOGGER.verbose("Clearing {} pending bytes for retry from segment boundary {}",
-                    pendingBuffer.remaining(), retryOffset);
+                LOGGER.atInfo()
+                    .addKeyValue("pendingBytes", pendingBuffer.remaining())
+                    .addKeyValue("retryOffset", retryOffset)
+                    .log("Clearing pending bytes for retry from segment boundary");
                 pendingBuffer = null;
             }
 
-            LOGGER.verbose("Retry offset calculated: {} (last complete segment boundary)", retryOffset);
+            LOGGER.atInfo()
+                .addKeyValue("retryOffset", retryOffset)
+                .log("Retry offset calculated (last complete segment boundary)");
             return retryOffset;
         }
 
