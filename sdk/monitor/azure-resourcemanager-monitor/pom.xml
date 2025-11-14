@@ -90,7 +90,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.53.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;dependency} -->
+      <version>2.54.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
