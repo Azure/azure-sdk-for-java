@@ -176,6 +176,16 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
                     return SessionUpdateResponseFunctionCallArgumentsDelta.fromJson(readerToUse.reset());
                 } else if ("response.function_call_arguments.done".equals(discriminatorValue)) {
                     return SessionUpdateResponseFunctionCallArgumentsDone.fromJson(readerToUse.reset());
+                } else if ("mcp_list_tools.in_progress".equals(discriminatorValue)) {
+                    return ServerEventMcpListToolsInProgress.fromJson(readerToUse.reset());
+                } else if ("mcp_list_tools.completed".equals(discriminatorValue)) {
+                    return ServerEventMcpListToolsCompleted.fromJson(readerToUse.reset());
+                } else if ("mcp_list_tools.failed".equals(discriminatorValue)) {
+                    return ServerEventMcpListToolsFailed.fromJson(readerToUse.reset());
+                } else if ("response.mcp_call_arguments.delta".equals(discriminatorValue)) {
+                    return ServerEventResponseMcpCallArgumentsDelta.fromJson(readerToUse.reset());
+                } else if ("response.mcp_call_arguments.done".equals(discriminatorValue)) {
+                    return ServerEventResponseMcpCallArgumentsDone.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
