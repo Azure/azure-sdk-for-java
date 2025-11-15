@@ -221,7 +221,7 @@ enabling multi-index grounding for agentic retrieval.
 - `QueryCaption` now supports a `maxCharLength` option to limit the character length of the caption.
 - `VectorizableTextQuery` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
 - `SemanticSearchOptions` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
-- `VectorSearchCompression` now supports configuring the `rescoringOptoins`.
+- `VectorSearchCompression` now supports configuring the `rescoringOptions`.
 - `IndexingParametersConfiguration` now supports two additional options for `MarkdownParsingSubmode` and `MarkdownHeaderDepth`.
 - Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
 - Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.
