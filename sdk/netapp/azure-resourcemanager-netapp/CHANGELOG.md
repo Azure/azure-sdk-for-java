@@ -1,14 +1,269 @@
 # Release History
 
-## 1.10.0-beta.2 (Unreleased)
+## 1.10.0 (2025-11-14)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SnapshotPoliciesList` was removed
 
-### Other Changes
+#### `models.VolumeQuotaRulesList` was removed
+
+#### `models.BackupPoliciesList` was removed
+
+#### `models.SnapshotsList` was removed
+
+#### `models.VolumeGroupList` was removed
+
+#### `models.RelationshipStatus` was removed
+
+#### `models.UsagesListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.BackupsList` was removed
+
+#### `models.BackupVaultsList` was removed
+
+#### `models.SubscriptionQuotaItemList` was removed
+
+#### `models.RegionInfosList` was removed
+
+#### `models.VolumeList` was removed
+
+#### `models.CapacityPoolList` was removed
+
+#### `models.SubvolumesList` was removed
+
+#### `models.ListReplications` was removed
+
+#### `models.NetAppAccountList` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withInternalMetricName(java.lang.String)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
+* `withSourceMdmAccount(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
+* `withSupportedAggregationTypes(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.BackupStatus` was modified
+
+* `models.RelationshipStatus relationshipStatus()` -> `models.VolumeBackupRelationshipStatus relationshipStatus()`
+
+#### `models.ReplicationStatus` was modified
+
+* `models.RelationshipStatus relationshipStatus()` -> `models.VolumeReplicationRelationshipStatus relationshipStatus()`
+
+#### `models.Volume` was modified
+
+* `listReplications(com.azure.core.util.Context)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.VolumePatch` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was removed
+
+#### `models.CapacityPool` was modified
+
+* `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
+
+#### `models.ProvisioningState` was modified
+
+* `models.ProvisioningState[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
+#### `models.NicInfo` was modified
+
+* `NicInfo()` was changed to private access
+* `withVolumeResourceIds(java.util.List)` was removed
+
+#### `models.VolumeBackups` was modified
+
+* `VolumeBackups()` was changed to private access
+* `withVolumeName(java.lang.String)` was removed
+* `withBackupsCount(java.lang.Integer)` was removed
+* `withPolicyEnabled(java.lang.Boolean)` was removed
+* `withVolumeResourceId(java.lang.String)` was removed
+
+#### `models.DestinationReplication` was modified
+
+* `DestinationReplication()` was changed to private access
+* `withResourceId(java.lang.String)` was removed
+* `withReplicationType(models.ReplicationType)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withZone(java.lang.String)` was removed
+
+#### `models.RestoreStatus` was modified
+
+* `models.RelationshipStatus relationshipStatus()` -> `models.VolumeRestoreRelationshipStatus relationshipStatus()`
+
+#### `models.BackupPolicyPatch` was modified
+
+* `withTags(java.util.Map)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.Volumes` was modified
+
+* `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.RegionInfoAvailabilityZoneMappingsItem` was modified
+
+* `RegionInfoAvailabilityZoneMappingsItem()` was changed to private access
+* `withIsAvailable(java.lang.Boolean)` was removed
+* `withAvailabilityZone(java.lang.String)` was removed
+
+#### `models.CapacityPoolPatch` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was removed
+* `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
+* `withTags(java.util.Map)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.Dimension` was modified
+
+* `Dimension()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.Snapshots` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Object)` was removed
+
+### Features Added
+
+* `models.NetAppResourceQuotaLimitsAccounts` was added
+
+* `models.MountTargetProperties` was added
+
+* `models.ReplicationMirrorState` was added
+
+* `models.ListReplicationsRequest` was added
+
+* `models.VolumeReplicationRelationshipStatus` was added
+
+* `models.Exclude` was added
+
+* `models.VolumeBackupRelationshipStatus` was added
+
+* `models.VolumeRestoreRelationshipStatus` was added
+
+#### `models.SnapshotPolicyVolumeList` was modified
+
+* `nextLink()` was added
+
+#### `models.Volume` was modified
+
+* `listReplications(models.ListReplicationsRequest,com.azure.core.util.Context)` was added
+
+#### `models.VolumePatch` was modified
+
+* `tags()` was added
+* `location()` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Integer)` was added
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCustomThroughputMibps(java.lang.Integer)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `netAppResourceQuotaLimitsAccounts()` was added
+
+#### `models.VolumeGroupDetails` was modified
+
+* `systemData()` was added
+
+#### `models.ProvisioningState` was modified
+
+* `ProvisioningState()` was added
+
+#### `models.BackupPolicyPatch` was modified
+
+* `location()` was added
+* `tags()` was added
+
+#### `models.Volumes` was modified
+
+* `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListReplicationsRequest,com.azure.core.util.Context)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `tags()` was added
+* `location()` was added
+
+#### `models.CapacityPoolPatch` was modified
+
+* `withCustomThroughputMibps(java.lang.Integer)` was added
+* `location()` was added
+* `tags()` was added
+
+#### `models.Replication` was modified
+
+* `mirrorState()` was added
+* `replicationCreationTime()` was added
+* `replicationDeletionTime()` was added
+
+#### `models.SubscriptionQuotaItem` was modified
+
+* `usage()` was added
 
 ## 1.10.0-beta.1 (2025-10-15)
 
