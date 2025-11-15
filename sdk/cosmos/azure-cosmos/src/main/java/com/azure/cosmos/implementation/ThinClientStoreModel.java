@@ -27,6 +27,8 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -56,7 +58,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            ApiType.SQL);
+            ApiType.SQL,
+            null);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()

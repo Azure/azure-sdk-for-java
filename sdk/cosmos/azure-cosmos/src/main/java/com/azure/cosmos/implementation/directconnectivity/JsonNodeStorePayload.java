@@ -24,7 +24,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final Logger logger = LoggerFactory.getLogger(JsonNodeStorePayload.class);
     private static final CharsetDecoder fallbackCharsetDecoder = getFallbackCharsetDecoder();
     private final int responsePayloadSize;
-    private final JsonNode jsonValue;
+    private JsonNode jsonValue;
 
     public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
         if (readableBytes > 0) {
@@ -105,6 +105,10 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     @Override
     public JsonNode getPayload() {
         return jsonValue;
+    }
+
+    public void setPayload(JsonNode payload) {
+        jsonValue = payload;
     }
 
     private static CharsetDecoder getFallbackCharsetDecoder() {

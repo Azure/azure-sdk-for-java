@@ -71,6 +71,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -110,6 +112,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    public Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -355,6 +358,17 @@ public class GatewayAddressCache implements IAddressCache {
         if (logger.isDebugEnabled()) {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
+        }
+
+        logger.info("inside getServerAddressesViaGatewayInternalAsync");
+        logger.info("httpRequestInterceptor is " + (this.httpRequestInterceptor != null ? "not null" : "null"));
+        if (this.httpRequestInterceptor != null) {
+            logger.info("getServerAddressesViaGatewayInternalAsync intercepted");
+            logger.info("request operationType: " + request.getOperationType() + ", resourceType: " + request.getResourceType());
+            RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request);
+            if (result != null) {
+                return Mono.just(result.getQueryResponse(null, Address.class));
+            }
         }
 
         // track address refresh has happened, this is only meant to be used for fault injection validation

@@ -449,6 +449,7 @@ public class HttpConstants {
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
         // Sub-status code paired with 408 status code
         public static final int TRANSIT_TIMEOUT = 20911;
+        public static final int WRITE_REGION_BARRIER_CHANGED_MID_OPERATION = 20912;
 
         // IMPORTANT - below sub status codes have no corresponding .Net
         // version, because they are only applicable in Java

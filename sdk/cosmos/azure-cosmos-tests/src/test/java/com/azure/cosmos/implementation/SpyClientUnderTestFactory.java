@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.doAnswer;
@@ -110,7 +112,7 @@ public class SpyClientUnderTestFactory {
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
-            init(null, null);
+            init(null, null, null, null);
             updateOrigRxGatewayStoreModel();
         }
 
@@ -126,7 +128,8 @@ public class SpyClientUnderTestFactory {
                                                  UserAgentContainer userAgentContainer,
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
-                                                 ApiType apiType) {
+                                                 ApiType apiType,
+                                                 Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,
@@ -134,7 +137,8 @@ public class SpyClientUnderTestFactory {
                 userAgentContainer,
                 globalEndpointManager,
                 rxClient,
-                apiType);
+                apiType,
+                null);
             this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();
@@ -201,7 +205,7 @@ public class SpyClientUnderTestFactory {
                     credential,
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
-            init(null, this::initHttpRequestCapture);
+            init(null, this::initHttpRequestCapture, null, null);
         }
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
@@ -287,7 +291,7 @@ public class SpyClientUnderTestFactory {
                     contentResponseOnWriteEnabled,
                     clientTelemetryConfig);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
-            init(null, null);
+            init(null, null, null, null);
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
             this.spyHttpClient = spy(this.origHttpClient);
