@@ -90,7 +90,6 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
      */
     @Override
     public void validate() {
-        super.validate();
         if (anyOf() != null) {
             anyOf().forEach(e -> e.validate());
         }

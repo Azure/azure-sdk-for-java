@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * contactFolder.
+ * Represents a contact folder.
  */
 @Fluent
 public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {

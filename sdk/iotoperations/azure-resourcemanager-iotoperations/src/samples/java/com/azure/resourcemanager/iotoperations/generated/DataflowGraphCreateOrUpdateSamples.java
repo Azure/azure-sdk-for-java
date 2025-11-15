@@ -10,8 +10,6 @@ import com.azure.resourcemanager.iotoperations.models.DataflowGraphConnectionSch
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphConnectionSchemaSettings;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNode;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNodeSettings;
-import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSerializationFormat;
-import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSettings;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphGraphNode;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphGraphNodeConfiguration;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphNodeConnection;
@@ -29,7 +27,7 @@ import java.util.Arrays;
  */
 public final class DataflowGraphCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowGraph_CreateOrUpdate_MaximumSet.
@@ -44,29 +42,27 @@ public final class DataflowGraphCreateOrUpdateSamples {
             .withProperties(
                 new DataflowGraphProperties().withMode(OperationalMode.ENABLED)
                     .withRequestDiskPersistence(OperationalMode.ENABLED)
-                    .withNodes(Arrays.asList(new DataflowGraphSourceNode().withName("temperature")
-                        .withSourceSettings(new DataflowGraphSourceSettings().withEndpointRef("default")
-                            .withDataSources(Arrays.asList("telemetry/temperature"))),
-                        new DataflowGraphGraphNode().withName("my-graph")
-                            .withGraphSettings(
-                                new DataflowGraphNodeGraphSettings().withRegistryEndpointRef("my-registry-endpoint")
+                    .withNodes(
+                        Arrays.asList(new DataflowGraphSourceNode().withName("temperature")
+                            .withSourceSettings(new DataflowGraphSourceSettings().withEndpointRef("default")
+                                .withDataSources(Arrays.asList("telemetry/temperature"))),
+                            new DataflowGraphGraphNode().withName("my-graph")
+                                .withGraphSettings(new DataflowGraphNodeGraphSettings().withRegistryEndpointRef(
+                                    "my-registry-endpoint")
                                     .withArtifact("my-wasm-module:1.4.3")
                                     .withConfiguration(Arrays.asList(
                                         new DataflowGraphGraphNodeConfiguration().withKey("fakeTokenPlaceholder")
                                             .withValue("value1"),
                                         new DataflowGraphGraphNodeConfiguration().withKey("fakeTokenPlaceholder")
                                             .withValue("value2")))),
-                        new DataflowGraphDestinationNode().withName("alert")
-                            .withDestinationSettings(new DataflowGraphDestinationNodeSettings()
-                                .withEndpointRef("default")
-                                .withDataDestination("telemetry/temperature/alert")),
-                        new DataflowGraphDestinationNode().withName("fabric")
-                            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef(
-                                "fabric")
-                                .withDataDestination("my-table")
-                                .withOutputSchemaSettings(new DataflowGraphDestinationSchemaSettings()
-                                    .withSerializationFormat(DataflowGraphDestinationSchemaSerializationFormat.PARQUET)
-                                    .withSchemaRef("aio-sr://namespace/alert-parquet:1")))))
+                            new DataflowGraphDestinationNode().withName("alert")
+                                .withDestinationSettings(
+                                    new DataflowGraphDestinationNodeSettings().withEndpointRef("default")
+                                        .withDataDestination("telemetry/temperature/alert")),
+                            new DataflowGraphDestinationNode().withName("fabric")
+                                .withDestinationSettings(
+                                    new DataflowGraphDestinationNodeSettings().withEndpointRef("fabric")
+                                        .withDataDestination("my-table"))))
                     .withNodeConnections(
                         Arrays
                             .asList(

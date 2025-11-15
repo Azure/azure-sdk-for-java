@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RequestMatchPatternTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RequestMatchPattern model = BinaryData.fromString("{\"path\":\"hsgcbacphejkot\",\"method\":\"qgoulznd\"}")
+        RequestMatchPattern model = BinaryData.fromString("{\"path\":\"iawxklry\",\"method\":\"wckbasyypnd\"}")
             .toObject(RequestMatchPattern.class);
-        Assertions.assertEquals("hsgcbacphejkot", model.path());
-        Assertions.assertEquals("qgoulznd", model.method());
+        Assertions.assertEquals("iawxklry", model.path());
+        Assertions.assertEquals("wckbasyypnd", model.method());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestMatchPattern model = new RequestMatchPattern().withPath("hsgcbacphejkot").withMethod("qgoulznd");
+        RequestMatchPattern model = new RequestMatchPattern().withPath("iawxklry").withMethod("wckbasyypnd");
         model = BinaryData.fromObject(model).toObject(RequestMatchPattern.class);
-        Assertions.assertEquals("hsgcbacphejkot", model.path());
-        Assertions.assertEquals("qgoulznd", model.method());
+        Assertions.assertEquals("iawxklry", model.path());
+        Assertions.assertEquals("wckbasyypnd", model.method());
     }
 }

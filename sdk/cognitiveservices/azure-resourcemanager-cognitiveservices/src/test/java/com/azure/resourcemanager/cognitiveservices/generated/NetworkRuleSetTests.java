@@ -17,32 +17,31 @@ public final class NetworkRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkRuleSet model = BinaryData.fromString(
-            "{\"defaultAction\":\"Deny\",\"bypass\":\"None\",\"ipRules\":[{\"value\":\"uuvmkjozkrwfnd\"}],\"virtualNetworkRules\":[{\"id\":\"jpslwejd\",\"state\":\"wryoqpsoacc\",\"ignoreMissingVnetServiceEndpoint\":true},{\"id\":\"akl\",\"state\":\"ahbc\",\"ignoreMissingVnetServiceEndpoint\":true}]}")
+            "{\"defaultAction\":\"Deny\",\"bypass\":\"AzureServices\",\"ipRules\":[{\"value\":\"xj\"},{\"value\":\"prozvcputegjvwmf\"},{\"value\":\"atscmd\"},{\"value\":\"pjhulsuuvmkj\"}],\"virtualNetworkRules\":[{\"id\":\"rwfndiod\",\"state\":\"slwejdpvw\",\"ignoreMissingVnetServiceEndpoint\":false}]}")
             .toObject(NetworkRuleSet.class);
         Assertions.assertEquals(NetworkRuleAction.DENY, model.defaultAction());
-        Assertions.assertEquals(ByPassSelection.NONE, model.bypass());
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.ipRules().get(0).value());
-        Assertions.assertEquals("jpslwejd", model.virtualNetworkRules().get(0).id());
-        Assertions.assertEquals("wryoqpsoacc", model.virtualNetworkRules().get(0).state());
-        Assertions.assertTrue(model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
+        Assertions.assertEquals(ByPassSelection.AZURE_SERVICES, model.bypass());
+        Assertions.assertEquals("xj", model.ipRules().get(0).value());
+        Assertions.assertEquals("rwfndiod", model.virtualNetworkRules().get(0).id());
+        Assertions.assertEquals("slwejdpvw", model.virtualNetworkRules().get(0).state());
+        Assertions.assertFalse(model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkRuleSet model = new NetworkRuleSet().withDefaultAction(NetworkRuleAction.DENY)
-            .withBypass(ByPassSelection.NONE)
-            .withIpRules(Arrays.asList(new IpRule().withValue("uuvmkjozkrwfnd")))
-            .withVirtualNetworkRules(Arrays.asList(
-                new VirtualNetworkRule().withId("jpslwejd")
-                    .withState("wryoqpsoacc")
-                    .withIgnoreMissingVnetServiceEndpoint(true),
-                new VirtualNetworkRule().withId("akl").withState("ahbc").withIgnoreMissingVnetServiceEndpoint(true)));
+            .withBypass(ByPassSelection.AZURE_SERVICES)
+            .withIpRules(Arrays.asList(new IpRule().withValue("xj"), new IpRule().withValue("prozvcputegjvwmf"),
+                new IpRule().withValue("atscmd"), new IpRule().withValue("pjhulsuuvmkj")))
+            .withVirtualNetworkRules(Arrays.asList(new VirtualNetworkRule().withId("rwfndiod")
+                .withState("slwejdpvw")
+                .withIgnoreMissingVnetServiceEndpoint(false)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
         Assertions.assertEquals(NetworkRuleAction.DENY, model.defaultAction());
-        Assertions.assertEquals(ByPassSelection.NONE, model.bypass());
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.ipRules().get(0).value());
-        Assertions.assertEquals("jpslwejd", model.virtualNetworkRules().get(0).id());
-        Assertions.assertEquals("wryoqpsoacc", model.virtualNetworkRules().get(0).state());
-        Assertions.assertTrue(model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
+        Assertions.assertEquals(ByPassSelection.AZURE_SERVICES, model.bypass());
+        Assertions.assertEquals("xj", model.ipRules().get(0).value());
+        Assertions.assertEquals("rwfndiod", model.virtualNetworkRules().get(0).id());
+        Assertions.assertEquals("slwejdpvw", model.virtualNetworkRules().get(0).state());
+        Assertions.assertFalse(model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
     }
 }

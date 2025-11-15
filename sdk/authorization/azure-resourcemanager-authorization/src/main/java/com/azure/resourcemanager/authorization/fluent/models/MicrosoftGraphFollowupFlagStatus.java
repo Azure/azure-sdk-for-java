@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * followupFlagStatus.
+ * Represents a followup flag status.
  */
 public final class MicrosoftGraphFollowupFlagStatus extends ExpandableStringEnum<MicrosoftGraphFollowupFlagStatus> {
     /**

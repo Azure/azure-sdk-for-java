@@ -52,6 +52,7 @@
     <module>sdk/communication</module>
     <module>sdk/compute</module>
     <module>sdk/computefleet</module>
+    <module>sdk/computelimit</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
@@ -215,7 +216,6 @@
     <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
-    <module>sdk/remoterendering</module>
     <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>

@@ -61,7 +61,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowRuns")
     public interface WorkflowRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs")
@@ -137,10 +137,11 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, this.client.getApiVersion(), top, filter, accept, context))
+                resourceGroupName, name, workflowName, apiVersion, top, filter, accept, context))
             .<PagedResponse<WorkflowRunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -182,11 +183,12 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                this.client.getApiVersion(), top, filter, accept, context)
+                apiVersion, top, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -328,10 +330,11 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, runName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -372,10 +375,11 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, this.client.getApiVersion(), accept, context);
+            workflowName, runName, apiVersion, accept, context);
     }
 
     /**
@@ -468,10 +472,11 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, runName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -512,10 +517,11 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, this.client.getApiVersion(), accept, context);
+            workflowName, runName, apiVersion, accept, context);
     }
 
     /**
@@ -577,7 +583,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunInner>> listNextSinglePageAsync(String nextLink) {
@@ -603,7 +609,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunInner>> listNextSinglePageAsync(String nextLink, Context context) {

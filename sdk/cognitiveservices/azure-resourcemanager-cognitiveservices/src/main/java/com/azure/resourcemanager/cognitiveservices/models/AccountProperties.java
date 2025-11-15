@@ -111,6 +111,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private Boolean dynamicThrottlingEnabled;
 
     /*
+     * The flag to disable stored completions.
+     */
+    private Boolean storedCompletionsDisabled;
+
+    /*
      * The quotaLimit property.
      */
     private QuotaLimit quotaLimit;
@@ -463,6 +468,26 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the storedCompletionsDisabled property: The flag to disable stored completions.
+     * 
+     * @return the storedCompletionsDisabled value.
+     */
+    public Boolean storedCompletionsDisabled() {
+        return this.storedCompletionsDisabled;
+    }
+
+    /**
+     * Set the storedCompletionsDisabled property: The flag to disable stored completions.
+     * 
+     * @param storedCompletionsDisabled the storedCompletionsDisabled value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withStoredCompletionsDisabled(Boolean storedCompletionsDisabled) {
+        this.storedCompletionsDisabled = storedCompletionsDisabled;
+        return this;
+    }
+
+    /**
      * Get the quotaLimit property: The quotaLimit property.
      * 
      * @return the quotaLimit value.
@@ -792,6 +817,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeJsonField("apiProperties", this.apiProperties);
         jsonWriter.writeBooleanField("dynamicThrottlingEnabled", this.dynamicThrottlingEnabled);
+        jsonWriter.writeBooleanField("storedCompletionsDisabled", this.storedCompletionsDisabled);
         jsonWriter.writeBooleanField("restrictOutboundNetworkAccess", this.restrictOutboundNetworkAccess);
         jsonWriter.writeArrayField("allowedFqdnList", this.allowedFqdnList,
             (writer, element) -> writer.writeString(element));
@@ -865,6 +891,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.callRateLimit = CallRateLimit.fromJson(reader);
                 } else if ("dynamicThrottlingEnabled".equals(fieldName)) {
                     deserializedAccountProperties.dynamicThrottlingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storedCompletionsDisabled".equals(fieldName)) {
+                    deserializedAccountProperties.storedCompletionsDisabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("quotaLimit".equals(fieldName)) {
                     deserializedAccountProperties.quotaLimit = QuotaLimit.fromJson(reader);
                 } else if ("restrictOutboundNetworkAccess".equals(fieldName)) {

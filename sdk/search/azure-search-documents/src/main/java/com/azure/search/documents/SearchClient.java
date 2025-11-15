@@ -51,10 +51,8 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
 import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteRequest;
-import static com.azure.search.documents.SearchAsyncClient.createContinuationToken;
 import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
 import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
-import static com.azure.search.documents.SearchAsyncClient.getSearchResults;
 import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
 
 /**

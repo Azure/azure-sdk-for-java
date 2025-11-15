@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * hashes.
+ * Represents a hashes.
  */
 @Fluent
 public final class MicrosoftGraphHashes implements JsonSerializable<MicrosoftGraphHashes> {

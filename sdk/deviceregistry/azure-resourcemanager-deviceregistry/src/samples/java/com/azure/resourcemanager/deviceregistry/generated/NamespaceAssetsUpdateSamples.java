@@ -12,7 +12,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdatePrope
  */
 public final class NamespaceAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Update_NamespaceAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceAsset.json
      */
     /**
      * Sample code: Update_NamespaceAssets.

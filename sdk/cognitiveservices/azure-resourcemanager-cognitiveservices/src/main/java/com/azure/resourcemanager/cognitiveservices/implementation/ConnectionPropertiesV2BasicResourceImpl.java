@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2;
@@ -30,6 +31,10 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
 
     public ConnectionPropertiesV2 properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

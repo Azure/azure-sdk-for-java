@@ -1,6 +1,42 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
+
+### azure-resourcemanager-containerregistry
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-11-01`.
+
+### azure-resourcemanager-appservice
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-03-01`.
+
+### azure-resourcemanager-network
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-01-01`.
+
+#### Features Added
+
+- Added `STANDARD_V2` to `PublicIPSkuType`.
+
+#### Bugs Fixed
+
+- Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
+- Improved `VirtualNetworkGateway` to create Public IP Address with Standard SKU (unless the gateway is Basic SKU).
+- Improved `PublicIpAddress` to set the public IP allocation method to Static (unless the Public IP Address is Basic SKU).
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-09-01`.
+
+## 2.56.0 (2025-10-31)
 
 ### azure-resourcemanager-containerservice
 
@@ -17,6 +53,12 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2024-10-01`.
+
+### azure-resourcemanager-keyvault
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
 
 ### Other Changes
 
