@@ -34,6 +34,12 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     private final IndexerStatus status;
 
     /*
+     * Snapshot of the indexer’s cumulative runtime consumption for the service over the current UTC period.
+     */
+    @Generated
+    private IndexerRuntime runtime;
+
+    /*
      * The result of the most recent or an in-progress indexer execution.
      */
     @Generated
@@ -90,6 +96,17 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public IndexerStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * Get the runtime property: Snapshot of the indexer’s cumulative runtime consumption for the service over the
+     * current UTC period.
+     * 
+     * @return the runtime value.
+     */
+    @Generated
+    public IndexerRuntime getRuntime() {
+        return this.runtime;
     }
 
     /**
@@ -162,6 +179,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             boolean limitsFound = false;
             SearchIndexerLimits limits = null;
             String name = null;
+            IndexerRuntime runtime = null;
             IndexerExecutionResult lastResult = null;
             IndexerCurrentState currentState = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -179,6 +197,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     limitsFound = true;
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("runtime".equals(fieldName)) {
+                    runtime = IndexerRuntime.fromJson(reader);
                 } else if ("lastResult".equals(fieldName)) {
                     lastResult = IndexerExecutionResult.fromJson(reader);
                 } else if ("currentState".equals(fieldName)) {
@@ -191,6 +211,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                 SearchIndexerStatus deserializedSearchIndexerStatus
                     = new SearchIndexerStatus(status, executionHistory, limits);
                 deserializedSearchIndexerStatus.name = name;
+                deserializedSearchIndexerStatus.runtime = runtime;
                 deserializedSearchIndexerStatus.lastResult = lastResult;
                 deserializedSearchIndexerStatus.currentState = currentState;
 

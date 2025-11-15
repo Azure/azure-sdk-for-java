@@ -19,7 +19,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.agents.SearchKnowledgeAgentClientBuilder;
+import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -191,8 +191,8 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected SearchKnowledgeAgentClientBuilder getSearchKnowledgeAgentClientBuilder(boolean isSync) {
-        SearchKnowledgeAgentClientBuilder builder = new SearchKnowledgeAgentClientBuilder().endpoint(SEARCH_ENDPOINT)
+    protected SearchKnowledgeBaseClientBuilder getSearchKnowledgeBaseClientBuilder(boolean isSync) {
+        SearchKnowledgeBaseClientBuilder builder = new SearchKnowledgeBaseClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(getTestTokenCredential())
             .httpClient(getHttpClient(interceptorManager, isSync))
             .retryOptions(SERVICE_THROTTLE_SAFE_RETRY_OPTIONS);

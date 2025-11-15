@@ -68,4 +68,12 @@ public @interface SimpleField {
      * @return A flag indicating if the field or method should generate as a permission filter {@link SearchField field}.
      */
     String permissionFilter() default "";
+
+    /**
+     * Indicates if the field or method should be used for sensitivity label filtering. This enables document-level
+     * filtering based on Microsoft Purview sensitivity labels.
+     *
+     * @return A flag indicating if the field or method should generate as a sensitivity label {@link SearchField field}.
+     */
+    boolean isSensitivityLabel() default false;
 }

@@ -33,6 +33,7 @@ import com.azure.search.documents.indexes.implementation.models.ErrorResponseExc
 import com.azure.search.documents.indexes.implementation.models.ListKnowledgeSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceStatus;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -147,6 +148,20 @@ public final class KnowledgeSourcesImpl {
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") KnowledgeSource knowledgeSource, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/status")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<KnowledgeSourceStatus>> getStatus(@HostParam("endpoint") String endpoint,
+            @PathParam("sourceName") String sourceName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/status")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<KnowledgeSourceStatus> getStatusSync(@HostParam("endpoint") String endpoint,
+            @PathParam("sourceName") String sourceName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -816,5 +831,121 @@ public final class KnowledgeSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeSource create(KnowledgeSource knowledgeSource, RequestOptions requestOptions) {
         return createWithResponse(knowledgeSource, requestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the current status and synchronization history of a knowledge source.
+     * 
+     * @param sourceName The name of the knowledge source for which to retrieve status.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSourceStatus>> getStatusWithResponseAsync(String sourceName,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> getStatusWithResponseAsync(sourceName, requestOptions, context));
+    }
+
+    /**
+     * Returns the current status and synchronization history of a knowledge source.
+     * 
+     * @param sourceName The name of the knowledge source for which to retrieve status.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSourceStatus>> getStatusWithResponseAsync(String sourceName,
+        RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.getStatus(this.client.getEndpoint(), sourceName, xMsClientRequestId, this.client.getApiVersion(),
+            accept, context);
+    }
+
+    /**
+     * Returns the current status and synchronization history of a knowledge source.
+     * 
+     * @param sourceName The name of the knowledge source for which to retrieve status.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceStatus> getStatusAsync(String sourceName, RequestOptions requestOptions) {
+        return getStatusWithResponseAsync(sourceName, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the current status and synchronization history of a knowledge source.
+     * 
+     * @param sourceName The name of the knowledge source for which to retrieve status.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceStatus> getStatusAsync(String sourceName, RequestOptions requestOptions,
+        Context context) {
+        return getStatusWithResponseAsync(sourceName, requestOptions, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the current status and synchronization history of a knowledge source.
+     * 
+     * @param sourceName The name of the knowledge source for which to retrieve status.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSourceStatus> getStatusWithResponse(String sourceName, RequestOptions requestOptions,
+        Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.getStatusSync(this.client.getEndpoint(), sourceName, xMsClientRequestId,
+            this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Returns the current status and synchronization history of a knowledge source.
+     * 
+     * @param sourceName The name of the knowledge source for which to retrieve status.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSourceStatus getStatus(String sourceName, RequestOptions requestOptions) {
+        return getStatusWithResponse(sourceName, requestOptions, Context.NONE).getValue();
     }
 }

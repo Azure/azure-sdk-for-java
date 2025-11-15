@@ -38,19 +38,19 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
     private String description;
 
     /*
-     * The ETag of the agent.
+     * The ETag of the knowledge base.
      */
     @Generated
     private String eTag;
 
     /*
      * A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional
-     * level of encryption-at-rest for your agent definition when you want full assurance that no one, not even
-     * Microsoft, can decrypt them. Once you have encrypted your agent definition, it will always remain encrypted. The
-     * search service will ignore attempts to set this property to null. You can change this property as needed if you
-     * want to rotate your encryption key; Your agent definition will be unaffected. Encryption with customer-managed
-     * keys is not available for free search services, and is only available for paid services created on or after
-     * January 1, 2019.
+     * level of encryption-at-rest for your knowledge base definition when you want full assurance that no one, not even
+     * Microsoft, can decrypt them. Once you have encrypted your knowledge base definition, it will always remain
+     * encrypted. The search service will ignore attempts to set this property to null. You can change this property as
+     * needed if you want to rotate your encryption key; Your knowledge base definition will be unaffected. Encryption
+     * with customer-managed keys is not available for free search services, and is only available for paid services
+     * created on or after January 1, 2019.
      */
     @Generated
     private SearchResourceEncryptionKey encryptionKey;
@@ -108,7 +108,7 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
     }
 
     /**
-     * Get the eTag property: The ETag of the agent.
+     * Get the eTag property: The ETag of the knowledge base.
      * 
      * @return the eTag value.
      */
@@ -118,7 +118,7 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
     }
 
     /**
-     * Set the eTag property: The ETag of the agent.
+     * Set the eTag property: The ETag of the knowledge base.
      * 
      * @param eTag the eTag value to set.
      * @return the KnowledgeSource object itself.
@@ -131,12 +131,12 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
 
     /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
-     * is used to provide an additional level of encryption-at-rest for your agent definition when you want full
-     * assurance that no one, not even Microsoft, can decrypt them. Once you have encrypted your agent definition, it
-     * will always remain encrypted. The search service will ignore attempts to set this property to null. You can
-     * change this property as needed if you want to rotate your encryption key; Your agent definition will be
-     * unaffected. Encryption with customer-managed keys is not available for free search services, and is only
-     * available for paid services created on or after January 1, 2019.
+     * is used to provide an additional level of encryption-at-rest for your knowledge base definition when you want
+     * full assurance that no one, not even Microsoft, can decrypt them. Once you have encrypted your knowledge base
+     * definition, it will always remain encrypted. The search service will ignore attempts to set this property to
+     * null. You can change this property as needed if you want to rotate your encryption key; Your knowledge base
+     * definition will be unaffected. Encryption with customer-managed keys is not available for free search services,
+     * and is only available for paid services created on or after January 1, 2019.
      * 
      * @return the encryptionKey value.
      */
@@ -147,12 +147,12 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
 
     /**
      * Set the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
-     * is used to provide an additional level of encryption-at-rest for your agent definition when you want full
-     * assurance that no one, not even Microsoft, can decrypt them. Once you have encrypted your agent definition, it
-     * will always remain encrypted. The search service will ignore attempts to set this property to null. You can
-     * change this property as needed if you want to rotate your encryption key; Your agent definition will be
-     * unaffected. Encryption with customer-managed keys is not available for free search services, and is only
-     * available for paid services created on or after January 1, 2019.
+     * is used to provide an additional level of encryption-at-rest for your knowledge base definition when you want
+     * full assurance that no one, not even Microsoft, can decrypt them. Once you have encrypted your knowledge base
+     * definition, it will always remain encrypted. The search service will ignore attempts to set this property to
+     * null. You can change this property as needed if you want to rotate your encryption key; Your knowledge base
+     * definition will be unaffected. Encryption with customer-managed keys is not available for free search services,
+     * and is only available for paid services created on or after January 1, 2019.
      * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the KnowledgeSource object itself.
@@ -208,6 +208,14 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
                     return SearchIndexKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return AzureBlobKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("indexedSharePoint".equals(discriminatorValue)) {
+                    return IndexedSharePointKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("indexedOneLake".equals(discriminatorValue)) {
+                    return IndexedOneLakeKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("web".equals(discriminatorValue)) {
+                    return WebKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("remoteSharePoint".equals(discriminatorValue)) {
+                    return RemoteSharePointKnowledgeSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
