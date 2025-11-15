@@ -31,6 +31,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
@@ -209,6 +210,25 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlacementPolicyInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -250,6 +270,28 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlacementPolicyInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
         final String accept = "application/json";
         Response<PlacementPoliciesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, accept, Context.NONE);
@@ -272,6 +314,28 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlacementPolicyInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
         final String accept = "application/json";
         Response<PlacementPoliciesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, accept, context);
@@ -331,6 +395,29 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PlacementPolicyInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -374,6 +461,32 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlacementPolicyInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, privateCloudName, clusterName, placementPolicyName, accept, context);
@@ -415,6 +528,35 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String privateCloudName, String clusterName, String placementPolicyName, PlacementPolicyInner placementPolicy) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
+        if (placementPolicy == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter placementPolicy is required and cannot be null."));
+        } else {
+            placementPolicy.validate();
+        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -440,6 +582,38 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, PlacementPolicyInner placementPolicy) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
+        if (placementPolicy == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicy is required and cannot be null."));
+        } else {
+            placementPolicy.validate();
+        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -464,6 +638,38 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, PlacementPolicyInner placementPolicy, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
+        if (placementPolicy == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicy is required and cannot be null."));
+        } else {
+            placementPolicy.validate();
+        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -619,6 +825,35 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, PlacementPolicyUpdate placementPolicyUpdate) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
+        if (placementPolicyUpdate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter placementPolicyUpdate is required and cannot be null."));
+        } else {
+            placementPolicyUpdate.validate();
+        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -644,6 +879,38 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, PlacementPolicyUpdate placementPolicyUpdate) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
+        if (placementPolicyUpdate == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyUpdate is required and cannot be null."));
+        } else {
+            placementPolicyUpdate.validate();
+        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -668,6 +935,38 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, PlacementPolicyUpdate placementPolicyUpdate, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
+        if (placementPolicyUpdate == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyUpdate is required and cannot be null."));
+        } else {
+            placementPolicyUpdate.validate();
+        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -821,6 +1120,29 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, placementPolicyName,
@@ -843,6 +1165,32 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, placementPolicyName,
             Context.NONE);
@@ -864,6 +1212,32 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String placementPolicyName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (placementPolicyName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
+        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, placementPolicyName,
             context);
@@ -997,6 +1371,13 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlacementPolicyInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PlacementPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -1015,6 +1396,15 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlacementPolicyInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         final String accept = "application/json";
         Response<PlacementPoliciesList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1034,10 +1424,21 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlacementPolicyInner> listNextSinglePage(String nextLink, Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         final String accept = "application/json";
         Response<PlacementPoliciesList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PlacementPoliciesClientImpl.class);
 }
