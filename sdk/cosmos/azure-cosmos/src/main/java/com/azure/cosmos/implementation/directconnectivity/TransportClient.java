@@ -10,10 +10,14 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // We suppress the "try" warning here because the close() method's signature
@@ -23,15 +27,38 @@ import java.util.List;
 // signature for backwards compatibility purposes.
 @SuppressWarnings("try")
 public abstract class TransportClient implements AutoCloseable {
+    private static final Logger logger = LoggerFactory.getLogger(TransportClient.class);
     private final boolean switchOffIOThreadForResponse = Configs.shouldSwitchOffIOThreadForResponse();
     private ThroughputControlStore throughputControlStore;
+    private List<ITransportClientInterceptor> transportClientInterceptors;
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
         this.throughputControlStore = throughputControlStore;
     }
 
-    // Uses requests's ResourceOperation to determine the operation
     public Mono<StoreResponse> invokeResourceOperationAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
+        return invokeResourceOperationInternalAsync(physicalAddress, request)
+            .map(response -> {
+                if (this.transportClientInterceptors == null) {
+                    logger.info("invokeResourceOperationAsync without interceptor");
+                    return response;
+                } else {
+                    logger.info("invokeResourceOperationAsync with interceptor");
+                    // there are interceptors configured, process the store response with the interceptors
+                    StoreResponse storeResponse = response;
+                    for (ITransportClientInterceptor transportClientInterceptor : this.transportClientInterceptors) {
+                        if (transportClientInterceptor.getStoreResponseInterceptor() != null) {
+                            storeResponse = transportClientInterceptor.getStoreResponseInterceptor().apply(request, storeResponse);
+                        }
+                    }
+
+                    return storeResponse;
+                }
+            });
+    }
+
+    // Uses request's ResourceOperation to determine the operation
+    public Mono<StoreResponse> invokeResourceOperationInternalAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         if (StringUtils.isEmpty(request.requestContext.resourcePhysicalAddress)) {
             request.requestContext.resourcePhysicalAddress = physicalAddress.toString();
         }
@@ -56,6 +83,15 @@ public abstract class TransportClient implements AutoCloseable {
     public abstract void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
     public abstract void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+
+    public synchronized void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        if (this.transportClientInterceptors == null) {
+            this.transportClientInterceptors = new ArrayList<>();
+        }
+
+        logger.info("registerTransportClientInterceptor in Transport client");
+        this.transportClientInterceptors.add(transportClientInterceptor);
+    }
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(

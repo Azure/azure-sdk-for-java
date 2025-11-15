@@ -63,6 +63,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=com.azure.cosmos.kafka.connect
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.interceptor=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.guava25.base=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect=ALL-UNNAMED

@@ -82,6 +82,8 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.throughputControl.sdk to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl.sdk.config to com.fasterxml.jackson.databind;
 
+    exports com.azure.cosmos.implementation.interceptor to com.azure.cosmos.test;
+
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;
 }
