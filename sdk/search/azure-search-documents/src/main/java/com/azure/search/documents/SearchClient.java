@@ -3,6 +3,12 @@
 
 package com.azure.search.documents;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,6 +18,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import static com.azure.core.util.serializer.TypeReference.createInstance;
+import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
+import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteRequest;
+import static com.azure.search.documents.SearchAsyncClient.createContinuationToken;
+import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
+import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
+import static com.azure.search.documents.SearchAsyncClient.getSearchResults;
+import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
@@ -41,19 +55,6 @@ import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
-import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteRequest;
-import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
-import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
-import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
