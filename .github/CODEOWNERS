@@ -83,13 +83,16 @@
 # ServiceOwners:                                                   @mojayara @Prasanna-Padmanabhan
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jhakulin @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @jhakulin @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
 /sdk/ai/azure-ai-agents-persistent/                                @dargilco @jhakulin @jayantjha @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
+
+# PRLabel: %Voice Live
+/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang
 
 # ServiceLabel: %AKS
 # ServiceOwners:                                                   @Azure/aks-pm
@@ -107,8 +110,8 @@
 /sdk/appconfiguration/                                             @alzimmermsft @Azure/azure-java-sdk
 
 # ServiceLabel: %App Configuration
-# AzureSdkOwners:                                                  @alzimmermsft
-# ServiceOwners:                                                   @shenmuxiaosen @avanigupta
+# AzureSdkOwners:                                                  @mrm9084
+# ServiceOwners:                                                   @mrm9084 @rossgrambo @shenmuxiaosen @avanigupta
 
 # ServiceLabel: %App Services
 # ServiceOwners:                                                   @antcp @AzureAppServiceCLI
@@ -171,10 +174,10 @@
 # AzureSdkOwners:                                                  @g2vinay @joshfree
 
 # PRLabel: %Batch
-/sdk/batch/                                                        @skapur12 @wiboris @dpwatrous @NickKouds @Azure/azure-java-sdk
+/sdk/batch/                                                        @skapur12 @wiboris @ReneOv-MSFT @dpwatrous @Azure/azure-java-sdk
 
 # ServiceLabel: %Batch
-# ServiceOwners:                                                   @mksuni @bgklein @mscurrell @cRui861 @paterasMSFT @gingi @dpwatrous
+# ServiceOwners:                                                   @skapur12 @wiboris @ReneOv-MSFT @dpwatrous
 
 # ServiceLabel: %Billing
 # ServiceOwners:                                                   @cabbpt
@@ -230,9 +233,6 @@
 
 # PRLabel: %Cognitive - Health Insights
 /sdk/healthinsights/                                               @tomsft @koen-mertens @Azure/azure-java-sdk
-
-# ServiceLabel: %Cognitive - Health Insights
-# ServiceOwners:                                                   @tomsft @koen-mertens
 
 # ServiceLabel: %Cognitive - Immersive Reader
 # ServiceOwners:                                                   @metanMSFT
@@ -543,11 +543,11 @@
 # ServiceOwners:                                                   @Azure/azure-iot-cli-triage
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                                                     @vcolin7 @g2vinay @Azure/azure-sdk-write-keyvault @Azure/azure-java-sdk
+/sdk/keyvault/                                                     @Azure/azure-sdk-write-keyvault @Azure/azure-java-sdk
 
 # ServiceLabel: %KeyVault
-# AzureSdkOwners:                                                  @vcolin7 @Azure/azure-sdk-write-keyvault
-# ServiceOwners:                                                   @cheathamb36 @chen-karen @Azure/azure-sdk-write-keyvault
+# AzureSdkOwners:                                                  @Azure/azure-sdk-write-keyvault
+# ServiceOwners:                                                   @chen-karen @Azure/azure-sdk-write-keyvault
 
 # ServiceLabel: %Kubernetes Configuration
 # ServiceOwners:                                                   @NarayanThiru
@@ -739,9 +739,6 @@
 # ServiceLabel: %Redis Cache
 # ServiceOwners:                                                   @yegu-ms
 
-# PRLabel: %Remote Rendering
-/sdk/remoterendering/                                              @MichaelZp0 @ChristopherManthei @Azure/azure-java-sdk
-
 # ServiceLabel: %Reservations
 # ServiceOwners:                                                   @Rkapso
 
@@ -901,13 +898,13 @@
 # AzureSdkOwners:                                                  @jeanbisutti @trask @ramthi @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @avanigupta @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-feature-management*/                @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @avanigupta @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @samsadsam @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @mrm9084 @rujche @netyyyy @saragluna @moarychan @rossgrambo @avanigupta @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
 /sdk/spring/azure-spring-data-cosmos/                              @rujche @netyyyy @saragluna @moarychan @Azure/azure-cosmos-java-sdk-connectors
@@ -979,8 +976,9 @@
 /.github/                                                          @Azure/azure-java-sdk
 /.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                                @Azure/azure-sdk-eng
+/.github/copilot-instructions.md                                   @samvaity @praveenkuttappan @maririos
 /.config/1espt/                                                    @benbp @weshaggard
-/eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity
+/eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity @praveenkuttappan @maririos @Azure/azure-sdk-eng
 
 # Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt

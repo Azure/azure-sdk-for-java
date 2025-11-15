@@ -57,7 +57,20 @@ public class ClientRetryPolicyTest {
             { OperationType.ReadFeed, ResourceType.DocumentCollection, false }
         };
     }
-    
+
+    @DataProvider(name = "exceptionArgsProvider")
+    public static Object[][] exceptionArgsProvider() {
+        return new Object[][]{
+            {new ServiceUnavailableException(), OperationType.Read},
+            {new ServiceUnavailableException(), OperationType.Create},
+            {new InternalServerErrorException(), OperationType.Read},
+            {new InternalServerErrorException(), OperationType.Create},
+            {new RequestTimeoutException(null, null, HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT), OperationType.Create},
+            {new RequestTimeoutException(null, new ReadTimeoutException(), null, null, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT), OperationType.Create},
+            {new RequestTimeoutException(null, new ReadTimeoutException(), null, null, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT), OperationType.Read},
+        };
+    }
+
     @Test(groups = "unit", dataProvider = "requestRateTooLargeArgProvider")
     public void requestRateTooLarge(
         OperationType operationType,
@@ -120,7 +133,7 @@ public class ClientRetryPolicyTest {
                 .build());
         }
     }
-    
+
     @DataProvider(name = "tcpNetworkFailureOnWriteArgProvider")
     public static Object[][] tcpNetworkFailureOnWriteArgProvider() {
         return new Object[][]{
@@ -622,6 +635,47 @@ public class ClientRetryPolicyTest {
                 .build());
 
         Mockito.verifyNoInteractions(endpointManager);
+    }
+
+    @Test(groups = "unit", dataProvider = "exceptionArgsProvider")
+    public void returnWithInternalServerErrorOnPpcbFailure(CosmosException cosmosException, OperationType operationType) throws Exception {
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+
+        CosmosException cosmosEx = Mockito.mock(CosmosException.class);
+
+        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(true);
+        Mockito.doThrow(cosmosEx).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).handleLocationExceptionForPartitionKeyRange(Mockito.any(), Mockito.any(), Mockito.anyBoolean());
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
+        ClientRetryPolicy clientRetryPolicy =
+            new ClientRetryPolicy(
+                mockDiagnosticsClientContext(),
+                endpointManager,
+                true,
+                throttlingRetryOptions,
+                null,
+                globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+
+        RxDocumentServiceRequest dsr;
+        Mono<ShouldRetryResult> shouldRetry;
+
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(), operationType, TEST_DOCUMENT_PATH, ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        // rethrow exception thrown from PPCB
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .withException(cosmosEx)
+            .shouldRetry(false)
+            .build());
     }
 
     public static void validateSuccess(Mono<ShouldRetryResult> single,

@@ -17,6 +17,11 @@ import java.io.IOException;
 @Fluent
 public final class RegistryNameStatusInner implements JsonSerializable<RegistryNameStatusInner> {
     /*
+     * The complete login server name with domain name label (DNL) hash, if available
+     */
+    private String availableLoginServerName;
+
+    /*
      * The value that indicates whether the name is available.
      */
     private Boolean nameAvailable;
@@ -35,6 +40,28 @@ public final class RegistryNameStatusInner implements JsonSerializable<RegistryN
      * Creates an instance of RegistryNameStatusInner class.
      */
     public RegistryNameStatusInner() {
+    }
+
+    /**
+     * Get the availableLoginServerName property: The complete login server name with domain name label (DNL) hash, if
+     * available.
+     * 
+     * @return the availableLoginServerName value.
+     */
+    public String availableLoginServerName() {
+        return this.availableLoginServerName;
+    }
+
+    /**
+     * Set the availableLoginServerName property: The complete login server name with domain name label (DNL) hash, if
+     * available.
+     * 
+     * @param availableLoginServerName the availableLoginServerName value to set.
+     * @return the RegistryNameStatusInner object itself.
+     */
+    public RegistryNameStatusInner withAvailableLoginServerName(String availableLoginServerName) {
+        this.availableLoginServerName = availableLoginServerName;
+        return this;
     }
 
     /**
@@ -113,6 +140,7 @@ public final class RegistryNameStatusInner implements JsonSerializable<RegistryN
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("availableLoginServerName", this.availableLoginServerName);
         jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
         jsonWriter.writeStringField("reason", this.reason);
         jsonWriter.writeStringField("message", this.message);
@@ -134,7 +162,9 @@ public final class RegistryNameStatusInner implements JsonSerializable<RegistryN
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("nameAvailable".equals(fieldName)) {
+                if ("availableLoginServerName".equals(fieldName)) {
+                    deserializedRegistryNameStatusInner.availableLoginServerName = reader.getString();
+                } else if ("nameAvailable".equals(fieldName)) {
                     deserializedRegistryNameStatusInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("reason".equals(fieldName)) {
                     deserializedRegistryNameStatusInner.reason = reader.getString();

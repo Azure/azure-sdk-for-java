@@ -12,10 +12,10 @@ public final class SchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"vhrfsphuagrt\",\"description\":\"kteusqczk\",\"schemaContent\":\"yklxubyjaffmmfbl\",\"hash\":\"cuubgq\",\"provisioningState\":\"Canceled\"},\"id\":\"a\",\"name\":\"metttwgd\",\"type\":\"lqxihhrmooiz\"}],\"nextLink\":\"eypxiutcxapzhyr\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"bezkgimsidxasic\",\"description\":\"yvvjskgfmo\",\"schemaContent\":\"wa\",\"hash\":\"qgatjeaahhvjhhn\",\"provisioningState\":\"Failed\"},\"id\":\"bbjjidjksyxk\",\"name\":\"xvxevblbjednljla\",\"type\":\"euaulxu\"},{\"properties\":{\"uuid\":\"jbnkpp\",\"description\":\"nenlsvxeizzg\",\"schemaContent\":\"klnsrmffey\",\"hash\":\"ckt\",\"provisioningState\":\"Accepted\"},\"id\":\"erteeammxqiekk\",\"name\":\"zddrt\",\"type\":\"g\"},{\"properties\":{\"uuid\":\"bmxva\",\"description\":\"efdeesve\",\"schemaContent\":\"uij\",\"hash\":\"txsu\",\"provisioningState\":\"Failed\"},\"id\":\"ujwsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"}],\"nextLink\":\"m\"}")
             .toObject(SchemaVersionListResult.class);
-        Assertions.assertEquals("kteusqczk", model.value().get(0).properties().description());
-        Assertions.assertEquals("yklxubyjaffmmfbl", model.value().get(0).properties().schemaContent());
-        Assertions.assertEquals("eypxiutcxapzhyr", model.nextLink());
+        Assertions.assertEquals("yvvjskgfmo", model.value().get(0).properties().description());
+        Assertions.assertEquals("wa", model.value().get(0).properties().schemaContent());
+        Assertions.assertEquals("m", model.nextLink());
     }
 }

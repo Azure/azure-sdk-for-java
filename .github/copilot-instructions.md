@@ -25,6 +25,7 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 ### Prerequisites
 
 - To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
+- Always run the [`azsdk_verify_setup`](../eng/common/instructions/azsdk-tools/verify-setup.instructions.md) tool to check the user's development environment setup for using SDK MCP tools. DO NOT PROCEED with running other tools before completing this step. Only skip for queries that don't need tools.
 
 ## Behavior
 
@@ -151,19 +152,4 @@ When facing issues, direct users to:
 
 ## SDK release
 
-There are two tools to help with SDK releases:
-- Check SDK release readiness
-- Release SDK
-
-### Check SDK Release Readiness
-Run `CheckPackageReleaseReadiness` to verify if the package is ready for release. This tool checks:
-- API review status
-- Change log status
-- Package name approval (If package is new and releasing a preview version)
-- Release date is set in release tracker
-
-### Release SDK
-Run `ReleasePackage` to release the package. This tool requires package name and language as inputs. It will:- Check if the package is ready for release
-- Identify the release pipeline
-- Trigger the release pipeline.
-  User needs to approve the release stage in the pipeline after it is triggered.
+For detailed workflow instructions, see [SDK Release](../eng/common/instructions/copilot/sdk-release.instructions.md).

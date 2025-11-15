@@ -163,9 +163,9 @@ public final class NamespaceAssetProperties implements JsonSerializable<Namespac
     private List<NamespaceDataset> datasets;
 
     /*
-     * Array of events that are part of the asset. Each event can have per-event configuration.
+     * Array of event groups that are part of the asset. Each event group can have per-event group configuration.
      */
-    private List<NamespaceEvent> events;
+    private List<NamespaceEventGroup> eventGroups;
 
     /*
      * Array of streams that are part of the asset. Each stream can have a per-stream configuration.
@@ -724,22 +724,24 @@ public final class NamespaceAssetProperties implements JsonSerializable<Namespac
     }
 
     /**
-     * Get the events property: Array of events that are part of the asset. Each event can have per-event configuration.
+     * Get the eventGroups property: Array of event groups that are part of the asset. Each event group can have
+     * per-event group configuration.
      * 
-     * @return the events value.
+     * @return the eventGroups value.
      */
-    public List<NamespaceEvent> events() {
-        return this.events;
+    public List<NamespaceEventGroup> eventGroups() {
+        return this.eventGroups;
     }
 
     /**
-     * Set the events property: Array of events that are part of the asset. Each event can have per-event configuration.
+     * Set the eventGroups property: Array of event groups that are part of the asset. Each event group can have
+     * per-event group configuration.
      * 
-     * @param events the events value to set.
+     * @param eventGroups the eventGroups value to set.
      * @return the NamespaceAssetProperties object itself.
      */
-    public NamespaceAssetProperties withEvents(List<NamespaceEvent> events) {
-        this.events = events;
+    public NamespaceAssetProperties withEventGroups(List<NamespaceEventGroup> eventGroups) {
+        this.eventGroups = eventGroups;
         return this;
     }
 
@@ -842,7 +844,7 @@ public final class NamespaceAssetProperties implements JsonSerializable<Namespac
         jsonWriter.writeArrayField("defaultStreamsDestinations", this.defaultStreamsDestinations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventGroups", this.eventGroups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("streams", this.streams, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("managementGroups", this.managementGroups,
             (writer, element) -> writer.writeJson(element));
@@ -931,9 +933,10 @@ public final class NamespaceAssetProperties implements JsonSerializable<Namespac
                 } else if ("datasets".equals(fieldName)) {
                     List<NamespaceDataset> datasets = reader.readArray(reader1 -> NamespaceDataset.fromJson(reader1));
                     deserializedNamespaceAssetProperties.datasets = datasets;
-                } else if ("events".equals(fieldName)) {
-                    List<NamespaceEvent> events = reader.readArray(reader1 -> NamespaceEvent.fromJson(reader1));
-                    deserializedNamespaceAssetProperties.events = events;
+                } else if ("eventGroups".equals(fieldName)) {
+                    List<NamespaceEventGroup> eventGroups
+                        = reader.readArray(reader1 -> NamespaceEventGroup.fromJson(reader1));
+                    deserializedNamespaceAssetProperties.eventGroups = eventGroups;
                 } else if ("streams".equals(fieldName)) {
                     List<NamespaceStream> streams = reader.readArray(reader1 -> NamespaceStream.fromJson(reader1));
                     deserializedNamespaceAssetProperties.streams = streams;

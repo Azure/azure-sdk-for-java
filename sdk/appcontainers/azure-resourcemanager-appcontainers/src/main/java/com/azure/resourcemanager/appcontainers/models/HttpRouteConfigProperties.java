@@ -18,7 +18,7 @@ import java.util.List;
 @Fluent
 public final class HttpRouteConfigProperties implements JsonSerializable<HttpRouteConfigProperties> {
     /*
-     * The provisioning state of the Http Route Config in cluster
+     * The provisioning state of the Http Route Config
      */
     private HttpRouteProvisioningState provisioningState;
 
@@ -33,12 +33,12 @@ public final class HttpRouteConfigProperties implements JsonSerializable<HttpRou
     private String fqdn;
 
     /*
-     * Custom domain bindings for http Routes' hostnames.
+     * Custom domain bindings for Http Routes' hostnames.
      */
     private List<CustomDomain> customDomains;
 
     /*
-     * Routing Rules for http route resource.
+     * Routing Rules for the Http Route resource.
      */
     private List<HttpRouteRule> rules;
 
@@ -49,7 +49,7 @@ public final class HttpRouteConfigProperties implements JsonSerializable<HttpRou
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Http Route Config in cluster.
+     * Get the provisioningState property: The provisioning state of the Http Route Config.
      * 
      * @return the provisioningState value.
      */
@@ -76,7 +76,7 @@ public final class HttpRouteConfigProperties implements JsonSerializable<HttpRou
     }
 
     /**
-     * Get the customDomains property: Custom domain bindings for http Routes' hostnames.
+     * Get the customDomains property: Custom domain bindings for Http Routes' hostnames.
      * 
      * @return the customDomains value.
      */
@@ -85,7 +85,7 @@ public final class HttpRouteConfigProperties implements JsonSerializable<HttpRou
     }
 
     /**
-     * Set the customDomains property: Custom domain bindings for http Routes' hostnames.
+     * Set the customDomains property: Custom domain bindings for Http Routes' hostnames.
      * 
      * @param customDomains the customDomains value to set.
      * @return the HttpRouteConfigProperties object itself.
@@ -96,7 +96,7 @@ public final class HttpRouteConfigProperties implements JsonSerializable<HttpRou
     }
 
     /**
-     * Get the rules property: Routing Rules for http route resource.
+     * Get the rules property: Routing Rules for the Http Route resource.
      * 
      * @return the rules value.
      */
@@ -105,7 +105,7 @@ public final class HttpRouteConfigProperties implements JsonSerializable<HttpRou
     }
 
     /**
-     * Set the rules property: Routing Rules for http route resource.
+     * Set the rules property: Routing Rules for the Http Route resource.
      * 
      * @param rules the rules value to set.
      * @return the HttpRouteConfigProperties object itself.

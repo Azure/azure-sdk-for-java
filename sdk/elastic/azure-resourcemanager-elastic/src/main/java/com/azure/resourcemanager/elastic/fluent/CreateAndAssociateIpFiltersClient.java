@@ -15,7 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
  */
 public interface CreateAndAssociateIpFiltersClient {
     /**
-     * Create and Associate IP traffic filter for the given deployment.
+     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -28,7 +28,7 @@ public interface CreateAndAssociateIpFiltersClient {
     SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName);
 
     /**
-     * Create and Associate IP traffic filter for the given deployment.
+     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -45,7 +45,7 @@ public interface CreateAndAssociateIpFiltersClient {
         String name, Context context);
 
     /**
-     * Create and Associate IP traffic filter for the given deployment.
+     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -57,7 +57,7 @@ public interface CreateAndAssociateIpFiltersClient {
     void create(String resourceGroupName, String monitorName);
 
     /**
-     * Create and Associate IP traffic filter for the given deployment.
+     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

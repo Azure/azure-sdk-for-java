@@ -26,7 +26,7 @@ public final class SchemasCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"dqzrdzsyloll\",\"displayName\":\"rc\",\"description\":\"ydmxzj\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Deleting\",\"tags\":{\"fx\":\"rkihcirld\",\"ja\":\"dcoxnbk\"}},\"id\":\"rnnqb\",\"name\":\"q\",\"type\":\"pizxqltgrdogyp\"}";
+            = "{\"properties\":{\"uuid\":\"dyvkfkmr\",\"displayName\":\"xne\",\"description\":\"sm\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"vyuns\":\"apucygvo\",\"gvvpasek\":\"xlghieegj\",\"aq\":\"gbuxantuygdh\"}},\"id\":\"irpiwrqofulopmj\",\"name\":\"lexwhcbjp\",\"type\":\"bke\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +36,20 @@ public final class SchemasCreateOrReplaceWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .define("oaedsxjwuivedwcg")
-            .withExistingSchemaRegistry("wtoaukhfk", "cisiz")
-            .withProperties(new SchemaProperties().withDisplayName("mljdlrgmsplzga")
-                .withDescription("cshhv")
+            .define("rzdcgdzbenribcaw")
+            .withExistingSchemaRegistry("apcohhouc", "pqojxcx")
+            .withProperties(new SchemaProperties().withDisplayName("jwfljhznamtua")
+                .withDescription("zwcjjncqtj")
                 .withFormat(Format.DELTA_1_0)
                 .withSchemaType(SchemaType.MESSAGE_SCHEMA)
-                .withTags(mapOf("aoypny", "ympqanxrjkixtwb", "ycphdrwjjkhvyo", "hshxcylhkgmnsghp", "u", "ac", "wmkoisq",
-                    "vxnqmhrpqpd")))
+                .withTags(mapOf("uuvbx", "gat", "ajqfutlx", "grebwggahttzlsw")))
             .create();
 
-        Assertions.assertEquals("rc", response.properties().displayName());
-        Assertions.assertEquals("ydmxzj", response.properties().description());
+        Assertions.assertEquals("xne", response.properties().displayName());
+        Assertions.assertEquals("sm", response.properties().description());
         Assertions.assertEquals(Format.DELTA_1_0, response.properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.properties().schemaType());
-        Assertions.assertEquals("rkihcirld", response.properties().tags().get("fx"));
+        Assertions.assertEquals("apucygvo", response.properties().tags().get("vyuns"));
     }
 
     // Use "Map.of" if available

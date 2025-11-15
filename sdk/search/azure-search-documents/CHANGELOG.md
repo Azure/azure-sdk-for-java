@@ -41,6 +41,9 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where multiple iterations / subscriptions of `SearchPagedFlux` and `SearchPagedIterable` would return the
+  same first page result of the initial iteration / subscription.
+
 ## 11.8.0 (2025-10-10)
 
 ### Features Added

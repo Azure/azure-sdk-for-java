@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.BillingInfoResponse;
@@ -21,27 +21,28 @@ public final class BillingInfoesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"ondjmq\"},\"marketplaceName\":\"vypomgkopkwho\",\"marketplaceResourceId\":\"pajqgxysm\",\"marketplaceStatus\":\"mbqfqvmk\",\"billedAzureSubscriptionId\":\"oz\",\"subscribed\":true},\"partnerBillingEntity\":{\"id\":\"lxprglyatddckcbc\",\"name\":\"jrjxgciqibrhosx\",\"partnerEntityUri\":\"qrhzoymibmrqyib\"}}";
+            = "{\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"iypbsfgytgusl\",\"publisherId\":\"adcy\",\"offerId\":\"ukyhejhzis\"},\"marketplaceName\":\"fpel\",\"marketplaceResourceId\":\"p\",\"marketplaceStatus\":\"ksrpqv\",\"billedAzureSubscriptionId\":\"zraehtwd\",\"subscribed\":true},\"partnerBillingEntity\":{\"id\":\"wib\",\"name\":\"cdl\",\"partnerEntityUri\":\"shfwpracstwity\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        BillingInfoResponse response = manager.billingInfoes()
-            .getWithResponse("aakc", "wiyzvqtmnubexkp", com.azure.core.util.Context.NONE)
-            .getValue();
+        BillingInfoResponse response
+            = manager.billingInfoes().getWithResponse("wem", "zrncsdt", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ondjmq", response.marketplaceSaasInfo().marketplaceSubscription().id());
-        Assertions.assertEquals("vypomgkopkwho", response.marketplaceSaasInfo().marketplaceName());
-        Assertions.assertEquals("pajqgxysm", response.marketplaceSaasInfo().marketplaceResourceId());
-        Assertions.assertEquals("mbqfqvmk", response.marketplaceSaasInfo().marketplaceStatus());
-        Assertions.assertEquals("oz", response.marketplaceSaasInfo().billedAzureSubscriptionId());
-        Assertions.assertEquals(true, response.marketplaceSaasInfo().subscribed());
-        Assertions.assertEquals("lxprglyatddckcbc", response.partnerBillingEntity().id());
-        Assertions.assertEquals("jrjxgciqibrhosx", response.partnerBillingEntity().name());
-        Assertions.assertEquals("qrhzoymibmrqyib", response.partnerBillingEntity().partnerEntityUri());
+        Assertions.assertEquals("iypbsfgytgusl", response.marketplaceSaasInfo().marketplaceSubscription().id());
+        Assertions.assertEquals("adcy", response.marketplaceSaasInfo().marketplaceSubscription().publisherId());
+        Assertions.assertEquals("ukyhejhzis", response.marketplaceSaasInfo().marketplaceSubscription().offerId());
+        Assertions.assertEquals("fpel", response.marketplaceSaasInfo().marketplaceName());
+        Assertions.assertEquals("p", response.marketplaceSaasInfo().marketplaceResourceId());
+        Assertions.assertEquals("ksrpqv", response.marketplaceSaasInfo().marketplaceStatus());
+        Assertions.assertEquals("zraehtwd", response.marketplaceSaasInfo().billedAzureSubscriptionId());
+        Assertions.assertTrue(response.marketplaceSaasInfo().subscribed());
+        Assertions.assertEquals("wib", response.partnerBillingEntity().id());
+        Assertions.assertEquals("cdl", response.partnerBillingEntity().name());
+        Assertions.assertEquals("shfwpracstwity", response.partnerBillingEntity().partnerEntityUri());
     }
 }

@@ -11,7 +11,7 @@ public final class DeploymentInfoResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentInfoResponseInner model = BinaryData.fromString(
-            "{\"status\":\"Healthy\",\"version\":\"ayvvtpgvdf\",\"memoryCapacity\":\"otkftutqxlngx\",\"diskCapacity\":\"fgugnxkrxdqmid\",\"elasticsearchEndPoint\":\"hzrvqd\",\"deploymentUrl\":\"bhj\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"ehoqfbowskan\"},\"marketplaceName\":\"tzlcuiywgqywgn\",\"marketplaceResourceId\":\"vynhzgpphrcg\",\"marketplaceStatus\":\"cocpecfvmmcoofsx\",\"billedAzureSubscriptionId\":\"evgbmqjq\",\"subscribed\":false}}")
+            "{\"status\":\"Unhealthy\",\"version\":\"mvxi\",\"memoryCapacity\":\"uugidyjrrfby\",\"diskCapacity\":\"svexcsonpclhoco\",\"elasticsearchEndPoint\":\"lkevle\",\"deploymentUrl\":\"zfbuhf\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"x\",\"publisherId\":\"feiithlvmez\",\"offerId\":\"shxmzsbbzoggigrx\"},\"marketplaceName\":\"ur\",\"marketplaceResourceId\":\"xxjnspydptk\",\"marketplaceStatus\":\"nkoukn\",\"billedAzureSubscriptionId\":\"dwtiukbldngkp\",\"subscribed\":true},\"projectType\":\"azyxoegukg\",\"configurationType\":\"piu\"}")
             .toObject(DeploymentInfoResponseInner.class);
     }
 

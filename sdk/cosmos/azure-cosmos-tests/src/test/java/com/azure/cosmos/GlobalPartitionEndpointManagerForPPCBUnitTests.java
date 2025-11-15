@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AvailabilityStrategyContext;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
@@ -97,6 +98,26 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     + "}",
                 !READ_OPERATION_TRUE
             }
+        };
+    }
+
+    @DataProvider(name = "nullPartitionKeyRangeHandlingArgs")
+    public Object[][] nullPartitionKeyRangeHandlingArgs() {
+        /*
+           Dimensions:
+             1) resolvedPartitionKeyRangeForCircuitBreaker present or absent
+             2) isCancellationException true/false
+             3) resolvedPartitionKeyRange (normal routing) present or absent (to cover early-return branch where
+                resolvedPartitionKeyRangeForCircuitBreaker != null but resolvedPartitionKeyRange == null)
+         */
+        return new Object[][] {
+            // resolvedPartitionKeyRangeForCircuitBreaker = null, cancellation=true  (should NOT throw)
+            { false, true,  true  }, // keep resolvedPartitionKeyRange present (value doesn't matter here)
+            // resolvedPartitionKeyRangeForCircuitBreaker = null, cancellation=false (should throw 500 / 20913)
+            { false, false, true  },
+            // resolvedPartitionKeyRangeForCircuitBreaker = present, but resolvedPartitionKeyRange = null AND cancellation flag irrelevant (early return, no throw)
+            { true,  true,  false },
+            { true,  false, false }
         };
     }
 
@@ -195,7 +216,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
             Mockito.when(this.globalEndpointManagerMock.getWriteEndpoints()).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
 
             Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
             Class<?> partitionLevelUnavailabilityInfoClass
@@ -269,7 +290,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
             }
 
             Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
@@ -346,7 +367,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
             }
 
             Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
@@ -434,7 +455,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
             }
 
             Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
@@ -530,7 +551,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
             }
 
             Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
@@ -571,7 +592,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
             }
 
             locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
@@ -626,11 +647,11 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getKey()), false);
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getKey()), false);
             }
 
             Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
@@ -709,7 +730,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
 
             for (int i = 1; i <= exceptionCountToHandle; i++) {
                 globalPartitionEndpointManagerForCircuitBreaker
-                    .handleLocationExceptionForPartitionKeyRange(request1, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()));
+                    .handleLocationExceptionForPartitionKeyRange(request1, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
             }
 
             globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request2);
@@ -902,6 +923,90 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
         }
     }
 
+    /**
+     * Validates handling in handleLocationExceptionForPartitionKeyRange when
+     * resolvedPartitionKeyRangeForCircuitBreaker is absent (null) vs present under
+     * different cancellation flags.
+     * <p>
+     * Expectations:
+     * - If resolvedPartitionKeyRangeForCircuitBreaker == null AND isCancellationException == true
+     * => method returns without throwing.
+     * - If resolvedPartitionKeyRangeForCircuitBreaker == null AND isCancellationException == false
+     * => method MUST throw CosmosException (500 / subStatus 20913).
+     * - If resolvedPartitionKeyRangeForCircuitBreaker != null BUT resolvedPartitionKeyRange == null
+     * => method returns early (no throw) regardless of cancellation flag.
+     */
+    @Test(groups = {"unit"}, dataProvider = "nullPartitionKeyRangeHandlingArgs")
+    public void validateHandlingOnNullPartitionKeyRange(boolean setResolvedPartitionKeyRangeForCircuitBreaker,
+                                                        boolean isCancellationException,
+                                                        boolean setResolvedPartitionKeyRange) {
+
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker =
+            new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
+
+        // Build a minimal request
+        String collectionRid = "dbs/db1/colls/coll1";
+        String pkRangeId = "0";
+        String min = "AA";
+        String max = "BB";
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document);
+
+        request.setResourceId(collectionRid);
+        request.requestContext.regionalRoutingContextToRoute =
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey());
+
+        if (setResolvedPartitionKeyRange) {
+            request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(pkRangeId, min, max);
+        }
+
+        if (setResolvedPartitionKeyRangeForCircuitBreaker) {
+            // Only set circuit-breaker partition if we also set normal routing partition OR we want to test early return branch
+            PartitionKeyRange pkr = new PartitionKeyRange(pkRangeId, min, max);
+            request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = pkr;
+            if (!setResolvedPartitionKeyRange) {
+                // Simulate split/invalid: routing partition is null while circuit breaker holder not null.
+                // Code path should early-return and not throw regardless of cancellation flag.
+                request.requestContext.resolvedPartitionKeyRange = null;
+            }
+        }
+
+        boolean expectThrow = !isCancellationException && !setResolvedPartitionKeyRangeForCircuitBreaker;
+        boolean threw = false;
+        CosmosException captured = null;
+
+        try {
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
+                request,
+                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()),
+                isCancellationException);
+        } catch (CosmosException ce) {
+            threw = true;
+            captured = ce;
+        }
+
+        if (expectThrow) {
+            assertThat(threw)
+                .as("Expected CosmosException when circuit-breaker PK range is null and cancellation = false")
+                .isTrue();
+            assertThat(captured.getStatusCode())
+                .as("Status code should be 500")
+                .isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+            assertThat(captured.getSubStatusCode())
+                .as("Substatus should be 20913")
+                .isEqualTo(HttpConstants.SubStatusCodes.PPCB_INVALID_STATE);
+        } else {
+            assertThat(threw)
+                .as("Did not expect exception (setResolvedPartitionKeyRangeForCircuitBreaker=" +
+                    setResolvedPartitionKeyRangeForCircuitBreaker +
+                    ", isCancellationException=" + isCancellationException + ")")
+                .isFalse();
+        }
+    }
+
     private static void validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
         RxDocumentServiceRequest request,
@@ -911,7 +1016,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
         List<RegionalRoutingContext> applicableReadWriteLocations) {
 
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
-        globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(locationWithFailure));
+        globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(locationWithFailure), false);
 
         List<String> unavailableRegions
             = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(request, collectionResourceId, partitionKeyRange);

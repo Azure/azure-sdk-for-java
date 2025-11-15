@@ -87,9 +87,11 @@ public final class ManagementEventRuleCondition extends RuleCondition {
      */
     @Override
     public void validate() {
-        super.validate();
         if (aggregation() != null) {
             aggregation().validate();
+        }
+        if (dataSource() != null) {
+            dataSource().validate();
         }
     }
 

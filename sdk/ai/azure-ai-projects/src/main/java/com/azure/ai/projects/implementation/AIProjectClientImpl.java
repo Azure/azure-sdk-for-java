@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -17,22 +17,20 @@ import com.azure.core.util.serializer.SerializerAdapter;
  */
 public final class AIProjectClientImpl {
     /**
-     * Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      */
     private final String endpoint;
 
     /**
-     * Gets Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * Gets Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * 
      * @return the endpoint value.
      */
@@ -43,14 +41,14 @@ public final class AIProjectClientImpl {
     /**
      * Service version.
      */
-    private final ProjectsServiceVersion serviceVersion;
+    private final AIProjectsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -94,20 +92,6 @@ public final class AIProjectClientImpl {
      */
     public ConnectionsImpl getConnections() {
         return this.connections;
-    }
-
-    /**
-     * The EvaluationsImpl object to access its operations.
-     */
-    private final EvaluationsImpl evaluations;
-
-    /**
-     * Gets the EvaluationsImpl object to access its operations.
-     * 
-     * @return the EvaluationsImpl object.
-     */
-    public EvaluationsImpl getEvaluations() {
-        return this.evaluations;
     }
 
     /**
@@ -167,17 +151,86 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The EvaluationRulesImpl object to access its operations.
+     */
+    private final EvaluationRulesImpl evaluationRules;
+
+    /**
+     * Gets the EvaluationRulesImpl object to access its operations.
+     * 
+     * @return the EvaluationRulesImpl object.
+     */
+    public EvaluationRulesImpl getEvaluationRules() {
+        return this.evaluationRules;
+    }
+
+    /**
+     * The EvaluationTaxonomiesImpl object to access its operations.
+     */
+    private final EvaluationTaxonomiesImpl evaluationTaxonomies;
+
+    /**
+     * Gets the EvaluationTaxonomiesImpl object to access its operations.
+     * 
+     * @return the EvaluationTaxonomiesImpl object.
+     */
+    public EvaluationTaxonomiesImpl getEvaluationTaxonomies() {
+        return this.evaluationTaxonomies;
+    }
+
+    /**
+     * The EvaluatorsImpl object to access its operations.
+     */
+    private final EvaluatorsImpl evaluators;
+
+    /**
+     * Gets the EvaluatorsImpl object to access its operations.
+     * 
+     * @return the EvaluatorsImpl object.
+     */
+    public EvaluatorsImpl getEvaluators() {
+        return this.evaluators;
+    }
+
+    /**
+     * The InsightsImpl object to access its operations.
+     */
+    private final InsightsImpl insights;
+
+    /**
+     * Gets the InsightsImpl object to access its operations.
+     * 
+     * @return the InsightsImpl object.
+     */
+    public InsightsImpl getInsights() {
+        return this.insights;
+    }
+
+    /**
+     * The SchedulesImpl object to access its operations.
+     */
+    private final SchedulesImpl schedules;
+
+    /**
+     * Gets the SchedulesImpl object to access its operations.
+     * 
+     * @return the SchedulesImpl object.
+     */
+    public SchedulesImpl getSchedules() {
+        return this.schedules;
+    }
+
+    /**
      * Initializes an instance of AIProjectClient client.
      * 
-     * @param endpoint Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * @param endpoint Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public AIProjectClientImpl(String endpoint, ProjectsServiceVersion serviceVersion) {
+    public AIProjectClientImpl(String endpoint, AIProjectsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -186,15 +239,14 @@ public final class AIProjectClientImpl {
      * Initializes an instance of AIProjectClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * @param endpoint Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public AIProjectClientImpl(HttpPipeline httpPipeline, String endpoint, ProjectsServiceVersion serviceVersion) {
+    public AIProjectClientImpl(HttpPipeline httpPipeline, String endpoint, AIProjectsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -203,25 +255,28 @@ public final class AIProjectClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * @param endpoint Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
     public AIProjectClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        ProjectsServiceVersion serviceVersion) {
+        AIProjectsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.connections = new ConnectionsImpl(this);
-        this.evaluations = new EvaluationsImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.indexes = new IndexesImpl(this);
         this.deployments = new DeploymentsImpl(this);
         this.redTeams = new RedTeamsImpl(this);
+        this.evaluationRules = new EvaluationRulesImpl(this);
+        this.evaluationTaxonomies = new EvaluationTaxonomiesImpl(this);
+        this.evaluators = new EvaluatorsImpl(this);
+        this.insights = new InsightsImpl(this);
+        this.schedules = new SchedulesImpl(this);
     }
 }

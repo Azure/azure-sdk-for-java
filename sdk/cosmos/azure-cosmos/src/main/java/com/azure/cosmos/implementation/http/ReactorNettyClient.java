@@ -346,14 +346,21 @@ public class ReactorNettyClient implements HttpClient {
 
         @Override
         public Mono<ByteBuf> body() {
-            return bodyIntern()
+            return ByteBufFlux
+                .fromInbound(
+                    bodyIntern().doOnDiscard(ByteBuf.class, io.netty.util.ReferenceCountUtil::safeRelease)
+                )
                 .aggregate()
                 .doOnSubscribe(this::updateSubscriptionState);
         }
 
         @Override
         public Mono<String> bodyAsString() {
-            return bodyIntern().aggregate()
+            return  ByteBufFlux
+                .fromInbound(
+                   bodyIntern().doOnDiscard(ByteBuf.class, io.netty.util.ReferenceCountUtil::safeRelease)
+                )
+                .aggregate()
                 .asString()
                 .doOnSubscribe(this::updateSubscriptionState);
         }
@@ -394,8 +401,8 @@ public class ReactorNettyClient implements HttpClient {
                     logger.debug("Releasing body, not yet subscribed");
                 }
                 this.bodyIntern()
-                    .doOnNext(byteBuf -> {})
-                    .subscribe(byteBuf -> {}, ex -> {});
+                    .doOnNext(io.netty.util.ReferenceCountUtil::safeRelease)
+                    .subscribe(v -> {}, ex -> {}, () -> {});
             }
         }
     }

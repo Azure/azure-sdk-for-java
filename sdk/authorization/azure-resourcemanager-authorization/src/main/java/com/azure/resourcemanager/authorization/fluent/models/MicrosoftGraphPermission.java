@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * permission.
+ * Represents a permission.
  */
 @Fluent
 public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
