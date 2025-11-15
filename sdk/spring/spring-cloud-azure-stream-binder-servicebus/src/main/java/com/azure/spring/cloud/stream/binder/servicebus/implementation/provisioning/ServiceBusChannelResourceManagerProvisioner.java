@@ -18,7 +18,7 @@ import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.cloud.stream.provisioning.ProvisioningException;
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.Assert;
 
 import static com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType.QUEUE;
@@ -37,8 +37,8 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
      * @param namespace the namespace
      * @param serviceBusProvisioner the service Bus Provisioner
      */
-    public ServiceBusChannelResourceManagerProvisioner(@NonNull String namespace,
-                                                       @NonNull ServiceBusProvisioner serviceBusProvisioner) {
+    public ServiceBusChannelResourceManagerProvisioner(String namespace,
+                                                       ServiceBusProvisioner serviceBusProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
         this.serviceBusProvisioner = serviceBusProvisioner;
