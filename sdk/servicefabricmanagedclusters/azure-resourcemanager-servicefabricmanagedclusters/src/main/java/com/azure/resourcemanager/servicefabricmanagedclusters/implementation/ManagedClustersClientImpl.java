@@ -115,18 +115,18 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
             @BodyParam("application/json") ManagedClusterInner parameters, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterInner>> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ManagedClusterUpdateParameters parameters, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ManagedClusterInner> updateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -576,7 +576,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the managed cluster resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedClusterInner>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -594,13 +594,16 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed cluster resource on successful completion of {@link Mono}.
+     * @return the managed cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedClusterInner> updateAsync(String resourceGroupName, String clusterName,
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters) {
-        return updateWithResponseAsync(resourceGroupName, clusterName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
+            Context.NONE);
     }
 
     /**
@@ -616,7 +619,7 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the managed cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedClusterInner> updateWithResponse(String resourceGroupName, String clusterName,
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -633,12 +636,106 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the managed cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, ManagedClusterUpdateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, parameters);
+        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedClusterInner.class, ManagedClusterInner.class, this.client.getContext());
+    }
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the managed cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdate(String resourceGroupName,
+        String clusterName, ManagedClusterUpdateParameters parameters) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, parameters);
+        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(response, ManagedClusterInner.class,
+            ManagedClusterInner.class, Context.NONE);
+    }
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the managed cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdate(String resourceGroupName,
+        String clusterName, ManagedClusterUpdateParameters parameters, Context context) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, parameters, context);
+        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(response, ManagedClusterInner.class,
+            ManagedClusterInner.class, context);
+    }
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed cluster resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ManagedClusterInner> updateAsync(String resourceGroupName, String clusterName,
+        ManagedClusterUpdateParameters parameters) {
+        return beginUpdateAsync(resourceGroupName, clusterName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedClusterInner update(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters) {
-        return updateWithResponse(resourceGroupName, clusterName, parameters, Context.NONE).getValue();
+        return beginUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
+    }
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedClusterInner update(String resourceGroupName, String clusterName,
+        ManagedClusterUpdateParameters parameters, Context context) {
+        return beginUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**

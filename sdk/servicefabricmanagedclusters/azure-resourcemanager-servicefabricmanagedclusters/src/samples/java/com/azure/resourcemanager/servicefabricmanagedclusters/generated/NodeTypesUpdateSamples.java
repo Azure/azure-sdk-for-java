@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class NodeTypesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/NodeTypePatchOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/NodeTypePatchOperation_example.json
      */
     /**
      * Sample code: Patch a node type.
@@ -30,7 +30,7 @@ public final class NodeTypesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/NodeTypePatchOperationAutoScale_example.json
+     * x-ms-original-file: 2025-10-01-preview/NodeTypePatchOperationAutoScale_example.json
      */
     /**
      * Sample code: Patch a node type while auto-scaling.

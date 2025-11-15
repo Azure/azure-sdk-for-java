@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class NodeTypeSkusListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/NodeTypeSkusListOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/NodeTypeSkusListOperation_example.json
      */
     /**
      * Sample code: List a node type SKUs.

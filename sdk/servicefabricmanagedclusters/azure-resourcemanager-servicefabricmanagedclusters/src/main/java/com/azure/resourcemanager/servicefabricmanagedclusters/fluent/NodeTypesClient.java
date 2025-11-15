@@ -121,7 +121,7 @@ public interface NodeTypesClient {
         NodeTypeInner parameters, Context context);
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -138,7 +138,7 @@ public interface NodeTypesClient {
         String nodeTypeName, NodeTypeUpdateParameters parameters);
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -156,7 +156,7 @@ public interface NodeTypesClient {
         String nodeTypeName, NodeTypeUpdateParameters parameters, Context context);
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -172,7 +172,7 @@ public interface NodeTypesClient {
         NodeTypeUpdateParameters parameters);
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.

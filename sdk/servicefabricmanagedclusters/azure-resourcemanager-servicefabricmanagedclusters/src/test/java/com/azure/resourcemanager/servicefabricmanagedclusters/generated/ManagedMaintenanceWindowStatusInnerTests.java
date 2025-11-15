@@ -11,7 +11,7 @@ public final class ManagedMaintenanceWindowStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedMaintenanceWindowStatusInner model = BinaryData.fromString(
-            "{\"isWindowEnabled\":true,\"isRegionReady\":false,\"isWindowActive\":false,\"canApplyUpdates\":true,\"lastWindowStatusUpdateAtUTC\":\"2021-10-15T06:55:02Z\",\"lastWindowStartTimeUTC\":\"2021-03-04T17:22:18Z\",\"lastWindowEndTimeUTC\":\"2021-10-02T18:29:47Z\"}")
+            "{\"isWindowEnabled\":true,\"isRegionReady\":false,\"isWindowActive\":false,\"canApplyUpdates\":true,\"lastWindowStatusUpdateAtUTC\":\"2021-03-14T01:14:47Z\",\"lastWindowStartTimeUTC\":\"2021-01-18T23:13:43Z\",\"lastWindowEndTimeUTC\":\"2021-02-18T14:41:58Z\"}")
             .toObject(ManagedMaintenanceWindowStatusInner.class);
     }
 }

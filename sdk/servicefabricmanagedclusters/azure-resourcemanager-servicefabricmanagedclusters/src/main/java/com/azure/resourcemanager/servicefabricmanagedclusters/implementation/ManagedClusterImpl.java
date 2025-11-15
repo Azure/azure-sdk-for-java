@@ -356,16 +356,14 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
     public ManagedCluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getManagedClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
         return this;
     }
 
     public ManagedCluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getManagedClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateParameters, context)
-            .getValue();
+            .update(resourceGroupName, clusterName, updateParameters, context);
         return this;
     }
 

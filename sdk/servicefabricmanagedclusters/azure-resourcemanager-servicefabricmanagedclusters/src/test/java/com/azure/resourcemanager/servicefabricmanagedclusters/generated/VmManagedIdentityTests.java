@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VmManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmManagedIdentity model = BinaryData
-            .fromString("{\"userAssignedIdentities\":[\"lpqekf\",\"nkhtjsyingw\",\"qatmtdhtmdvy\",\"gikdgsz\"]}")
-            .toObject(VmManagedIdentity.class);
-        Assertions.assertEquals("lpqekf", model.userAssignedIdentities().get(0));
+        VmManagedIdentity model
+            = BinaryData.fromString("{\"userAssignedIdentities\":[\"jbypel\",\"c\",\"vhixbjxy\",\"w\"]}")
+                .toObject(VmManagedIdentity.class);
+        Assertions.assertEquals("jbypel", model.userAssignedIdentities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmManagedIdentity model = new VmManagedIdentity()
-            .withUserAssignedIdentities(Arrays.asList("lpqekf", "nkhtjsyingw", "qatmtdhtmdvy", "gikdgsz"));
+        VmManagedIdentity model
+            = new VmManagedIdentity().withUserAssignedIdentities(Arrays.asList("jbypel", "c", "vhixbjxy", "w"));
         model = BinaryData.fromObject(model).toObject(VmManagedIdentity.class);
-        Assertions.assertEquals("lpqekf", model.userAssignedIdentities().get(0));
+        Assertions.assertEquals("jbypel", model.userAssignedIdentities().get(0));
     }
 }
