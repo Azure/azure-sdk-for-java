@@ -50,7 +50,7 @@
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>6.2.0</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+      <version>4.4.8</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -122,7 +122,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>redis.clients:jedis:[6.2.0]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
+                <include>redis.clients:jedis:[4.4.8]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

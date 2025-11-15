@@ -91,7 +91,7 @@ org.postgresql:postgresql;42.3.9
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
-redis.clients:jedis;6.2.0
+redis.clients:jedis;4.4.8
 io.lettuce:lettuce-core;6.8.1.RELEASE
 org.redisson:redisson;3.51.0
 testdep_net.bytebuddy:byte-buddy;1.17.7
