@@ -111,7 +111,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
 
         if (leakDetectionDebuggingEnabled) {
-            content.touch(this);
+            content.touch("ThinClientStoreModel.unwrapToStoreResponse - refCnt: " + content.refCnt());
         }
 
         try {
@@ -123,7 +123,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                     ByteBuf payloadBuf = response.getContent();
 
                     if (payloadBuf != Unpooled.EMPTY_BUFFER && leakDetectionDebuggingEnabled) {
-                        payloadBuf.touch(this);
+                        payloadBuf.touch("ThinClientStoreModel.after RNTBD decoding - refCnt: " + payloadBuf.refCnt());
                     }
 
                     try {

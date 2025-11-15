@@ -14,7 +14,7 @@
     "-Pcircuit-breaker-read-all-read-many": "CircuitBreakerReadAllAndReadMany",
     "-Pmulti-region": "MultiRegion",
     "-Plong": "Long",
-    "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
+    "-DargLine=\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }": "",
@@ -38,7 +38,7 @@
         }
       },
       "AdditionalArgs": [
-        "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
+        "-DargLine=\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -Dazure.cosmos.directModeProtocol=Tcp\""
       ],
       "ProfileFlag": "-Pe2e",
       "Agent": {
@@ -52,7 +52,7 @@
       "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "AdditionalArgs": [
-        "-DargLine=\"-Dio.netty.handler.ssl.noOpenSsl=true\""
+        "-DargLine=\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -Dio.netty.handler.ssl.noOpenSsl=true\""
       ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
@@ -71,7 +71,7 @@
     {
       "DESIRED_CONSISTENCY": "BoundedStaleness",
       "ACCOUNT_CONSISTENCY": "Strong",
-      "AdditionalArgs": "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"",
+      "AdditionalArgs": "-DargLine=\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -Dazure.cosmos.directModeProtocol=Tcp\"",
       "ProfileFlag": "-Pe2e",
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
@@ -109,7 +109,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
+      "AdditionalArgs": "\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
@@ -125,7 +125,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pfi-multi-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
+      "AdditionalArgs": "\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
@@ -141,7 +141,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
+      "AdditionalArgs": "\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
@@ -157,7 +157,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pfi-multi-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
+      "AdditionalArgs": "\"-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

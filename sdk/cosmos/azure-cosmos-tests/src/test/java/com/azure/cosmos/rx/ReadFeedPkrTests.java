@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
@@ -49,8 +50,9 @@ public class ReadFeedPkrTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedPkrTests() {
-        client = CosmosBridgeInternal.getAsyncDocumentClient(getClientBuilder().buildAsyncClient());
-        createdDatabase = getSharedCosmosDatabase(getClientBuilder().buildAsyncClient());
+        CosmosAsyncClient cosmosAsyncClient = getClientBuilder().buildAsyncClient();
+        client = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
+        createdDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
         createdCollection = createCollection(createdDatabase,
                                              getCollectionDefinition(),
                                              new CosmosContainerRequestOptions());

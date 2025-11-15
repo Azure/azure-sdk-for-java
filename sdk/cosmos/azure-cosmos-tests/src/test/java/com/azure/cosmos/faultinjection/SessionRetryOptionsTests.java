@@ -279,7 +279,7 @@ public class SessionRetryOptionsTests extends FaultInjectionTestBase {
             }
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
-            safeCloseAsync(clientWithPreferredRegions);
+            safeClose(clientWithPreferredRegions);
         }
     }
 
@@ -354,13 +354,13 @@ public class SessionRetryOptionsTests extends FaultInjectionTestBase {
             }
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
-            safeCloseAsync(clientWithPreferredRegions);
+            safeClose(clientWithPreferredRegions);
         }
     }
 
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
-        safeCloseAsync(cosmosAsyncClient);
+        safeClose(cosmosAsyncClient);
     }
 
     private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {

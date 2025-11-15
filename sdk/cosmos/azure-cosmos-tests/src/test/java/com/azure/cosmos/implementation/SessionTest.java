@@ -78,21 +78,26 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setOfferThroughput(20000); //Making sure we have 4 physical partitions
 
-        createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.getId(),
+        AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
+        try {
+            createdCollection = createCollection(asynClient, createdDatabase.getId(),
                 collection, requestOptions);
-        houseKeepingClient = clientBuilder().build();
-        connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
+            houseKeepingClient = clientBuilder().build();
+            connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
 
-        if (connectionMode == ConnectionMode.DIRECT) {
-            spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
-        } else {
-            // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
-            ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
-            connectionPolicy.setMultipleWriteRegionsEnabled(true);
-            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+            if (connectionMode == ConnectionMode.DIRECT) {
+                spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
+            } else {
+                // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
+                ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
+                connectionPolicy.setMultipleWriteRegionsEnabled(true);
+                spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+            }
+            options = new RequestOptions();
+            options.setPartitionKey(PartitionKey.NONE);
+        } finally {
+            asynClient.close();
         }
-        options = new RequestOptions();
-        options.setPartitionKey(PartitionKey.NONE);
     }
 
     @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -211,6 +216,8 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for cross partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
+
+        safeClose(dummyState);
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
@@ -227,6 +234,7 @@ public class SessionTest extends TestSuiteBase {
         List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased), true).block();
         queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setFeedRange(feedRanges.get(0));
+        safeClose(dummyState);
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
@@ -241,6 +249,7 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for readAll with partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
+        safeClose(dummyState);
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.ReadFeed,
@@ -260,6 +269,7 @@ public class SessionTest extends TestSuiteBase {
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
 
+        safeClose(dummyState);
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.ReadFeed,
@@ -278,10 +288,12 @@ public class SessionTest extends TestSuiteBase {
         CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         cosmosItemIdentities.add(cosmosItemIdentity);
+        safeClose(dummyState);
+        dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient);
         spyClient.readMany(
             cosmosItemIdentities,
             getCollectionLink(isNameBased),
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient),
+            dummyState,
             InternalObjectNode.class).block();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
@@ -317,6 +329,8 @@ public class SessionTest extends TestSuiteBase {
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
             assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
         }
+
+        safeClose(dummyState);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")

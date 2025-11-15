@@ -81,11 +81,14 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
     @BeforeClass(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
-        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
-        GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
+        DatabaseAccount databaseAccount;
 
-        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        try (CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient()) {
+            AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
+            GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
+
+            databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        }
 
         this.accountLevelReadableLocationContext
             = getAccountLevelLocationContext(databaseAccount, false);

@@ -42,13 +42,13 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
                 }
             });
 
-            super.channelRead(ctx, msg);
+            ctx.fireChannelRead(msg);
         } else if (msg instanceof Http2SettingsAckFrame) {
             ReferenceCountUtil.release(msg);
         } else if (msg instanceof Http2SettingsFrame) {
             Http2SettingsFrame settingsFrame = (Http2SettingsFrame)msg;
             logger.trace("SETTINGS retrieved - {}", settingsFrame.settings());
-            super.channelRead(ctx, msg);
+            ctx.fireChannelRead(msg);
         } else {
             // Pass the message to the next handler in the pipeline
             ctx.fireChannelRead(msg);

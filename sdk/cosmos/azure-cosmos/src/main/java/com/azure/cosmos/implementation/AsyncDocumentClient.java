@@ -329,7 +329,14 @@ public interface AsyncDocumentClient {
                     operationPolicies,
                     isPerPartitionAutomaticFailoverEnabled);
 
-            client.init(state, null);
+            try {
+                client.init(state, null);
+            } catch (Throwable t) {
+                client.close();
+                // TODO - should we map this to a CosmosException?
+                throw t;
+            }
+
             return client;
         }
 

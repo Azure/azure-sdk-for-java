@@ -328,41 +328,42 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
-        CosmosClient testClient = new CosmosClientBuilder()
+        try (CosmosClient testClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
             .userAgentSuffix(USER_AGENT_SUFFIX_GATEWAY_CLIENT)
             .gatewayMode()
-            .buildClient();
+            .buildClient()) {
 
-        CosmosContainer testContainer =
-            testClient
-                .getDatabase(cosmosAsyncContainer.getDatabase().getId())
-                .getContainer(cosmosAsyncContainer.getId());
-        // Adding a delay to allow async VM instance metadata initialization to complete
-        Thread.sleep(2000);
-        InternalObjectNode internalObjectNode = getInternalObjectNode();
-        CosmosItemResponse<InternalObjectNode> createResponse = testContainer.createItem(internalObjectNode);
-        String diagnostics = createResponse.getDiagnostics().toString();
-        logger.info("DIAGNOSTICS: {}", diagnostics);
-        assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
-        assertThat(diagnostics).contains("gatewayStatisticsList");
-        assertThat(diagnostics).contains("\"operationType\":\"Create\"");
-        assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-        assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
-        assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-        assertThat(diagnostics).containsAnyOf(
-            "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
-            "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
-        );
-        assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
-        assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
-        assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
-        assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
-        validateTransportRequestTimelineGateway(diagnostics);
-        validateRegionContacted(createResponse.getDiagnostics(), gatewayClient.asyncClient());
-        isValidJSON(diagnostics);
+            CosmosContainer testContainer =
+                testClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+            // Adding a delay to allow async VM instance metadata initialization to complete
+            Thread.sleep(2000);
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = testContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+            logger.info("DIAGNOSTICS: {}", diagnostics);
+            assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+            assertThat(diagnostics).contains("gatewayStatisticsList");
+            assertThat(diagnostics).contains("\"operationType\":\"Create\"");
+            assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
+            assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
+            assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
+            assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
+            assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
+            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            validateTransportRequestTimelineGateway(diagnostics);
+            validateRegionContacted(createResponse.getDiagnostics(), gatewayClient.asyncClient());
+            isValidJSON(diagnostics);
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
@@ -474,31 +475,32 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void directDiagnostics() throws Exception {
-        CosmosClient testClient = new CosmosClientBuilder()
+        try (CosmosClient testClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
             .userAgentSuffix(USER_AGENT_SUFFIX_DIRECT_CLIENT)
             .directMode()
-            .buildClient();
+            .buildClient()) {
 
-        CosmosContainer testContainer =
-            testClient
-                .getDatabase(cosmosAsyncContainer.getDatabase().getId())
-                .getContainer(cosmosAsyncContainer.getId());
+            CosmosContainer testContainer =
+                testClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
 
-        InternalObjectNode internalObjectNode = getInternalObjectNode();
-        CosmosItemResponse<InternalObjectNode> createResponse = testContainer.createItem(internalObjectNode);
-        validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
-        validateChannelAcquisitionContext(createResponse.getDiagnostics(), false);
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = testContainer.createItem(internalObjectNode);
+            validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
+            validateChannelAcquisitionContext(createResponse.getDiagnostics(), false);
 
-        // validate that on failed operation request timeline is populated
-        try {
-            testContainer.createItem(internalObjectNode);
-            fail("expected 409");
-        } catch (CosmosException e) {
-            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
-            validateChannelAcquisitionContext(e.getDiagnostics(), false);
+            // validate that on failed operation request timeline is populated
+            try {
+                testContainer.createItem(internalObjectNode);
+                fail("expected 409");
+            } catch (CosmosException e) {
+                validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
+                validateChannelAcquisitionContext(e.getDiagnostics(), false);
+            }
         }
     }
 
@@ -796,7 +798,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         deleteCollection(testcontainer);
     }
 
-    @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void directDiagnosticsOnCancelledOperation(OperationType operationType) {
 
         CosmosAsyncClient client = null;
@@ -1808,12 +1810,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document),
                 new Uri(new URI("http://localhost/replica-path").toString())
             );
-            RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
-            RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
-            record.completeExceptionally(exception);
-            // validate record.toString() will work correctly
-            String recordString = record.toString();
-            assertThat(recordString.contains("NotFoundException")).isTrue();
+            try (RntbdRequestTimer requestTimer =
+                     new RntbdRequestTimer(5000, 5000)) {
+
+                RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
+                record.completeExceptionally(exception);
+                // validate record.toString() will work correctly
+                String recordString = record.toString();
+                assertThat(recordString.contains("NotFoundException")).isTrue();
+            }
         } finally {
             safeClose(client);
         }

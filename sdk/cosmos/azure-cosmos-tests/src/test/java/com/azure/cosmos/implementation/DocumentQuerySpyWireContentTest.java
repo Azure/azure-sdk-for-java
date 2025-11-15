@@ -95,22 +95,27 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        Flux<FeedResponse<Document>> queryObservable = client
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        try {
+            Flux<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(
                     collectionLink,
                     query,
-                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
+                    dummyState,
                     Document.class);
 
-        List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
-            .collectList().block();
+            List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
+                                                    .collectList().block();
 
-        assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
+            assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
 
-        List<HttpRequest> requests = client.getCapturedRequests();
+            List<HttpRequest> requests = client.getCapturedRequests();
 
-        for(HttpRequest req: requests) {
-            validateRequestHasContinuationTokenLimit(req, options.getResponseContinuationTokenLimitInKb());
+            for (HttpRequest req : requests) {
+                validateRequestHasContinuationTokenLimit(req, options.getResponseContinuationTokenLimitInKb());
+            }
+        } finally {
+            safeClose(dummyState);
         }
     }
 
@@ -142,6 +147,11 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
+        SpyClientUnderTestFactory.ClientUnderTest oldSnapshot = client;
+        if (oldSnapshot != null) {
+            oldSnapshot.close();
+        }
+
         client = new SpyClientBuilder(this.clientBuilder()).build();
 
         createdDatabase = SHARED_DATABASE;
@@ -172,13 +182,17 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             client
         );
 
-        // do the query once to ensure the collection is cached.
-        client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
-            .then().block();
+        try {
+            // do the query once to ensure the collection is cached.
+            client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
+                  .then().block();
 
-        // do the query once to ensure the collection is cached.
-        client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
-              .then().block();
+            // do the query once to ensure the collection is cached.
+            client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
+                  .then().block();
+        } finally {
+            safeClose(state);
+        }
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
