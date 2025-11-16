@@ -108,9 +108,7 @@ public class StructuredMessageEncoder {
         return buffer.array();
     }
 
-    private byte[] generateSegmentHeader() {
-        int segmentContentSize = Math.min(segmentSize, contentLength - currentContentOffset);
-        // 2 byte number, 8 byte size
+    private byte[] generateSegmentHeader(int segmentContentSize) {
         ByteBuffer buffer = ByteBuffer.allocate(getSegmentHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short) currentSegmentNumber);
         buffer.putLong(segmentContentSize);
@@ -155,7 +153,9 @@ public class StructuredMessageEncoder {
                 // if we are at the beginning of a segment's content, encode segment header
                 if (currentSegmentOffset == 0) {
                     incrementCurrentSegment();
-                    buffers.add(ByteBuffer.wrap(generateSegmentHeader()));
+                    // Calculate actual segment size based on remaining content
+                    int actualSegmentSize = Math.min(segmentSize, contentLength - currentContentOffset);
+                    buffers.add(ByteBuffer.wrap(generateSegmentHeader(actualSegmentSize)));
                 }
 
                 buffers.add(encodeSegmentContent(unencodedBuffer));
