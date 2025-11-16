@@ -159,6 +159,29 @@ public final class NewRelicMonitorResourceUpdate implements JsonSerializable<New
     }
 
     /**
+     * Get the saaSData property: SaaS details.
+     * 
+     * @return the saaSData value.
+     */
+    public SaaSData saaSData() {
+        return this.innerProperties() == null ? null : this.innerProperties().saaSData();
+    }
+
+    /**
+     * Set the saaSData property: SaaS details.
+     * 
+     * @param saaSData the saaSData value to set.
+     * @return the NewRelicMonitorResourceUpdate object itself.
+     */
+    public NewRelicMonitorResourceUpdate withSaaSData(SaaSData saaSData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NewRelicMonitorResourceUpdateProperties();
+        }
+        this.innerProperties().withSaaSData(saaSData);
+        return this;
+    }
+
+    /**
      * Get the orgCreationSource property: Source of org creation.
      * 
      * @return the orgCreationSource value.

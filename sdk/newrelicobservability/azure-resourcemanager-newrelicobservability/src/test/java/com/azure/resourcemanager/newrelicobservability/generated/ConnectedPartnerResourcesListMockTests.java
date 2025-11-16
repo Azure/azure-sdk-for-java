@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.ConnectedPartnerResourcesListFormat;
@@ -22,21 +22,21 @@ public final class ConnectedPartnerResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountName\":\"nqxwbp\",\"accountId\":\"ulpiuj\",\"azureResourceId\":\"asipqiio\",\"location\":\"uqerpqlpqwc\"}}]}";
+            = "{\"value\":[{\"properties\":{\"accountName\":\"zk\",\"accountId\":\"oqreyfkzikfjawn\",\"azureResourceId\":\"ivx\",\"location\":\"zel\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ConnectedPartnerResourcesListFormat> response = manager.connectedPartnerResources()
-            .list("piexpbtgiw", "wo", "nwashrtd", com.azure.core.util.Context.NONE);
+        PagedIterable<ConnectedPartnerResourcesListFormat> response
+            = manager.connectedPartnerResources().list("himdbl", "gwimfn", "hfjx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nqxwbp", response.iterator().next().properties().accountName());
-        Assertions.assertEquals("ulpiuj", response.iterator().next().properties().accountId());
-        Assertions.assertEquals("asipqiio", response.iterator().next().properties().azureResourceId());
-        Assertions.assertEquals("uqerpqlpqwc", response.iterator().next().properties().location());
+        Assertions.assertEquals("zk", response.iterator().next().properties().accountName());
+        Assertions.assertEquals("oqreyfkzikfjawn", response.iterator().next().properties().accountId());
+        Assertions.assertEquals("ivx", response.iterator().next().properties().azureResourceId());
+        Assertions.assertEquals("zel", response.iterator().next().properties().location());
     }
 }

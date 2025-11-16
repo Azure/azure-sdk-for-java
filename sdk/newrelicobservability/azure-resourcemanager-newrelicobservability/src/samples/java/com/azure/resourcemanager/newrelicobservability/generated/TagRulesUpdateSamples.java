@@ -19,7 +19,8 @@ import java.util.Arrays;
  */
 public final class TagRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
      * TagRules_Update_MaximumSet_Gen.json
      */
     /**
@@ -49,7 +50,8 @@ public final class TagRulesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
      * TagRules_Update_MinimumSet_Gen.json
      */
     /**

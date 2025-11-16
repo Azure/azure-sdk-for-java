@@ -6,8 +6,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.MetricRulesInner;
@@ -26,49 +26,45 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class MonitoredSubscriptionsCreateorUpdateMockTests {
+public final class MonitoredSubscriptionsCreateOrUpdateMockTests {
     @Test
-    public void testCreateorUpdate() throws Exception {
+    public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"patchOperation\":\"Active\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"zkoj\",\"status\":\"InProgress\",\"error\":\"zfoqouicybxar\",\"tagRules\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{},\"metricRules\":{}}}],\"provisioningState\":\"Succeeded\"},\"id\":\"ciqopidoa\",\"name\":\"ciodhkhaz\",\"type\":\"khnzbonlw\"}";
+            = "{\"properties\":{\"patchOperation\":\"DeleteComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"ujhemmsbvdkcrodt\",\"status\":\"Deleting\",\"error\":\"wj\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"jvefkdlfoakggkfp\",\"status\":\"InProgress\",\"error\":\"wpu\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"s\",\"status\":\"InProgress\",\"error\":\"jnsjervtiagxsd\",\"tagRules\":{\"provisioningState\":\"Updating\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"bzkfzbeyvpn\",\"status\":\"Deleting\",\"error\":\"invkjjxdxrbuu\",\"tagRules\":{\"provisioningState\":\"Updating\",\"logRules\":{},\"metricRules\":{}}}],\"provisioningState\":\"Succeeded\"},\"id\":\"lw\",\"name\":\"aztz\",\"type\":\"ofncckwyfzqwhxxb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MonitoredSubscriptionProperties response = manager.monitoredSubscriptions()
             .define(ConfigurationName.DEFAULT)
-            .withExistingMonitor("pfuvglsbjjca", "vxb")
-            .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.DELETE_COMPLETE)
+            .withExistingMonitor("byxbaaabjy", "ayffim")
+            .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ADD_BEGIN)
                 .withMonitoredSubscriptionList(Arrays.asList(
-                    new MonitoredSubscriptionInner().withSubscriptionId("cormr")
-                        .withStatus(Status.DELETING)
-                        .withError("vcofudfl")
-                        .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
-                            .withMetricRules(new MetricRulesInner())),
-                    new MonitoredSubscriptionInner().withSubscriptionId("dknnqvsazn")
+                    new MonitoredSubscriptionInner().withSubscriptionId("gsexne")
                         .withStatus(Status.IN_PROGRESS)
-                        .withError("rudsg")
+                        .withError("wnwmewzs")
                         .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
                             .withMetricRules(new MetricRulesInner())),
-                    new MonitoredSubscriptionInner().withSubscriptionId("grauwjuetaebur")
-                        .withStatus(Status.ACTIVE)
-                        .withError("ovsm")
+                    new MonitoredSubscriptionInner().withSubscriptionId("oibjudpfrxtrthz")
+                        .withStatus(Status.IN_PROGRESS)
+                        .withError("dwkqbrq")
                         .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
                             .withMetricRules(new MetricRulesInner())),
-                    new MonitoredSubscriptionInner().withSubscriptionId("q")
-                        .withStatus(Status.ACTIVE)
-                        .withError("ifrvtpu")
+                    new MonitoredSubscriptionInner().withSubscriptionId("xiilivpdtiirqt")
+                        .withStatus(Status.FAILED)
+                        .withError("xoruzfgsquyfxrx")
                         .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
                             .withMetricRules(new MetricRulesInner())))))
             .create();
 
-        Assertions.assertEquals(PatchOperation.ACTIVE, response.properties().patchOperation());
-        Assertions.assertEquals("zkoj", response.properties().monitoredSubscriptionList().get(0).subscriptionId());
-        Assertions.assertEquals(Status.IN_PROGRESS, response.properties().monitoredSubscriptionList().get(0).status());
-        Assertions.assertEquals("zfoqouicybxar", response.properties().monitoredSubscriptionList().get(0).error());
+        Assertions.assertEquals(PatchOperation.DELETE_COMPLETE, response.properties().patchOperation());
+        Assertions.assertEquals("ujhemmsbvdkcrodt",
+            response.properties().monitoredSubscriptionList().get(0).subscriptionId());
+        Assertions.assertEquals(Status.DELETING, response.properties().monitoredSubscriptionList().get(0).status());
+        Assertions.assertEquals("wj", response.properties().monitoredSubscriptionList().get(0).error());
     }
 }

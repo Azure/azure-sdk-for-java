@@ -15,31 +15,28 @@ public final class OrganizationsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationsListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"organizationId\":\"nqpjwnzlljfmpp\",\"organizationName\":\"bvmgxsabkyqduuji\",\"billingSource\":\"NEWRELIC\"},\"id\":\"zdzevndh\",\"name\":\"rwpdappdsbdkvwrw\",\"type\":\"feusnhut\"},{\"properties\":{\"organizationId\":\"tmrldhugjzzdatq\",\"organizationName\":\"oc\",\"billingSource\":\"AZURE\"},\"id\":\"blgphuticn\",\"name\":\"vkaozwyiftyhxhur\",\"type\":\"k\"},{\"properties\":{\"organizationId\":\"xolniwpwcukjfk\",\"organizationName\":\"awxklr\",\"billingSource\":\"NEWRELIC\"},\"id\":\"ckbasyypndd\",\"name\":\"sgcbac\",\"type\":\"hejkotynqgou\"}],\"nextLink\":\"ndlik\"}")
+            "{\"value\":[{\"properties\":{\"organizationId\":\"ryplwckbasyypn\",\"organizationName\":\"hsgcbacphejkot\",\"billingSource\":\"AZURE\"},\"id\":\"oulzndlikwyq\",\"name\":\"gfgibm\",\"type\":\"dgak\"},{\"properties\":{\"organizationId\":\"rxybz\",\"organizationName\":\"e\",\"billingSource\":\"AZURE\"},\"id\":\"bciqfouflm\",\"name\":\"nkzsmodmglou\",\"type\":\"pbkwtmu\"}],\"nextLink\":\"uqktap\"}")
             .toObject(OrganizationsListResponse.class);
-        Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).organizationId());
-        Assertions.assertEquals("bvmgxsabkyqduuji", model.value().get(0).organizationName());
-        Assertions.assertEquals(BillingSource.NEWRELIC, model.value().get(0).billingSource());
-        Assertions.assertEquals("ndlik", model.nextLink());
+        Assertions.assertEquals("ryplwckbasyypn", model.value().get(0).organizationId());
+        Assertions.assertEquals("hsgcbacphejkot", model.value().get(0).organizationName());
+        Assertions.assertEquals(BillingSource.AZURE, model.value().get(0).billingSource());
+        Assertions.assertEquals("uqktap", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OrganizationsListResponse model = new OrganizationsListResponse().withValue(Arrays.asList(
-            new OrganizationResourceInner().withOrganizationId("nqpjwnzlljfmpp")
-                .withOrganizationName("bvmgxsabkyqduuji")
-                .withBillingSource(BillingSource.NEWRELIC),
-            new OrganizationResourceInner().withOrganizationId("tmrldhugjzzdatq")
-                .withOrganizationName("oc")
+            new OrganizationResourceInner().withOrganizationId("ryplwckbasyypn")
+                .withOrganizationName("hsgcbacphejkot")
                 .withBillingSource(BillingSource.AZURE),
-            new OrganizationResourceInner().withOrganizationId("xolniwpwcukjfk")
-                .withOrganizationName("awxklr")
-                .withBillingSource(BillingSource.NEWRELIC)))
-            .withNextLink("ndlik");
+            new OrganizationResourceInner().withOrganizationId("rxybz")
+                .withOrganizationName("e")
+                .withBillingSource(BillingSource.AZURE)))
+            .withNextLink("uqktap");
         model = BinaryData.fromObject(model).toObject(OrganizationsListResponse.class);
-        Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).organizationId());
-        Assertions.assertEquals("bvmgxsabkyqduuji", model.value().get(0).organizationName());
-        Assertions.assertEquals(BillingSource.NEWRELIC, model.value().get(0).billingSource());
-        Assertions.assertEquals("ndlik", model.nextLink());
+        Assertions.assertEquals("ryplwckbasyypn", model.value().get(0).organizationId());
+        Assertions.assertEquals("hsgcbacphejkot", model.value().get(0).organizationName());
+        Assertions.assertEquals(BillingSource.AZURE, model.value().get(0).billingSource());
+        Assertions.assertEquals("uqktap", model.nextLink());
     }
 }

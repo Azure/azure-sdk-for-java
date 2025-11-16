@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.newrelicobservability.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.MonitoredSubscriptionPropertiesInner;
 import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
@@ -30,6 +31,10 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
 
     public SubscriptionList properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -59,14 +64,14 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
     public MonitoredSubscriptionProperties create() {
         this.innerObject = serviceManager.serviceClient()
             .getMonitoredSubscriptions()
-            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MonitoredSubscriptionProperties create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getMonitoredSubscriptions()
-            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 

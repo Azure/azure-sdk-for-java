@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.newrelicobservability.fluent.MonitorsClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.AppServiceInfoInner;
+import com.azure.resourcemanager.newrelicobservability.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.LinkedResourceInner;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.MetricRulesInner;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.MetricsStatusResponseInner;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.VMInfoInner
 import com.azure.resourcemanager.newrelicobservability.models.AppServiceInfo;
 import com.azure.resourcemanager.newrelicobservability.models.AppServicesGetRequest;
 import com.azure.resourcemanager.newrelicobservability.models.HostsGetRequest;
+import com.azure.resourcemanager.newrelicobservability.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.newrelicobservability.models.LinkedResource;
 import com.azure.resourcemanager.newrelicobservability.models.MetricRules;
 import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
@@ -28,8 +30,9 @@ import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusReque
 import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusResponse;
 import com.azure.resourcemanager.newrelicobservability.models.MonitoredResource;
 import com.azure.resourcemanager.newrelicobservability.models.Monitors;
-import com.azure.resourcemanager.newrelicobservability.models.MonitorsSwitchBillingResponse;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorResource;
+import com.azure.resourcemanager.newrelicobservability.models.ResubscribeProperties;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 import com.azure.resourcemanager.newrelicobservability.models.VMExtensionPayload;
 import com.azure.resourcemanager.newrelicobservability.models.VMInfo;
@@ -89,12 +92,12 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public void delete(String resourceGroupName, String userEmail, String monitorName) {
-        this.serviceClient().delete(resourceGroupName, userEmail, monitorName);
+    public void delete(String resourceGroupName, String monitorName, String userEmail) {
+        this.serviceClient().delete(resourceGroupName, monitorName, userEmail);
     }
 
-    public void delete(String resourceGroupName, String userEmail, String monitorName, Context context) {
-        this.serviceClient().delete(resourceGroupName, userEmail, monitorName, context);
+    public void delete(String resourceGroupName, String monitorName, String userEmail, Context context) {
+        this.serviceClient().delete(resourceGroupName, monitorName, userEmail, context);
     }
 
     public Response<MetricRules> getMetricRulesWithResponse(String resourceGroupName, String monitorName,
@@ -141,6 +144,47 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<LatestLinkedSaaSResponseInner> inner
+            = this.serviceClient().latestLinkedSaaSWithResponse(resourceGroupName, monitorName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String monitorName) {
+        LatestLinkedSaaSResponseInner inner = this.serviceClient().latestLinkedSaaS(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new LatestLinkedSaaSResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public NewRelicMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
+        NewRelicMonitorResourceInner inner = this.serviceClient().linkSaaS(resourceGroupName, monitorName, body);
+        if (inner != null) {
+            return new NewRelicMonitorResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public NewRelicMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body,
+        Context context) {
+        NewRelicMonitorResourceInner inner
+            = this.serviceClient().linkSaaS(resourceGroupName, monitorName, body, context);
+        if (inner != null) {
+            return new NewRelicMonitorResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName,
         AppServicesGetRequest request) {
         PagedIterable<AppServiceInfoInner> inner
@@ -155,9 +199,76 @@ public final class MonitorsImpl implements Monitors {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
     }
 
+    public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request) {
+        PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName, request);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request,
+        Context context) {
+        PagedIterable<VMInfoInner> inner
+            = this.serviceClient().listHosts(resourceGroupName, monitorName, request, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName) {
+        PagedIterable<LinkedResourceInner> inner
+            = this.serviceClient().listLinkedResources(resourceGroupName, monitorName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName,
+        Context context) {
+        PagedIterable<LinkedResourceInner> inner
+            = this.serviceClient().listLinkedResources(resourceGroupName, monitorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName) {
+        PagedIterable<MonitoredResourceInner> inner
+            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context) {
+        PagedIterable<MonitoredResourceInner> inner
+            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> refreshIngestionKeyWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        return this.serviceClient().refreshIngestionKeyWithResponse(resourceGroupName, monitorName, context);
+    }
+
+    public void refreshIngestionKey(String resourceGroupName, String monitorName) {
+        this.serviceClient().refreshIngestionKey(resourceGroupName, monitorName);
+    }
+
+    public NewRelicMonitorResource resubscribe(String resourceGroupName, String monitorName) {
+        NewRelicMonitorResourceInner inner = this.serviceClient().resubscribe(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new NewRelicMonitorResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public NewRelicMonitorResource resubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body,
+        Context context) {
+        NewRelicMonitorResourceInner inner
+            = this.serviceClient().resubscribe(resourceGroupName, monitorName, body, context);
+        if (inner != null) {
+            return new NewRelicMonitorResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Response<NewRelicMonitorResource> switchBillingWithResponse(String resourceGroupName, String monitorName,
         SwitchBillingRequest request, Context context) {
-        MonitorsSwitchBillingResponse inner
+        Response<NewRelicMonitorResourceInner> inner
             = this.serviceClient().switchBillingWithResponse(resourceGroupName, monitorName, request, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -176,44 +287,6 @@ public final class MonitorsImpl implements Monitors {
         } else {
             return null;
         }
-    }
-
-    public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request) {
-        PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName, request);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request,
-        Context context) {
-        PagedIterable<VMInfoInner> inner
-            = this.serviceClient().listHosts(resourceGroupName, monitorName, request, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoredResourceInner> inner
-            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
-        Context context) {
-        PagedIterable<MonitoredResourceInner> inner
-            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName) {
-        PagedIterable<LinkedResourceInner> inner
-            = this.serviceClient().listLinkedResources(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName,
-        Context context) {
-        PagedIterable<LinkedResourceInner> inner
-            = this.serviceClient().listLinkedResources(resourceGroupName, monitorName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedResourceImpl(inner1, this.manager()));
     }
 
     public Response<VMExtensionPayload> vmHostPayloadWithResponse(String resourceGroupName, String monitorName,

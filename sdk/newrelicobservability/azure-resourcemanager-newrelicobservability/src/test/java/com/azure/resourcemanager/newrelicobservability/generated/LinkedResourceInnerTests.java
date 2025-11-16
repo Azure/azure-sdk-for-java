@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedResourceInner model = BinaryData.fromString("{\"id\":\"hkfpbs\"}").toObject(LinkedResourceInner.class);
-        Assertions.assertEquals("hkfpbs", model.id());
+        LinkedResourceInner model = BinaryData.fromString("{\"id\":\"gygev\"}").toObject(LinkedResourceInner.class);
+        Assertions.assertEquals("gygev", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedResourceInner model = new LinkedResourceInner().withId("hkfpbs");
+        LinkedResourceInner model = new LinkedResourceInner().withId("gygev");
         model = BinaryData.fromObject(model).toObject(LinkedResourceInner.class);
-        Assertions.assertEquals("hkfpbs", model.id());
+        Assertions.assertEquals("gygev", model.id());
     }
 }

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
  */
 public final class MonitoredSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
      * MonitoredSubscriptions_Delete.json
      */
     /**

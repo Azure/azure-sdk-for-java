@@ -21,48 +21,47 @@ public final class MonitoringTagRulesPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringTagRulesPropertiesInner model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[{\"name\":\"kpoc\",\"value\":\"azyxoegukg\",\"action\":\"Include\"},{\"name\":\"ucgygevqz\",\"value\":\"yp\",\"action\":\"Exclude\"},{\"name\":\"izcdrqjsd\",\"value\":\"dnfyhxdeoejzicwi\",\"action\":\"Include\"}]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"ishc\",\"value\":\"hajdeyeamdpha\",\"action\":\"Exclude\"},{\"name\":\"buxwgip\",\"value\":\"onowk\",\"action\":\"Exclude\"},{\"name\":\"ankixzbinjeput\",\"value\":\"rywn\",\"action\":\"Exclude\"}],\"userEmail\":\"ftiyqzrnkcq\"}}")
+            "{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"lmuzy\",\"value\":\"aepdkzjanc\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"xbniwdjs\",\"value\":\"tsdbpgn\",\"action\":\"Include\"},{\"name\":\"hpzxbzpfzab\",\"value\":\"cuh\",\"action\":\"Include\"},{\"name\":\"tyq\",\"value\":\"lbbovplw\",\"action\":\"Exclude\"},{\"name\":\"gy\",\"value\":\"uosvmkfssxqukk\",\"action\":\"Include\"}],\"userEmail\":\"mg\"}}")
             .toObject(MonitoringTagRulesPropertiesInner.class);
-        Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
-        Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED, model.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(SendActivityLogsStatus.DISABLED, model.logRules().sendActivityLogs());
-        Assertions.assertEquals("kpoc", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("azyxoegukg", model.logRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
+        Assertions.assertEquals(SendAadLogsStatus.ENABLED, model.logRules().sendAadLogs());
+        Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, model.logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(SendActivityLogsStatus.ENABLED, model.logRules().sendActivityLogs());
+        Assertions.assertEquals("lmuzy", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("aepdkzjanc", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.logRules().filteringTags().get(0).action());
         Assertions.assertEquals(SendMetricsStatus.DISABLED, model.metricRules().sendMetrics());
-        Assertions.assertEquals("ishc", model.metricRules().filteringTags().get(0).name());
-        Assertions.assertEquals("hajdeyeamdpha", model.metricRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE, model.metricRules().filteringTags().get(0).action());
-        Assertions.assertEquals("ftiyqzrnkcq", model.metricRules().userEmail());
+        Assertions.assertEquals("xbniwdjs", model.metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("tsdbpgn", model.metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals("mg", model.metricRules().userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoringTagRulesPropertiesInner model = new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules()
-            .withSendAadLogs(SendAadLogsStatus.DISABLED)
-            .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-            .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-            .withFilteringTags(Arrays.asList(
-                new FilteringTag().withName("kpoc").withValue("azyxoegukg").withAction(TagAction.INCLUDE),
-                new FilteringTag().withName("ucgygevqz").withValue("yp").withAction(TagAction.EXCLUDE),
-                new FilteringTag().withName("izcdrqjsd").withValue("dnfyhxdeoejzicwi").withAction(TagAction.INCLUDE))))
+        MonitoringTagRulesPropertiesInner model = new MonitoringTagRulesPropertiesInner()
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("lmuzy").withValue("aepdkzjanc").withAction(TagAction.EXCLUDE))))
             .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
                 .withFilteringTags(Arrays.asList(
-                    new FilteringTag().withName("ishc").withValue("hajdeyeamdpha").withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("buxwgip").withValue("onowk").withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("ankixzbinjeput").withValue("rywn").withAction(TagAction.EXCLUDE)))
-                .withUserEmail("ftiyqzrnkcq"));
+                    new FilteringTag().withName("xbniwdjs").withValue("tsdbpgn").withAction(TagAction.INCLUDE),
+                    new FilteringTag().withName("hpzxbzpfzab").withValue("cuh").withAction(TagAction.INCLUDE),
+                    new FilteringTag().withName("tyq").withValue("lbbovplw").withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("gy").withValue("uosvmkfssxqukk").withAction(TagAction.INCLUDE)))
+                .withUserEmail("mg"));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesPropertiesInner.class);
-        Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
-        Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED, model.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(SendActivityLogsStatus.DISABLED, model.logRules().sendActivityLogs());
-        Assertions.assertEquals("kpoc", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("azyxoegukg", model.logRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
+        Assertions.assertEquals(SendAadLogsStatus.ENABLED, model.logRules().sendAadLogs());
+        Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, model.logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(SendActivityLogsStatus.ENABLED, model.logRules().sendActivityLogs());
+        Assertions.assertEquals("lmuzy", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("aepdkzjanc", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.logRules().filteringTags().get(0).action());
         Assertions.assertEquals(SendMetricsStatus.DISABLED, model.metricRules().sendMetrics());
-        Assertions.assertEquals("ishc", model.metricRules().filteringTags().get(0).name());
-        Assertions.assertEquals("hajdeyeamdpha", model.metricRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE, model.metricRules().filteringTags().get(0).action());
-        Assertions.assertEquals("ftiyqzrnkcq", model.metricRules().userEmail());
+        Assertions.assertEquals("xbniwdjs", model.metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("tsdbpgn", model.metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals("mg", model.metricRules().userEmail());
     }
 }

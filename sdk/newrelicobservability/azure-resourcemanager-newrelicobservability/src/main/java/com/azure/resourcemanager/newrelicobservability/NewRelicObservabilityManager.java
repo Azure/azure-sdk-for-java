@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.newrelicobservability.fluent.NewRelicObservability;
 import com.azure.resourcemanager.newrelicobservability.implementation.AccountsImpl;
@@ -33,6 +34,7 @@ import com.azure.resourcemanager.newrelicobservability.implementation.NewRelicOb
 import com.azure.resourcemanager.newrelicobservability.implementation.OperationsImpl;
 import com.azure.resourcemanager.newrelicobservability.implementation.OrganizationsImpl;
 import com.azure.resourcemanager.newrelicobservability.implementation.PlansImpl;
+import com.azure.resourcemanager.newrelicobservability.implementation.SaaSImpl;
 import com.azure.resourcemanager.newrelicobservability.implementation.TagRulesImpl;
 import com.azure.resourcemanager.newrelicobservability.models.Accounts;
 import com.azure.resourcemanager.newrelicobservability.models.BillingInfoes;
@@ -42,11 +44,13 @@ import com.azure.resourcemanager.newrelicobservability.models.Monitors;
 import com.azure.resourcemanager.newrelicobservability.models.Operations;
 import com.azure.resourcemanager.newrelicobservability.models.Organizations;
 import com.azure.resourcemanager.newrelicobservability.models.Plans;
+import com.azure.resourcemanager.newrelicobservability.models.SaaS;
 import com.azure.resourcemanager.newrelicobservability.models.TagRules;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -58,6 +62,8 @@ public final class NewRelicObservabilityManager {
 
     private Accounts accounts;
 
+    private SaaS saaS;
+
     private Monitors monitors;
 
     private Organizations organizations;
@@ -68,9 +74,9 @@ public final class NewRelicObservabilityManager {
 
     private ConnectedPartnerResources connectedPartnerResources;
 
-    private TagRules tagRules;
-
     private MonitoredSubscriptions monitoredSubscriptions;
+
+    private TagRules tagRules;
 
     private final NewRelicObservability clientObject;
 
@@ -125,6 +131,9 @@ public final class NewRelicObservabilityManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-newrelicobservability.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -232,12 +241,14 @@ public final class NewRelicObservabilityManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.newrelicobservability")
                 .append("/")
-                .append("1.2.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -308,6 +319,18 @@ public final class NewRelicObservabilityManager {
     }
 
     /**
+     * Gets the resource collection API of SaaS.
+     * 
+     * @return Resource collection API of SaaS.
+     */
+    public SaaS saaS() {
+        if (this.saaS == null) {
+            this.saaS = new SaaSImpl(clientObject.getSaaS(), this);
+        }
+        return saaS;
+    }
+
+    /**
      * Gets the resource collection API of Monitors. It manages NewRelicMonitorResource.
      * 
      * @return Resource collection API of Monitors.
@@ -369,18 +392,6 @@ public final class NewRelicObservabilityManager {
     }
 
     /**
-     * Gets the resource collection API of TagRules. It manages TagRule.
-     * 
-     * @return Resource collection API of TagRules.
-     */
-    public TagRules tagRules() {
-        if (this.tagRules == null) {
-            this.tagRules = new TagRulesImpl(clientObject.getTagRules(), this);
-        }
-        return tagRules;
-    }
-
-    /**
      * Gets the resource collection API of MonitoredSubscriptions. It manages MonitoredSubscriptionProperties.
      * 
      * @return Resource collection API of MonitoredSubscriptions.
@@ -391,6 +402,18 @@ public final class NewRelicObservabilityManager {
                 = new MonitoredSubscriptionsImpl(clientObject.getMonitoredSubscriptions(), this);
         }
         return monitoredSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of TagRules. It manages TagRule.
+     * 
+     * @return Resource collection API of TagRules.
+     */
+    public TagRules tagRules() {
+        if (this.tagRules == null) {
+            this.tagRules = new TagRulesImpl(clientObject.getTagRules(), this);
+        }
+        return tagRules;
     }
 
     /**

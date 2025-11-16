@@ -22,7 +22,7 @@ public final class AccountInfo implements JsonSerializable<AccountInfo> {
     private String accountId;
 
     /*
-     * ingestion key of account
+     * Credential string.
      */
     private String ingestionKey;
 
@@ -58,7 +58,7 @@ public final class AccountInfo implements JsonSerializable<AccountInfo> {
     }
 
     /**
-     * Get the ingestionKey property: ingestion key of account.
+     * Get the ingestionKey property: Credential string.
      * 
      * @return the ingestionKey value.
      */
@@ -67,7 +67,7 @@ public final class AccountInfo implements JsonSerializable<AccountInfo> {
     }
 
     /**
-     * Set the ingestionKey property: ingestion key of account.
+     * Set the ingestionKey property: Credential string.
      * 
      * @param ingestionKey the ingestionKey value to set.
      * @return the AccountInfo object itself.
