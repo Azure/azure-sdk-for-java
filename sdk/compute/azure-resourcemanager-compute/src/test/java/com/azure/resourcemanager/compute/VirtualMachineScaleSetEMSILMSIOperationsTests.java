@@ -7,10 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
-import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
-import com.azure.resourcemanager.compute.models.ResourceIdentityType;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.resourcemanager.compute.models.*;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
@@ -104,7 +101,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
             .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -322,7 +319,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
             .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -431,7 +428,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
             .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
