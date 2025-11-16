@@ -5,12 +5,12 @@
 <suppressions>
   <suppress files="com.azure.v2.security.keyvault.certificates.models.CertificateContentType.java" checks="EqualsHashCode" />
   <suppress files="com.azure.v2.security.keyvault.certificates.models.CertificatePolicyAction.java" checks="EqualsHashCode" />
-  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrow" />
-  <suppress files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClient" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
 
   <!-- Generated classes -->
   <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="FinalClass" />
-  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="com.azure.tools.checkstyle.checks.GoodLogging" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrow" />
 </suppressions>
