@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0 (2025-11-14)
+## 2.54.2 (2025-11-14)
 
 ### Other Changes
 
