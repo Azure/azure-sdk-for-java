@@ -3,6 +3,9 @@
 ## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for Azure Workload Identity authentication for Azure Kubernetes Service (AKS) workloads.
+  - Automatically detects and uses federated token authentication when `AZURE_FEDERATED_TOKEN_FILE`, `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables are present.
+  - Provides credential-free authentication for AKS pods configured with Workload Identity-enabled service accounts.
 
 ### Breaking Changes
 
