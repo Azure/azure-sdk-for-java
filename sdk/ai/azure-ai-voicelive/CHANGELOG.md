@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.2 (2025-11-14)
 
 ### Features Added
 
@@ -14,10 +24,6 @@
   - Server events: `ServerEventResponseMcpCallArgumentsDelta`, `ServerEventResponseMcpCallArgumentsDone`
   - New `ToolType.MCP` for MCP-based tool definitions
   - New `ServerEventType` constants for MCP-related events
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 

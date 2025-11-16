@@ -58,7 +58,7 @@ com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.1.7;1.2.0-beta.1
 com.azure:azure-ai-translation-document;1.0.6;1.1.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-ai-voicelive;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-ai-voicelive;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
@@ -132,7 +132,7 @@ com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.2
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.1.5;1.2.0-beta.1
-com.azure:azure-identity;1.18.1;1.19.0-beta.1
+com.azure:azure-identity;1.18.1;1.19.0-beta.2
 com.azure:azure-identity-extensions;1.2.6;1.3.0-beta.1
 com.azure:azure-identity-broker;1.1.18;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
