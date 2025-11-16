@@ -12,6 +12,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkProvisioningState;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptions;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageStatus;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import java.io.IOException;
 import java.util.List;
@@ -71,6 +73,16 @@ public final class CloudServicesNetworkProperties implements JsonSerializable<Cl
      * The provisioning state of the cloud services network.
      */
     private CloudServicesNetworkProvisioningState provisioningState;
+
+    /*
+     * The storage options for the cloud services network.
+     */
+    private CloudServicesNetworkStorageOptions storageOptions;
+
+    /*
+     * The storage status for the cloud services network.
+     */
+    private CloudServicesNetworkStorageStatus storageStatus;
 
     /*
      * Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
@@ -208,6 +220,35 @@ public final class CloudServicesNetworkProperties implements JsonSerializable<Cl
     }
 
     /**
+     * Get the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    public CloudServicesNetworkStorageOptions storageOptions() {
+        return this.storageOptions;
+    }
+
+    /**
+     * Set the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @param storageOptions the storageOptions value to set.
+     * @return the CloudServicesNetworkProperties object itself.
+     */
+    public CloudServicesNetworkProperties withStorageOptions(CloudServicesNetworkStorageOptions storageOptions) {
+        this.storageOptions = storageOptions;
+        return this;
+    }
+
+    /**
+     * Get the storageStatus property: The storage status for the cloud services network.
+     * 
+     * @return the storageStatus value.
+     */
+    public CloudServicesNetworkStorageStatus storageStatus() {
+        return this.storageStatus;
+    }
+
+    /**
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
      * services network.
@@ -230,6 +271,12 @@ public final class CloudServicesNetworkProperties implements JsonSerializable<Cl
         if (enabledEgressEndpoints() != null) {
             enabledEgressEndpoints().forEach(e -> e.validate());
         }
+        if (storageOptions() != null) {
+            storageOptions().validate();
+        }
+        if (storageStatus() != null) {
+            storageStatus().validate();
+        }
     }
 
     /**
@@ -242,6 +289,7 @@ public final class CloudServicesNetworkProperties implements JsonSerializable<Cl
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("enableDefaultEgressEndpoints",
             this.enableDefaultEgressEndpoints == null ? null : this.enableDefaultEgressEndpoints.toString());
+        jsonWriter.writeJsonField("storageOptions", this.storageOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -291,6 +339,12 @@ public final class CloudServicesNetworkProperties implements JsonSerializable<Cl
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedCloudServicesNetworkProperties.provisioningState
                         = CloudServicesNetworkProvisioningState.fromString(reader.getString());
+                } else if ("storageOptions".equals(fieldName)) {
+                    deserializedCloudServicesNetworkProperties.storageOptions
+                        = CloudServicesNetworkStorageOptions.fromJson(reader);
+                } else if ("storageStatus".equals(fieldName)) {
+                    deserializedCloudServicesNetworkProperties.storageStatus
+                        = CloudServicesNetworkStorageStatus.fromJson(reader);
                 } else if ("virtualMachinesAssociatedIds".equals(fieldName)) {
                     List<String> virtualMachinesAssociatedIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedCloudServicesNetworkProperties.virtualMachinesAssociatedIds

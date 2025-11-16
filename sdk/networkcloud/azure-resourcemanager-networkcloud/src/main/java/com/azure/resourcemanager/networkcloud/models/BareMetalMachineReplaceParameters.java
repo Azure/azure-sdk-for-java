@@ -40,9 +40,20 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
     private String machineName;
 
     /*
+     * The safeguard mode to use for the replace action, where None indicates to bypass safeguards and All indicates to
+     * utilize all safeguards.
+     */
+    private BareMetalMachineReplaceSafeguardMode safeguardMode;
+
+    /*
      * The serial number of the bare metal machine.
      */
     private String serialNumber;
+
+    /*
+     * The indicator of whether to bypass clearing storage while replacing a bare metal machine.
+     */
+    private BareMetalMachineReplaceStoragePolicy storagePolicy;
 
     /**
      * Creates an instance of BareMetalMachineReplaceParameters class.
@@ -137,6 +148,28 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
     }
 
     /**
+     * Get the safeguardMode property: The safeguard mode to use for the replace action, where None indicates to bypass
+     * safeguards and All indicates to utilize all safeguards.
+     * 
+     * @return the safeguardMode value.
+     */
+    public BareMetalMachineReplaceSafeguardMode safeguardMode() {
+        return this.safeguardMode;
+    }
+
+    /**
+     * Set the safeguardMode property: The safeguard mode to use for the replace action, where None indicates to bypass
+     * safeguards and All indicates to utilize all safeguards.
+     * 
+     * @param safeguardMode the safeguardMode value to set.
+     * @return the BareMetalMachineReplaceParameters object itself.
+     */
+    public BareMetalMachineReplaceParameters withSafeguardMode(BareMetalMachineReplaceSafeguardMode safeguardMode) {
+        this.safeguardMode = safeguardMode;
+        return this;
+    }
+
+    /**
      * Get the serialNumber property: The serial number of the bare metal machine.
      * 
      * @return the serialNumber value.
@@ -153,6 +186,28 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
      */
     public BareMetalMachineReplaceParameters withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+        return this;
+    }
+
+    /**
+     * Get the storagePolicy property: The indicator of whether to bypass clearing storage while replacing a bare metal
+     * machine.
+     * 
+     * @return the storagePolicy value.
+     */
+    public BareMetalMachineReplaceStoragePolicy storagePolicy() {
+        return this.storagePolicy;
+    }
+
+    /**
+     * Set the storagePolicy property: The indicator of whether to bypass clearing storage while replacing a bare metal
+     * machine.
+     * 
+     * @param storagePolicy the storagePolicy value to set.
+     * @return the BareMetalMachineReplaceParameters object itself.
+     */
+    public BareMetalMachineReplaceParameters withStoragePolicy(BareMetalMachineReplaceStoragePolicy storagePolicy) {
+        this.storagePolicy = storagePolicy;
         return this;
     }
 
@@ -177,7 +232,9 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
         jsonWriter.writeStringField("bmcMacAddress", this.bmcMacAddress);
         jsonWriter.writeStringField("bootMacAddress", this.bootMacAddress);
         jsonWriter.writeStringField("machineName", this.machineName);
+        jsonWriter.writeStringField("safeguardMode", this.safeguardMode == null ? null : this.safeguardMode.toString());
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("storagePolicy", this.storagePolicy == null ? null : this.storagePolicy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -206,8 +263,14 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
                     deserializedBareMetalMachineReplaceParameters.bootMacAddress = reader.getString();
                 } else if ("machineName".equals(fieldName)) {
                     deserializedBareMetalMachineReplaceParameters.machineName = reader.getString();
+                } else if ("safeguardMode".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.safeguardMode
+                        = BareMetalMachineReplaceSafeguardMode.fromString(reader.getString());
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedBareMetalMachineReplaceParameters.serialNumber = reader.getString();
+                } else if ("storagePolicy".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.storagePolicy
+                        = BareMetalMachineReplaceStoragePolicy.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

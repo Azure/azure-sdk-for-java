@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
@@ -37,6 +38,12 @@ import java.util.List;
  */
 @Fluent
 public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
+    /*
+     * The current state of any in progress or completed actions. The most recent known instance of each action type is
+     * shown.
+     */
+    private List<ActionState> actionStates;
+
     /*
      * The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
      * rack in a multi-rack cluster.
@@ -91,7 +98,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private String clusterManagerId;
 
     /*
-     * The service principal to be used by the cluster during Arc Appliance installation.
+     * Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster
+     * during Arc Appliance installation.
      */
     private ServicePrincipalInformation clusterServicePrincipal;
 
@@ -199,6 +207,16 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * Creates an instance of ClusterProperties class.
      */
     public ClusterProperties() {
+    }
+
+    /**
+     * Get the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    public List<ActionState> actionStates() {
+        return this.actionStates;
     }
 
     /**
@@ -350,8 +368,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Get the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Get the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
+     * service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -360,8 +378,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Set the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Set the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
+     * service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterProperties object itself.
@@ -699,6 +717,9 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (actionStates() != null) {
+            actionStates().forEach(e -> e.validate());
+        }
         if (aggregatorOrSingleRackDefinition() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -820,6 +841,9 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.clusterVersion = reader.getString();
                 } else if ("networkFabricId".equals(fieldName)) {
                     deserializedClusterProperties.networkFabricId = reader.getString();
+                } else if ("actionStates".equals(fieldName)) {
+                    List<ActionState> actionStates = reader.readArray(reader1 -> ActionState.fromJson(reader1));
+                    deserializedClusterProperties.actionStates = actionStates;
                 } else if ("analyticsOutputSettings".equals(fieldName)) {
                     deserializedClusterProperties.analyticsOutputSettings = AnalyticsOutputSettings.fromJson(reader);
                 } else if ("analyticsWorkspaceId".equals(fieldName)) {

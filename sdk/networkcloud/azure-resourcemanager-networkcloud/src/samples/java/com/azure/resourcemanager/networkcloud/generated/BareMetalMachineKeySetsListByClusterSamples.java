@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class BareMetalMachineKeySetsListByClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * BareMetalMachineKeySets_ListByCluster.json
      */
     /**
@@ -21,6 +21,6 @@ public final class BareMetalMachineKeySetsListByClusterSamples {
     public static void
         listBareMetalMachineKeySetsOfTheCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.bareMetalMachineKeySets()
-            .listByCluster("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE);
+            .listByCluster("resourceGroupName", "clusterName", null, null, com.azure.core.util.Context.NONE);
     }
 }

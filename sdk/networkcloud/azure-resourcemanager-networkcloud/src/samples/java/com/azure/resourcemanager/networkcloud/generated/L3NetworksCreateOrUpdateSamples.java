@@ -15,8 +15,8 @@ import java.util.Map;
 public final class L3NetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/L3Networks_Create.
-     * json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * L3Networks_Create.json
      */
     /**
      * Sample code: Create or update L3 network.

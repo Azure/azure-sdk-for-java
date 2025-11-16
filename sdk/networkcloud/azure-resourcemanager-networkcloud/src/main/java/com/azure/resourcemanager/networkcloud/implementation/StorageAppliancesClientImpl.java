@@ -41,6 +41,7 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInne
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceList;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -83,6 +84,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -91,6 +93,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<StorageApplianceList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -99,8 +102,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances")
@@ -108,8 +111,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<StorageApplianceList> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
@@ -242,6 +245,28 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/runReadCommands")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> runReadCommands(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName,
+            @BodyParam("application/json") StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/runReadCommands")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> runReadCommandsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName,
+            @BodyParam("application/json") StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -279,13 +304,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -297,10 +326,29 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), top, skipToken, accept, context))
             .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List storage appliances in the subscription.
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of storage appliances in the provided subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<StorageApplianceInner> listAsync(Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -314,7 +362,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -323,12 +373,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageApplianceInner> listSinglePage() {
+    private PagedResponse<StorageApplianceInner> listSinglePage(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -341,7 +395,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         Response<StorageApplianceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -351,6 +405,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -358,7 +415,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageApplianceInner> listSinglePage(Context context) {
+    private PagedResponse<StorageApplianceInner> listSinglePage(Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -371,7 +428,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         Response<StorageApplianceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, context);
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -388,7 +445,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -396,6 +456,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -404,8 +467,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageApplianceInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context),
+    public PagedIterable<StorageApplianceInner> list(Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
@@ -415,6 +478,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -422,7 +488,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -438,10 +505,31 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List storage appliances in the resource group.
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of storage appliances in the provided resource group as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -457,7 +545,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -467,13 +557,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+    private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -489,8 +583,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<StorageApplianceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        Response<StorageApplianceList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -501,6 +596,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -508,8 +606,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName,
-        Context context) {
+    private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -525,8 +623,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<StorageApplianceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        Response<StorageApplianceList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -545,7 +644,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
@@ -555,6 +656,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -563,8 +667,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+    public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
@@ -2400,14 +2505,291 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(String resourceGroupName,
+        String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceRunReadCommandsParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
+        } else {
+            storageApplianceRunReadCommandsParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.runReadCommands(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+                storageApplianceRunReadCommandsParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> runReadCommandsWithResponse(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceRunReadCommandsParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
+        } else {
+            storageApplianceRunReadCommandsParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.runReadCommandsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, accept, Context.NONE);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> runReadCommandsWithResponse(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceRunReadCommandsParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
+        } else {
+            storageApplianceRunReadCommandsParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.runReadCommandsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, accept, context);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommandsAsync(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = runReadCommandsWithResponseAsync(resourceGroupName,
+            storageApplianceName, storageApplianceRunReadCommandsParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        Response<BinaryData> response = runReadCommandsWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        Response<BinaryData> response = runReadCommandsWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> runReadCommandsAsync(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        return beginRunReadCommandsAsync(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters)
+            .getFinalResult();
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+            context).getFinalResult();
+    }
+
+    /**
+     * List storage appliances in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2428,13 +2810,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse}.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -2455,6 +2839,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2462,7 +2848,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse}.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
@@ -2483,13 +2869,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2511,13 +2899,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse}.
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -2538,6 +2928,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2545,7 +2937,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse}.
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {

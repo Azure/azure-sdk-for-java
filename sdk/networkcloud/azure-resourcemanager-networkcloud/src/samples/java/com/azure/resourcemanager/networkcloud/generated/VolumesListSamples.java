@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class VolumesListSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * Volumes_ListBySubscription.json
      */
     /**
@@ -19,6 +19,6 @@ public final class VolumesListSamples {
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void listVolumeForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.volumes().list(com.azure.core.util.Context.NONE);
+        manager.volumes().list(null, null, com.azure.core.util.Context.NONE);
     }
 }
