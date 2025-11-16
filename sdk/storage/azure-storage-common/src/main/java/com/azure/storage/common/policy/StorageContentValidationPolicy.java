@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
@@ -111,13 +112,14 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
             .getBody()
             .flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
-            .flatMap(bufferAggregator -> bufferAggregator.asFlux().map(structuredMessageEncoder::encode));
+            .flatMap(bufferAggregator -> bufferAggregator.asFlux().flatMap(structuredMessageEncoder::encode));
 
         // Set the encoded body
         context.getHttpRequest().setBody(encodedBody);
 
         context.getHttpRequest()
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, structuredMessageEncoder.getEncodedMessageLength());
+            .setHeader(HttpHeaderName.CONTENT_LENGTH,
+                String.valueOf(structuredMessageEncoder.getEncodedMessageLength()));
         // x-ms-structured-body
         context.getHttpRequest().setHeader(STRUCTURED_BODY_TYPE_HEADER_NAME, STRUCTURED_BODY_TYPE_VALUE);
         // x-ms-structured-content-length
