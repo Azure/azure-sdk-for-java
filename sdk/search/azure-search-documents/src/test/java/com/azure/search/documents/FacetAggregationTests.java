@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
@@ -310,10 +313,12 @@ public class FacetAggregationTests extends SearchTestBase {
         hotel.put("HotelId", id);
         hotel.put("HotelName", name);
         hotel.put("Description", "Test hotel for facet aggregation testing");
-        if (rating != null)
+        if (rating != null) {
             hotel.put("Rating", rating);
-        if (category != null)
+        }
+        if (category != null) {
             hotel.put("Category", category);
+        }
         return hotel;
     }
 

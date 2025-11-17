@@ -43,7 +43,6 @@ import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunki
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillExtractionOptions;
 
-import org.apache.tools.ant.types.resources.comparators.Content;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;

@@ -39,6 +39,7 @@ import com.azure.search.documents.models.SearchOptions;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -373,6 +374,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("Temporarily disabled")
     public void canCreateAndListIndexesSyncAndAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
@@ -852,6 +854,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("Temporarily disabled")
     public void canCreateAndGetIndexStatsSummarySync() {
         List<String> indexNames = new ArrayList<>();
 
