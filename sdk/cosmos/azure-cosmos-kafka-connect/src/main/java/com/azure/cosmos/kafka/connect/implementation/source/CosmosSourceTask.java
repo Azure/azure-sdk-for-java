@@ -85,7 +85,6 @@ public class CosmosSourceTask extends SourceTask {
                 this.taskUnitsQueue.add(taskUnit);
             }
 
-            this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
             LOGGER.info("Creating the cosmos client");
 
             this.cosmosClientItem =

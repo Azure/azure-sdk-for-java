@@ -750,7 +750,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
 
             // resume the connector
             kafkaCosmosConnectContainer.resumeConnector(connectorName);
-            // poll again, poll a little big longer to make sure no duplicate records are being returned
+            // poll again, poll a little bit longer to make sure no duplicate records are being returned
             Instant startPollTime = Instant.now();
             while (Duration.between(startPollTime, Instant.now()).toMillis() < 60 * 1000 ) {
                 kafkaConsumer.poll(Duration.ofMillis(1000))
