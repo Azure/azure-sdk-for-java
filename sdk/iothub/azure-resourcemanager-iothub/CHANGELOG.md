@@ -1,14 +1,45 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2025-11-17)
+
+- Azure Resource Manager IotHub client library for Java. This package contains Microsoft Azure SDK for IotHub Management SDK. Use this API to manage the IoT hubs in your Azure subscription. Package tag package-preview-2025-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.EncryptionPropertiesDescription` was added
 
-### Bugs Fixed
+* `models.DeviceRegistry` was added
 
-### Other Changes
+* `models.KeyVaultKeyProperties` was added
+
+* `models.IpVersion` was added
+
+* `models.RootCertificateProperties` was added
+
+* `models.IotHubPropertiesDeviceStreams` was added
+
+#### `models.IotHubProperties` was modified
+
+* `rootCertificate()` was added
+* `deviceStreams()` was added
+* `withDeviceStreams(models.IotHubPropertiesDeviceStreams)` was added
+* `withRootCertificate(models.RootCertificateProperties)` was added
+* `encryption()` was added
+* `withDeviceRegistry(models.DeviceRegistry)` was added
+* `withEncryption(models.EncryptionPropertiesDescription)` was added
+* `withIpVersion(models.IpVersion)` was added
+* `deviceRegistry()` was added
+* `ipVersion()` was added
+
+#### `models.CertificatePropertiesWithNonce` was modified
+
+* `policyResourceId()` was added
+* `withPolicyResourceId(java.lang.String)` was added
+
+#### `models.CertificateProperties` was modified
+
+* `withPolicyResourceId(java.lang.String)` was added
+* `policyResourceId()` was added
 
 ## 1.3.0 (2024-12-11)
 
