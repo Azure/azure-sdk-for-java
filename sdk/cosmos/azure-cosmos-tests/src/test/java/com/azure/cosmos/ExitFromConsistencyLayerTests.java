@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
+//import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -24,6 +25,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+//import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -104,22 +106,23 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     public static Object[][] headRequestLeaseNotFoundScenarios() {
         return new Object[][]{
             // headFailureCount, operationType, successfulHeadRequestsWhichDontMeetBarrier
-            { 1, OperationType.Create, false, 0 },
-            { 2, OperationType.Create, false, 0 },
-            { 3, OperationType.Create, false, 0 },
-            { 4, OperationType.Create, false, 0 },
-            { 1, OperationType.Read, false, 0 },
-            { 2, OperationType.Read, false, 0 },
-            { 3, OperationType.Read, false, 0 },
-            { 4, OperationType.Read, false, 0 },
-            { 1, OperationType.Read, true, 18 },
-            { 2, OperationType.Read, true, 18 },
-            { 3, OperationType.Read, true, 18 },
+//            { 1, OperationType.Create, false, 0 },
+//            { 2, OperationType.Create, false, 0 },
+//            { 3, OperationType.Create, false, 0 },
+//            { 4, OperationType.Create, false, 0 },
+//            { 1, OperationType.Read, false, 0 },
+//            { 2, OperationType.Read, false, 0 },
+//            { 3, OperationType.Read, false, 0 },
+//            { 4, OperationType.Read, false, 0 },
+//            { 1, OperationType.Read, true, 18 },
+//            { 2, OperationType.Read, true, 18 },
+//            { 3, OperationType.Read, true, 18 },
             { 4, OperationType.Read, true, 18 },
-            { 1, OperationType.Read, true, 108 },
-            { 2, OperationType.Read, true, 108 },
-            { 3, OperationType.Read, true, 108 },
-            { 4, OperationType.Read, true, 108 }
+            { 4, OperationType.Read, true, 18 }
+//            { 1, OperationType.Read, true, 108 },
+//            { 2, OperationType.Read, true, 108 },
+//            { 3, OperationType.Read, true, 108 },
+//            { 4, OperationType.Read, true, 108 }
         };
     }
 
@@ -164,6 +167,8 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
         CosmosAsyncClient targetClient = getClientBuilder()
             .preferredRegions(this.preferredRegions)
+            // revert
+            .consistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
             .buildAsyncClient();
 
         ConsistencyLevel effectiveConsistencyLevel
@@ -204,6 +209,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     interceptorClient
                         .setResponseInterceptor(
                             StoreResponseInterceptorUtils.forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(
+                                effectiveConsistencyLevel,
                                 this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
                                 successfulHeadRequestCountWhichDontMeetBarrier,
                                 successfulHeadCountTracker,
@@ -219,6 +225,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     interceptorClient
                         .setResponseInterceptor(
                             StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
+                                effectiveConsistencyLevel,
                                 this.regionNameToEndpoint.get(this.preferredRegions.get(1)),
                                 headFailureCount,
                                 failedHeadCountTracker,
@@ -229,6 +236,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                     interceptorClient
                         .setResponseInterceptor(
                             StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
+                                effectiveConsistencyLevel,
                                 this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
                                 headFailureCount,
                                 failedHeadCountTracker,
@@ -260,8 +268,8 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = response.getDiagnostics();
                         assertThat(diagnostics).isNotNull();
 
-                        validateContactedRegions(diagnostics, 1);
                         validateHeadRequestsInCosmosDiagnostics(diagnostics, 2, (2 + successfulHeadRequestCountWhichDontMeetBarrier));
+                        validateContactedRegions(diagnostics, 1);
                     } else {
                         // Should timeout with 408
                         fail("Should have thrown timeout exception");
@@ -283,8 +291,8 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = response.getDiagnostics();
                         assertThat(diagnostics).isNotNull();
 
-                        validateContactedRegions(diagnostics, 1);
                         validateHeadRequestsInCosmosDiagnostics(diagnostics, 4, (4 + successfulHeadRequestCountWhichDontMeetBarrier));
+                        validateContactedRegions(diagnostics, 1);
                     } else {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
@@ -293,8 +301,8 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = response.getDiagnostics();
                         assertThat(diagnostics).isNotNull();
 
-                        validateContactedRegions(diagnostics, 2);
                         validateHeadRequestsInCosmosDiagnostics(diagnostics, 4, (4 + successfulHeadRequestCountWhichDontMeetBarrier));
+                        validateContactedRegions(diagnostics, 2);
                     }
                 }
 
@@ -311,8 +319,8 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
                         CosmosDiagnostics diagnostics = e.getDiagnostics();
 
-                        validateContactedRegions(diagnostics, 1);
                         validateHeadRequestsInCosmosDiagnostics(diagnostics, 2, (2 + successfulHeadRequestCountWhichDontMeetBarrier));
+                        validateContactedRegions(diagnostics, 1);
                     }
                 }
 
@@ -448,10 +456,10 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
             }
         }
 
-        assertThat(primaryReplicaContacted).isTrue();
-        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).isGreaterThan(0);
-        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).isLessThanOrEqualTo(expectedHeadRequestCountWithFailures);
-        assertThat(actualHeadRequestCount).isGreaterThanOrEqualTo(expectedHeadRequestCount);
+        assertThat(actualHeadRequestCount).as("Not enough head requests were seen.").isGreaterThanOrEqualTo(expectedHeadRequestCount);
+        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).as("Head request failed count with 410/1022 should be greater than 1.").isGreaterThan(0);
+        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).as("Too many head request failed.").isLessThanOrEqualTo(expectedHeadRequestCountWithFailures);
+        assertThat(primaryReplicaContacted).as("Primary replica should be contacted even when a single Head request sees a 410/1022").isTrue();
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {

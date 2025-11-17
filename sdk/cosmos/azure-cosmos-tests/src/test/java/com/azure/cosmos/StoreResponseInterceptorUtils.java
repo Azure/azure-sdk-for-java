@@ -15,6 +15,7 @@ import java.util.function.BiFunction;
 public class StoreResponseInterceptorUtils {
 
     public static BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> forceBarrierFollowedByBarrierFailure(
+        ConsistencyLevel operationConsistencyLevel,
         String regionName,
         int maxAllowedFailureCount,
         AtomicInteger failureCount,
@@ -25,27 +26,37 @@ public class StoreResponseInterceptorUtils {
 
             if (OperationType.Create.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
 
-                long globalLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN));
-                long manipulatedGlobalCommittedLSN = globalLsn - 1;
+                long localLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN));
+                long manipulatedGCLSN = localLsn - 1;
 
-                storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGlobalCommittedLSN));
+                storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGCLSN));
 
                 return storeResponse;
             }
 
             if (OperationType.Read.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
 
-                long globalLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN));
-                long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
-                long manipulatedGlobalCommittedLSN = Math.min(globalLsn, itemLsn) - 1;
-                long manipulatedGlobalLsn = itemLsn - 1;
+                if (ConsistencyLevel.STRONG.equals(operationConsistencyLevel)) {
 
-                // Force barrier by setting GCLSN to be less than both local LSN and item LSN - applicable to strong consistency reads
-                storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGlobalCommittedLSN));
+                    long globalLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN));
+                    long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
+                    long manipulatedGlobalCommittedLSN = Math.min(globalLsn, itemLsn) - 1;
 
-                // Force barrier by setting the (LSN - can correspond to GLSN when that particular document was part of a commit increment)
-                // to less than itemLsn - applicable to bounded staleness consistency reads
-                storeResponse.setHeaderValue(WFConstants.BackendHeaders.LSN, String.valueOf(manipulatedGlobalLsn));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGlobalCommittedLSN));
+
+                    return storeResponse;
+                } else if (ConsistencyLevel.BOUNDED_STALENESS.equals(operationConsistencyLevel)) {
+
+                    long manipulatedItemLSN = -1;
+                    long manipulatedGlobalLSN = 0;
+
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.LSN, String.valueOf(manipulatedGlobalLSN));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN, String.valueOf(manipulatedGlobalLSN));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.ITEM_LSN, String.valueOf(manipulatedItemLSN));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.ITEM_LOCAL_LSN, String.valueOf(manipulatedItemLSN));
+
+                    return storeResponse;
+                }
 
                 return storeResponse;
             }
@@ -60,27 +71,40 @@ public class StoreResponseInterceptorUtils {
         };
     }
 
-    public static BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(String regionName,
-                                                                                                                                                               int allowedSuccessfulHeadRequestsWithoutBarrierBeingMet,
-                                                                                                                                                               AtomicInteger successfulHeadRequestCount,
-                                                                                                                                                               int maxAllowedFailureCount,
-                                                                                                                                                               AtomicInteger failureCount,
-                                                                                                                                                               int statusCode,
+    public static BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(
+        ConsistencyLevel operationConsistencyLevel,
+        String regionName,
+        int allowedSuccessfulHeadRequestsWithoutBarrierBeingMet,
+        AtomicInteger successfulHeadRequestCount,
+        int maxAllowedFailureCount,
+        AtomicInteger failureCount,
+        int statusCode,
                                                                                                                                                                int subStatusCode) {
         return (request, storeResponse) -> {
 
             if (OperationType.Read.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
-                long globalLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN));
-                long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
-                long manipulatedGlobalCommittedLSN = Math.min(globalLsn, itemLsn) - 1;
-                long manipulatedGlobalLsn = itemLsn - 1;
 
-                // Force barrier by setting GCLSN to be less than both local LSN and item LSN - applicable to strong consistency reads
-                storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGlobalCommittedLSN));
+                if (ConsistencyLevel.STRONG.equals(operationConsistencyLevel)) {
 
-                // Force barrier by setting the (LSN - can correspond to GLSN when that particular document was part of a commit increment)
-                // to less than itemLsn - applicable to bounded staleness consistency reads
-                storeResponse.setHeaderValue(WFConstants.BackendHeaders.LSN, String.valueOf(manipulatedGlobalLsn));
+                    long globalLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN));
+                    long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
+                    long manipulatedGlobalCommittedLSN = Math.min(globalLsn, itemLsn) - 1;
+
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGlobalCommittedLSN));
+
+                    return storeResponse;
+                } else if (ConsistencyLevel.BOUNDED_STALENESS.equals(operationConsistencyLevel)) {
+
+                    long manipulatedItemLSN = -1;
+                    long manipulatedGlobalLSN = 0;
+
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.LSN, String.valueOf(manipulatedGlobalLSN));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN, String.valueOf(manipulatedGlobalLSN));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.ITEM_LSN, String.valueOf(manipulatedItemLSN));
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.ITEM_LOCAL_LSN, String.valueOf(manipulatedItemLSN));
+
+                    return storeResponse;
+                }
 
                 return storeResponse;
             }
@@ -89,17 +113,29 @@ public class StoreResponseInterceptorUtils {
 
                 if (successfulHeadRequestCount.incrementAndGet() <= allowedSuccessfulHeadRequestsWithoutBarrierBeingMet) {
 
-                    long globalLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN));
-                    long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
-                    long manipulatedGlobalCommittedLSN = Math.min(globalLsn, itemLsn) - 1;
-                    long manipulatedGlobalLsn = itemLsn - 1;
+                    if (ConsistencyLevel.STRONG.equals(operationConsistencyLevel)) {
+                        System.out.println("Allowing successful barrier for head request number: " + successfulHeadRequestCount.get());
 
-                    // Force barrier by setting GCLSN to be less than both local LSN and item LSN - applicable to strong consistency reads
-                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGlobalCommittedLSN));
+                        long localLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN));
+                        long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
+                        long manipulatedGCLSN = Math.min(localLsn, itemLsn) - 1;
 
-                    // Force barrier by setting the (LSN - can correspond to GLSN when that particular document was part of a commit increment)
-                    // to less than itemLsn - applicable to bounded staleness consistency reads
-                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.LSN, String.valueOf(manipulatedGlobalLsn));
+                        storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(manipulatedGCLSN));
+
+                        return storeResponse;
+                    } else if (ConsistencyLevel.BOUNDED_STALENESS.equals(operationConsistencyLevel)) {
+                        System.out.println("Allowing successful barrier for head request number: " + successfulHeadRequestCount.get());
+
+                        long manipulatedItemLSN = -1;
+                        long manipulatedGlobalLSN = -1;
+
+                        storeResponse.setHeaderValue(WFConstants.BackendHeaders.LSN, String.valueOf(manipulatedGlobalLSN));
+                        storeResponse.setHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN, String.valueOf(manipulatedGlobalLSN));
+                        storeResponse.setHeaderValue(WFConstants.BackendHeaders.ITEM_LSN, String.valueOf(manipulatedItemLSN));
+                        storeResponse.setHeaderValue(WFConstants.BackendHeaders.ITEM_LOCAL_LSN, String.valueOf(manipulatedItemLSN));
+
+                        return storeResponse;
+                    }
 
                     return storeResponse;
                 }
