@@ -28,6 +28,7 @@ import java.util.UUID;
 import static com.azure.spring.data.cosmos.common.TestConstants.COURSE_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.DEPARTMENT;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveEtagIT {

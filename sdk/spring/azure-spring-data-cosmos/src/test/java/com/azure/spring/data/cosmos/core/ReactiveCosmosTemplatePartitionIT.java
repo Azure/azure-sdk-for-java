@@ -42,6 +42,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplatePartitionIT {

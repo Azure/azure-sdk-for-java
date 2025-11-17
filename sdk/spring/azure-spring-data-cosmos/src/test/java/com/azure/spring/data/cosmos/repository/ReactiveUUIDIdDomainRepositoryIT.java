@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveUUIDIdDomainRepositoryIT {

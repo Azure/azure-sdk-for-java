@@ -42,6 +42,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MultiTenantTestRepositoryConfig.class)
 public class MultiTenantContainerCosmosFactoryIT {

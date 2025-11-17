@@ -33,6 +33,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class EtagIT {

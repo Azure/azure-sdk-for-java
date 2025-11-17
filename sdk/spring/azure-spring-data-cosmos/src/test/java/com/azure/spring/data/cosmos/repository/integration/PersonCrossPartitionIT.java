@@ -43,6 +43,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PersonCrossPartitionIT {

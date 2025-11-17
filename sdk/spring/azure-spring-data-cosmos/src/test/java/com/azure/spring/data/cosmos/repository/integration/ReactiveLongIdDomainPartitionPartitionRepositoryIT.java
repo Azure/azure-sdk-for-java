@@ -25,6 +25,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.Objects;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
