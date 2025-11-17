@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnection;
@@ -22,22 +22,23 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"wmd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"wpklvxw\",\"actionsRequired\":\"gdxpg\"}},\"id\":\"qchiszep\",\"name\":\"nb\",\"type\":\"crxgibb\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"voqyt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"yo\",\"actionsRequired\":\"blgyavutpthj\"}},\"id\":\"xoi\",\"name\":\"msksbp\",\"type\":\"mlqoljx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("d", "utujba", "pjuohminyfl", com.azure.core.util.Context.NONE)
+            .getWithResponse("gmblrri", "bywdxsmicc", "rwfscjfnynszquj", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("wpklvxw", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("gdxpg", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("yo", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("blgyavutpthj",
+            response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }
