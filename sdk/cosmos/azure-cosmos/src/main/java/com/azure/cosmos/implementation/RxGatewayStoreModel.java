@@ -214,7 +214,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         if (leakDetectionDebuggingEnabled) {
             retainedContent.touch(
                 "RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: " + retainedContent.refCnt());
-            logger.info("RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: {}", retainedContent.refCnt());
+            logger.debug("RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: {}", retainedContent.refCnt());
         }
 
         // If there is any error in the header response this throws exception
@@ -224,7 +224,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         if ((size = retainedContent.readableBytes()) > 0) {
             if (leakDetectionDebuggingEnabled) {
                 retainedContent.touch("RxGatewayStoreModel before creating StoreResponse - refCnt: " + retainedContent.refCnt());
-                logger.info("RxGatewayStoreModel before creating StoreResponse - refCnt: {}", retainedContent.refCnt());
+                logger.debug("RxGatewayStoreModel before creating StoreResponse - refCnt: {}", retainedContent.refCnt());
             }
 
             return new StoreResponse(
@@ -427,7 +427,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     .map(bodyByteBuf -> {
                         if (leakDetectionDebuggingEnabled) {
                             bodyByteBuf.touch("RxGatewayStoreModel - buffer after aggregate before retain - refCnt: " + bodyByteBuf.refCnt());
-                            logger.info("RxGatewayStoreModel - buffer after aggregate before retain  - refCnt: {}", bodyByteBuf.refCnt());
+                            logger.debug("RxGatewayStoreModel - buffer after aggregate before retain  - refCnt: {}", bodyByteBuf.refCnt());
                         }
 
                         if (bodyByteBuf != Unpooled.EMPTY_BUFFER) {
@@ -437,7 +437,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                         if (leakDetectionDebuggingEnabled) {
                             bodyByteBuf.touch("RxGatewayStoreModel - touch retained buffer  - refCnt: " + bodyByteBuf.refCnt());
-                            logger.info("RxGatewayStoreModel - touch retained buffer  - refCnt: {]", bodyByteBuf.refCnt());
+                            logger.debug("RxGatewayStoreModel - touch retained buffer  - refCnt: {]", bodyByteBuf.refCnt());
                         }
 
                         return bodyByteBuf;
@@ -446,7 +446,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         if (buf.refCnt() > 0) {
                             if (leakDetectionDebuggingEnabled) {
                                 buf.touch("RxGatewayStoreModel - doOnDiscard - begin - refCnt: " + buf.refCnt());
-                                logger.info("RxGatewayStoreModel - doOnDiscard - begin - refCnt: {}", buf.refCnt());
+                                logger.debug("RxGatewayStoreModel - doOnDiscard - begin - refCnt: {}", buf.refCnt());
                             }
 
                             // there could be a race with the catch in the .map operator below
@@ -460,7 +460,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     .map(content -> {
                         if (leakDetectionDebuggingEnabled) {
                             content.touch("RxGatewayStoreModel - before capturing transport timeline - refCnt: " + content.refCnt());
-                            logger.info("RxGatewayStoreModel - before capturing transport timeline - refCnt: {}", content.refCnt());
+                            logger.debug("RxGatewayStoreModel - before capturing transport timeline - refCnt: {}", content.refCnt());
                         }
 
                         try {
@@ -472,7 +472,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             if (leakDetectionDebuggingEnabled) {
                                 content.touch("RxGatewayStoreModel - before creating StoreResponse - refCnt: " + content.refCnt());
-                                logger.info("RxGatewayStoreModel - before creating StoreResponse - refCnt: {}", content.refCnt());
+                                logger.debug("RxGatewayStoreModel - before creating StoreResponse - refCnt: {}", content.refCnt());
                             }
                             StoreResponse rsp = request
                                 .getEffectiveHttpTransportSerializer(this)
@@ -504,7 +504,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                             if (content.refCnt() > 0) {
                                 if (leakDetectionDebuggingEnabled) {
                                     content.touch("RxGatewayStoreModel -exception creating StoreResponse - refCnt: " + content.refCnt());
-                                    logger.info("RxGatewayStoreModel -exception creating StoreResponse - refCnt: {}", content.refCnt());
+                                    logger.debug("RxGatewayStoreModel -exception creating StoreResponse - refCnt: {}", content.refCnt());
                                 }
                                 // Unwrap failed before StoreResponse took ownership -> release our retain
                                 // there could be a race with the doOnDiscard above - so, use safeRelease
@@ -520,7 +520,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         if (buf.refCnt() > 0) {
                             if (leakDetectionDebuggingEnabled) {
                                 buf.touch("RxGatewayStoreModel - doOnDiscard after map - refCnt: " + buf.refCnt());
-                                logger.info("RxGatewayStoreModel - doOnDiscard after map - refCnt: {}", buf.refCnt());
+                                logger.debug("RxGatewayStoreModel - doOnDiscard after map - refCnt: {}", buf.refCnt());
                             }
                             ReferenceCountUtil.safeRelease(buf);
                         }

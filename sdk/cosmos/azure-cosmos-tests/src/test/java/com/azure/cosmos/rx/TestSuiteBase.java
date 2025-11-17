@@ -280,27 +280,35 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
-        int i = 0;
-        while (i < 100) {
-            try {
-                truncateCollectionInternal(cosmosContainer);
-                return;
-            } catch (CosmosException exception) {
-                if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
-                    || exception.getSubStatusCode() != 3200) {
 
-                    logger.error("No retry of exception", exception);
-                    throw exception;
-                }
-
-                i++;
-                logger.info("Retrying truncation after 100ms - iteration " + i);
+        try {
+            int i = 0;
+            while (i < 100) {
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    truncateCollectionInternal(cosmosContainer);
+                    return;
+                } catch (CosmosException exception) {
+                    if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                        || exception.getSubStatusCode() != 3200) {
+
+                        logger.error("No retry of exception", exception);
+                        throw exception;
+                    }
+
+                    i++;
+                    logger.info("Retrying truncation after 100ms - iteration " + i);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
+        } finally {
+            // TODO @fabianm - Resetting leak detection - there is some flakiness when tests
+            // truncate collection and hit throttling - this will need to be investigated
+            // separately
+            CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
         }
     }
 
@@ -1567,4 +1575,28 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
         return outputStream.toByteArray();
     }
+
+    public static String captureNettyLeaks() {
+        System.gc();
+        try {
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+        if (nettyLeaks.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n");
+            for (String leak : nettyLeaks) {
+                sb.append(leak).append("\n");
+            }
+
+            return "NETTY LEAKS detected: "
+                + "\n\n"
+                + sb;
+        }
+
+        return "";
+    }
+
 }

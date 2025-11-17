@@ -864,30 +864,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public static String captureNettyLeaks() {
-        System.gc();
-        try {
-            Thread.sleep(5_000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
-        if (nettyLeaks.size() > 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("\n");
-            for (String leak : nettyLeaks) {
-                sb.append(leak).append("\n");
-            }
-
-            return "NETTY LEAKS detected: "
-                + "\n\n"
-                + sb;
-        }
-
-        return "";
-    }
-
-
     private void assertInvalidContinuationToken(String query, int[] pageSize, List<String> expectedIds) {
         String requestContinuation = null;
         do {

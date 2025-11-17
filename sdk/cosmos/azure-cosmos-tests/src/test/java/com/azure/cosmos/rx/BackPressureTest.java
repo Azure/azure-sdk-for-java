@@ -251,6 +251,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
         client = new ClientUnderTestBuilder(
             getClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
