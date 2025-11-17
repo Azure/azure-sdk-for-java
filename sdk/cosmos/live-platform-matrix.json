@@ -183,7 +183,7 @@
       "ACCOUNT_CONSISTENCY": "Strong",
       "ArmConfig": {
         "MultiRegion_Strong": {
-          "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }"
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }"
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
