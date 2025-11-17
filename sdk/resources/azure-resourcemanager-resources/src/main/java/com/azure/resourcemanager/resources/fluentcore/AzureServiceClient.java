@@ -44,6 +44,8 @@ public abstract class AzureServiceClient {
 
     private final SerializerAdapter serializerAdapter;
     private final HttpPipeline httpPipeline;
+    private final String sdkName;
+    private final String sdkVersion;
 
     static {
         loadLibraryVersions();
@@ -60,6 +62,18 @@ public abstract class AzureServiceClient {
         AzureEnvironment environment) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        String packageName = this.getClass().getPackage().getName();
+        String implementationSegment = ".implementation";
+        if (packageName.endsWith(implementationSegment)) {
+            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
+        }
+        this.sdkName = packageName;
+        if (packageName.startsWith("com.")) {
+            String artifactId = packageName.substring("com.".length()).replace(".", "-");
+            this.sdkVersion = LIBRARY_VERSION_MAP.getOrDefault(artifactId, UNKNOWN_VERSION);
+        } else {
+            this.sdkVersion = UNKNOWN_VERSION;
+        }
     }
 
     /**
@@ -93,19 +107,7 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        String packageName = this.getClass().getPackage().getName();
-        String implementationSegment = ".implementation";
-        if (packageName.endsWith(implementationSegment)) {
-            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
-        }
-        String sdkVersion;
-        if (packageName.startsWith("com.")) {
-            String artifactId = packageName.substring("com.".length()).replace(".", "-");
-            sdkVersion = LIBRARY_VERSION_MAP.getOrDefault(artifactId, UNKNOWN_VERSION);
-        } else {
-            sdkVersion = UNKNOWN_VERSION;
-        }
-        return new Context("Sdk-Name", packageName).addData("Sdk-Version", sdkVersion);
+        return new Context("Sdk-Name", sdkName).addData("Sdk-Version", sdkVersion);
     }
 
     /**
