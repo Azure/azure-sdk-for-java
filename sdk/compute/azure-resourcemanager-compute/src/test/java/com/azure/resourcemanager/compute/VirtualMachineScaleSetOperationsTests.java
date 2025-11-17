@@ -78,7 +78,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withoutPrimaryInternalLoadBalancer()
@@ -136,7 +136,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withoutPrimaryInternalLoadBalancer()
@@ -228,7 +228,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -441,7 +441,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -503,7 +503,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -581,7 +581,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Validate other properties
         //
         Assertions.assertEquals(virtualMachineScaleSet.vhdContainers().size(), 2);
-        Assertions.assertEquals(virtualMachineScaleSet.sku(), VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2);
+        Assertions.assertEquals(virtualMachineScaleSet.sku(), VirtualMachineScaleSetSkuTypes.STANDARD_A1);
         // Check defaults
         Assertions.assertTrue(virtualMachineScaleSet.upgradeModel() == UpgradeMode.AUTOMATIC);
         Assertions.assertEquals(virtualMachineScaleSet.capacity(), 2);
@@ -733,7 +733,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName1)
             .withRegion(region2)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0)) // This VMSS in the first backend pool
@@ -751,7 +751,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName2)
             .withRegion(region2)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(1)) // This VMSS in the second backend pool
@@ -877,7 +877,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(localRegion)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -958,7 +958,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -1061,7 +1061,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -1165,7 +1165,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withoutPrimaryInternalLoadBalancer()
@@ -1358,7 +1358,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Test
     public void testVirtualMachineScaleSetSkuTypes() {
         rgName = null;
-        VirtualMachineScaleSetSkuTypes skuType = VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2;
+        VirtualMachineScaleSetSkuTypes skuType = VirtualMachineScaleSetSkuTypes.STANDARD_A1;
         Assertions.assertNull(skuType.sku().capacity());
         // first copy of sku
         Sku sku1 = skuType.sku();
@@ -1407,7 +1407,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withoutPrimaryInternalLoadBalancer()
@@ -1473,7 +1473,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRegion(region.name())
             .withExistingResourceGroup(resourceGroup)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -1574,7 +1574,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -1719,7 +1719,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withoutPrimaryInternalLoadBalancer()
@@ -1909,7 +1909,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             // create ProximityPlacementGroup with the VMSS
             .withNewProximityPlacementGroup("ppg", ProximityPlacementGroupType.STANDARD)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")

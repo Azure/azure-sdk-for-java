@@ -1653,7 +1653,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .define(vmssName2)
             .withRegion(region)
             .withNewResourceGroup(rgName)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network2, "subnet2")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer2)
             .withoutPrimaryInternalLoadBalancer()
@@ -1676,7 +1676,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("jvuser5")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
                 .withExistingVirtualMachineScaleSet(uniformVMSS)
                 .create());
     }
@@ -2035,7 +2035,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
