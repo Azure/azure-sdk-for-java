@@ -139,7 +139,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withBootDiagnostics()
             .withExistingStorageAccount(storageAccount)
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
