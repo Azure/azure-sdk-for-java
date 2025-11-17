@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Removed unused jetty, redisson, and lettuce-core dependencies.
 
 ## 1.19.0-beta.1 (2025-11-14)
 
