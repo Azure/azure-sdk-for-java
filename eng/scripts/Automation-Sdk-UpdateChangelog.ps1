@@ -152,7 +152,7 @@ function Invoke-ChangelogGeneration {
         [string]$NewJarPath
     )
     
-    $changelogPomPath = Join-Path $SdkRepoPath "eng\automation\changelog\pom.xml"
+    $changelogPomPath = Join-Path $SdkRepoPath "eng" "automation" "changelog" "pom.xml"
     
     if (-not (Test-Path $changelogPomPath)) {
         throw "Changelog tool POM not found at: $changelogPomPath"
