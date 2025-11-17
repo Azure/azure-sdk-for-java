@@ -126,12 +126,12 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     /**
      * Validates that the consistency layer properly handles LEASE_NOT_FOUND (410-1022) failures during head requests
      * in the barrier flow for strong consistency scenarios across multiple regions.
-     * 
+     *
      * <p>This test simulates various failure scenarios where head requests fail with LEASE_NOT_FOUND errors
      * during the barrier protocol, which is used to ensure strong consistency guarantees. The test verifies
      * that the client can properly bail out and retry when too many head failures occur, or successfully
      * complete operations when head failures are within acceptable thresholds.</p>
-     * 
+     *
      * <p><b>Test Scenarios:</b></p>
      * <ul>
      *   <li>For <b>Create operations</b>: Head can fail up to 1 time before the operation times out (408-1022)</li>
@@ -139,7 +139,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
      *       with 4 failures, the operation fails over to another region</li>
      *   <li>Tests both pre-quorum and post-quorum selection barrier failure scenarios</li>
      * </ul>
-     * 
+     *
      * <p><b>Verification Points:</b></p>
      * <ul>
      *   <li>Correct HTTP status codes (201 for Create, 200 for Read, 408 for timeouts)</li>
@@ -148,7 +148,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
      *   <li>Primary replica is contacted during barrier protocol</li>
      *   <li>No 410 errors surface for Create/Read operations (should be handled internally)</li>
      * </ul>
-     * 
+     *
      * @param headFailureCount Number of head requests that should fail with LEASE_NOT_FOUND
      * @param operationTypeForWhichBarrierFlowIsTriggered The operation type (Create or Read) that triggers the barrier flow
      * @param enterPostQuorumSelectionOnlyBarrierLoop Whether to simulate failures in the post-quorum selection phase
@@ -176,7 +176,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
         if (!shouldTestExecutionHappen(
             effectiveConsistencyLevel,
-            ConsistencyLevel.STRONG,
+            OperationType.Create.equals(operationTypeForWhichBarrierFlowIsTriggered) ? ConsistencyLevel.STRONG : ConsistencyLevel.BOUNDED_STALENESS,
             connectionModeOfClientUnderTest,
             ConnectionMode.DIRECT)) {
 
@@ -489,7 +489,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
             return false;
         }
 
-        return accountConsistencyLevel.equals(minimumConsistencyLevel);
+        return accountConsistencyLevel.compareTo(minimumConsistencyLevel) <= 0;
     }
 
     private static boolean isPrimaryReplicaEndpoint(String storePhysicalAddress) {
