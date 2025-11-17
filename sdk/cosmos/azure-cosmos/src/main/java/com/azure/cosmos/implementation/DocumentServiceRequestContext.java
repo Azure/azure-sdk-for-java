@@ -38,6 +38,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile ISessionToken sessionToken;
     public volatile long quorumSelectedLSN;
     public volatile long globalCommittedSelectedLSN;
+    public volatile String globalStrongWriteRegion;
     public volatile StoreResponse globalStrongWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile ReadConsistencyStrategy readConsistencyStrategy;
@@ -148,6 +149,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.sessionToken = this.sessionToken;
         context.quorumSelectedLSN = this.quorumSelectedLSN;
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
+        context.globalStrongWriteRegion = this.globalStrongWriteRegion;
         context.globalStrongWriteResponse = this.globalStrongWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
         context.readConsistencyStrategy = this.readConsistencyStrategy;

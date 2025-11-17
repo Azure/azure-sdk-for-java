@@ -145,6 +145,7 @@ public class LocationCache {
      * @param databaseAccount READ DatabaseAccount
      */
     public void onDatabaseAccountRead(DatabaseAccount databaseAccount) {
+        logger.info("inside onDatabaseAccountRead");
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
@@ -686,7 +687,7 @@ public class LocationCache {
                                 this.unavailableLocationsExpirationTime)
 
                         && Utils.tryRemove(this.locationUnavailabilityInfoByEndpoint, unavailableEndpoint, removedHolder)) {
-                    logger.debug(
+                    logger.info(
                             "Removed endpoint [{}] unavailable for operations [{}] from unavailableEndpoints",
                             unavailableEndpoint,
                             unavailabilityInfoHolder.v.unavailableOperations);
@@ -750,7 +751,7 @@ public class LocationCache {
 
         this.updateLocationCache();
 
-        logger.debug(
+        logger.info(
                 "Endpoint [{}] unavailable for [{}] added/updated to unavailableEndpoints with timestamp [{}]",
                 unavailableEndpoint,
                 unavailableOperationType,
@@ -770,7 +771,7 @@ public class LocationCache {
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
             DatabaseAccountLocationsInfo nextLocationInfo = new DatabaseAccountLocationsInfo(this.locationInfo);
-            logger.debug("updating location cache ..., current readLocations [{}], current writeLocations [{}]",
+            logger.info("updating location cache ..., current readLocations [{}], current writeLocations [{}]",
                     nextLocationInfo.readRegionalRoutingContexts, nextLocationInfo.writeRegionalRoutingContexts);
 
             if (preferenceList != null) {
@@ -822,7 +823,7 @@ public class LocationCache {
 
             this.lastCacheUpdateTimestamp = Instant.now();
 
-            logger.debug("updating location cache finished, new readLocations [{}], new writeLocations [{}]",
+            logger.info("updating location cache finished, new readLocations [{}], new writeLocations [{}]",
                     nextLocationInfo.readRegionalRoutingContexts, nextLocationInfo.writeRegionalRoutingContexts);
             this.locationInfo = nextLocationInfo;
         }
@@ -914,7 +915,7 @@ public class LocationCache {
                         String location = gatewayDbAccountLocation.getName().toLowerCase(Locale.ROOT);
                         URI endpoint = new URI(gatewayDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
-                        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(endpoint);
+                        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(endpoint, location);
 
                         if (!endpointsByLocation.containsKey(location)) {
                             endpointsByLocation.put(location, regionalRoutingContext);

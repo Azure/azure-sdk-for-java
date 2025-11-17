@@ -38,7 +38,7 @@ public class ServiceUnavailableException extends CosmosException {
         setSubStatus(subStatusCode);
     }
 
-    ServiceUnavailableException(String message, int subStatusCode) {
+    public ServiceUnavailableException(String message, int subStatusCode) {
         this(message, null, (String) null, subStatusCode);
     }
 

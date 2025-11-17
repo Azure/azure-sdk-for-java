@@ -63,6 +63,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
@@ -114,6 +115,7 @@ public class RntbdTransportClient extends TransportClient {
     private final RntbdServerErrorInjector serverErrorInjector;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AddressSelector addressSelector;
+    private BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor;
 
     // endregion
 
@@ -319,6 +321,10 @@ public class RntbdTransportClient extends TransportClient {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
 
+            if (this.storeResponseInterceptor != null) {
+                return this.storeResponseInterceptor.apply(request, storeResponse);
+            }
+
             return storeResponse;
 
         }).onErrorMap(throwable -> {
@@ -490,6 +496,10 @@ public class RntbdTransportClient extends TransportClient {
 
         return channelAcquisitionEvent.isPresent() &&
                 channelAcquisitionEvent.get().getDuration().toMillis() > this.channelAcquisitionContextLatencyThresholdInMillis;
+    }
+
+    public void setStoreResponseInterceptor(BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
+        this.storeResponseInterceptor = storeResponseInterceptor;
     }
 
     // endregion

@@ -41,6 +41,7 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -267,6 +268,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
     private volatile boolean useMultipleWriteLocations;
 
     // creator of TransportClient is responsible for disposing it.
@@ -780,7 +782,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.thinProxy).setSessionContainer(this.sessionContainer);
     }
 
-    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
+    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
+                     Function<HttpClient, HttpClient> httpClientInterceptor,
+                     Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor,
+                     BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
         try {
 
             this.httpClientInterceptor = httpClientInterceptor;
@@ -794,7 +799,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.userAgentContainer,
                 this.globalEndpointManager,
                 this.reactorHttpClient,
-                this.apiType);
+                this.apiType,
+                httpRequestInterceptor);
 
             this.thinProxy = createThinProxy(this.sessionContainer,
                 this.consistencyLevel,
@@ -836,6 +842,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
                 collectionCache);
 
+            this.httpRequestInterceptor = httpRequestInterceptor;
+
             updateGatewayProxy();
             updateThinProxy();
             clientTelemetry = new ClientTelemetry(
@@ -864,7 +872,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {
-                this.initializeDirectConnectivity();
+                this.initializeDirectConnectivity(storeResponseInterceptor);
             }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
             ConsistencyLevel effectiveConsistencyLevel = consistencyLevel != null
@@ -887,7 +895,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxCollectionCache.serialize(state, this.collectionCache);
     }
 
-    private void initializeDirectConnectivity() {
+    private void initializeDirectConnectivity(BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> rntbdTransportClientStoreResponseInterceptor) {
         this.addressResolver = new GlobalAddressResolver(this,
             this.reactorHttpClient,
             this.globalEndpointManager,
@@ -900,7 +908,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             //     this.gatewayConfigurationReader,
             null,
             this.connectionPolicy,
-            this.apiType);
+            this.apiType,
+            this.httpRequestInterceptor);
 
         this.storeClientFactory = new StoreClientFactory(
             this.addressResolver,
@@ -913,6 +922,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.clientTelemetry,
             this.globalEndpointManager);
 
+        this.storeClientFactory.setStoreResponseInterceptorIfRntbdTransportClient(rntbdTransportClientStoreResponseInterceptor);
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.setGlobalAddressResolver(this.addressResolver);
         this.createStoreModel(true);
     }
@@ -944,7 +954,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              UserAgentContainer userAgentContainer,
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
-                                             ApiType apiType) {
+                                             ApiType apiType,
+                                             Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -953,7 +964,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-                apiType);
+                apiType,
+                httpRequestInterceptor);
     }
 
     ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,
@@ -6375,6 +6387,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+        logger.info("entered getDatabaseAccountFromEndpoint line 6334 RxDocumentClientImpl");
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);

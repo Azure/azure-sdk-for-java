@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -16,7 +17,6 @@ import java.util.function.Function;
  * This is meant to be internally used only by our sdk.
  */
 public class BackoffRetryUtility {
-
     // transforms a retryFunc to a function which can be used by Observable.retryWhen(.)
     // also it invokes preRetryCallback prior to doing retry.
     public static final Quadruple<Boolean, Boolean, Duration, Integer> InitialArgumentValuePolicyArg = Quadruple.with(false, false,
@@ -30,7 +30,6 @@ public class BackoffRetryUtility {
     // a helper method for invoking callback method given the retry policy
     static public <T> Mono<T> executeRetry(Callable<Mono<T>> callbackMethod,
                                            IRetryPolicy retryPolicy) {
-
         return Mono.defer(() -> {
             try {
                 return callbackMethod.call();

@@ -98,6 +98,8 @@ public class StoreReader {
             boolean checkMinLSN,
             boolean forceReadAll) {
 
+        logger.info("inside readMultipleReplicaAsync with region {}", entity.requestContext.regionalRoutingContextToRoute.getRegion());
+
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
         }
