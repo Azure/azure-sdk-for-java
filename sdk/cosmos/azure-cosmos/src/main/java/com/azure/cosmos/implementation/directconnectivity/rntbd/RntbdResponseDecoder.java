@@ -65,11 +65,11 @@ public final class RntbdResponseDecoder extends ByteToMessageDecoder {
 
                 out.add(response.retain());
             } else if (leakDetectionDebuggingEnabled) {
-                logger.info("{} RntbdResponseDecoder: response is null, not enough data to decode yet",
+                logger.debug("{} RntbdResponseDecoder: response is null, not enough data to decode yet",
                     context.channel());
             }
         } else if (leakDetectionDebuggingEnabled) {
-            logger.info("{} RntbdResponseDecoder: cannot decode head yet, readableBytes={}",
+            logger.debug("{} RntbdResponseDecoder: cannot decode head yet, readableBytes={}",
                 context.channel(), in.readableBytes());
         }
     }

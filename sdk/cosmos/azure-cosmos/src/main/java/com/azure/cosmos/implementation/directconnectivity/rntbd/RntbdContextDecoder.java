@@ -44,14 +44,14 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
                 result = rntbdContext;
 
                 if (leakDetectionDebuggingEnabled) {
-                    logger.info("{} RntbdContextDecoder: decoded RntbdContext successfully", context.channel());
+                    logger.debug("{} RntbdContextDecoder: decoded RntbdContext successfully", context.channel());
                 }
             } catch (RntbdContextException error) {
                 context.fireUserEventTriggered(error);
                 result = error;
 
                 if (leakDetectionDebuggingEnabled) {
-                    logger.info("{} RntbdContextDecoder: caught RntbdContextException", context.channel(), error);
+                    logger.debug("{} RntbdContextDecoder: caught RntbdContextException", context.channel(), error);
                 }
             } finally {
                 if (leakDetectionDebuggingEnabled) {
@@ -62,7 +62,7 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
 
             logger.debug("{} DECODE COMPLETE: {}", context.channel(), result);
         } else if (leakDetectionDebuggingEnabled) {
-            logger.info("{} RntbdContextDecoder: cannot decode head yet, readableBytes={}",
+            logger.debug("{} RntbdContextDecoder: cannot decode head yet, readableBytes={}",
                 context.channel(), in.readableBytes());
         }
     }
