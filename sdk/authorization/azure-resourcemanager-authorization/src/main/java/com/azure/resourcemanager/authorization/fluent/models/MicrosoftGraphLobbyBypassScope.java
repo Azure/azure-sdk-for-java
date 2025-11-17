@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * lobbyBypassScope.
+ * Represents a lobby bypass scope.
  */
 public final class MicrosoftGraphLobbyBypassScope extends ExpandableStringEnum<MicrosoftGraphLobbyBypassScope> {
     /**

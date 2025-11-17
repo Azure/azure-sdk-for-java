@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamMessagingSettings.
+ * Represents a team messaging settings.
  */
 @Fluent
 public final class MicrosoftGraphTeamMessagingSettings

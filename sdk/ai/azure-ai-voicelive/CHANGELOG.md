@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.2 (2025-11-14)
+
+### Features Added
+
+- Added Model Context Protocol (MCP) support for tool integration:
+  - `MCPServer` class for defining MCP server configurations with server label, URL, authorization, headers, and tool restrictions
+  - `MCPTool` class representing MCP tool definitions with name, description, input schema, and annotations
+  - `ResponseMCPListToolItem` for listing available tools on an MCP server
+  - `ResponseMCPCallItem` for MCP tool call responses with arguments, output, and error handling
+  - `ResponseMCPApprovalRequestItem` and `ResponseMCPApprovalResponseItem` for tool call approval workflow
+  - Server events: `ServerEventMcpListToolsInProgress`, `ServerEventMcpListToolsCompleted`, `ServerEventMcpListToolsFailed`
+  - Server events: `ServerEventResponseMcpCallArgumentsDelta`, `ServerEventResponseMcpCallArgumentsDone`
+  - New `ToolType.MCP` for MCP-based tool definitions
+  - New `ServerEventType` constants for MCP-related events
+
+### Other Changes
+
+#### Dependency Updates
+
+- Dependency versions remain unchanged from `1.0.0-beta.1`.
 
 ## 1.0.0-beta.1 (2025-11-10)
 

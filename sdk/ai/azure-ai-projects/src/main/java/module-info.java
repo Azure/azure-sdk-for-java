@@ -5,7 +5,6 @@
 module com.azure.ai.projects {
     requires transitive com.azure.core;
     requires com.azure.storage.blob;
-    requires com.azure.ai.agents.persistent;
     requires openai.java.core;
     requires openai.java.client.okhttp;
 
