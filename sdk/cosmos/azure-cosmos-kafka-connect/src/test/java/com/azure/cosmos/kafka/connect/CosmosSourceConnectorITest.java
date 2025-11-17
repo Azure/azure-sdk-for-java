@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -201,20 +202,16 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
             List<ConsumerRecord<String, JsonNode>> itemRecords = new ArrayList<>();
             int expectedMetadataRecordsCount = metadataStorageType == CosmosMetadataStorageType.COSMOS ? 0 : 2;
-            int expectedItemRecords = createdItems.size();
+            int expectedItemRecordsCount = createdItems.size();
 
-            Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {
-                kafkaConsumer.poll(Duration.ofMillis(1000))
-                    .iterator()
-                    .forEachRemaining(consumerRecord -> {
-                        if (consumerRecord.topic().equals(topicName)) {
-                            itemRecords.add(consumerRecord);
-                        } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getStorageName())) {
-                            metadataRecords.add(consumerRecord);
-                        }
-                    });
-                return metadataRecords.size() >= expectedMetadataRecordsCount && itemRecords.size() >= expectedItemRecords;
-            });
+            pollChangesForSingleTopic(
+                kafkaConsumer,
+                topicName,
+                sourceConfig.getMetadataConfig().getStorageName(),
+                itemRecords,
+                metadataRecords,
+                expectedItemRecordsCount,
+                expectedMetadataRecordsCount);
 
             assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
             if (metadataStorageType == CosmosMetadataStorageType.KAFKA) {
@@ -270,15 +267,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().size()).isEqualTo(1);
             }
 
-            // validate the item records
-            assertThat(itemRecords.size()).isEqualTo(createdItems.size());
-            List<String> receivedItems =
-                itemRecords.stream().map(consumerRecord -> {
-                    JsonNode jsonNode = consumerRecord.value();
-                    return jsonNode.get("payload").get("id").asText();
-                }).collect(Collectors.toList());
-
-            assertThat(receivedItems.containsAll(createdItems)).isTrue();
+            validateFeedRangeItemRecords(itemRecords, createdItems);
 
         } finally {
             if (client != null) {
@@ -679,5 +668,151 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 kafkaCosmosConnectContainer.deleteConnector(connectorName);
             }
         }
+    }
+
+    @Test(groups = { "kafka-integration" }, timeOut = 2 * TIMEOUT)
+    public void readFromSingleContainer_pause_and_resume() {
+        logger.info("Pause and resume connector for single container ");
+        String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
+
+        Map<String, String> sourceConnectorConfig = new HashMap<>();
+        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
+        sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+
+        // Create topic ahead of time
+        kafkaCosmosConnectContainer.createTopic(topicName, 1);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
+        CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
+
+        String connectorName = "simpleTest-" + UUID.randomUUID();
+
+        try {
+            // create few items in the container
+            logger.info("creating items in container {}", singlePartitionContainerName);
+            List<String> createdItems = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                container.createItem(testItem).block();
+                createdItems.add(testItem.getId());
+            }
+
+            kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
+
+            logger.info("Getting consumer and subscribe to topic {}", singlePartitionContainerName);
+
+            Properties consumerProperties = kafkaCosmosConnectContainer.getConsumerProperties();
+            consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+            consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+            KafkaConsumer<String, JsonNode> kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+
+            kafkaConsumer.subscribe(
+                Arrays.asList(
+                    topicName,
+                    sourceConfig.getMetadataConfig().getStorageName()));
+
+            List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
+            List<ConsumerRecord<String, JsonNode>> itemRecords = new ArrayList<>();
+            int expectedMetadataRecordsCount = 2;
+            int expectedItemRecordsCount = createdItems.size();
+
+            pollChangesForSingleTopic(
+                kafkaConsumer,
+                topicName,
+                sourceConfig.getMetadataConfig().getStorageName(),
+                itemRecords,
+                metadataRecords,
+                expectedItemRecordsCount,
+                expectedMetadataRecordsCount);
+
+            assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
+            validateFeedRangeItemRecords(itemRecords, createdItems);
+
+            // now pause the connector
+            kafkaCosmosConnectContainer.pauseConnector(connectorName);
+
+            // create few items
+            createdItems.clear();
+            metadataRecords.clear();
+            itemRecords.clear();
+
+            for (int i = 0; i < 5; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                container.createItem(testItem).block();
+                createdItems.add(testItem.getId());
+            }
+
+            // resume the connector
+            kafkaCosmosConnectContainer.resumeConnector(connectorName);
+            // poll again, poll a little big longer to make sure no duplicate records are being returned
+            Instant startPollTime = Instant.now();
+            while (Duration.between(startPollTime, Instant.now()).toMillis() < 60 * 1000 ) {
+                kafkaConsumer.poll(Duration.ofMillis(1000))
+                    .iterator()
+                    .forEachRemaining(consumerRecord -> {
+                        if (consumerRecord.topic().equals(topicName)) {
+                            itemRecords.add(consumerRecord);
+                        } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getStorageName())) {
+                            metadataRecords.add(consumerRecord);
+                        }
+                    });
+            }
+
+            assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
+            validateFeedRangeItemRecords(itemRecords, createdItems);
+        } finally {
+            if (client != null) {
+                logger.info("cleaning container {}", singlePartitionContainerName);
+                cleanUpContainer(client, databaseName, singlePartitionContainerName);
+            }
+
+            // IMPORTANT: remove the connector after use
+            if (kafkaCosmosConnectContainer != null) {
+                kafkaCosmosConnectContainer.deleteConnector(connectorName);
+            }
+        }
+    }
+
+    private void pollChangesForSingleTopic(
+        KafkaConsumer<String, JsonNode> kafkaConsumer,
+        String topicName,
+        String storageName,
+        List<ConsumerRecord<String, JsonNode>> itemRecords,
+        List<ConsumerRecord<String, JsonNode>> metadataRecords,
+        int expectedItemRecords,
+        int expectedMetadataRecordsCount) {
+
+        Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {
+            kafkaConsumer.poll(Duration.ofMillis(1000))
+                .iterator()
+                .forEachRemaining(consumerRecord -> {
+                    if (consumerRecord.topic().equals(topicName)) {
+                        itemRecords.add(consumerRecord);
+                    } else if (consumerRecord.topic().equals(storageName)) {
+                        metadataRecords.add(consumerRecord);
+                    }
+                });
+            return metadataRecords.size() >= expectedMetadataRecordsCount && itemRecords.size() >= expectedItemRecords;
+        });
+    }
+
+    private void validateFeedRangeItemRecords(
+        List<ConsumerRecord<String, JsonNode>> itemRecords,
+        List<String> expectedItems) {
+        // validate the item records
+        assertThat(itemRecords.size()).isEqualTo(expectedItems.size());
+        List<String> receivedItems =
+            itemRecords.stream().map(consumerRecord -> {
+                JsonNode jsonNode = consumerRecord.value();
+                return jsonNode.get("payload").get("id").asText();
+            }).collect(Collectors.toList());
+
+        assertThat(receivedItems.containsAll(expectedItems)).isTrue();
     }
 }
