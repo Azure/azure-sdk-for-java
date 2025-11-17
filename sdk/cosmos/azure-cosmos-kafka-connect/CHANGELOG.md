@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed duplicate processing in `CosmosSourceConnector` when task rebalance happens - See [PR 47308](https://github.com/Azure/azure-sdk-for-java/pull/47308)
 
 #### Other Changes
 
