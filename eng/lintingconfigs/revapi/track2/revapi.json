@@ -761,6 +761,86 @@
           "code" : "java.field.addedStaticField",
           "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
           "justification" : "Not a break."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.netapp\\.models\\..*(List|ListResult|ListReplications)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.netapp\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.netapp\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.netapp\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method com.azure.resourcemanager.netapp.models.Snapshot .*"
+          },
+          "justification" : "The 'update' API has no effect."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": ".*",
+          "old": ".*(r|R)elationshipStatus.*",
+          "justification": "Enum name changed due to specs bug fix."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "(java.method.returnTypeChanged|java.method.parameterTypeChanged)",
+          "old": ".*(c|C)ustomThroughputMibps.*",
+          "justification": "Type changed due to specs bug fix."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old": "class com\\.azure\\.resourcemanager\\.netapp\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": ".*",
+          "old": ".*ProvisioningState.*",
+          "justification": "TypeSpec fix for expansive enum class."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "(java.method.numberOfParametersChanged|java.method.returnTypeTypeParametersChanged)",
+          "old": ".*(listReplications|mountTargets).*",
+          "justification": "Minor change due to added parameter."
         }
       ]
     }
