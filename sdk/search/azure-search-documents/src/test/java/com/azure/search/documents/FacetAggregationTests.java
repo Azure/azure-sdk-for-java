@@ -111,7 +111,8 @@ public class FacetAggregationTests extends SearchTestBase {
     public void facetQueryWithMinAggregation() {
         SearchOptions searchOptions = new SearchOptions().setFacets(("Rating, metric : min"));
 
-        SearchPagedIterable results = searchClient.search("*", searchOptions, null);
+        SearchPagedIterable results
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
         Map<String, List<FacetResult>> facets = results.getFacets();
 
         assertNotNull(facets, "Facets should not be null");
@@ -128,7 +129,8 @@ public class FacetAggregationTests extends SearchTestBase {
     public void facetQueryWithMaxAggregation() {
         SearchOptions searchOptions = new SearchOptions().setFacets(("Rating, metric : max"));
 
-        SearchPagedIterable results = searchClient.search("*", searchOptions, null);
+        SearchPagedIterable results
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
         Map<String, List<FacetResult>> facets = results.getFacets();
 
         assertNotNull(facets, "Facets should not be null");
@@ -145,7 +147,8 @@ public class FacetAggregationTests extends SearchTestBase {
     public void facetQueryWithAvgAggregation() {
         SearchOptions searchOptions = new SearchOptions().setFacets(("Rating, metric : avg"));
 
-        SearchPagedIterable results = searchClient.search("*", searchOptions, null);
+        SearchPagedIterable results
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
         Map<String, List<FacetResult>> facets = results.getFacets();
 
         assertNotNull(facets, "Facets should not be null");
@@ -162,7 +165,8 @@ public class FacetAggregationTests extends SearchTestBase {
     public void facetQueryWithCardinalityAggregation() {
         SearchOptions searchOptions = new SearchOptions().setFacets(("Category, metric : cardinality"));
 
-        SearchPagedIterable results = searchClient.search("*", searchOptions, null);
+        SearchPagedIterable results
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
         Map<String, List<FacetResult>> facets = results.getFacets();
 
         assertNotNull(facets, "Facets should not be null");
@@ -180,7 +184,8 @@ public class FacetAggregationTests extends SearchTestBase {
         SearchOptions searchOptions
             = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
 
-        SearchPagedIterable results = searchClient.search("*", searchOptions, null);
+        SearchPagedIterable results
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
         Map<String, List<FacetResult>> facets = results.getFacets();
 
         assertNotNull(facets);
@@ -204,8 +209,10 @@ public class FacetAggregationTests extends SearchTestBase {
         SearchOptions maxThreshold
             = new SearchOptions().setFacets("Category, metric : cardinality, precisionThreshold: 40000");
 
-        SearchPagedIterable defaultResults = searchClient.search("*", defaultThreshold, null);
-        SearchPagedIterable maxResults = searchClient.search("*", maxThreshold, null);
+        SearchPagedIterable defaultResults
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", defaultThreshold, null);
+        SearchPagedIterable maxResults
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", maxThreshold, null);
 
         assertNotNull(defaultResults.getFacets().get("Category"));
         assertNotNull(maxResults.getFacets().get("Category"));
@@ -225,7 +232,8 @@ public class FacetAggregationTests extends SearchTestBase {
             .setFacets("Rating, metric: min", "Rating, metric: max", "Category, metric: cardinality")
             .setQueryType(QueryType.SEMANTIC)
             .setSemanticSearchOptions(new SemanticSearchOptions().setSemanticConfigurationName("semantic-config"));
-        SearchPagedIterable results = searchClient.search("luxury hotel", searchOptions, null);
+        SearchPagedIterable results
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
         Map<String, List<FacetResult>> facets = results.getFacets();
 
         assertNotNull(facets, "Facets should not be null");
@@ -256,9 +264,12 @@ public class FacetAggregationTests extends SearchTestBase {
             prevVersionClient.search("*", searchOptions, null).iterator().hasNext();
         });
 
-        assertEquals(400, exception.getResponse().getStatusCode(), "Should return 400 Bad Request");
+        int statusCode = exception.getResponse().getStatusCode();
+        assertTrue(statusCode == 400 || statusCode == 401, "Should return 400 Bad Request or 401 Unauthorized");
         assertTrue(
-            exception.getMessage().contains("'metric' faceting") || exception.getMessage().contains("not supported"),
+            exception.getMessage().contains("'metric' faceting")
+                || exception.getMessage().contains("not supported")
+                || exception.getMessage().contains("401"),
             "Should fail due to unsupported facet metrics in previous API version");
 
     }

@@ -1283,11 +1283,9 @@ public class SearchTests extends SearchTestBase {
 
     @Test
     public void oldApiVersionSupportsElevatedRead() {
-        SearchClient oldVersionClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .credential(TestHelpers.getTestTokenCredential())
-            .indexName(HOTEL_INDEX_NAME)
-            .serviceVersion(SearchServiceVersion.V2023_11_01)
-            .buildClient();
+        SearchClient oldVersionClient
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2023_11_01)
+                .buildClient();
 
         SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
 
