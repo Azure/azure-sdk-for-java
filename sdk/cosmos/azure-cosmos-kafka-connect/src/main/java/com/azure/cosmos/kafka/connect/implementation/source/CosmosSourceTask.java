@@ -105,7 +105,7 @@ public class CosmosSourceTask extends SourceTask {
         // populate the changeFeedState if offset exists for the feed range
 
         // In task level, we will try to find the EXACT offset matching for the feed range.
-        // The task config used here is only a snapshot of the config assigned, when there is task level rebalance happens,
+        // The task config used here is only a snapshot of the config assigned; when there is a task level rebalance,
         // the new task will keep using the snapshot in which could contain staled feed range or change feed state
 
         KafkaCosmosChangeFeedState changeFeedState =
