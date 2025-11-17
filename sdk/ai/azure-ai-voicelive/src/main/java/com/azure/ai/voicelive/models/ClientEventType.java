@@ -138,4 +138,10 @@ public final class ClientEventType extends ExpandableStringEnum<ClientEventType>
     public static Collection<ClientEventType> values() {
         return values(ClientEventType.class);
     }
+
+    /**
+     * Static value mcp_approval_response for ClientEventType.
+     */
+    @Generated
+    public static final ClientEventType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
 }

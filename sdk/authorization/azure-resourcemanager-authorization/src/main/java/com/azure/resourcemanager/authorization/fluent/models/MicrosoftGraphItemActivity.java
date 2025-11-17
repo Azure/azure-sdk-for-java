@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * itemActivity.
+ * Represents an item activity.
  */
 @Fluent
 public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {

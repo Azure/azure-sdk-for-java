@@ -14,7 +14,7 @@ import java.util.Map;
 public final class WebAppsUpdateApplicationSettingsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/UpdateAppSettings.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/UpdateAppSettings.json
      */
     /**
      * Sample code: Update App Settings.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.19.0-beta.1 (Unreleased)
+## 1.19.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.19.0-beta.1 (2025-11-14)
+
+### Features Added
+- Added `enableAzureTokenProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`).
+
+### Other Changes
+- Ported the authentication flow of WorkloadIdentityCredential to use Msal4j.
 
 ## 1.18.1 (2025-10-13)
 

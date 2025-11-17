@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * presence.
+ * Represents a presence.
  */
 @Fluent
 public final class MicrosoftGraphPresence extends MicrosoftGraphEntity {

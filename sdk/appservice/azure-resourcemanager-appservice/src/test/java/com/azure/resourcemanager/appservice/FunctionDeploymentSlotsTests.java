@@ -22,8 +22,10 @@ import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
 public class FunctionDeploymentSlotsTests extends AppServiceTest {
     private String webappName1 = "";
     private String slotName1 = "";
@@ -46,7 +48,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         // Create with consumption
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewAppServicePlan(PricingTier.STANDARD_S1)
             .withAppSetting("appkey", "appvalue")
@@ -56,10 +58,10 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
             .withPythonVersion(PythonVersion.PYTHON_27)
             .create();
         Assertions.assertNotNull(functionApp1);
-        Assertions.assertEquals(Region.US_WEST, functionApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
 
         /*
         IMPORTANT, function app cannot create slot with empty config.
@@ -141,7 +143,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
     }
 
     private static final String FUNCTION_APP_PACKAGE_URL
-        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
+        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
     @Test
     public void canCRUDFunctionSlots() {

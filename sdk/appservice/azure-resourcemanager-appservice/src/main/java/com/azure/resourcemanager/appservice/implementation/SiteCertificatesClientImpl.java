@@ -65,7 +65,7 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientSiteCertificates")
     public interface SiteCertificatesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/certificates")
@@ -213,10 +213,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -252,11 +253,12 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+            .list(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -359,10 +361,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -401,10 +404,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -498,11 +502,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                    this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+                certificateName, this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -547,10 +551,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context);
     }
 
     /**
@@ -643,10 +648,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -684,10 +690,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -779,10 +786,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -827,10 +835,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, name, certificateName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, certificateEnvelope, accept, context);
     }
 
     /**
@@ -924,10 +933,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -968,11 +978,12 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSlot(this.client.getEndpoint(), resourceGroupName, name, slot, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1094,10 +1105,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                certificateName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1141,10 +1153,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSlot(this.client.getEndpoint(), resourceGroupName, name, slot, certificateName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1250,11 +1263,12 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateSlot(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), name, slot, certificateName, this.client.getApiVersion(),
-                certificateEnvelope, accept, context))
+                this.client.getSubscriptionId(), name, slot, certificateName, apiVersion, certificateEnvelope, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1304,10 +1318,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateSlot(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            name, slot, certificateName, this.client.getApiVersion(), certificateEnvelope, accept, context);
+            name, slot, certificateName, apiVersion, certificateEnvelope, accept, context);
     }
 
     /**
@@ -1412,10 +1427,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteSlot(this.client.getEndpoint(), resourceGroupName, name, slot,
-                certificateName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1458,10 +1474,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteSlot(this.client.getEndpoint(), resourceGroupName, name, slot, certificateName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1565,11 +1582,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateSlot(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, slot, certificateName, this.client.getApiVersion(), certificateEnvelope,
-                accept, context))
+                resourceGroupName, name, slot, certificateName, apiVersion, certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1619,10 +1636,11 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
         } else {
             certificateEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateSlot(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            slot, certificateName, this.client.getApiVersion(), certificateEnvelope, accept, context);
+            slot, certificateName, apiVersion, certificateEnvelope, accept, context);
     }
 
     /**
@@ -1690,13 +1708,16 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
+     * Get all certificates in a resource group under a site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all certificates in a resource group under a site along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listNextSinglePageAsync(String nextLink) {
@@ -1715,6 +1736,8 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
+     * Get all certificates in a resource group under a site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1722,7 +1745,8 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all certificates in a resource group under a site along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1741,13 +1765,16 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
+     * Get all certificates in a resource group for a given site and a deployment slot.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all certificates in a resource group for a given site and a deployment slot along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listSlotNextSinglePageAsync(String nextLink) {
@@ -1767,6 +1794,8 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
     }
 
     /**
+     * Get all certificates in a resource group for a given site and a deployment slot.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1774,7 +1803,8 @@ public final class SiteCertificatesClientImpl implements SiteCertificatesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all certificates in a resource group for a given site and a deployment slot along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listSlotNextSinglePageAsync(String nextLink, Context context) {

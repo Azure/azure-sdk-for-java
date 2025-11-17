@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DataflowGraphSourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowGraphSourceSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"gaowpulpqblylsyx\",\"dataSources\":[\"jnsjervtiagxsd\",\"zuempsbzkf\",\"beyvpnqicvinvkjj\"],\"assetRef\":\"xrbuukzclew\"}")
-            .toObject(DataflowGraphSourceSettings.class);
-        Assertions.assertEquals("gaowpulpqblylsyx", model.endpointRef());
-        Assertions.assertEquals("jnsjervtiagxsd", model.dataSources().get(0));
-        Assertions.assertEquals("xrbuukzclew", model.assetRef());
+        DataflowGraphSourceSettings model
+            = BinaryData.fromString("{\"endpointRef\":\"gsexne\",\"dataSources\":[\"dnw\"],\"assetRef\":\"mewzsyyc\"}")
+                .toObject(DataflowGraphSourceSettings.class);
+        Assertions.assertEquals("gsexne", model.endpointRef());
+        Assertions.assertEquals("dnw", model.dataSources().get(0));
+        Assertions.assertEquals("mewzsyyc", model.assetRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphSourceSettings model = new DataflowGraphSourceSettings().withEndpointRef("gaowpulpqblylsyx")
-            .withDataSources(Arrays.asList("jnsjervtiagxsd", "zuempsbzkf", "beyvpnqicvinvkjj"))
-            .withAssetRef("xrbuukzclew");
+        DataflowGraphSourceSettings model = new DataflowGraphSourceSettings().withEndpointRef("gsexne")
+            .withDataSources(Arrays.asList("dnw"))
+            .withAssetRef("mewzsyyc");
         model = BinaryData.fromObject(model).toObject(DataflowGraphSourceSettings.class);
-        Assertions.assertEquals("gaowpulpqblylsyx", model.endpointRef());
-        Assertions.assertEquals("jnsjervtiagxsd", model.dataSources().get(0));
-        Assertions.assertEquals("xrbuukzclew", model.assetRef());
+        Assertions.assertEquals("gsexne", model.endpointRef());
+        Assertions.assertEquals("dnw", model.dataSources().get(0));
+        Assertions.assertEquals("mewzsyyc", model.assetRef());
     }
 }

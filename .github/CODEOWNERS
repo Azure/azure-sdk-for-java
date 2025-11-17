@@ -83,7 +83,7 @@
 # ServiceOwners:                                                   @mojayara @Prasanna-Padmanabhan
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jhakulin @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @jhakulin @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
 /sdk/ai/azure-ai-agents-persistent/                                @dargilco @jhakulin @jayantjha @Azure/azure-java-sdk
@@ -233,9 +233,6 @@
 
 # PRLabel: %Cognitive - Health Insights
 /sdk/healthinsights/                                               @tomsft @koen-mertens @Azure/azure-java-sdk
-
-# ServiceLabel: %Cognitive - Health Insights
-# ServiceOwners:                                                   @tomsft @koen-mertens
 
 # ServiceLabel: %Cognitive - Immersive Reader
 # ServiceOwners:                                                   @metanMSFT
