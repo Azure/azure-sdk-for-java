@@ -1,6 +1,6 @@
 # Release History
 
-## 11.9.0-beta.1 (Unreleased)
+## 11.9.0-beta.1 (2025-11-17)
 
 ### Features Added
 
