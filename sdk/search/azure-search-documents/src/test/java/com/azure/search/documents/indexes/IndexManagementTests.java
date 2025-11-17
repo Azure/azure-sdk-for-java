@@ -1161,6 +1161,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("Uses System.getenv; requires specific environment setup")
     public void purviewEnabledIndexRejectsApiKeyAuth() {
         String indexName = randomIndexName("purview-api-key-test");
         SearchIndex index = new SearchIndex(indexName).setPurviewEnabled(true)

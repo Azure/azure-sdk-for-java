@@ -26,6 +26,7 @@ import com.azure.search.documents.util.SearchPagedIterable;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -249,14 +250,11 @@ public class FacetAggregationTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("Issues with responses based on record or playback mode")
     public void facetMetricsApiVersionCompatibility() {
-        SearchClient prevVersionClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .credential(TestHelpers.getTestTokenCredential())
-            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
-            .indexName(HOTEL_INDEX_NAME)
-            .serviceVersion(SearchServiceVersion.V2025_09_01)
-            .buildClient();
+        SearchClient prevVersionClient
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2025_09_01)
+                .buildClient();
 
         SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min");
 
