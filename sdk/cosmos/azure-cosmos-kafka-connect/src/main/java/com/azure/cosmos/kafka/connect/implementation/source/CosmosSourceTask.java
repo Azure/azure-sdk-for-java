@@ -106,7 +106,7 @@ public class CosmosSourceTask extends SourceTask {
 
         // In task level, we will try to find the EXACT offset matching for the feed range.
         // The task config used here is only a snapshot of the config assigned; when there is a task level rebalance,
-        // the new task will keep using the snapshot in which could contain staled feed range or change feed state
+        // the new task will keep using the snapshot which could contain stale feed range or change feed state
 
         KafkaCosmosChangeFeedState changeFeedState =
             this.getContinuationStateFromOffset(
