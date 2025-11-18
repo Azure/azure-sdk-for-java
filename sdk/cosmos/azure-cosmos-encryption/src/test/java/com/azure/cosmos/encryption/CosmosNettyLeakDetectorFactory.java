@@ -118,7 +118,8 @@ public final class CosmosNettyLeakDetectorFactory
             synchronized (staticLock) {
                 instanceCountSnapshot = testClassInventory.get(testClassName);
                 if (instanceCountSnapshot == null) {
-                    testClassInventory.put(testClassName, instanceCountSnapshot = new AtomicInteger(0));
+                    throw new IllegalStateException(
+                        "BeforeClass in TestListener was not called for testClass " + testClassName);
                 }
             }
 
