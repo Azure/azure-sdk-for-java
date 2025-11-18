@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * employeeOrgData.
+ * Represents an employee org data.
  */
 @Fluent
 public final class MicrosoftGraphEmployeeOrgData implements JsonSerializable<MicrosoftGraphEmployeeOrgData> {

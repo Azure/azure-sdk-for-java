@@ -24,7 +24,7 @@ public final class StatusDetailProperties implements JsonSerializable<StatusDeta
     private String type;
 
     /*
-     * The code of the status.
+     * The HTTP status code.
      */
     private String code;
 
@@ -59,7 +59,7 @@ public final class StatusDetailProperties implements JsonSerializable<StatusDeta
     }
 
     /**
-     * Get the code property: The code of the status.
+     * Get the code property: The HTTP status code.
      * 
      * @return the code value.
      */

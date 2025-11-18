@@ -9,8 +9,9 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DomainsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/
-     * ListDomainsByResourceGroup.json
+     * x-ms-original-file:
+     * specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-
+     * 01/examples/ListDomainsByResourceGroup.json
      */
     /**
      * Sample code: List domains by resource group.

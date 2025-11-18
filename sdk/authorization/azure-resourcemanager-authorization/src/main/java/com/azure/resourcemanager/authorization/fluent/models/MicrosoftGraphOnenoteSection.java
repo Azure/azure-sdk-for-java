@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * onenoteSection.
+ * Represents an onenote section.
  */
 @Fluent
 public final class MicrosoftGraphOnenoteSection extends MicrosoftGraphOnenoteEntityHierarchyModel {

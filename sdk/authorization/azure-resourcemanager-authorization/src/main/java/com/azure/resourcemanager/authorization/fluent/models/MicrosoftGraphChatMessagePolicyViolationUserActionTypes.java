@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * chatMessagePolicyViolationUserActionTypes.
+ * Represents chat message policy violation user action types.
  */
 public final class MicrosoftGraphChatMessagePolicyViolationUserActionTypes
     extends ExpandableStringEnum<MicrosoftGraphChatMessagePolicyViolationUserActionTypes> {

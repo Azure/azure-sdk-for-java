@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * onenote.
+ * Represents an onenote.
  */
 @Fluent
 public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {

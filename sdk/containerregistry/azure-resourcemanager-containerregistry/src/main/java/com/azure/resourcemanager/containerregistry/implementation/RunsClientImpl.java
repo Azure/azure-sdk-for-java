@@ -69,7 +69,7 @@ public final class RunsClientImpl implements RunsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientRuns")
     public interface RunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs")
@@ -1051,7 +1051,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the runs for a registry along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listNextSinglePageAsync(String nextLink) {
@@ -1077,7 +1077,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the runs for a registry along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listNextSinglePageAsync(String nextLink, Context context) {

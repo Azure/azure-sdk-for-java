@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * CopyNotebookModel.
+ * Represents a copy notebook model.
  */
 @Fluent
 public final class MicrosoftGraphCopyNotebookModel implements JsonSerializable<MicrosoftGraphCopyNotebookModel> {

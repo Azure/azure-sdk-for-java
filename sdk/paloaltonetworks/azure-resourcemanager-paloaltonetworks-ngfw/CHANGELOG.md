@@ -46,11 +46,11 @@
 
 #### `models.LocalRulestacks` was modified
 
-* `models.CountriesResponse listCountries(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listCountries(java.lang.String,java.lang.String)`
-* `listAppIdsWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
-* `models.ListAppIdResponse listAppIds(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listAppIds(java.lang.String,java.lang.String)`
 * `models.PredefinedUrlCategoriesResponse listPredefinedUrlCategories(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listPredefinedUrlCategories(java.lang.String,java.lang.String)`
+* `listAppIdsWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
 * `listCountriesWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+* `models.CountriesResponse listCountries(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listCountries(java.lang.String,java.lang.String)`
+* `models.ListAppIdResponse listAppIds(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listAppIds(java.lang.String,java.lang.String)`
 * `listPredefinedUrlCategoriesWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
 
 #### `models.MarketplaceDetails` was modified
@@ -60,20 +60,20 @@
 #### `models.PredefinedUrlCategory` was modified
 
 * `PredefinedUrlCategory()` was removed
-* `java.lang.String name()` -> `java.lang.String name()`
-* `withAction(java.lang.String)` was removed
-* `java.lang.String action()` -> `java.lang.String action()`
-* `withName(java.lang.String)` was removed
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `toJson(com.azure.json.JsonWriter)` was removed
 * `validate()` was removed
+* `withAction(java.lang.String)` was removed
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `withName(java.lang.String)` was removed
+* `java.lang.String action()` -> `java.lang.String action()`
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.String name()` -> `java.lang.String name()`
 
 #### `models.AdvSecurityObjectModel` was modified
 
 * `AdvSecurityObjectModel()` was changed to private access
-* `withEntry(java.util.List)` was removed
 * `validate()` was removed
 * `withType(java.lang.String)` was removed
+* `withEntry(java.util.List)` was removed
 
 #### `models.IpAddressSpace` was modified
 
@@ -102,21 +102,21 @@
 #### `models.NameDescriptionObject` was modified
 
 * `NameDescriptionObject()` was changed to private access
-* `withDescription(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.AppSeenInfo` was modified
 
 * `AppSeenInfo()` was changed to private access
-* `withCategory(java.lang.String)` was removed
-* `withRisk(java.lang.String)` was removed
 * `withStandardPorts(java.lang.String)` was removed
-* `withTitle(java.lang.String)` was removed
-* `withSubCategory(java.lang.String)` was removed
-* `withTag(java.lang.String)` was removed
 * `validate()` was removed
+* `withSubCategory(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
 * `withTechnology(java.lang.String)` was removed
+* `withRisk(java.lang.String)` was removed
+* `withTag(java.lang.String)` was removed
+* `withTitle(java.lang.String)` was removed
 
 #### `models.PlanData` was modified
 
@@ -161,9 +161,9 @@
 #### `models.SecurityServicesTypeList` was modified
 
 * `SecurityServicesTypeList()` was changed to private access
+* `withType(java.lang.String)` was removed
 * `withEntry(java.util.List)` was removed
 * `validate()` was removed
-* `withType(java.lang.String)` was removed
 
 #### `models.RulestackDetails` was modified
 
@@ -197,10 +197,10 @@
 #### `models.LocalRulestackResource` was modified
 
 * `listPredefinedUrlCategoriesWithResponse(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
-* `listCountriesWithResponse(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
-* `models.CountriesResponse listCountries()` -> `com.azure.core.http.rest.PagedIterable listCountries()`
 * `listAppIdsWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
 * `models.ListAppIdResponse listAppIds()` -> `com.azure.core.http.rest.PagedIterable listAppIds()`
+* `models.CountriesResponse listCountries()` -> `com.azure.core.http.rest.PagedIterable listCountries()`
+* `listCountriesWithResponse(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
 * `models.PredefinedUrlCategoriesResponse listPredefinedUrlCategories()` -> `com.azure.core.http.rest.PagedIterable listPredefinedUrlCategories()`
 
 #### `models.SourceAddr` was modified
@@ -222,9 +222,9 @@
 #### `models.AppSeenData` was modified
 
 * `AppSeenData()` was changed to private access
+* `withCount(int)` was removed
 * `validate()` was removed
 * `withAppSeenList(java.util.List)` was removed
-* `withCount(int)` was removed
 
 #### `models.PanoramaStatus` was modified
 
@@ -242,13 +242,13 @@
 #### `models.Country` was modified
 
 * `Country()` was removed
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `withCode(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
 * `java.lang.String code()` -> `java.lang.String code()`
 * `java.lang.String description()` -> `java.lang.String description()`
 * `toJson(com.azure.json.JsonWriter)` was removed
-* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
 
 #### `models.ApplicationInsights` was modified
 
@@ -256,8 +256,8 @@
 
 #### `models.PanoramaConfig` was modified
 
-* `hostname()` was removed
 * `validate()` was removed
+* `hostname()` was removed
 
 ### Features Added
 
@@ -287,8 +287,8 @@
 
 #### `models.LocalRulestacks` was modified
 
-* `listAppIds(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
 * `listPredefinedUrlCategories(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `listAppIds(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
 * `listCountries(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
 
 #### `models.PredefinedUrlCategory` was modified
@@ -318,20 +318,20 @@
 #### `models.LocalRulestackResource` was modified
 
 * `listAppIds(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
-* `listPredefinedUrlCategories(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
 * `listCountries(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `listPredefinedUrlCategories(java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
 
 #### `models.FirewallResourceUpdateProperties` was modified
 
-* `withStrataCloudManagerConfig(models.StrataCloudManagerConfig)` was added
-* `strataCloudManagerConfig()` was added
-* `isStrataCloudManaged()` was added
 * `withIsStrataCloudManaged(models.BooleanEnum)` was added
+* `withStrataCloudManagerConfig(models.StrataCloudManagerConfig)` was added
+* `isStrataCloudManaged()` was added
+* `strataCloudManagerConfig()` was added
 
 #### `models.NetworkProfile` was modified
 
-* `privateSourceNatRulesDestination()` was added
 * `withPrivateSourceNatRulesDestination(java.util.List)` was added
+* `privateSourceNatRulesDestination()` was added
 
 #### `models.Country` was modified
 
