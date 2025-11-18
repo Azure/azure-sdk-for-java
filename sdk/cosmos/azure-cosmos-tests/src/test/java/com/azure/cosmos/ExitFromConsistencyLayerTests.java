@@ -12,7 +12,9 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.codec.binary.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -510,7 +512,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         actualHeadRequestCountWithLeaseNotFoundErrors++;
                     }
 
-                    if (isPrimaryReplicaEndpoint(storePhysicalAddressContacted)) {
+                    if (isStorePhysicalAddressThatOfPrimaryReplica(storePhysicalAddressContacted)) {
                         primaryReplicaContacted = true;
                     }
                 }
@@ -565,7 +567,12 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         return effectiveConsistencyLevel.compareTo(minimumConsistencyLevel) <= 0;
     }
 
-    private static boolean isPrimaryReplicaEndpoint(String storePhysicalAddress) {
+    private static boolean isStorePhysicalAddressThatOfPrimaryReplica(String storePhysicalAddress) {
+
+        if (Strings.isNullOrEmpty(storePhysicalAddress)) {
+            return false;
+        }
+
         return storePhysicalAddress.endsWith("p/");
     }
 
