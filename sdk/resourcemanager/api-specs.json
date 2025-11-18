@@ -187,7 +187,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2023-04-java --metadata-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
+    "args": "--tag=package-policy-2025-03-stable --metadata-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
     "note": "Remove policyVariables.json and policyVariableValues.json from tag, as they are still in preview."
   },
   "policy-hybrid": {

@@ -63,71 +63,51 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PolicyClientPolicySe")
+    @ServiceInterface(name = "PolicyClientPolicySetDefinitions")
     public interface PolicySetDefinitionsService {
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionInner>> createOrUpdate(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policySetDefinitionName") String policySetDefinitionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PolicySetDefinitionInner parameters, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policySetDefinitionName") String policySetDefinitionName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
+        @Get("/providers/Microsoft.Authorization/policySetDefinitions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policySetDefinitionName") String policySetDefinitionName, @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PolicySetDefinitionListResult>> listBuiltIn(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicySetDefinitionInner>> getBuiltIn(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
             @PathParam("policySetDefinitionName") String policySetDefinitionName, @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions")
+        @Get("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policySetDefinitions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$expand") String expand,
-            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PolicySetDefinitionListResult>> listByManagementGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
+            @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/providers/Microsoft.Authorization/policySetDefinitions")
+        @Get("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResult>> listBuiltIn(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
-            @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PolicySetDefinitionInner>> getAtManagementGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
+            @PathParam("policySetDefinitionName") String policySetDefinitionName, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicySetDefinitionInner>> createOrUpdateAtManagementGroup(@HostParam("$host") String endpoint,
-            @PathParam("managementGroupId") String managementGroupId,
+            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
             @PathParam("policySetDefinitionName") String policySetDefinitionName,
-            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PolicySetDefinitionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -136,35 +116,46 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteAtManagementGroup(@HostParam("$host") String endpoint,
-            @PathParam("managementGroupId") String managementGroupId,
-            @PathParam("policySetDefinitionName") String policySetDefinitionName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
+            @PathParam("policySetDefinitionName") String policySetDefinitionName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionInner>> getAtManagementGroup(@HostParam("$host") String endpoint,
-            @PathParam("managementGroupId") String managementGroupId,
-            @PathParam("policySetDefinitionName") String policySetDefinitionName, @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policySetDefinitions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResult>> listByManagementGroup(@HostParam("$host") String endpoint,
-            @PathParam("managementGroupId") String managementGroupId, @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$expand") String expand,
-            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicySetDefinitionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+        Mono<Response<PolicySetDefinitionListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicySetDefinitionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policySetDefinitionName") String policySetDefinitionName, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicySetDefinitionInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policySetDefinitionName") String policySetDefinitionName,
+            @BodyParam("application/json") PolicySetDefinitionInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policySetDefinitionName") String policySetDefinitionName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -181,387 +172,207 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
         Mono<Response<PolicySetDefinitionListResult>> listByManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicySetDefinitionListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Creates or updates a policy set definition.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      * 
-     * This operation creates or updates a policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicySetDefinitionInner>> createOrUpdateWithResponseAsync(String policySetDefinitionName,
-        PolicySetDefinitionInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (policySetDefinitionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2023-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                policySetDefinitionName, apiVersion, parameters, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates a policy set definition.
-     * 
-     * This operation creates or updates a policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicySetDefinitionInner>> createOrUpdateWithResponseAsync(String policySetDefinitionName,
-        PolicySetDefinitionInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (policySetDefinitionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2023-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            policySetDefinitionName, apiVersion, parameters, accept, context);
-    }
-
-    /**
-     * Creates or updates a policy set definition.
-     * 
-     * This operation creates or updates a policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> createOrUpdateAsync(String policySetDefinitionName,
-        PolicySetDefinitionInner parameters) {
-        return createOrUpdateWithResponseAsync(policySetDefinitionName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a policy set definition.
-     * 
-     * This operation creates or updates a policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicySetDefinitionInner> createOrUpdateWithResponse(String policySetDefinitionName,
-        PolicySetDefinitionInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(policySetDefinitionName, parameters, context).block();
-    }
-
-    /**
-     * Creates or updates a policy set definition.
-     * 
-     * This operation creates or updates a policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to create.
-     * @param parameters The policy set definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicySetDefinitionInner createOrUpdate(String policySetDefinitionName,
-        PolicySetDefinitionInner parameters) {
-        return createOrUpdateWithResponse(policySetDefinitionName, parameters, Context.NONE).getValue();
-    }
-
-    /**
-     * Deletes a policy set definition.
-     * 
-     * This operation deletes the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String policySetDefinitionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (policySetDefinitionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
-        }
-        final String apiVersion = "2023-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                policySetDefinitionName, apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes a policy set definition.
-     * 
-     * This operation deletes the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String policySetDefinitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (policySetDefinitionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
-        }
-        final String apiVersion = "2023-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), policySetDefinitionName,
-            apiVersion, accept, context);
-    }
-
-    /**
-     * Deletes a policy set definition.
-     * 
-     * This operation deletes the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String policySetDefinitionName) {
-        return deleteWithResponseAsync(policySetDefinitionName).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a policy set definition.
-     * 
-     * This operation deletes the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String policySetDefinitionName, Context context) {
-        return deleteWithResponseAsync(policySetDefinitionName, context).block();
-    }
-
-    /**
-     * Deletes a policy set definition.
-     * 
-     * This operation deletes the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String policySetDefinitionName) {
-        deleteWithResponse(policySetDefinitionName, Context.NONE);
-    }
-
-    /**
-     * Retrieves a policy set definition.
-     * 
-     * This operation retrieves the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName,
-        String expand) {
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInSinglePageAsync(String filter, String expand,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (policySetDefinitionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
-        }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                policySetDefinitionName, expand, apiVersion, accept, context))
+            .withContext(context -> service.listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), filter,
+                expand, top, accept, context))
+            .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      * 
-     * This operation retrieves the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName, String expand,
-        Context context) {
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInSinglePageAsync(String filter, String expand,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (policySetDefinitionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
-        }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), policySetDefinitionName, expand,
-            apiVersion, accept, context);
+        return service
+            .listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), filter, expand, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      * 
-     * This operation retrieves the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> getAsync(String policySetDefinitionName) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, String expand, Integer top) {
+        return new PagedFlux<>(() -> listBuiltInSinglePageAsync(filter, expand, top),
+            nextLink -> listBuiltInNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync() {
+        final String filter = null;
         final String expand = null;
-        return getWithResponseAsync(policySetDefinitionName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final Integer top = null;
+        return new PagedFlux<>(() -> listBuiltInSinglePageAsync(filter, expand, top),
+            nextLink -> listBuiltInNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      * 
-     * This operation retrieves the policy set definition in the given subscription with the given name.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition along with {@link Response}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicySetDefinitionInner> getWithResponse(String policySetDefinitionName, String expand,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, String expand, Integer top,
         Context context) {
-        return getWithResponseAsync(policySetDefinitionName, expand, context).block();
+        return new PagedFlux<>(() -> listBuiltInSinglePageAsync(filter, expand, top, context),
+            nextLink -> listBuiltInNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      * 
-     * This operation retrieves the policy set definition in the given subscription with the given name.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicySetDefinitionInner> listBuiltIn() {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedIterable<>(listBuiltInAsync(filter, expand, top));
+    }
+
+    /**
+     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
+     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
+     * definitions whose category match the {value}.
      * 
-     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicySetDefinitionInner get(String policySetDefinitionName) {
-        final String expand = null;
-        return getWithResponse(policySetDefinitionName, expand, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicySetDefinitionInner> listBuiltIn(String filter, String expand, Integer top,
+        Context context) {
+        return new PagedIterable<>(listBuiltInAsync(filter, expand, top, context));
     }
 
     /**
-     * Retrieves a built in policy set definition.
-     * 
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
@@ -583,17 +394,14 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
             return Mono.error(
                 new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getBuiltIn(this.client.getEndpoint(), policySetDefinitionName, expand,
-                apiVersion, accept, context))
+            .withContext(context -> service.getBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(),
+                policySetDefinitionName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves a built in policy set definition.
-     * 
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
@@ -616,16 +424,13 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
             return Mono.error(
                 new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getBuiltIn(this.client.getEndpoint(), policySetDefinitionName, expand, apiVersion, accept,
-            context);
+        return service.getBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), policySetDefinitionName,
+            expand, accept, context);
     }
 
     /**
-     * Retrieves a built in policy set definition.
-     * 
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
@@ -642,8 +447,6 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Retrieves a built in policy set definition.
-     * 
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
@@ -662,8 +465,6 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Retrieves a built in policy set definition.
-     * 
      * This operation retrieves the built-in policy set definition with the given name.
      * 
      * @param policySetDefinitionName The name of the policy set definition to get.
@@ -679,18 +480,17 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
      * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
      * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
@@ -704,42 +504,41 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listSinglePageAsync(String filter, String expand,
-        Integer top) {
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId,
+        String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (managementGroupId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
-                filter, expand, top, accept, context))
+            .withContext(context -> service.listByManagementGroup(this.client.getEndpoint(),
+                this.client.getApiVersion(), managementGroupId, filter, expand, top, accept, context))
             .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
      * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
      * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
@@ -754,42 +553,41 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listSinglePageAsync(String filter, String expand, Integer top,
-        Context context) {
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId,
+        String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (managementGroupId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, filter, expand, top, accept,
-                context)
+            .listByManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId, filter,
+                expand, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
      * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
      * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
@@ -803,53 +601,53 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listAsync(String filter, String expand, Integer top) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+    public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter,
+        String expand, Integer top) {
+        return new PagedFlux<>(() -> listByManagementGroupSinglePageAsync(managementGroupId, filter, expand, top),
+            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listAsync() {
+    public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId) {
         final String filter = null;
         final String expand = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByManagementGroupSinglePageAsync(managementGroupId, filter, expand, top),
+            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
      * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
      * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
@@ -864,52 +662,53 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicySetDefinitionInner> listAsync(String filter, String expand, Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter,
+        String expand, Integer top, Context context) {
+        return new PagedFlux<>(
+            () -> listByManagementGroupSinglePageAsync(managementGroupId, filter, expand, top, context),
+            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicySetDefinitionInner> list() {
+    public PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId) {
         final String filter = null;
         final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(listAsync(filter, expand, top));
+        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, filter, expand, top));
     }
 
     /**
-     * Retrieves the policy set definitions for a subscription.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * This operation retrieves a list of all the policy set definitions in a given management group that match the
+     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the subscription, including those that apply directly or from management groups that contain the given
-     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
-     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
-     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * the management group, including those that apply directly or from management groups that contain the given
+     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
+     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
+     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
+     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose category match the {value}.
      * 
+     * @param managementGroupId The ID of the management group.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
      * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
      * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
@@ -924,222 +723,142 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicySetDefinitionInner> list(String filter, String expand, Integer top, Context context) {
-        return new PagedIterable<>(listAsync(filter, expand, top, context));
+    public PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId, String filter,
+        String expand, Integer top, Context context) {
+        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, filter, expand, top, context));
     }
 
     /**
-     * Retrieves built-in policy set definitions.
+     * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInSinglePageAsync(String filter, String expand,
-        Integer top) {
+    public Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policySetDefinitionName, String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        if (managementGroupId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        }
+        if (policySetDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
+        }
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listBuiltIn(this.client.getEndpoint(), apiVersion, filter, expand, top, accept, context))
-            .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+        return FluxUtil
+            .withContext(context -> service.getAtManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                managementGroupId, policySetDefinitionName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves built-in policy set definitions.
+     * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInSinglePageAsync(String filter, String expand,
-        Integer top, Context context) {
+    private Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policySetDefinitionName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        if (managementGroupId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        }
+        if (policySetDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listBuiltIn(this.client.getEndpoint(), apiVersion, filter, expand, top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service.getAtManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
+            policySetDefinitionName, expand, accept, context);
     }
 
     /**
-     * Retrieves built-in policy set definitions.
+     * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, String expand, Integer top) {
-        return new PagedFlux<>(() -> listBuiltInSinglePageAsync(filter, expand, top),
-            nextLink -> listBuiltInNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves built-in policy set definitions.
-     * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync() {
-        final String filter = null;
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(String managementGroupId,
+        String policySetDefinitionName) {
         final String expand = null;
-        final Integer top = null;
-        return new PagedFlux<>(() -> listBuiltInSinglePageAsync(filter, expand, top),
-            nextLink -> listBuiltInNextSinglePageAsync(nextLink));
+        return getAtManagementGroupWithResponseAsync(managementGroupId, policySetDefinitionName, expand)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves built-in policy set definitions.
+     * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
+     * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
+     * @return the policy set definition along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, String expand, Integer top,
-        Context context) {
-        return new PagedFlux<>(() -> listBuiltInSinglePageAsync(filter, expand, top, context),
-            nextLink -> listBuiltInNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicySetDefinitionInner> getAtManagementGroupWithResponse(String managementGroupId,
+        String policySetDefinitionName, String expand, Context context) {
+        return getAtManagementGroupWithResponseAsync(managementGroupId, policySetDefinitionName, expand, context)
+            .block();
     }
 
     /**
-     * Retrieves built-in policy set definitions.
+     * This operation retrieves the policy set definition in the given management group with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicySetDefinitionInner> listBuiltIn() {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        return new PagedIterable<>(listBuiltInAsync(filter, expand, top));
-    }
-
-    /**
-     * Retrieves built-in policy set definitions.
-     * 
-     * This operation retrieves a list of all the built-in policy set definitions that match the optional given $filter.
-     * If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set
-     * definitions whose category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
+     * @param managementGroupId The ID of the management group.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
+     * @return the policy set definition.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicySetDefinitionInner> listBuiltIn(String filter, String expand, Integer top,
-        Context context) {
-        return new PagedIterable<>(listBuiltInAsync(filter, expand, top, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicySetDefinitionInner getAtManagementGroup(String managementGroupId, String policySetDefinitionName) {
+        final String expand = null;
+        return getAtManagementGroupWithResponse(managementGroupId, policySetDefinitionName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
-     * Creates or updates a policy set definition.
-     * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1166,21 +885,18 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateAtManagementGroup(this.client.getEndpoint(),
-                managementGroupId, policySetDefinitionName, apiVersion, parameters, accept, context))
+                this.client.getApiVersion(), managementGroupId, policySetDefinitionName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates or updates a policy set definition.
-     * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param parameters The policy set definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1209,20 +925,17 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdateAtManagementGroup(this.client.getEndpoint(), managementGroupId,
-            policySetDefinitionName, apiVersion, parameters, accept, context);
+        return service.createOrUpdateAtManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            managementGroupId, policySetDefinitionName, parameters, accept, context);
     }
 
     /**
-     * Creates or updates a policy set definition.
-     * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1237,12 +950,10 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Creates or updates a policy set definition.
-     * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param parameters The policy set definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,12 +969,10 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Creates or updates a policy set definition.
-     * 
      * This operation creates or updates a policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1278,12 +987,10 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Deletes a policy set definition.
-     * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1304,21 +1011,18 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
             return Mono.error(
                 new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteAtManagementGroup(this.client.getEndpoint(), managementGroupId,
-                policySetDefinitionName, apiVersion, accept, context))
+            .withContext(context -> service.deleteAtManagementGroup(this.client.getEndpoint(),
+                this.client.getApiVersion(), managementGroupId, policySetDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a policy set definition.
-     * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1340,20 +1044,17 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
             return Mono.error(
                 new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteAtManagementGroup(this.client.getEndpoint(), managementGroupId, policySetDefinitionName,
-            apiVersion, accept, context);
+        return service.deleteAtManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            managementGroupId, policySetDefinitionName, accept, context);
     }
 
     /**
-     * Deletes a policy set definition.
-     * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1366,12 +1067,10 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Deletes a policy set definition.
-     * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1385,12 +1084,10 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Deletes a policy set definition.
-     * 
      * This operation deletes the policy set definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1401,11 +1098,247 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      * 
-     * This operation retrieves the policy set definition in the given management group with the given name.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listSinglePageAsync(String filter, String expand,
+        Integer top) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), filter, expand, top, accept, context))
+            .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
      * 
-     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listSinglePageAsync(String filter, String expand, Integer top,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), filter,
+                expand, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * 
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicySetDefinitionInner> listAsync(String filter, String expand, Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicySetDefinitionInner> listAsync() {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * 
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicySetDefinitionInner> listAsync(String filter, String expand, Integer top, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicySetDefinitionInner> list() {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(filter, expand, top));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy set definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
+     * the subscription, including those that apply directly or from management groups that contain the given
+     * subscription. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions
+     * that at the given subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes
+     * all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and
+     * Custom. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * 
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
+     * whose category match the {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicySetDefinitionInner> list(String filter, String expand, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(filter, expand, top, context));
+    }
+
+    /**
+     * This operation retrieves the policy set definition in the given subscription with the given name.
+     * 
      * @param policySetDefinitionName The name of the policy set definition to get.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
@@ -1415,34 +1348,30 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
-        String policySetDefinitionName, String expand) {
+    public Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName,
+        String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policySetDefinitionName == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getAtManagementGroup(this.client.getEndpoint(), managementGroupId,
-                policySetDefinitionName, expand, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), policySetDefinitionName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves the policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves the policy set definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
      * @param policySetDefinitionName The name of the policy set definition to get.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
@@ -1453,33 +1382,29 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
-        String policySetDefinitionName, String expand, Context context) {
+    private Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName, String expand,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policySetDefinitionName == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAtManagementGroup(this.client.getEndpoint(), managementGroupId, policySetDefinitionName,
-            expand, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            policySetDefinitionName, expand, accept, context);
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves the policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves the policy set definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
      * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1487,19 +1412,14 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(String managementGroupId,
-        String policySetDefinitionName) {
+    public Mono<PolicySetDefinitionInner> getAsync(String policySetDefinitionName) {
         final String expand = null;
-        return getAtManagementGroupWithResponseAsync(managementGroupId, policySetDefinitionName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getWithResponseAsync(policySetDefinitionName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves the policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves the policy set definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
      * @param policySetDefinitionName The name of the policy set definition to get.
      * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
      * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
@@ -1510,18 +1430,14 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicySetDefinitionInner> getAtManagementGroupWithResponse(String managementGroupId,
-        String policySetDefinitionName, String expand, Context context) {
-        return getAtManagementGroupWithResponseAsync(managementGroupId, policySetDefinitionName, expand, context)
-            .block();
+    public Response<PolicySetDefinitionInner> getWithResponse(String policySetDefinitionName, String expand,
+        Context context) {
+        return getWithResponseAsync(policySetDefinitionName, expand, context).block();
     }
 
     /**
-     * Retrieves a policy set definition.
+     * This operation retrieves the policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves the policy set definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
      * @param policySetDefinitionName The name of the policy set definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1529,327 +1445,235 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @return the policy set definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicySetDefinitionInner getAtManagementGroup(String managementGroupId, String policySetDefinitionName) {
+    public PolicySetDefinitionInner get(String policySetDefinitionName) {
         final String expand = null;
-        return getAtManagementGroupWithResponse(managementGroupId, policySetDefinitionName, expand, Context.NONE)
-            .getValue();
+        return getWithResponse(policySetDefinitionName, expand, Context.NONE).getValue();
     }
 
     /**
-     * Retrieves all policy set definitions in management group.
+     * This operation creates or updates a policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId,
-        String filter, String expand, Integer top) {
+    public Mono<Response<PolicySetDefinitionInner>> createOrUpdateWithResponseAsync(String policySetDefinitionName,
+        PolicySetDefinitionInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        if (policySetDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByManagementGroup(this.client.getEndpoint(), managementGroupId,
-                apiVersion, filter, expand, top, accept, context))
-            .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), policySetDefinitionName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves all policy set definitions in management group.
+     * This operation creates or updates a policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param parameters The policy set definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId,
-        String filter, String expand, Integer top, Context context) {
+    private Mono<Response<PolicySetDefinitionInner>> createOrUpdateWithResponseAsync(String policySetDefinitionName,
+        PolicySetDefinitionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        if (policySetDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByManagementGroup(this.client.getEndpoint(), managementGroupId, apiVersion, filter, expand, top,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), policySetDefinitionName, parameters, accept, context);
     }
 
     /**
-     * Retrieves all policy set definitions in management group.
+     * This operation creates or updates a policy set definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter,
-        String expand, Integer top) {
-        return new PagedFlux<>(() -> listByManagementGroupSinglePageAsync(managementGroupId, filter, expand, top),
-            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves all policy set definitions in management group.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId) {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        return new PagedFlux<>(() -> listByManagementGroupSinglePageAsync(managementGroupId, filter, expand, top),
-            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves all policy set definitions in management group.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter,
-        String expand, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByManagementGroupSinglePageAsync(managementGroupId, filter, expand, top, context),
-            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves all policy set definitions in management group.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId) {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, filter, expand, top));
-    }
-
-    /**
-     * Retrieves all policy set definitions in management group.
-     * 
-     * This operation retrieves a list of all the policy set definitions in a given management group that match the
-     * optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy set definitions associated with
-     * the management group, including those that apply directly or from management groups that contain the given
-     * management group. If $filter=atExactScope() is provided, the returned list only includes all policy set
-     * definitions that at the given management group. If $filter='policyType -eq {value}' is provided, the returned
-     * list only includes all policy set definitions whose type match the {value}. Possible policyType values are
-     * NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-     * all policy set definitions whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set
-     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
-     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions
-     * whose category match the {value}.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId, String filter,
-        String expand, Integer top, Context context) {
-        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, filter, expand, top, context));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
+    public Mono<PolicySetDefinitionInner> createOrUpdateAsync(String policySetDefinitionName,
+        PolicySetDefinitionInner parameters) {
+        return createOrUpdateWithResponseAsync(policySetDefinitionName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This operation creates or updates a policy set definition in the given subscription with the given name.
+     * 
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param parameters The policy set definition properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy set definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicySetDefinitionInner> createOrUpdateWithResponse(String policySetDefinitionName,
+        PolicySetDefinitionInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(policySetDefinitionName, parameters, context).block();
+    }
+
+    /**
+     * This operation creates or updates a policy set definition in the given subscription with the given name.
+     * 
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param parameters The policy set definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy set definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicySetDefinitionInner createOrUpdate(String policySetDefinitionName,
+        PolicySetDefinitionInner parameters) {
+        return createOrUpdateWithResponse(policySetDefinitionName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * This operation deletes the policy set definition in the given subscription with the given name.
+     * 
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String policySetDefinitionName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (policySetDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
+        }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), policySetDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the next page of items.
+     * This operation deletes the policy set definition in the given subscription with the given name.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param policySetDefinitionName The name of the policy set definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicySetDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
+    private Mono<Response<Void>> deleteWithResponseAsync(String policySetDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (policySetDefinitionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            policySetDefinitionName, accept, context);
+    }
+
+    /**
+     * This operation deletes the policy set definition in the given subscription with the given name.
+     * 
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String policySetDefinitionName) {
+        return deleteWithResponseAsync(policySetDefinitionName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * This operation deletes the policy set definition in the given subscription with the given name.
+     * 
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String policySetDefinitionName, Context context) {
+        return deleteWithResponseAsync(policySetDefinitionName, context).block();
+    }
+
+    /**
+     * This operation deletes the policy set definition in the given subscription with the given name.
+     * 
+     * @param policySetDefinitionName The name of the policy set definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String policySetDefinitionName) {
+        deleteWithResponse(policySetDefinitionName, Context.NONE);
     }
 
     /**
@@ -1859,7 +1683,8 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInNextSinglePageAsync(String nextLink) {
@@ -1886,7 +1711,8 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInNextSinglePageAsync(String nextLink,
@@ -1912,7 +1738,8 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupNextSinglePageAsync(String nextLink) {
@@ -1940,7 +1767,8 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupNextSinglePageAsync(String nextLink,
@@ -1955,6 +1783,59 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PolicySetDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicySetDefinition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicySetDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

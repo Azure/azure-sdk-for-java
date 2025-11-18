@@ -18,184 +18,81 @@ import reactor.core.publisher.Mono;
  */
 public interface PolicyDefinitionsClient {
     /**
-     * Creates or updates a policy definition in a subscription.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
+     * match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(String policyDefinitionName,
-        PolicyDefinitionInner parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionInner> listBuiltInAsync(String filter, Integer top);
 
     /**
-     * Creates or updates a policy definition in a subscription.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionInner> listBuiltInAsync();
 
     /**
-     * Creates or updates a policy definition in a subscription.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionInner> listBuiltIn();
+
+    /**
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      * 
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
+     * match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition along with {@link Response}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionInner> createOrUpdateWithResponse(String policyDefinitionName,
-        PolicyDefinitionInner parameters, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionInner> listBuiltIn(String filter, Integer top, Context context);
 
     /**
-     * Creates or updates a policy definition in a subscription.
-     * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionInner createOrUpdate(String policyDefinitionName, PolicyDefinitionInner parameters);
-
-    /**
-     * Deletes a policy definition in a subscription.
-     * 
-     * This operation deletes the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName);
-
-    /**
-     * Deletes a policy definition in a subscription.
-     * 
-     * This operation deletes the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String policyDefinitionName);
-
-    /**
-     * Deletes a policy definition in a subscription.
-     * 
-     * This operation deletes the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String policyDefinitionName, Context context);
-
-    /**
-     * Deletes a policy definition in a subscription.
-     * 
-     * This operation deletes the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String policyDefinitionName);
-
-    /**
-     * Retrieves a policy definition in a subscription.
-     * 
-     * This operation retrieves the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName);
-
-    /**
-     * Retrieves a policy definition in a subscription.
-     * 
-     * This operation retrieves the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionInner> getAsync(String policyDefinitionName);
-
-    /**
-     * Retrieves a policy definition in a subscription.
-     * 
-     * This operation retrieves the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionInner> getWithResponse(String policyDefinitionName, Context context);
-
-    /**
-     * Retrieves a policy definition in a subscription.
-     * 
-     * This operation retrieves the policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionInner get(String policyDefinitionName);
-
-    /**
-     * Retrieves a built-in policy definition.
-     * 
      * This operation retrieves the built-in policy definition with the given name.
      * 
      * @param policyDefinitionName The name of the built-in policy definition to get.
@@ -208,8 +105,6 @@ public interface PolicyDefinitionsClient {
     Mono<Response<PolicyDefinitionInner>> getBuiltInWithResponseAsync(String policyDefinitionName);
 
     /**
-     * Retrieves a built-in policy definition.
-     * 
      * This operation retrieves the built-in policy definition with the given name.
      * 
      * @param policyDefinitionName The name of the built-in policy definition to get.
@@ -222,8 +117,6 @@ public interface PolicyDefinitionsClient {
     Mono<PolicyDefinitionInner> getBuiltInAsync(String policyDefinitionName);
 
     /**
-     * Retrieves a built-in policy definition.
-     * 
      * This operation retrieves the built-in policy definition with the given name.
      * 
      * @param policyDefinitionName The name of the built-in policy definition to get.
@@ -237,8 +130,6 @@ public interface PolicyDefinitionsClient {
     Response<PolicyDefinitionInner> getBuiltInWithResponse(String policyDefinitionName, Context context);
 
     /**
-     * Retrieves a built-in policy definition.
-     * 
      * This operation retrieves the built-in policy definition with the given name.
      * 
      * @param policyDefinitionName The name of the built-in policy definition to get.
@@ -251,139 +142,104 @@ public interface PolicyDefinitionsClient {
     PolicyDefinitionInner getBuiltIn(String policyDefinitionName);
 
     /**
-     * Creates or updates a policy definition in a management group.
-     * 
-     * This operation creates or updates a policy definition in the given management group with the given name.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
+     * match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(String managementGroupId,
-        String policyDefinitionName, PolicyDefinitionInner parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter, Integer top);
 
     /**
-     * Creates or updates a policy definition in a management group.
-     * 
-     * This operation creates or updates a policy definition in the given management group with the given name.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(String managementGroupId,
-        String policyDefinitionName, PolicyDefinitionInner parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId);
 
     /**
-     * Creates or updates a policy definition in a management group.
-     * 
-     * This operation creates or updates a policy definition in the given management group with the given name.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      * 
      * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId);
+
+    /**
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
+     * match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition along with {@link Response}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionInner> createOrUpdateAtManagementGroupWithResponse(String managementGroupId,
-        String policyDefinitionName, PolicyDefinitionInner parameters, Context context);
-
-    /**
-     * Creates or updates a policy definition in a management group.
-     * 
-     * This operation creates or updates a policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionInner createOrUpdateAtManagementGroup(String managementGroupId, String policyDefinitionName,
-        PolicyDefinitionInner parameters);
-
-    /**
-     * Deletes a policy definition in a management group.
-     * 
-     * This operation deletes the policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
-        String policyDefinitionName);
-
-    /**
-     * Deletes a policy definition in a management group.
-     * 
-     * This operation deletes the policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String policyDefinitionName);
-
-    /**
-     * Deletes a policy definition in a management group.
-     * 
-     * This operation deletes the policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAtManagementGroupWithResponse(String managementGroupId, String policyDefinitionName,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId, String filter, Integer top,
         Context context);
 
     /**
-     * Deletes a policy definition in a management group.
-     * 
-     * This operation deletes the policy definition in the given management group with the given name.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAtManagementGroup(String managementGroupId, String policyDefinitionName);
-
-    /**
-     * Retrieve a policy definition in a management group.
-     * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
@@ -398,8 +254,6 @@ public interface PolicyDefinitionsClient {
         String policyDefinitionName);
 
     /**
-     * Retrieve a policy definition in a management group.
-     * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
@@ -413,8 +267,6 @@ public interface PolicyDefinitionsClient {
     Mono<PolicyDefinitionInner> getAtManagementGroupAsync(String managementGroupId, String policyDefinitionName);
 
     /**
-     * Retrieve a policy definition in a management group.
-     * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
@@ -430,8 +282,6 @@ public interface PolicyDefinitionsClient {
         String policyDefinitionName, Context context);
 
     /**
-     * Retrieve a policy definition in a management group.
-     * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
      * @param managementGroupId The ID of the management group.
@@ -445,8 +295,121 @@ public interface PolicyDefinitionsClient {
     PolicyDefinitionInner getAtManagementGroup(String managementGroupId, String policyDefinitionName);
 
     /**
-     * Retrieves policy definitions in a subscription
+     * This operation creates or updates a policy definition in the given management group with the given name.
      * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policyDefinitionName, PolicyDefinitionInner parameters);
+
+    /**
+     * This operation creates or updates a policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(String managementGroupId,
+        String policyDefinitionName, PolicyDefinitionInner parameters);
+
+    /**
+     * This operation creates or updates a policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionInner> createOrUpdateAtManagementGroupWithResponse(String managementGroupId,
+        String policyDefinitionName, PolicyDefinitionInner parameters, Context context);
+
+    /**
+     * This operation creates or updates a policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionInner createOrUpdateAtManagementGroup(String managementGroupId, String policyDefinitionName,
+        PolicyDefinitionInner parameters);
+
+    /**
+     * This operation deletes the policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policyDefinitionName);
+
+    /**
+     * This operation deletes the policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String policyDefinitionName);
+
+    /**
+     * This operation deletes the policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteAtManagementGroupWithResponse(String managementGroupId, String policyDefinitionName,
+        Context context);
+
+    /**
+     * This operation deletes the policy definition in the given management group with the given name.
+     * 
+     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAtManagementGroup(String managementGroupId, String policyDefinitionName);
+
+    /**
      * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
      * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
@@ -468,14 +431,12 @@ public interface PolicyDefinitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedFlux}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PolicyDefinitionInner> listAsync(String filter, Integer top);
 
     /**
-     * Retrieves policy definitions in a subscription
-     * 
      * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
      * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
@@ -488,14 +449,12 @@ public interface PolicyDefinitionsClient {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedFlux}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PolicyDefinitionInner> listAsync();
 
     /**
-     * Retrieves policy definitions in a subscription
-     * 
      * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
      * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
@@ -508,14 +467,12 @@ public interface PolicyDefinitionsClient {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedIterable}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyDefinitionInner> list();
 
     /**
-     * Retrieves policy definitions in a subscription
-     * 
      * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
      * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
      * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
@@ -538,197 +495,160 @@ public interface PolicyDefinitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedIterable}.
+     * @return the response of a PolicyDefinition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyDefinitionInner> list(String filter, Integer top, Context context);
 
     /**
-     * Retrieve built-in policy definitions
+     * This operation retrieves the policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
-     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
-     * category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
-     * match the {value}.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedFlux}.
+     * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionInner> listBuiltInAsync(String filter, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName);
 
     /**
-     * Retrieve built-in policy definitions
+     * This operation retrieves the policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
-     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
-     * category match the {value}.
-     * 
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedFlux}.
+     * @return the policy definition on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionInner> listBuiltInAsync();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionInner> getAsync(String policyDefinitionName);
 
     /**
-     * Retrieve built-in policy definitions
+     * This operation retrieves the policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
-     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
-     * category match the {value}.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionInner> listBuiltIn();
-
-    /**
-     * Retrieve built-in policy definitions
-     * 
-     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
-     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
-     * category match the {value}.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
-     * match the {value}.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedIterable}.
+     * @return the policy definition along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionInner> listBuiltIn(String filter, Integer top, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionInner> getWithResponse(String policyDefinitionName, Context context);
 
     /**
-     * Retrieve policy definitions in a management group
+     * This operation retrieves the policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
-     * management group, including those that apply directly or from management groups that contain the given management
-     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
-     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
-     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
-     * match the {value}.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedFlux}.
+     * @return the policy definition.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId, String filter, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionInner get(String policyDefinitionName);
 
     /**
-     * Retrieve policy definitions in a management group
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
-     * management group, including those that apply directly or from management groups that contain the given management
-     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
-     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
-     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedFlux}.
+     * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(String policyDefinitionName,
+        PolicyDefinitionInner parameters);
 
     /**
-     * Retrieve policy definitions in a management group
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
-     * management group, including those that apply directly or from management groups that contain the given management
-     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
-     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
-     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedIterable}.
+     * @return the policy definition on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters);
 
     /**
-     * Retrieve policy definitions in a management group
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
-     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
-     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
-     * management group, including those that apply directly or from management groups that contain the given management
-     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
-     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
-     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose category match the {value}.
-     * 
-     * @param managementGroupId The ID of the management group.
-     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
-     * -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
-     * $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
-     * scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions
-     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
-     * $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
-     * match the {value}.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definitions as paginated response with {@link PagedIterable}.
+     * @return the policy definition along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId, String filter, Integer top,
-        Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionInner> createOrUpdateWithResponse(String policyDefinitionName,
+        PolicyDefinitionInner parameters, Context context);
+
+    /**
+     * This operation creates or updates a policy definition in the given subscription with the given name.
+     * 
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionInner createOrUpdate(String policyDefinitionName, PolicyDefinitionInner parameters);
+
+    /**
+     * This operation deletes the policy definition in the given subscription with the given name.
+     * 
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName);
+
+    /**
+     * This operation deletes the policy definition in the given subscription with the given name.
+     * 
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String policyDefinitionName);
+
+    /**
+     * This operation deletes the policy definition in the given subscription with the given name.
+     * 
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String policyDefinitionName, Context context);
+
+    /**
+     * This operation deletes the policy definition in the given subscription with the given name.
+     * 
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String policyDefinitionName);
 }

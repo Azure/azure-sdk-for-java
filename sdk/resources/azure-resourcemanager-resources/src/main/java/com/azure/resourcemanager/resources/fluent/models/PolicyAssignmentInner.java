@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.AssignmentType;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
@@ -41,7 +42,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     private Identity identity;
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -116,7 +117,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -347,8 +348,8 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
-     * DoNotEnforce.
+     * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default,
+     * DoNotEnforce, and Enroll.
      * 
      * @return the enforcementMode value.
      */
@@ -357,8 +358,8 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
-     * DoNotEnforce.
+     * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default,
+     * DoNotEnforce, and Enroll.
      * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the PolicyAssignmentInner object itself.
@@ -440,6 +441,41 @@ public final class PolicyAssignmentInner extends ProxyResource {
         }
         this.innerProperties().withOverrides(overrides);
         return this;
+    }
+
+    /**
+     * Get the assignmentType property: The type of policy assignment. Possible values are NotSpecified, System,
+     * SystemHidden, and Custom. Immutable.
+     * 
+     * @return the assignmentType value.
+     */
+    public AssignmentType assignmentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().assignmentType();
+    }
+
+    /**
+     * Set the assignmentType property: The type of policy assignment. Possible values are NotSpecified, System,
+     * SystemHidden, and Custom. Immutable.
+     * 
+     * @param assignmentType the assignmentType value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withAssignmentType(AssignmentType assignmentType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withAssignmentType(assignmentType);
+        return this;
+    }
+
+    /**
+     * Get the instanceId property: The instance ID of the policy assignment. This ID only and always changes when the
+     * assignment is deleted and recreated.
+     * 
+     * @return the instanceId value.
+     */
+    public String instanceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceId();
     }
 
     /**

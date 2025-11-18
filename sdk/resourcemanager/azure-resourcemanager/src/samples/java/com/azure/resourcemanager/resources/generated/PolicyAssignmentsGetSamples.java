@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * getPolicyAssignmentWithOverrides.json
      */
     /**
@@ -27,7 +27,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * getPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
@@ -46,7 +46,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * getPolicyAssignmentWithResourceSelectors.json
      */
     /**
@@ -66,7 +66,7 @@ public final class PolicyAssignmentsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignment.
+     * specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/getPolicyAssignment.
      * json
      */
     /**
@@ -84,7 +84,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * getPolicyAssignmentWithIdentity.json
      */
     /**

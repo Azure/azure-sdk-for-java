@@ -26,6 +26,13 @@ public interface PolicyClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      * 
      * @return the httpPipeline value.
@@ -40,18 +47,11 @@ public interface PolicyClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the DataPolicyManifestsClient object to access its operations.
+     * Gets the PolicyAssignmentsClient object to access its operations.
      * 
-     * @return the DataPolicyManifestsClient object.
+     * @return the PolicyAssignmentsClient object.
      */
-    DataPolicyManifestsClient getDataPolicyManifests();
-
-    /**
-     * Gets the PolicyDefinitionsClient object to access its operations.
-     * 
-     * @return the PolicyDefinitionsClient object.
-     */
-    PolicyDefinitionsClient getPolicyDefinitions();
+    PolicyAssignmentsClient getPolicyAssignments();
 
     /**
      * Gets the PolicyDefinitionVersionsClient object to access its operations.
@@ -61,13 +61,6 @@ public interface PolicyClient {
     PolicyDefinitionVersionsClient getPolicyDefinitionVersions();
 
     /**
-     * Gets the PolicySetDefinitionsClient object to access its operations.
-     * 
-     * @return the PolicySetDefinitionsClient object.
-     */
-    PolicySetDefinitionsClient getPolicySetDefinitions();
-
-    /**
      * Gets the PolicySetDefinitionVersionsClient object to access its operations.
      * 
      * @return the PolicySetDefinitionVersionsClient object.
@@ -75,16 +68,23 @@ public interface PolicyClient {
     PolicySetDefinitionVersionsClient getPolicySetDefinitionVersions();
 
     /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
+     * Gets the PolicyDefinitionsClient object to access its operations.
      * 
-     * @return the PolicyAssignmentsClient object.
+     * @return the PolicyDefinitionsClient object.
      */
-    PolicyAssignmentsClient getPolicyAssignments();
+    PolicyDefinitionsClient getPolicyDefinitions();
 
     /**
-     * Gets the PolicyExemptionsClient object to access its operations.
+     * Gets the PolicySetDefinitionsClient object to access its operations.
      * 
-     * @return the PolicyExemptionsClient object.
+     * @return the PolicySetDefinitionsClient object.
      */
-    PolicyExemptionsClient getPolicyExemptions();
+    PolicySetDefinitionsClient getPolicySetDefinitions();
+
+    /**
+     * Gets the PolicyTokensClient object to access its operations.
+     * 
+     * @return the PolicyTokensClient object.
+     */
+    PolicyTokensClient getPolicyTokens();
 }

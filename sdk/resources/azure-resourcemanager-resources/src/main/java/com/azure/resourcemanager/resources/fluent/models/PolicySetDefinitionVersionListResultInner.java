@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,18 +14,18 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * List of policy set definition versions.
+ * The response of a PolicySetDefinitionVersion list operation.
  */
 @Fluent
 public final class PolicySetDefinitionVersionListResultInner
     implements JsonSerializable<PolicySetDefinitionVersionListResultInner> {
     /*
-     * An array of policy set definition versions.
+     * The PolicySetDefinitionVersion items on this page
      */
     private List<PolicySetDefinitionVersionInner> value;
 
     /*
-     * The URL to use for getting the next set of results.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -35,7 +36,7 @@ public final class PolicySetDefinitionVersionListResultInner
     }
 
     /**
-     * Get the value property: An array of policy set definition versions.
+     * Get the value property: The PolicySetDefinitionVersion items on this page.
      * 
      * @return the value value.
      */
@@ -44,7 +45,7 @@ public final class PolicySetDefinitionVersionListResultInner
     }
 
     /**
-     * Set the value property: An array of policy set definition versions.
+     * Set the value property: The PolicySetDefinitionVersion items on this page.
      * 
      * @param value the value value to set.
      * @return the PolicySetDefinitionVersionListResultInner object itself.
@@ -55,7 +56,7 @@ public final class PolicySetDefinitionVersionListResultInner
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -64,7 +65,7 @@ public final class PolicySetDefinitionVersionListResultInner
     }
 
     /**
-     * Set the nextLink property: The URL to use for getting the next set of results.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the PolicySetDefinitionVersionListResultInner object itself.
@@ -80,10 +81,16 @@ public final class PolicySetDefinitionVersionListResultInner
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model PolicySetDefinitionVersionListResultInner"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicySetDefinitionVersionListResultInner.class);
 
     /**
      * {@inheritDoc}
@@ -102,6 +109,7 @@ public final class PolicySetDefinitionVersionListResultInner
      * @param jsonReader The JsonReader being read.
      * @return An instance of PolicySetDefinitionVersionListResultInner if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PolicySetDefinitionVersionListResultInner.
      */
     public static PolicySetDefinitionVersionListResultInner fromJson(JsonReader jsonReader) throws IOException {

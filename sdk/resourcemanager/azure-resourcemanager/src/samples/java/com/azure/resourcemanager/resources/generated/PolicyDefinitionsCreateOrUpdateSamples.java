@@ -7,6 +7,8 @@ package com.azure.resourcemanager.resources.generated;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.models.ExternalEvaluationEndpointSettings;
+import com.azure.resourcemanager.resources.models.ExternalEvaluationEnforcementSettings;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValueMetadata;
 import com.azure.resourcemanager.resources.models.ParameterType;
@@ -20,7 +22,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * createOrUpdatePolicyDefinitionAdvancedParams.json
      */
     /**
@@ -55,7 +57,42 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
+     * createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
+     */
+    /**
+     * Sample code: Create or update a policy definition with external evaluation enforcement settings.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateAPolicyDefinitionWithExternalEvaluationEnforcementSettings(
+        com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+        azure.genericResources()
+            .manager()
+            .policyClient()
+            .getPolicyDefinitions()
+            .createOrUpdateWithResponse("RandomizeVMAllocation", new PolicyDefinitionInner().withMode("Indexed")
+                .withDisplayName("Randomize VM Allocation")
+                .withDescription(
+                    "Randomly disable VM allocation in eastus by having policy rule reference the outcome of invoking an external endpoint using the CoinFlip endpoint that returns random values.")
+                .withPolicyRule(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(
+                        "{\"if\":{\"allOf\":[{\"equals\":\"Microsoft.Compute/virtualMachines\",\"field\":\"type\"},{\"equals\":\"eastus\",\"field\":\"location\"},{\"equals\":\"false\",\"value\":\"[claims().isValid]\"}]},\"then\":{\"effect\":\"deny\"}}",
+                        Object.class, SerializerEncoding.JSON))
+                .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"category\":\"VM\"}", Object.class, SerializerEncoding.JSON))
+                .withExternalEvaluationEnforcementSettings(new ExternalEvaluationEnforcementSettings()
+                    .withMissingTokenAction("fakeTokenPlaceholder")
+                    .withEndpointSettings(new ExternalEvaluationEndpointSettings().withKind("CoinFlip")
+                        .withDetails(SerializerFactory.createDefaultManagementSerializerAdapter()
+                            .deserialize("{\"successProbability\":0.5}", Object.class, SerializerEncoding.JSON)))
+                    .withRoleDefinitionIds(Arrays.asList(
+                        "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/roleDefinitions/f0cc2aea-b517-48f6-8f9e-0c01c687907b"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * createOrUpdatePolicyDefinition.json
      */
     /**

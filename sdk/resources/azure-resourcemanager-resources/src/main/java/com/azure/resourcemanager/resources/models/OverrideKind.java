@@ -17,6 +17,11 @@ public final class OverrideKind extends ExpandableStringEnum<OverrideKind> {
     public static final OverrideKind POLICY_EFFECT = fromString("policyEffect");
 
     /**
+     * Static value definitionVersion for OverrideKind.
+     */
+    public static final OverrideKind DEFINITION_VERSION = fromString("definitionVersion");
+
+    /**
      * Creates a new instance of OverrideKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

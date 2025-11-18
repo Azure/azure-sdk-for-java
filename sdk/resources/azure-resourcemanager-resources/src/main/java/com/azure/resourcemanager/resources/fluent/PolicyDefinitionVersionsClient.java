@@ -26,7 +26,8 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PolicyDefinitionVersionListResultInner>> listAllBuiltinsWithResponseAsync();
@@ -38,7 +39,7 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinitionVersion list operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PolicyDefinitionVersionListResultInner> listAllBuiltinsAsync();
@@ -52,7 +53,7 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions along with {@link Response}.
+     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PolicyDefinitionVersionListResultInner> listAllBuiltinsWithResponse(Context context);
@@ -64,329 +65,65 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions.
+     * @return the response of a PolicyDefinitionVersion list operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PolicyDefinitionVersionListResultInner listAllBuiltins();
 
     /**
-     * Lists all policy definition versions at management group scope.
+     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
      * 
-     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionVersionListResultInner>>
-        listAllAtManagementGroupWithResponseAsync(String managementGroupName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionVersionInner> listBuiltInAsync(String policyDefinitionName, Integer top);
 
     /**
-     * Lists all policy definition versions at management group scope.
+     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
      * 
-     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions on successful completion of {@link Mono}.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionVersionListResultInner> listAllAtManagementGroupAsync(String managementGroupName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionVersionInner> listBuiltInAsync(String policyDefinitionName);
 
     /**
-     * Lists all policy definition versions at management group scope.
+     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
      * 
-     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
+     * @param policyDefinitionName The name of the policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionVersionInner> listBuiltIn(String policyDefinitionName);
+
+    /**
+     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
      * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions along with {@link Response}.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
+     * {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionVersionListResultInner> listAllAtManagementGroupWithResponse(String managementGroupName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionVersionInner> listBuiltIn(String policyDefinitionName, Integer top, Context context);
 
     /**
-     * Lists all policy definition versions at management group scope.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionVersionListResultInner listAllAtManagementGroup(String managementGroupName);
-
-    /**
-     * Lists all policy definition versions within a subscription.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions within a subscription.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionVersionListResultInner>> listAllWithResponseAsync();
-
-    /**
-     * Lists all policy definition versions within a subscription.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions within a subscription.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionVersionListResultInner> listAllAsync();
-
-    /**
-     * Lists all policy definition versions within a subscription.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionVersionListResultInner> listAllWithResponse(Context context);
-
-    /**
-     * Lists all policy definition versions within a subscription.
-     * 
-     * This operation lists all the policy definition versions for all policy definitions within a subscription.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionVersionListResultInner listAll();
-
-    /**
-     * Creates or updates a policy definition in a subscription.
-     * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionVersionInner>> createOrUpdateWithResponseAsync(String policyDefinitionName,
-        String policyDefinitionVersion, PolicyDefinitionVersionInner parameters);
-
-    /**
-     * Creates or updates a policy definition in a subscription.
-     * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionVersionInner> createOrUpdateAsync(String policyDefinitionName, String policyDefinitionVersion,
-        PolicyDefinitionVersionInner parameters);
-
-    /**
-     * Creates or updates a policy definition in a subscription.
-     * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionVersionInner> createOrUpdateWithResponse(String policyDefinitionName,
-        String policyDefinitionVersion, PolicyDefinitionVersionInner parameters, Context context);
-
-    /**
-     * Creates or updates a policy definition in a subscription.
-     * 
-     * This operation creates or updates a policy definition in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionVersionInner createOrUpdate(String policyDefinitionName, String policyDefinitionVersion,
-        PolicyDefinitionVersionInner parameters);
-
-    /**
-     * Deletes a policy definition version in a subscription.
-     * 
-     * This operation deletes the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName, String policyDefinitionVersion);
-
-    /**
-     * Deletes a policy definition version in a subscription.
-     * 
-     * This operation deletes the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String policyDefinitionName, String policyDefinitionVersion);
-
-    /**
-     * Deletes a policy definition version in a subscription.
-     * 
-     * This operation deletes the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String policyDefinitionName, String policyDefinitionVersion, Context context);
-
-    /**
-     * Deletes a policy definition version in a subscription.
-     * 
-     * This operation deletes the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String policyDefinitionName, String policyDefinitionVersion);
-
-    /**
-     * Retrieves a policy definition version in a subscription.
-     * 
-     * This operation retrieves the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionVersionInner>> getWithResponseAsync(String policyDefinitionName,
-        String policyDefinitionVersion);
-
-    /**
-     * Retrieves a policy definition version in a subscription.
-     * 
-     * This operation retrieves the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionVersionInner> getAsync(String policyDefinitionName, String policyDefinitionVersion);
-
-    /**
-     * Retrieves a policy definition version in a subscription.
-     * 
-     * This operation retrieves the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionVersionInner> getWithResponse(String policyDefinitionName, String policyDefinitionVersion,
-        Context context);
-
-    /**
-     * Retrieves a policy definition version in a subscription.
-     * 
-     * This operation retrieves the policy definition version in the given subscription with the given name.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
-     * number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the policy definition version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionVersionInner get(String policyDefinitionName, String policyDefinitionVersion);
-
-    /**
-     * Retrieves a built-in policy definition version.
-     * 
      * This operation retrieves the built-in policy definition version with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
@@ -403,8 +140,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionVersion);
 
     /**
-     * Retrieves a built-in policy definition version.
-     * 
      * This operation retrieves the built-in policy definition version with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
@@ -419,8 +154,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
     Mono<PolicyDefinitionVersionInner> getBuiltInAsync(String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Retrieves a built-in policy definition version.
-     * 
      * This operation retrieves the built-in policy definition version with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
@@ -437,8 +170,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionVersion, Context context);
 
     /**
-     * Retrieves a built-in policy definition version.
-     * 
      * This operation retrieves the built-in policy definition version with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
@@ -453,8 +184,197 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
     PolicyDefinitionVersionInner getBuiltIn(String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Creates or updates a policy definition version in a management group.
+     * Lists all policy definition versions at management group scope.
      * 
+     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionVersionListResultInner>>
+        listAllAtManagementGroupWithResponseAsync(String managementGroupName);
+
+    /**
+     * Lists all policy definition versions at management group scope.
+     * 
+     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionVersionListResultInner> listAllAtManagementGroupAsync(String managementGroupName);
+
+    /**
+     * Lists all policy definition versions at management group scope.
+     * 
+     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionVersionListResultInner> listAllAtManagementGroupWithResponse(String managementGroupName,
+        Context context);
+
+    /**
+     * Lists all policy definition versions at management group scope.
+     * 
+     * This operation lists all the policy definition versions for all policy definitions at the management group scope.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionVersionListResultInner listAllAtManagementGroup(String managementGroupName);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
+     * given management group.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionVersionInner> listByManagementGroupAsync(String managementGroupName,
+        String policyDefinitionName, Integer top);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
+     * given management group.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionVersionInner> listByManagementGroupAsync(String managementGroupName,
+        String policyDefinitionName);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
+     * given management group.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionVersionInner> listByManagementGroup(String managementGroupName,
+        String policyDefinitionName);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
+     * given management group.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionVersionInner> listByManagementGroup(String managementGroupName,
+        String policyDefinitionName, Integer top, Context context);
+
+    /**
+     * This operation retrieves the policy definition version in the given management group with the given name.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the policy definition version along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionVersionInner>> getAtManagementGroupWithResponseAsync(String managementGroupName,
+        String policyDefinitionName, String policyDefinitionVersion);
+
+    /**
+     * This operation retrieves the policy definition version in the given management group with the given name.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the policy definition version on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionVersionInner> getAtManagementGroupAsync(String managementGroupName,
+        String policyDefinitionName, String policyDefinitionVersion);
+
+    /**
+     * This operation retrieves the policy definition version in the given management group with the given name.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the policy definition version along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionVersionInner> getAtManagementGroupWithResponse(String managementGroupName,
+        String policyDefinitionName, String policyDefinitionVersion, Context context);
+
+    /**
+     * This operation retrieves the policy definition version in the given management group with the given name.
+     * 
+     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the policy definition version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionVersionInner getAtManagementGroup(String managementGroupName, String policyDefinitionName,
+        String policyDefinitionVersion);
+
+    /**
      * This operation creates or updates a policy definition version in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -474,8 +394,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         PolicyDefinitionVersionInner parameters);
 
     /**
-     * Creates or updates a policy definition version in a management group.
-     * 
      * This operation creates or updates a policy definition version in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -493,8 +411,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionName, String policyDefinitionVersion, PolicyDefinitionVersionInner parameters);
 
     /**
-     * Creates or updates a policy definition version in a management group.
-     * 
      * This operation creates or updates a policy definition version in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -514,8 +430,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         Context context);
 
     /**
-     * Creates or updates a policy definition version in a management group.
-     * 
      * This operation creates or updates a policy definition version in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -533,8 +447,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionName, String policyDefinitionVersion, PolicyDefinitionVersionInner parameters);
 
     /**
-     * Deletes a policy definition in a management group.
-     * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -551,8 +463,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Deletes a policy definition in a management group.
-     * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -569,8 +479,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionVersion);
 
     /**
-     * Deletes a policy definition in a management group.
-     * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -588,8 +496,6 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionVersion, Context context);
 
     /**
-     * Deletes a policy definition in a management group.
-     * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
      * @param managementGroupName The name of the management group. The name is case insensitive.
@@ -605,11 +511,112 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
         String policyDefinitionVersion);
 
     /**
-     * Retrieve a policy definition version in a management group.
+     * Lists all policy definition versions within a subscription.
      * 
-     * This operation retrieves the policy definition version in the given management group with the given name.
+     * This operation lists all the policy definition versions for all policy definitions within a subscription.
      * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionVersionListResultInner>> listAllWithResponseAsync();
+
+    /**
+     * Lists all policy definition versions within a subscription.
+     * 
+     * This operation lists all the policy definition versions for all policy definitions within a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionVersionListResultInner> listAllAsync();
+
+    /**
+     * Lists all policy definition versions within a subscription.
+     * 
+     * This operation lists all the policy definition versions for all policy definitions within a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionVersionListResultInner> listAllWithResponse(Context context);
+
+    /**
+     * Lists all policy definition versions within a subscription.
+     * 
+     * This operation lists all the policy definition versions for all policy definitions within a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionVersionListResultInner listAll();
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * 
+     * @param policyDefinitionName The name of the policy definition.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionVersionInner> listAsync(String policyDefinitionName, Integer top);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * 
+     * @param policyDefinitionName The name of the policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PolicyDefinitionVersionInner> listAsync(String policyDefinitionName);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * 
+     * @param policyDefinitionName The name of the policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionVersionInner> list(String policyDefinitionName);
+
+    /**
+     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * 
+     * @param policyDefinitionName The name of the policy definition.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PolicyDefinitionVersion list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyDefinitionVersionInner> list(String policyDefinitionName, Integer top, Context context);
+
+    /**
+     * This operation retrieves the policy definition version in the given subscription with the given name.
+     * 
      * @param policyDefinitionName The name of the policy definition.
      * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
      * number, y is the minor version number, and z is the patch number.
@@ -620,15 +627,12 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyDefinitionVersionInner>> getAtManagementGroupWithResponseAsync(String managementGroupName,
-        String policyDefinitionName, String policyDefinitionVersion);
+    Mono<Response<PolicyDefinitionVersionInner>> getWithResponseAsync(String policyDefinitionName,
+        String policyDefinitionVersion);
 
     /**
-     * Retrieve a policy definition version in a management group.
+     * This operation retrieves the policy definition version in the given subscription with the given name.
      * 
-     * This operation retrieves the policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
      * @param policyDefinitionName The name of the policy definition.
      * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
      * number, y is the minor version number, and z is the patch number.
@@ -638,15 +642,11 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * @return the ID of the policy definition version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyDefinitionVersionInner> getAtManagementGroupAsync(String managementGroupName,
-        String policyDefinitionName, String policyDefinitionVersion);
+    Mono<PolicyDefinitionVersionInner> getAsync(String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Retrieve a policy definition version in a management group.
+     * This operation retrieves the policy definition version in the given subscription with the given name.
      * 
-     * This operation retrieves the policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
      * @param policyDefinitionName The name of the policy definition.
      * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
      * number, y is the minor version number, and z is the patch number.
@@ -657,15 +657,12 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * @return the ID of the policy definition version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDefinitionVersionInner> getAtManagementGroupWithResponse(String managementGroupName,
-        String policyDefinitionName, String policyDefinitionVersion, Context context);
+    Response<PolicyDefinitionVersionInner> getWithResponse(String policyDefinitionName, String policyDefinitionVersion,
+        Context context);
 
     /**
-     * Retrieve a policy definition version in a management group.
+     * This operation retrieves the policy definition version in the given subscription with the given name.
      * 
-     * This operation retrieves the policy definition version in the given management group with the given name.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
      * @param policyDefinitionName The name of the policy definition.
      * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
      * number, y is the minor version number, and z is the patch number.
@@ -675,195 +672,127 @@ public interface PolicyDefinitionVersionsClient extends InnerSupportsDelete<Void
      * @return the ID of the policy definition version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyDefinitionVersionInner getAtManagementGroup(String managementGroupName, String policyDefinitionName,
-        String policyDefinitionVersion);
+    PolicyDefinitionVersionInner get(String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Retrieves policy definition versions for a given policy definition in a subscription
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedFlux}.
+     * @return the ID of the policy definition version along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionVersionInner> listAsync(String policyDefinitionName, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PolicyDefinitionVersionInner>> createOrUpdateWithResponseAsync(String policyDefinitionName,
+        String policyDefinitionVersion, PolicyDefinitionVersionInner parameters);
 
     /**
-     * Retrieves policy definition versions for a given policy definition in a subscription
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedFlux}.
+     * @return the ID of the policy definition version on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionVersionInner> listAsync(String policyDefinitionName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PolicyDefinitionVersionInner> createOrUpdateAsync(String policyDefinitionName, String policyDefinitionVersion,
+        PolicyDefinitionVersionInner parameters);
 
     /**
-     * Retrieves policy definition versions for a given policy definition in a subscription
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition.
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionVersionInner> list(String policyDefinitionName);
-
-    /**
-     * Retrieves policy definition versions for a given policy definition in a subscription
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition.
-     * 
-     * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedIterable}.
+     * @return the ID of the policy definition version along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionVersionInner> list(String policyDefinitionName, Integer top, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PolicyDefinitionVersionInner> createOrUpdateWithResponse(String policyDefinitionName,
+        String policyDefinitionVersion, PolicyDefinitionVersionInner parameters, Context context);
 
     /**
-     * Retrieve built-in policy definition versions
-     * 
-     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
+     * This operation creates or updates a policy definition in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedFlux}.
+     * @return the ID of the policy definition version.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionVersionInner> listBuiltInAsync(String policyDefinitionName, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PolicyDefinitionVersionInner createOrUpdate(String policyDefinitionName, String policyDefinitionVersion,
+        PolicyDefinitionVersionInner parameters);
 
     /**
-     * Retrieve built-in policy definition versions
-     * 
-     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
+     * This operation deletes the policy definition version in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedFlux}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionVersionInner> listBuiltInAsync(String policyDefinitionName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Retrieve built-in policy definition versions
-     * 
-     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
+     * This operation deletes the policy definition version in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedIterable}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionVersionInner> listBuiltIn(String policyDefinitionName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String policyDefinitionName, String policyDefinitionVersion);
 
     /**
-     * Retrieve built-in policy definition versions
-     * 
-     * This operation retrieves a list of all the built-in policy definition versions for the given policy definition.
+     * This operation deletes the policy definition version in the given subscription with the given name.
      * 
      * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedIterable}.
+     * @return the {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionVersionInner> listBuiltIn(String policyDefinitionName, Integer top, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String policyDefinitionName, String policyDefinitionVersion, Context context);
 
     /**
-     * Retrieve policy definition versions in a management group policy definition.
+     * This operation deletes the policy definition version in the given subscription with the given name.
      * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
-     * given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
      * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @param policyDefinitionVersion The policy definition version. The format is x.y.z where x is the major version
+     * number, y is the minor version number, and z is the patch number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionVersionInner> listByManagementGroupAsync(String managementGroupName,
-        String policyDefinitionName, Integer top);
-
-    /**
-     * Retrieve policy definition versions in a management group policy definition.
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
-     * given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyDefinitionVersionInner> listByManagementGroupAsync(String managementGroupName,
-        String policyDefinitionName);
-
-    /**
-     * Retrieve policy definition versions in a management group policy definition.
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
-     * given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionVersionInner> listByManagementGroup(String managementGroupName,
-        String policyDefinitionName);
-
-    /**
-     * Retrieve policy definition versions in a management group policy definition.
-     * 
-     * This operation retrieves a list of all the policy definition versions for the given policy definition in the
-     * given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policyDefinitionName The name of the policy definition.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy definition versions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyDefinitionVersionInner> listByManagementGroup(String managementGroupName,
-        String policyDefinitionName, Integer top, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String policyDefinitionName, String policyDefinitionVersion);
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,17 +15,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * List of policy set definitions.
+ * The response of a PolicySetDefinition list operation.
  */
 @Fluent
 public final class PolicySetDefinitionListResult implements JsonSerializable<PolicySetDefinitionListResult> {
     /*
-     * An array of policy set definitions.
+     * The PolicySetDefinition items on this page
      */
     private List<PolicySetDefinitionInner> value;
 
     /*
-     * The URL to use for getting the next set of results.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -35,7 +36,7 @@ public final class PolicySetDefinitionListResult implements JsonSerializable<Pol
     }
 
     /**
-     * Get the value property: An array of policy set definitions.
+     * Get the value property: The PolicySetDefinition items on this page.
      * 
      * @return the value value.
      */
@@ -44,7 +45,7 @@ public final class PolicySetDefinitionListResult implements JsonSerializable<Pol
     }
 
     /**
-     * Set the value property: An array of policy set definitions.
+     * Set the value property: The PolicySetDefinition items on this page.
      * 
      * @param value the value value to set.
      * @return the PolicySetDefinitionListResult object itself.
@@ -55,7 +56,7 @@ public final class PolicySetDefinitionListResult implements JsonSerializable<Pol
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -64,7 +65,7 @@ public final class PolicySetDefinitionListResult implements JsonSerializable<Pol
     }
 
     /**
-     * Set the nextLink property: The URL to use for getting the next set of results.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the PolicySetDefinitionListResult object itself.
@@ -80,10 +81,16 @@ public final class PolicySetDefinitionListResult implements JsonSerializable<Pol
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model PolicySetDefinitionListResult"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicySetDefinitionListResult.class);
 
     /**
      * {@inheritDoc}
@@ -102,6 +109,7 @@ public final class PolicySetDefinitionListResult implements JsonSerializable<Pol
      * @param jsonReader The JsonReader being read.
      * @return An instance of PolicySetDefinitionListResult if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PolicySetDefinitionListResult.
      */
     public static PolicySetDefinitionListResult fromJson(JsonReader jsonReader) throws IOException {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
+ * The policy assignment enforcement mode. Possible values are Default, DoNotEnforce, and Enroll.
  */
 public final class EnforcementMode extends ExpandableStringEnum<EnforcementMode> {
     /**
@@ -20,6 +20,11 @@ public final class EnforcementMode extends ExpandableStringEnum<EnforcementMode>
      * Static value DoNotEnforce for EnforcementMode.
      */
     public static final EnforcementMode DO_NOT_ENFORCE = fromString("DoNotEnforce");
+
+    /**
+     * Static value Enroll for EnforcementMode.
+     */
+    public static final EnforcementMode ENROLL = fromString("Enroll");
 
     /**
      * Creates a new instance of EnforcementMode value.

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.resources.generated;
 public final class PolicyAssignmentsListSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicyAssignments
+     * specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/listPolicyAssignments
      * .json
      */
     /**

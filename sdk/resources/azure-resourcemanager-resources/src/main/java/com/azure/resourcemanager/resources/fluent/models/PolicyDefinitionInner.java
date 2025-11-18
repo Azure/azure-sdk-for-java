@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.ExternalEvaluationEnforcementSettings;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public final class PolicyDefinitionInner extends ProxyResource {
     private PolicyDefinitionProperties innerProperties;
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -62,7 +63,7 @@ public final class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -310,6 +311,32 @@ public final class PolicyDefinitionInner extends ProxyResource {
             this.innerProperties = new PolicyDefinitionProperties();
         }
         this.innerProperties().withVersions(versions);
+        return this;
+    }
+
+    /**
+     * Get the externalEvaluationEnforcementSettings property: The details of the source of external evaluation results
+     * required by the policy during enforcement evaluation.
+     * 
+     * @return the externalEvaluationEnforcementSettings value.
+     */
+    public ExternalEvaluationEnforcementSettings externalEvaluationEnforcementSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalEvaluationEnforcementSettings();
+    }
+
+    /**
+     * Set the externalEvaluationEnforcementSettings property: The details of the source of external evaluation results
+     * required by the policy during enforcement evaluation.
+     * 
+     * @param externalEvaluationEnforcementSettings the externalEvaluationEnforcementSettings value to set.
+     * @return the PolicyDefinitionInner object itself.
+     */
+    public PolicyDefinitionInner withExternalEvaluationEnforcementSettings(
+        ExternalEvaluationEnforcementSettings externalEvaluationEnforcementSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withExternalEvaluationEnforcementSettings(externalEvaluationEnforcementSettings);
         return this;
     }
 

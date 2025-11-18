@@ -9,16 +9,16 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2025-03-01/examples/
      * listPolicyAssignmentsForResource.json
      */
     /**
-     * Sample code: List all policy assignments that apply to a resource.
+     * Sample code: List policy assignments that apply to a resource group.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        listAllPolicyAssignmentsThatApplyToAResource(com.azure.resourcemanager.AzureResourceManager azure) {
+        listPolicyAssignmentsThatApplyToAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
             .policyClient()
