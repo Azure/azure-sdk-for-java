@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class RntbdRequestDecoder extends ByteToMessageDecoder {
 
-    private static final Logger logger = LoggerFactory.getLogger(RntbdContextRequestDecoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestDecoder.class);
 
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
