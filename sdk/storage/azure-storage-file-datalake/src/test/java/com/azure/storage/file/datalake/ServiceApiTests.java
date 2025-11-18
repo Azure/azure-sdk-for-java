@@ -821,9 +821,9 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertNotNull(aadServiceClient.getProperties());
     }
 
-    //This is a local test used to verify connectivity to OneLake and that special characters are handled correctly.
+    //This is a test used to verify connectivity to OneLake and that special characters are handled correctly.
     @Test
-    @PlaybackOnly
+    @LiveOnly
     public void oneLakeContainerNameEncoding() {
         String endpoint = "https://onelake.dfs.fabric.microsoft.com/";
         DataLakeServiceClient service

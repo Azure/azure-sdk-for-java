@@ -772,9 +772,9 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(aadServiceClient.getProperties()).assertNext(Assertions::assertNotNull).verifyComplete();
     }
 
-    //This is a local test used to verify connectivity to OneLake and that special characters are handled correctly.
+    //This is a test used to verify connectivity to OneLake and that special characters are handled correctly.
     @Test
-    @PlaybackOnly
+    @LiveOnly
     public void oneLakeContainerNameEncoding() {
         String endpoint = "https://onelake.dfs.fabric.microsoft.com/";
         DataLakeServiceAsyncClient service
