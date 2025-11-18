@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
-- temp
+- Added support for container names with special characters when using OneLake.
 
 ## 12.32.0 (2025-10-21)
 

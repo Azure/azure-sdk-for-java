@@ -207,7 +207,7 @@ public class HelperTests extends BlobTestBase {
     }
 
     // Tests that container names are properly URL decoded when retrieved from BlobUrlParts. Container names with special characters are not supported
-    // by the service, however, the names should still be encoded.
+    // by the service, however, the names should still be encoded. The setter and getter p
     @Test
     public void containerNameDecodingOnGet() {
         BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my%20container");

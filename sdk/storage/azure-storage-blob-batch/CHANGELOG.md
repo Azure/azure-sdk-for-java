@@ -7,9 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where `BlobBatchSetBlobAccessTierOptions` would not properly handle encoded blob names.
 
 ### Other Changes
-- temp
+- Added support for container names with special characters when using OneLake.
 
 ## 12.28.0 (2025-10-21)
 
