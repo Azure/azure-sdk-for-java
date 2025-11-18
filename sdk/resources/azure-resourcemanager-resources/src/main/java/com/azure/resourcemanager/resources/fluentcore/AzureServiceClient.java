@@ -194,6 +194,7 @@ public abstract class AzureServiceClient {
         Map<String, String> properties = CoreUtils.getProperties("azure-resourcemanager-resources.properties");
         Arrays.stream(properties.getOrDefault("premium-libraries", "").split(","))
             .filter(premiumLibrary -> !CoreUtils.isNullOrEmpty(premiumLibrary))
+            .map(String::trim)
             .forEach(premiumLibrary -> {
                 // load version for each library
                 Map<String, String> libraryProperties = CoreUtils.getProperties(premiumLibrary + ".properties");
