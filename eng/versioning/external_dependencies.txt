@@ -402,7 +402,7 @@ springboot3_org.springframework:spring-core-test;7.0.0-RC3
 springboot3_org.springframework:spring-core;7.0.0-RC3
 springboot3_org.springframework:spring-expression;7.0.0-RC3
 springboot3_org.springframework:spring-jdbc;7.0.0-RC3
-springboot3_org.springframework:spring-jms;7.0.0-RC3
+springboot3_org.springframework.boot:spring-boot-jms;4.0.0-RC2
 springboot3_org.springframework:spring-messaging;7.0.0-RC3
 springboot3_org.springframework:spring-test;7.0.0-RC3
 springboot3_org.springframework:spring-tx;7.0.0-RC3

@@ -126,9 +126,9 @@
 
     <!--Spring JMS-->
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jms</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jms</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -568,7 +568,7 @@
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework:spring-context-support:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
-                <include>org.springframework:spring-jms:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-jms:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jms;external_dependency} -->
                 <include>org.springframework:spring-tx:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>
             </bannedDependencies>
