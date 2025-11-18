@@ -404,6 +404,7 @@ springboot3_org.springframework:spring-expression;7.0.0-RC3
 springboot3_org.springframework.boot:spring-boot-jdbc;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-jms;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-restclient;4.0.0-RC2
+springboot3_org.springframework.boot:spring-boot-security;4.0.0-RC2
 springboot3_org.springframework:spring-messaging;7.0.0-RC3
 springboot3_org.springframework:spring-test;7.0.0-RC3
 springboot3_org.springframework:spring-tx;7.0.0-RC3

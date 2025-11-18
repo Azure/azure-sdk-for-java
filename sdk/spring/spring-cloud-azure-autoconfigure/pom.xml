@@ -170,6 +170,13 @@
       <optional>true</optional>
     </dependency>
 
+    <!--Spring Security-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-security</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-security;external_dependency} -->
+    </dependency>
+
     <!-- Azure SDKs-->
     <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
     currently released version and a lower version is resolved. -->
@@ -573,6 +580,7 @@
                 <include>org.springframework.boot:spring-boot-jdbc:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jms:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jms;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-restclient:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-restclient;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-security:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-security;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.3.0]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
