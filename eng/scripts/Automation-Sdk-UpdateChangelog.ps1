@@ -235,53 +235,80 @@ function Update-ChangelogFile {
         throw "CHANGELOG.md not found at: $ChangelogPath"
     }
 
-    # output changelog text
+    # Output changelog text for debugging
     Write-Host "-----------------NewChangelogText-----------------------"
     Write-Host $NewChangelogText
     Write-Host "----------------------------------------"
 
-    $oldChangelog = Get-Content $ChangelogPath -Raw
-    $lines = $oldChangelog -split "`n"
-    $newLines = @()
-    $newChangelogLines = $NewChangelogText -split "`n"
+    # Load the common changelog operations script
+    $EngCommonScriptsDir = Join-Path $PSScriptRoot ".." "common" "scripts"
+    . (Join-Path $EngCommonScriptsDir "ChangeLog-Operations.ps1")
+
+    # Get all changelog entries using the common script
+    $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangelogPath
     
-    $foundFirstVersion = $false
-    $foundFirstVersionSubSections = $false
-    $foundSecondVersion = $false
-    
-    foreach ($line in $lines) {
-        if (-not $foundFirstVersion) {
-            if ($line -match "^## ") {
-                $foundFirstVersion = $true
-            }
-            $newLines += $line
-        }
-        elseif ($foundFirstVersion -and -not $foundSecondVersion) {
-            if ($line -match "^## ") {
-                $foundSecondVersion = $true
-                $newLines += $line
-            }
-            elseif (-not $foundFirstVersionSubSections) {
-                if ($line -match "^### ") {
-                    $foundFirstVersionSubSections = $true
-                    $newLines += $newChangelogLines
-                }
-                else {
-                    $newLines += $line
-                }
-            }
-        }
-        else {
-            $newLines += $line
+    if (-not $changeLogEntries -or $changeLogEntries.Count -eq 0) {
+        throw "Failed to parse CHANGELOG.md at: $ChangelogPath"
+    }
+
+    # Find the first unreleased version entry
+    $firstEntry = $null
+    foreach ($key in $changeLogEntries.Keys) {
+        $entry = $changeLogEntries[$key]
+        if ($entry.ReleaseStatus -eq "(Unreleased)") {
+            $firstEntry = $entry
+            break
         }
     }
+
+    if (-not $firstEntry) {
+        Write-Warning "No unreleased version found in CHANGELOG.md. Looking for the first version entry..."
+        # If no unreleased version, use the first entry
+        $sortedEntries = Sort-ChangeLogEntries -changeLogEntries $changeLogEntries
+        $firstEntry = $sortedEntries[0]
+    }
+
+    if (-not $firstEntry) {
+        throw "Could not find any version entry in CHANGELOG.md to update"
+    }
+
+    Write-Host "Updating changelog entry for version: $($firstEntry.ReleaseVersion) $($firstEntry.ReleaseStatus)"
+
+    # Parse the new changelog content into lines
+    $newChangelogLines = $NewChangelogText -split "`r?`n"
     
-    $updatedChangelog = $newLines -join "`n"
+    # Clear existing section content and add new content
+    $firstEntry.ReleaseContent = @()
+    $firstEntry.Sections = @{}
+    
+    # Add an empty line after the version header
+    $firstEntry.ReleaseContent += ""
+    
+    # Add the new changelog content
+    $currentSection = $null
+    $sectionHeaderRegex = "^$($changeLogEntries.InitialAtxHeader)##\s+(?<sectionName>.*)"
+    
+    foreach ($line in $newChangelogLines) {
+        if ($line -match $sectionHeaderRegex) {
+            $currentSection = $matches["sectionName"].Trim()
+            $firstEntry.Sections[$currentSection] = @()
+            $firstEntry.ReleaseContent += $line
+        }
+        elseif ($currentSection) {
+            $firstEntry.Sections[$currentSection] += $line
+            $firstEntry.ReleaseContent += $line
+        }
+        else {
+            $firstEntry.ReleaseContent += $line
+        }
+    }
+
+    # Write the updated changelog back using the common script
     Write-Host "Writing updated CHANGELOG.md to: $ChangelogPath"
+    Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $changeLogEntries
     Write-Host "----------------------------------------"
-    Write-Host $updatedChangelog
+    Write-Host "CHANGELOG.md successfully updated"
     Write-Host "----------------------------------------"
-    Set-Content -Path $ChangelogPath -Value $updatedChangelog -NoNewline
 }
 
 # Main script execution
