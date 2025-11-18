@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInner;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachine;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonParameters;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplacePara
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunCommandParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunDataExtractsParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunReadCommandsParameters;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.HardwareInventory;
 import com.azure.resourcemanager.networkcloud.models.HardwareValidationStatus;
@@ -75,6 +77,15 @@ public final class BareMetalMachineImpl
         return this.innerModel().systemData();
     }
 
+    public List<ActionState> actionStates() {
+        List<ActionState> inner = this.innerModel().actionStates();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public List<String> associatedResourceIds() {
         List<String> inner = this.innerModel().associatedResourceIds();
         if (inner != null) {
@@ -98,6 +109,10 @@ public final class BareMetalMachineImpl
 
     public String bootMacAddress() {
         return this.innerModel().bootMacAddress();
+    }
+
+    public CertificateInfo caCertificate() {
+        return this.innerModel().caCertificate();
     }
 
     public String clusterId() {
@@ -406,6 +421,21 @@ public final class BareMetalMachineImpl
         return serviceManager.bareMetalMachines()
             .runDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
                 context);
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        return serviceManager.bareMetalMachines()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters);
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+        Context context) {
+        return serviceManager.bareMetalMachines()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters, context);
     }
 
     public OperationStatusResult

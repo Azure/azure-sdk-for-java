@@ -6,8 +6,8 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,43 +17,13 @@ import java.io.IOException;
 /**
  * The KnowledgeSourceReference model.
  */
-@Fluent
+@Immutable
 public final class KnowledgeSourceReference implements JsonSerializable<KnowledgeSourceReference> {
     /*
      * The name of the knowledge source.
      */
     @Generated
     private final String name;
-
-    /*
-     * Indicates whether references should be included for data retrieved from this source.
-     */
-    @Generated
-    private Boolean includeReferences;
-
-    /*
-     * Indicates whether references should include the structured data obtained during retrieval in their payload.
-     */
-    @Generated
-    private Boolean includeReferenceSourceData;
-
-    /*
-     * Indicates that this knowledge source should bypass source selection and always be queried at retrieval time.
-     */
-    @Generated
-    private Boolean alwaysQuerySource;
-
-    /*
-     * The maximum number of queries that can be issued at a time when retrieving data from this source.
-     */
-    @Generated
-    private Integer maxSubQueries;
-
-    /*
-     * The reranker threshold all retrieved documents must meet to be included in the response.
-     */
-    @Generated
-    private Float rerankerThreshold;
 
     /**
      * Creates an instance of KnowledgeSourceReference class.
@@ -76,126 +46,6 @@ public final class KnowledgeSourceReference implements JsonSerializable<Knowledg
     }
 
     /**
-     * Get the includeReferences property: Indicates whether references should be included for data retrieved from this
-     * source.
-     * 
-     * @return the includeReferences value.
-     */
-    @Generated
-    public Boolean isIncludeReferences() {
-        return this.includeReferences;
-    }
-
-    /**
-     * Set the includeReferences property: Indicates whether references should be included for data retrieved from this
-     * source.
-     * 
-     * @param includeReferences the includeReferences value to set.
-     * @return the KnowledgeSourceReference object itself.
-     */
-    @Generated
-    public KnowledgeSourceReference setIncludeReferences(Boolean includeReferences) {
-        this.includeReferences = includeReferences;
-        return this;
-    }
-
-    /**
-     * Get the includeReferenceSourceData property: Indicates whether references should include the structured data
-     * obtained during retrieval in their payload.
-     * 
-     * @return the includeReferenceSourceData value.
-     */
-    @Generated
-    public Boolean isIncludeReferenceSourceData() {
-        return this.includeReferenceSourceData;
-    }
-
-    /**
-     * Set the includeReferenceSourceData property: Indicates whether references should include the structured data
-     * obtained during retrieval in their payload.
-     * 
-     * @param includeReferenceSourceData the includeReferenceSourceData value to set.
-     * @return the KnowledgeSourceReference object itself.
-     */
-    @Generated
-    public KnowledgeSourceReference setIncludeReferenceSourceData(Boolean includeReferenceSourceData) {
-        this.includeReferenceSourceData = includeReferenceSourceData;
-        return this;
-    }
-
-    /**
-     * Get the alwaysQuerySource property: Indicates that this knowledge source should bypass source selection and
-     * always be queried at retrieval time.
-     * 
-     * @return the alwaysQuerySource value.
-     */
-    @Generated
-    public Boolean isAlwaysQuerySource() {
-        return this.alwaysQuerySource;
-    }
-
-    /**
-     * Set the alwaysQuerySource property: Indicates that this knowledge source should bypass source selection and
-     * always be queried at retrieval time.
-     * 
-     * @param alwaysQuerySource the alwaysQuerySource value to set.
-     * @return the KnowledgeSourceReference object itself.
-     */
-    @Generated
-    public KnowledgeSourceReference setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        this.alwaysQuerySource = alwaysQuerySource;
-        return this;
-    }
-
-    /**
-     * Get the maxSubQueries property: The maximum number of queries that can be issued at a time when retrieving data
-     * from this source.
-     * 
-     * @return the maxSubQueries value.
-     */
-    @Generated
-    public Integer getMaxSubQueries() {
-        return this.maxSubQueries;
-    }
-
-    /**
-     * Set the maxSubQueries property: The maximum number of queries that can be issued at a time when retrieving data
-     * from this source.
-     * 
-     * @param maxSubQueries the maxSubQueries value to set.
-     * @return the KnowledgeSourceReference object itself.
-     */
-    @Generated
-    public KnowledgeSourceReference setMaxSubQueries(Integer maxSubQueries) {
-        this.maxSubQueries = maxSubQueries;
-        return this;
-    }
-
-    /**
-     * Get the rerankerThreshold property: The reranker threshold all retrieved documents must meet to be included in
-     * the response.
-     * 
-     * @return the rerankerThreshold value.
-     */
-    @Generated
-    public Float getRerankerThreshold() {
-        return this.rerankerThreshold;
-    }
-
-    /**
-     * Set the rerankerThreshold property: The reranker threshold all retrieved documents must meet to be included in
-     * the response.
-     * 
-     * @param rerankerThreshold the rerankerThreshold value to set.
-     * @return the KnowledgeSourceReference object itself.
-     */
-    @Generated
-    public KnowledgeSourceReference setRerankerThreshold(Float rerankerThreshold) {
-        this.rerankerThreshold = rerankerThreshold;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -203,11 +53,6 @@ public final class KnowledgeSourceReference implements JsonSerializable<Knowledg
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeBooleanField("includeReferences", this.includeReferences);
-        jsonWriter.writeBooleanField("includeReferenceSourceData", this.includeReferenceSourceData);
-        jsonWriter.writeBooleanField("alwaysQuerySource", this.alwaysQuerySource);
-        jsonWriter.writeNumberField("maxSubQueries", this.maxSubQueries);
-        jsonWriter.writeNumberField("rerankerThreshold", this.rerankerThreshold);
         return jsonWriter.writeEndObject();
     }
 
@@ -225,11 +70,6 @@ public final class KnowledgeSourceReference implements JsonSerializable<Knowledg
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
-            Boolean includeReferences = null;
-            Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
-            Integer maxSubQueries = null;
-            Float rerankerThreshold = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -237,29 +77,12 @@ public final class KnowledgeSourceReference implements JsonSerializable<Knowledg
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
-                } else if ("includeReferences".equals(fieldName)) {
-                    includeReferences = reader.getNullable(JsonReader::getBoolean);
-                } else if ("includeReferenceSourceData".equals(fieldName)) {
-                    includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
-                } else if ("maxSubQueries".equals(fieldName)) {
-                    maxSubQueries = reader.getNullable(JsonReader::getInt);
-                } else if ("rerankerThreshold".equals(fieldName)) {
-                    rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }
             }
             if (nameFound) {
-                KnowledgeSourceReference deserializedKnowledgeSourceReference = new KnowledgeSourceReference(name);
-                deserializedKnowledgeSourceReference.includeReferences = includeReferences;
-                deserializedKnowledgeSourceReference.includeReferenceSourceData = includeReferenceSourceData;
-                deserializedKnowledgeSourceReference.alwaysQuerySource = alwaysQuerySource;
-                deserializedKnowledgeSourceReference.maxSubQueries = maxSubQueries;
-                deserializedKnowledgeSourceReference.rerankerThreshold = rerankerThreshold;
-
-                return deserializedKnowledgeSourceReference;
+                return new KnowledgeSourceReference(name);
             }
             throw new IllegalStateException("Missing required property: name");
         });
