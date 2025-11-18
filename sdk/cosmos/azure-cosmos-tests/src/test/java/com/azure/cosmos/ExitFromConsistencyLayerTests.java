@@ -507,7 +507,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
                     actualHeadRequestCount++;
 
-                    if (storeResponseDiagnostics.getStatusCode() == HttpConstants.StatusCodes.GONE && storeResponseDiagnostics.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND) {;
+                    if (storeResponseDiagnostics.getStatusCode() == HttpConstants.StatusCodes.GONE && storeResponseDiagnostics.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND) {
                         actualHeadRequestCountWithLeaseNotFoundErrors++;
                     }
 
