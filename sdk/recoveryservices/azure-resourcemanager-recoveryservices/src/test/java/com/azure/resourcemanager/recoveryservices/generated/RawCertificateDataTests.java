@@ -12,15 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class RawCertificateDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RawCertificateData model
-            = BinaryData.fromString("{\"authType\":\"AzureActiveDirectory\"}").toObject(RawCertificateData.class);
-        Assertions.assertEquals(AuthType.AZURE_ACTIVE_DIRECTORY, model.authType());
+        RawCertificateData model = BinaryData.fromString("{\"authType\":\"ACS\"}").toObject(RawCertificateData.class);
+        Assertions.assertEquals(AuthType.ACS, model.authType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RawCertificateData model = new RawCertificateData().withAuthType(AuthType.AZURE_ACTIVE_DIRECTORY);
+        RawCertificateData model = new RawCertificateData().withAuthType(AuthType.ACS);
         model = BinaryData.fromObject(model).toObject(RawCertificateData.class);
-        Assertions.assertEquals(AuthType.AZURE_ACTIVE_DIRECTORY, model.authType());
+        Assertions.assertEquals(AuthType.ACS, model.authType());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInf
  */
 public final class VaultExtendedInfoCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/UpdateVaultExtendedInfo_Put.json
+     * x-ms-original-file: 2025-02-01/UpdateVaultExtendedInfo_Put.json
      */
     /**
      * Sample code: Put ExtendedInfo of Resource.

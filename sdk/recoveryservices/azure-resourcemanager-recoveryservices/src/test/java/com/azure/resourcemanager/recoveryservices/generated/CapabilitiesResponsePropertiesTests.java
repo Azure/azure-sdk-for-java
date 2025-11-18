@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class CapabilitiesResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilitiesResponseProperties model = BinaryData
-            .fromString(
-                "{\"dnsZones\":[{\"requiredZoneNames\":[\"eojnabc\"],\"subResource\":\"AzureBackup_secondary\"}]}")
+        CapabilitiesResponseProperties model = BinaryData.fromString(
+            "{\"dnsZones\":[{\"requiredZoneNames\":[\"kymuctqhjfbebr\",\"cxerf\",\"wutttxfvjrbi\",\"phxepcyvahf\"],\"subResource\":\"AzureBackup\"},{\"requiredZoneNames\":[\"qxj\"],\"subResource\":\"AzureBackup_secondary\"},{\"requiredZoneNames\":[\"gidokgjljyoxgvcl\",\"bgsncghkjeszzhb\",\"jhtxfvgxbfsmxne\"],\"subResource\":\"AzureBackup_secondary\"}]}")
             .toObject(CapabilitiesResponseProperties.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.dnsZones().get(0).subResource());
-        Assertions.assertEquals("eojnabc", model.dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.dnsZones().get(0).subResource());
+        Assertions.assertEquals("kymuctqhjfbebr", model.dnsZones().get(0).requiredZoneNames().get(0));
     }
 }

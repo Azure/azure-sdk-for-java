@@ -26,7 +26,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.recoveryservices.fluent.DeletedVaultsClient;
 import com.azure.resourcemanager.recoveryservices.fluent.OperationsClient;
 import com.azure.resourcemanager.recoveryservices.fluent.PrivateLinkResourcesOperationsClient;
 import com.azure.resourcemanager.recoveryservices.fluent.RecoveryServicesClient;
@@ -179,20 +178,6 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
     }
 
     /**
-     * The DeletedVaultsClient object to access its operations.
-     */
-    private final DeletedVaultsClient deletedVaults;
-
-    /**
-     * Gets the DeletedVaultsClient object to access its operations.
-     * 
-     * @return the DeletedVaultsClient object.
-     */
-    public DeletedVaultsClient getDeletedVaults() {
-        return this.deletedVaults;
-    }
-
-    /**
      * The PrivateLinkResourcesOperationsClient object to access its operations.
      */
     private final PrivateLinkResourcesOperationsClient privateLinkResourcesOperations;
@@ -307,11 +292,10 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-01";
+        this.apiVersion = "2025-02-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
-        this.deletedVaults = new DeletedVaultsClientImpl(this);
         this.privateLinkResourcesOperations = new PrivateLinkResourcesOperationsClientImpl(this);
         this.vaultCertificates = new VaultCertificatesClientImpl(this);
         this.registeredIdentities = new RegisteredIdentitiesClientImpl(this);

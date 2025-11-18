@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithCMK.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
@@ -64,7 +64,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault.json
+     * x-ms-original-file: 2025-02-01/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
@@ -84,7 +84,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_ResourceGuardEnabled.json
+     * x-ms-original-file: 2025-02-01/PUTVault_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create or Update Vault performing critical operation With MUA.
@@ -114,7 +114,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
@@ -137,7 +137,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Monitoring Setting.
@@ -165,7 +165,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithRedundancySettings.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Create or Update Vault With Redundancy Setting.
@@ -188,7 +188,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Create or Update Vault with Source scan configuration.

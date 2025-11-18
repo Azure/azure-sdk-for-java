@@ -13,9 +13,9 @@ public final class DnsZoneResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsZoneResponse model
-            = BinaryData.fromString("{\"requiredZoneNames\":[\"xpsiebtfhvpes\"],\"subResource\":\"AzureSiteRecovery\"}")
+            = BinaryData.fromString("{\"requiredZoneNames\":[\"cxgod\"],\"subResource\":\"AzureBackup\"}")
                 .toObject(DnsZoneResponse.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.subResource());
-        Assertions.assertEquals("xpsiebtfhvpes", model.requiredZoneNames().get(0));
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.subResource());
+        Assertions.assertEquals("cxgod", model.requiredZoneNames().get(0));
     }
 }

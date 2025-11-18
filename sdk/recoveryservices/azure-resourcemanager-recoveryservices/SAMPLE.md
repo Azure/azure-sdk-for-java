@@ -1,12 +1,9 @@
 # Code snippets and samples
 
 
-## DeletedVaults
+## Operations
 
-- [Get](#deletedvaults_get)
-- [GetOperationStatus](#deletedvaults_getoperationstatus)
-- [ListBySubscriptionId](#deletedvaults_listbysubscriptionid)
-- [Undelete](#deletedvaults_undelete)
+- [List](#operations_list)
 
 ## PrivateLinkResourcesOperation
 
@@ -53,99 +50,23 @@
 - [List](#vaults_list)
 - [ListByResourceGroup](#vaults_listbyresourcegroup)
 - [Update](#vaults_update)
-### DeletedVaults_Get
+### Operations_List
 
 ```java
 /**
- * Samples for DeletedVaults Get.
+ * Samples for Operations List.
  */
-public final class DeletedVaultsGetSamples {
+public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_Get.json
+     * x-ms-original-file: 2025-02-01/ListOperations.json
      */
     /**
-     * Sample code: Gets Deleted vault.
+     * Sample code: ListOperations.
      * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void getsDeletedVault(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.deletedVaults().getWithResponse("westus", "swaggerExample", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DeletedVaults_GetOperationStatus
-
-```java
-/**
- * Samples for DeletedVaults GetOperationStatus.
- */
-public final class DeletedVaultsGetOperationStatusSamples {
-    /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_GetOperationStatus.json
-     */
-    /**
-     * Sample code: Gets operation status on deleted vault.
-     * 
-     * @param manager Entry point to RecoveryServicesManager.
-     */
-    public static void
-        getsOperationStatusOnDeletedVault(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.deletedVaults()
-            .getOperationStatusWithResponse("westus", "swaggerExample",
-                "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DeletedVaults_ListBySubscriptionId
-
-```java
-/**
- * Samples for DeletedVaults ListBySubscriptionId.
- */
-public final class DeletedVaultsListBySubscriptionIdSamples {
-    /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_ListBySubscriptionId.json
-     */
-    /**
-     * Sample code: List deleted vaults in a subscription.
-     * 
-     * @param manager Entry point to RecoveryServicesManager.
-     */
-    public static void
-        listDeletedVaultsInASubscription(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.deletedVaults().listBySubscriptionId("westus", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DeletedVaults_Undelete
-
-```java
-import com.azure.resourcemanager.recoveryservices.models.DeletedVaultUndeleteInput;
-import com.azure.resourcemanager.recoveryservices.models.DeletedVaultUndeleteInputProperties;
-
-/**
- * Samples for DeletedVaults Undelete.
- */
-public final class DeletedVaultsUndeleteSamples {
-    /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_Undelete.json
-     */
-    /**
-     * Sample code: Undelete a deleted vault.
-     * 
-     * @param manager Entry point to RecoveryServicesManager.
-     */
-    public static void
-        undeleteADeletedVault(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.deletedVaults()
-            .undelete("westus", "swaggerExample", new DeletedVaultUndeleteInput()
-                .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId(
-                    "/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup")),
-                com.azure.core.util.Context.NONE);
+    public static void listOperations(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -158,7 +79,7 @@ public final class DeletedVaultsUndeleteSamples {
  */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GetPrivateLinkResources.json
+     * x-ms-original-file: 2025-02-01/GetPrivateLinkResources.json
      */
     /**
      * Sample code: Get PrivateLinkResource.
@@ -181,7 +102,7 @@ public final class PrivateLinkResourcesOperationGetSamples {
  */
 public final class PrivateLinkResourcesOperationListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/ListPrivateLinkResources.json
+     * x-ms-original-file: 2025-02-01/ListPrivateLinkResources.json
      */
     /**
      * Sample code: List PrivateLinkResources.
@@ -209,7 +130,7 @@ import java.util.Arrays;
  */
 public final class RecoveryServicesCapabilitiesSamples {
     /*
-     * x-ms-original-file: 2025-08-01/Capabilities.json
+     * x-ms-original-file: 2025-02-01/Capabilities.json
      */
     /**
      * Sample code: Capabilities for Microsoft.RecoveryServices/Vaults.
@@ -239,7 +160,7 @@ import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityPa
  */
 public final class RecoveryServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-08-01/CheckNameAvailability_Available.json
+     * x-ms-original-file: 2025-02-01/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: Availability status of Resource Name when no resource with same name, type and subscription exists,
@@ -258,7 +179,7 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/CheckNameAvailability_NotAvailable.json
+     * x-ms-original-file: 2025-02-01/CheckNameAvailability_NotAvailable.json
      */
     /**
      * Sample code: Availability status of Resource Name when resource with same name, type and subscription exists.
@@ -284,7 +205,7 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
  */
 public final class RegisteredIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeleteRegisteredIdentities.json
+     * x-ms-original-file: 2025-02-01/DeleteRegisteredIdentities.json
      */
     /**
      * Sample code: Delete registered Identity.
@@ -307,7 +228,7 @@ public final class RegisteredIdentitiesDeleteSamples {
  */
 public final class ReplicationUsagesListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/ListReplicationUsages.json
+     * x-ms-original-file: 2025-02-01/ListReplicationUsages.json
      */
     /**
      * Sample code: Gets Replication usages of vault.
@@ -329,7 +250,7 @@ public final class ReplicationUsagesListSamples {
  */
 public final class ResourceProviderGetOperationResultSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GetOperationResult.json
+     * x-ms-original-file: 2025-02-01/GetOperationResult.json
      */
     /**
      * Sample code: Get Operation Result.
@@ -353,7 +274,7 @@ public final class ResourceProviderGetOperationResultSamples {
  */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GetOperationStatus.json
+     * x-ms-original-file: 2025-02-01/GetOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status.
@@ -377,7 +298,7 @@ public final class ResourceProviderGetOperationStatusSamples {
  */
 public final class UsagesListByVaultsSamples {
     /*
-     * x-ms-original-file: 2025-08-01/ListUsages.json
+     * x-ms-original-file: 2025-02-01/ListUsages.json
      */
     /**
      * Sample code: Gets vault usages.
@@ -402,7 +323,7 @@ import com.azure.resourcemanager.recoveryservices.models.RawCertificateData;
  */
 public final class VaultCertificatesCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PUTVaultCred.json
+     * x-ms-original-file: 2025-02-01/PUTVaultCred.json
      */
     /**
      * Sample code: Download vault credential file.
@@ -433,7 +354,7 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInf
  */
 public final class VaultExtendedInfoCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/UpdateVaultExtendedInfo_Put.json
+     * x-ms-original-file: 2025-02-01/UpdateVaultExtendedInfo_Put.json
      */
     /**
      * Sample code: Put ExtendedInfo of Resource.
@@ -458,7 +379,7 @@ public final class VaultExtendedInfoCreateOrUpdateSamples {
  */
 public final class VaultExtendedInfoGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GETVaultExtendedInfo.json
+     * x-ms-original-file: 2025-02-01/GETVaultExtendedInfo.json
      */
     /**
      * Sample code: Get ExtendedInfo of Resource.
@@ -484,7 +405,7 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInf
  */
 public final class VaultExtendedInfoUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: 2025-02-01/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: PATCH ExtendedInfo of Resource.
@@ -536,7 +457,7 @@ import java.util.Map;
  */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithCMK.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
@@ -564,7 +485,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault.json
+     * x-ms-original-file: 2025-02-01/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
@@ -584,7 +505,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_ResourceGuardEnabled.json
+     * x-ms-original-file: 2025-02-01/PUTVault_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create or Update Vault performing critical operation With MUA.
@@ -614,7 +535,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
@@ -637,7 +558,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Monitoring Setting.
@@ -665,7 +586,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithRedundancySettings.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Create or Update Vault With Redundancy Setting.
@@ -688,7 +609,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2025-02-01/PUTVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Create or Update Vault with Source scan configuration.
@@ -733,7 +654,7 @@ public final class VaultsCreateOrUpdateSamples {
  */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeleteVault.json
+     * x-ms-original-file: 2025-02-01/DeleteVault.json
      */
     /**
      * Sample code: Delete Recovery Services Vault.
@@ -756,7 +677,7 @@ public final class VaultsDeleteSamples {
  */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GETVault.json
+     * x-ms-original-file: 2025-02-01/GETVault.json
      */
     /**
      * Sample code: Get Recovery Services Resource.
@@ -780,7 +701,7 @@ public final class VaultsGetByResourceGroupSamples {
  */
 public final class VaultsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/ListBySubscriptionIds.json
+     * x-ms-original-file: 2025-02-01/ListBySubscriptionIds.json
      */
     /**
      * Sample code: List of Recovery Services Resources in SubscriptionId.
@@ -802,7 +723,7 @@ public final class VaultsListSamples {
  */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01/ListResources.json
+     * x-ms-original-file: 2025-02-01/ListResources.json
      */
     /**
      * Sample code: List of Recovery Services Resources in ResourceGroup.
@@ -849,7 +770,7 @@ import java.util.Map;
  */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Update Vault With Monitoring Setting.
@@ -875,7 +796,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithCMK.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
@@ -902,7 +823,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PatchVault_WithCMK2.json
+     * x-ms-original-file: 2025-02-01/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
@@ -923,7 +844,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithCMK3.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
@@ -947,7 +868,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault.json
+     * x-ms-original-file: 2025-02-01/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
@@ -962,7 +883,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Update Vault With Source scan configuration.
@@ -990,7 +911,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithRedundancySettings.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Update Vault With Redundancy Setting.
@@ -1010,7 +931,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.
