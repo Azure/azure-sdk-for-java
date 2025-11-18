@@ -1,0 +1,82 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.security.keyvault.keys.cryptography.models
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.security.keyvault.keys.cryptography.models
+displayName: Migrate from azure.security.keyvault.keys.cryptography.models to next generation stack
+description: This recipe migrates the azure.security.keyvault.keys.cryptography.models package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # DecryptResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.DecryptResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.DecryptResult
+
+  # --------------------------------------------------------------------
+  # EncryptResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.EncryptResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.EncryptResult
+
+  # --------------------------------------------------------------------
+  # EncryptionAlgorithm
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.EncryptionAlgorithm
+
+  # --------------------------------------------------------------------
+  # EncryptResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
+
+  # --------------------------------------------------------------------
+  # UnwrapResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.UnwrapResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.UnwrapResult
+
+  # --------------------------------------------------------------------
+  # WrapResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.WrapResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult
+
+  # --------------------------------------------------------------------
+  # SignResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.SignResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.SignResult
+
+  # --------------------------------------------------------------------
+  # SignatureAlgorithm
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.SignatureAlgorithm
+
+  # --------------------------------------------------------------------
+  # VerifyResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.models.VerifyResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.models.VerifyResult

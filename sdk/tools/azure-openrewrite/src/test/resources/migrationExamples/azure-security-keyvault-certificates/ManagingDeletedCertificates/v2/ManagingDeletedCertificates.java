@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.certificates;
-
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.CertificateKeyType;
+import com.azure.v2.core.http.polling.LongRunningOperationStatus;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.certificates.CertificateClient;
+import com.azure.v2.security.keyvault.certificates.CertificateClientBuilder;
+import com.azure.v2.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.v2.security.keyvault.certificates.models.CertificateKeyType;
+import com.azure.v2.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.v2.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.v2.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.v2.security.keyvault.certificates.models.SubjectAlternativeNames;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class ManagingDeletedCertificates {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
         for links and instructions. */
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -59,14 +59,14 @@ public class ManagingDeletedCertificates {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
+        Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
             certificateClient.beginCreateCertificate("certificateName", policy, true,  tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         // The certificate is no longer needed, need to delete it from the key vault.
-        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
+        Poller<DeletedCertificate, Void> deletedCertificatePoller =
             certificateClient.beginDeleteCertificate("certificateName");
         // The deleted certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
@@ -81,7 +81,7 @@ public class ManagingDeletedCertificates {
 
         // We accidentally deleted the certificate. Let's recover it.
         // A deleted certificate can only be recovered if the key vault is soft-delete enabled.
-        SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverCertPoller = certificateClient
+        Poller<KeyVaultCertificateWithPolicy, Void> recoverCertPoller = certificateClient
             .beginRecoverDeletedCertificate("certificateName");
         // A recovered certificate is accessible as soon as polling beings
         PollResponse<KeyVaultCertificateWithPolicy> recoverPollResponse = recoverCertPoller.poll();

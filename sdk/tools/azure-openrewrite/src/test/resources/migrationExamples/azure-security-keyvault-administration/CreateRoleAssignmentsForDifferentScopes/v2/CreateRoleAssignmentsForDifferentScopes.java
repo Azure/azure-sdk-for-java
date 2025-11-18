@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration;
-
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient;
+import com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClientBuilder;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleAssignment;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleScope;
 
 /**
  * This sample demonstrates how to create role assignments in the key vault for different scopes.
@@ -28,7 +28,7 @@ public class CreateRoleAssignmentsForDifferentScopes {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("<your-managed-hsm-url>")
+            .endpoint("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -53,7 +53,7 @@ public class CreateRoleAssignmentsForDifferentScopes {
         String keyId = "<key-id>";
 
         KeyVaultRoleAssignment roleAssignmentForSingleKey =
-            accessControlClient.createRoleAssignment(KeyVaultRoleScope.fromString(keyId), roleDefinitionId,
+            accessControlClient.createRoleAssignment(KeyVaultRoleScope.fromValue(keyId), roleDefinitionId,
                 servicePrincipalId);
 
         System.out.printf("Created role assignment with name: %s %n", roleAssignmentForSingleKey.getName());
