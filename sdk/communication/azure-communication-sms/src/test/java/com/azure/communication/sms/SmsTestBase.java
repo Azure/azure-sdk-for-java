@@ -58,8 +58,13 @@ public class SmsTestBase extends TestProxyTestBase {
 
     protected SmsClientBuilder getSmsClientUsingConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder.connectionString(CONNECTION_STRING)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.connectionString(CONNECTION_STRING);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (httpClient != null) {
+            builder.httpClient(httpClient);
+        }
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

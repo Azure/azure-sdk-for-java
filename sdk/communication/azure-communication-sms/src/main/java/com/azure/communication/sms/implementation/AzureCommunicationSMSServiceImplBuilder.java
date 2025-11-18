@@ -254,7 +254,7 @@ public final class AzureCommunicationSMSServiceImplBuilder implements
     public AzureCommunicationSMSServiceImpl buildClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2021-03-07";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2026-01-23";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationSMSServiceImpl client = new AzureCommunicationSMSServiceImpl(localPipeline,

@@ -86,6 +86,34 @@ public final class AzureCommunicationSMSServiceImpl {
     }
 
     /**
+     * The OptOutsImpl object to access its operations.
+     */
+    private final OptOutsImpl optOuts;
+
+    /**
+     * Gets the OptOutsImpl object to access its operations.
+     * 
+     * @return the OptOutsImpl object.
+     */
+    public OptOutsImpl getOptOuts() {
+        return this.optOuts;
+    }
+
+    /**
+     * The DeliveryReportsImpl object to access its operations.
+     */
+    private final DeliveryReportsImpl deliveryReports;
+
+    /**
+     * Gets the DeliveryReportsImpl object to access its operations.
+     * 
+     * @return the DeliveryReportsImpl object.
+     */
+    public DeliveryReportsImpl getDeliveryReports() {
+        return this.deliveryReports;
+    }
+
+    /**
      * Initializes an instance of AzureCommunicationSMSService client.
      * 
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
@@ -122,5 +150,7 @@ public final class AzureCommunicationSMSServiceImpl {
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.sms = new SmsImpl(this);
+        this.optOuts = new OptOutsImpl(this);
+        this.deliveryReports = new DeliveryReportsImpl(this);
     }
 }
