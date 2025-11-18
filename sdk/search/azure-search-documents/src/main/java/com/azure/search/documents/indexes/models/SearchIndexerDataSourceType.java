@@ -57,6 +57,12 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
     public static final SearchIndexerDataSourceType ONE_LAKE = fromString("onelake");
 
     /**
+     * Indicates a SharePoint datasource.
+     */
+    @Generated
+    public static final SearchIndexerDataSourceType SHARE_POINT = fromString("sharepoint");
+
+    /**
      * Creates a new instance of SearchIndexerDataSourceType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

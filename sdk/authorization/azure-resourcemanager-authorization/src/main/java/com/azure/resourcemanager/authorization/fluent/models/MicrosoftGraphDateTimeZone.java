@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * dateTimeTimeZone.
+ * Represents a date time time zone.
  */
 @Fluent
 public final class MicrosoftGraphDateTimeZone implements JsonSerializable<MicrosoftGraphDateTimeZone> {

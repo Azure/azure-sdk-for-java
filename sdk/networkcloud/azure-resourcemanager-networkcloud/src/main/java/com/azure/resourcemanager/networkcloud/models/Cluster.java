@@ -79,6 +79,14 @@ public interface Cluster {
     SystemData systemData();
 
     /**
+     * Gets the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    List<ActionState> actionStates();
+
+    /**
      * Gets the aggregatorOrSingleRackDefinition property: The rack definition that is intended to reflect only a single
      * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
      * 
@@ -159,8 +167,8 @@ public interface Cluster {
     String clusterManagerId();
 
     /**
-     * Gets the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Gets the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
+     * service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -562,11 +570,11 @@ public interface Cluster {
          */
         interface WithClusterServicePrincipal {
             /**
-             * Specifies the clusterServicePrincipal property: The service principal to be used by the cluster during
-             * Arc Appliance installation..
+             * Specifies the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster
+             * privileges. The service principal to be used by the cluster during Arc Appliance installation..
              * 
-             * @param clusterServicePrincipal The service principal to be used by the cluster during Arc Appliance
-             * installation.
+             * @param clusterServicePrincipal Deprecated: Use managed identity to provide cluster privileges. The
+             * service principal to be used by the cluster during Arc Appliance installation.
              * @return the next definition stage.
              */
             WithCreate withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal);
@@ -850,11 +858,11 @@ public interface Cluster {
          */
         interface WithClusterServicePrincipal {
             /**
-             * Specifies the clusterServicePrincipal property: The service principal to be used by the cluster during
-             * Arc Appliance installation..
+             * Specifies the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster
+             * privileges. The service principal to be used by the cluster during Arc Appliance installation..
              * 
-             * @param clusterServicePrincipal The service principal to be used by the cluster during Arc Appliance
-             * installation.
+             * @param clusterServicePrincipal Deprecated: Use managed identity to provide cluster privileges. The
+             * service principal to be used by the cluster during Arc Appliance installation.
              * @return the next definition stage.
              */
             Update withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal);

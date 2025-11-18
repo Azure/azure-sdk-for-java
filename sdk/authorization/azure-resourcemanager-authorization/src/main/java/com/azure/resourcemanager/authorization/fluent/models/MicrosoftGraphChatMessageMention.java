@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * chatMessageMention.
+ * Represents a chat message mention.
  */
 @Fluent
 public final class MicrosoftGraphChatMessageMention implements JsonSerializable<MicrosoftGraphChatMessageMention> {

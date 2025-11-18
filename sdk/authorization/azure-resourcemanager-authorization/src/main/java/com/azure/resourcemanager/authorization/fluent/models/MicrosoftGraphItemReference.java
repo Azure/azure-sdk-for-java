@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * itemReference.
+ * Represents an item reference.
  */
 @Fluent
 public final class MicrosoftGraphItemReference implements JsonSerializable<MicrosoftGraphItemReference> {

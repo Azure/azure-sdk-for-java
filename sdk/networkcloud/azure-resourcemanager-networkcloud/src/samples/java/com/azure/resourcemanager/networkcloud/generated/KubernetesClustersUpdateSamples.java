@@ -18,7 +18,7 @@ import java.util.Map;
 public final class KubernetesClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * KubernetesClusters_Patch.json
      */
     /**

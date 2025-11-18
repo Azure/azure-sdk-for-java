@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * meetingParticipantInfo.
+ * Represents a meeting participant info.
  */
 @Fluent
 public final class MicrosoftGraphMeetingParticipantInfo

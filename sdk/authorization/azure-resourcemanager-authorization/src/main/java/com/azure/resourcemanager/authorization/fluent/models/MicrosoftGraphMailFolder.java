@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * mailFolder.
+ * Represents a mail folder.
  */
 @Fluent
 public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {

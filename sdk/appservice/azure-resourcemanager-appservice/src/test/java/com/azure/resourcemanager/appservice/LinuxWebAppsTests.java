@@ -51,16 +51,16 @@ public class LinuxWebAppsTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewLinuxPlan(PricingTier.BASIC_B1)
             .withPublicDockerHubImage("wordpress")
             .create();
         Assertions.assertNotNull(webApp1);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
         Assertions.assertEquals(OperatingSystem.LINUX, plan1.operatingSystem());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp1.operatingSystem());
@@ -74,7 +74,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
             .withContainerLoggingEnabled()
             .create();
         Assertions.assertNotNull(webApp2);
-        Assertions.assertEquals(Region.US_WEST, webApp2.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp2.region());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp2.operatingSystem());
 
         // Get
@@ -106,7 +106,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         webApp = webApp1.update().withNewAppServicePlan(PricingTier.STANDARD_S2).apply();
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(webApp.appServicePlanId());
         Assertions.assertNotNull(plan2);
-        Assertions.assertEquals(Region.US_WEST, plan2.region());
+        Assertions.assertEquals(Region.US_WEST3, plan2.region());
         Assertions.assertEquals(PricingTier.STANDARD_S2, plan2.pricingTier());
         Assertions.assertEquals(OperatingSystem.LINUX, plan2.operatingSystem());
 
@@ -133,16 +133,16 @@ public class LinuxWebAppsTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewLinuxPlan(PricingTier.BASIC_B1)
             .withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11)
             .create();
         Assertions.assertNotNull(webApp1);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
         Assertions.assertEquals(OperatingSystem.LINUX, plan1.operatingSystem());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp1.operatingSystem());
@@ -153,16 +153,16 @@ public class LinuxWebAppsTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewLinuxPlan(PricingTier.BASIC_B1)
             .withBuiltInImage(RuntimeStack.TOMCAT_10_0_JAVA17)
             .create();
         Assertions.assertNotNull(webApp1);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
         Assertions.assertEquals(OperatingSystem.LINUX, plan1.operatingSystem());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp1.operatingSystem());
