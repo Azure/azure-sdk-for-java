@@ -44,7 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class ExitFromConsistencyLayerTests extends TestSuiteBase {
+public class BailOutFromBarrierE2ETests extends TestSuiteBase {
 
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor cosmosAsyncClientAccessor
         = ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
@@ -81,7 +81,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuildersWithDirectTcp")
-    public ExitFromConsistencyLayerTests(CosmosClientBuilder clientBuilder) {
+    public BailOutFromBarrierE2ETests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 

@@ -545,8 +545,7 @@ public class ConsistencyWriter {
                     return Mono.just(false);
                 }
 
-                boolean hasRequiredGlobalCommittedLsn =
-                    selectedGlobalCommittedLSN <= 0 || storeResult.globalCommittedLSN >= selectedGlobalCommittedLSN;
+                boolean hasRequiredGlobalCommittedLsn = storeResult.globalCommittedLSN >= selectedGlobalCommittedLSN;
 
                 return Mono.just(hasRequiredGlobalCommittedLsn);
             })
