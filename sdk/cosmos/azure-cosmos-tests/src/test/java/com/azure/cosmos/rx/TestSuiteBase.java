@@ -312,6 +312,21 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    protected static void expectCount(CosmosAsyncContainer cosmosContainer, int expectedCount) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
+        options.setMaxDegreeOfParallelism(-1);
+        List<Integer> counts = cosmosContainer
+            .queryItems("SELECT VALUE COUNT(0) FROM root", options, Integer.class)
+            .collectList()
+            .block();
+        assertThat(counts).hasSize(1);
+        assertThat(counts.get(0)).isEqualTo(expectedCount);
+    }
+
     private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
@@ -350,6 +365,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
                            return cosmosContainer.deleteItem(doc.getId(), partitionKey);
                        }).then().block();
+
+        expectCount(cosmosContainer, 0);
+
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
