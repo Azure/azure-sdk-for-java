@@ -51,9 +51,9 @@ class AzureEventHubsConsumerClientConfiguration {
         SharedConsumerConnectionConfiguration(AzureEventHubsProperties properties, EventHubClientBuilder builder) {
             this.builder = builder;
 
-            PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-            mapper.from(properties.getConsumer().getConsumerGroup()).to(builder::consumerGroup);
-            mapper.from(properties.getConsumer().getPrefetchCount()).to(builder::prefetchCount);
+            PropertyMapper mapper = PropertyMapper.get();
+            mapper.from(properties.getConsumer().getConsumerGroup()).always().to(builder::consumerGroup);
+            mapper.from(properties.getConsumer().getPrefetchCount()).always().to(builder::prefetchCount);
         }
 
         @Bean
