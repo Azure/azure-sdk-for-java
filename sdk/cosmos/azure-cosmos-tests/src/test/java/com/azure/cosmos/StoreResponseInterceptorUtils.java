@@ -114,7 +114,6 @@ public class StoreResponseInterceptorUtils {
                 if (successfulHeadRequestCount.incrementAndGet() <= allowedSuccessfulHeadRequestsWithoutBarrierBeingMet) {
 
                     if (ConsistencyLevel.STRONG.equals(operationConsistencyLevel)) {
-                        System.out.println("Allowing successful barrier for head request number: " + successfulHeadRequestCount.get());
 
                         long localLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN));
                         long itemLsn = Long.parseLong(storeResponse.getHeaderValue(WFConstants.BackendHeaders.ITEM_LSN));
@@ -124,7 +123,6 @@ public class StoreResponseInterceptorUtils {
 
                         return storeResponse;
                     } else if (ConsistencyLevel.BOUNDED_STALENESS.equals(operationConsistencyLevel)) {
-                        System.out.println("Allowing successful barrier for head request number: " + successfulHeadRequestCount.get());
 
                         long manipulatedItemLSN = -1;
                         long manipulatedGlobalLSN = -1;

@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
-//import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -25,7 +24,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-//import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -86,89 +84,152 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-/**
-      * The data provider generates combinations of:
-      * <ul>
-      *   <li><b>headFailureCount</b>: Number of head failures to simulate</li>
-      *   <li><b>operationTypeForWhichBarrierFlowIsTriggered</b>: Operation type (Create/Read) for which barrier flow is triggered</li>
-      *   <li><b>enterPostQuorumSelectionOnlyBarrierLoop</b>: Whether to enter post quorum selection only barrier loop</li>
-      *   <li><b>successfulHeadRequestsWhichDontMeetBarrier</b>: Number of successful head requests which don't meet the barrier condition</li>
-      * </ul>
-      *
-      * <p>This helps cover scenarios where:</p>
-      * <ul>
-      *   <li>Enough head failures occur that the encapsulated document operation cannot succeed or has to be retried in a different region</li>
-      *   <li>Head failures occur in the first phase of quorum selection</li>
-      *   <li>Head failures occur in the second phase of quorum selection where the quorum was selected but not met</li>
-      * </ul>
-      */
+
+    /**
+     * Provides test scenarios for head request lease not found (410/1022) error handling.
+     *
+     * <p>Each scenario is defined by the following parameters:</p>
+     * <ul>
+     *   <li><b>headFailureCount</b>: Number of Head requests that should fail with 410/1022 status codes</li>
+     *   <li><b>operationTypeForWhichBarrierFlowIsTriggered</b>: The operation type (Create or Read) that triggers the barrier flow</li>
+     *   <li><b>enterPostQuorumSelectionOnlyBarrierLoop</b>: Whether to enter the post quorum selection only barrier loop</li>
+     *   <li><b>successfulHeadRequestCountWhichDontMeetBarrier</b>: Number of successful Head requests (204 status code)
+     *       that don't meet barrier requirements before failures start</li>
+     *   <li><b>isCrossRegionRetryExpected</b>: Whether a cross-region retry is expected for the scenario</li>
+     *   <li><b>desiredClientLevelConsistency</b>: The desired client-level consistency (STRONG or BOUNDED_STALENESS)</li>
+     * </ul>
+     *
+     * <p><b>Important Notes:</b></p>
+     * <ul>
+     *   <li>Scenarios are scoped to cases where document requests succeeded but barrier flows were triggered
+     *       (excludes QuorumNotMet scenarios which scope all barriers to primary)</li>
+     *   <li>Create operations tolerate up to 2 Head failures before failing with timeout</li>
+     *   <li>Read operations tolerate 3-5 Head failures before requiring cross-region retry</li>
+     *   <li>In the QuorumSelected phase, successful Head requests that don't meet barrier requirements are tolerated:
+     *       <ul>
+     *         <li>Up to 18 successful Head requests for BOUNDED_STALENESS consistency</li>
+     *         <li>Up to 111 successful Head requests for STRONG consistency</li>
+     *       </ul>
+     *       (See QuorumReader - maxNumberOfReadBarrierReadRetries and maxBarrierRetriesForMultiRegion)</li>
+     * </ul>
+     *
+     * @return array of test scenario parameters for head request lease not found error handling
+     */
     @DataProvider(name = "headRequestLeaseNotFoundScenarios")
     public static Object[][] headRequestLeaseNotFoundScenarios() {
+
         return new Object[][]{
-            // headFailureCount, operationType, successfulHeadRequestsWhichDontMeetBarrier
-//            { 1, OperationType.Create, false, 0 },
-//            { 2, OperationType.Create, false, 0 },
-//            { 3, OperationType.Create, false, 0 },
-//            { 4, OperationType.Create, false, 0 },
-//            { 1, OperationType.Read, false, 0 },
-//            { 2, OperationType.Read, false, 0 },
-//            { 3, OperationType.Read, false, 0 },
-//            { 4, OperationType.Read, false, 0 },
-//            { 1, OperationType.Read, true, 18 },
-//            { 2, OperationType.Read, true, 18 },
-//            { 3, OperationType.Read, true, 18 },
-            { 4, OperationType.Read, true, 18 },
-            { 4, OperationType.Read, true, 18 }
-//            { 1, OperationType.Read, true, 108 },
-//            { 2, OperationType.Read, true, 108 },
-//            { 3, OperationType.Read, true, 108 },
-//            { 4, OperationType.Read, true, 108 }
+            { 1, OperationType.Create, false, 0, false, null },
+            { 2, OperationType.Create, false, 0, false, null },
+            { 3, OperationType.Create, false, 0, false, null },
+            { 4, OperationType.Create, false, 0, false, null },
+            { 400, OperationType.Create, false, 0, false, null },
+            { 1, OperationType.Read, false, 0, false, null },
+            { 2, OperationType.Read, false, 0, false, null },
+            { 3, OperationType.Read, false, 0, false, null },
+            { 4, OperationType.Read, false, 0, true, null },
+            { 400, OperationType.Read, false, 0, true, null },
+            { 1, OperationType.Read, true, 18, false, ConsistencyLevel.BOUNDED_STALENESS },
+            { 2, OperationType.Read, true, 18, false, ConsistencyLevel.BOUNDED_STALENESS },
+            { 3, OperationType.Read, true, 18, false, ConsistencyLevel.BOUNDED_STALENESS },
+            { 4, OperationType.Read, true, 18, false, ConsistencyLevel.BOUNDED_STALENESS },
+            { 5, OperationType.Read, true, 18, true, ConsistencyLevel.BOUNDED_STALENESS },
+            { 1, OperationType.Read, true, 18, false, ConsistencyLevel.STRONG },
+            { 2, OperationType.Read, true, 18, false, ConsistencyLevel.STRONG },
+            { 3, OperationType.Read, true, 18, false, ConsistencyLevel.STRONG },
+            { 4, OperationType.Read, true, 18, true, ConsistencyLevel.STRONG },
+            { 1, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
+            { 2, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
+            { 3, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
+            { 4, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
+            { 5, OperationType.Read, true, 111, true, ConsistencyLevel.STRONG }
         };
     }
 
     /**
-     * Validates that the consistency layer properly handles LEASE_NOT_FOUND (410-1022) failures during head requests
-     * in the barrier flow for strong consistency scenarios across multiple regions.
+     * Validates that the consistency layer properly handles lease not found (410/1022) errors during
+     * barrier head requests and implements appropriate bailout/retry strategies based on the failure count,
+     * operation type, and consistency level.
      *
-     * <p>This test simulates various failure scenarios where head requests fail with LEASE_NOT_FOUND errors
-     * during the barrier protocol, which is used to ensure strong consistency guarantees. The test verifies
-     * that the client can properly bail out and retry when too many head failures occur, or successfully
-     * complete operations when head failures are within acceptable thresholds.</p>
+     * <p>This test verifies the resilience and fault tolerance of the barrier flow mechanism in the
+     * consistency layer when head requests fail with lease not found errors. The barrier flow is triggered
+     * when documents requests succeed but additional head requests are needed to ensure consistency guarantees
+     * are met across replicas.</p>
      *
      * <p><b>Test Scenarios:</b></p>
      * <ul>
-     *   <li>For <b>Create operations</b>: Head can fail up to 1 time before the operation times out (408-1022)</li>
-     *   <li>For <b>Read operations</b>: Head can fail up to 3 times and still succeed from the same region;
-     *       with 4 failures, the operation fails over to another region</li>
-     *   <li>Tests both pre-quorum and post-quorum selection barrier failure scenarios</li>
+     *   <li><b>Create Operations:</b> Can tolerate up to 2 head failures before timing out. Beyond this threshold,
+     *       the operation fails with a 408 timeout status code with 1022 substatus.</li>
+     *   <li><b>Read Operations:</b> Can tolerate 3-4 head failures within the same region. After 4 failures,
+     *       the operation triggers a cross-region retry to ensure eventual consistency.</li>
+     *   <li><b>Post-Quorum Selection Barrier Loop:</b> Tests scenarios where initial barriers pass but subsequent
+     *       barriers in the quorum-selected phase encounter failures. The system tolerates different numbers of
+     *       successful head requests that don't meet barrier requirements:
+     *       <ul>
+     *         <li>Up to 18 for BOUNDED_STALENESS consistency</li>
+     *         <li>Up to 111 for STRONG consistency</li>
+     *       </ul>
+     *   </li>
      * </ul>
      *
-     * <p><b>Verification Points:</b></p>
+     * <p><b>Validation Steps:</b></p>
+     * <ol>
+     *   <li>Creates a CosmosAsyncClient with the specified consistency level and preferred regions</li>
+     *   <li>Intercepts store responses to inject controlled head request failures (410/1022)</li>
+     *   <li>Executes the specified operation (Create or Read) that triggers the barrier flow</li>
+     *   <li>Validates the operation completes successfully or fails appropriately based on failure count</li>
+     *   <li>Examines diagnostics to verify:
+     *       <ul>
+     *         <li>Correct number of head requests were attempted</li>
+     *         <li>Expected number of regions were contacted</li>
+     *         <li>Primary replica was contacted when failures occurred</li>
+     *         <li>No 410 errors reached the Create/Read operations themselves</li>
+     *       </ul>
+     *   </li>
+     * </ol>
+     *
+     * <p><b>Important Notes:</b></p>
      * <ul>
-     *   <li>Correct HTTP status codes (201 for Create, 200 for Read, 408 for timeouts)</li>
-     *   <li>Proper region contact behavior (single region vs. failover to second region)</li>
-     *   <li>Head request counts in diagnostics match expectations</li>
-     *   <li>Primary replica is contacted during barrier protocol</li>
-     *   <li>No 410 errors surface for Create/Read operations (should be handled internally)</li>
+     *   <li>Test scenarios are scoped to cases where document requests succeeded but barrier flows were triggered,
+     *       excluding QuorumNotMet scenarios which scope all barriers to the primary region</li>
+     *   <li>The test uses an interceptor client to inject failures at precise points in the barrier flow</li>
+     *   <li>Cross-region retry is only expected for Read operations exceeding the failure threshold</li>
+     *   <li>The test validates that the system never exposes 410/1022 errors to the application layer for
+     *       the primary Create/Read operations - only head requests should encounter these errors</li>
      * </ul>
      *
-     * @param headFailureCount Number of head requests that should fail with LEASE_NOT_FOUND
-     * @param operationTypeForWhichBarrierFlowIsTriggered The operation type (Create or Read) that triggers the barrier flow
-     * @param enterPostQuorumSelectionOnlyBarrierLoop Whether to simulate failures in the post-quorum selection phase
-     * @param successfulHeadRequestCountWhichDontMeetBarrier Number of successful head requests that don't meet the barrier condition
-     * @throws Exception if the test setup or execution fails
+     * @param headFailureCount the number of head requests that should fail with 410/1022 status codes
+     *                         before the system either succeeds, times out, or retries in another region
+     * @param operationTypeForWhichBarrierFlowIsTriggered the type of operation (Create or Read) that triggers
+     *                                                     the barrier flow and determines retry behavior
+     * @param enterPostQuorumSelectionOnlyBarrierLoop if true, allows initial barriers to pass and only injects
+     *                                                 failures during the post-quorum selection barrier loop phase
+     * @param successfulHeadRequestCountWhichDontMeetBarrier the number of successful head requests (204 status)
+     *                                                        that don't meet barrier requirements before failures
+     *                                                        start being injected (only relevant when in post-quorum
+     *                                                        selection barrier loop)
+     * @param isCrossRegionRetryExpected whether the test expects a cross-region retry to occur based on the
+     *                                    failure count and operation type
+     * @param consistencyLevelApplicableForTest the consistency level to configure on the test client (STRONG or
+     *                                       BOUNDED_STALENESS), which affects barrier retry thresholds
+     *
+     * @throws Exception if the test setup fails or unexpected errors occur during test execution
+     *
+     * @see ConsistencyReader for barrier flow implementation in read path
+     * @see ConsistencyWriter for barrier flow implementation in write path
+     * @see StoreResponseInterceptorUtils for failure injection mechanisms
      */
     @Test(groups = {"multi-region-strong"}, dataProvider = "headRequestLeaseNotFoundScenarios", timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void validateHeadRequestLeaseNotFoundBailout(
         int headFailureCount,
         OperationType operationTypeForWhichBarrierFlowIsTriggered,
         boolean enterPostQuorumSelectionOnlyBarrierLoop,
-        int successfulHeadRequestCountWhichDontMeetBarrier) throws Exception {
+        int successfulHeadRequestCountWhichDontMeetBarrier,
+        boolean isCrossRegionRetryExpected,
+        ConsistencyLevel consistencyLevelApplicableForTest) throws Exception {
 
         CosmosAsyncClient targetClient = getClientBuilder()
             .preferredRegions(this.preferredRegions)
-            // revert
-            .consistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
             .buildAsyncClient();
 
         ConsistencyLevel effectiveConsistencyLevel
@@ -182,15 +243,16 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         if (!shouldTestExecutionHappen(
             effectiveConsistencyLevel,
             OperationType.Create.equals(operationTypeForWhichBarrierFlowIsTriggered) ? ConsistencyLevel.STRONG : ConsistencyLevel.BOUNDED_STALENESS,
-            connectionModeOfClientUnderTest,
-            ConnectionMode.DIRECT)) {
+            consistencyLevelApplicableForTest,
+            connectionModeOfClientUnderTest)) {
 
             safeClose(targetClient);
 
             throw new SkipException("Skipping test for arguments: " +
                 " OperationType: " + operationTypeForWhichBarrierFlowIsTriggered +
                 " ConsistencyLevel: " + effectiveConsistencyLevel +
-                " ConnectionMode: " + connectionModeOfClientUnderTest);
+                " ConnectionMode: " + connectionModeOfClientUnderTest +
+                " DesiredConsistencyLevel: " + consistencyLevelApplicableForTest);
         }
 
         AtomicInteger successfulHeadCountTracker = new AtomicInteger();
@@ -201,11 +263,10 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
 
         try {
 
-            // Setup test data
             TestObject testObject = TestObject.create();
 
             if (enterPostQuorumSelectionOnlyBarrierLoop) {
-                if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Read) {
+                if (OperationType.Read.equals(operationTypeForWhichBarrierFlowIsTriggered)) {
                     interceptorClient
                         .setResponseInterceptor(
                             StoreResponseInterceptorUtils.forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(
@@ -221,7 +282,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                 }
             } else {
 
-                if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Create) {
+                if (OperationType.Create.equals(operationTypeForWhichBarrierFlowIsTriggered)) {
                     interceptorClient
                         .setResponseInterceptor(
                             StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
@@ -232,7 +293,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                                 HttpConstants.StatusCodes.GONE,
                                 HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
                             ));
-                } else if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Read) {
+                } else if (OperationType.Read.equals(operationTypeForWhichBarrierFlowIsTriggered)) {
                     interceptorClient
                         .setResponseInterceptor(
                             StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
@@ -282,7 +343,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         = targetContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class).block();
 
                     // for Read, Head can fail up to 3 times and still succeed from the same region after which read has to go to another region
-                    if (headFailureCount <= 3) {
+                    if (!isCrossRegionRetryExpected) {
                         // Should eventually succeed
                         assertThat(response).isNotNull();
                         assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
@@ -291,7 +352,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = response.getDiagnostics();
                         assertThat(diagnostics).isNotNull();
 
-                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4, (4 + successfulHeadRequestCountWhichDontMeetBarrier));
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 5, (5 + successfulHeadRequestCountWhichDontMeetBarrier));
                         validateContactedRegions(diagnostics, 1);
                     } else {
                         // Should eventually succeed
@@ -301,7 +362,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                         CosmosDiagnostics diagnostics = response.getDiagnostics();
                         assertThat(diagnostics).isNotNull();
 
-                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 4, (4 + successfulHeadRequestCountWhichDontMeetBarrier));
+                        validateHeadRequestsInCosmosDiagnostics(diagnostics, 5, (5 + successfulHeadRequestCountWhichDontMeetBarrier));
                         validateContactedRegions(diagnostics, 2);
                     }
                 }
@@ -325,7 +386,7 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
                 }
 
                 if (operationTypeForWhichBarrierFlowIsTriggered == OperationType.Read) {
-                    fail("Read operation should have succeeded even with head failures");
+                    fail("Read operation should have succeeded even with head failures through cross region retry.");
                 }
             }
 
@@ -396,13 +457,13 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
         assertThat(cosmosDiagnosticsContext).isNotNull();
         assertThat(cosmosDiagnosticsContext.getContactedRegionNames()).isNotNull();
         assertThat(cosmosDiagnosticsContext.getContactedRegionNames()).isNotEmpty();
-        assertThat(cosmosDiagnosticsContext.getContactedRegionNames().size()).isEqualTo(expectedRegionsContactedCount);
+        assertThat(cosmosDiagnosticsContext.getContactedRegionNames().size()).as("Mismatch in regions contacted.").isEqualTo(expectedRegionsContactedCount);
     }
 
     private void validateHeadRequestsInCosmosDiagnostics(
         CosmosDiagnostics diagnostics,
-        int expectedHeadRequestCountWithFailures,
-        int expectedHeadRequestCount) {
+        int maxExpectedHeadRequestCountWithLeaseNotFoundErrors,
+        int maxExpectedHeadRequestCount) {
 
         int actualHeadRequestCountWithLeaseNotFoundErrors = 0;
         int actualHeadRequestCount = 0;
@@ -456,9 +517,9 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
             }
         }
 
-        assertThat(actualHeadRequestCount).as("Not enough head requests were seen.").isGreaterThanOrEqualTo(expectedHeadRequestCount);
         assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).as("Head request failed count with 410/1022 should be greater than 1.").isGreaterThan(0);
-        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).as("Too many head request failed.").isLessThanOrEqualTo(expectedHeadRequestCountWithFailures);
+        assertThat(actualHeadRequestCountWithLeaseNotFoundErrors).as("Too many head request failed.").isLessThanOrEqualTo(maxExpectedHeadRequestCountWithLeaseNotFoundErrors);
+        assertThat(actualHeadRequestCount).as("Too many Head requests made perhaps due to real replication lag.").isLessThanOrEqualTo(maxExpectedHeadRequestCount + 10);
         assertThat(primaryReplicaContacted).as("Primary replica should be contacted even when a single Head request sees a 410/1022").isTrue();
     }
 
@@ -488,16 +549,20 @@ public class ExitFromConsistencyLayerTests extends TestSuiteBase {
     }
 
     private boolean shouldTestExecutionHappen(
-        ConsistencyLevel accountConsistencyLevel,
+        ConsistencyLevel effectiveConsistencyLevel,
         ConsistencyLevel minimumConsistencyLevel,
-        ConnectionMode connectionModeOfClientUnderTest,
-        ConnectionMode expectedConnectionMode) {
+        ConsistencyLevel consistencyLevelApplicableForTestScenario,
+        ConnectionMode connectionModeOfClientUnderTest) {
 
-        if (!connectionModeOfClientUnderTest.name().equalsIgnoreCase(expectedConnectionMode.name())) {
+        if (!connectionModeOfClientUnderTest.name().equalsIgnoreCase(ConnectionMode.DIRECT.name())) {
             return false;
         }
 
-        return accountConsistencyLevel.compareTo(minimumConsistencyLevel) <= 0;
+        if (consistencyLevelApplicableForTestScenario != null) {
+            return consistencyLevelApplicableForTestScenario.equals(effectiveConsistencyLevel);
+        }
+
+        return effectiveConsistencyLevel.compareTo(minimumConsistencyLevel) <= 0;
     }
 
     private static boolean isPrimaryReplicaEndpoint(String storePhysicalAddress) {
