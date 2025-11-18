@@ -4,17 +4,14 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -27,7 +24,6 @@ import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
-import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.ClearRange;
@@ -100,14 +96,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -3388,19 +3380,20 @@ class FileApiTests extends FileShareTestBase {
             response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 
+    /* PULLED FROM RELEASE
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createFileFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
         ShareFileCreateOptions options
             = new ShareFileCreateOptions(Constants.KB).setFilePropertySemantics(filePropertySemantics);
-
+    
         // For Create File and Directory with FilePropertySemantics == Restore,
         // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
         if (filePropertySemantics == FilePropertySemantics.RESTORE) {
             options.setFilePermission(FILE_PERMISSION);
         }
-
+    
         Response<ShareFileInfo> response = primaryFileClient.createWithResponse(options, null, Context.NONE);
         HttpHeader retrievedHeader = response.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
         if (filePropertySemantics != null) {
@@ -3409,104 +3402,104 @@ class FileApiTests extends FileShareTestBase {
             assertNull(retrievedHeader);
         }
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryData() {
         ShareFileCreateOptions options
             = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
-
+    
         primaryFileClient.createWithResponse(options, null, Context.NONE);
-
+    
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         primaryFileClient.download(stream);
-
+    
         assertArrayEquals(DATA.getDefaultBytes(), stream.toByteArray());
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataFail() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
-
+    
         assertThrows(ShareStorageException.class,
             () -> primaryFileClient.createWithResponse(options, null, Context.NONE));
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataPartiallyEmpty() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
-
+    
         primaryFileClient.createWithResponse(options, null, Context.NONE);
-
+    
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         primaryFileClient.download(stream);
-
+    
         // When the max file size is larger than the data size, the rest of the file is zeroed out.
         // We only check the part we wrote to here, which is why we use copyOfRange.
         assertArrayEquals(DATA.getDefaultBytes(),
             Arrays.copyOfRange(stream.toByteArray(), 0, DATA.getDefaultDataSize()));
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryData() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
-
+    
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
-
+    
         primaryFileClient.createWithResponse(options, null, Context.NONE);
-
+    
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         primaryFileClient.download(stream);
-
+    
         assertArrayEquals(randomByteArray, stream.toByteArray());
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmpty() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
-
+    
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
-
+    
         primaryFileClient.createWithResponse(options, null, Context.NONE);
-
+    
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         primaryFileClient.download(stream);
-
+    
         assertArrayEquals(randomByteArray, Arrays.copyOfRange(stream.toByteArray(), 0, Constants.MB * 4));
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
-
+    
         primaryFileClient.createWithResponse(options, null, Context.NONE);
-
+    
         Response<ShareFileInfo> response = primaryFileClient.createWithResponse(options, null, Context.NONE);
         String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();
         byte[] decodedContentMd5 = Base64.getDecoder().decode(contentMD5);
-
+    
         assertArrayEquals(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().getBytes()), decodedContentMd5);
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
-
+    
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
-
+    
         Response<ShareFileInfo> response = primaryFileClient.createWithResponse(options, null, Context.NONE);
         String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();
         byte[] decodedContentMd5 = Base64.getDecoder().decode(contentMD5);
-
+    
         assertArrayEquals(MessageDigest.getInstance("MD5").digest(randomByteArray), decodedContentMd5);
-    }
+    } */
 }

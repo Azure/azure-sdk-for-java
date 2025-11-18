@@ -3,19 +3,16 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
-import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.FilePermissionFormat;
@@ -69,7 +66,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -1833,19 +1829,20 @@ public class DirectoryApiTests extends FileShareTestBase {
             response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 
+    /* PULLED FROM RELEASE
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createDirectoryFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
         ShareDirectoryCreateOptions options
             = new ShareDirectoryCreateOptions().setFilePropertySemantics(filePropertySemantics);
-
+    
         // For Create File and Directory with FilePropertySemantics == Restore,
         // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
         if (filePropertySemantics == FilePropertySemantics.RESTORE) {
             options.setFilePermission(FILE_PERMISSION);
         }
-
+    
         Response<ShareDirectoryInfo> response = primaryDirectoryClient.createWithResponse(options, null, Context.NONE);
         HttpHeader retrievedHeader = response.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
         if (filePropertySemantics != null) {
@@ -1854,20 +1851,20 @@ public class DirectoryApiTests extends FileShareTestBase {
             assertNull(retrievedHeader);
         }
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createDirectoryIfNotExistsFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
         ShareDirectoryCreateOptions options
             = new ShareDirectoryCreateOptions().setFilePropertySemantics(filePropertySemantics);
-
+    
         // For Create File and Directory with FilePropertySemantics == Restore,
         // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
         if (filePropertySemantics == FilePropertySemantics.RESTORE) {
             options.setFilePermission(FILE_PERMISSION);
         }
-
+    
         Response<ShareDirectoryInfo> response
             = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, Context.NONE);
         HttpHeader retrievedHeader = response.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
@@ -1876,5 +1873,5 @@ public class DirectoryApiTests extends FileShareTestBase {
         } else {
             assertNull(retrievedHeader);
         }
-    }
+    } */
 }

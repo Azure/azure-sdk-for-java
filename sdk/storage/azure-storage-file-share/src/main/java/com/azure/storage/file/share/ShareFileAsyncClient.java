@@ -450,8 +450,8 @@ public class ShareFileAsyncClient {
             StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
-                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(),
-                options.getFilePropertySemantics(), options.getData(), context));
+                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), null, null,
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -459,18 +459,17 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
+        FilePosixProperties filePosixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
         FilePropertySemantics filePropertySemantics, BinaryData binaryData, Context context) {
-        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        FilePosixProperties finalFileposixProperties
-            = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
-        Context finalContext = context == null ? Context.NONE : context;
+        context = context == null ? Context.NONE : context;
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        filePosixProperties = filePosixProperties == null ? new FilePosixProperties() : filePosixProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
+        /* PULLED FROM RELEASE
         Mono<UploadUtils.FluxMd5Wrapper> contentMD5Mono;
         Long contentLength;
         if (binaryData != null) {
@@ -479,17 +478,17 @@ public class ShareFileAsyncClient {
         } else {
             contentLength = null;
             contentMD5Mono = UploadUtils.computeMd5(null, false, LOGGER);
-        }
+        } */
 
-        return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
+        //return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
+        return azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
-                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
-                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
-                finalSmbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(),
-                finalFileposixProperties.getOwner(), finalFileposixProperties.getGroup(),
-                finalFileposixProperties.getFileMode(), finalFileposixProperties.getFileType(), fluxMD5wrapper.getMd5(),
-                filePropertySemantics, contentLength, binaryData, httpHeaders, finalContext)
-            .map(ModelHelper::createFileInfoResponse));
+                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), filePosixProperties.getOwner(),
+                filePosixProperties.getGroup(), filePosixProperties.getFileMode(), filePosixProperties.getFileType(),
+                null, null, null, (Flux<ByteBuffer>) null, httpHeaders, context)
+            .map(ModelHelper::createFileInfoResponse);
     }
 
     /**
