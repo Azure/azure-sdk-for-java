@@ -42,7 +42,7 @@ public class BlobBatchSetBlobAccessTierOptions {
      * Creates a new instance of {@link BlobBatchSetBlobAccessTierOptions}.
      *
      * @param containerName Name of the container to set access tier.
-     * @param blobName Name of the blob to set access tier.
+     * @param blobName Name of the blob to set access tier. Blob names must be encoded to UTF-8.
      * @param tier {@link AccessTier} to set on each blob.
      * @throws NullPointerException If {@code containerName}, {@code blobName}, or {@code tier} is null.
      */
@@ -66,18 +66,18 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the unencoded container name of the blob to set its access tier.
+     * Gets the container name of the blob to set its access tier.
      *
-     * @return Unencoded name of the container of the blob to set its access tier.
+     * @return Container of the blob to set its access tier.
      */
     public String getBlobContainerName() {
         return blobUrlParts.getBlobContainerName();
     }
 
     /**
-     * Gets the unencoded name of the blob to set its access tier.
+     * Gets the name of the blob to set its access tier.
      *
-     * @return Unencoded name of the blob to set its access tier.
+     * @return Name of the blob to set its access tier.
      */
     public String getBlobName() {
         return blobUrlParts.getBlobName();
@@ -89,8 +89,9 @@ public class BlobBatchSetBlobAccessTierOptions {
      * @return Identifier of the blob to set its access tier.
      */
     public String getBlobIdentifier() {
-        String basePath = Utility.urlEncode(blobUrlParts.getBlobContainerName()) + "/"
-            + Utility.urlEncode(blobUrlParts.getBlobName());
+        String basePath = blobUrlParts.toUrl().toString();
+        //        String basePath = Utility.urlEncode(blobUrlParts.getBlobContainerName()) + "/"
+        //            + Utility.urlEncode(blobUrlParts.getBlobName());
         String snapshot = blobUrlParts.getSnapshot();
         String versionId = blobUrlParts.getVersionId();
         if (snapshot != null && versionId != null) {

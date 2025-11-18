@@ -2099,10 +2099,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     // by the service, however, the names should still be encoded.
     @Test
     public void getBlobContainerUrlEncodesContainerName() {
-        String containerName = generateContainerName() + "enc!";
+        String containerName = "container space";
         BlobContainerAsyncClient containerClient
             = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
 
-        assertTrue(containerClient.getBlobContainerUrl().contains(Utility.urlEncode(containerName)));
+        assertTrue(containerClient.getBlobContainerUrl().contains("container%20space"));
     }
 }

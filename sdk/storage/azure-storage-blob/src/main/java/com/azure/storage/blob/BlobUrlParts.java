@@ -121,11 +121,11 @@ public final class BlobUrlParts {
     /**
      * Sets the container name that will be used as part of the URL path.
      *
-     * @param containerName The container name.
+     * @param containerName The container name. If the container name contains special characters, pass in the url
+     * encoded version of the container name.
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setContainerName(String containerName) {
-        //decodes and encodes to ensure containerName is always stored in encoded format
         this.containerName = Utility.urlEncode(Utility.urlDecode(containerName));
         return this;
     }
@@ -147,7 +147,6 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {
-        //decodes and encodes to ensure blobName is always stored in encoded format
         this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         return this;
     }

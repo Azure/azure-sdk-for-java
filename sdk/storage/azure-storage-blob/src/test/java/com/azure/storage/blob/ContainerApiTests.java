@@ -1974,10 +1974,10 @@ public class ContainerApiTests extends BlobTestBase {
     // by the service, however, the names should still be encoded.
     @Test
     public void getBlobContainerUrlEncodesContainerName() {
-        String containerName = generateContainerName() + "enc!";
+        String containerName = "container space";
         BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName);
 
-        assertTrue(containerClient.getBlobContainerUrl().contains(Utility.urlEncode(containerName)));
+        assertTrue(containerClient.getBlobContainerUrl().contains("container%20space"));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.
