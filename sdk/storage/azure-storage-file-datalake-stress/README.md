@@ -1,6 +1,10 @@
 # Azure File Datalake Storage Stress Tests
 
-Represents stress tests for Azure Storage File Datalake client library.
+Represents stress tests for Azure Storage File Datalake client library. 
+
+<blockquote style="padding:10px; border-left:2px dashed #ccc;">
+The instructions are for internal Azure SDK developers to run stress tests in the stress test infrastructure.
+</blockquote>
 
 ## Running tests in stress infra
 

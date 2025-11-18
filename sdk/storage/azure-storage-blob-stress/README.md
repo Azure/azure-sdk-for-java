@@ -1,13 +1,14 @@
 # Azure Blob Storage Stress Tests
 
-Represents stress tests for Azure Storage Blob client library.
+Represents stress tests for Azure Storage Blob client library. 
+
+<blockquote style="padding:10px; border-left:2px dashed #ccc;">
+The instructions are for internal Azure SDK developers to run stress tests in the stress test infrastructure.
+</blockquote>
 
 ## Running tests in stress infra
 
 Check out [Azure SDK Stress Test Wiki][azure_sdk_stress_test] for general information about stress tests.
-
-Check out [Java Stress Testing Documentation](https://msazure.visualstudio.com/One/_wiki/wikis/One.wiki/697419/Java-Stress-Testing-Documentation) for specific information about Java stress tests.
-
 
 ### Prerequisites
 
