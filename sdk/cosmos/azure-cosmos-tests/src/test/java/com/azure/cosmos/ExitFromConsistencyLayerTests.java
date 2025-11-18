@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.codec.binary.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
