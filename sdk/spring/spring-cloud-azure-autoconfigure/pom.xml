@@ -424,6 +424,12 @@
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-http-converter</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-http-converter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
@@ -548,6 +554,7 @@
                 <include>org.springframework.boot:spring-boot-autoconfigure:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-data-redis:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-http-converter:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-http-converter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-kafka:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-kafka;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jackson:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jackson;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jdbc:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jdbc;external_dependency} -->

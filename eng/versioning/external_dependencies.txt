@@ -388,6 +388,7 @@ springboot3_org.springframework.cloud:spring-cloud-stream;4.3.0
 springboot3_org.springframework.data:spring-data-commons;3.5.3
 springboot3_org.springframework.boot:spring-boot-data-redis;4.0.0-RC2
 springboot3_org.springframework.integration:spring-integration-core;7.0.0-RC2
+springboot3_org.springframework.boot:spring-boot-http-converter;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-kafka;4.0.0-RC2
 springboot3_org.springframework.retry:spring-retry;2.0.12
 springboot3_org.springframework.security:spring-security-config;6.5.3
