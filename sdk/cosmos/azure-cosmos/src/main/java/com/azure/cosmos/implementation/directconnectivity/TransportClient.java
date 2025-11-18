@@ -13,8 +13,6 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import java.util.List;
 // signature for backwards compatibility purposes.
 @SuppressWarnings("try")
 public abstract class TransportClient implements AutoCloseable {
-    private static final Logger logger = LoggerFactory.getLogger(TransportClient.class);
     private final boolean switchOffIOThreadForResponse = Configs.shouldSwitchOffIOThreadForResponse();
     private ThroughputControlStore throughputControlStore;
     private List<ITransportClientInterceptor> transportClientInterceptors;
@@ -40,10 +37,8 @@ public abstract class TransportClient implements AutoCloseable {
         return invokeResourceOperationInternalAsync(physicalAddress, request)
             .map(response -> {
                 if (this.transportClientInterceptors == null) {
-                    logger.info("invokeResourceOperationAsync without interceptor");
                     return response;
                 } else {
-                    logger.info("invokeResourceOperationAsync with interceptor");
                     // there are interceptors configured, process the store response with the interceptors
                     StoreResponse storeResponse = response;
                     for (ITransportClientInterceptor transportClientInterceptor : this.transportClientInterceptors) {
@@ -89,7 +84,6 @@ public abstract class TransportClient implements AutoCloseable {
             this.transportClientInterceptors = new ArrayList<>();
         }
 
-        logger.info("registerTransportClientInterceptor in Transport client");
         this.transportClientInterceptors.add(transportClientInterceptor);
     }
 

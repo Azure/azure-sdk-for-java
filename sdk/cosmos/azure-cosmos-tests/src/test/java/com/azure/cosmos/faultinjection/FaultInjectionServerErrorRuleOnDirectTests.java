@@ -84,7 +84,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master", "fault-injection-barrier"}, timeOut = TIMEOUT)
     public void beforeClass() {
         clientWithoutPreferredRegions = getClientBuilder()
             .preferredRegions(new ArrayList<>())
@@ -1057,7 +1057,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    @AfterClass(groups = {"multi-region", "long", "fast", "fi-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "long", "fast", "fi-multi-master", "fault-injection-barrier"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(clientWithoutPreferredRegions);
     }
@@ -1475,7 +1475,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "barrierRequestServerErrorResponseProvider", timeOut = 2 * TIMEOUT)
+    @Test(groups = {"fault-injection-barrier"}, dataProvider = "barrierRequestServerErrorResponseProvider", timeOut = 2 * TIMEOUT)
     public void faultInjection_serverError_barrierRequest(
         OperationType operationType,
         FaultInjectionServerErrorType serverErrorType,
@@ -1528,7 +1528,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
 
             // in order to trigger barrier request, we will need to also modify the store response of the original read/write operation so that GCLSN < LSN
-            logger.info("faultInjection_serverError_barrierRequest RegisterTransportClientInterceptor");
             CosmosInterceptorHelper.registerTransportClientInterceptor(
                 newClient,
                 (request, storeResponse) -> {
@@ -1542,7 +1541,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             );
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, testItem, false);
-            logger.info("faultInjection_serverError_barrierRequest cosmosDiagnostics: " + cosmosDiagnostics.toString());
             validateFaultInjectionRuleAppliedForBarrier(
                 cosmosDiagnostics,
                 operationType,
