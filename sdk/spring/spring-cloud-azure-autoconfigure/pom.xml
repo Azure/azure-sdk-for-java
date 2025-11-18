@@ -162,6 +162,14 @@
       <optional>true</optional>
     </dependency>
 
+    <!--Web Client-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-restclient</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-restclient;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <!-- Azure SDKs-->
     <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
     currently released version and a lower version is resolved. -->
@@ -560,16 +568,17 @@
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.3.0]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-data-redis:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-kafka:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-kafka;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-jdbc:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-jms:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jms;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-restclient:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-restclient;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.3.0]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework:spring-context-support:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-jdbc:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-jms:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jms;external_dependency} -->
                 <include>org.springframework:spring-tx:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>
             </bannedDependencies>

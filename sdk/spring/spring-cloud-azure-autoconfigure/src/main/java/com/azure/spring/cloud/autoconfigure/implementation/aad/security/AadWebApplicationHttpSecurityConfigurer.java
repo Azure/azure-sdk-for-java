@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.security.config.annotation.SecurityConfigurer;
