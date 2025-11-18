@@ -800,7 +800,7 @@ public class BatchApiTests extends BlobBatchTestBase {
     // by the service, however, the names should still be encoded.
     @Test
     public void deleteBlobContainerNameEncoding() {
-        String containerName = generateContainerName() + "enc!";
+        String containerName = "my container";
         String blobName = generateBlobName();
 
         BlobBatch batch = batchClient.getBlobBatch();
@@ -809,7 +809,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         BlobStorageException temp = assertThrows(BlobStorageException.class, response::getRequest);
 
-        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains(Utility.urlEncode(containerName)));
+        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains("my%20container"));
     }
 
     // Tests blob name encoding for BlobBatch.deleteBlob.
@@ -831,7 +831,7 @@ public class BatchApiTests extends BlobBatchTestBase {
     // by the service, however, the names should still be encoded.
     @Test
     public void setTierContainerNameEncoding() {
-        String containerName = generateContainerName() + "enc!";
+        String containerName = "my container";
         String blobName = generateBlobName();
 
         BlobBatch batch = batchClient.getBlobBatch();
@@ -840,7 +840,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         BlobStorageException temp = assertThrows(BlobStorageException.class, response::getRequest);
 
-        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains(Utility.urlEncode(containerName)));
+        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains("my%20container"));
     }
 
     // Tests blob name encoding for BlobBatch.setBlobAccessTier
@@ -862,7 +862,7 @@ public class BatchApiTests extends BlobBatchTestBase {
     // by the service, however, the names should still be encoded.
     @Test
     public void setTierContainerNameEncodingOptionsConstructor() {
-        String containerName = generateContainerName() + "enc!";
+        String containerName = "my container";
         String blobName = generateBlobName();
 
         BlobBatch batch = batchClient.getBlobBatch();
@@ -873,7 +873,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         BlobStorageException temp = assertThrows(BlobStorageException.class, response::getRequest);
 
-        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains(Utility.urlEncode(containerName)));
+        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains("my%20container"));
     }
 
     //Tests blob name encoding for BlobBatchSetBlobAccessTierOptions constructor
@@ -898,8 +898,8 @@ public class BatchApiTests extends BlobBatchTestBase {
     // Tests getters return unencoded names (constructor with separate names)
     @Test
     public void getBlobNameAndContainerNameOptionsConstructor() {
-        String containerName = generateContainerName() + "enc!";
-        String blobName = generateBlobName() + "enc!";
+        String containerName = "my container";
+        String blobName = "my blob";
 
         BlobBatchSetBlobAccessTierOptions options
             = new BlobBatchSetBlobAccessTierOptions(containerName, blobName, AccessTier.HOT);
@@ -908,15 +908,15 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(blobName, options.getBlobName());
 
         String identifier = options.getBlobIdentifier();
-        assertTrue(identifier.contains(Utility.urlEncode(blobName)));
-        assertTrue(identifier.contains(Utility.urlEncode(containerName)));
+        assertTrue(identifier.contains("my%20container"));
+        assertTrue(identifier.contains("my%20blob"));
     }
 
     // Tests getters return unencoded names (constructor with full blob URL)
     @Test
     public void getBlobNameAndContainerNameUrlConstructor() {
-        String containerName = generateContainerName() + "enc!";
-        String blobName = generateBlobName() + "enc!";
+        String containerName = "my container";
+        String blobName = "my blob";
         BlockBlobClient blockBlobClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(blobName)
             .getBlockBlobClient();
@@ -928,7 +928,22 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(blobName, options.getBlobName());
 
         String identifier = options.getBlobIdentifier();
-        assertTrue(identifier.contains(Utility.urlEncode(blobName)));
-        assertTrue(identifier.contains(Utility.urlEncode(containerName)));
+        assertTrue(identifier.contains("my%20container"));
+        assertTrue(identifier.contains("my%20blob"));
+    }
+
+    @Test
+    public void temp() {
+        String blobName = "my blob";
+        String containerName = generateContainerName();
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(containerName);
+
+        BlobClient blobClient1 = containerClient.getBlobClient(blobName);
+        blobClient1.getBlockBlobClient().upload(DATA.getDefaultBinaryData());
+
+        batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(containerName, "my%20blob", AccessTier.HOT));
+        batchClient.submitBatch(batch);
     }
 }
