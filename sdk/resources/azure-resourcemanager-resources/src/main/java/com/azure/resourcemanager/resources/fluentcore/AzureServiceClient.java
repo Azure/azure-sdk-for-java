@@ -30,6 +30,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -187,15 +188,18 @@ public abstract class AzureServiceClient {
     }
 
     private static void loadLibraryVersions() {
-        // get premium libraries
+        // Get premium libraries
+        // CoreUtils.getProperties will return empty map for any IOException, e.g. if the property file does not exist.
+        // It'll neither throw nor return null.
         Map<String, String> properties = CoreUtils.getProperties("azure-resourcemanager-resources.properties");
-        String[] premiumLibraries = properties.getOrDefault("premium-libraries", "").split(",");
-        for (String premiumLibrary : premiumLibraries) {
-            // load version for each library
-            Map<String, String> libraryProperties = CoreUtils.getProperties(premiumLibrary + ".properties");
-            String version = libraryProperties.getOrDefault("version", UNKNOWN_VERSION);
-            LIBRARY_VERSION_MAP.put(premiumLibrary, version);
-        }
+        Arrays.stream(properties.getOrDefault("premium-libraries", "").split(","))
+            .filter(premiumLibrary -> !CoreUtils.isNullOrEmpty(premiumLibrary))
+            .forEach(premiumLibrary -> {
+                // load version for each library
+                Map<String, String> libraryProperties = CoreUtils.getProperties(premiumLibrary + ".properties");
+                String version = libraryProperties.getOrDefault("version", UNKNOWN_VERSION);
+                LIBRARY_VERSION_MAP.put(premiumLibrary, version);
+            });
     }
 
     private static class HttpResponseImpl extends HttpResponse {
