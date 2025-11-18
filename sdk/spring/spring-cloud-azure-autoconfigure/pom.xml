@@ -154,6 +154,14 @@
       </exclusions>
     </dependency>
 
+    <!-- JDBC -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jdbc</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <!-- Azure SDKs-->
     <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
     currently released version and a lower version is resolved. -->
@@ -477,13 +485,6 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -567,7 +568,7 @@
                 <include>org.springframework.security:spring-security-oauth2-jose:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework:spring-context-support:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-jdbc:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jms:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-jms;external_dependency} -->
                 <include>org.springframework:spring-tx:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>
