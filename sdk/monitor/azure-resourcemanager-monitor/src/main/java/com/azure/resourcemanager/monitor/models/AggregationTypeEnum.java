@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * the criteria time aggregation types.
+ * The criteria time aggregation types. Previously undocumented values might be returned.
  */
 public final class AggregationTypeEnum extends ExpandableStringEnum<AggregationTypeEnum> {
     /**

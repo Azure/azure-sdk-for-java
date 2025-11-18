@@ -62,7 +62,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientRecommendations")
     public interface RecommendationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
@@ -278,10 +278,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), featured, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), filter, accept, context))
+                apiVersion, filter, accept, context))
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -314,11 +315,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), featured, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                filter, accept, context)
+            .list(this.client.getEndpoint(), featured, this.client.getSubscriptionId(), apiVersion, filter, accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -439,10 +441,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetAllFilters(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -467,10 +470,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.resetAllFilters(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+        return service.resetAllFilters(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept,
+            context);
     }
 
     /**
@@ -540,10 +544,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disableRecommendationForSubscription(this.client.getEndpoint(), name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -572,10 +577,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disableRecommendationForSubscription(this.client.getEndpoint(), name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -662,11 +668,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listHistoryForHostingEnvironment(this.client.getEndpoint(),
-                resourceGroupName, hostingEnvironmentName, expiredOnly, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), filter, accept, context))
+                resourceGroupName, hostingEnvironmentName, expiredOnly, this.client.getSubscriptionId(), apiVersion,
+                filter, accept, context))
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -709,11 +716,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHistoryForHostingEnvironment(this.client.getEndpoint(), resourceGroupName, hostingEnvironmentName,
-                expiredOnly, this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context)
+                expiredOnly, this.client.getSubscriptionId(), apiVersion, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -873,11 +881,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRecommendedRulesForHostingEnvironment(this.client.getEndpoint(),
-                resourceGroupName, hostingEnvironmentName, featured, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), filter, accept, context))
+                resourceGroupName, hostingEnvironmentName, featured, this.client.getSubscriptionId(), apiVersion,
+                filter, accept, context))
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -919,12 +928,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-                hostingEnvironmentName, featured, this.client.getSubscriptionId(), this.client.getApiVersion(), filter,
-                accept, context)
+                hostingEnvironmentName, featured, this.client.getSubscriptionId(), apiVersion, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1082,11 +1091,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disableAllForHostingEnvironment(this.client.getEndpoint(),
-                resourceGroupName, environmentName, hostingEnvironmentName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                resourceGroupName, environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1127,10 +1137,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disableAllForHostingEnvironment(this.client.getEndpoint(), resourceGroupName, environmentName,
-            hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            hostingEnvironmentName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1229,11 +1240,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetAllFiltersForHostingEnvironment(this.client.getEndpoint(),
-                resourceGroupName, environmentName, hostingEnvironmentName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                resourceGroupName, environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1274,11 +1286,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetAllFiltersForHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-            environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1382,11 +1394,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getRuleDetailsByHostingEnvironment(this.client.getEndpoint(),
                 resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1432,11 +1445,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getRuleDetailsByHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-            hostingEnvironmentName, name, updateSeen, recommendationId, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            hostingEnvironmentName, name, updateSeen, recommendationId, this.client.getSubscriptionId(), apiVersion,
+            accept, context);
     }
 
     /**
@@ -1549,11 +1563,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disableRecommendationForHostingEnvironment(this.client.getEndpoint(),
                 resourceGroupName, environmentName, name, hostingEnvironmentName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1598,11 +1613,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disableRecommendationForHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-            environmentName, name, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            environmentName, name, hostingEnvironmentName, this.client.getSubscriptionId(), apiVersion, accept,
+            context);
     }
 
     /**
@@ -1703,10 +1719,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listHistoryForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-                expiredOnly, this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context))
+                expiredOnly, this.client.getSubscriptionId(), apiVersion, filter, accept, context))
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1748,11 +1765,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHistoryForWebApp(this.client.getEndpoint(), resourceGroupName, siteName, expiredOnly,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context)
+                this.client.getSubscriptionId(), apiVersion, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1907,11 +1925,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listRecommendedRulesForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-                    featured, this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context))
+            .withContext(context -> service.listRecommendedRulesForWebApp(this.client.getEndpoint(), resourceGroupName,
+                siteName, featured, this.client.getSubscriptionId(), apiVersion, filter, accept, context))
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1952,11 +1970,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForWebApp(this.client.getEndpoint(), resourceGroupName, siteName, featured,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context)
+                this.client.getSubscriptionId(), apiVersion, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2104,10 +2123,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disableAllForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2142,10 +2162,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disableAllForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2228,10 +2249,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetAllFiltersForWebApp(this.client.getEndpoint(), resourceGroupName,
-                siteName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                siteName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2266,10 +2288,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetAllFiltersForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2363,11 +2386,12 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getRuleDetailsByWebApp(this.client.getEndpoint(), resourceGroupName,
-                siteName, name, updateSeen, recommendationId, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.getRuleDetailsByWebApp(this.client.getEndpoint(), resourceGroupName, siteName, name,
+                    updateSeen, recommendationId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2411,10 +2435,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getRuleDetailsByWebApp(this.client.getEndpoint(), resourceGroupName, siteName, name, updateSeen,
-            recommendationId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            recommendationId, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2520,10 +2545,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disableRecommendationForSite(this.client.getEndpoint(), resourceGroupName,
-                siteName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                siteName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2562,10 +2588,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disableRecommendationForSite(this.client.getEndpoint(), resourceGroupName, siteName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2625,6 +2652,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * List all recommendations for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2650,6 +2679,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * List all recommendations for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2676,6 +2707,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2704,6 +2737,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2731,6 +2766,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get all recommendations for a hosting environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2759,6 +2796,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get all recommendations for a hosting environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2787,6 +2826,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2814,6 +2855,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2841,6 +2884,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get all recommendations for an app.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2867,6 +2912,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Get all recommendations for an app.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

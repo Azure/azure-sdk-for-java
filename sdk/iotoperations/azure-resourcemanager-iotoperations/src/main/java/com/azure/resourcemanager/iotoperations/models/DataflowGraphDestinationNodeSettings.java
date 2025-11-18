@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * DataflowGraph destination node settings.
@@ -28,9 +29,9 @@ public final class DataflowGraphDestinationNodeSettings
     private String dataDestination;
 
     /*
-     * Output schema settings.
+     * Headers for the output data.
      */
-    private DataflowGraphDestinationSchemaSettings outputSchemaSettings;
+    private List<DataflowGraphDestinationHeaderAction> headers;
 
     /**
      * Creates an instance of DataflowGraphDestinationNodeSettings class.
@@ -79,23 +80,22 @@ public final class DataflowGraphDestinationNodeSettings
     }
 
     /**
-     * Get the outputSchemaSettings property: Output schema settings.
+     * Get the headers property: Headers for the output data.
      * 
-     * @return the outputSchemaSettings value.
+     * @return the headers value.
      */
-    public DataflowGraphDestinationSchemaSettings outputSchemaSettings() {
-        return this.outputSchemaSettings;
+    public List<DataflowGraphDestinationHeaderAction> headers() {
+        return this.headers;
     }
 
     /**
-     * Set the outputSchemaSettings property: Output schema settings.
+     * Set the headers property: Headers for the output data.
      * 
-     * @param outputSchemaSettings the outputSchemaSettings value to set.
+     * @param headers the headers value to set.
      * @return the DataflowGraphDestinationNodeSettings object itself.
      */
-    public DataflowGraphDestinationNodeSettings
-        withOutputSchemaSettings(DataflowGraphDestinationSchemaSettings outputSchemaSettings) {
-        this.outputSchemaSettings = outputSchemaSettings;
+    public DataflowGraphDestinationNodeSettings withHeaders(List<DataflowGraphDestinationHeaderAction> headers) {
+        this.headers = headers;
         return this;
     }
 
@@ -107,7 +107,7 @@ public final class DataflowGraphDestinationNodeSettings
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpointRef", this.endpointRef);
         jsonWriter.writeStringField("dataDestination", this.dataDestination);
-        jsonWriter.writeJsonField("outputSchemaSettings", this.outputSchemaSettings);
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -132,9 +132,10 @@ public final class DataflowGraphDestinationNodeSettings
                     deserializedDataflowGraphDestinationNodeSettings.endpointRef = reader.getString();
                 } else if ("dataDestination".equals(fieldName)) {
                     deserializedDataflowGraphDestinationNodeSettings.dataDestination = reader.getString();
-                } else if ("outputSchemaSettings".equals(fieldName)) {
-                    deserializedDataflowGraphDestinationNodeSettings.outputSchemaSettings
-                        = DataflowGraphDestinationSchemaSettings.fromJson(reader);
+                } else if ("headers".equals(fieldName)) {
+                    List<DataflowGraphDestinationHeaderAction> headers
+                        = reader.readArray(reader1 -> DataflowGraphDestinationHeaderAction.fromJson(reader1));
+                    deserializedDataflowGraphDestinationNodeSettings.headers = headers;
                 } else {
                     reader.skipChildren();
                 }

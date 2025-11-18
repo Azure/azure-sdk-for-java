@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * notebookLinks.
+ * Represents a notebook links.
  */
 @Fluent
 public final class MicrosoftGraphNotebookLinks implements JsonSerializable<MicrosoftGraphNotebookLinks> {

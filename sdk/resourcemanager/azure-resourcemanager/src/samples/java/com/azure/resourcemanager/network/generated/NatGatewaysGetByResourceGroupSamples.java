@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NatGatewaysGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NatGatewayGet.json
      */
     /**
      * Sample code: Get nat gateway.
@@ -27,7 +27,7 @@ public final class NatGatewaysGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayGetStandardV2Sku.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NatGatewayGetStandardV2Sku.
      * json
      */
     /**

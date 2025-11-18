@@ -7,10 +7,14 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a possible memory leak (Netty buffers) in Gateway mode caused by a race condition when timeouts are happening. - [47228](https://github.com/Azure/azure-sdk-for-java/pull/47228) and [47251](https://github.com/Azure/azure-sdk-for-java/pull/47251)
 
 #### Other Changes
+* Changed to use incremental change feed to get partition key ranges. - [46810](https://github.com/Azure/azure-sdk-for-java/pull/46810)
 
 ### 4.75.0 (2025-10-21)
+> [!IMPORTANT]
+> We strongly recommend our customers to use at least version 4.75.0 of `azure-cosmos`.
 
 #### Features Added
 * Enabled `Cosmos(Async)Client` to support per-partition automatic failover dynamically without the need to restart the application. - See [PR 46477](https://github.com/Azure/azure-sdk-for-java/pull/46477)
@@ -121,8 +125,6 @@
 * Added a way to opt-in into Per-Partition Automatic Failover using enablement flag from the account metadata. - [PR 45317](https://github.com/Azure/azure-sdk-for-java/pull/45317)
 
 ### 4.68.1 (2025-05-16)
-> [!IMPORTANT]
-> We strongly recommend customers with an upgrade-intent to upgrade to version 4.70.0 or later to include this bug fix.
 
 #### Bugs Fixed
 * Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
@@ -220,8 +222,7 @@
 * Fixed an issue where holding onto a `CosmosException` instance would hold a strong reference to a `RxDocumentClientImpl` instance preventing garbage collection of the `RxDocumentClientImpl` instance. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
 
 ### 4.64.0 (2024-10-10)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.64.0 and above.
+
 #### Features Added
 * Added an API to retrieve diagnostics from the change feed processor context. - See [PR 41738](https://github.com/Azure/azure-sdk-for-java/pull/41738)
 * Added support to allow `queryChangeFeed` to complete when all changes available when the query starts have been fetched. - See [PR 42160](https://github.com/Azure/azure-sdk-for-java/pull/42160)
@@ -506,8 +507,7 @@
 * Reverted preserve ordering in bulk mode([PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)). See [PR 36638](https://github.com/Azure/azure-sdk-for-java/pull/36638)
 
 ### 4.45.2-hotfix (2023-09-18)
-> [!IMPORTANT]
-> We strongly recommend our customers to upgrade directly to at least 4.48.2 or above if they have been using the 4.45.2-hotfix version of `azure-cosmos`. Versions 4.46.0 - 4.48.1 will miss important fixes that have been backported to 4.45.2-hotfix.
+
 #### Bugs Fixed
 * Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
   with the region in the direct connectivity mode. - See [PR 35586](https://github.com/Azure/azure-sdk-for-java/pull/35586)

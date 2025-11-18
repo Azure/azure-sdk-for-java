@@ -374,6 +374,10 @@ public class Configs {
 
     public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
+    // TODO @fabianm - Make test changes to enable leak detection from CI pipeline tests
+    private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = false;
+    private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
+
     public static int getCPUCnt() {
         return CPU_CNT;
     }
@@ -490,6 +494,15 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    public static boolean isClientLeakDetectionEnabled() {
+        String valueFromSystemProperty = System.getProperty(CLIENT_LEAK_DETECTION_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        return DEFAULT_CLIENT_LEAK_DETECTION_ENABLED;
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {

@@ -81,6 +81,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L3NetworkList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -89,6 +90,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<L3NetworkList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -97,8 +99,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L3NetworkList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks")
@@ -106,8 +108,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<L3NetworkList> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
@@ -229,13 +231,17 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<L3NetworkInner>> listSinglePageAsync(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -247,10 +253,30 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), top, skipToken, accept, context))
             .<PagedResponse<L3NetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
+     * Get a list of layer 3 (L3) networks in the provided subscription.
+     * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of layer 3 (L3) networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<L3NetworkInner> listAsync(Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -265,7 +291,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3NetworkInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -274,12 +302,16 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<L3NetworkInner> listSinglePage() {
+    private PagedResponse<L3NetworkInner> listSinglePage(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -292,7 +324,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         }
         final String accept = "application/json";
         Response<L3NetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -302,6 +334,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -309,7 +344,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<L3NetworkInner> listSinglePage(Context context) {
+    private PagedResponse<L3NetworkInner> listSinglePage(Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -322,7 +357,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         }
         final String accept = "application/json";
         Response<L3NetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, context);
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -339,7 +374,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3NetworkInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -347,6 +385,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -355,8 +396,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<L3NetworkInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context),
+    public PagedIterable<L3NetworkInner> list(Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
@@ -366,6 +407,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -373,7 +417,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -389,10 +434,32 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<L3NetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
+     * Get a list of layer 3 (L3) networks in the provided resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of layer 3 (L3) networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<L3NetworkInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -409,7 +476,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3NetworkInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -419,13 +488,17 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<L3NetworkInner> listByResourceGroupSinglePage(String resourceGroupName) {
+    private PagedResponse<L3NetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -441,8 +514,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<L3NetworkList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        Response<L3NetworkList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -453,6 +527,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -460,7 +537,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<L3NetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+    private PagedResponse<L3NetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -476,8 +554,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<L3NetworkList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        Response<L3NetworkList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -496,7 +575,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3NetworkInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
@@ -506,6 +587,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,8 +598,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<L3NetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+    public PagedIterable<L3NetworkInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
@@ -1487,14 +1572,16 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3NetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1515,13 +1602,15 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse}.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3NetworkInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -1542,6 +1631,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1549,7 +1640,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse}.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3NetworkInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
@@ -1570,14 +1661,16 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1598,13 +1691,15 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse}.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3NetworkInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -1625,6 +1720,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1632,7 +1729,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse}.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<L3NetworkInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {

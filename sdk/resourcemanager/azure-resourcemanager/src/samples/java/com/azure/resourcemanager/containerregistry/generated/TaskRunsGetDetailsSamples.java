@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class TaskRunsGetDetailsSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TaskRunsGetDetails.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TaskRunsGetDetails.json
      */
     /**
      * Sample code: TaskRuns_GetDetails.

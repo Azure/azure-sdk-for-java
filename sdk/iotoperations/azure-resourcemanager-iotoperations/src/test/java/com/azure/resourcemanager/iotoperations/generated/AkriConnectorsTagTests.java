@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AkriConnectorsTagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AkriConnectorsTag model = BinaryData.fromString("{\"tagDigestType\":\"Tag\",\"tag\":\"amrsreuzv\"}")
-            .toObject(AkriConnectorsTag.class);
-        Assertions.assertEquals("amrsreuzv", model.tag());
+        AkriConnectorsTag model
+            = BinaryData.fromString("{\"tagDigestType\":\"Tag\",\"tag\":\"gitvg\"}").toObject(AkriConnectorsTag.class);
+        Assertions.assertEquals("gitvg", model.tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AkriConnectorsTag model = new AkriConnectorsTag().withTag("amrsreuzv");
+        AkriConnectorsTag model = new AkriConnectorsTag().withTag("gitvg");
         model = BinaryData.fromObject(model).toObject(AkriConnectorsTag.class);
-        Assertions.assertEquals("amrsreuzv", model.tag());
+        Assertions.assertEquals("gitvg", model.tag());
     }
 }
