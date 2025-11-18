@@ -138,7 +138,7 @@ Stress test dashboard does not know about local stress test runs.
 
 ##### Azure Monitor
 
-Storage stress test workbook is available [here][azure-monitor] and allows to pick a specific run and see it's summary:
+Storage stress test workbook is available [here][azure-monitor] and allows to pick a specific run and see its summary:
 1. Key test parameters
 2. Throughput and latency charts
 3. Failed operations including their status and fault injected (if any)
@@ -157,13 +157,6 @@ Here are a few things that clearly indicate an issue:
   - you see error logs like `{"az.sdk.message":"mismatched crc"...}`. Such logs have some additional context to investigate (content length, first 1024 bytes of it).
 - Throughput is noticeably lower than for previous runs with the similar parameters. This would normally correlate with latency being higher than usual. 
 - CPU/memory consumption is noticeably higher than for previous runs with the similar parameters
-
-### Logging
-
-We use [logback.xml][logback_xml] to configure the logging. By default, the stress test run on cluster will output
-`INFO` level log which you may adjust based on your needs.
-
-See also [Logging in Azure SDK][logging-azure-sdk] for more details.
 
 ## Key concepts
 
