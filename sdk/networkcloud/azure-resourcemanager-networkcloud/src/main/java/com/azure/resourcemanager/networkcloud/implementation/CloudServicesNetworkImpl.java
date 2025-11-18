@@ -13,6 +13,9 @@ import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkDetaile
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkPatchParameters;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkProvisioningState;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptions;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptionsPatch;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageStatus;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import java.util.Collections;
@@ -120,6 +123,14 @@ public final class CloudServicesNetworkImpl
 
     public CloudServicesNetworkProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public CloudServicesNetworkStorageOptions storageOptions() {
+        return this.innerModel().storageOptions();
+    }
+
+    public CloudServicesNetworkStorageStatus storageStatus() {
+        return this.innerModel().storageStatus();
     }
 
     public List<String> virtualMachinesAssociatedIds() {
@@ -289,6 +300,11 @@ public final class CloudServicesNetworkImpl
         }
     }
 
+    public CloudServicesNetworkImpl withStorageOptions(CloudServicesNetworkStorageOptions storageOptions) {
+        this.innerModel().withStorageOptions(storageOptions);
+        return this;
+    }
+
     public CloudServicesNetworkImpl withIfMatch(String ifMatch) {
         if (isInCreateMode()) {
             this.createIfMatch = ifMatch;
@@ -307,6 +323,11 @@ public final class CloudServicesNetworkImpl
             this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
+    }
+
+    public CloudServicesNetworkImpl withStorageOptions(CloudServicesNetworkStorageOptionsPatch storageOptions) {
+        this.updateCloudServicesNetworkUpdateParameters.withStorageOptions(storageOptions);
+        return this;
     }
 
     private boolean isInCreateMode() {

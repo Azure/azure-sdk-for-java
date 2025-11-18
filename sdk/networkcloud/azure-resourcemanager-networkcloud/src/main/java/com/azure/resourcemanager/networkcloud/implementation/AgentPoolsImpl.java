@@ -36,9 +36,9 @@ public final class AgentPoolsImpl implements AgentPools {
     }
 
     public PagedIterable<AgentPool> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
-        Context context) {
-        PagedIterable<AgentPoolInner> inner
-            = this.serviceClient().listByKubernetesCluster(resourceGroupName, kubernetesClusterName, context);
+        Integer top, String skipToken, Context context) {
+        PagedIterable<AgentPoolInner> inner = this.serviceClient()
+            .listByKubernetesCluster(resourceGroupName, kubernetesClusterName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AgentPoolImpl(inner1, this.manager()));
     }
 

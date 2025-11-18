@@ -149,6 +149,20 @@ public interface CloudServicesNetwork {
     CloudServicesNetworkProvisioningState provisioningState();
 
     /**
+     * Gets the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    CloudServicesNetworkStorageOptions storageOptions();
+
+    /**
+     * Gets the storageStatus property: The storage status for the cloud services network.
+     * 
+     * @return the storageStatus value.
+     */
+    CloudServicesNetworkStorageStatus storageStatus();
+
+    /**
      * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
      * services network.
@@ -255,8 +269,8 @@ public interface CloudServicesNetwork {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAdditionalEgressEndpoints,
-            DefinitionStages.WithEnableDefaultEgressEndpoints, DefinitionStages.WithIfMatch,
-            DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithEnableDefaultEgressEndpoints, DefinitionStages.WithStorageOptions,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -318,6 +332,19 @@ public interface CloudServicesNetwork {
         }
 
         /**
+         * The stage of the CloudServicesNetwork definition allowing to specify storageOptions.
+         */
+        interface WithStorageOptions {
+            /**
+             * Specifies the storageOptions property: The storage options for the cloud services network..
+             * 
+             * @param storageOptions The storage options for the cloud services network.
+             * @return the next definition stage.
+             */
+            WithCreate withStorageOptions(CloudServicesNetworkStorageOptions storageOptions);
+        }
+
+        /**
          * The stage of the CloudServicesNetwork definition allowing to specify ifMatch.
          */
         interface WithIfMatch {
@@ -360,7 +387,8 @@ public interface CloudServicesNetwork {
      * The template for CloudServicesNetwork update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithAdditionalEgressEndpoints,
-        UpdateStages.WithEnableDefaultEgressEndpoints, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
+        UpdateStages.WithEnableDefaultEgressEndpoints, UpdateStages.WithStorageOptions, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -423,6 +451,19 @@ public interface CloudServicesNetwork {
              */
             Update withEnableDefaultEgressEndpoints(
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
+        }
+
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify storageOptions.
+         */
+        interface WithStorageOptions {
+            /**
+             * Specifies the storageOptions property: The storage options for the cloud services network..
+             * 
+             * @param storageOptions The storage options for the cloud services network.
+             * @return the next definition stage.
+             */
+            Update withStorageOptions(CloudServicesNetworkStorageOptionsPatch storageOptions);
         }
 
         /**
