@@ -933,7 +933,7 @@ public class BatchApiTests extends BlobBatchTestBase {
     }
 
     @Test
-    public void temp() {
+    public void blobBatchSetBlobAccessTierOptionsHandlesSpecialChars() {
         String blobName = "my blob";
         String containerName = generateContainerName();
 
@@ -943,7 +943,9 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlobClient blobClient1 = containerClient.getBlobClient(blobName);
         blobClient1.getBlockBlobClient().upload(DATA.getDefaultBinaryData());
 
-        batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(containerName, "my%20blob", AccessTier.HOT));
+        Response<Void> response
+            = batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(containerName, blobName, AccessTier.HOT));
         batchClient.submitBatch(batch);
+        assertEquals(200, response.getStatusCode());
     }
 }
