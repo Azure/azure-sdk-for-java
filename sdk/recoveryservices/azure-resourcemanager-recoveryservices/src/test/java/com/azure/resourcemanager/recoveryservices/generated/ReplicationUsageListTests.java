@@ -12,21 +12,21 @@ public final class ReplicationUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":1238878906,\"unHealthyProviderCount\":1975532924,\"eventsCount\":1054022835,\"deprecatedProviderCount\":2065726481,\"supportedProviderCount\":528662531,\"unsupportedProviderCount\":441208972},\"jobsSummary\":{\"failedJobs\":10143119,\"suspendedJobs\":1769769453,\"inProgressJobs\":831407974},\"protectedItemCount\":1685542215,\"recoveryPlanCount\":384639682,\"registeredServersCount\":1059812914,\"recoveryServicesProviderAuthType\":1745548413}],\"nextLink\":\"ghkjeszzhbi\"}")
+            "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":750094319,\"unHealthyProviderCount\":943693980,\"eventsCount\":517393984,\"deprecatedProviderCount\":1914432251,\"supportedProviderCount\":63986979,\"unsupportedProviderCount\":511745945},\"jobsSummary\":{\"failedJobs\":2122365511,\"suspendedJobs\":516508763,\"inProgressJobs\":1443350377},\"protectedItemCount\":2099560460,\"recoveryPlanCount\":2042967034,\"registeredServersCount\":681165656,\"recoveryServicesProviderAuthType\":1542879301}],\"nextLink\":\"rxwburv\"}")
             .toObject(ReplicationUsageList.class);
-        Assertions.assertEquals(1238878906, model.value().get(0).monitoringSummary().unHealthyVmCount());
-        Assertions.assertEquals(1975532924, model.value().get(0).monitoringSummary().unHealthyProviderCount());
-        Assertions.assertEquals(1054022835, model.value().get(0).monitoringSummary().eventsCount());
-        Assertions.assertEquals(2065726481, model.value().get(0).monitoringSummary().deprecatedProviderCount());
-        Assertions.assertEquals(528662531, model.value().get(0).monitoringSummary().supportedProviderCount());
-        Assertions.assertEquals(441208972, model.value().get(0).monitoringSummary().unsupportedProviderCount());
-        Assertions.assertEquals(10143119, model.value().get(0).jobsSummary().failedJobs());
-        Assertions.assertEquals(1769769453, model.value().get(0).jobsSummary().suspendedJobs());
-        Assertions.assertEquals(831407974, model.value().get(0).jobsSummary().inProgressJobs());
-        Assertions.assertEquals(1685542215, model.value().get(0).protectedItemCount());
-        Assertions.assertEquals(384639682, model.value().get(0).recoveryPlanCount());
-        Assertions.assertEquals(1059812914, model.value().get(0).registeredServersCount());
-        Assertions.assertEquals(1745548413, model.value().get(0).recoveryServicesProviderAuthType());
-        Assertions.assertEquals("ghkjeszzhbi", model.nextLink());
+        Assertions.assertEquals(750094319, model.value().get(0).monitoringSummary().unHealthyVmCount());
+        Assertions.assertEquals(943693980, model.value().get(0).monitoringSummary().unHealthyProviderCount());
+        Assertions.assertEquals(517393984, model.value().get(0).monitoringSummary().eventsCount());
+        Assertions.assertEquals(1914432251, model.value().get(0).monitoringSummary().deprecatedProviderCount());
+        Assertions.assertEquals(63986979, model.value().get(0).monitoringSummary().supportedProviderCount());
+        Assertions.assertEquals(511745945, model.value().get(0).monitoringSummary().unsupportedProviderCount());
+        Assertions.assertEquals(2122365511, model.value().get(0).jobsSummary().failedJobs());
+        Assertions.assertEquals(516508763, model.value().get(0).jobsSummary().suspendedJobs());
+        Assertions.assertEquals(1443350377, model.value().get(0).jobsSummary().inProgressJobs());
+        Assertions.assertEquals(2099560460, model.value().get(0).protectedItemCount());
+        Assertions.assertEquals(2042967034, model.value().get(0).recoveryPlanCount());
+        Assertions.assertEquals(681165656, model.value().get(0).registeredServersCount());
+        Assertions.assertEquals(1542879301, model.value().get(0).recoveryServicesProviderAuthType());
+        Assertions.assertEquals("rxwburv", model.nextLink());
     }
 }

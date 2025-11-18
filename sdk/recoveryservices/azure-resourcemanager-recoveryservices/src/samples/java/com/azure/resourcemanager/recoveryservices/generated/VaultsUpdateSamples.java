@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Update Vault With Monitoring Setting.
@@ -59,7 +59,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithCMK.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
@@ -86,7 +86,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PatchVault_WithCMK2.json
+     * x-ms-original-file: 2025-02-01/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
@@ -107,7 +107,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithCMK3.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
@@ -131,7 +131,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault.json
+     * x-ms-original-file: 2025-02-01/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
@@ -146,7 +146,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Update Vault With Source scan configuration.
@@ -174,7 +174,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithRedundancySettings.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Update Vault With Redundancy Setting.
@@ -194,7 +194,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-02-01/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.

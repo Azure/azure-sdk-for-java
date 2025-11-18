@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class ReplicationUsagesListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/ListReplicationUsages.json
+     * x-ms-original-file: 2025-02-01/ListReplicationUsages.json
      */
     /**
      * Sample code: Gets Replication usages of vault.

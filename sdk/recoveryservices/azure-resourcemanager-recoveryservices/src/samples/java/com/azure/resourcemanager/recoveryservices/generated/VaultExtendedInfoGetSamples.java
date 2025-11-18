@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class VaultExtendedInfoGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GETVaultExtendedInfo.json
+     * x-ms-original-file: 2025-02-01/GETVaultExtendedInfo.json
      */
     /**
      * Sample code: Get ExtendedInfo of Resource.

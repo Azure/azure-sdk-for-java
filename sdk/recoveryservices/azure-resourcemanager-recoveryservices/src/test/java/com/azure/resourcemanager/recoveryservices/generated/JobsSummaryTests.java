@@ -12,10 +12,10 @@ public final class JobsSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobsSummary model = BinaryData
-            .fromString("{\"failedJobs\":390168051,\"suspendedJobs\":1233074363,\"inProgressJobs\":595725350}")
+            .fromString("{\"failedJobs\":1866473569,\"suspendedJobs\":829690425,\"inProgressJobs\":1792680801}")
             .toObject(JobsSummary.class);
-        Assertions.assertEquals(390168051, model.failedJobs());
-        Assertions.assertEquals(1233074363, model.suspendedJobs());
-        Assertions.assertEquals(595725350, model.inProgressJobs());
+        Assertions.assertEquals(1866473569, model.failedJobs());
+        Assertions.assertEquals(829690425, model.suspendedJobs());
+        Assertions.assertEquals(1792680801, model.inProgressJobs());
     }
 }

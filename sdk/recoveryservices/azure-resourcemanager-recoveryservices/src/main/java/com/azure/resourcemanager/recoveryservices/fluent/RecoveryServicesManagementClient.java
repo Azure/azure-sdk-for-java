@@ -68,13 +68,6 @@ public interface RecoveryServicesManagementClient {
     VaultsClient getVaults();
 
     /**
-     * Gets the DeletedVaultsClient object to access its operations.
-     * 
-     * @return the DeletedVaultsClient object.
-     */
-    DeletedVaultsClient getDeletedVaults();
-
-    /**
      * Gets the PrivateLinkResourcesOperationsClient object to access its operations.
      * 
      * @return the PrivateLinkResourcesOperationsClient object.

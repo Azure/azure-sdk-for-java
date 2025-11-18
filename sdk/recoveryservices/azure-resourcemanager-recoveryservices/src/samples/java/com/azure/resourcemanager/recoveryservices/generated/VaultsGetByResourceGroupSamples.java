@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01/GETVault.json
+     * x-ms-original-file: 2025-02-01/GETVault.json
      */
     /**
      * Sample code: Get Recovery Services Resource.
