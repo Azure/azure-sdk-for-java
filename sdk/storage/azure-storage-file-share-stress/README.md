@@ -5,6 +5,7 @@ Represents stress tests for Azure Storage File Share client library.
 ## Running tests in stress infra
 
 Check out [Azure SDK Stress Test Wiki][azure_sdk_stress_test] for general information about stress tests.
+Check out [Java Stress Testing Documentation](https://msazure.visualstudio.com/One/_wiki/wikis/One.wiki/697419/Java-Stress-Testing-Documentation) for specific information about Java stress tests.
 
 ### Prerequisites
 
@@ -18,11 +19,17 @@ Check out [Azure SDK Stress Test Wiki][azure_sdk_stress_test] for general inform
 
 ### Deploy Stress Test
 
-cd into `azure-sdk-for-java` root folder and run command to deploy the package to cluster:
+cd into `azure-sdk-for-java` root folder and run command to deploy all packages to the cluster:
 
 ```shell
 .\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\storage
 ``` 
+
+Run the following command, if you only want to deploy this package to the cluster:
+
+```shell
+.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\storage\azure-storage-file-share-stress
+```
 
 ### Check Status
 
@@ -34,7 +41,7 @@ List deployed packages:
 helm list -n <stress test namespace>
 ```
 
-the namespace usually matches your username. 
+The namespace usually matches your username and `java` for auto-deployed tests.
 
 Get stress test pods and status:
 
@@ -70,28 +77,13 @@ helm uninstall <stress test name> -n <stress test namespace>
 
 ### Fault injection
 
+For details on using the HTTP fault injector and how it is wired into the Java stress tests, see the [Java Stress Testing documentation](https://msazure.visualstudio.com/One/_wiki/wikis/One.wiki/697419/Java-Stress-Testing-Documentation) and the [HTTP fault-injector documentation][http-fault-injector].
+
 ## Running tests locally
 
 You can also run stress tests locally with or without fault-injection.
-To run test locally:
-1. Build `azure-storage-file-share-stress` jar file. For example, you can do it with:
-   ```powershell
-   cd .\sdk\storage
-   mvn clean install -pl .\azure-storage-stress\,.\azure-storage-file-share-stress
-   ``` 
-   As a result, you should have fat jar in `azure-storage-file-share-stress\target\azure-storage-file-share-stress-1.0.0-beta.1-jar-with-dependencies.jar`
-2. Configure environment:
-   - Set `STORAGE_CONNECTION_STRING`environment variable (connection string to storage account). You may also provide it with `--cs` command line option
-   - Configure Application Insights:
-     - Set `APPLICATIONINSIGHTS_CONNECTION_STRING` (connection string to application insights). You may also provide it in any other
-       way mentioned in the [Enable Application Insights steps][enable_application_insights]
-     - Set `APPLICATIONINSIGHTS_ROLE_NAME` to `storage-{ random string }` (for example, `storage-foobar`).
-3. Run the test, for example, with:
-   ```powershell
-   java -javaagent:path\to\applicationinsights-agent.jar `
-     -jar .\azure-storage-file-share-stress\target\azure-storage-file-share-stress-1.0.0-beta.1-jar-with-dependencies.jar `
-     downloadtofile --duration 10 --size 1024 --parallel 2 --warmup 0
-   ```
+To run test locally from the command line, refer to the Java stress testing documentation:
+- [Java Stress Testing Documentation](https://msazure.visualstudio.com/One/_wiki/wikis/One.wiki/697419/Java-Stress-Testing-Documentation)
 
 ### Running locally with fault-injection
 
@@ -127,36 +119,24 @@ To get a super-quick idea about test results, look for a log record that looks l
   "succeeded":468,"failed":0}
 ```
 
-After the stress test is deployed on the cluster, we can monitor the progress on the Application Insights resource inside the stress test resource group.
+After the stress test is deployed on the cluster, we can monitor the progress in the Log Analytics Workspace resource inside the stress test resource group.
 There are several dashboards within the stress test resource group that we can use to monitor the AKS pod and stress test status.
 
 #### Stress Test Dashboard
 
-General-purpose stress test dashboard is available at https://aka.ms/azsdk/stress/dashboard. It shows:
-- Pod status events
-- CPU and memory utilization of the stress test pods
-- Container logs and events
+General-purpose stress test dashboard is available at [Stress Test Dashboard][stress-test-dashboard]. It shows:
+
+- Stress test pods per namespace
+- Successful runs
+- Duration
+- Container status
+- The ability to query details on each of the pods
 
 Stress test dashboard does not know about local stress test runs.
 
-#### Application Insights
+##### Azure Monitor
 
-Application Insights agent brings rich monitoring experience including:
-- resource utilization metrics (CPU, memory, GC, threads, etc.)
-- live metrics, performance overview, etc
-- distributed tracing and dependency calls (HTTP, Azure SDK calls)
-- exceptions and logs
-- profiling in production
-
-Application Insights is useful to:
-- monitor and compare throughput and latency across runs
-- investigate issues and find bottlenecks
-
-Application Insights is available for local runs (as long as you provide `-javaagent` option and make sure connection string is configured).
-
-##### Stress test workbook
-
-Storage stress test workbook is available [here][storage-workbook] and allows to pick a specific run and see it's summary:
+Storage stress test workbook is available [here][azure-monitor] and allows to pick a specific run and see it's summary:
 1. Key test parameters
 2. Throughput and latency charts
 3. Failed operations including their status and fault injected (if any)
@@ -165,11 +145,9 @@ Storage stress test workbook is available [here][storage-workbook] and allows to
 
 The workbook relies on tests to emit:
 - certain logs in a specific format produced by [TelemetryHelper][telemetry-helper] class
-- certain spans produced in [BlobScenarioBase][blob-scenario-base] class.
+- certain spans produced in [ShareScenarioBase][share-scenario-base] class.
 - report cloud role name that follows `storage-{runId}` pattern. 
   Make sure to set `APPLICATIONINSIGHTS_ROLE_NAME` environment variable accordingly to make sure run appears on the dashboard. 
-
-_Note: some failures are expected and there is no clear 'success' criteria for the stress test_
 
 Here are a few things that clearly indicate an issue:
 - Content mismatch - they can be detected in following ways: 
@@ -183,7 +161,7 @@ Here are a few things that clearly indicate an issue:
 We use [logback.xml][logback_xml] to configure the logging. By default, the stress test run on cluster will output
 `INFO` level log which you may adjust based on your needs. 
 
-The [storage workbook](#stress-test-workbook) needs `com.azure.storage.file-share.stress` and `com.azure.storage.stress` to stay at the `INFO` level.
+The [storage workbook](#azure-monitor) needs `com.azure.storage.file-share.stress` and `com.azure.storage.stress` to stay at the `INFO` level.
 
 You may also control the verbosity of logs that go to Application Insights - see [Application Insights logging configuration][application-insights-logging] for more details.
 
@@ -193,20 +171,9 @@ See also [Logging in Azure SDK][logging-azure-sdk] for more details.
 
 ### Project Structure
 
-See [Layout][stress_test_layout] section for details.
+See [Layout][stress_test_layout] section for details as described by the Azure SDK team.
 
-Below is the current structure of project:
-```
-.
-├── src/                           # Test code
-├── templates/                     # A directory of helm templates that will generate Kubernetes manifest files.
-├── Chart.yaml                     # A YAML file containing information about the helm chart and its dependencies
-├── scenarios-matrix.yaml          # A YAML file containing configuration and custom values for stress test(s)
-├── Dockerfile                     # A Dockerfile for building the stress test image
-├── stress-test-resources.bicep    # An Azure Bicep for deploying stress test azure resources
-├── pom.xml
-└── README.md
-```
+To understand the project structure, you may also refer to the [Java Stress Testing Documentation](https://msazure.visualstudio.com/One/_wiki/wikis/One.wiki/697419/Java-Stress-Testing-Documentation?anchor=how-it-works).
 
 <!-- links -->
 [azure_sdk_stress_test]: https://aka.ms/azsdk/stress
@@ -222,8 +189,9 @@ Below is the current structure of project:
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
 [http-fault-injector]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/http-fault-injector
-[telemtery-helper]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-stress/src/main/java/com/azure/storage/stress/TelemetryHelper.java
+[telemetry-helper]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-stress/src/main/java/com/azure/storage/stress/TelemetryHelper.java
 [share-scenario-base]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share-stress/src/main/java/com/azure/storage/file/share/stress/ShareScenarioBase.java
-[storage-workbook]: https://ms.portal.azure.com/#blade/AppInsightsExtension/UsageNotebookBlade/ComponentId/%2Fsubscriptions%2Ffaa080af-c1d8-40ad-9cce-e1a450ca5b57%2FresourceGroups%2Frg-stress-cluster-pg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fstress-pg-ai-s7b6dif73rup6/ConfigurationId/%2Fsubscriptions%2Ffaa080af-c1d8-40ad-9cce-e1a450ca5b57%2Fresourcegroups%2Frg-stress-cluster-pg%2Fproviders%2Fmicrosoft.insights%2Fworkbooks%2Fa6fc3414-4c15-4651-8517-6f74cbe0d0fe/Type/workbook/WorkbookTemplateName/Storage%20stress%20tests
+[stress-test-dashboard]: https://portal.azure.com/#@TME01.onmicrosoft.com/resource/subscriptions/4d042dc6-fe17-4698-a23f-ec6a8d1e98f4/resourceGroups/rg-stress-cluster-storage/providers/microsoft.insights/workbooks/01d047ea-1c0d-4463-98fa-4f465596401e/workbook
+[azure-monitor]: https://portal.azure.com/#view/AppInsightsExtension/WorkbookViewerBlade/ComponentId/azure%20monitor/ConfigurationId/%2Fsubscriptions%2F4d042dc6-fe17-4698-a23f-ec6a8d1e98f4%2FresourceGroups%2Frg-stress-cluster-storage%2Fproviders%2FMicrosoft.Insights%2Fworkbooks%2F1acdb3e6-3135-5dff-b808-85def43fb868/WorkbookTemplateName/Azure%20SDK%20Stress%20Testing%20-%20storage/NotebookParams~/%7B%22TimeRange%22%3A%7B%22durationMs%22%3A604800000%7D%2C%22NamespaceParameter%22%3A%5B%22java%22%5D%2C%22PodUidParameter%22%3A%5B%2267d0dcea-82f1-4992-bc3d-b7ee199aaca3%22%5D%7D
 [application-insights-logging]: https://learn.microsoft.com/azure/azure-monitor/app/java-standalone-config#autocollected-logging
 [logging-azure-sdk]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
