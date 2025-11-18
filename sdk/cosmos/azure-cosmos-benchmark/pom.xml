@@ -206,6 +206,7 @@ Licensed under the MIT License.
           <systemPropertyVariables>
             <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
             <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+            <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
             <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
           </systemPropertyVariables>
           <includes>
@@ -320,7 +321,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -347,7 +348,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -374,7 +375,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -401,7 +402,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -428,7 +429,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -455,7 +456,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -482,7 +483,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -509,7 +510,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -536,7 +537,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -563,7 +564,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -591,7 +592,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -626,7 +627,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
@@ -653,7 +654,7 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.samplingInterval>256</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
