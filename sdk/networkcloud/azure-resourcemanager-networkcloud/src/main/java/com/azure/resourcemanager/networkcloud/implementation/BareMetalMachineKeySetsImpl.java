@@ -36,9 +36,9 @@ public final class BareMetalMachineKeySetsImpl implements BareMetalMachineKeySet
     }
 
     public PagedIterable<BareMetalMachineKeySet> listByCluster(String resourceGroupName, String clusterName,
-        Context context) {
+        Integer top, String skipToken, Context context) {
         PagedIterable<BareMetalMachineKeySetInner> inner
-            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineKeySetImpl(inner1, this.manager()));
     }
 

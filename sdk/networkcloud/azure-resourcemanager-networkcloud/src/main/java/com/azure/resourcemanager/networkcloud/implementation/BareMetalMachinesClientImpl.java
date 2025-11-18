@@ -88,6 +88,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BareMetalMachineList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -96,6 +97,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BareMetalMachineList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -104,8 +106,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BareMetalMachineList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines")
@@ -113,8 +115,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BareMetalMachineList> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}")
@@ -355,6 +357,28 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtractsRestricted")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> runDataExtractsRestricted(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bareMetalMachineName") String bareMetalMachineName,
+            @BodyParam("application/json") BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtractsRestricted")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> runDataExtractsRestrictedSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("bareMetalMachineName") String bareMetalMachineName,
+            @BodyParam("application/json") BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runReadCommands")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -454,13 +478,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * 
      * Get a list of bare metal machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<BareMetalMachineInner>> listSinglePageAsync(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -472,10 +500,29 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), top, skipToken, accept, context))
             .<PagedResponse<BareMetalMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List bare metal machines in the subscription.
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of bare metal machines in the provided subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BareMetalMachineInner> listAsync(Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -489,7 +536,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BareMetalMachineInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -498,12 +547,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * 
      * Get a list of bare metal machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BareMetalMachineInner> listSinglePage() {
+    private PagedResponse<BareMetalMachineInner> listSinglePage(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -516,7 +569,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         }
         final String accept = "application/json";
         Response<BareMetalMachineList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -526,6 +579,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * 
      * Get a list of bare metal machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -533,7 +589,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BareMetalMachineInner> listSinglePage(Context context) {
+    private PagedResponse<BareMetalMachineInner> listSinglePage(Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -546,7 +602,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         }
         final String accept = "application/json";
         Response<BareMetalMachineList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, context);
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -563,7 +619,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -571,6 +630,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * 
      * Get a list of bare metal machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -579,8 +641,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BareMetalMachineInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context),
+    public PagedIterable<BareMetalMachineInner> list(Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
@@ -590,6 +652,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * Get a list of bare metal machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -597,7 +662,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<BareMetalMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -613,10 +679,32 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<BareMetalMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List bare metal machines in the resource group.
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BareMetalMachineInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -633,7 +721,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BareMetalMachineInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -643,13 +733,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * Get a list of bare metal machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BareMetalMachineInner> listByResourceGroupSinglePage(String resourceGroupName) {
+    private PagedResponse<BareMetalMachineInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -665,8 +759,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<BareMetalMachineList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        Response<BareMetalMachineList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -677,6 +772,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * Get a list of bare metal machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -684,8 +782,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BareMetalMachineInner> listByResourceGroupSinglePage(String resourceGroupName,
-        Context context) {
+    private PagedResponse<BareMetalMachineInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -701,8 +799,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<BareMetalMachineList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        Response<BareMetalMachineList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -721,7 +820,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
@@ -731,6 +832,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * Get a list of bare metal machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -739,8 +843,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+    public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
@@ -3987,6 +4092,305 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> runDataExtractsRestrictedWithResponseAsync(String resourceGroupName,
+        String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bareMetalMachineName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bareMetalMachineName is required and cannot be null."));
+        }
+        if (bareMetalMachineRunDataExtractsRestrictedParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter bareMetalMachineRunDataExtractsRestrictedParameters is required and cannot be null."));
+        } else {
+            bareMetalMachineRunDataExtractsRestrictedParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.runDataExtractsRestricted(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> runDataExtractsRestrictedWithResponse(String resourceGroupName,
+        String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bareMetalMachineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bareMetalMachineName is required and cannot be null."));
+        }
+        if (bareMetalMachineRunDataExtractsRestrictedParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineRunDataExtractsRestrictedParameters is required and cannot be null."));
+        } else {
+            bareMetalMachineRunDataExtractsRestrictedParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.runDataExtractsRestrictedSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, accept, Context.NONE);
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> runDataExtractsRestrictedWithResponse(String resourceGroupName,
+        String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bareMetalMachineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter bareMetalMachineName is required and cannot be null."));
+        }
+        if (bareMetalMachineRunDataExtractsRestrictedParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineRunDataExtractsRestrictedParameters is required and cannot be null."));
+        } else {
+            bareMetalMachineRunDataExtractsRestrictedParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.runDataExtractsRestrictedSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, accept, context);
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRunDataExtractsRestrictedAsync(String resourceGroupName, String bareMetalMachineName,
+            BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = runDataExtractsRestrictedWithResponseAsync(resourceGroupName,
+            bareMetalMachineName, bareMetalMachineRunDataExtractsRestrictedParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRunDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+            BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        Response<BinaryData> response = runDataExtractsRestrictedWithResponse(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRunDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+            BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+            Context context) {
+        Response<BinaryData> response = runDataExtractsRestrictedWithResponse(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> runDataExtractsRestrictedAsync(String resourceGroupName,
+        String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        return beginRunDataExtractsRestrictedAsync(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        return beginRunDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters).getFinalResult();
+    }
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+        Context context) {
+        return beginRunDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, context).getFinalResult();
+    }
+
+    /**
      * Run read-only commands against a bare metal machine.
      * 
      * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
@@ -4740,14 +5144,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * List bare metal machines in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -4768,13 +5174,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * List bare metal machines in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse}.
+     * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -4795,6 +5203,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * List bare metal machines in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4802,7 +5212,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse}.
+     * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
@@ -4823,13 +5233,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * List bare metal machines in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse} on
+     * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4851,13 +5263,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * List bare metal machines in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse}.
+     * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -4878,6 +5292,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     }
 
     /**
+     * List bare metal machines in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -4885,7 +5301,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse}.
+     * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
