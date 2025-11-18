@@ -231,7 +231,7 @@ public class HelperTests extends BlobTestBase {
         assertEquals("my blob", parts.getBlobName());
         String url = parts.toUrl().toString();
         assertFalse(url.contains("my blob"));
-        assertTrue(url.contains("my%blob"));
+        assertTrue(url.contains("my%20blob"));
     }
 
     // Tests that container names are automatically URL encoded when set in BlobUrlParts.

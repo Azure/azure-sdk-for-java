@@ -821,6 +821,21 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertNotNull(aadServiceClient.getProperties());
     }
 
+    //This is a local test used to verify connectivity to OneLake and that special characters are handled correctly.
+    @Test
+    @PlaybackOnly
+    public void oneLakeContainerNameEncoding() {
+        String endpoint = "https://onelake.dfs.fabric.microsoft.com/";
+        DataLakeServiceClient service
+            = new DataLakeServiceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(endpoint)
+                .buildClient();
+
+        DataLakeFileSystemClient fsc = service.getFileSystemClient("#SalesWorkspace");
+        Response<FileSystemProperties> fsp = fsc.getPropertiesWithResponse(null, null, null);
+        assertEquals(200, fsp.getStatusCode());
+    }
+
     //    @Test
     //    public void renameFileSystem() {
     //        String oldName = generateFileSystemName();
