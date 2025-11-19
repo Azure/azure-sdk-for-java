@@ -8,7 +8,7 @@ variables:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
-    TestPipeline: $(TestPipeline)
+    TestPipeline: ${{ variables.TestPipeline }}
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
