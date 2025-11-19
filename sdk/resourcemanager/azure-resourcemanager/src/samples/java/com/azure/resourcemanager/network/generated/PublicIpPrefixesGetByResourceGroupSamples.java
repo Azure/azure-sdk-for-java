@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpPrefixesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * PublicIpPrefixGetStandardV2Sku.json
      */
     /**
@@ -27,7 +27,7 @@ public final class PublicIpPrefixesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpPrefixGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/PublicIpPrefixGet.json
      */
     /**
      * Sample code: Get public IP prefix.

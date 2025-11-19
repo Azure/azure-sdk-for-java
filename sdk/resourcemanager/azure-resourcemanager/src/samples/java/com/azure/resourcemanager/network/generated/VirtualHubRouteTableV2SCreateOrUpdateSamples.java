@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualHubRouteTableV2Put.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualHubRouteTableV2Put.
      * json
      */
     /**
