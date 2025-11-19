@@ -39,6 +39,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this.innerModel().etag();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String kind() {
         return this.innerModel().kind();
     }
@@ -49,10 +53,6 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
 
     public Identity identity() {
         return this.innerModel().identity();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public Map<String, String> tags() {

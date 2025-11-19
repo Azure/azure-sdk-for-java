@@ -23,7 +23,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ConnectedEnvironmentDaprComponent> list(String resourceGroupName, String connectedEnvironmentName);
+    PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName);
 
     /**
      * Get the Dapr Components for a connected environment.
@@ -37,8 +37,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ConnectedEnvironmentDaprComponent> list(String resourceGroupName, String connectedEnvironmentName,
-        Context context);
+    PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName, Context context);
 
     /**
      * Get a dapr component.
@@ -53,8 +52,8 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
-    Response<ConnectedEnvironmentDaprComponent> getWithResponse(String resourceGroupName,
-        String connectedEnvironmentName, String componentName, Context context);
+    Response<DaprComponent> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, Context context);
 
     /**
      * Get a dapr component.
@@ -68,8 +67,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component.
      */
-    ConnectedEnvironmentDaprComponent get(String resourceGroupName, String connectedEnvironmentName,
-        String componentName);
+    DaprComponent get(String resourceGroupName, String connectedEnvironmentName, String componentName);
 
     /**
      * Delete a Dapr Component.
@@ -140,7 +138,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
-    ConnectedEnvironmentDaprComponent getById(String id);
+    DaprComponent getById(String id);
 
     /**
      * Get a dapr component.
@@ -153,7 +151,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
-    Response<ConnectedEnvironmentDaprComponent> getByIdWithResponse(String id, Context context);
+    Response<DaprComponent> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete a Dapr Component.
@@ -181,10 +179,10 @@ public interface ConnectedEnvironmentsDaprComponents {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ConnectedEnvironmentDaprComponent resource.
+     * Begins definition for a new DaprComponent resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new ConnectedEnvironmentDaprComponent definition.
+     * @return the first stage of the new DaprComponent definition.
      */
-    ConnectedEnvironmentDaprComponent.DefinitionStages.Blank define(String name);
+    DaprComponent.DefinitionStages.Blank define(String name);
 }

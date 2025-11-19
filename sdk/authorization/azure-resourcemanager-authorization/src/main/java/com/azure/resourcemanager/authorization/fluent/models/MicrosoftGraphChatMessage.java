@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * chatMessage.
+ * Represents a chat message.
  */
 @Fluent
 public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {

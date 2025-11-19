@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * freeBusyStatus.
+ * Represents a free busy status.
  */
 public final class MicrosoftGraphFreeBusyStatus extends ExpandableStringEnum<MicrosoftGraphFreeBusyStatus> {
     /**

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
      */
     /**
      * Sample code: CreateOrReplace_Namespace_With_Endpoints.
@@ -32,10 +32,10 @@ public final class NamespacesCreateOrReplaceSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withProperties(
                 new NamespaceProperties().withMessaging(new Messaging().withEndpoints(mapOf("eventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.EventGrid")
+                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
                         .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
                     "anotherEventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.EventGrid")
+                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
                         .withAddress("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events")))))
             .withIdentity(
                 new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))

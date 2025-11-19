@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 2.53.5 (2025-11-14)
+
+### Other Changes
+
+- Improved Javadoc on classes.
+
+## 2.53.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.53.3 (2025-09-24)
 
 ### Other Changes

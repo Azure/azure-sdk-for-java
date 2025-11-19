@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,6 +23,11 @@ public final class ConnectionPropertiesV2BasicResourceInner extends ProxyResourc
      * Connection property base schema.
      */
     private ConnectionPropertiesV2 properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -62,6 +68,15 @@ public final class ConnectionPropertiesV2BasicResourceInner extends ProxyResourc
     public ConnectionPropertiesV2BasicResourceInner withProperties(ConnectionPropertiesV2 properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -147,6 +162,8 @@ public final class ConnectionPropertiesV2BasicResourceInner extends ProxyResourc
                 } else if ("properties".equals(fieldName)) {
                     deserializedConnectionPropertiesV2BasicResourceInner.properties
                         = ConnectionPropertiesV2.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedConnectionPropertiesV2BasicResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/List_Namespace_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_Namespace_BySubscription.json
      */
     /**
      * Sample code: List_Namespaces_BySubscription.

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * itemAnalytics.
+ * Represents an item analytics.
  */
 @Fluent
 public final class MicrosoftGraphItemAnalytics extends MicrosoftGraphEntity {

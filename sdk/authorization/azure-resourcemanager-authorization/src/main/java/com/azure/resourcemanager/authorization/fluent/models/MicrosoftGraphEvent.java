@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * event.
+ * Represents an event.
  */
 @Fluent
 public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {

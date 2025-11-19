@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.6.0-beta.1 (Unreleased)
+### 2.7.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,15 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.6.1 (2025-11-18)
+
+#### Bugs Fixed
+* Fixed duplicate processing in `CosmosSourceConnector` when task rebalance(pause/resume) happens - See [PR 47308](https://github.com/Azure/azure-sdk-for-java/pull/47308)
+
+### 2.6.0 (2025-10-21)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.75.0`.
 
 ### 2.5.1 (2025-08-22)
 

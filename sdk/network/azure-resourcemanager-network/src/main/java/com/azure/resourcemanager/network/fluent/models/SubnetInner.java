@@ -500,8 +500,7 @@ public final class SubnetInner extends SubResource {
 
     /**
      * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
-     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
-     * existing subnet.
+     * all VMs in the subnet.
      * 
      * @return the defaultOutboundAccess value.
      */
@@ -511,8 +510,7 @@ public final class SubnetInner extends SubResource {
 
     /**
      * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
-     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
-     * existing subnet.
+     * all VMs in the subnet.
      * 
      * @param defaultOutboundAccess the defaultOutboundAccess value to set.
      * @return the SubnetInner object itself.

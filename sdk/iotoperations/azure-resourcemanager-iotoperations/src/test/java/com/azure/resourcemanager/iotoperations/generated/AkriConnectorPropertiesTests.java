@@ -10,8 +10,9 @@ import com.azure.resourcemanager.iotoperations.models.AkriConnectorProperties;
 public final class AkriConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AkriConnectorProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Deleting\"}").toObject(AkriConnectorProperties.class);
+        AkriConnectorProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Failed\",\"allocatedDevices\":[{\"deviceInboundEndpointName\":\"vwxnbkfe\",\"deviceName\":\"zxscyhwzdgirujb\"},{\"deviceInboundEndpointName\":\"bomvzzbtdcqv\",\"deviceName\":\"niyujv\"},{\"deviceInboundEndpointName\":\"ylwdshfssn\",\"deviceName\":\"bgye\"},{\"deviceInboundEndpointName\":\"rymsgaojfmw\",\"deviceName\":\"cotmr\"}],\"healthState\":\"Unknown\"}")
+            .toObject(AkriConnectorProperties.class);
     }
 
     @org.junit.jupiter.api.Test

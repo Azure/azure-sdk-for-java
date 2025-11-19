@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesListStaticSiteAppSettingsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListStaticSiteAppSettings.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListStaticSiteAppSettings.
+     * json
      */
     /**
      * Sample code: Get app settings of a static site.

@@ -23,7 +23,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile
     private ManagedClusterWorkloadAutoScalerProfileKeda keda;
 
     /*
-     * The verticalPodAutoscaler property.
+     * VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler profile.
      */
     private ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler;
 
@@ -54,7 +54,8 @@ public final class ManagedClusterWorkloadAutoScalerProfile
     }
 
     /**
-     * Get the verticalPodAutoscaler property: The verticalPodAutoscaler property.
+     * Get the verticalPodAutoscaler property: VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler
+     * profile.
      * 
      * @return the verticalPodAutoscaler value.
      */
@@ -63,7 +64,8 @@ public final class ManagedClusterWorkloadAutoScalerProfile
     }
 
     /**
-     * Set the verticalPodAutoscaler property: The verticalPodAutoscaler property.
+     * Set the verticalPodAutoscaler property: VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler
+     * profile.
      * 
      * @param verticalPodAutoscaler the verticalPodAutoscaler value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfile object itself.

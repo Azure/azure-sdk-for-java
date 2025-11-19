@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class ManagedEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ManagedEnvironments_Patch.json
      */
     /**
