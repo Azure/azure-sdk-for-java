@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0 (2025-10-21)
+## 1.4.0 (2025-11-19)
 
 - Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -106,8 +106,8 @@
 
 #### `models.PrivateClouds` was modified
 
-* `getVcfLicense(java.lang.String,java.lang.String)` was added
 * `getVcfLicenseWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getVcfLicense(java.lang.String,java.lang.String)` was added
 
 #### `AvsManager` was modified
 
@@ -120,9 +120,9 @@
 
 #### `models.PrivateCloud` was modified
 
+* `getVcfLicenseWithResponse(com.azure.core.util.Context)` was added
 * `getVcfLicense()` was added
 * `vcfLicense()` was added
-* `getVcfLicenseWithResponse(com.azure.core.util.Context)` was added
 
 ## 1.3.0 (2025-07-08)
 
