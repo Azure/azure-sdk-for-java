@@ -1,12 +1,11 @@
 # Release History
 
-## 2.0.0 (2025-11-14)
+## 2.0.0 (2025-11-19)
 
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
-
-#### `models.SnapshotPoliciesList` was removed
 
 #### `models.VolumeQuotaRulesList` was removed
 
@@ -14,19 +13,9 @@
 
 #### `models.SnapshotsList` was removed
 
-#### `models.VolumeGroupList` was removed
-
-#### `models.RelationshipStatus` was removed
-
 #### `models.UsagesListResult` was removed
 
 #### `models.OperationListResult` was removed
-
-#### `models.BackupsList` was removed
-
-#### `models.BackupVaultsList` was removed
-
-#### `models.SubscriptionQuotaItemList` was removed
 
 #### `models.RegionInfosList` was removed
 
@@ -34,78 +23,55 @@
 
 #### `models.CapacityPoolList` was removed
 
+#### `models.NetAppAccountList` was removed
+
+#### `models.SnapshotPoliciesList` was removed
+
+#### `models.VolumeGroupList` was removed
+
+#### `models.RelationshipStatus` was removed
+
+#### `models.BackupsList` was removed
+
+#### `models.BackupVaultsList` was removed
+
+#### `models.SubscriptionQuotaItemList` was removed
+
 #### `models.SubvolumesList` was removed
 
 #### `models.ListReplications` was removed
 
-#### `models.NetAppAccountList` was removed
-
-#### `models.ServiceSpecification` was modified
-
-* `ServiceSpecification()` was changed to private access
-* `withMetricSpecifications(java.util.List)` was removed
-* `withLogSpecifications(java.util.List)` was removed
-
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withInternalMetricName(java.lang.String)` was removed
-* `withIsInternal(java.lang.Boolean)` was removed
-* `withFillGapWithZero(java.lang.Boolean)` was removed
-* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withSupportedAggregationTypes(java.util.List)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
 * `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
 * `withSourceMdmAccount(java.lang.String)` was removed
 * `withDimensions(java.util.List)` was removed
-* `withAggregationType(java.lang.String)` was removed
-* `withCategory(java.lang.String)` was removed
-* `withDisplayDescription(java.lang.String)` was removed
-* `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withInternalMetricName(java.lang.String)` was removed
 * `withUnit(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
-* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
-* `withSupportedAggregationTypes(java.util.List)` was removed
+* `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
-
-#### `models.BackupStatus` was modified
-
-* `models.RelationshipStatus relationshipStatus()` -> `models.VolumeBackupRelationshipStatus relationshipStatus()`
+* `withCategory(java.lang.String)` was removed
 
 #### `models.ReplicationStatus` was modified
 
 * `models.RelationshipStatus relationshipStatus()` -> `models.VolumeReplicationRelationshipStatus relationshipStatus()`
 
-#### `models.Volume` was modified
-
-* `listReplications(com.azure.core.util.Context)` was removed
-
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withProvider(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
-
-#### `models.VolumePatch` was modified
-
-* `withLocation(java.lang.String)` was removed
-* `withTags(java.util.Map)` was removed
-
-#### `models.CapacityPool$Definition` was modified
-
-* `withCustomThroughputMibps(java.lang.Float)` was removed
-
-#### `models.UsageName` was modified
-
-* `UsageName()` was changed to private access
-* `withLocalizedValue(java.lang.String)` was removed
-* `withValue(java.lang.String)` was removed
-
-#### `models.LogSpecification` was modified
-
-* `LogSpecification()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
 
 #### `models.CapacityPool$Update` was modified
 
@@ -121,6 +87,65 @@
 * `toString()` was removed
 * `valueOf(java.lang.String)` was removed
 
+#### `models.NetAppAccountPatch` was modified
+
+* `withTags(java.util.Map)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.RegionInfoAvailabilityZoneMappingsItem` was modified
+
+* `RegionInfoAvailabilityZoneMappingsItem()` was changed to private access
+* `withAvailabilityZone(java.lang.String)` was removed
+* `withIsAvailable(java.lang.Boolean)` was removed
+
+#### `models.CapacityPoolPatch` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was removed
+* `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.Dimension` was modified
+
+* `Dimension()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+
+#### `models.BackupStatus` was modified
+
+* `models.RelationshipStatus relationshipStatus()` -> `models.VolumeBackupRelationshipStatus relationshipStatus()`
+
+#### `models.Volume` was modified
+
+* `listReplications(com.azure.core.util.Context)` was removed
+
+#### `models.VolumePatch` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
 #### `models.NicInfo` was modified
 
 * `NicInfo()` was changed to private access
@@ -129,18 +154,18 @@
 #### `models.VolumeBackups` was modified
 
 * `VolumeBackups()` was changed to private access
-* `withVolumeName(java.lang.String)` was removed
 * `withBackupsCount(java.lang.Integer)` was removed
 * `withPolicyEnabled(java.lang.Boolean)` was removed
+* `withVolumeName(java.lang.String)` was removed
 * `withVolumeResourceId(java.lang.String)` was removed
 
 #### `models.DestinationReplication` was modified
 
 * `DestinationReplication()` was changed to private access
-* `withResourceId(java.lang.String)` was removed
-* `withReplicationType(models.ReplicationType)` was removed
-* `withRegion(java.lang.String)` was removed
 * `withZone(java.lang.String)` was removed
+* `withReplicationType(models.ReplicationType)` was removed
+* `withResourceId(java.lang.String)` was removed
+* `withRegion(java.lang.String)` was removed
 
 #### `models.RestoreStatus` was modified
 
@@ -155,105 +180,444 @@
 
 * `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
-#### `models.NetAppAccountPatch` was modified
-
-* `withLocation(java.lang.String)` was removed
-* `withTags(java.util.Map)` was removed
-
-#### `models.RegionInfoAvailabilityZoneMappingsItem` was modified
-
-* `RegionInfoAvailabilityZoneMappingsItem()` was changed to private access
-* `withIsAvailable(java.lang.Boolean)` was removed
-* `withAvailabilityZone(java.lang.String)` was removed
-
-#### `models.CapacityPoolPatch` was modified
-
-* `withCustomThroughputMibps(java.lang.Float)` was removed
-* `java.lang.Float customThroughputMibps()` -> `java.lang.Integer customThroughputMibps()`
-* `withTags(java.util.Map)` was removed
-* `withLocation(java.lang.String)` was removed
-
-#### `models.Dimension` was modified
-
-* `Dimension()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
-
 #### `models.Snapshots` was modified
 
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
 * `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Object)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
 
 ### Features Added
 
-* `models.NetAppResourceQuotaLimitsAccounts` was added
+* `models.RansomwareSuspects` was added
 
-* `models.MountTargetProperties` was added
+* `models.BucketPatch` was added
+
+* `models.ElasticBackupProperties` was added
+
+* `models.EncryptionState` was added
+
+* `models.ElasticBackupPolicyProperties` was added
+
+* `models.ElasticSnapshot` was added
+
+* `models.ElasticCapacityPools` was added
+
+* `models.ElasticKeyVaultProperties` was added
+
+* `models.LdapConfiguration` was added
+
+* `models.RansomwareReport` was added
+
+* `models.ElasticVolumeUpdateProperties` was added
+
+* `models.ActualRansomwareProtectionState` was added
+
+* `models.ElasticBackup$Definition` was added
+
+* `models.ElasticSnapshotPolicyHourlySchedule` was added
+
+* `models.ElasticMountTargetProperties` was added
+
+* `models.Bucket$DefinitionStages` was added
+
+* `models.ElasticVolumeUpdate` was added
+
+* `models.ElasticVolume$UpdateStages` was added
+
+* `models.KerberosState` was added
+
+* `models.ElasticVolumeDataProtectionProperties` was added
+
+* `models.ElasticSnapshotPolicyProperties` was added
+
+* `models.ElasticVolumeSnapshotProperties` was added
+
+* `models.ElasticPoolEncryptionKeySource` was added
+
+* `models.ListQuotaReportResponse` was added
+
+* `models.ElasticServiceLevel` was added
+
+* `models.CacheLifeCycleState` was added
+
+* `models.ElasticBackupPolicy` was added
+
+* `models.SmbSettings` was added
+
+* `models.BucketServerProperties` was added
+
+* `models.ElasticResourceAvailabilityStatus` was added
+
+* `models.Cache$UpdateStages` was added
+
+* `models.LdapServerType` was added
 
 * `models.ReplicationMirrorState` was added
 
-* `models.ListReplicationsRequest` was added
+* `models.ElasticCapacityPoolUpdateProperties` was added
 
-* `models.VolumeReplicationRelationshipStatus` was added
+* `models.ElasticNfsv3Access` was added
+
+* `models.RansomwareSuspectResolution` was added
+
+* `models.CheckElasticVolumeFilePathAvailabilityRequest` was added
+
+* `models.SuspectFile` was added
+
+* `models.VolumeLanguage` was added
+
+* `models.ElasticSmbEncryption` was added
+
+* `models.ElasticVolumeProperties` was added
+
+* `models.BreakthroughMode` was added
+
+* `models.ElasticAccount$DefinitionStages` was added
+
+* `models.ElasticEncryption` was added
+
+* `models.ElasticBackupPolicy$Definition` was added
+
+* `models.RansomwareReportSeverity` was added
+
+* `models.ElasticVolumeRevert` was added
+
+* `models.RansomwareReports` was added
+
+* `models.ActiveDirectoryConfig$Definition` was added
+
+* `models.SnapshotUsage` was added
+
+* `models.ActiveDirectoryConfig` was added
+
+* `models.VolumeSize` was added
+
+* `models.ElasticBackupPolicies` was added
+
+* `models.CacheMountTargetProperties` was added
+
+* `models.ElasticExportPolicyRule` was added
+
+* `models.BucketPermissions` was added
+
+* `models.ActiveDirectoryConfig$DefinitionStages` was added
+
+* `models.ElasticAccountUpdate` was added
+
+* `models.ElasticCapacityPoolUpdate` was added
+
+* `models.ElasticSnapshot$UpdateStages` was added
+
+* `models.CifsChangeNotifyState` was added
+
+* `models.ActiveDirectoryConfigUpdateProperties` was added
+
+* `models.ElasticAccountProperties` was added
+
+* `models.ElasticSnapshots` was added
+
+* `models.ElasticKeyVaultStatus` was added
+
+* `models.BucketPatchPermissions` was added
+
+* `models.Bucket$Definition` was added
+
+* `models.ElasticEncryptionIdentity` was added
+
+* `models.Bucket` was added
+
+* `models.ElasticSnapshotProperties` was added
+
+* `models.ActiveDirectoryConfigs` was added
+
+* `models.ElasticBackup$UpdateStages` was added
+
+* `models.CacheProperties` was added
 
 * `models.Exclude` was added
 
+* `models.NfsUser` was added
+
+* `models.BucketGenerateCredentials` was added
+
+* `models.ActiveDirectoryConfig$Update` was added
+
+* `models.SecretPasswordIdentity` was added
+
+* `models.Caches` was added
+
+* `models.Cache$Definition` was added
+
+* `models.ElasticAccount$UpdateStages` was added
+
+* `models.ElasticBackupPolicy$Update` was added
+
+* `models.ElasticBackupVaults` was added
+
+* `models.RansomwareReportState` was added
+
+* `models.ElasticCapacityPool` was added
+
+* `models.CacheProvisioningState` was added
+
+* `models.ElasticExportPolicy` was added
+
+* `models.ElasticSnapshotPolicyWeeklySchedule` was added
+
+* `models.OriginClusterInformation` was added
+
+* `models.ElasticVolume$Definition` was added
+
+* `models.BucketCredentialsExpiry` was added
+
+* `models.CacheUpdate` was added
+
+* `models.ElasticRootAccess` was added
+
+* `models.ElasticBackupVault$Update` was added
+
+* `models.RansomwareSuspectsClearRequest` was added
+
+* `models.ElasticBackups` was added
+
+* `models.ElasticSnapshotPolicy` was added
+
+* `models.CheckElasticResourceAvailabilityStatus` was added
+
+* `models.SecretPassword` was added
+
+* `models.NetAppResourceQuotaLimitsAccounts` was added
+
+* `models.ElasticBackup$Update` was added
+
+* `models.ElasticCapacityPool$Update` was added
+
+* `models.ElasticSnapshotPolicyDailySchedule` was added
+
+* `models.ElasticCapacityPool$UpdateStages` was added
+
+* `models.PeeringPassphrases` was added
+
+* `models.Bucket$Update` was added
+
+* `models.ElasticAccount$Update` was added
+
+* `models.MountTargetProperties` was added
+
+* `models.LdapState` was added
+
+* `models.Cache$Update` was added
+
+* `models.RansomwareProtectionPatchSettings` was added
+
+* `models.Cache` was added
+
+* `models.ElasticSnapshotPolicy$Definition` was added
+
+* `models.RansomwareProtectionSettings` was added
+
+* `models.ElasticSnapshot$Definition` was added
+
+* `models.ElasticBackupVaultProperties` was added
+
+* `models.ElasticBackupPolicy$DefinitionStages` was added
+
+* `models.ElasticNfsv4Access` was added
+
+* `models.ActiveDirectoryConfigProperties` was added
+
+* `models.ElasticVolumeRestorationState` was added
+
+* `models.ElasticVolumePolicyEnforcement` was added
+
+* `models.SecretPasswordKeyVaultProperties` was added
+
+* `models.ElasticAccount$Definition` was added
+
+* `models.ElasticVolumes` was added
+
+* `models.ElasticBackupVault$Definition` was added
+
+* `models.ElasticSnapshotPolicy$Update` was added
+
+* `models.ProtocolTypes` was added
+
+* `models.ElasticBackup$DefinitionStages` was added
+
+* `models.CifsUser` was added
+
+* `models.DesiredRansomwareProtectionState` was added
+
+* `models.ElasticSnapshotPolicies` was added
+
+* `models.ElasticAccount` was added
+
+* `models.QuotaReport` was added
+
+* `models.ListReplicationsRequest` was added
+
+* `models.CheckElasticResourceAvailabilityReason` was added
+
+* `models.ElasticCapacityPoolProperties` was added
+
+* `models.ActiveDirectoryConfigUpdate` was added
+
+* `models.BucketServerPatchProperties` was added
+
+* `models.ElasticVolume$DefinitionStages` was added
+
+* `models.VolumeReplicationRelationshipStatus` was added
+
+* `models.CacheUpdateProperties` was added
+
+* `models.ElasticAccountUpdateProperties` was added
+
+* `models.ElasticCapacityPool$DefinitionStages` was added
+
+* `models.CredentialsStatus` was added
+
+* `models.ElasticSmbProperties` was added
+
+* `models.LargeVolumeType` was added
+
+* `models.PolicyStatus` was added
+
+* `models.ElasticVolumeBackupProperties` was added
+
+* `models.ElasticBackup` was added
+
+* `models.ChangeZoneRequest` was added
+
+* `models.ElasticBackupVault$DefinitionStages` was added
+
+* `models.ElasticSnapshot$Update` was added
+
+* `models.CheckElasticResourceAvailabilityResponse` was added
+
+* `models.SmbEncryptionState` was added
+
+* `models.ElasticBackupVault` was added
+
+* `models.ElasticUnixAccessRule` was added
+
+* `models.ActiveDirectoryConfig$UpdateStages` was added
+
+* `models.ElasticVolume` was added
+
+* `models.ElasticVolume$Update` was added
+
+* `models.RansomwareReportProperties` was added
+
+* `models.ElasticBackupPolicyState` was added
+
+* `models.ElasticSnapshotPolicyMonthlySchedule` was added
+
+* `models.ExternalReplicationSetupStatus` was added
+
+* `models.GlobalFileLockingState` was added
+
+* `models.Cache$DefinitionStages` was added
+
+* `models.ElasticVolumeDataProtectionPatchProperties` was added
+
+* `models.ElasticAccounts` was added
+
+* `models.ElasticSmbPatchProperties` was added
+
+* `models.Bucket$UpdateStages` was added
+
+* `models.Buckets` was added
+
+* `models.ElasticSnapshot$DefinitionStages` was added
+
+* `models.FileSystemUser` was added
+
+* `models.ElasticBackupVault$UpdateStages` was added
+
+* `models.SnapshotDirectoryVisibility` was added
+
+* `models.ElasticBackupPolicy$UpdateStages` was added
+
+* `models.ElasticEncryptionConfiguration` was added
+
+* `models.EnableWriteBackState` was added
+
 * `models.VolumeBackupRelationshipStatus` was added
 
+* `models.DayOfWeek` was added
+
+* `models.ElasticCapacityPool$Definition` was added
+
+* `models.ElasticSnapshotPolicy$DefinitionStages` was added
+
 * `models.VolumeRestoreRelationshipStatus` was added
+
+* `models.ElasticBackupType` was added
+
+* `models.ElasticProtocolType` was added
+
+* `models.ElasticSnapshotPolicy$UpdateStages` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
 
 #### `models.SnapshotPolicyVolumeList` was modified
 
 * `nextLink()` was added
 
-#### `models.Volume` was modified
-
-* `listReplications(models.ListReplicationsRequest,com.azure.core.util.Context)` was added
-
-#### `models.VolumePatch` was modified
-
-* `tags()` was added
-* `location()` was added
-
-#### `models.CapacityPool$Definition` was modified
-
-* `withCustomThroughputMibps(java.lang.Integer)` was added
-
 #### `models.CapacityPool$Update` was modified
 
 * `withCustomThroughputMibps(java.lang.Integer)` was added
-
-#### `NetAppFilesManager` was modified
-
-* `netAppResourceQuotaLimitsAccounts()` was added
 
 #### `models.VolumeGroupDetails` was modified
 
 * `systemData()` was added
 
+#### `models.Volume$Definition` was modified
+
+* `withBreakthroughMode(models.BreakthroughMode)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+
 #### `models.ProvisioningState` was modified
 
 * `ProvisioningState()` was added
 
-#### `models.BackupPolicyPatch` was modified
+#### `models.ReplicationObject` was modified
 
-* `location()` was added
-* `tags()` was added
-
-#### `models.Volumes` was modified
-
-* `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListReplicationsRequest,com.azure.core.util.Context)` was added
+* `mirrorState()` was added
+* `relationshipStatus()` was added
+* `externalReplicationSetupInfo()` was added
+* `externalReplicationSetupStatus()` was added
 
 #### `models.NetAppAccountPatch` was modified
 
+* `ldapConfiguration()` was added
+* `withLdapConfiguration(models.LdapConfiguration)` was added
 * `tags()` was added
 * `location()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
 
 #### `models.CapacityPoolPatch` was modified
 
 * `withCustomThroughputMibps(java.lang.Integer)` was added
 * `location()` was added
 * `tags()` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withLdapServerType(models.LdapServerType)` was added
+* `largeVolumeType()` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `withBreakthroughMode(models.BreakthroughMode)` was added
+* `language()` was added
+* `ldapServerType()` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `breakthroughMode()` was added
 
 #### `models.Replication` was modified
 
@@ -264,6 +628,66 @@
 #### `models.SubscriptionQuotaItem` was modified
 
 * `usage()` was added
+
+#### `models.Volume` was modified
+
+* `largeVolumeType()` was added
+* `language()` was added
+* `breakthroughMode()` was added
+* `listReplications(models.ListReplicationsRequest,com.azure.core.util.Context)` was added
+* `ldapServerType()` was added
+* `listQuotaReport(com.azure.core.util.Context)` was added
+* `listQuotaReport()` was added
+
+#### `models.VolumePatch` was modified
+
+* `location()` was added
+* `tags()` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Integer)` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
+* `ransomwareProtection()` was added
+
+#### `NetAppFilesManager` was modified
+
+* `activeDirectoryConfigs()` was added
+* `elasticBackupPolicies()` was added
+* `elasticCapacityPools()` was added
+* `elasticBackups()` was added
+* `elasticSnapshotPolicies()` was added
+* `elasticVolumes()` was added
+* `elasticBackupVaults()` was added
+* `caches()` was added
+* `elasticSnapshots()` was added
+* `ransomwareReports()` was added
+* `buckets()` was added
+* `elasticAccounts()` was added
+* `netAppResourceQuotaLimitsAccounts()` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `ransomwareProtection()` was added
+* `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
+
+#### `models.BackupPolicyPatch` was modified
+
+* `location()` was added
+* `tags()` was added
+
+#### `models.Volumes` was modified
+
+* `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListReplicationsRequest,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `ldapConfiguration()` was added
 
 ## 1.10.0-beta.1 (2025-10-15)
 

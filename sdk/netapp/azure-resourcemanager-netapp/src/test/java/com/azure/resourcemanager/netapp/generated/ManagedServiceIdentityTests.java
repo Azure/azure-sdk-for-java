@@ -16,7 +16,7 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"4874fca2-98c7-489a-b222-1e81560c1cc3\",\"tenantId\":\"fb4813d8-c3b4-4303-8154-a8ad04c76c98\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"650d7d51-5a6e-4400-b441-f8be2806f868\",\"clientId\":\"b189049f-a04e-455f-a235-fe97c63a1f2a\"},\"spskasdvlmfwdgz\":{\"principalId\":\"14e56ed6-7ee2-4877-a330-08080cd8c9a6\",\"clientId\":\"910ff85d-3155-4cd9-8fe6-2dbe334fe04b\"}}}")
+            "{\"principalId\":\"fb371ca9-9f6e-4175-a52a-3606c6504a01\",\"tenantId\":\"db94fb8d-a76a-4865-9dc2-7f230bb5212f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wmn\":{\"principalId\":\"90ae5e70-7e55-43ca-972b-1fee0c6c9757\",\"clientId\":\"2a136cbf-0949-4622-9ae5-0492f9b70c48\"},\"tijfybvp\":{\"principalId\":\"144448c4-8b55-46ae-8185-85df3300af9b\",\"clientId\":\"5b6ec3fa-bcc7-4e85-bf81-2d8a21dff590\"},\"rsg\":{\"principalId\":\"6e53171e-208a-46fe-b942-172b73f40fb4\",\"clientId\":\"db1bf85e-b721-4095-8333-c8985001328c\"}}}")
             .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
@@ -24,8 +24,8 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("h", new UserAssignedIdentity(), "spskasdvlmfwdgz", new UserAssignedIdentity()));
+            .withUserAssignedIdentities(mapOf("wmn", new UserAssignedIdentity(), "tijfybvp", new UserAssignedIdentity(),
+                "rsg", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
  */
 public final class VolumesListReplicationsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_ListReplications.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_ListReplications.json
      */
     /**
      * Sample code: Volumes_ListReplications.

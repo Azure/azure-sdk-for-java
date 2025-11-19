@@ -9,14 +9,14 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsListByVaultSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupsUnderBackupVault_List.json
+     * x-ms-original-file: 2025-09-01-preview/Backups_ListByVault.json
      */
     /**
-     * Sample code: Backups_List.
+     * Sample code: Backups_ListByVault.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void backupsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+    public static void backupsListByVault(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         manager.backups().listByVault("myRG", "account1", "backupVault1", null, com.azure.core.util.Context.NONE);
     }
 }
