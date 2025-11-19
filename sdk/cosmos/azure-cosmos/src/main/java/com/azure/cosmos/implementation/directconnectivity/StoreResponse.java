@@ -170,6 +170,11 @@ public class StoreResponse {
         return -1;
     }
 
+    // NOTE: Only used in local test through transport client interceptor
+    public void setGCLSN(long gclsn) {
+        this.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(gclsn));
+    }
+
     public String getPartitionKeyRangeId() {
         return this.getHeaderValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
     }
@@ -194,6 +199,20 @@ public class StoreResponse {
         }
 
         return null;
+    }
+
+    //NOTE: only used for testing purpose to change the response header value
+    private void setHeaderValue(String headerName, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
+                responseHeaderValues[i] = value;
+                break;
+            }
+        }
     }
 
     public double getRequestCharge() {

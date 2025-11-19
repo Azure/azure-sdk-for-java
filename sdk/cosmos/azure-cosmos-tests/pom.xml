@@ -789,5 +789,27 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>fault-injection-barrier</id>
+      <properties>
+        <test.groups>fault-injection-barrier</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/fault-injection-barrier-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
