@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
-     * MaintenanceConfigurationsDelete_MaintenanceWindow.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-09-02-preview/
+     * examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
      */
     /**
      * Sample code: Delete Maintenance Configuration For Node OS Upgrade.

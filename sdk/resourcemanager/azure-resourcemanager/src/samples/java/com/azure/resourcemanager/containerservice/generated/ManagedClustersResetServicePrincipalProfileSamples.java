@@ -12,8 +12,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePr
 public final class ManagedClustersResetServicePrincipalProfileSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
-     * ManagedClustersResetServicePrincipalProfile.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-09-02-preview/
+     * examples/ManagedClustersResetServicePrincipalProfile.json
      */
     /**
      * Sample code: Reset Service Principal Profile.
