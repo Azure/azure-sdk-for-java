@@ -110,11 +110,11 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     }
 
     private void testHttpHeaders(HttpHeaders headers) {
-        assertTrue(headers.containsKey("x-client-SKU"));
+        assertTrue(headers.containsHeader("x-client-SKU"));
         assertEquals(Collections.singletonList(AzureSpringIdentifier.AZURE_SPRING_AAD), headers.get("x-client-SKU"));
-        assertTrue(headers.containsKey("x-client-VER"));
+        assertTrue(headers.containsHeader("x-client-VER"));
         assertEquals(Collections.singletonList(AzureSpringIdentifier.VERSION), headers.get("x-client-VER"));
-        assertTrue(headers.containsKey("client-request-id"));
+        assertTrue(headers.containsHeader("client-request-id"));
     }
 
     private MultiValueMap<String, String> convertedBodyOf(AadClientRegistrationRepository repository,
