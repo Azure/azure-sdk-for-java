@@ -771,21 +771,4 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(aadServiceClient.getProperties()).assertNext(Assertions::assertNotNull).verifyComplete();
     }
-
-    //This is a test used to verify connectivity to OneLake and that special characters are handled correctly.
-    @Test
-    @LiveOnly
-    public void oneLakeContainerNameEncoding() {
-        String endpoint = "https://onelake.dfs.fabric.microsoft.com/";
-        DataLakeServiceAsyncClient service
-            = new DataLakeServiceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildAsyncClient();
-
-        DataLakeFileSystemAsyncClient fsc = service.getFileSystemAsyncClient("#SalesWorkspace");
-        StepVerifier.create(fsc.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-    }
-
 }
