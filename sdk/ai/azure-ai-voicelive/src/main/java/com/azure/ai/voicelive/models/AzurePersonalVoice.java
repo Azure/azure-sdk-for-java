@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Azure personal voice configuration.
@@ -116,6 +117,14 @@ public final class AzurePersonalVoice extends AzureVoice {
         jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeStringField("custom_lexicon_url", this.customLexiconUrl);
+        jsonWriter.writeArrayField("prefer_locales", this.preferLocales,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("locale", this.locale);
+        jsonWriter.writeStringField("style", this.style);
+        jsonWriter.writeStringField("pitch", this.pitch);
+        jsonWriter.writeStringField("rate", this.rate);
+        jsonWriter.writeStringField("volume", this.volume);
         return jsonWriter.writeEndObject();
     }
 
@@ -135,6 +144,13 @@ public final class AzurePersonalVoice extends AzureVoice {
             PersonalVoiceModels model = null;
             AzureVoiceType type = AzureVoiceType.AZURE_PERSONAL;
             Double temperature = null;
+            String customLexiconUrl = null;
+            List<String> preferLocales = null;
+            String locale = null;
+            String style = null;
+            String pitch = null;
+            String rate = null;
+            String volume = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -146,6 +162,20 @@ public final class AzurePersonalVoice extends AzureVoice {
                     type = AzureVoiceType.fromString(reader.getString());
                 } else if ("temperature".equals(fieldName)) {
                     temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("custom_lexicon_url".equals(fieldName)) {
+                    customLexiconUrl = reader.getString();
+                } else if ("prefer_locales".equals(fieldName)) {
+                    preferLocales = reader.readArray(reader1 -> reader1.getString());
+                } else if ("locale".equals(fieldName)) {
+                    locale = reader.getString();
+                } else if ("style".equals(fieldName)) {
+                    style = reader.getString();
+                } else if ("pitch".equals(fieldName)) {
+                    pitch = reader.getString();
+                } else if ("rate".equals(fieldName)) {
+                    rate = reader.getString();
+                } else if ("volume".equals(fieldName)) {
+                    volume = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -153,7 +183,210 @@ public final class AzurePersonalVoice extends AzureVoice {
             AzurePersonalVoice deserializedAzurePersonalVoice = new AzurePersonalVoice(name, model);
             deserializedAzurePersonalVoice.type = type;
             deserializedAzurePersonalVoice.temperature = temperature;
+            deserializedAzurePersonalVoice.customLexiconUrl = customLexiconUrl;
+            deserializedAzurePersonalVoice.preferLocales = preferLocales;
+            deserializedAzurePersonalVoice.locale = locale;
+            deserializedAzurePersonalVoice.style = style;
+            deserializedAzurePersonalVoice.pitch = pitch;
+            deserializedAzurePersonalVoice.rate = rate;
+            deserializedAzurePersonalVoice.volume = volume;
             return deserializedAzurePersonalVoice;
         });
+    }
+
+    /*
+     * The custom_lexicon_url property.
+     */
+    @Generated
+    private String customLexiconUrl;
+
+    /*
+     * The prefer_locales property.
+     */
+    @Generated
+    private List<String> preferLocales;
+
+    /*
+     * The locale property.
+     */
+    @Generated
+    private String locale;
+
+    /*
+     * The style property.
+     */
+    @Generated
+    private String style;
+
+    /*
+     * The pitch property.
+     */
+    @Generated
+    private String pitch;
+
+    /*
+     * The rate property.
+     */
+    @Generated
+    private String rate;
+
+    /*
+     * The volume property.
+     */
+    @Generated
+    private String volume;
+
+    /**
+     * Get the customLexiconUrl property: The custom_lexicon_url property.
+     *
+     * @return the customLexiconUrl value.
+     */
+    @Generated
+    public String getCustomLexiconUrl() {
+        return this.customLexiconUrl;
+    }
+
+    /**
+     * Set the customLexiconUrl property: The custom_lexicon_url property.
+     *
+     * @param customLexiconUrl the customLexiconUrl value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setCustomLexiconUrl(String customLexiconUrl) {
+        this.customLexiconUrl = customLexiconUrl;
+        return this;
+    }
+
+    /**
+     * Get the preferLocales property: The prefer_locales property.
+     *
+     * @return the preferLocales value.
+     */
+    @Generated
+    public List<String> getPreferLocales() {
+        return this.preferLocales;
+    }
+
+    /**
+     * Set the preferLocales property: The prefer_locales property.
+     *
+     * @param preferLocales the preferLocales value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setPreferLocales(List<String> preferLocales) {
+        this.preferLocales = preferLocales;
+        return this;
+    }
+
+    /**
+     * Get the locale property: The locale property.
+     *
+     * @return the locale value.
+     */
+    @Generated
+    public String getLocale() {
+        return this.locale;
+    }
+
+    /**
+     * Set the locale property: The locale property.
+     *
+     * @param locale the locale value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setLocale(String locale) {
+        this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the style property: The style property.
+     *
+     * @return the style value.
+     */
+    @Generated
+    public String getStyle() {
+        return this.style;
+    }
+
+    /**
+     * Set the style property: The style property.
+     *
+     * @param style the style value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setStyle(String style) {
+        this.style = style;
+        return this;
+    }
+
+    /**
+     * Get the pitch property: The pitch property.
+     *
+     * @return the pitch value.
+     */
+    @Generated
+    public String getPitch() {
+        return this.pitch;
+    }
+
+    /**
+     * Set the pitch property: The pitch property.
+     *
+     * @param pitch the pitch value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setPitch(String pitch) {
+        this.pitch = pitch;
+        return this;
+    }
+
+    /**
+     * Get the rate property: The rate property.
+     *
+     * @return the rate value.
+     */
+    @Generated
+    public String getRate() {
+        return this.rate;
+    }
+
+    /**
+     * Set the rate property: The rate property.
+     *
+     * @param rate the rate value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setRate(String rate) {
+        this.rate = rate;
+        return this;
+    }
+
+    /**
+     * Get the volume property: The volume property.
+     *
+     * @return the volume value.
+     */
+    @Generated
+    public String getVolume() {
+        return this.volume;
+    }
+
+    /**
+     * Set the volume property: The volume property.
+     *
+     * @param volume the volume value to set.
+     * @return the AzurePersonalVoice object itself.
+     */
+    @Generated
+    public AzurePersonalVoice setVolume(String volume) {
+        this.volume = volume;
+        return this;
     }
 }
