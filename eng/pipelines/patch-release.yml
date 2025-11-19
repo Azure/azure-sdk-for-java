@@ -1,14 +1,15 @@
 trigger: none
 pr: none
 
-variables:
+parameters:
 - name: TestPipeline
-  value: false
+  type: boolean
+  default: false
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
-    TestPipeline: ${{ variables.TestPipeline }}
+    TestPipeline: ${{ parameters.TestPipeline }}
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
