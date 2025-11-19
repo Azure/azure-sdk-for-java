@@ -145,18 +145,6 @@ public class RntbdTransportClient extends TransportClient {
             globalEndpointManager);
     }
 
-    public RntbdTransportClient(RntbdTransportClient other) {
-        this.serverErrorInjector = other.serverErrorInjector;
-        this.endpointProvider = other.endpointProvider;
-        this.id = instanceCount.incrementAndGet();
-        this.tag = RntbdTransportClient.tag(this.id);
-        this.channelAcquisitionContextLatencyThresholdInMillis = other.channelAcquisitionContextLatencyThresholdInMillis;
-        this.globalEndpointManager = other.globalEndpointManager;
-        this.addressSelector = other.addressSelector;
-        this.proactiveOpenConnectionsProcessor = other.proactiveOpenConnectionsProcessor;
-        this.metricConfig = other.metricConfig;
-    }
-
     RntbdTransportClient(
         final Options options,
         final SslContext sslContext,
