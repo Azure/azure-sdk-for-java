@@ -682,6 +682,15 @@ public class StoreReader {
                         true,
                         primaryUriReference.get(),
                         replicaStatusList);
+
+                if (storeTaskException instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) storeTaskException;
+
+                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+                        return Mono.error(cosmosException);
+                    }
+                }
+
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators

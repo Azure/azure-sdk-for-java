@@ -11,21 +11,15 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
-import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.implementation.interceptor.CosmosInterceptorHelper;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -258,9 +252,6 @@ public class BailOutFromBarrierE2ETests extends TestSuiteBase {
 
         AtomicInteger successfulHeadCountTracker = new AtomicInteger();
         AtomicInteger failedHeadCountTracker = new AtomicInteger();
-        Utils.ValueHolder<RntbdTransportClient> originalRntbdTransportClientHolder = new Utils.ValueHolder<>();
-
-        RntbdTransportClientWithStoreResponseInterceptor interceptorClient = createClientWithInterceptor(targetClient, originalRntbdTransportClientHolder);
 
         try {
 
@@ -268,43 +259,36 @@ public class BailOutFromBarrierE2ETests extends TestSuiteBase {
 
             if (enterPostQuorumSelectionOnlyBarrierLoop) {
                 if (OperationType.Read.equals(operationTypeForWhichBarrierFlowIsTriggered)) {
-                    interceptorClient
-                        .setResponseInterceptor(
-                            StoreResponseInterceptorUtils.forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(
-                                effectiveConsistencyLevel,
-                                this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
-                                successfulHeadRequestCountWhichDontMeetBarrier,
-                                successfulHeadCountTracker,
-                                headFailureCount,
-                                failedHeadCountTracker,
-                                HttpConstants.StatusCodes.GONE,
-                                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
-                            ));
+                    CosmosInterceptorHelper.registerTransportClientInterceptor(targetClient, StoreResponseInterceptorUtils.forceSuccessfulBarriersOnReadUntilQuorumSelectionThenForceBarrierFailures(
+                            effectiveConsistencyLevel,
+                            this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
+                            successfulHeadRequestCountWhichDontMeetBarrier,
+                            successfulHeadCountTracker,
+                            headFailureCount,
+                            failedHeadCountTracker,
+                            HttpConstants.StatusCodes.GONE,
+                            HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
+                        ));
                 }
             } else {
-
                 if (OperationType.Create.equals(operationTypeForWhichBarrierFlowIsTriggered)) {
-                    interceptorClient
-                        .setResponseInterceptor(
-                            StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
-                                effectiveConsistencyLevel,
-                                this.regionNameToEndpoint.get(this.preferredRegions.get(1)),
-                                headFailureCount,
-                                failedHeadCountTracker,
-                                HttpConstants.StatusCodes.GONE,
-                                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
-                            ));
+                    CosmosInterceptorHelper.registerTransportClientInterceptor(targetClient, StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
+                            effectiveConsistencyLevel,
+                            this.regionNameToEndpoint.get(this.preferredRegions.get(1)),
+                            headFailureCount,
+                            failedHeadCountTracker,
+                            HttpConstants.StatusCodes.GONE,
+                            HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
+                        ));
                 } else if (OperationType.Read.equals(operationTypeForWhichBarrierFlowIsTriggered)) {
-                    interceptorClient
-                        .setResponseInterceptor(
-                            StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
-                                effectiveConsistencyLevel,
-                                this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
-                                headFailureCount,
-                                failedHeadCountTracker,
-                                HttpConstants.StatusCodes.GONE,
-                                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
-                            ));
+                    CosmosInterceptorHelper.registerTransportClientInterceptor(targetClient, StoreResponseInterceptorUtils.forceBarrierFollowedByBarrierFailure(
+                            effectiveConsistencyLevel,
+                            this.regionNameToEndpoint.get(this.preferredRegions.get(0)),
+                            headFailureCount,
+                            failedHeadCountTracker,
+                            HttpConstants.StatusCodes.GONE,
+                            HttpConstants.SubStatusCodes.LEASE_NOT_FOUND
+                        ));
                 }
             }
 
@@ -392,46 +376,8 @@ public class BailOutFromBarrierE2ETests extends TestSuiteBase {
             }
 
         } finally {
-
-            if (originalRntbdTransportClientHolder.v != null) {
-                originalRntbdTransportClientHolder.v.close();
-            }
-
-            interceptorClient.close();
             safeClose(targetClient);
         }
-    }
-
-    private RntbdTransportClientWithStoreResponseInterceptor createClientWithInterceptor(
-        CosmosAsyncClient targetClient,
-        Utils.ValueHolder<RntbdTransportClient> originalRntbdTransportClientHolder) {
-
-        // Get internal client
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(targetClient);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-
-        // Get store client and components
-        StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
-        ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
-        ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
-        ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
-        StoreReader storeReaderFromConsistencyReader = ReflectionUtils.getStoreReader(consistencyReader);
-        StoreReader storeReaderFromConsistencyWriter = ReflectionUtils.getStoreReader(consistencyWriter);
-
-        // Get the original transport client
-        RntbdTransportClient originalTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(replicatedResourceClient);
-        originalRntbdTransportClientHolder.v = originalTransportClient;
-
-        // Create interceptor client
-        RntbdTransportClientWithStoreResponseInterceptor interceptorClient =
-            new RntbdTransportClientWithStoreResponseInterceptor(originalTransportClient);
-
-        // Set the interceptor client on both reader and writer
-        ReflectionUtils.setTransportClient(storeReaderFromConsistencyReader, interceptorClient);
-        ReflectionUtils.setTransportClient(storeReaderFromConsistencyWriter, interceptorClient);
-        ReflectionUtils.setTransportClient(consistencyWriter, interceptorClient);
-
-        return interceptorClient;
     }
 
     private void validateContactedRegions(CosmosDiagnostics diagnostics, int expectedRegionsContactedCount) {

@@ -925,7 +925,7 @@ public class QuorumReader {
             if (bailFromReadBarrierLoop.v) {
                 bailFromReadBarrierLoop.v = true;
                 cosmosExceptionValueHolder.v = Utils.createCosmosException(
-                    HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                    HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                     cosmosExceptionInStoreResult.getSubStatusCode(),
                     cosmosExceptionInStoreResult,
                     null);
