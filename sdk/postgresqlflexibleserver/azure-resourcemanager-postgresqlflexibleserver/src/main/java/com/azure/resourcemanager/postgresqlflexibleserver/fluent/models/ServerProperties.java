@@ -18,10 +18,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -29,38 +29,41 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * The properties of a server.
+ * Properties of a server.
  */
 @Fluent
 public final class ServerProperties implements JsonSerializable<ServerProperties> {
     /*
-     * The administrator's login name of a server. Can only be specified when the server is being created (and is
-     * required for creation).
+     * Name of the login designated as the first password based administrator assigned to your instance of PostgreSQL.
+     * Must be specified the first time that you enable password based authentication on a server. Once set to a given
+     * value, it cannot be changed for the rest of the life of a server. If you disable password based authentication on
+     * a server which had it enabled, this password based role isn't deleted.
      */
     private String administratorLogin;
 
     /*
-     * The administrator login password (required for server creation).
+     * Password assigned to the administrator login. As long as password authentication is enabled, this password can be
+     * changed at any time.
      */
     private String administratorLoginPassword;
 
     /*
-     * PostgreSQL Server version.
+     * Major version of PostgreSQL database engine.
      */
-    private ServerVersion version;
+    private PostgresMajorVersion version;
 
     /*
-     * The minor version of the server.
+     * Minor version of PostgreSQL database engine.
      */
     private String minorVersion;
 
     /*
-     * A state of a server that is visible to user.
+     * Possible states of a server.
      */
     private ServerState state;
 
     /*
-     * The fully qualified domain name of a server.
+     * Fully qualified domain name of a server.
      */
     private String fullyQualifiedDomainName;
 
@@ -70,7 +73,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     private Storage storage;
 
     /*
-     * AuthConfig properties of a server.
+     * Authentication configuration properties of a server.
      */
     private AuthConfig authConfig;
 
@@ -85,8 +88,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     private Backup backup;
 
     /*
-     * Network properties of a server. This Network property is required to be passed only in case you want the server
-     * to be Private access server.
+     * Network properties of a server. Only required if you want your server to be integrated into a virtual network
+     * provided by customer.
      */
     private Network network;
 
@@ -101,45 +104,45 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     private MaintenanceWindow maintenanceWindow;
 
     /*
-     * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or
-     * 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned only for Replica server
+     * Identifier of the server to be used as the source of the new server. Required when 'createMode' is
+     * 'PointInTimeRestore', 'GeoRestore', 'Replica', or 'ReviveDropped'. This property is returned only when the target
+     * server is a read replica.
      */
     private String sourceServerResourceId;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * Creation time (in ISO8601 format) of the backup which you want to restore in the new server. It's required when
+     * 'createMode' is 'PointInTimeRestore', 'GeoRestore', or 'ReviveDropped'.
      */
     private OffsetDateTime pointInTimeUtc;
 
     /*
-     * availability zone information of the server.
+     * Availability zone of a server.
      */
     private String availabilityZone;
 
     /*
-     * Replication role of the server
+     * Role of the server in a replication set.
      */
     private ReplicationRole replicationRole;
 
     /*
-     * Replicas allowed for a server.
+     * Maximum number of read replicas allowed for a server.
      */
     private Integer replicaCapacity;
 
     /*
-     * Replica properties of a server. These Replica properties are required to be passed only in case you want to
-     * Promote a server.
+     * Read replica properties of a server. Required only in case that you want to promote a server.
      */
     private Replica replica;
 
     /*
-     * The mode to create a new PostgreSQL server.
+     * Creation mode of a new server.
      */
     private CreateMode createMode;
 
     /*
-     * List of private endpoint connections associated with the specified resource.
+     * List of private endpoint connections associated with the specified server.
      */
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
@@ -155,8 +158,11 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
-     * server is being created (and is required for creation).
+     * Get the administratorLogin property: Name of the login designated as the first password based administrator
+     * assigned to your instance of PostgreSQL. Must be specified the first time that you enable password based
+     * authentication on a server. Once set to a given value, it cannot be changed for the rest of the life of a server.
+     * If you disable password based authentication on a server which had it enabled, this password based role isn't
+     * deleted.
      * 
      * @return the administratorLogin value.
      */
@@ -165,8 +171,11 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
-     * server is being created (and is required for creation).
+     * Set the administratorLogin property: Name of the login designated as the first password based administrator
+     * assigned to your instance of PostgreSQL. Must be specified the first time that you enable password based
+     * authentication on a server. Once set to a given value, it cannot be changed for the rest of the life of a server.
+     * If you disable password based authentication on a server which had it enabled, this password based role isn't
+     * deleted.
      * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerProperties object itself.
@@ -177,7 +186,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the administratorLoginPassword property: The administrator login password (required for server creation).
+     * Get the administratorLoginPassword property: Password assigned to the administrator login. As long as password
+     * authentication is enabled, this password can be changed at any time.
      * 
      * @return the administratorLoginPassword value.
      */
@@ -186,7 +196,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the administratorLoginPassword property: The administrator login password (required for server creation).
+     * Set the administratorLoginPassword property: Password assigned to the administrator login. As long as password
+     * authentication is enabled, this password can be changed at any time.
      * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerProperties object itself.
@@ -197,27 +208,27 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the version property: PostgreSQL Server version.
+     * Get the version property: Major version of PostgreSQL database engine.
      * 
      * @return the version value.
      */
-    public ServerVersion version() {
+    public PostgresMajorVersion version() {
         return this.version;
     }
 
     /**
-     * Set the version property: PostgreSQL Server version.
+     * Set the version property: Major version of PostgreSQL database engine.
      * 
      * @param version the version value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withVersion(ServerVersion version) {
+    public ServerProperties withVersion(PostgresMajorVersion version) {
         this.version = version;
         return this;
     }
 
     /**
-     * Get the minorVersion property: The minor version of the server.
+     * Get the minorVersion property: Minor version of PostgreSQL database engine.
      * 
      * @return the minorVersion value.
      */
@@ -226,7 +237,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the state property: A state of a server that is visible to user.
+     * Get the state property: Possible states of a server.
      * 
      * @return the state value.
      */
@@ -235,7 +246,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
+     * Get the fullyQualifiedDomainName property: Fully qualified domain name of a server.
      * 
      * @return the fullyQualifiedDomainName value.
      */
@@ -264,7 +275,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the authConfig property: AuthConfig properties of a server.
+     * Get the authConfig property: Authentication configuration properties of a server.
      * 
      * @return the authConfig value.
      */
@@ -273,7 +284,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the authConfig property: AuthConfig properties of a server.
+     * Set the authConfig property: Authentication configuration properties of a server.
      * 
      * @param authConfig the authConfig value to set.
      * @return the ServerProperties object itself.
@@ -324,8 +335,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the network property: Network properties of a server. This Network property is required to be passed only in
-     * case you want the server to be Private access server.
+     * Get the network property: Network properties of a server. Only required if you want your server to be integrated
+     * into a virtual network provided by customer.
      * 
      * @return the network value.
      */
@@ -334,8 +345,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the network property: Network properties of a server. This Network property is required to be passed only in
-     * case you want the server to be Private access server.
+     * Set the network property: Network properties of a server. Only required if you want your server to be integrated
+     * into a virtual network provided by customer.
      * 
      * @param network the network value to set.
      * @return the ServerProperties object itself.
@@ -386,9 +397,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * Get the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * Required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', 'Replica', or 'ReviveDropped'. This property is
+     * returned only when the target server is a read replica.
      * 
      * @return the sourceServerResourceId value.
      */
@@ -397,9 +408,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * Set the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * Required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', 'Replica', or 'ReviveDropped'. This property is
+     * returned only when the target server is a read replica.
      * 
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerProperties object itself.
@@ -410,8 +421,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * Get the pointInTimeUtc property: Creation time (in ISO8601 format) of the backup which you want to restore in the
+     * new server. It's required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', or 'ReviveDropped'.
      * 
      * @return the pointInTimeUtc value.
      */
@@ -420,8 +431,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * Set the pointInTimeUtc property: Creation time (in ISO8601 format) of the backup which you want to restore in the
+     * new server. It's required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', or 'ReviveDropped'.
      * 
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerProperties object itself.
@@ -432,7 +443,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the availabilityZone property: availability zone information of the server.
+     * Get the availabilityZone property: Availability zone of a server.
      * 
      * @return the availabilityZone value.
      */
@@ -441,7 +452,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the availabilityZone property: availability zone information of the server.
+     * Set the availabilityZone property: Availability zone of a server.
      * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the ServerProperties object itself.
@@ -452,7 +463,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the replicationRole property: Replication role of the server.
+     * Get the replicationRole property: Role of the server in a replication set.
      * 
      * @return the replicationRole value.
      */
@@ -461,7 +472,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the replicationRole property: Replication role of the server.
+     * Set the replicationRole property: Role of the server in a replication set.
      * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerProperties object itself.
@@ -472,7 +483,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the replicaCapacity property: Replicas allowed for a server.
+     * Get the replicaCapacity property: Maximum number of read replicas allowed for a server.
      * 
      * @return the replicaCapacity value.
      */
@@ -481,8 +492,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
-     * in case you want to Promote a server.
+     * Get the replica property: Read replica properties of a server. Required only in case that you want to promote a
+     * server.
      * 
      * @return the replica value.
      */
@@ -491,8 +502,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
-     * in case you want to Promote a server.
+     * Set the replica property: Read replica properties of a server. Required only in case that you want to promote a
+     * server.
      * 
      * @param replica the replica value to set.
      * @return the ServerProperties object itself.
@@ -503,7 +514,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the createMode property: The mode to create a new PostgreSQL server.
+     * Get the createMode property: Creation mode of a new server.
      * 
      * @return the createMode value.
      */
@@ -512,7 +523,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Set the createMode property: The mode to create a new PostgreSQL server.
+     * Set the createMode property: Creation mode of a new server.
      * 
      * @param createMode the createMode value to set.
      * @return the ServerProperties object itself.
@@ -524,7 +535,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
-     * resource.
+     * server.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -638,7 +649,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                 } else if ("administratorLoginPassword".equals(fieldName)) {
                     deserializedServerProperties.administratorLoginPassword = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedServerProperties.version = ServerVersion.fromString(reader.getString());
+                    deserializedServerProperties.version = PostgresMajorVersion.fromString(reader.getString());
                 } else if ("minorVersion".equals(fieldName)) {
                     deserializedServerProperties.minorVersion = reader.getString();
                 } else if ("state".equals(fieldName)) {

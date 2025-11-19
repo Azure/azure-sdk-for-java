@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.QuotaUsagesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.QuotaUsageInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsagesListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsageList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,13 +61,13 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientQuotaUsages")
     public interface QuotaUsagesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/resourceType/flexibleServers/usages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaUsagesListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<QuotaUsageList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName, @HeaderParam("Accept") String accept, Context context);
 
@@ -75,7 +75,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/resourceType/flexibleServers/usages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<QuotaUsagesListResult> listSync(@HostParam("$host") String endpoint,
+        Response<QuotaUsageList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName, @HeaderParam("Accept") String accept, Context context);
 
@@ -83,14 +83,14 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaUsagesListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<QuotaUsageList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<QuotaUsagesListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<QuotaUsageList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -166,7 +166,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
                 .log(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<QuotaUsagesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        Response<QuotaUsageList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), locationName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -199,7 +199,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
                 .log(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<QuotaUsagesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        Response<QuotaUsageList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), locationName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -244,8 +244,8 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capability for the PostgreSQL server along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return quota usages at specified location in a given subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaUsageInner>> listNextSinglePageAsync(String nextLink) {
@@ -270,7 +270,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capability for the PostgreSQL server along with {@link PagedResponse}.
+     * @return quota usages at specified location in a given subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaUsageInner> listNextSinglePage(String nextLink) {
@@ -284,8 +284,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<QuotaUsagesListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<QuotaUsageList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -298,7 +297,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capability for the PostgreSQL server along with {@link PagedResponse}.
+     * @return quota usages at specified location in a given subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaUsageInner> listNextSinglePage(String nextLink, Context context) {
@@ -312,8 +311,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<QuotaUsagesListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<QuotaUsageList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

@@ -16,27 +16,27 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Validation status summary for an individual database.
+ * Validation status summary for a database.
  */
 @Fluent
 public final class DbLevelValidationStatus implements JsonSerializable<DbLevelValidationStatus> {
     /*
-     * Name of the database
+     * Name of database.
      */
     private String databaseName;
 
     /*
-     * Start date-time of a database level validation
+     * Start time of a database level validation.
      */
     private OffsetDateTime startedOn;
 
     /*
-     * End date-time of a database level validation
+     * End time of a database level validation.
      */
     private OffsetDateTime endedOn;
 
     /*
-     * Summary of database level validations
+     * Summary of database level validations.
      */
     private List<ValidationSummaryItem> summary;
 
@@ -47,7 +47,7 @@ public final class DbLevelValidationStatus implements JsonSerializable<DbLevelVa
     }
 
     /**
-     * Get the databaseName property: Name of the database.
+     * Get the databaseName property: Name of database.
      * 
      * @return the databaseName value.
      */
@@ -56,7 +56,7 @@ public final class DbLevelValidationStatus implements JsonSerializable<DbLevelVa
     }
 
     /**
-     * Set the databaseName property: Name of the database.
+     * Set the databaseName property: Name of database.
      * 
      * @param databaseName the databaseName value to set.
      * @return the DbLevelValidationStatus object itself.
@@ -67,7 +67,7 @@ public final class DbLevelValidationStatus implements JsonSerializable<DbLevelVa
     }
 
     /**
-     * Get the startedOn property: Start date-time of a database level validation.
+     * Get the startedOn property: Start time of a database level validation.
      * 
      * @return the startedOn value.
      */
@@ -76,7 +76,7 @@ public final class DbLevelValidationStatus implements JsonSerializable<DbLevelVa
     }
 
     /**
-     * Set the startedOn property: Start date-time of a database level validation.
+     * Set the startedOn property: Start time of a database level validation.
      * 
      * @param startedOn the startedOn value to set.
      * @return the DbLevelValidationStatus object itself.
@@ -87,7 +87,7 @@ public final class DbLevelValidationStatus implements JsonSerializable<DbLevelVa
     }
 
     /**
-     * Get the endedOn property: End date-time of a database level validation.
+     * Get the endedOn property: End time of a database level validation.
      * 
      * @return the endedOn value.
      */
@@ -96,7 +96,7 @@ public final class DbLevelValidationStatus implements JsonSerializable<DbLevelVa
     }
 
     /**
-     * Set the endedOn property: End date-time of a database level validation.
+     * Set the endedOn property: End time of a database level validation.
      * 
      * @param endedOn the endedOn value to set.
      * @return the DbLevelValidationStatus object itself.

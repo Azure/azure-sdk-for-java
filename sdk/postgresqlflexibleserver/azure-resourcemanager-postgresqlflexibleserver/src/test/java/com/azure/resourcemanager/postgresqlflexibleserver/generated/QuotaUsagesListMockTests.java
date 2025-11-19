@@ -22,7 +22,7 @@ public final class QuotaUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":{\"value\":\"rgmsplzga\",\"localizedValue\":\"cshhv\"},\"limit\":5821657988601371961,\"unit\":\"xkym\",\"currentValue\":5759368920772451636,\"id\":\"rjkixtw\"}]}";
+            = "{\"value\":[{\"name\":{\"value\":\"ylollgtrczzydmxz\",\"localizedValue\":\"jpvuaurkihcirld\"},\"limit\":3662886964591682986,\"unit\":\"c\",\"currentValue\":4478329422803924367,\"id\":\"kjanur\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class QuotaUsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<QuotaUsage> response = manager.quotaUsages().list("mguaml", com.azure.core.util.Context.NONE);
+        PagedIterable<QuotaUsage> response = manager.quotaUsages().list("ypobkdqzr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rgmsplzga", response.iterator().next().name().value());
-        Assertions.assertEquals("cshhv", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals(5821657988601371961L, response.iterator().next().limit());
-        Assertions.assertEquals("xkym", response.iterator().next().unit());
-        Assertions.assertEquals(5759368920772451636L, response.iterator().next().currentValue());
-        Assertions.assertEquals("rjkixtw", response.iterator().next().id());
+        Assertions.assertEquals("ylollgtrczzydmxz", response.iterator().next().name().value());
+        Assertions.assertEquals("jpvuaurkihcirld", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(3662886964591682986L, response.iterator().next().limit());
+        Assertions.assertEquals("c", response.iterator().next().unit());
+        Assertions.assertEquals(4478329422803924367L, response.iterator().next().currentValue());
+        Assertions.assertEquals("kjanur", response.iterator().next().id());
     }
 }

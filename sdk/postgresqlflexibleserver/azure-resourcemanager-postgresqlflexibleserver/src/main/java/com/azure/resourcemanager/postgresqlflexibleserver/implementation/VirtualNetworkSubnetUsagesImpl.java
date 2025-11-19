@@ -9,9 +9,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageModelInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageModel;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageResult;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 
 public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubnetUsages {
@@ -27,22 +27,22 @@ public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubne
         this.serviceManager = serviceManager;
     }
 
-    public Response<VirtualNetworkSubnetUsageResult> executeWithResponse(String locationName,
+    public Response<VirtualNetworkSubnetUsageModel> listWithResponse(String locationName,
         VirtualNetworkSubnetUsageParameter parameters, Context context) {
-        Response<VirtualNetworkSubnetUsageResultInner> inner
-            = this.serviceClient().executeWithResponse(locationName, parameters, context);
+        Response<VirtualNetworkSubnetUsageModelInner> inner
+            = this.serviceClient().listWithResponse(locationName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualNetworkSubnetUsageResultImpl(inner.getValue(), this.manager()));
+                new VirtualNetworkSubnetUsageModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public VirtualNetworkSubnetUsageResult execute(String locationName, VirtualNetworkSubnetUsageParameter parameters) {
-        VirtualNetworkSubnetUsageResultInner inner = this.serviceClient().execute(locationName, parameters);
+    public VirtualNetworkSubnetUsageModel list(String locationName, VirtualNetworkSubnetUsageParameter parameters) {
+        VirtualNetworkSubnetUsageModelInner inner = this.serviceClient().list(locationName, parameters);
         if (inner != null) {
-            return new VirtualNetworkSubnetUsageResultImpl(inner, this.manager());
+            return new VirtualNetworkSubnetUsageModelImpl(inner, this.manager());
         } else {
             return null;
         }
