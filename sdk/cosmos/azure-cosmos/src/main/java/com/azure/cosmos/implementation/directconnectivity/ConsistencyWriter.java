@@ -283,7 +283,7 @@ public class ConsistencyWriter {
                         false,
                         primaryURI.get(),
                         replicaStatusList);
-                return barrierForGlobalStrong(request, response, cosmosExceptionValueHolder, bailFromWriteBarrierLoopValueHolder);
+                return barrierForGlobalStrong(request, response, cosmosExceptionValueHolder);
             })
             .doFinally(signalType -> {
                 if (signalType != SignalType.CANCEL) {
@@ -299,7 +299,7 @@ public class ConsistencyWriter {
         } else {
 
             Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, request, this.authorizationTokenProvider, null, request.requestContext.globalCommittedSelectedLSN);
-            return barrierRequestObs.flatMap(barrierRequest -> waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder, bailFromWriteBarrierLoopValueHolder)
+            return barrierRequestObs.flatMap(barrierRequest -> waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder)
                 .flatMap(v -> {
 
                     if (!v) {
@@ -335,8 +335,7 @@ public class ConsistencyWriter {
     Mono<StoreResponse> barrierForGlobalStrong(
         RxDocumentServiceRequest request,
         StoreResponse response,
-        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromWriteBarrierLoopValueHolder) {
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder) {
 
         try {
             if (ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response)) {
@@ -368,7 +367,7 @@ public class ConsistencyWriter {
                         request.requestContext.globalCommittedSelectedLSN);
 
                     return barrierRequestObs.flatMap(barrierRequest -> {
-                        Mono<Boolean> barrierWait = this.waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder, bailFromWriteBarrierLoopValueHolder);
+                        Mono<Boolean> barrierWait = this.waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder);
 
                         return barrierWait.flatMap(res -> {
                             if (!res) {
@@ -405,8 +404,7 @@ public class ConsistencyWriter {
     private Mono<Boolean> waitForWriteBarrierAsync(
         RxDocumentServiceRequest barrierRequest,
         long selectedGlobalCommittedLsn,
-        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromWriteBarrierLoop) {
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder) {
 
         AtomicInteger writeBarrierRetryCount = new AtomicInteger(ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES);
         AtomicLong maxGlobalCommittedLsnReceived = new AtomicLong(0);
@@ -439,11 +437,11 @@ public class ConsistencyWriter {
                     }
 
                     if (isAvoidQuorumSelectionStoreResult) {
+                        writeBarrierRetryCount.getAndIncrement();
                         return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                             barrierRequest,
                             selectedGlobalCommittedLsn,
                             cosmosExceptionValueHolder,
-                            bailFromWriteBarrierLoop,
                             cosmosExceptionFromStoreResult);
                     }
 
@@ -507,21 +505,24 @@ public class ConsistencyWriter {
         RxDocumentServiceRequest barrierRequest,
         long selectedGlobalCommittedLsn,
         MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromWriteBarrierLoop,
         CosmosException cosmosExceptionInStoreResult) {
 
-        return performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
+        MutableVolatile<Boolean> bailFromWriteBarrierLoop = new MutableVolatile<>(false);
+
+        return performOptimisticBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
             barrierRequest,
-            selectedGlobalCommittedLsn)
-            .flatMap(barrierStatusFromPrimary -> {
+            selectedGlobalCommittedLsn,
+            cosmosExceptionValueHolder,
+            bailFromWriteBarrierLoop).flatMap(isBarrierFromPrimarySuccessful -> {
 
-                if (barrierStatusFromPrimary) {
-                    bailFromWriteBarrierLoop.v = true;
-                    cosmosExceptionValueHolder.v = null;
+            if (isBarrierFromPrimarySuccessful) {
+                bailFromWriteBarrierLoop.v = true;
+                cosmosExceptionValueHolder.v = null;
 
-                    return Mono.just(true);
-                }
+                return Mono.just(true);
+            }
 
+            if (bailFromWriteBarrierLoop.v) {
                 bailFromWriteBarrierLoop.v = true;
                 cosmosExceptionValueHolder.v = Utils.createCosmosException(
                     HttpConstants.StatusCodes.REQUEST_TIMEOUT,
@@ -529,16 +530,23 @@ public class ConsistencyWriter {
                     cosmosExceptionInStoreResult,
                     null);
                 return Mono.just(false);
-            });
+            } else {
+                bailFromWriteBarrierLoop.v = false;
+                cosmosExceptionValueHolder.v = null;
+                return Mono.empty();
+            }
+        });
     }
 
-    private Mono<Boolean> performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
-        RxDocumentServiceRequest entity,
-        long selectedGlobalCommittedLSN) {
+    private Mono<Boolean> performOptimisticBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
+        RxDocumentServiceRequest barrierRequest,
+        long selectedGlobalCommittedLSN,
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
+        MutableVolatile<Boolean> bailFromWriteBarrierLoop) {
 
-        entity.requestContext.forceRefreshAddressCache = true;
+        barrierRequest.requestContext.forceRefreshAddressCache = true;
         Mono<StoreResult> storeResultObs = this.storeReader.readPrimaryAsync(
-            entity, true, false /*useSessionToken*/);
+            barrierRequest, true, false /*useSessionToken*/);
 
         return storeResultObs.flatMap(storeResult -> {
                 if (!storeResult.isValid) {
@@ -547,9 +555,30 @@ public class ConsistencyWriter {
 
                 boolean hasRequiredGlobalCommittedLsn = storeResult.globalCommittedLSN >= selectedGlobalCommittedLSN;
 
+                barrierRequest.requestContext.forceRefreshAddressCache = false;
                 return Mono.just(hasRequiredGlobalCommittedLsn);
             })
-            .onErrorResume(throwable -> Mono.just(false));
+            .onErrorResume(throwable -> {
+
+                barrierRequest.requestContext.forceRefreshAddressCache = false;
+
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+
+                        bailFromWriteBarrierLoop.v = true;
+                        cosmosExceptionValueHolder.v = cosmosException;
+                        return Mono.just(false);
+                    }
+
+                    bailFromWriteBarrierLoop.v = false;
+                    return Mono.just(false);
+                }
+
+                bailFromWriteBarrierLoop.v = false;
+                return Mono.just(false);
+            });
     }
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {

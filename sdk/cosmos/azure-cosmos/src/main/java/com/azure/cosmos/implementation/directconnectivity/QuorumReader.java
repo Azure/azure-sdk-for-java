@@ -674,6 +674,7 @@ public class QuorumReader {
                     }
 
                     if (isAvoidQuorumSelectionStoreResult) {
+                        readBarrierRetryCount.decrementAndGet();
                         return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                             barrierRequest,
                             readBarrierLsn,
@@ -756,6 +757,7 @@ public class QuorumReader {
                                            }
 
                                            if (isAvoidQuorumSelectionStoreResult) {
+                                               readBarrierRetryCountMultiRegion.getAndDecrement();
                                                return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                                                    barrierRequest,
                                                    readBarrierLsn,
@@ -903,40 +905,50 @@ public class QuorumReader {
         long targetGlobalCommittedLSN,
         MutableVolatile<CosmosException> cosmosExceptionValueHolder,
         MutableVolatile<Boolean> bailFromReadBarrierLoop,
-        CosmosException cosmosExceptionFromStoreResult) {
+        CosmosException cosmosExceptionInStoreResult) {
 
         return performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
             barrierRequest,
             true,
             readBarrierLsn,
-            targetGlobalCommittedLSN).flatMap(barrierStatusFromPrimary -> {
+            targetGlobalCommittedLSN,
+            cosmosExceptionValueHolder,
+            bailFromReadBarrierLoop).flatMap(isBarrierFromPrimarySuccessful -> {
 
-                if (barrierStatusFromPrimary) {
+                if (isBarrierFromPrimarySuccessful) {
                     bailFromReadBarrierLoop.v = true;
                     cosmosExceptionValueHolder.v = null;
 
                     return Mono.just(true);
                 }
 
+            if (bailFromReadBarrierLoop.v) {
                 bailFromReadBarrierLoop.v = true;
                 cosmosExceptionValueHolder.v = Utils.createCosmosException(
-                    HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                    cosmosExceptionFromStoreResult.getSubStatusCode(),
-                    cosmosExceptionFromStoreResult,
+                    HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                    cosmosExceptionInStoreResult.getSubStatusCode(),
+                    cosmosExceptionInStoreResult,
                     null);
                 return Mono.just(false);
+            } else {
+                bailFromReadBarrierLoop.v = false;
+                cosmosExceptionValueHolder.v = null;
+                return Mono.empty();
+            }
             });
     }
 
     private Mono<Boolean> performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
-        RxDocumentServiceRequest entity,
+        RxDocumentServiceRequest barrierRequest,
         boolean requiresValidLsn,
         long readBarrierLsn,
-        long targetGlobalCommittedLSN) {
+        long targetGlobalCommittedLSN,
+        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
+        MutableVolatile<Boolean> bailFromReadBarrierLoop) {
 
-        entity.requestContext.forceRefreshAddressCache = true;
+        barrierRequest.requestContext.forceRefreshAddressCache = true;
         Mono<StoreResult> storeResultObs = this.storeReader.readPrimaryAsync(
-            entity, requiresValidLsn, false /*useSessionToken*/);
+            barrierRequest, requiresValidLsn, false /*useSessionToken*/);
 
         return storeResultObs.flatMap(storeResult -> {
                 if (!storeResult.isValid) {
@@ -949,7 +961,27 @@ public class QuorumReader {
 
                 return Mono.just(hasRequiredLsn && hasRequiredGlobalCommittedLsn);
             })
-            .onErrorResume(throwable -> Mono.just(false));
+            .onErrorResume(throwable -> {
+
+                barrierRequest.requestContext.forceRefreshAddressCache = false;
+
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+
+                        bailFromReadBarrierLoop.v = true;
+                        cosmosExceptionValueHolder.v = cosmosException;
+                        return Mono.just(false);
+                    }
+
+                    bailFromReadBarrierLoop.v = false;
+                    return Mono.just(false);
+                }
+
+                bailFromReadBarrierLoop.v = false;
+                return Mono.just(false);
+            });
     }
 
     private enum ReadQuorumResultKind {
