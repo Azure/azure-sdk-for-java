@@ -18,7 +18,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-01-01`.
+- Updated `api-version` to `2025-03-01`.
 
 #### Features Added
 
