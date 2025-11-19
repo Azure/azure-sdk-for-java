@@ -60,7 +60,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientDatabaseAccountRegions")
     public interface DatabaseAccountRegionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/metrics")
