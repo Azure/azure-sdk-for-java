@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationAudience;
 
 import reactor.core.publisher.Mono;
@@ -18,6 +19,8 @@ import reactor.core.publisher.Mono;
  * audience configuration issues occur during authentication.
  */
 public class AudiencePolicy implements HttpPipelinePolicy {
+
+    private static final ClientLogger LOGGER = new ClientLogger(AudiencePolicy.class);
 
     private static final String NO_AUDIENCE_ERROR_MESSAGE
         = "Unable to authenticate to Azure App Configuration. No authentication token audience was provided. "
@@ -54,7 +57,7 @@ public class AudiencePolicy implements HttpPipelinePolicy {
         try {
             return next.processSync();
         } catch (HttpResponseException ex) {
-            throw handleAudienceException(ex);
+            throw LOGGER.logExceptionAsError(handleAudienceException(ex));
         }
     }
 
