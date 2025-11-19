@@ -915,12 +915,12 @@ public class QuorumReader {
             cosmosExceptionValueHolder,
             bailFromReadBarrierLoop).flatMap(isBarrierFromPrimarySuccessful -> {
 
-                if (isBarrierFromPrimarySuccessful) {
-                    bailFromReadBarrierLoop.v = true;
-                    cosmosExceptionValueHolder.v = null;
+            if (isBarrierFromPrimarySuccessful) {
+                bailFromReadBarrierLoop.v = true;
+                cosmosExceptionValueHolder.v = null;
 
-                    return Mono.just(true);
-                }
+                return Mono.just(true);
+            }
 
             if (bailFromReadBarrierLoop.v) {
                 bailFromReadBarrierLoop.v = true;
@@ -935,7 +935,7 @@ public class QuorumReader {
                 cosmosExceptionValueHolder.v = null;
                 return Mono.empty();
             }
-            });
+        });
     }
 
     private Mono<Boolean> performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
