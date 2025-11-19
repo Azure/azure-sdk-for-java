@@ -382,10 +382,11 @@ springboot3_org.springframework.boot:spring-boot-test;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-testcontainers;4.0.0-RC2
 springboot3_org.springframework.cloud:spring-cloud-bus;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-context;4.3.0
-springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.3.0
+springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;5.0.0-RC1
 springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;4.3.0
 springboot3_org.springframework.cloud:spring-cloud-stream;4.3.0
 springboot3_org.springframework.data:spring-data-commons;3.5.3
+springboot3_org.springframework.data:spring-data-redis;3.5.3
 springboot3_org.springframework.boot:spring-boot-data-redis;4.0.0-RC2
 springboot3_org.springframework.integration:spring-integration-core;7.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-http-converter;4.0.0-RC2
@@ -408,6 +409,8 @@ springboot3_org.springframework.boot:spring-boot-jdbc;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-jms;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-restclient;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-security;4.0.0-RC2
+springboot3_org.springframework.boot:spring-boot-security-oauth2-client;4.0.0-RC2
+springboot3_org.springframework:spring-jms;7.0.0-RC3
 springboot3_org.springframework:spring-messaging;7.0.0-RC3
 springboot3_org.springframework:spring-test;7.0.0-RC3
 springboot3_org.springframework:spring-tx;7.0.0-RC3

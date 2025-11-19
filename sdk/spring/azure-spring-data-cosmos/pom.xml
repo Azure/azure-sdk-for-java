@@ -99,8 +99,8 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-persistence</artifactId> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-persistence;external_dependency} -->
-      <version>4.0.0-RC2</version>
+      <artifactId>spring-boot-persistence</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-persistence;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -284,6 +284,7 @@
                 <include>org.springframework:spring-expression:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-expression;external_dependency} -->
                 <include>org.springframework:spring-core:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-core;external_dependency} -->
                 <include>org.springframework:spring-context:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-persistence:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-persistence;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[3.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;springboot3_org.javatuples:javatuples;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.20]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
