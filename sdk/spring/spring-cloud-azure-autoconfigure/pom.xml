@@ -424,6 +424,12 @@
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-security-oauth2-client</artifactId>
+      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-security-oauth2-client;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-http-converter</artifactId>
       <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-http-converter;external_dependency} -->
       <scope>test</scope>
