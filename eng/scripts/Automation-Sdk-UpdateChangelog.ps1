@@ -601,6 +601,9 @@ try {
                 LogWarning "  - $breakingChange"
             }
         }
+        
+        # Exit with success code
+        exit 0
     }
     finally {
         # Clean up temporary directory
