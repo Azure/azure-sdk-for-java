@@ -27,6 +27,11 @@ public final class VectorDataType extends ExpandableStringEnum<VectorDataType> {
     public static final VectorDataType INT8 = fromString("int8");
 
     /**
+     * Static value float16 for VectorDataType.
+     */
+    public static final VectorDataType FLOAT16 = fromString("float16");
+
+    /**
      * Creates a new instance of VectorDataType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

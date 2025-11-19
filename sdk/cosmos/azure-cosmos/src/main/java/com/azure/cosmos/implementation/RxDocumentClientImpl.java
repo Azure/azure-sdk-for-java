@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -6580,6 +6581,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public String getMasterKeyOrResourceToken() {
         return this.masterKeyOrResourceToken;
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeModel.registerTransportClientInterceptor(transportClientInterceptor);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

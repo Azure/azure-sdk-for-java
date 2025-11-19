@@ -10,7 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurati
 import com.azure.resourcemanager.networkcloud.models.ClusterType;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyType;
+import com.azure.resourcemanager.networkcloud.models.CommandOutputOverride;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
+import com.azure.resourcemanager.networkcloud.models.CommandOutputType;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.IdentitySelector;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
@@ -21,7 +23,6 @@ import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionEnforcementLevel;
 import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
-import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationData;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
@@ -39,8 +40,8 @@ import java.util.Map;
 public final class ClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Clusters_Create.
-     * json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * Clusters_Create.json
      */
     /**
      * Sample code: Create or update cluster.
@@ -55,41 +56,37 @@ public final class ClustersCreateOrUpdateSamples {
             .withExtendedLocation(new ExtendedLocation().withName(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName")
                 .withType("CustomLocation"))
-            .withAggregatorOrSingleRackDefinition(
-                new RackDefinition()
-                    .withBareMetalMachineConfigurationData(Arrays.asList(
-                        new BareMetalMachineConfigurationData()
-                            .withBmcCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
-                                .withUsername("username"))
-                            .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
-                            .withBootMacAddress("00:BB:CC:DD:EE:FF")
-                            .withMachineDetails("extraDetails")
-                            .withMachineName("bmmName1")
-                            .withRackSlot(1L)
-                            .withSerialNumber("BM1219XXX"),
-                        new BareMetalMachineConfigurationData()
-                            .withBmcCredentials(
-                                new AdministrativeCredentials()
-                                    .withPassword("fakeTokenPlaceholder")
-                                    .withUsername("username"))
-                            .withBmcMacAddress("AA:BB:CC:DD:EE:00")
-                            .withBootMacAddress("00:BB:CC:DD:EE:00")
-                            .withMachineDetails("extraDetails")
-                            .withMachineName("bmmName2")
-                            .withRackSlot(2L)
-                            .withSerialNumber("BM1219YYY")))
-                    .withNetworkRackId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
-                    .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
-                    .withRackSerialNumber("AA1234")
-                    .withRackSkuId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
-                    .withStorageApplianceConfigurationData(Arrays.asList(new StorageApplianceConfigurationData()
-                        .withAdminCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
+            .withAggregatorOrSingleRackDefinition(new RackDefinition()
+                .withBareMetalMachineConfigurationData(Arrays.asList(
+                    new BareMetalMachineConfigurationData()
+                        .withBmcCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
                             .withUsername("username"))
+                        .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
+                        .withBootMacAddress("00:BB:CC:DD:EE:FF")
+                        .withMachineDetails("extraDetails")
+                        .withMachineName("bmmName1")
                         .withRackSlot(1L)
-                        .withSerialNumber("BM1219XXX")
-                        .withStorageApplianceName("vmName"))))
+                        .withSerialNumber("BM1219XXX"),
+                    new BareMetalMachineConfigurationData().withBmcCredentials(
+                        new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("username"))
+                        .withBmcMacAddress("AA:BB:CC:DD:EE:00")
+                        .withBootMacAddress("00:BB:CC:DD:EE:00")
+                        .withMachineDetails("extraDetails")
+                        .withMachineName("bmmName2")
+                        .withRackSlot(2L)
+                        .withSerialNumber("BM1219YYY")))
+                .withNetworkRackId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
+                .withRackSerialNumber("AA1234")
+                .withRackSkuId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                .withStorageApplianceConfigurationData(Arrays.asList(new StorageApplianceConfigurationData()
+                    .withAdminCredentials(
+                        new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("username"))
+                    .withRackSlot(1L)
+                    .withSerialNumber("BM1219XXX")
+                    .withStorageApplianceName("vmName"))))
             .withClusterType(ClusterType.SINGLE_RACK)
             .withClusterVersion("1.0.0")
             .withNetworkFabricId(
@@ -106,16 +103,17 @@ public final class ClustersCreateOrUpdateSamples {
                     .withUserAssignedIdentityResourceId(
                         "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1")))
             .withClusterLocation("Foo Street, 3rd Floor, row 9")
-            .withClusterServicePrincipal(
-                new ServicePrincipalInformation().withApplicationId("12345678-1234-1234-1234-123456789012")
-                    .withPassword("fakeTokenPlaceholder")
-                    .withPrincipalId("00000008-0004-0004-0004-000000000012")
-                    .withTenantId("80000000-4000-4000-4000-120000000000"))
             .withCommandOutputSettings(new CommandOutputSettings().withAssociatedIdentity(new IdentitySelector()
                 .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
                 .withUserAssignedIdentityResourceId(
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"))
-                .withContainerUrl("https://myaccount.blob.core.windows.net/mycontainer?restype=container"))
+                .withContainerUrl("https://myaccount.blob.core.windows.net/mycontainer?restype=container")
+                .withOverrides(Arrays.asList(new CommandOutputOverride().withAssociatedIdentity(new IdentitySelector()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"))
+                    .withCommandOutputType(CommandOutputType.STORAGE_RUN_READ_COMMANDS)
+                    .withContainerUrl("https://myaccount.blob.core.windows.net/myContainer2?restype=container"))))
             .withComputeDeploymentThreshold(
                 new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
                     .withType(ValidationThresholdType.PERCENT_SUCCESS)

@@ -15,6 +15,7 @@
     "-Pmulti-region": "MultiRegion",
     "-Pmulti-region-strong": "MultiRegionStrong",
     "-Plong": "Long",
+    "-Pfault-injection-barrier": "Fault-injection-barrier",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -22,7 +23,8 @@
     "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
-    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": ""
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }": ""
   },
   "include": [
     {
@@ -174,6 +176,16 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pflaky-multi-master", "-Pcircuit-breaker-misc-direct", "-Pcircuit-breaker-misc-gateway", "-Pcircuit-breaker-read-all-read-many", "-Pfast", "-Pdirect" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Strong\"]",
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pfault-injection-barrier" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
