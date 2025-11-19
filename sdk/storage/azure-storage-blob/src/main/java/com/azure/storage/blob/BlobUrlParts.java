@@ -111,11 +111,10 @@ public final class BlobUrlParts {
 
     /**
      * Gets the decoded container name that will be used as part of the URL path.
-     * <p>
-     * Note:
+     * <p> Note:
      * This value may differ from the original value provided to {@link #setContainerName(String)}
      * because the setter and getter do not guarantee round-trip consistency.
-     * This behavior is intentional to normalize names that may or may not be URL encoded.
+     * This behavior is intentional to normalize names that may or may not be URL encoded. </p>
      *
      * @return the decoded container name.
      */
@@ -125,12 +124,11 @@ public final class BlobUrlParts {
 
     /**
      * Sets the container name that will be used as part of the URL path.
-     * <p>
-     * Note:
+     * <p> Note:
      * The setter and getter do not guarantee round-trip consistency.
      * This is because container names with special characters may need URL encoding,
      * and this method normalizes the input by decoding and then encoding it.
-     * If the container name contains special characters, it is recommended to URL encode it.
+     * If the container name contains special characters, it is recommended to URL encode it. </p>
      *
      * @param containerName The container name. If the container name contains special characters, it should be URL encoded.
      * @return the updated BlobUrlParts object.
@@ -142,11 +140,10 @@ public final class BlobUrlParts {
 
     /**
      * Gets the decoded blob name that will be used as part of the URL path.
-     * <p>
-     * Note:
+     * <p> Note:
      * This value may differ from the original value provided to {@link #setBlobName(String)}
      * because the setter and getter do not guarantee round-trip consistency.
-     * This behavior is intentional to normalize names that may or may not be URL encoded.
+     * This behavior is intentional to normalize names that may or may not be URL encoded. </p>
      *
      * @return the decoded blob name.
      */
@@ -156,12 +153,11 @@ public final class BlobUrlParts {
 
     /**
      * Sets the blob name that will be used as part of the URL path.
-     * <p>
-     * Note:
+     * <p> Note:
      * The setter and getter do not guarantee round-trip consistency.
      * This is because blob names with special characters may need URL encoding,
      * and this method normalizes the input by decoding and then encoding it.
-     * If the blob name contains special characters, it is recommended to URL encode it.
+     * If the blob name contains special characters, it is recommended to URL encode it. </p>
      *
      * @param blobName The blob name. If the blob name contains special characters, it should be URL encoded.
      * @return the updated BlobUrlParts object.
