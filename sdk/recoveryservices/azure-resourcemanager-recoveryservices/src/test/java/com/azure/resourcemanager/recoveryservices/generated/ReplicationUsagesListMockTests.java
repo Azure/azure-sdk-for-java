@@ -22,7 +22,7 @@ public final class ReplicationUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":2143349080,\"unHealthyProviderCount\":109668081,\"eventsCount\":294676582,\"deprecatedProviderCount\":2066979028,\"supportedProviderCount\":1480663750,\"unsupportedProviderCount\":1663002651},\"jobsSummary\":{\"failedJobs\":1207488512,\"suspendedJobs\":402779247,\"inProgressJobs\":868372706},\"protectedItemCount\":1454263457,\"recoveryPlanCount\":373907539,\"registeredServersCount\":1344502344,\"recoveryServicesProviderAuthType\":41792863}]}";
+            = "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":1257406932,\"unHealthyProviderCount\":118794160,\"eventsCount\":1324146324,\"deprecatedProviderCount\":1193975954,\"supportedProviderCount\":459767106,\"unsupportedProviderCount\":3568430},\"jobsSummary\":{\"failedJobs\":1518598912,\"suspendedJobs\":1488418313,\"inProgressJobs\":121454695},\"protectedItemCount\":1757688267,\"recoveryPlanCount\":1073132708,\"registeredServersCount\":2107317095,\"recoveryServicesProviderAuthType\":306696017}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,20 @@ public final class ReplicationUsagesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ReplicationUsage> response
-            = manager.replicationUsages().list("ajqgxy", "mocmbqfqvmk", com.azure.core.util.Context.NONE);
+            = manager.replicationUsages().list("pkeqdcvdrhvoo", "sotbob", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(2143349080, response.iterator().next().monitoringSummary().unHealthyVmCount());
-        Assertions.assertEquals(109668081, response.iterator().next().monitoringSummary().unHealthyProviderCount());
-        Assertions.assertEquals(294676582, response.iterator().next().monitoringSummary().eventsCount());
-        Assertions.assertEquals(2066979028, response.iterator().next().monitoringSummary().deprecatedProviderCount());
-        Assertions.assertEquals(1480663750, response.iterator().next().monitoringSummary().supportedProviderCount());
-        Assertions.assertEquals(1663002651, response.iterator().next().monitoringSummary().unsupportedProviderCount());
-        Assertions.assertEquals(1207488512, response.iterator().next().jobsSummary().failedJobs());
-        Assertions.assertEquals(402779247, response.iterator().next().jobsSummary().suspendedJobs());
-        Assertions.assertEquals(868372706, response.iterator().next().jobsSummary().inProgressJobs());
-        Assertions.assertEquals(1454263457, response.iterator().next().protectedItemCount());
-        Assertions.assertEquals(373907539, response.iterator().next().recoveryPlanCount());
-        Assertions.assertEquals(1344502344, response.iterator().next().registeredServersCount());
-        Assertions.assertEquals(41792863, response.iterator().next().recoveryServicesProviderAuthType());
+        Assertions.assertEquals(1257406932, response.iterator().next().monitoringSummary().unHealthyVmCount());
+        Assertions.assertEquals(118794160, response.iterator().next().monitoringSummary().unHealthyProviderCount());
+        Assertions.assertEquals(1324146324, response.iterator().next().monitoringSummary().eventsCount());
+        Assertions.assertEquals(1193975954, response.iterator().next().monitoringSummary().deprecatedProviderCount());
+        Assertions.assertEquals(459767106, response.iterator().next().monitoringSummary().supportedProviderCount());
+        Assertions.assertEquals(3568430, response.iterator().next().monitoringSummary().unsupportedProviderCount());
+        Assertions.assertEquals(1518598912, response.iterator().next().jobsSummary().failedJobs());
+        Assertions.assertEquals(1488418313, response.iterator().next().jobsSummary().suspendedJobs());
+        Assertions.assertEquals(121454695, response.iterator().next().jobsSummary().inProgressJobs());
+        Assertions.assertEquals(1757688267, response.iterator().next().protectedItemCount());
+        Assertions.assertEquals(1073132708, response.iterator().next().recoveryPlanCount());
+        Assertions.assertEquals(2107317095, response.iterator().next().registeredServersCount());
+        Assertions.assertEquals(306696017, response.iterator().next().recoveryServicesProviderAuthType());
     }
 }
