@@ -3,6 +3,7 @@ pr: none
 
 parameters:
 - name: TestPipeline
+  displayName: Test Run Without Version Changes
   type: boolean
   default: false
 
