@@ -316,12 +316,9 @@ storage_com.microsoft.azure:azure-storage;8.6.6
 # sdk\spring\pom.xml modules
 springboot3_com.diffplug.spotless:spotless-maven-plugin;2.30.0
 springboot3_com.fasterxml.jackson.core:jackson-annotations;2.20
-springboot3_com.fasterxml.jackson.core:jackson-core;2.20.1
 springboot3_com.fasterxml.jackson.core:jackson-databind;2.20.1
-springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.20.1
 springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.20.1
 springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.20.1
-springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;2.20.1
 springboot3_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.1
 springboot3_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 springboot3_com.google.code.findbugs:jsr305;3.0.2
