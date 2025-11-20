@@ -87,11 +87,11 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
-            ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
-                allEqualOrLowerConsistencies(accountConsistency)));
+                ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
+                                          allEqualOrLowerConsistencies(accountConsistency)));
         preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
-            ImmutableList.of(Protocol.TCP));
+                                              ImmutableList.of(Protocol.TCP));
         //  Object mapper configuration
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
@@ -475,9 +475,9 @@ public abstract class TestSuiteBase extends DocumentClientTest {
     }
 
     public Flux<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
-                                                       String collectionLink,
-                                                       List<Document> documentDefinitionList,
-                                                       int concurrencyLevel) {
+                                                             String collectionLink,
+                                                             List<Document> documentDefinitionList,
+                                                             int concurrencyLevel) {
         ArrayList<Mono<ResourceResponse<Document>>> result = new ArrayList<>(documentDefinitionList.size());
         for (Document docDef : documentDefinitionList) {
             result.add(client.createDocument(collectionLink, docDef, null, false));
@@ -487,8 +487,8 @@ public abstract class TestSuiteBase extends DocumentClientTest {
     }
 
     public Flux<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
-                                                       String collectionLink,
-                                                       List<Document> documentDefinitionList) {
+                                                             String collectionLink,
+                                                             List<Document> documentDefinitionList) {
         return bulkInsert(client, collectionLink, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
     }
 
@@ -838,9 +838,9 @@ public abstract class TestSuiteBase extends DocumentClientTest {
     @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
-            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)},
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true)}
+                {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)},
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true)}
         };
     }
 
@@ -907,15 +907,15 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
         for (Protocol protocol : protocols) {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel,
-                protocol,
-                isMultiMasterEnabled,
-                preferredLocations, contentResponseOnWriteEnabled)));
+                                                                                                    protocol,
+                                                                                                    isMultiMasterEnabled,
+                                                                                                    preferredLocations, contentResponseOnWriteEnabled)));
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-            b.getConnectionPolicy().getConnectionMode(),
-            b.getDesiredConsistencyLevel(),
-            b.getConfigs().getProtocol()
+                                          b.getConnectionPolicy().getConnectionMode(),
+                                          b.getDesiredConsistencyLevel(),
+                                          b.getConfigs().getProtocol()
         ));
 
         return builders.stream().map(b -> new Object[]{b}).collect(Collectors.toList()).toArray(new Object[0][]);
@@ -997,15 +997,15 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
         for (Protocol protocol : protocols) {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel,
-                protocol,
-                isMultiMasterEnabled,
-                preferredLocations, contentResponseOnWriteEnabled)));
+                                                                                                    protocol,
+                                                                                                    isMultiMasterEnabled,
+                                                                                                    preferredLocations, contentResponseOnWriteEnabled)));
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-            b.getConnectionPolicy().getConnectionMode(),
-            b.getDesiredConsistencyLevel(),
-            b.getConfigs().getProtocol()
+                                          b.getConnectionPolicy().getConnectionMode(),
+                                          b.getDesiredConsistencyLevel(),
+                                          b.getConfigs().getProtocol()
         ));
 
         return builders.stream().map(b -> new Object[]{b}).collect(Collectors.toList()).toArray(new Object[0][]);
@@ -1018,14 +1018,14 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setThrottlingRetryOptions(options);
         return new Builder()
-            .withServiceEndpoint(TestConfigurations.HOST)
-            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION)
-            .withContentResponseOnWriteEnabled(true)
-            .withClientTelemetryConfig(
-                new CosmosClientTelemetryConfig()
-                    .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withContentResponseOnWriteEnabled(true)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
@@ -1034,14 +1034,14 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         connectionPolicy.setMultipleWriteRegionsEnabled(multiMasterEnabled);
         connectionPolicy.setPreferredRegions(preferredLocations);
         return new Builder()
-            .withServiceEndpoint(TestConfigurations.HOST)
-            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(consistencyLevel)
-            .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-            .withClientTelemetryConfig(
-                new CosmosClientTelemetryConfig()
-                    .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     static protected Builder createGatewayRxDocumentClient() {
@@ -1073,8 +1073,8 @@ public abstract class TestSuiteBase extends DocumentClientTest {
                             .withConfigs(configs)
                             .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                             .withClientTelemetryConfig(
-                                new CosmosClientTelemetryConfig()
-                                    .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
 
     }
 
@@ -1085,9 +1085,9 @@ public abstract class TestSuiteBase extends DocumentClientTest {
     @DataProvider(name = "queryMetricsArgProvider")
     public Object[][] queryMetricsArgProvider() {
         return new Object[][]{
-            {true},
-            {false},
-            {null}
+                {true},
+                {false},
+                {null}
         };
     }
 }
