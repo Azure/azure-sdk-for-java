@@ -85,22 +85,6 @@ extends:
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true
-    Artifacts:
-      - name: azure-sdk-template
-        groupId: com.azure
-        safeName: azuresdktemplate
-        releaseInBatch: ${{ parameters.release_azuresdktemplate }}
-        skipPublishDocMs: true
-      - name: azure-sdk-template-two
-        groupId: com.azure
-        safeName: azuresdktemplatetwo
-        releaseInBatch: ${{ parameters.release_azuresdktemplatetwo }}
-        skipPublishDocMs: true
-      - name: azure-sdk-template-three
-        groupId: com.azure
-        safeName: azuresdktemplatethree
-        releaseInBatch: ${{ parameters.release_azuresdktemplatethree }}
-        skipPublishDocMs: true
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
