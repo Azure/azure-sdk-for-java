@@ -3,7 +3,9 @@
 ## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
+
 - Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
+- Added audience policy to provide more meaningful error messages for Azure Active Directory authentication failures. The policy detects AAD audience-related errors and provides clear guidance on audience configuration issues.
 
 ### Breaking Changes
 
