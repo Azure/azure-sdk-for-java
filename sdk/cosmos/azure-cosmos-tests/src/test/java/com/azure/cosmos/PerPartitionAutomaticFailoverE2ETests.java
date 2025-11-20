@@ -69,9 +69,11 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.util.ReferenceCountUtil;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -95,6 +97,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -212,6 +215,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
+    private CosmosAsyncClient sharedClient;
     private CosmosAsyncDatabase sharedDatabase;
     private CosmosAsyncContainer sharedSinglePartitionContainer;
     private AccountLevelLocationContext accountLevelLocationReadableLocationContext;
@@ -462,10 +466,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-region"})
     public void beforeClass() {
-        CosmosAsyncClient cosmosAsyncClient = getClientBuilder().buildAsyncClient();
+        this.sharedClient = getClientBuilder().buildAsyncClient();
 
-        this.sharedDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
-        this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(cosmosAsyncClient);
+        this.sharedDatabase = getSharedCosmosDatabase(this.sharedClient);
+        this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(this.sharedClient);
 
         ONLY_GATEWAY_MODE.add(ConnectionMode.GATEWAY);
         ONLY_DIRECT_MODE.add(ConnectionMode.DIRECT);
@@ -473,11 +477,18 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         ALL_CONNECTION_MODES.add(ConnectionMode.DIRECT);
         ALL_CONNECTION_MODES.add(ConnectionMode.GATEWAY);
 
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(this.sharedClient);
         GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
         DatabaseAccount databaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
 
         this.accountLevelLocationReadableLocationContext = getAccountLevelLocationContext(databaseAccountSnapshot, false);
+    }
+
+    @AfterClass(groups = {"multi-region"})
+    public void afterClass() throws InterruptedException {
+        safeClose(this.sharedClient);
+        System.gc();
+        Thread.sleep(10_000);
     }
 
     @DataProvider(name = "ppafTestConfigsWithWriteOps")
@@ -2821,32 +2832,49 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
             @Override
             public Mono<ByteBuf> body() {
-                try {
-
-                    if (resourceType == ResourceType.DatabaseAccount) {
-                        return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, databaseAccount.toJson()));
-                    }
-
-                    if (operationType == OperationType.Batch) {
-                        FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
-
-                        fakeBatchResponse
-                            .seteTag("1")
-                            .setStatusCode(HttpConstants.StatusCodes.OK)
-                            .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
-                            .setRequestCharge(1.0d)
-                            .setResourceBody(getTestPojoObject())
-                            .setRetryAfterMilliseconds("1");
-
-                        return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
-                            OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse))));
-                    }
-
-                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
-                        OBJECT_MAPPER.writeValueAsString(testPojo)));
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
+                if (resourceType == ResourceType.DatabaseAccount) {
+                    return createAutoReleasingMono(
+                        () -> ByteBufUtil.writeUtf8(
+                            ByteBufAllocator.DEFAULT,
+                            databaseAccount.toJson()
+                        ));
                 }
+
+                if (operationType == OperationType.Batch) {
+                    FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
+
+                    fakeBatchResponse
+                        .seteTag("1")
+                        .setStatusCode(HttpConstants.StatusCodes.OK)
+                        .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
+                        .setRequestCharge(1.0d)
+                        .setResourceBody(getTestPojoObject())
+                        .setRetryAfterMilliseconds("1");
+
+                    return createAutoReleasingMono(
+                        () -> {
+                            try {
+                                return ByteBufUtil.writeUtf8(
+                                    ByteBufAllocator.DEFAULT,
+                                    OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse))
+                                );
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                }
+
+                return createAutoReleasingMono(
+                    () -> {
+                        try {
+                            return ByteBufUtil.writeUtf8(
+                                ByteBufAllocator.DEFAULT,
+                                OBJECT_MAPPER.writeValueAsString(testPojo)
+                            );
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
             }
 
             @Override
@@ -2883,5 +2911,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         } catch (URISyntaxException e) {
             return httpResponse;
         }
+    }
+
+    private Mono<ByteBuf> createAutoReleasingMono(Supplier<ByteBuf> bufferSupplier) {
+        final AtomicReference<ByteBuf> output = new AtomicReference<>(null);
+
+        return Mono
+            .fromCallable(() -> {
+                ByteBuf buf = bufferSupplier.get();
+                output.set(buf);
+
+                return buf;
+            })
+            .doOnDiscard(ByteBuf.class, ReferenceCountUtil::safeRelease)
+            .doFinally(signalType -> ReferenceCountUtil.safeRelease(output.get()));
     }
 }
