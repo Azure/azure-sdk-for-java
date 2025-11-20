@@ -3976,6 +3976,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void directoryNameEncodingOnGetPathUrl() {
+        DataLakeDirectoryAsyncClient directoryClient
+            = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient("my directory");
+        String expectedName = "my%20directory";
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
+
+    @Test
     public void listPathsStartFrom() {
         String dirName = generatePathName();
 
@@ -3986,5 +3994,4 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(response.collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
     }
-
 }

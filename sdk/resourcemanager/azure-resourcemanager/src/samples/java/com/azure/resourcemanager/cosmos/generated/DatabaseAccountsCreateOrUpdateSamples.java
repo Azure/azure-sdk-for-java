@@ -19,6 +19,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParame
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseRestoreResource;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
@@ -43,7 +44,8 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/
      * CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
@@ -83,12 +85,14 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                         new DatabaseRestoreResource().withDatabaseName("db1")
                             .withCollectionNames(Arrays.asList("collection1", "collection2")),
                         new DatabaseRestoreResource().withDatabaseName("db2")
-                            .withCollectionNames(Arrays.asList("collection3", "collection4")))))
+                            .withCollectionNames(Arrays.asList("collection3", "collection4"))))
+                    .withSourceBackupLocation("westus"))
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/
      * CosmosDBDatabaseAccountCreateMax.json
      */
     /**
@@ -143,11 +147,14 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000))
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS12)
                 .withEnableBurstCapacity(true)
-                .withEnablePerRegionPerPartitionAutoscale(true), com.azure.core.util.Context.NONE);
+                .withEnablePerRegionPerPartitionAutoscale(true)
+                .withEnablePriorityBasedExecution(true)
+                .withDefaultPriorityLevel(DefaultPriorityLevel.LOW), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/
      * CosmosDBDatabaseAccountCreateMin.json
      */
     /**

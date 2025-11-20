@@ -22,7 +22,7 @@ public final class DeletedVaultsUndeleteMockTests {
     @Test
     public void testUndelete() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vaultId\":\"wiwubm\",\"vaultDeletionTime\":\"2021-05-28T18:40:12Z\",\"purgeAt\":\"2021-02-22T15:24:40Z\"},\"id\":\"dnkwwtppjflcxog\",\"name\":\"okonzmnsikvmkqz\",\"type\":\"qqkdltfzxmhhvhgu\"}";
+            = "{\"properties\":{\"vaultId\":\"d\",\"vaultDeletionTime\":\"2021-11-22T15:14:34Z\",\"purgeAt\":\"2021-03-06T05:36:52Z\"},\"id\":\"dxssadbzm\",\"name\":\"vdfznudaodvxzb\",\"type\":\"cblylpstdbhhxsr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class DeletedVaultsUndeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeletedVault response = manager.deletedVaults()
-            .undelete("emwabnet", "hhszh",
+            .undelete("aolps", "lqlfm",
                 new DeletedVaultUndeleteInput()
-                    .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("d")),
+                    .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("dnbbglzps")),
                 com.azure.core.util.Context.NONE);
 
     }

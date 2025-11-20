@@ -373,7 +373,7 @@ def set_or_increase_version(
 def is_windows():
     return platform.system().lower() == "windows"
 
-
+# Get the latest release version based on current version. If current version is beta, get latest beta version; if current version is GA, get latest GA version.
 def get_latest_release_version(previous_version: str, current_version: str) -> str:
     if "-beta." in current_version and "-beta." not in previous_version:
         # if current version is preview, try compare it with a previous preview release

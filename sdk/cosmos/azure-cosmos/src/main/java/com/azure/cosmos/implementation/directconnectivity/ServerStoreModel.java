@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Flux;
@@ -100,5 +101,10 @@ public class ServerStoreModel implements RxStoreModel {
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.storeClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeClient.registerTransportClientInterceptor(transportClientInterceptor);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class IpamPoolsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/IpamPools_Create.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/IpamPools_Create.json
      */
     /**
      * Sample code: IpamPools_Create.

@@ -2394,7 +2394,21 @@ public class FileSystemApiTests extends DataLakeTestBase {
         // Act
         FileSystemAccessPolicies response = fileSystemClient.getAccessPolicy();
         fileSystemClient.setAccessPolicy(null, response.getIdentifiers());
+    }
 
+    @Test
+    public void fileSystemNameEncodingOnGetFileSystemUrl() {
+        DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        assertTrue(fileSystemClient.getFileSystemUrl().contains(expectedName));
+    }
+
+    @Test
+    public void fileSystemNameEncodingOnGetPathUrl() {
+        DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        DataLakeDirectoryClient directoryClient = fileSystemClient.getDirectoryClient(generatePathName());
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
     }
 
     @Test

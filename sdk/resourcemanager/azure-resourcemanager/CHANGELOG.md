@@ -18,7 +18,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-01-01`.
+- Updated `api-version` to `2025-03-01`.
 
 #### Features Added
 
@@ -35,6 +35,12 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2025-09-01`.
+
+### azure-resourcemanager-cosmos
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-15`
 
 ## 2.56.0 (2025-10-31)
 

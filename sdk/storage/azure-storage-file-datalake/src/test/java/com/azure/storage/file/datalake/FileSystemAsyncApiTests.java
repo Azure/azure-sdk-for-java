@@ -2569,6 +2569,23 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void fileSystemNameEncodingOnGetFileSystemUrl() {
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        assertTrue(fileSystemClient.getFileSystemUrl().contains(expectedName));
+    }
+
+    @Test
+    public void fileSystemNameEncodingOnGetPathUrl() {
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        DataLakeDirectoryAsyncClient directoryClient = fileSystemClient.getDirectoryAsyncClient(generatePathName());
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
+
+    @Test
     public void listPathsStartFrom() {
         String dirName = generatePathName();
         DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
@@ -2588,5 +2605,4 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
                 .then(baz.createSubdirectory("bar/foo"));
         });
     }
-
 }

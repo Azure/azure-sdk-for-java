@@ -3618,6 +3618,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void directoryNameEncodingOnGetPathUrl() {
+        DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("my directory");
+        String expectedName = "my%20directory";
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
+
+    @Test
     public void listPathsStartFrom() {
         String dirName = generatePathName();
         DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
@@ -3629,5 +3636,4 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         assertEquals(3, pathsFromFoo.size());
     }
-
 }
