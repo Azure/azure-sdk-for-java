@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 public final class VirtualHubIpConfigurationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualHubIpConfigurationPut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualHubIpConfigurationPut.
      * json
      */
     /**

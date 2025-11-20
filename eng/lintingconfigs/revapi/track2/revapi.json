@@ -761,6 +761,16 @@
           "code" : "java.field.addedStaticField",
           "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
           "justification" : "Not a break."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.ApplicationGatewayWafRuleSensitivityTypes.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
         }
       ]
     }
