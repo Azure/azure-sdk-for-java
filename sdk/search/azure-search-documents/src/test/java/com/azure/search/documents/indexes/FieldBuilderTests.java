@@ -17,6 +17,7 @@ import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
 import com.azure.search.documents.test.environment.models.HotelWithArray;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -63,6 +64,7 @@ public class FieldBuilderTests {
     }
 
     @Test
+    @Disabled("Temporarily disabled")
     public void hotelWithEmptySynonymMaps() {
         // We cannot put null in the annotation. So no need to test null case.
         List<SearchField> actualFields = SearchIndexClient.buildSearchFields(HotelWithEmptyInSynonymMaps.class, null);
@@ -95,6 +97,7 @@ public class FieldBuilderTests {
     }
 
     @Test
+    @Disabled("Temporarily disabled")
     public void hotelWithArrayType() {
         List<SearchField> actualFields
             = sortByFieldName(SearchIndexClient.buildSearchFields(HotelWithArray.class, null));

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * inferenceClassificationOverride.
+ * Represents an inference classification override.
  */
 @Fluent
 public final class MicrosoftGraphInferenceClassificationOverride extends MicrosoftGraphEntity {

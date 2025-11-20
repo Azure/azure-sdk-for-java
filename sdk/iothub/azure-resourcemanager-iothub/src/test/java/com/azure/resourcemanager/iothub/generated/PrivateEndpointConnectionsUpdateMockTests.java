@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
@@ -26,29 +26,30 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"vcyy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fgdo\",\"actionsRequired\":\"ubiipuipwoqonma\"}},\"id\":\"jeknizshq\",\"name\":\"cimpevfg\",\"type\":\"b\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"av\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"qdzfvazivjlfrqtt\",\"actionsRequired\":\"jlkatnwxy\"}},\"id\":\"opidkqqfkuv\",\"name\":\"cxkdmligovi\",\"type\":\"rxkpmloazuruoc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .update("axconfozauo", "sukokwbqplhl", "nuuepzlrp",
+            .update("cgxxlxs", "fgcviz", "zdwlvwlyoupfgfb",
                 new PrivateEndpointConnectionInner()
                     .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                         .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                            .withDescription("nrwrbiork")
-                            .withActionsRequired("lywjhh"))),
+                            .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                            .withDescription("tsttktlahbq")
+                            .withActionsRequired("tx"))),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fgdo", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ubiipuipwoqonma",
+        Assertions.assertEquals("qdzfvazivjlfrqtt",
+            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jlkatnwxy",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

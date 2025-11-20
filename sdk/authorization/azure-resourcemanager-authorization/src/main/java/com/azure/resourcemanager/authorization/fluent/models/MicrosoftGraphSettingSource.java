@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * settingSource.
+ * Represents a setting source.
  */
 @Fluent
 public final class MicrosoftGraphSettingSource implements JsonSerializable<MicrosoftGraphSettingSource> {

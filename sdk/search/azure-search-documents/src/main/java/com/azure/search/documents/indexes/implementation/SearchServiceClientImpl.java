@@ -104,17 +104,17 @@ public final class SearchServiceClientImpl {
     }
 
     /**
-     * The KnowledgeAgentsImpl object to access its operations.
+     * The KnowledgeBasesImpl object to access its operations.
      */
-    private final KnowledgeAgentsImpl knowledgeAgents;
+    private final KnowledgeBasesImpl knowledgeBases;
 
     /**
-     * Gets the KnowledgeAgentsImpl object to access its operations.
+     * Gets the KnowledgeBasesImpl object to access its operations.
      * 
-     * @return the KnowledgeAgentsImpl object.
+     * @return the KnowledgeBasesImpl object.
      */
-    public KnowledgeAgentsImpl getKnowledgeAgents() {
-        return this.knowledgeAgents;
+    public KnowledgeBasesImpl getKnowledgeBases() {
+        return this.knowledgeBases;
     }
 
     /**
@@ -251,7 +251,7 @@ public final class SearchServiceClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
-        this.knowledgeAgents = new KnowledgeAgentsImpl(this);
+        this.knowledgeBases = new KnowledgeBasesImpl(this);
         this.knowledgeSources = new KnowledgeSourcesImpl(this);
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);

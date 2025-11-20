@@ -17,7 +17,7 @@ MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{ver
 
 SDK_ROOT = "../../"  # related to file dir
 AUTOREST_CORE_VERSION = "3.9.7"
-AUTOREST_JAVA = "@autorest/java@4.1.59"
+AUTOREST_JAVA = "@autorest/java@4.1.60"
 DEFAULT_VERSION = "1.0.0-beta.1"
 GROUP_ID = "com.azure.resourcemanager"
 API_SPECS_FILE = "api-specs.yaml"

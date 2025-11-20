@@ -28,6 +28,9 @@
   "packageOptions": {
     "buildScript": {
       "command": "mvn clean package -f {packagePath} -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
+    },
+    "updateChangelogContentScript": {
+      "path": "./eng/scripts/Automation-Sdk-UpdateChangelog.ps1"
     }
   }
 }

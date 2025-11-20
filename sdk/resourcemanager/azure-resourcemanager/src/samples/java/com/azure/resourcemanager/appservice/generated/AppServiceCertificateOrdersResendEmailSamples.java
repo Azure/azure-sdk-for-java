@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceCertificateOrdersResendEmailSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
-     * ResendAppServiceCertificateOrderEmail.json
+     * specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/
+     * stable/2024-11-01/examples/ResendAppServiceCertificateOrderEmail.json
      */
     /**
      * Sample code: Resend App Service Certificate Order email.

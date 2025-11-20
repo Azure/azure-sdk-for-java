@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DomainsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/DeleteAppServiceDomain
-     * .json
+     * specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-
+     * 01/examples/DeleteAppServiceDomain.json
      */
     /**
      * Sample code: Delete App Service Domain.

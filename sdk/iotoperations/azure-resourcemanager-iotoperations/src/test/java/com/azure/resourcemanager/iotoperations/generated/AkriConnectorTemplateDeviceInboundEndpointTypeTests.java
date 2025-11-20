@@ -5,46 +5,29 @@
 package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointType;
 import org.junit.jupiter.api.Assertions;
 
 public final class AkriConnectorTemplateDeviceInboundEndpointTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AkriConnectorTemplateDeviceInboundEndpointType model = BinaryData.fromString(
-            "{\"description\":\"sx\",\"endpointType\":\"ojmsvpkjprvkwc\",\"version\":\"ql\",\"configurationSchemaRefs\":{\"defaultDatasetConfigSchemaRef\":\"gtczheydb\",\"defaultEventsConfigSchemaRef\":\"shmkxmaehvbbxur\",\"defaultProcessControlConfigSchemaRef\":\"ltfnhtbaxkgx\",\"defaultStreamsConfigSchemaRef\":\"rc\",\"additionalConfigSchemaRef\":\"yklyhpluodpvruud\"}}")
+        AkriConnectorTemplateDeviceInboundEndpointType model = BinaryData
+            .fromString("{\"displayName\":\"njwmwkpnbsazejj\",\"endpointType\":\"qkagfhsxt\",\"version\":\"ugzxnf\"}")
             .toObject(AkriConnectorTemplateDeviceInboundEndpointType.class);
-        Assertions.assertEquals("sx", model.description());
-        Assertions.assertEquals("ojmsvpkjprvkwc", model.endpointType());
-        Assertions.assertEquals("ql", model.version());
-        Assertions.assertEquals("gtczheydb", model.configurationSchemaRefs().defaultDatasetConfigSchemaRef());
-        Assertions.assertEquals("shmkxmaehvbbxur", model.configurationSchemaRefs().defaultEventsConfigSchemaRef());
-        Assertions.assertEquals("ltfnhtbaxkgx", model.configurationSchemaRefs().defaultProcessControlConfigSchemaRef());
-        Assertions.assertEquals("rc", model.configurationSchemaRefs().defaultStreamsConfigSchemaRef());
-        Assertions.assertEquals("yklyhpluodpvruud", model.configurationSchemaRefs().additionalConfigSchemaRef());
+        Assertions.assertEquals("njwmwkpnbsazejj", model.displayName());
+        Assertions.assertEquals("qkagfhsxt", model.endpointType());
+        Assertions.assertEquals("ugzxnf", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateDeviceInboundEndpointType model
-            = new AkriConnectorTemplateDeviceInboundEndpointType().withDescription("sx")
-                .withEndpointType("ojmsvpkjprvkwc")
-                .withVersion("ql")
-                .withConfigurationSchemaRefs(new AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs()
-                    .withDefaultDatasetConfigSchemaRef("gtczheydb")
-                    .withDefaultEventsConfigSchemaRef("shmkxmaehvbbxur")
-                    .withDefaultProcessControlConfigSchemaRef("ltfnhtbaxkgx")
-                    .withDefaultStreamsConfigSchemaRef("rc")
-                    .withAdditionalConfigSchemaRef("yklyhpluodpvruud"));
+            = new AkriConnectorTemplateDeviceInboundEndpointType().withDisplayName("njwmwkpnbsazejj")
+                .withEndpointType("qkagfhsxt")
+                .withVersion("ugzxnf");
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateDeviceInboundEndpointType.class);
-        Assertions.assertEquals("sx", model.description());
-        Assertions.assertEquals("ojmsvpkjprvkwc", model.endpointType());
-        Assertions.assertEquals("ql", model.version());
-        Assertions.assertEquals("gtczheydb", model.configurationSchemaRefs().defaultDatasetConfigSchemaRef());
-        Assertions.assertEquals("shmkxmaehvbbxur", model.configurationSchemaRefs().defaultEventsConfigSchemaRef());
-        Assertions.assertEquals("ltfnhtbaxkgx", model.configurationSchemaRefs().defaultProcessControlConfigSchemaRef());
-        Assertions.assertEquals("rc", model.configurationSchemaRefs().defaultStreamsConfigSchemaRef());
-        Assertions.assertEquals("yklyhpluodpvruud", model.configurationSchemaRefs().additionalConfigSchemaRef());
+        Assertions.assertEquals("njwmwkpnbsazejj", model.displayName());
+        Assertions.assertEquals("qkagfhsxt", model.endpointType());
+        Assertions.assertEquals("ugzxnf", model.version());
     }
 }
