@@ -2597,12 +2597,12 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     private Mono<DataLakeDirectoryAsyncClient> setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
-        return client.createSubdirectory("foo").flatMap(foo -> {
-            return foo.createSubdirectory("foo").then(foo.createSubdirectory("bar"));
-        }).then(client.createSubdirectory("bar")).then(client.createSubdirectory("baz")).flatMap(baz -> {
-            return baz.createSubdirectory("foo")
+        return client.createSubdirectory("foo")
+            .flatMap(foo -> foo.createSubdirectory("foo").then(foo.createSubdirectory("bar")))
+            .then(client.createSubdirectory("bar"))
+            .then(client.createSubdirectory("baz"))
+            .flatMap(baz -> baz.createSubdirectory("foo")
                 .flatMap(foo2 -> foo2.createSubdirectory("bar"))
-                .then(baz.createSubdirectory("bar/foo"));
-        });
+                .then(baz.createSubdirectory("bar/foo")));
     }
 }

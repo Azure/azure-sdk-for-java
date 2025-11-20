@@ -15,7 +15,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.52'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/feature/storage/stg100base/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
