@@ -19,7 +19,6 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CustomNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
@@ -35,7 +34,6 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
@@ -69,18 +67,12 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.util.ResourceLeakDetector;
-import io.netty.util.internal.PlatformDependent;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
 import org.testng.ITestContext;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
@@ -89,8 +81,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.management.BufferPoolMXBean;
-import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,27 +203,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
-        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public void beforeClassTestSuiteBase() {
-        logger.info("beforeClassTestSuiteBase {}", this.getClass().getCanonicalName());
-        logMemoryUsage("beforeClassTestSuiteBase");
-    }
-
-    @AfterClass(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
-        "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public void afterClassTestSuiteBase() {
-        logger.info("afterClassTestSuiteBase {}", this.getClass().getCanonicalName());
-        logMemoryUsage("afterClassTestSuiteBase");
-    }
-
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "fault-injection-barrier"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
-        logMemoryUsage("beforeSuite");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
@@ -252,7 +227,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     public void afterSuite() {
 
         logger.info("afterSuite Started");
-        logMemoryUsage("afterSuite");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             safeDeleteDatabase(SHARED_DATABASE);
@@ -281,58 +255,28 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         int maxItemCount = 100;
 
         cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(doc -> {
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(doc -> {
 
-                PartitionKey partitionKey = null;
+                           PartitionKey partitionKey = null;
 
-                Object propertyValue = null;
-                if (paths != null && !paths.isEmpty()) {
-                    List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = doc.getObjectByPath(pkPath);
-                    if (propertyValue == null) {
-                        partitionKey = PartitionKey.NONE;
-                    } else {
-                        partitionKey = new PartitionKey(propertyValue);
-                    }
-                } else {
-                    partitionKey = new PartitionKey(null);
-                }
+                           Object propertyValue = null;
+                           if (paths != null && !paths.isEmpty()) {
+                               List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                               propertyValue = doc.getObjectByPath(pkPath);
+                               if (propertyValue == null) {
+                                   partitionKey = PartitionKey.NONE;
+                               } else {
+                                   partitionKey = new PartitionKey(propertyValue);
+                               }
+                           } else {
+                               partitionKey = new PartitionKey(null);
+                           }
 
-                final PartitionKey pkSnapshot = partitionKey;
-
-                CosmosItemRequestOptions deleteOptions = new CosmosItemRequestOptions();
-                deleteOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
-                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .build()
-                );
-
-                return cosmosContainer
-                    .deleteItem(doc.getId(), partitionKey, deleteOptions)
-                    .onErrorResume(t -> {
-                        if (!(t instanceof CosmosException)) {
-                            logger.error("Unexpected failure trying to delete document |{}|/{}", pkSnapshot, doc.getId(), t);
-                            return Mono.error(t);
-                        }
-
-                        CosmosException cosmosError = (CosmosException)t;
-                        if (cosmosError.getStatusCode() == 404 && cosmosError.getSubStatusCode() == 0) {
-                            return Mono.empty();
-                        }
-
-                        if (cosmosError.getStatusCode() == 408
-                            && cosmosError.getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
-
-                            logger.warn("Timeout trying to delete document |{}|/{}", pkSnapshot, doc.getId(), cosmosError);
-                            return Mono.empty();
-                        }
-
-                        logger.error("Failed to delete document |{}|/{}", pkSnapshot, doc.getId(), cosmosError);
-                        return Mono.error(cosmosError);
-                    });
-            }).then().block();
+                           return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                       }).then().block();
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
@@ -682,7 +626,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<T> documentDefinitionList) {
+                                          List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .map(itemResponse -> itemResponse.getItem())
@@ -804,8 +748,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosAsyncDatabase database = client.getDatabase(databaseId);
         database.read().block();
         List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null)
-            .collectList()
-            .block();
+                                                      .collectList()
+                                                      .block();
 
         if (!res.isEmpty()) {
             deleteCollection(database, collectionId);
@@ -903,8 +847,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
-            .collectList()
-            .block();
+                                                   .collectList()
+                                                   .block();
         if (res.size() != 0) {
             CosmosAsyncDatabase database = client.getDatabase(databaseId);
             database.read().block();
@@ -940,8 +884,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
-                .collectList()
-                .block();
+                                                                  .collectList()
+                                                                  .block();
 
             for(CosmosContainerProperties collection: collections) {
                 database.getContainer(collection.getId()).delete().block();
@@ -1014,13 +958,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             }
         }
     }
-
-    static protected void safeClose(QueryFeedOperationState client) {
-        if (client != null) {
-            safeClose(client.getClient());
-        }
-    }
-
 
     static protected void safeCloseSyncClient(CosmosClient client) {
         if (client != null) {
@@ -1104,12 +1041,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
-                                                          FeedResponseListValidator<T> validator) {
+                                         FeedResponseListValidator<T> validator) {
         validateQuerySuccess(flowable, validator, subscriberValidationTimeout);
     }
 
     public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
-                                                                 FeedResponseListValidator<T> validator, long timeout) {
+                                                FeedResponseListValidator<T> validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
 
@@ -1170,7 +1107,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
-                                                                 FailureValidator validator, long timeout) {
+                                                FailureValidator validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
 
@@ -1210,7 +1147,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] clientBuilderSolelyDirectWithSessionConsistency() {
         return new Object[][]{
-                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
+            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
         };
     }
 
@@ -1570,12 +1507,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
-            .credential(credential)
-            .gatewayMode(gatewayConnectionConfig)
-            .multipleWriteRegionsEnabled(multiMasterEnabled)
-            .preferredRegions(preferredRegions)
-            .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-            .consistencyLevel(consistencyLevel);
+                                                               .credential(credential)
+                                                               .gatewayMode(gatewayConnectionConfig)
+                                                               .multipleWriteRegionsEnabled(multiMasterEnabled)
+                                                               .preferredRegions(preferredRegions)
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                                               .consistencyLevel(consistencyLevel);
         ImplementationBridgeHelpers
             .CosmosClientBuilderHelper
             .getCosmosClientBuilderAccessor()
@@ -1679,4 +1616,5 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         return "";
     }
+
 }
