@@ -371,7 +371,7 @@ springboot3_org.springframework.boot:spring-boot-starter-data-jdbc;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter-integration;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter-parent;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter-test;4.0.0-RC2
-springboot3_org.springframework.boot:spring-boot-starter-web;4.0.0-RC2
+springboot3_org.springframework.boot:spring-boot-starter-webmvc;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-starter;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-test;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-testcontainers;4.0.0-RC2
@@ -383,6 +383,7 @@ springboot3_org.springframework.cloud:spring-cloud-stream;4.3.0
 springboot3_org.springframework.data:spring-data-commons;3.5.3
 springboot3_org.springframework.data:spring-data-redis;3.5.3
 springboot3_org.springframework.boot:spring-boot-data-redis;4.0.0-RC2
+springboot3_org.springframework.boot:spring-boot-resttestclient;4.0.0-RC2
 springboot3_org.springframework.integration:spring-integration-core;7.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-http-converter;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-kafka;4.0.0-RC2

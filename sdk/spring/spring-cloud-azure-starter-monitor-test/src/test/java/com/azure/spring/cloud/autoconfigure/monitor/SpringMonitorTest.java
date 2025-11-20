@@ -15,6 +15,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.*;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.resttestclient.TestRestTemplate;
@@ -35,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestRestTemplate
 class SpringMonitorTest {
 
     private static CountDownLatch countDownLatch;
