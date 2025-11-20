@@ -2879,7 +2879,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
@@ -2935,7 +2935,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -3062,7 +3062,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLink(this.getEndpoint(), resourceGroupName,
@@ -3106,7 +3106,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLink(this.getEndpoint(), resourceGroupName, bastionHostname, apiVersion,
@@ -3296,7 +3296,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLinkByToken(this.getEndpoint(), resourceGroupName,
@@ -3342,7 +3342,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLinkByToken(this.getEndpoint(), resourceGroupName, bastionHostname,
@@ -3534,7 +3534,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBastionShareableLink(this.getEndpoint(), resourceGroupName,
@@ -3581,7 +3581,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3695,7 +3695,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
@@ -3744,7 +3744,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -3865,7 +3865,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectActiveSessions(this.getEndpoint(), resourceGroupName,
@@ -3912,7 +3912,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -4027,7 +4027,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkDnsNameAvailability(this.getEndpoint(), location, domainNameLabel,
@@ -4066,7 +4066,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.checkDnsNameAvailability(this.getEndpoint(), location, domainNameLabel, apiVersion,
@@ -4147,7 +4147,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.expressRouteProviderPort(this.getEndpoint(), providerport, apiVersion,
@@ -4179,7 +4179,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.expressRouteProviderPort(this.getEndpoint(), providerport, apiVersion, this.getSubscriptionId(),
@@ -4269,7 +4269,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listActiveConnectivityConfigurations(this.getEndpoint(), apiVersion,
@@ -4317,7 +4317,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listActiveConnectivityConfigurations(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -4423,7 +4423,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listActiveSecurityAdminRules(this.getEndpoint(), apiVersion,
@@ -4471,7 +4471,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listActiveSecurityAdminRules(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -4577,7 +4577,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNetworkManagerEffectiveConnectivityConfigurations(this.getEndpoint(),
@@ -4626,7 +4626,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listNetworkManagerEffectiveConnectivityConfigurations(this.getEndpoint(),
@@ -4737,7 +4737,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNetworkManagerEffectiveSecurityAdminRules(this.getEndpoint(),
@@ -4786,7 +4786,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listNetworkManagerEffectiveSecurityAdminRules(this.getEndpoint(), this.getSubscriptionId(),
@@ -4883,7 +4883,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedSecurityProviders(this.getEndpoint(), this.getSubscriptionId(),
@@ -4920,7 +4920,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.supportedSecurityProviders(this.getEndpoint(), this.getSubscriptionId(), resourceGroupName,
@@ -5014,7 +5014,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generatevirtualwanvpnserverconfigurationvpnprofile(this.getEndpoint(),
@@ -5062,7 +5062,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.generatevirtualwanvpnserverconfigurationvpnprofile(this.getEndpoint(), this.getSubscriptionId(),
