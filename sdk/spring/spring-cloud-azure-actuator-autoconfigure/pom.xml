@@ -208,6 +208,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.20.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-health:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-health;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
