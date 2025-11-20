@@ -64,12 +64,6 @@ public class InvalidHostnameTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT)
     public void directConnectionFailsWhenHostnameIsInvalidAndHostnameValidationIsNotSet() throws Exception {
-        ByteBuf buf = ByteBufAllocator.DEFAULT.buffer(1024);
-        buf.writeInt(42);
-        // no release() on purpose
-        System.gc();
-        Thread.sleep(2000); // give GC & leak detector time
-
         directConnectionFailsWhenHostnameIsInvalidCore(null);
     }
 
