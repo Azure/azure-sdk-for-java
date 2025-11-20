@@ -6481,7 +6481,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
-        this.removeFromActiveClients();
         if (!closed.getAndSet(true)) {
             this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();
