@@ -277,6 +277,12 @@ Licensed under the MIT License.
         <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
+          <systemPropertyVariables>
+            <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+            <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+            <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+            <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+          </systemPropertyVariables>
           <includes>
             <include>%regex[.*]</include>
           </includes>
@@ -284,6 +290,10 @@ Licensed under the MIT License.
             <property>
               <name>surefire.testng.verbose</name>
               <value>2</value>
+            </property>
+            <property>
+              <name>listener</name>
+              <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
             </property>
           </properties>
           <skipTests>true</skipTests>
@@ -534,7 +544,12 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/unit-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -556,7 +571,12 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -578,7 +598,12 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -600,7 +625,12 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-integration-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

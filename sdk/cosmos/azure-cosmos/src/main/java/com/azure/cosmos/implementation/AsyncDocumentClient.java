@@ -331,6 +331,7 @@ public interface AsyncDocumentClient {
                     isPerPartitionAutomaticFailoverEnabled);
 
             client.init(state, null);
+
             return client;
         }
 
