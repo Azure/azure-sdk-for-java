@@ -763,13 +763,11 @@
           "justification" : "Not a break."
         },
         {
-          "ignore": true,
           "code": "java.field.removed",
           "old": "field com.azure.resourcemanager.network.models.ApplicationGatewayWafRuleSensitivityTypes.NONE",
           "justification": "Removed as part of cleanup in newer version."
         },
         {
-          "ignore": true,
           "code": "java.field.removed",
           "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
           "justification": "Removed as part of cleanup in newer version."
