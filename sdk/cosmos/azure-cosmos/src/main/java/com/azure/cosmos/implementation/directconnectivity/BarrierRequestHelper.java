@@ -131,6 +131,10 @@ public class BarrierRequestHelper {
 
         barrierLsnRequest.requestContext = request.requestContext.clone();
 
+        // barrier requests are associated with the write/read operation
+        // copy over the fault injection context here
+        barrierLsnRequest.faultInjectionRequestContext = request.faultInjectionRequestContext;
+
         if (request.getPartitionKeyRangeIdentity() != null) {
             barrierLsnRequest.routeTo(request.getPartitionKeyRangeIdentity());
         }

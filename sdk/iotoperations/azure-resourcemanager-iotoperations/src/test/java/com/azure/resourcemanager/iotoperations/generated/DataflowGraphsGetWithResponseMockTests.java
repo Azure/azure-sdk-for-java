@@ -23,7 +23,7 @@ public final class DataflowGraphsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"mode\":\"Enabled\",\"requestDiskPersistence\":\"Enabled\",\"nodes\":[{\"nodeType\":\"DataflowGraphNode\",\"name\":\"dnlj\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"age\"}],\"nodeConnections\":[{\"from\":{\"name\":\"ulxunsmjbnkpp\",\"schema\":{}},\"to\":{\"name\":\"nenlsvxeizzg\"}}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"srmffeycxcktpiym\",\"type\":\"CustomLocation\"},\"id\":\"eeammxqie\",\"name\":\"kkzddrtkgdojbmx\",\"type\":\"a\"}";
+            = "{\"properties\":{\"mode\":\"Enabled\",\"requestDiskPersistence\":\"Disabled\",\"nodes\":[{\"nodeType\":\"DataflowGraphNode\",\"name\":\"rmooizqse\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"pxiutc\"}],\"nodeConnections\":[{\"from\":{\"name\":\"pzhyr\",\"schema\":{}},\"to\":{\"name\":\"togebjoxsl\"}},{\"from\":{\"name\":\"vnh\",\"schema\":{}},\"to\":{\"name\":\"brqnkkzjcjb\"}},{\"from\":{\"name\":\"rgaehvvibrxjj\",\"schema\":{}},\"to\":{\"name\":\"oqbeitpkxzt\"}}],\"provisioningState\":\"Succeeded\",\"healthState\":\"Available\"},\"extendedLocation\":{\"name\":\"ft\",\"type\":\"CustomLocation\"},\"id\":\"fc\",\"name\":\"qmpimaqxzhem\",\"type\":\"yhohujswtwkozzwc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class DataflowGraphsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataflowGraphResource response = manager.dataflowGraphs()
-            .getWithResponse("hpqgatjeaahhvj", "hnakzyb", "jjidjk", "yxkyxvx", com.azure.core.util.Context.NONE)
+            .getWithResponse("fmmfblcqcu", "bgq", "brta", "metttwgd", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(OperationalMode.ENABLED, response.properties().mode());
-        Assertions.assertEquals(OperationalMode.ENABLED, response.properties().requestDiskPersistence());
-        Assertions.assertEquals("dnlj", response.properties().nodes().get(0).name());
-        Assertions.assertEquals("ulxunsmjbnkpp", response.properties().nodeConnections().get(0).from().name());
-        Assertions.assertEquals("nenlsvxeizzg", response.properties().nodeConnections().get(0).to().name());
-        Assertions.assertEquals("srmffeycxcktpiym", response.extendedLocation().name());
+        Assertions.assertEquals(OperationalMode.DISABLED, response.properties().requestDiskPersistence());
+        Assertions.assertEquals("rmooizqse", response.properties().nodes().get(0).name());
+        Assertions.assertEquals("pzhyr", response.properties().nodeConnections().get(0).from().name());
+        Assertions.assertEquals("togebjoxsl", response.properties().nodeConnections().get(0).to().name());
+        Assertions.assertEquals("ft", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

@@ -39,6 +39,11 @@ public final class RestoreParameters extends RestoreParametersBase {
      */
     private List<String> tablesToRestore;
 
+    /*
+     * The source backup location for restore.
+     */
+    private String sourceBackupLocation;
+
     /**
      * Creates an instance of RestoreParameters class.
      */
@@ -127,6 +132,26 @@ public final class RestoreParameters extends RestoreParametersBase {
     }
 
     /**
+     * Get the sourceBackupLocation property: The source backup location for restore.
+     * 
+     * @return the sourceBackupLocation value.
+     */
+    public String sourceBackupLocation() {
+        return this.sourceBackupLocation;
+    }
+
+    /**
+     * Set the sourceBackupLocation property: The source backup location for restore.
+     * 
+     * @param sourceBackupLocation the sourceBackupLocation value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withSourceBackupLocation(String sourceBackupLocation) {
+        this.sourceBackupLocation = sourceBackupLocation;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -187,6 +212,7 @@ public final class RestoreParameters extends RestoreParametersBase {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tablesToRestore", this.tablesToRestore,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sourceBackupLocation", this.sourceBackupLocation);
         return jsonWriter.writeEndObject();
     }
 
@@ -226,6 +252,8 @@ public final class RestoreParameters extends RestoreParametersBase {
                 } else if ("tablesToRestore".equals(fieldName)) {
                     List<String> tablesToRestore = reader.readArray(reader1 -> reader1.getString());
                     deserializedRestoreParameters.tablesToRestore = tablesToRestore;
+                } else if ("sourceBackupLocation".equals(fieldName)) {
+                    deserializedRestoreParameters.sourceBackupLocation = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

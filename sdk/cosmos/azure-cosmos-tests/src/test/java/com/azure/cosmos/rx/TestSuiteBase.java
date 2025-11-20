@@ -106,8 +106,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
-@Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends CosmosAsyncClientTest {
+public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -230,7 +229,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "fault-injection-barrier"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -247,16 +246,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"unit"})
-    public void parallelizeUnitTests(ITestContext context) {
-        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
-    }
-
     @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
         "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "fault-injection-barrier"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -344,28 +336,51 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
-        int i = 0;
-        while (i < 100) {
-            try {
-                truncateCollectionInternal(cosmosContainer);
-                return;
-            } catch (CosmosException exception) {
-                if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
-                    || exception.getSubStatusCode() != 3200) {
 
-                    logger.error("No retry of exception", exception);
-                    throw exception;
-                }
-
-                i++;
-                logger.info("Retrying truncation after 100ms - iteration " + i);
+        try {
+            int i = 0;
+            while (i < 100) {
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    truncateCollectionInternal(cosmosContainer);
+                    return;
+                } catch (CosmosException exception) {
+                    if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                        || exception.getSubStatusCode() != 3200) {
+
+                        logger.error("No retry of exception", exception);
+                        throw exception;
+                    }
+
+                    i++;
+                    logger.info("Retrying truncation after 100ms - iteration " + i);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
+        } finally {
+            // TODO @fabianm - Resetting leak detection - there is some flakiness when tests
+            // truncate collection and hit throttling - this will need to be investigated
+            // separately
+            CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
         }
+    }
+
+    protected static void expectCount(CosmosAsyncContainer cosmosContainer, int expectedCount) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
+        options.setMaxDegreeOfParallelism(-1);
+        List<Integer> counts = cosmosContainer
+            .queryItems("SELECT VALUE COUNT(0) FROM root", options, Integer.class)
+            .collectList()
+            .block();
+        assertThat(counts).hasSize(1);
+        assertThat(counts.get(0)).isEqualTo(expectedCount);
     }
 
     private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
@@ -406,6 +421,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
                            return cosmosContainer.deleteItem(doc.getId(), partitionKey);
                        }).then().block();
+
+        expectCount(cosmosContainer, 0);
+
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
@@ -981,15 +999,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeCloseAsync(CosmosAsyncClient client) {
-        if (client != null) {
-            new Thread(() -> {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    logger.error("failed to close client", e);
-                }
-            }).start();
+    static protected void safeClose(QueryFeedOperationState state) {
+        if (state != null) {
+            safeClose(state.getClient());
         }
     }
 
@@ -1645,22 +1657,26 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return outputStream.toByteArray();
     }
 
-    protected void logMemoryUsage(String name) {
-        logger.info("ACTIVE COSMOS CLIENTS");
-        logger.info(RxDocumentClientImpl.getActiveClientCallstacks());
-        long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
-                                                               .directArenas().stream()
-                                                               .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)
-                                                               .sum();
+    public static String captureNettyLeaks() {
+        System.gc();
+        try {
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+        if (nettyLeaks.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n");
+            for (String leak : nettyLeaks) {
+                sb.append(leak).append("\n");
+            }
 
-        long used = PlatformDependent.usedDirectMemory();
-        long max  = PlatformDependent.maxDirectMemory();
-        logger.info("MEMORY USAGE: {}:{}", this.getClass().getCanonicalName(), name);
-        logger.info("Netty Direct Memory: {}/{}/{} bytes", used, pooledDirectBytes, max);
-        for (BufferPoolMXBean pool : ManagementFactory.getPlatformMXBeans(BufferPoolMXBean.class)) {
-            logger.info("Pool {}: used={} bytes, capacity={} bytes, count={}",
-                pool.getName(), pool.getMemoryUsed(), pool.getTotalCapacity(), pool.getCount());
+            return "NETTY LEAKS detected: "
+                + "\n\n"
+                + sb;
         }
 
+        return "";
     }
 }

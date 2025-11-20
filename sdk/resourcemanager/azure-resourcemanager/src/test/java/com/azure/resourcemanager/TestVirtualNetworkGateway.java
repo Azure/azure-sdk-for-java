@@ -82,7 +82,7 @@ public class TestVirtualNetworkGateway {
                 .apply();
             resource.refresh();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
 
             Map<String, String> tagsMap = new HashMap<>();
             tagsMap.put("tag3", "value3");

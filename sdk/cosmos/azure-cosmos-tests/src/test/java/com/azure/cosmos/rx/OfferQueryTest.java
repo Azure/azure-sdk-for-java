@@ -153,30 +153,37 @@ public class OfferQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+        try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient();
-        QueryFeedOperationState dummyState = new QueryFeedOperationState(
-            cosmosClient,
-            "SomeSpanName",
-            "SomeDBName",
-            "SomeContainerName",
-            ResourceType.Document,
-            OperationType.Query,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
-        );
-        Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
+            .buildAsyncClient()) {
 
-        FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
-                .containsExactly(new ArrayList<>())
-                .numberOfPages(1)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
+            QueryFeedOperationState dummyState = new QueryFeedOperationState(
+                cosmosClient,
+                "SomeSpanName",
+                "SomeDBName",
+                "SomeContainerName",
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+
+            try {
+                Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
+
+                FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
+                    .containsExactly(new ArrayList<>())
+                    .numberOfPages(1)
+                    .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+                    .build();
+                validateQuerySuccess(queryObservable, validator);
+            } finally {
+                safeClose(dummyState);
+            }
+        }
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)

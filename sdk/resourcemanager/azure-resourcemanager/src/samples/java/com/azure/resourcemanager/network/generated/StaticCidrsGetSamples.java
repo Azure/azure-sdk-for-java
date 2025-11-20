@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class StaticCidrsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/StaticCidrs_Get.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/StaticCidrs_Get.json
      */
     /**
      * Sample code: StaticCidrs_Get.

@@ -23,7 +23,7 @@ public final class TrunkedNetworksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"ilrixysf\",\"extendedLocation\":{\"name\":\"imsqywwwmhk\",\"type\":\"uwaedrympmlqoi\"},\"properties\":{\"associatedResourceIds\":[\"duewihapfj\",\"iknj\",\"iqfl\",\"ejhpclbiedfsbwc\"],\"clusterId\":\"vbvzipbwxgo\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"pradmskxknpdgzi\",\"hybridAksClustersAssociatedIds\":[\"ug\",\"whgsaodkww\",\"bafo\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"zhaquvwsxb\",\"isolationDomainIds\":[\"vkervqchoadhrsxq\",\"z\"],\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"dsrgfajg\",\"zrsubklrxhjnltce\",\"jdvqy\",\"ie\"],\"vlans\":[1754048666808617813,6278680215750716361]},\"location\":\"wdxvqzxoebwg\",\"tags\":{\"upwtz\":\"ibanb\",\"ozkxbzrpejplss\":\"pak\"},\"id\":\"nbtttkgsuxu\",\"name\":\"rswgkpjhboyikeb\",\"type\":\"uhkslg\"}]}";
+            = "{\"value\":[{\"etag\":\"qownkiuajewnahw\",\"extendedLocation\":{\"name\":\"xjjmztnlmsoodtm\",\"type\":\"ecdh\"},\"properties\":{\"associatedResourceIds\":[\"wcrpt\",\"eajczxvlgsrgkr\",\"izrpywlptyuqhrl\"],\"clusterId\":\"skykpfuofix\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"fykkpyycpawmpjpr\",\"hybridAksClustersAssociatedIds\":[\"rpcfpcfjfwzl\",\"z\",\"wk\",\"yep\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"nnidmdiawpzxk\",\"isolationDomainIds\":[\"ntmkctdhuosgwqps\",\"azihq\",\"dvqgcnbhcbmjkz\"],\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"ynts\"],\"vlans\":[4131201062515209692,2907134383034197357,1631064550747822546]},\"location\":\"hkmo\",\"tags\":{\"kbwg\":\"rh\",\"pfdzxcouzfwofw\":\"jgrulcfogxhcxnwj\",\"kzkdtzxsoednlwg\":\"k\",\"isnionetbzdrdpue\":\"ihezomucmq\"},\"id\":\"xkgtlzlmtrlxcznn\",\"name\":\"zkbnbmxl\",\"type\":\"mwt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class TrunkedNetworksListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TrunkedNetwork> response
-            = manager.trunkedNetworks().listByResourceGroup("mvgohtwz", com.azure.core.util.Context.NONE);
+        PagedIterable<TrunkedNetwork> response = manager.trunkedNetworks()
+            .listByResourceGroup("etwilyrzoxpd", 711714374, "lfr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wdxvqzxoebwg", response.iterator().next().location());
-        Assertions.assertEquals("ibanb", response.iterator().next().tags().get("upwtz"));
-        Assertions.assertEquals("imsqywwwmhk", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("uwaedrympmlqoi", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("zhaquvwsxb", response.iterator().next().interfaceName());
-        Assertions.assertEquals("vkervqchoadhrsxq", response.iterator().next().isolationDomainIds().get(0));
-        Assertions.assertEquals(1754048666808617813L, response.iterator().next().vlans().get(0));
+        Assertions.assertEquals("hkmo", response.iterator().next().location());
+        Assertions.assertEquals("rh", response.iterator().next().tags().get("kbwg"));
+        Assertions.assertEquals("xjjmztnlmsoodtm", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("ecdh", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("nnidmdiawpzxk", response.iterator().next().interfaceName());
+        Assertions.assertEquals("ntmkctdhuosgwqps", response.iterator().next().isolationDomainIds().get(0));
+        Assertions.assertEquals(4131201062515209692L, response.iterator().next().vlans().get(0));
     }
 }

@@ -182,13 +182,17 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             client
         );
 
-        // do the query once to ensure the collection is cached.
-        client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
-            .then().block();
+        try {
+            // do the query once to ensure the collection is cached.
+            client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
+                  .then().block();
 
-        // do the query once to ensure the collection is cached.
-        client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
-              .then().block();
+            // do the query once to ensure the collection is cached.
+            client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
+                  .then().block();
+        } finally {
+            safeClose(state);
+        }
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

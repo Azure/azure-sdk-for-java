@@ -10,7 +10,8 @@ package com.azure.resourcemanager.iothub.generated;
 public final class IotHubResourceListEventHubConsumerGroupsSamples {
     /*
      * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listehgroups.json
+     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
+     * iothub_listehgroups.json
      */
     /**
      * Sample code: IotHubResource_ListEventHubConsumerGroups.

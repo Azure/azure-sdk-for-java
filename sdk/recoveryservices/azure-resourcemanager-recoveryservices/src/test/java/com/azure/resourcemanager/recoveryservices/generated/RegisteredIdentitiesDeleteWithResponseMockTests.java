@@ -28,7 +28,7 @@ public final class RegisteredIdentitiesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.registeredIdentities()
-            .deleteWithResponse("ndjmquxvyp", "mg", "opkwhojv", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("yjrxsagafcnih", "wqapnedgfbcvk", "vq", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * openShiftItem.
+ * Represents an open shift item.
  */
 @Fluent
 public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {

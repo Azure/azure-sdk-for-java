@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -1379,6 +1380,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
+    }
+
+    private void addToActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            logger.warn(
+                "Cosmos Client leak detection is enabled - "
+                + "this will impact performance negatively - disable it in production scenarios.");
+            synchronized (staticLock) {
+                activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
+            }
+        }
+    }
+
+    private void removeFromActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            synchronized (staticLock) {
+                activeClients.remove(this.clientId);
+            }
+        }
+    }
+
+    /**
+     * Returns a snapshot of the active clients. The key is the clientId, the value is the callstack showing
+     * where the client was created.
+     * @return a snapshot of the active clients.
+     */
+    public static Map<Integer, String> getActiveClientsSnapshot() {
+        synchronized (staticLock) {
+            return new HashMap<>(activeClients);
+        }
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -6557,6 +6588,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public String getMasterKeyOrResourceToken() {
         return this.masterKeyOrResourceToken;
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeModel.registerTransportClientInterceptor(transportClientInterceptor);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

@@ -22,6 +22,11 @@ public final class SecretArchiveReference implements JsonSerializable<SecretArch
     private String keyVaultId;
 
     /*
+     * The URI of the key containing the secret.
+     */
+    private String keyVaultUri;
+
+    /*
      * The name of the secret in the key vault.
      */
     private String secretName;
@@ -44,6 +49,15 @@ public final class SecretArchiveReference implements JsonSerializable<SecretArch
      */
     public String keyVaultId() {
         return this.keyVaultId;
+    }
+
+    /**
+     * Get the keyVaultUri property: The URI of the key containing the secret.
+     * 
+     * @return the keyVaultUri value.
+     */
+    public String keyVaultUri() {
+        return this.keyVaultUri;
     }
 
     /**
@@ -98,6 +112,8 @@ public final class SecretArchiveReference implements JsonSerializable<SecretArch
 
                 if ("keyVaultId".equals(fieldName)) {
                     deserializedSecretArchiveReference.keyVaultId = reader.getString();
+                } else if ("keyVaultUri".equals(fieldName)) {
+                    deserializedSecretArchiveReference.keyVaultUri = reader.getString();
                 } else if ("secretName".equals(fieldName)) {
                     deserializedSecretArchiveReference.secretName = reader.getString();
                 } else if ("secretVersion".equals(fieldName)) {
