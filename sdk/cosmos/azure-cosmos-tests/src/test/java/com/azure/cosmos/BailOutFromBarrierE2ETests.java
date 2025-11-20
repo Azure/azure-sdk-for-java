@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseInterceptorUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;

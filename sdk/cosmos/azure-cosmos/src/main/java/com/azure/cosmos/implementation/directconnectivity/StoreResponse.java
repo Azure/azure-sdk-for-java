@@ -202,7 +202,7 @@ public class StoreResponse {
     }
 
     //NOTE: only used for testing purpose to change the response header value
-    public void setHeaderValue(String headerName, String value) {
+    void setHeaderValue(String headerName, String value) {
         if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
             return;
         }

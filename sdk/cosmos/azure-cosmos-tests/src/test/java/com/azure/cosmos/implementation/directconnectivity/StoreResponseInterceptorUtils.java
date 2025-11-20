@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
@@ -79,7 +78,8 @@ public class StoreResponseInterceptorUtils {
         int maxAllowedFailureCount,
         AtomicInteger failureCount,
         int statusCode,
-                                                                                                                                                               int subStatusCode) {
+        int subStatusCode) {
+
         return (request, storeResponse) -> {
 
             if (OperationType.Read.equals(request.getOperationType()) && regionName.equals(request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint().toString())) {
