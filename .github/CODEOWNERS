@@ -918,7 +918,7 @@
 /common/perf-test-core/                                            @alzimmermsft @srnagar @g2vinay @Azure/azure-java-sdk
 
 # PRLabel: %common
-/.vscode/                                                          @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
+/.vscode/                                                          @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk @raych1
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                                  @alzimmermsft @srnagar
