@@ -75,7 +75,7 @@ function Submit-Request($filePath, $packageName, $packageType)
     catch
     {
         Write-Host "ERROR: API request failed" -ForegroundColor Red
-        Write-Host "Status Code: $($_.Exception.Response.StatusCode.Value__)" -ForegroundColor Yellow  
+        Write-Host "Status Code: $($_.Exception.Response.StatusCode.Value__)" -ForegroundColor Yellow
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Yellow
         if ($_.ErrorDetails.Message) {
             Write-Host "Details: $($_.ErrorDetails.Message)" -ForegroundColor Yellow
@@ -133,6 +133,11 @@ foreach ($packageInfoFile in $packageInfoFiles)
 {
     $packageInfo = Get-Content $packageInfoFile | ConvertFrom-Json
     $pkgArtifactName = $packageInfo.ArtifactName ?? $packageInfo.Name
+
+    # Construct full package name with groupId if available
+    if ($packageInfo.Group) {
+        $pkgArtifactName = "$($packageInfo.Group):${pkgArtifactName}"
+    }
     $packageType = $packageInfo.SdkType
 
     LogInfo "Processing $($pkgArtifactName)"
