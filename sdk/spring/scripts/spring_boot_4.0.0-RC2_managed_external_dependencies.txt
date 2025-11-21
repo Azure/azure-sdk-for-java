@@ -1743,3 +1743,11 @@ tools.jackson.module:jackson-module-scala_2.13;3.0.1
 tools.jackson.module:jackson-module-scala_3;3.0.1
 tools.jackson:jackson-bom;3.0.1
 wsdl4j:wsdl4j;1.6.3
+org.springframework.security:spring-security-config;7.0.0-RC3
+org.springframework.security:spring-security-core;7.0.0-RC3
+org.springframework.security:spring-security-oauth2-client;7.0.0-RC3
+org.springframework.security:spring-security-oauth2-core;7.0.0-RC3
+org.springframework.security:spring-security-oauth2-jose;7.0.0-RC3
+org.springframework.security:spring-security-oauth2-resource-server;7.0.0-RC3
+org.springframework.security:spring-security-web;7.0.0-RC3
+org.springframework.security:spring-security-test;7.0.0-RC3

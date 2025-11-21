@@ -364,25 +364,25 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>6.5.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-resource-server</artifactId>
-      <version>6.5.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>6.5.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>6.5.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
+      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -568,10 +568,10 @@
                 <include>org.springframework.boot:spring-boot-restclient:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-restclient;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-security:[4.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-security;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[5.0.0-RC1]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-client:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-jose:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-resource-server:[6.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework:spring-context-support:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-tx:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>

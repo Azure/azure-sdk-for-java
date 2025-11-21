@@ -388,11 +388,11 @@ springboot3_org.springframework.integration:spring-integration-core;7.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-http-converter;4.0.0-RC2
 springboot3_org.springframework.boot:spring-boot-kafka;4.0.0-RC2
 springboot3_org.springframework.retry:spring-retry;2.0.12
-springboot3_org.springframework.security:spring-security-config;6.5.3
-springboot3_org.springframework.security:spring-security-oauth2-client;6.5.3
-springboot3_org.springframework.security:spring-security-oauth2-jose;6.5.3
-springboot3_org.springframework.security:spring-security-oauth2-resource-server;6.5.3
-springboot3_org.springframework.security:spring-security-web;6.5.3
+springboot3_org.springframework.security:spring-security-config;7.0.0-RC3
+springboot3_org.springframework.security:spring-security-oauth2-client;7.0.0-RC3
+springboot3_org.springframework.security:spring-security-oauth2-jose;7.0.0-RC3
+springboot3_org.springframework.security:spring-security-oauth2-resource-server;7.0.0-RC3
+springboot3_org.springframework.security:spring-security-web;7.0.0-RC3
 springboot3_org.springframework:spring-beans;7.0.0-RC3
 springboot3_org.springframework:spring-context-support;7.0.0-RC3
 springboot3_org.springframework:spring-context;7.0.0-RC3
