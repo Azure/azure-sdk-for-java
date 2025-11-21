@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(MockitoExtension.class)
 public class SimpleCosmosRepositoryIllegalTest {
     private SimpleCosmosRepository<Person, String> repository;
@@ -31,41 +33,41 @@ public class SimpleCosmosRepositoryIllegalTest {
 
     @Test
     public void deleteNullShouldFail() {
-        repository.delete(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.delete(null));
     }
 
     @Test
     public void deleteIterableNullShouldFail() {
-        repository.deleteAll(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.deleteAll(null));
     }
 
     @Test
     public void deleteNullIdShouldFail() {
-        repository.deleteById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.deleteById(null));
     }
 
     @Test
     public void existsNullIdShouldFail() {
-        repository.existsById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.existsById(null));
     }
 
     @Test
     public void findNullIterableIdsShouldFail() {
-        repository.findAllById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.findAllById(null));
     }
 
     @Test
     public void findByNullIdShouldFail() {
-        repository.findById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.findById(null));
     }
 
     @Test
     public void saveNullShouldFail() {
-        repository.save(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.save(null));
     }
 
     @Test
     public void saveNullIterableShouldFail() {
-        repository.saveAll(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.saveAll(null));
     }
 }

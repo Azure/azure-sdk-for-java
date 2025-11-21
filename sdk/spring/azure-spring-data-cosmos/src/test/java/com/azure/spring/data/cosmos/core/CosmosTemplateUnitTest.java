@@ -11,14 +11,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(MockitoExtension.class)
 public class CosmosTemplateUnitTest {
 
     @Test
     public void rejectNullDbFactory() {
-        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-            .endpoint("")
-            .key(""));
-        new CosmosFactory(client, TestConstants.DB_NAME);
+        assertThrows(IllegalArgumentException.class, () -> {
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
+                .endpoint("")
+                .key(""));
+            new CosmosFactory(client, TestConstants.DB_NAME);
+        });
     }
 }

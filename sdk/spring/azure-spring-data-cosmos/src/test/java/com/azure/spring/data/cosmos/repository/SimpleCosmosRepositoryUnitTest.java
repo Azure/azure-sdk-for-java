@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +47,7 @@ public class SimpleCosmosRepositoryUnitTest {
     public void setUp() {
         when(entityInformation.getJavaType()).thenReturn(Person.class);
         when(entityInformation.getContainerName()).thenReturn(Person.class.getSimpleName());
-        when(cosmosOperations.findAll(anyString(), any())).thenReturn(Arrays.asList(TEST_PERSON));
+        lenient().when(cosmosOperations.findAll(anyString(), any())).thenReturn(Arrays.asList(TEST_PERSON));
 
         repository = new SimpleCosmosRepository<>(entityInformation, cosmosOperations);
     }

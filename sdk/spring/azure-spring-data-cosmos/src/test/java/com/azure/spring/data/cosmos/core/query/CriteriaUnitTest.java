@@ -57,21 +57,25 @@ public class CriteriaUnitTest {
 
     @Test
     public void testInvalidInKeywordParameter() {
-        final List<Object> values = Collections.singletonList(CRITERIA_OBJECT);
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IN,
-            CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
-        final CosmosQuery query = new CosmosQuery(criteria);
+        assertThrows(IllegalQueryException.class, () -> {
+            final List<Object> values = Collections.singletonList(CRITERIA_OBJECT);
+            final Criteria criteria = Criteria.getInstance(CriteriaType.IN,
+                CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
+            final CosmosQuery query = new CosmosQuery(criteria);
 
-        new FindQuerySpecGenerator().generateCosmos(query);
+            new FindQuerySpecGenerator().generateCosmos(query);
+        });
     }
 
     @Test
     public void testInvalidInKeywordType() {
-        final List<Object> values = Collections.singletonList(new IllegalQueryException(""));
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IN,
-            CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
-        final CosmosQuery query = new CosmosQuery(criteria);
+        assertThrows(IllegalQueryException.class, () -> {
+            final List<Object> values = Collections.singletonList(new IllegalQueryException(""));
+            final Criteria criteria = Criteria.getInstance(CriteriaType.IN,
+                CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
+            final CosmosQuery query = new CosmosQuery(criteria);
 
-        new FindQuerySpecGenerator().generateCosmos(query);
+            new FindQuerySpecGenerator().generateCosmos(query);
+        });
     }
 }
