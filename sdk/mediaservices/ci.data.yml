@@ -9,10 +9,8 @@ trigger:
   paths:
     include:
       - sdk/mediaservices/ci.data.yml
-      - sdk/mediaservices/microsoft-azure-media/
     exclude:
       - sdk/mediaservices/pom.xml
-      - sdk/mediaservices/microsoft-azure-media/pom.xml
 
 pr:
   branches:
@@ -24,17 +22,11 @@ pr:
   paths:
     include:
       - sdk/mediaservices/ci.data.yml
-      - sdk/mediaservices/microsoft-azure-media/
     exclude:
       - sdk/mediaservices/pom.xml
-      - sdk/mediaservices/microsoft-azure-media/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     SDKType: data
     ServiceDirectory: mediaservices
-    Artifacts:
-      - name: azure-media
-        groupId: com.microsoft.azure
-        safeName: azuremedia
