@@ -293,17 +293,6 @@ cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.4
 # Maven Tools for Cosmos Kafka connector only
 
-# sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
-# all of these unique references below are listed here because they're old, some are over 10 years old
-media_javax.xml.bind:jaxb-api;2.2.7
-media_javax.inject:javax.inject;1
-media_javax.mail:mail;1.4.5
-media_com.sun.jersey:jersey-client;1.19
-media_com.sun.jersey:jersey-json;1.19
-media_commons-logging:commons-logging;1.1.1
-media_io.jsonwebtoken:jjwt;0.5.1
-media_org.mockito:mockito-all;1.9.0
-media_com.microsoft.azure:adal4j;1.2.0
 # sdk\resourcemanager\azure-resourcemanager\pom.xml
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.jcraft:jsch;0.1.55
