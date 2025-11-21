@@ -373,8 +373,7 @@ elseif ($ArtifactList -and $ArtifactList.Count -gt 0) {
 elseif ($PackageInfoFiles -and $PackageInfoFiles.Count -gt 0) {
     # Lowest Priority: Direct PackageInfoFiles (new method)
     Write-Host "Using PackageInfoFiles parameter with $($PackageInfoFiles.Count) files"
-    # Filter out empty strings or whitespace-only entries
-    $ProcessedPackageInfoFiles = $PackageInfoFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    $ProcessedPackageInfoFiles = $PackageInfoFiles  # Use as-is
 }
 else {
     Write-Error "No package information provided. Please provide either 'PackageName', 'ArtifactList', or 'PackageInfoFiles' parameters."
@@ -383,7 +382,7 @@ else {
 
 # Validate that we have package info files to process
 if (-not $ProcessedPackageInfoFiles -or $ProcessedPackageInfoFiles.Count -eq 0) {
-    Write-Error "No package info files found after processing parameters. Or PackageInfoFiles parameter contains only empty or whitespace entries, please check the artifact settings."
+    Write-Error "No package info files found after processing parameters."
     exit 1
 }
 
