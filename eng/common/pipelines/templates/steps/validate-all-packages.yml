@@ -34,7 +34,7 @@ steps:
             -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId) `
             -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId) `
             -IsReleaseBuild $$(SetAsReleaseBuild) `
-            -PackageInfoFiles @(${{ if ne(length(parameters.PackageInfoFiles), 0) }}'${{ join(''',''', parameters.PackageInfoFiles) }}'${{ endif }})
+            -PackageInfoFiles @('${{ join(''',''', parameters.PackageInfoFiles) }}') # e.g., @('a/file1.json','a/file2.json')
         workingDirectory: $(Pipeline.Workspace)
       displayName: Validate packages and update work items
       continueOnError: true
