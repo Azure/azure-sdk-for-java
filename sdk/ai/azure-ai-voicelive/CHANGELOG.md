@@ -26,12 +26,6 @@
   - Locale preferences with `preferLocales` for multilingual scenarios
   - Voice style, pitch, rate, and volume controls for fine-tuned voice characteristics
 
-### Other Changes
-
-#### Dependency Updates
-
-- Dependency versions remain unchanged from `1.0.0-beta.2`.
-
 ## 1.0.0-beta.2 (2025-11-14)
 
 ### Features Added
