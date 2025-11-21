@@ -71,7 +71,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -968,7 +967,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
      * @param context  {@link ChannelHandlerContext} to which this {@link RntbdRequestManager request manager} belongs.
      * @param response the {@link RntbdResponse message} received.
      */
-    private void messageReceived(final ChannelHandlerContext context, final RntbdResponse response) throws Exception {
+    private void messageReceived(final ChannelHandlerContext context, final RntbdResponse response) {
 
         final Long transportRequestId = response.getTransportRequestId();
 
@@ -1002,8 +1001,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final String requestUriAsString = requestRecord.args().physicalAddressUri() != null ?
             requestRecord.args().physicalAddressUri().getURI().toString() : null;
 
-        Callable<Void> responseInterceptor = serviceRequest.requestContext.getResponseInterceptor();
-
         if ((HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) ||
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
@@ -1011,7 +1008,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (rntbdCtx == null) {
                 throw new IllegalStateException("Expecting non-null rntbd context.");
             }
-            final StoreResponse storeResponse = response.toStoreResponse(rntbdCtx.serverVersion(), requestUriAsString, responseInterceptor);
+            final StoreResponse storeResponse = response.toStoreResponse(rntbdCtx.serverVersion(), requestUriAsString);
 
             if (this.serverErrorInjector != null) {
                 Consumer<Duration> completeWithInjectedDelayConsumer =

@@ -192,14 +192,6 @@ class ChangeFeedQueryImpl<T> {
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
-
-        // TODO: Only for testing purposes. Remove post testing.
-        if (this.options.getResponseInterceptor() != null) {
-            if (request.requestContext != null) {
-                request.requestContext.setResponseInterceptor(this.options.getResponseInterceptor());
-            }
-        }
-
         if (this.operationContextAndListener == null) {
             return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)

@@ -64,7 +64,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile boolean hasServerContinuationTokenChange;
     private final int maxStreamsConstrainedRetries = 10;
     private final AtomicInteger streamsConstrainedRetries = new AtomicInteger(0);
-    private final AtomicInteger unparseableDocumentRetries = new AtomicInteger(0);
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
     private volatile Instant lastProcessedTime;
 
@@ -89,7 +88,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getStartState(),
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
-        this.options.setResponseInterceptor(settings.getResponseInterceptor());
 
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
         this.lastProcessedTime = Instant.now();
@@ -197,9 +195,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     this.options.setMaxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
                 }
 
-                this.options.setResponseInterceptor(settings.getResponseInterceptor());
                 this.streamsConstrainedRetries.set(0);
-                this.unparseableDocumentRetries.set(0);
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
@@ -287,7 +283,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                 "Lease with token : " + this.lease.getLeaseToken() + " : Streams constrained exception encountered, will retry. " + "retryCount " + retryCount + " of " + this.maxStreamsConstrainedRetries + " retries.",
                                 clientException);
 
-
                             if (this.options.getMaxItemCount() == -1) {
                                 logger.warn(
                                     "Lease with token : " + this.lease.getLeaseToken() + " : max item count is set to -1, will retry after setting it to 100. " + "retryCount " + retryCount + " of " + this.maxStreamsConstrainedRetries + " retries.",
@@ -308,46 +303,10 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                             return Flux.empty();
                         }
                         case JSON_PARSING_ERROR:
-
-                            if (!Configs.isChangeFeedProcessorMalformedResponseRecoveryEnabled()) {
-                                logger.error(
-                                    "Lease with token : " + this.lease.getLeaseToken() + ": Parsing error encountered. To enable automatic retries, please set the + " + Configs.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED + " configuration to 'true'. Failing.", clientException);
-                                this.resultException = new RuntimeException(clientException);
-                                return Flux.error(throwable);
-                            }
-
-                            if (this.unparseableDocumentRetries.compareAndSet(0, 1)) {
-                                logger.warn(
-                                    "Lease with token : " + this.lease.getLeaseToken() + " : Attempting a retry on parsing error.", clientException);
-                                this.options.setMaxItemCount(1);
-                                return Flux.empty();
-                            } else {
-
-                                logger.error("Lease with token : " + this.lease.getLeaseToken() + " : Encountered parsing error which is not recoverable, attempting to skip document", clientException);
-
-                                String continuation = CosmosChangeFeedContinuationTokenUtils.extractContinuationTokenFromCosmosException(clientException);
-
-                                if (Strings.isNullOrEmpty(continuation)) {
-                                    logger.error(
-                                        "Lease with token : " + this.lease.getLeaseToken() + ": Unable to extract continuation token post the parsing exception, failing.",
-                                        clientException);
-                                    this.resultException = new RuntimeException(clientException);
-                                    return Flux.error(throwable);
-                                }
-
-                                ChangeFeedState continuationState = ChangeFeedState.fromString(continuation);
-                                return this.checkpointer.checkpointPartition(continuationState)
-                                    .doOnSuccess(lease1 -> {
-                                        logger.info("Lease with token : " + this.lease.getLeaseToken() + " Successfully skipped the unparseable document.");
-                                        this.options =
-                                            PartitionProcessorHelper.createForProcessingFromContinuation(continuation, this.changeFeedMode);
-                                    })
-                                    .doOnError(t -> {
-                                        logger.error(
-                                            "Failed to checkpoint for lease with token :  " + this.lease.getLeaseToken() + " with continuation " + this.lease.getReadableContinuationToken() + " from thread " + Thread.currentThread().getId(), t);
-                                        this.resultException = new RuntimeException(t);
-                                    });
-                            }
+                            logger.error(
+                                "Lease with token : " + this.lease.getLeaseToken() + ": Parsing error encountered. To enable automatic retries, please set the + " + Configs.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED + " configuration to 'true'. Failing.", clientException);
+                            this.resultException = new RuntimeException(clientException);
+                            return Flux.error(throwable);
                         default: {
                             logger.error(
                                 "Lease with token " + this.lease.getLeaseToken() +

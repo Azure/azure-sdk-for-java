@@ -5,13 +5,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -68,11 +66,6 @@ class ServerSideOnlyContinuationNonDocumentFetcherImpl<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         return this.continuationToken = serverContinuationToken;
-    }
-
-    @Override
-    protected String applyServerResponseContinuation(String serverContinuationToken, RxDocumentServiceRequest request, CosmosException cosmosException) {
-        return Strings.Emtpy;
     }
 
     @Override

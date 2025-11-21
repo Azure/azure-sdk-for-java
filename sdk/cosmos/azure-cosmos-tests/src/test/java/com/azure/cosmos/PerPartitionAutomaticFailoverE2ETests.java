@@ -2270,7 +2270,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             regionMap);
     }
 
-    private StoreResponse constructStoreResponse(OperationType operationType, int statusCode) throws Exception {
+    private StoreResponse constructStoreResponse(OperationType operationType, int statusCode) throws JsonProcessingException {
 
         StoreResponseBuilder storeResponseBuilder = StoreResponseBuilder.create()
             .withContent(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()))

@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -54,7 +53,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
     private ReadConsistencyStrategy readConsistencyStrategy;
-    private Callable<Void> responseInterceptor;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         if (toBeCloned.continuationState != null) {
@@ -82,7 +80,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
-        this.responseInterceptor = toBeCloned.responseInterceptor;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -246,14 +243,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
             etag,
             this.feedRangeInternal);
-    }
-
-    public Callable<Void> getResponseInterceptor() {
-        return this.responseInterceptor;
-    }
-
-    public void setResponseInterceptor(Callable<Void> responseInterceptor) {
-        this.responseInterceptor = responseInterceptor;
     }
 
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =

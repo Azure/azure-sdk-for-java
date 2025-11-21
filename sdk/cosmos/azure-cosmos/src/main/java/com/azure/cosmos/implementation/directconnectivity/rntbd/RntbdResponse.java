@@ -25,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
@@ -348,7 +347,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return new RntbdResponse(in.readSlice(end - start), frame, headers, content);
     }
 
-    StoreResponse toStoreResponse(final String serverVersion, final String endpoint, Callable<Void> responseInterceptor) throws Exception {
+    StoreResponse toStoreResponse(final String serverVersion, final String endpoint) {
 
         checkNotNull(serverVersion, "Argument 'serverVersion' must not be null.");
 
@@ -360,8 +359,7 @@ public final class RntbdResponse implements ReferenceCounted {
                 this.getStatus().code(),
                 this.headers.asMap(serverVersion, this.getActivityId()),
                 null,
-                0,
-                responseInterceptor);
+                0);
         }
 
         return new StoreResponse(
@@ -369,8 +367,7 @@ public final class RntbdResponse implements ReferenceCounted {
             this.getStatus().code(),
             this.headers.asMap(serverVersion, this.getActivityId()),
             new ByteBufInputStream(this.content.retain(), true),
-            length,
-            responseInterceptor);
+            length);
     }
     // endregion
 

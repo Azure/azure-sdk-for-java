@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 
 import java.time.Duration;
-import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -18,7 +17,6 @@ public class ProcessorSettings {
     private Duration feedPollDelay;
     private final ChangeFeedState startState;
     private final CosmosAsyncContainer collectionSelfLink;
-    private Callable<Void> responseInterceptor;
 
     public ProcessorSettings(
         ChangeFeedState startState,
@@ -55,14 +53,5 @@ public class ProcessorSettings {
 
     public CosmosAsyncContainer getCollectionSelfLink() {
         return this.collectionSelfLink;
-    }
-
-    public Callable<Void> getResponseInterceptor() {
-        return this.responseInterceptor;
-    }
-
-    public ProcessorSettings withResponseInterceptor(Callable<Void> responseInterceptor) {
-        this.responseInterceptor = responseInterceptor;
-        return this;
     }
 }

@@ -113,7 +113,7 @@ public class RxDocumentClientImplTest {
 
     // todo: fix and revert enabled = false when circuit breaker is enabled
     @Test(groups = {"unit"}, enabled = true)
-    public void readMany() throws Exception {
+    public void readMany() {
 
         // setup static method mocks
         MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
@@ -441,15 +441,14 @@ public class RxDocumentClientImplTest {
         };
     }
 
-    private static RxDocumentServiceResponse mockRxDocumentServiceResponse(String content, Map<String, String> headers) throws Exception {
+    private static RxDocumentServiceResponse mockRxDocumentServiceResponse(String content, Map<String, String> headers) {
         byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             null,
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
-            blob.length,
-            null);
+            blob.length);
 
         RxDocumentServiceResponse documentServiceResponse = new RxDocumentServiceResponse(new DiagnosticsClientContext() {
 

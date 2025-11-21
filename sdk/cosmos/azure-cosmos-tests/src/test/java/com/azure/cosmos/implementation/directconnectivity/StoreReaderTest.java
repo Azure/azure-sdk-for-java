@@ -206,7 +206,7 @@ public class StoreReaderTest {
      * tries others till we find a replica which can support the given session token
      */
     @Test(groups = "unit")
-    public void sessionNotAvailableFromSomeReplicas_FindReplicaSatisfyingRequestedSession() throws Exception {
+    public void sessionNotAvailableFromSomeReplicas_FindReplicaSatisfyingRequestedSession() {
         long slowReplicaLSN = 651175;
         long globalCommittedLsn = 651174;
         String partitionKeyRangeId = "73";
@@ -614,7 +614,7 @@ public class StoreReaderTest {
     }
 
     @Test(groups = "unit")
-    public void canParseLongLsn() throws Exception {
+    public void canParseLongLsn() {
         TransportClient transportClient = Mockito.mock(TransportClient.class);
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
@@ -704,7 +704,7 @@ public class StoreReaderTest {
                                                            boolean performLocalRefreshOnGoneException,
                                                            boolean retryWithForceRefreshExpected,
                                                            FailureValidator failureFromSingle,
-                                                           boolean expectedStoreResponseInStoredReadResult) throws Exception {
+                                                           boolean expectedStoreResponseInStoredReadResult) {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         StoreResponse response = StoreResponseBuilder.create().build();
 
@@ -771,7 +771,7 @@ public class StoreReaderTest {
     }
 
     @Test(groups = "unit", dataProvider = "readMultipleReplicasAsyncArgProvider")
-    public void readMultipleReplicasAsync(boolean includePrimary, int replicaCountToRead, ReadMode readMode) throws Exception {
+    public void readMultipleReplicasAsync(boolean includePrimary, int replicaCountToRead, ReadMode readMode) {
         // This adds basic tests for StoreReader.readMultipleReplicasAsync(.) without failure
         // TODO: add some tests for readMultipleReplicasAsync which mock behaviour of failure of reading from a replica
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);

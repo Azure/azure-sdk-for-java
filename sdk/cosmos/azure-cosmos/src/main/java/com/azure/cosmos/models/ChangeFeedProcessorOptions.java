@@ -9,7 +9,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -56,7 +55,6 @@ public final class ChangeFeedProcessorOptions {
 
     private Scheduler scheduler;
     private ThroughputControlGroupConfig feedPollThroughputControlGroupConfig;
-    private Callable<Void> responseInterceptor;
 
     /**
      * Instantiates a new Change feed processor options.
@@ -430,27 +428,5 @@ public final class ChangeFeedProcessorOptions {
      */
     public boolean isLeaseVerificationEnabledOnRestart() {
         return this.leaseVerificationOnRestartEnabled;
-    }
-
-    /**
-     * Sets a callback to be invoked after every response from the service to the Change Feed requests.
-     * This can be used for logging or metrics gathering purposes.
-     *
-     * @param responseInterceptor a callback to be invoked after every response from the service to the Change Feed requests.
-     * @return the {@link ChangeFeedProcessorOptions}.
-     */
-    public ChangeFeedProcessorOptions setResponseInterceptor(Callable<Void> responseInterceptor) {
-        this.responseInterceptor = responseInterceptor;
-        return this;
-    }
-
-    /**
-     * Gets a callback to be invoked after every response from the service to the Change Feed requests.
-     * This can be used for logging or metrics gathering purposes.
-     *
-     * @return a callback to be invoked after every response from the service to the Change Feed requests.
-     */
-    public Callable<Void> getResponseInterceptor() {
-        return this.responseInterceptor;
     }
 }

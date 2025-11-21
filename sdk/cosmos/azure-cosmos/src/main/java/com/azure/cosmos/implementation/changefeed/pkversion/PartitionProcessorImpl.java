@@ -64,7 +64,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile boolean hasServerContinuationTokenChange;
     private final int maxStreamsConstrainedRetries = 10;
     private final AtomicInteger streamsConstrainedRetries = new AtomicInteger(0);
-    private final AtomicInteger unparseableDocumentRetries = new AtomicInteger(0);
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
     private volatile Instant lastProcessedTime;
 
@@ -84,7 +83,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
-        this.options.setResponseInterceptor(settings.getResponseInterceptor());
 
         // For pk version, merge is not support, exclude it from the capabilities header
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
@@ -204,9 +202,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     this.options.setMaxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
                 }
 
-                this.options.setResponseInterceptor(settings.getResponseInterceptor());
                 this.streamsConstrainedRetries.set(0);
-                this.unparseableDocumentRetries.set(0);
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
@@ -312,47 +308,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             return Flux.empty();
                         }
                         case JSON_PARSING_ERROR:
-
-                            if (!Configs.isChangeFeedProcessorMalformedResponseRecoveryEnabled()) {
-                                logger.error(
-                                    "Partition : " + this.lease.getLeaseToken() + ": Parsing error encountered. To enable automatic retries, please set the + " + Configs.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED + " configuration to 'true'. Failing.", clientException);
-                                this.resultException = new RuntimeException(clientException);
-                                return Flux.error(throwable);
-                            }
-
-                            if (this.unparseableDocumentRetries.compareAndSet(0, 1)) {
-                                logger.warn(
-                                    "Partition : " + this.lease.getLeaseToken() + " : Attempting a retry on parsing error.", clientException);
-                                this.options.setMaxItemCount(1);
-                                return Flux.empty();
-                            } else {
-
-                                logger.error("Partition : " + this.lease.getLeaseToken() + " : Encountered parsing error which is not recoverable, attempting to skip document", clientException);
-
-                                String continuation = CosmosChangeFeedContinuationTokenUtils.extractContinuationTokenFromCosmosException(clientException);
-
-                                if (Strings.isNullOrEmpty(continuation)) {
-                                    logger.error(
-                                        "Partition : " + this.lease.getLeaseToken() + ": Unable to extract continuation token post the parsing exception, failing.",
-                                        clientException);
-                                    this.resultException = new RuntimeException(clientException);
-                                    return Flux.error(throwable);
-                                }
-
-                                ChangeFeedState continuationState = ChangeFeedState.fromString(continuation);
-                                return this.checkpointer.checkpointPartition(continuationState)
-                                    .doOnSuccess(lease1 -> {
-                                        logger.info("Partition : " + this.lease.getLeaseToken() + " Successfully skipped the unparseable document.");
-                                        this.options =
-                                            CosmosChangeFeedRequestOptions
-                                                .createForProcessingFromContinuation(continuation);
-                                    })
-                                    .doOnError(t -> {
-                                        logger.error(
-                                            "Failed to checkpoint for Partition : " + this.lease.getLeaseToken() + " with continuation " + this.lease.getReadableContinuationToken() + " from thread " + Thread.currentThread().getId(), t);
-                                        this.resultException = new RuntimeException(t);
-                                    });
-                            }
+                            logger.error(
+                                "Partition : " + this.lease.getLeaseToken() + ": Parsing error encountered. To enable automatic retries, please set the + " + Configs.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED + " configuration to 'true'. Failing.", clientException);
+                            this.resultException = new RuntimeException(clientException);
+                            return Flux.error(throwable);
                         default: {
                             logger.error("Unrecognized Cosmos exception returned error code " + docDbError, clientException);
                             this.resultException = new RuntimeException(clientException);

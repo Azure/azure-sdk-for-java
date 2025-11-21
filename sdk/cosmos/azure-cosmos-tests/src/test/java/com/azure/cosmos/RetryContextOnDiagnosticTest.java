@@ -117,13 +117,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .withContent(rawJson)
                 .withStatus(200)
                 .build()));
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes(),
-                null)));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -155,7 +148,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
-    public void backoffRetryUtilityExecuteAsync() throws Exception {
+    public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod =
             Mockito.mock(Function.class);
@@ -171,13 +164,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .withContent(rawJson)
                 .withStatus(200)
                 .build()));
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes(),
-                null)));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,
@@ -357,7 +343,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void goneExceptionSuccessScenarioQuery() throws Exception {
+    public void goneExceptionSuccessScenarioQuery() {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -414,7 +400,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void goneExceptionSuccessScenario() throws Exception {
+    public void goneExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -502,7 +488,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void goneAndThrottlingExceptionSuccessScenario() throws Exception {
+    public void goneAndThrottlingExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -571,7 +557,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void goneAndThrottlingExceptionSuccessScenarioQuery() throws Exception {
+    public void goneAndThrottlingExceptionSuccessScenarioQuery() {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -689,7 +675,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void sessionNonAvailableExceptionScenario() throws Exception {
+    public void sessionNonAvailableExceptionScenario() throws JsonProcessingException {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -806,7 +792,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void throttlingExceptionScenario() throws Exception {
+    public void throttlingExceptionScenario() throws JsonProcessingException {
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -1022,14 +1008,14 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    private StoreResponse getStoreResponse(int statusCode) throws Exception {
+    private StoreResponse getStoreResponse(int statusCode) throws JsonProcessingException {
         StoreResponseBuilder storeResponseBuilder =
             StoreResponseBuilder.create().withContent(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()))
                 .withStatus(statusCode);
         return storeResponseBuilder.build();
     }
 
-    private StoreResponse getQueryStoreResponse() throws Exception {
+    private StoreResponse getQueryStoreResponse() {
         String queryContent = "{\n" +
             "  \"_rid\": \"IaBwAPRwFTg=\",\n" +
             "  \"Documents\": [\n" +

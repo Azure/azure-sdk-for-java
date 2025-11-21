@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreResponseTest {
     @Test(groups = { "unit" })
-    public void stringContent() throws Exception {
+    public void stringContent() {
         String content = "I am body";
         String jsonContent = "{\"id\":\"" + content + "\"}";
         HashMap<String, String> headerMap = new HashMap<>();
@@ -22,7 +22,7 @@ public class StoreResponseTest {
         headerMap.put("key2", "value2");
 
         ByteBuf buffer = getUTF8BytesOrNull(jsonContent);
-        StoreResponse sp = new StoreResponse(null, 200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes(), null);
+        StoreResponse sp = new StoreResponse(null, 200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes());
 
         assertThat(sp.getStatus()).isEqualTo(200);
         assertThat(sp.getResponseBodyAsJson().get("id").asText()).isEqualTo(content);

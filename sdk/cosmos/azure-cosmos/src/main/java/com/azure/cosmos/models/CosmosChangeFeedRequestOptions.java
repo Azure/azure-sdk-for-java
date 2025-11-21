@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
@@ -30,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -607,26 +607,6 @@ public final class CosmosChangeFeedRequestOptions {
      */
     public Set<String> getKeywordIdentifiers() {
         return this.actualRequestOptions.getKeywordIdentifiers();
-    }
-
-    /**
-     * Sets the response interceptor to be called after receiving the response
-     * for the request.
-     *
-     * @param responseInterceptor the response interceptor.
-     */
-    public void setResponseInterceptor(Callable<Void> responseInterceptor) {
-        this.actualRequestOptions.setResponseInterceptor(responseInterceptor);
-    }
-
-    /**
-     * Gets the response interceptor to be called after receiving the response
-     * for the request.
-     *
-     * @return the response interceptor.
-     */
-    public Callable<Void> getResponseInterceptor() {
-        return this.actualRequestOptions.getResponseInterceptor();
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {

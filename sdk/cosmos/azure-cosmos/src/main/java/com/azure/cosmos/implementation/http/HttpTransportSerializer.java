@@ -14,5 +14,5 @@ public interface HttpTransportSerializer {
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
-        ByteBuf retainedContent) throws Exception;
+        ByteBuf retainedContent);
 }

@@ -4,14 +4,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -25,7 +21,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -106,11 +101,6 @@ abstract class Fetcher<T> {
         RxDocumentServiceRequest request,
         FeedResponse<T> response);
 
-    protected abstract String applyServerResponseContinuation(
-        String serverContinuationToken,
-        RxDocumentServiceRequest request,
-        CosmosException cosmosException);
-
     protected abstract boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response);
 
     protected abstract String getContinuationForLogging();
@@ -153,10 +143,6 @@ abstract class Fetcher<T> {
                 isChangeFeed, this.getContinuationForLogging(), maxItemCount.get(), shouldFetchMore.get(),
                 this.operationContextTextProvider.get());
         }
-    }
-
-    private void updateStateForException(String continuationToken, RxDocumentServiceRequest request, CosmosException cosmosException) {
-        this.applyServerResponseContinuation(continuationToken, request, cosmosException);
     }
 
     protected void reEnableShouldFetchMoreForRetry() {
@@ -212,24 +198,7 @@ abstract class Fetcher<T> {
                     }
                 }
             })
-            .doOnError(throwable -> {
-
-                if (throwable instanceof CosmosException) {
-                    CosmosException cosmosException = (CosmosException) throwable;
-                    Map<String, String> responseHeaders = cosmosException.getResponseHeaders();
-
-                    if (responseHeaders != null) {
-                        String responseContinuation =
-                            OperationType.ReadFeed.equals(request.getOperationType()) && ResourceType.Document.equals(request.getResourceType()) ?
-                                responseHeaders.get(HttpConstants.HttpHeaders.E_TAG) :
-                                responseHeaders.get(HttpConstants.HttpHeaders.CONTINUATION);
-
-                        this.updateStateForException(responseContinuation, request, cosmosException);
-                    }
-                }
-
-                completed.set(true);
-            })
+            .doOnError(throwable -> completed.set(true))
             .doFinally(signalType -> {
                 // If the signal type is not cancel(which means success or error), we do not need to tracking the diagnostics here
                 // as the downstream will capture it

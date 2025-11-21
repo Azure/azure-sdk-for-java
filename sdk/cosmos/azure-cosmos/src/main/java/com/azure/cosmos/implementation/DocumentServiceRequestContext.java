@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -79,7 +78,6 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
     private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
-    private volatile Callable<Void> responseInterceptor;
 
     public DocumentServiceRequestContext() {}
 
@@ -170,8 +168,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
         context.crossRegionAvailabilityContextForRequest = this.crossRegionAvailabilityContextForRequest;
-        context.responseInterceptor = this.responseInterceptor;
-
         return context;
     }
 
@@ -269,14 +265,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         } else {
             this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
         }
-    }
-
-    public void setResponseInterceptor(Callable<Void> responseInterceptor) {
-        this.responseInterceptor = responseInterceptor;
-    }
-
-    public Callable<Void> getResponseInterceptor() {
-        return this.responseInterceptor;
     }
 }
 

@@ -56,7 +56,7 @@ abstract public class EndpointMock {
         }
     }
 
-    public static Builder.NoSecondaryReplica noSecondaryReplicaBuilder() throws Exception {
+    public static Builder.NoSecondaryReplica noSecondaryReplicaBuilder() {
         return new Builder.NoSecondaryReplica();
     }
 
@@ -149,9 +149,6 @@ abstract public class EndpointMock {
             private StoreResponse readStoreResponse = defaultResponse;
             private Function1WithCheckedException<RxDocumentServiceRequest, StoreResponse> storeResponseFunc;
 
-            public NoSecondaryReplica() throws Exception {
-            }
-
             public NoSecondaryReplica primaryReplica(Uri primaryReplica) {
                 this.primary = primaryReplica;
                 return this;
@@ -219,9 +216,6 @@ abstract public class EndpointMock {
                     .build();
             Map<Uri, Function1WithCheckedException<RxDocumentServiceRequest, StoreResponse>> secondaryResponseFunc =
                     new HashMap<>();
-
-            public NoSecondaryReplica_TwoSecondaryReplicasGoLiveAfterFirstHitOnPrimary() throws Exception {
-            }
 
 
             public NoSecondaryReplica_TwoSecondaryReplicasGoLiveAfterFirstHitOnPrimary primaryReplica(Uri primaryReplica) {
