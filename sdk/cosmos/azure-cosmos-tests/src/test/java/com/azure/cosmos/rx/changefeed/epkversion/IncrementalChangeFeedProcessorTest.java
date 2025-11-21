@@ -53,10 +53,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.exc.StreamConstraintsException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
@@ -92,7 +89,6 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -133,58 +129,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             FaultInjectionServerErrorType.PARTITION_IS_SPLITTING,
             FaultInjectionServerErrorType.GONE,
             FaultInjectionServerErrorType.PARTITION_IS_MIGRATING
-        };
-    }
-
-    @DataProvider(name = "parsingErrorArgProvider")
-    public static Object[][] parsingErrorArgProvider() {
-        return new Object[][]{
-            {
-                new StreamConstraintsException("A StreamConstraintsException has been hit!"),
-                -1
-            },
-            {
-                new JacksonException("A JacksonException has been hit!") {
-                    @Override
-                    public JsonLocation getLocation() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getOriginalMessage() {
-                        return "";
-                    }
-
-                    @Override
-                    public Object getProcessor() {
-                        return null;
-                    }
-                },
-                -1
-            },
-            {
-                new StreamConstraintsException("A StreamConstraintsException has been hit!"),
-                10
-            },
-            {
-                new JacksonException("A JacksonException has been hit!") {
-                    @Override
-                    public JsonLocation getLocation() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getOriginalMessage() {
-                        return "";
-                    }
-
-                    @Override
-                    public Object getProcessor() {
-                        return null;
-                    }
-                },
-                10
-            }
         };
     }
 
@@ -295,6 +239,107 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
             safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void verifyConsistentTimestamps() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleLatestVersionChanges((List<ChangeFeedProcessorItem> docs) -> {
+                    logger.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (ChangeFeedProcessorItem item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    logger.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(1))
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(10)
+                    .setMinScaleCount(1)
+                    .setMaxScaleCount(3)
+                )
+                .buildChangeFeedProcessor();
+            AtomicReference<String> initialTimestamp = new AtomicReference<>();
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            createdLeaseCollection.queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(), JsonNode.class)
+                .byPage()
+                .flatMap(feedResponse -> {
+                    for (JsonNode item : feedResponse.getResults()) {
+                        if (item.get("timestamp") != null) {
+                            initialTimestamp.set(item.get("timestamp").asText());
+                            logger.info("Found timestamp: %s", initialTimestamp);
+                        }
+                    }
+                    return Mono.empty();
+                }).blockLast();
+
+
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // create a gap between previously written documents
+            Thread.sleep(3000);
+
+            // process some documents after the CFP is started and stopped
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
+
+            // Wait for the feed processor to receive and process the documents.
+            waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            logger.info("After processing documents");
+
+            AtomicReference<String> newTimestamp = new AtomicReference<>();
+
+
+            createdLeaseCollection.queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(), JsonNode.class)
+                .byPage()
+                .flatMap(feedResponse -> {
+                    for (JsonNode item : feedResponse.getResults()) {
+                        if (item.get("timestamp") != null) {
+                            newTimestamp.set(item.get("timestamp").asText());
+                            logger.info("Found timestamp: %s", newTimestamp);
+                        }
+                    }
+                    return Mono.empty();
+                }).blockLast();
+
+
+            assertThat(newTimestamp.get()).doesNotContain("[UTC]");
+            assertThat(initialTimestamp.get()).doesNotContain("[UTC]");
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -1979,127 +2024,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
-            // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
-        }
-    }
-
-    @Test(groups = { "long-emulator" }, dataProvider = "parsingErrorArgProvider", timeOut = 12 * TIMEOUT)
-    public void readFeedDocumentsStartFromBeginningWithJsonProcessingErrors(Exception exceptionType, int maxItemCount) throws InterruptedException {
-
-        if (BridgeInternal.getContextClient(this.client).getConnectionPolicy().getConnectionMode()
-            == ConnectionMode.DIRECT) {
-            throw new SkipException("The fix is only for Gateway mode. Direct mode fix will be followed up on.");
-        }
-
-        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
-        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
-        Callable<Void> responseInterceptor = null;
-
-        // Response Interceptor Properties
-        AtomicInteger pageCounter = new AtomicInteger(0);
-        AtomicInteger exceptionCounter = new AtomicInteger(0);
-        AtomicInteger totalExceptionHits = new AtomicInteger(0);
-
-        if (exceptionType instanceof StreamConstraintsException) {
-            responseInterceptor = () -> {
-                // inject when certain no. of pages have been processed
-                if (pageCounter.get() > 1 && pageCounter.get() % 2 == 0) {
-                    if (exceptionCounter.get() < 3) {
-                        exceptionCounter.incrementAndGet();
-                        totalExceptionHits.incrementAndGet();
-                        throw exceptionType;
-                    } else {
-                        exceptionCounter.set(0);
-                    }
-                }
-
-                return null;
-            };
-        } else {
-            responseInterceptor = () -> {
-                // inject when certain no. of pages have been processed
-                if (pageCounter.get() > 1 && pageCounter.get() % 2 == 0) {
-                    if (exceptionCounter.get() < 2) {
-                        exceptionCounter.incrementAndGet();
-                        totalExceptionHits.incrementAndGet();
-                        throw exceptionType;
-                    } else {
-                        exceptionCounter.set(0);
-                    }
-                }
-
-                return null;
-            };
-        }
-
-        try {
-            List<InternalObjectNode> createdDocuments = new ArrayList<>();
-            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            setupReadFeedDocuments(createdDocuments, createdFeedCollection, 100);
-
-            changeFeedProcessor = new ChangeFeedProcessorBuilder()
-                .hostName(hostName)
-                .handleLatestVersionChanges((docs) -> {
-                    logger.info("START processing from thread {}", Thread.currentThread().getId());
-                    for (ChangeFeedProcessorItem item : docs) {
-                        processItem(item, receivedDocuments);
-                    }
-
-                    pageCounter.incrementAndGet();
-                    logger.info("END processing from thread {}", Thread.currentThread().getId());
-                })
-                .feedContainer(createdFeedCollection)
-                .leaseContainer(createdLeaseCollection)
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeaseRenewInterval(Duration.ofSeconds(20))
-                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
-                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
-                    .setFeedPollDelay(Duration.ofSeconds(2))
-                    .setLeasePrefix("TEST")
-                    .setMaxItemCount(maxItemCount)
-                    .setStartFromBeginning(true)
-                    .setMaxScaleCount(0) // unlimited
-                    .setResponseInterceptor(responseInterceptor)
-                )
-                .buildChangeFeedProcessor();
-
-            startChangeFeedProcessor(changeFeedProcessor);
-
-            for (int i = 0; i < 5; i++) {
-                setupReadFeedDocuments(createdDocuments, createdFeedCollection, 100);
-                Thread.sleep(10_000);
-            }
-
-            // Wait for the feed processor to receive and process the documents.
-            Thread.sleep(20 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
-
-            safeStopChangeFeedProcessor(changeFeedProcessor);
-
-            // Wait for the feed processor to shutdown.
-            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-            logger.warn("Total documents received: {}", receivedDocuments.size());
-            logger.warn("Total created documents : {}", createdDocuments.size());
-            logger.warn("Total exception hits : {}", totalExceptionHits.get());
-
-            assertThat(totalExceptionHits.get()).isGreaterThan(0);
-
-            if (exceptionType instanceof StreamConstraintsException) {
-                assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
-
-                for (InternalObjectNode item : createdDocuments) {
-                    assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
-                }
-            } else {
-                assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size() - totalExceptionHits.get() / 2);
-            }
-        } finally {
-            safeDeleteCollection(createdFeedCollection);
-            safeDeleteCollection(createdLeaseCollection);
-
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
         }

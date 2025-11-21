@@ -30,7 +30,7 @@ public class StoreResponseTest {
     }
 
     @Test(groups = { "unit" })
-    public void headerNamesAreCaseInsensitive() throws Exception {
+    public void headerNamesAreCaseInsensitive() {
         String content = "I am body";
         String jsonContent = "{\"id\":\"" + content + "\"}";
         HashMap<String, String> headerMap = new HashMap<>();
@@ -39,7 +39,7 @@ public class StoreResponseTest {
         headerMap.put("KEY3", "value3");
 
         ByteBuf buffer = getUTF8BytesOrNull(jsonContent);
-        StoreResponse sp = new StoreResponse(null, 200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes(), null);
+        StoreResponse sp = new StoreResponse(null, 200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes());
 
         assertThat(sp.getStatus()).isEqualTo(200);
         assertThat(sp.getResponseBodyAsJson().get("id").asText()).isEqualTo(content);
