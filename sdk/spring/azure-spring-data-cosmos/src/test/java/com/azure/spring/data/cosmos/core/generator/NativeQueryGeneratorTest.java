@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NativeQueryGeneratorTest {
 
@@ -35,7 +36,7 @@ public class NativeQueryGeneratorTest {
         SqlQuerySpec querySpec = new SqlQuerySpec("select * from a where a.firstName = @firstName", sqlParameters);
         final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, Sort.by(ASC, "id"));
 
-        Assertions.assertEquals(sortedQuerySpec.getQueryText(), "select * from a where a.firstName = @firstName ORDER BY a.id ASC");
+        assertEquals(sortedQuerySpec.getQueryText(), "select * from a where a.firstName = @firstName ORDER BY a.id ASC");
     }
 
     private static class EmptyQueryGenerator extends NativeQueryGenerator implements QuerySpecGenerator {

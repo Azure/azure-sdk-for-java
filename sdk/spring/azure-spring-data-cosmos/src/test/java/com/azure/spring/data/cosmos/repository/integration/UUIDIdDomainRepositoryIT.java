@@ -31,6 +31,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -70,8 +71,8 @@ public class UUIDIdDomainRepositoryIT {
         final Optional<UUIDIdDomain> foundOptional = this.repository.findById(ID_1);
 
         Assertions.assertTrue(foundOptional.isPresent());
-        Assertions.assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
-        Assertions.assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
+        assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
+        assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
 
         this.repository.delete(DOMAIN_1);
 
@@ -95,7 +96,7 @@ public class UUIDIdDomainRepositoryIT {
 
         final Optional<UUIDIdDomain> savedEntity = this.repository.findById(DOMAIN_1.getNumber());
         Assertions.assertTrue(savedEntity.isPresent());
-        Assertions.assertEquals(DOMAIN_1, savedEntity.get());
+        assertEquals(DOMAIN_1, savedEntity.get());
     }
 
     @Test
@@ -123,12 +124,12 @@ public class UUIDIdDomainRepositoryIT {
     private void assertUUIDIdDomainEquals(List<UUIDIdDomain> cur, List<UUIDIdDomain> reference) {
         cur.sort(Comparator.comparing(UUIDIdDomain::getNumber));
         reference.sort(Comparator.comparing(UUIDIdDomain::getNumber));
-        Assertions.assertEquals(reference, cur);
+        assertEquals(reference, cur);
     }
 
     @Test
     public void testCount() {
-        Assertions.assertEquals(2, repository.count());
+        assertEquals(2, repository.count());
     }
 
     @Test
@@ -137,7 +138,7 @@ public class UUIDIdDomainRepositoryIT {
         this.repository.save(DOMAIN_2);
         this.repository.deleteById(DOMAIN_1.getNumber());
         this.repository.deleteById(DOMAIN_2.getNumber());
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
@@ -150,7 +151,7 @@ public class UUIDIdDomainRepositoryIT {
     public void testDelete() {
         this.repository.save(DOMAIN_1);
         this.repository.delete(DOMAIN_1);
-        Assertions.assertEquals(1, this.repository.count());
+        assertEquals(1, this.repository.count());
     }
 
     @Test
@@ -164,7 +165,7 @@ public class UUIDIdDomainRepositoryIT {
         this.repository.save(DOMAIN_1);
         this.repository.save(DOMAIN_2);
         this.repository.deleteAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test

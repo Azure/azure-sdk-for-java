@@ -109,7 +109,7 @@ public class MultiTenantContainerCosmosFactoryIT {
         Iterable<Person> iterableDB2 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
         List<Person> resultDB2 = new ArrayList<>();
         iterableDB2.forEach(resultDB2::add);
-        Assertions.assertEquals(expectedResultsContainer2, resultDB2);
+        assertEquals(expectedResultsContainer2, resultDB2);
 
         // Check that testContainer1 has the correct contents
         cosmosFactory.manuallySetContainerName = testContainer1;
@@ -118,7 +118,7 @@ public class MultiTenantContainerCosmosFactoryIT {
         Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
         List<Person> resultDB1 = new ArrayList<>();
         iterableDB1.forEach(resultDB1::add);
-        Assertions.assertEquals(expectedResultsContainer1, resultDB1);
+        assertEquals(expectedResultsContainer1, resultDB1);
 
         //Cleanup
         deleteDatabaseIfExists(testDB1);

@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -72,8 +73,8 @@ public class LongIdDomainRepositoryIT {
         final Optional<LongIdDomain> foundOptional = this.repository.findById(ID_1);
 
         Assertions.assertTrue(foundOptional.isPresent());
-        Assertions.assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
-        Assertions.assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
+        assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
+        assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
 
         this.repository.delete(DOMAIN_1);
 
@@ -97,7 +98,7 @@ public class LongIdDomainRepositoryIT {
 
         final Optional<LongIdDomain> savedEntity = this.repository.findById(DOMAIN_1.getNumber());
         Assertions.assertTrue(savedEntity.isPresent());
-        Assertions.assertEquals(DOMAIN_1, savedEntity.get());
+        assertEquals(DOMAIN_1, savedEntity.get());
     }
 
     @Test
@@ -125,12 +126,12 @@ public class LongIdDomainRepositoryIT {
     private void assertLongIdDomainEquals(List<LongIdDomain> cur, List<LongIdDomain> reference) {
         cur.sort(Comparator.comparing(LongIdDomain::getNumber));
         reference.sort(Comparator.comparing(LongIdDomain::getNumber));
-        Assertions.assertEquals(reference, cur);
+        assertEquals(reference, cur);
     }
 
     @Test
     public void testCount() {
-        Assertions.assertEquals(2, repository.count());
+        assertEquals(2, repository.count());
     }
 
     @Test
@@ -139,7 +140,7 @@ public class LongIdDomainRepositoryIT {
         this.repository.save(DOMAIN_2);
         this.repository.deleteById(DOMAIN_1.getNumber());
         this.repository.deleteById(DOMAIN_2.getNumber());
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
@@ -152,7 +153,7 @@ public class LongIdDomainRepositoryIT {
     public void testDelete() {
         this.repository.save(DOMAIN_1);
         this.repository.delete(DOMAIN_1);
-        Assertions.assertEquals(1, this.repository.count());
+        assertEquals(1, this.repository.count());
     }
 
     @Test
@@ -166,7 +167,7 @@ public class LongIdDomainRepositoryIT {
         this.repository.save(DOMAIN_1);
         this.repository.save(DOMAIN_2);
         this.repository.deleteAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
@@ -185,19 +186,19 @@ public class LongIdDomainRepositoryIT {
         final List<LongIdDomain> ascending = StreamSupport
             .stream(this.repository.findAll(ascSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assertions.assertEquals(3, ascending.size());
-        Assertions.assertEquals(DOMAIN_1, ascending.get(0));
-        Assertions.assertEquals(other, ascending.get(1));
-        Assertions.assertEquals(DOMAIN_2, ascending.get(2));
+        assertEquals(3, ascending.size());
+        assertEquals(DOMAIN_1, ascending.get(0));
+        assertEquals(other, ascending.get(1));
+        assertEquals(DOMAIN_2, ascending.get(2));
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
         final List<LongIdDomain> descending = StreamSupport
             .stream(this.repository.findAll(descSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assertions.assertEquals(3, descending.size());
-        Assertions.assertEquals(DOMAIN_2, descending.get(0));
-        Assertions.assertEquals(other, descending.get(1));
-        Assertions.assertEquals(DOMAIN_1, descending.get(2));
+        assertEquals(3, descending.size());
+        assertEquals(DOMAIN_2, descending.get(0));
+        assertEquals(other, descending.get(1));
+        assertEquals(DOMAIN_1, descending.get(2));
 
     }
 
@@ -209,17 +210,17 @@ public class LongIdDomainRepositoryIT {
         final Page<LongIdDomain> page1 = this.repository.findAll(new CosmosPageRequest(0, 1, null));
         final Iterator<LongIdDomain> page1Iterator = page1.iterator();
         Assertions.assertTrue(page1Iterator.hasNext());
-        Assertions.assertEquals(DOMAIN_1, page1Iterator.next());
+        assertEquals(DOMAIN_1, page1Iterator.next());
 
         final Page<LongIdDomain> page2 = this.repository.findAll(new CosmosPageRequest(1, 1, null));
         final Iterator<LongIdDomain> page2Iterator = page2.iterator();
         Assertions.assertTrue(page2Iterator.hasNext());
-        Assertions.assertEquals(DOMAIN_2, page2Iterator.next());
+        assertEquals(DOMAIN_2, page2Iterator.next());
 
         final Page<LongIdDomain> page3 = this.repository.findAll(new CosmosPageRequest(2, 1, null));
         final Iterator<LongIdDomain> page3Iterator = page3.iterator();
         Assertions.assertTrue(page3Iterator.hasNext());
-        Assertions.assertEquals(other, page3Iterator.next());
+        assertEquals(other, page3Iterator.next());
     }
 
     private static class InvalidDomain {

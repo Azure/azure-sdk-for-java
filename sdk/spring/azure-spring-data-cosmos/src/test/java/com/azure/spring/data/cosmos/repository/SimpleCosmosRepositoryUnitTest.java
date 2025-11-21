@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -71,15 +72,15 @@ public class SimpleCosmosRepositoryUnitTest {
 
     @Test
     public void testFindOneExceptionForPartitioned() {
-        expectedException.expect(UnsupportedOperationException.class);
-        expectedException.expectMessage(PARTITION_VALUE_REQUIRED_MSG);
-
         repository.save(TEST_PERSON);
 
         when(cosmosOperations.findById(anyString(), anyString(), any()))
                 .thenThrow(new UnsupportedOperationException(PARTITION_VALUE_REQUIRED_MSG));
 
-        final Person result = repository.findById(TEST_PERSON.getId()).get();
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class, () -> {
+            repository.findById(TEST_PERSON.getId()).get();
+        });
+        assertEquals(PARTITION_VALUE_REQUIRED_MSG, exception.getMessage());
     }
 
     @Test

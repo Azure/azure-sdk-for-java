@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AbstractQueryGeneratorTest {
 
@@ -60,7 +61,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assertions.assertEquals(result.getQueryText(), " WHERE STARTSWITH(r.firstName, @firstName0, true) ");
+        assertEquals(result.getQueryText(), " WHERE STARTSWITH(r.firstName, @firstName0, true) ");
     }
 
     @Test
@@ -72,7 +73,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assertions.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ORDER BY r.id ASC");
+        assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ORDER BY r.id ASC");
     }
 
     @Test
@@ -84,7 +85,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assertions.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ");
+        assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ");
     }
 
     @Test
@@ -98,9 +99,9 @@ public class AbstractQueryGeneratorTest {
             SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
             if (ignoreCaseType == Part.IgnoreCaseType.NEVER) {
-                Assertions.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0) ");
+                assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0) ");
             } else {
-                Assertions.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+                assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
             }
         }
     }
@@ -114,7 +115,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assertions.assertEquals(result.getQueryText(), " WHERE UPPER(r.zipcode) = UPPER(@zipcode0) ");
+        assertEquals(result.getQueryText(), " WHERE UPPER(r.zipcode) = UPPER(@zipcode0) ");
     }
 
     @Test
@@ -126,7 +127,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assertions.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+        assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
     }
 
     private static class EmptyQueryGenerator extends AbstractQueryGenerator implements QuerySpecGenerator {

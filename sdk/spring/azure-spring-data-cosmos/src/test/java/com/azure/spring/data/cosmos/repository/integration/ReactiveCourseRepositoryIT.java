@@ -338,9 +338,9 @@ public class ReactiveCourseRepositoryIT {
     public void testFindByNameJsonNode() {
         final Flux<JsonNode> findResult = repository.annotatedFindByName(COURSE_NAME_1);
         StepVerifier.create(findResult).consumeNextWith(result -> {
-            Assertions.assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
-            Assertions.assertEquals(result.findValue("name").asText(), COURSE_1.getName());
-            Assertions.assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
+            assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
+            assertEquals(result.findValue("name").asText(), COURSE_1.getName());
+            assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
         }).verifyComplete();
     }
 

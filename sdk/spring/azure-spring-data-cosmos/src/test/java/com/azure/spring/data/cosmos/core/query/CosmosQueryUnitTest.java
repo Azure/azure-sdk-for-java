@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_KEY;
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_OBJECT;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CosmosQueryUnitTest {
 
@@ -22,9 +23,9 @@ public class CosmosQueryUnitTest {
 
         final CosmosQuery query = new CosmosQuery(criteria);
 
-        Assertions.assertEquals(criteria, query.getCriteria());
-        Assertions.assertEquals(Sort.unsorted(), query.getSort());
-        Assertions.assertEquals(Pageable.unpaged(), query.getPageable());
-        Assertions.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
+        assertEquals(criteria, query.getCriteria());
+        assertEquals(Sort.unsorted(), query.getSort());
+        assertEquals(Pageable.unpaged(), query.getPageable());
+        assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
     }
 }

@@ -28,6 +28,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -89,12 +90,12 @@ public class ProjectRepositoryIT {
     }
 
     private void assertProjectListEquals(@NonNull List<Project> projects, @NonNull List<Project> reference) {
-        Assertions.assertEquals(reference.size(), projects.size());
+        assertEquals(reference.size(), projects.size());
 
         projects.sort(Comparator.comparing(Project::getId));
         reference.sort(Comparator.comparing(Project::getId));
 
-        Assertions.assertEquals(reference, projects);
+        assertEquals(reference, projects);
     }
 
     @Test
@@ -364,7 +365,7 @@ public class ProjectRepositoryIT {
 
         Assertions.assertTrue(project.isPresent());
 
-        Assertions.assertEquals(project.get(), PROJECT_0);
+        assertEquals(project.get(), PROJECT_0);
     }
 
     @Test

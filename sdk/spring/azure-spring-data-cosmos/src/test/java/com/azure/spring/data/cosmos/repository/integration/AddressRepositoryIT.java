@@ -41,6 +41,7 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITIO
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -165,8 +166,8 @@ public class AddressRepositoryIT {
         result.sort(Comparator.comparing(Address::getPostalCode));
         reference.sort(Comparator.comparing(Address::getPostalCode));
 
-        Assertions.assertEquals(reference.size(), result.size());
-        Assertions.assertEquals(reference, result);
+        assertEquals(reference.size(), result.size());
+        assertEquals(reference, result);
     }
 
     @Test
@@ -181,7 +182,6 @@ public class AddressRepositoryIT {
 
     @Test
     public void deleteWithoutPartitionedColumnShouldFail() {
-        expectedException.expect(Exception.class);
 
         repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode());
     }

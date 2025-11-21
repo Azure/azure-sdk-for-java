@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -59,7 +60,7 @@ public class QuestionRepositoryIT {
         final Optional<Question> optional = this.repository.findById(QUESTION_ID);
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         Assertions.assertTrue(optional.isPresent());
-        Assertions.assertEquals(QUESTION, optional.get());
+        assertEquals(QUESTION, optional.get());
     }
 
     @Test
@@ -72,7 +73,7 @@ public class QuestionRepositoryIT {
     public void testFindAll() {
         final List<Question> questions = Lists.newArrayList(this.repository.findAll());
 
-        Assertions.assertEquals(Collections.singletonList(QUESTION), questions);
+        assertEquals(Collections.singletonList(QUESTION), questions);
     }
 
     @Test
@@ -80,7 +81,7 @@ public class QuestionRepositoryIT {
         Optional<Question> optional = this.repository.findById(QUESTION_ID);
 
         Assertions.assertTrue(optional.isPresent());
-        Assertions.assertEquals(QUESTION, optional.get());
+        assertEquals(QUESTION, optional.get());
 
         this.repository.delete(QUESTION);
         optional = this.repository.findById(QUESTION_ID);

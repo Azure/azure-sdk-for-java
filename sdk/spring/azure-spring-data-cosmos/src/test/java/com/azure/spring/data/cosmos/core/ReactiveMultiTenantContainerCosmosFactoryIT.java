@@ -112,7 +112,7 @@ public class ReactiveMultiTenantContainerCosmosFactoryIT {
         StepVerifier.create(fluxDB2).expectNextCount(1).verifyComplete();
         List<Person> resultDB2 = new ArrayList<>();
         fluxDB2.toIterable().forEach(resultDB2::add);
-        Assertions.assertEquals(expectedResultsContainer2, resultDB2);
+        assertEquals(expectedResultsContainer2, resultDB2);
 
         // Check that testContainer1 has the correct contents
         cosmosFactory.manuallySetContainerName = testContainer1;
@@ -122,7 +122,7 @@ public class ReactiveMultiTenantContainerCosmosFactoryIT {
         StepVerifier.create(fluxDB1).expectNextCount(1).verifyComplete();
         List<Person> resultDB1 = new ArrayList<>();
         fluxDB1.toIterable().forEach(resultDB1::add);
-        Assertions.assertEquals(expectedResultsContainer1, resultDB1);
+        assertEquals(expectedResultsContainer1, resultDB1);
 
         //Cleanup
         deleteDatabaseIfExists(testDB1);

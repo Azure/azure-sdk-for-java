@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_KEY;
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_OBJECT;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CriteriaUnitTest {
 
@@ -24,11 +25,11 @@ public class CriteriaUnitTest {
             CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
 
         Assertions.assertTrue(criteria.getSubCriteria().isEmpty());
-        Assertions.assertEquals(values, criteria.getSubjectValues());
-        Assertions.assertEquals(CriteriaType.IS_EQUAL, criteria.getType());
-        Assertions.assertEquals(CRITERIA_KEY, criteria.getSubject());
+        assertEquals(values, criteria.getSubjectValues());
+        assertEquals(CriteriaType.IS_EQUAL, criteria.getType());
+        assertEquals(CRITERIA_KEY, criteria.getSubject());
         Assertions.assertTrue(CriteriaType.isBinary(criteria.getType()));
-        Assertions.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
+        assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
     }
 
     @Test
@@ -43,15 +44,15 @@ public class CriteriaUnitTest {
         Assertions.assertNotNull(criteria.getSubCriteria());
         Assertions.assertNull(criteria.getSubjectValues());
         Assertions.assertNull(criteria.getSubject());
-        Assertions.assertEquals(criteria.getType(), CriteriaType.AND);
+        assertEquals(criteria.getType(), CriteriaType.AND);
         Assertions.assertTrue(CriteriaType.isClosed(criteria.getType()));
 
-        Assertions.assertEquals(2, criteria.getSubCriteria().size());
-        Assertions.assertEquals(leftCriteria, criteria.getSubCriteria().get(0));
-        Assertions.assertEquals(rightCriteria, criteria.getSubCriteria().get(1));
+        assertEquals(2, criteria.getSubCriteria().size());
+        assertEquals(leftCriteria, criteria.getSubCriteria().get(0));
+        assertEquals(rightCriteria, criteria.getSubCriteria().get(1));
 
-        Assertions.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getSubCriteria().get(0).getIgnoreCase());
-        Assertions.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getSubCriteria().get(1).getIgnoreCase());
+        assertEquals(Part.IgnoreCaseType.NEVER, criteria.getSubCriteria().get(0).getIgnoreCase());
+        assertEquals(Part.IgnoreCaseType.NEVER, criteria.getSubCriteria().get(1).getIgnoreCase());
     }
 
     @Test

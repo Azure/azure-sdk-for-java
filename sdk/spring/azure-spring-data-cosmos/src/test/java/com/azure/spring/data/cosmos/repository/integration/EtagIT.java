@@ -32,6 +32,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -72,7 +73,7 @@ public class EtagIT {
         final Optional<PersonWithEtag> foundPersonWithEtag = personWithEtagRepository.findById(insertedPersonWithEtag.getId());
         Assertions.assertTrue(foundPersonWithEtag.isPresent());
         Assertions.assertNotNull(foundPersonWithEtag.get().getEtag());
-        Assertions.assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.get().getEtag());
+        assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.get().getEtag());
     }
 
     @Test
@@ -89,7 +90,7 @@ public class EtagIT {
         for (int i = 0; i < updatedPeople.size(); i++) {
             PersonWithEtag insertedPersonWithEtag = insertedPeople.get(i);
             PersonWithEtag updatedPersonWithEtag = updatedPeople.get(i);
-            Assertions.assertEquals(insertedPersonWithEtag.getId(), updatedPersonWithEtag.getId());
+            assertEquals(insertedPersonWithEtag.getId(), updatedPersonWithEtag.getId());
             Assertions.assertNotNull(updatedPersonWithEtag.getEtag());
             Assertions.assertNotEquals(insertedPersonWithEtag.getEtag(), updatedPersonWithEtag.getEtag());
         }
@@ -102,7 +103,7 @@ public class EtagIT {
             PersonWithEtag updatedPersonWithEtag = updatedPeople.get(i);
             PersonWithEtag foundPersonWithEtag = foundPeople.get(i);
             Assertions.assertNotNull(foundPersonWithEtag.getEtag());
-            Assertions.assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.getEtag());
+            assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.getEtag());
         }
     }
 
@@ -148,14 +149,14 @@ public class EtagIT {
 
         try {
             List<PersonWithEtag> result = toList(personWithEtagRepository.saveAll(updatedPeopleWithEtag));
-            Assertions.assertEquals(result.size(), 0);
+            assertEquals(result.size(), 0);
         } catch (CosmosAccessException ex) {
         }
 
         try {
             personWithEtagRepository.deleteAll(updatedPeopleWithEtag);
             List<PersonWithEtag> result2 = toList(personWithEtagRepository.findAll());
-            Assertions.assertEquals(result2.size(), 1);
+            assertEquals(result2.size(), 1);
         } catch (CosmosAccessException ex) {
         }
     }

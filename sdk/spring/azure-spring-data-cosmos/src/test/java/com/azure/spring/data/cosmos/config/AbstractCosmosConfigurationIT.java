@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AbstractCosmosConfigurationIT {
 

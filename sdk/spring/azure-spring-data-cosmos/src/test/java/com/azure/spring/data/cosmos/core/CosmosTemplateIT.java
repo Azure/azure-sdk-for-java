@@ -244,7 +244,7 @@ public class CosmosTemplateIT {
         final Person personWithTransientField = TEST_PERSON_4;
         assertThat(personWithTransientField.getTransientProperty()).isNotNull();
         final Person insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
-        Assertions.assertEquals(TRANSIENT_PROPERTY, insertedPerson.getTransientProperty());
+        assertEquals(TRANSIENT_PROPERTY, insertedPerson.getTransientProperty());
         final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.getId(), Person.class);
         assertThat(retrievedPerson.getTransientProperty()).isNull();
     }
@@ -259,7 +259,7 @@ public class CosmosTemplateIT {
         Iterable<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
         //check that the transient field is retained in the response
         for (Person person : insertAllResponse) {
-            Assertions.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+            assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
         }
 
         Iterable<Person> findByIdsResponse = cosmosTemplate.findByIds(Arrays.asList(TEST_PERSON_4.getId()), Person.class, containerName);
@@ -482,7 +482,7 @@ public class CosmosTemplateIT {
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
 
-        Assertions.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+        assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();

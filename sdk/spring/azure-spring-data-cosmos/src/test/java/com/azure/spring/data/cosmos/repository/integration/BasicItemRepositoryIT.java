@@ -27,6 +27,7 @@ import java.util.Iterator;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -63,7 +64,7 @@ public class BasicItemRepositoryIT {
             TestUtils.toList(this.repository.findAllById(Arrays.asList(BASIC_ITEM_1.getId(), BASIC_ITEM_2.getId())));
         Assertions.assertTrue(((ArrayList) allById).size() == 2);
         Iterator<BasicItem> it = allById.iterator();
-        Assertions.assertEquals(BASIC_ITEM_1, it.next());
-        Assertions.assertEquals(BASIC_ITEM_2, it.next());
+        assertEquals(BASIC_ITEM_1, it.next());
+        assertEquals(BASIC_ITEM_2, it.next());
     }
 }

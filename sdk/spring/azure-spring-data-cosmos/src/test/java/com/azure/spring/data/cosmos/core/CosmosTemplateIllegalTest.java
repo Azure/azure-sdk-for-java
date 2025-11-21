@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(MockitoExtension.class)
 public class CosmosTemplateIllegalTest {
     private static final String NULL_STR = null;
@@ -78,7 +80,7 @@ public class CosmosTemplateIllegalTest {
         try {
             method.invoke(cosmosTemplate, args);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            Assertions.isTrue(e.getCause() instanceof IllegalArgumentException, CHECK_FAILURE_MSG);
+            Assert.isTrue(e.getCause() instanceof IllegalArgumentException, CHECK_FAILURE_MSG);
             return; // Test passed
         }
 

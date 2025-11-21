@@ -19,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -47,11 +48,11 @@ public class CountIT {
         Contact contact4 = new Contact("4", "other", 30, true);
         repository.saveAll(Arrays.asList(contact1, contact2, contact3, contact4));
 
-        Assertions.assertEquals(3, repository.countByTitle("title"));
-        Assertions.assertEquals(1, repository.countByTitle("other"));
+        assertEquals(3, repository.countByTitle("title"));
+        assertEquals(1, repository.countByTitle("other"));
 
-        Assertions.assertEquals(Long.valueOf(1), repository.countByTitleAndIntValue("title", 25));
-        Assertions.assertEquals(Long.valueOf(2), repository.countByTitleAndIntValue("title", 30));
+        assertEquals(Long.valueOf(1), repository.countByTitleAndIntValue("title", 25));
+        assertEquals(Long.valueOf(2), repository.countByTitleAndIntValue("title", 30));
     }
 
     @Test
@@ -61,11 +62,11 @@ public class CountIT {
         Contact contact3 = new Contact("3", "different");
         repository.saveAll(Arrays.asList(contact1, contact2, contact3));
 
-        Assertions.assertEquals(2, repository.countByQueryWithPrimitive("same"));
-        Assertions.assertEquals(1, repository.countByQueryWithPrimitive("different"));
+        assertEquals(2, repository.countByQueryWithPrimitive("same"));
+        assertEquals(1, repository.countByQueryWithPrimitive("different"));
 
-        Assertions.assertEquals(Long.valueOf(2), repository.countByQueryWithNonPrimitive("same"));
-        Assertions.assertEquals(Long.valueOf(1), repository.countByQueryWithNonPrimitive("different"));
+        assertEquals(Long.valueOf(2), repository.countByQueryWithNonPrimitive("same"));
+        assertEquals(Long.valueOf(1), repository.countByQueryWithNonPrimitive("different"));
     }
 
     @Test
@@ -75,8 +76,8 @@ public class CountIT {
         Course course3 = new Course("3", "course2", "department");
         reactiveRepository.saveAll(Arrays.asList(course1, course2, course3)).blockLast();
 
-        Assertions.assertEquals(Long.valueOf(2), reactiveRepository.countByName("course").block());
-        Assertions.assertEquals(Long.valueOf(1), reactiveRepository.countByName("course2").block());
+        assertEquals(Long.valueOf(2), reactiveRepository.countByName("course").block());
+        assertEquals(Long.valueOf(1), reactiveRepository.countByName("course2").block());
     }
 
     @Test
@@ -86,8 +87,8 @@ public class CountIT {
         Course course3 = new Course("3", "course2", "department");
         reactiveRepository.saveAll(Arrays.asList(course1, course2, course3)).blockLast();
 
-        Assertions.assertEquals(Long.valueOf(2), reactiveRepository.countByQuery("course").block());
-        Assertions.assertEquals(Long.valueOf(1), reactiveRepository.countByQuery("course2").block());
+        assertEquals(Long.valueOf(2), reactiveRepository.countByQuery("course").block());
+        assertEquals(Long.valueOf(1), reactiveRepository.countByQuery("course2").block());
     }
 
 }

@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -112,8 +113,8 @@ public class MemoRepositoryIT {
 
         memos = TestUtils.toList(this.repository.findByDateBefore(memoDate));
 
-        Assertions.assertEquals(1, memos.size());
-        Assertions.assertEquals(testMemo1, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo1, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateBefore(memoDateAfter));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2);
@@ -121,8 +122,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assertions.assertEquals(reference.size(), memos.size());
-        Assertions.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -134,8 +135,8 @@ public class MemoRepositoryIT {
 
         memos = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate, TestConstants.MESSAGE));
 
-        Assertions.assertEquals(1, memos.size());
-        Assertions.assertEquals(testMemo1, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo1, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateBeforeOrMessage(memoDateAfter, TestConstants.MESSAGE));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2);
@@ -143,8 +144,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assertions.assertEquals(reference.size(), memos.size());
-        Assertions.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -155,8 +156,8 @@ public class MemoRepositoryIT {
 
         memos = TestUtils.toList(this.repository.findByDateAfter(memoDate));
 
-        Assertions.assertEquals(1, memos.size());
-        Assertions.assertEquals(testMemo3, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo3, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateAfter(memoDateBefore));
         final List<Memo> reference = Arrays.asList(testMemo2, testMemo3);
@@ -164,8 +165,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assertions.assertEquals(reference.size(), memos.size());
-        Assertions.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -176,8 +177,8 @@ public class MemoRepositoryIT {
 
         memos = TestUtils.toList(this.repository.findByDateAfterAndMessage(memoDate, TestConstants.NEW_MESSAGE));
 
-        Assertions.assertEquals(1, memos.size());
-        Assertions.assertEquals(testMemo3, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo3, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateAfterOrMessage(memoDateBefore, TestConstants.MESSAGE));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2, testMemo3);
@@ -185,8 +186,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assertions.assertEquals(reference.size(), memos.size());
-        Assertions.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -226,8 +227,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assertions.assertEquals(reference.size(), memos.size());
-        Assertions.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -240,8 +241,8 @@ public class MemoRepositoryIT {
     public void testFindByStartsWith() {
         final List<Memo> result =
             TestUtils.toList(repository.findByMessageStartsWith(testMemo1.getMessage().substring(0, 10)));
-        Assertions.assertEquals(testMemo1, result.get(0));
-        Assertions.assertEquals(1, result.size());
+        assertEquals(testMemo1, result.get(0));
+        assertEquals(1, result.size());
     }
 
 }

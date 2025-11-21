@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -65,7 +66,7 @@ public class ContactRepositoryIT {
         final List<Contact> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(5);
-        Assertions.assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
+        assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
                                           TEST_CONTACT5), result);
 
         final Contact contact = repository.findById(TEST_CONTACT1.getLogicId()).get();
@@ -108,7 +109,7 @@ public class ContactRepositoryIT {
         final List<Contact> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(5);
-        Assertions.assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
+        assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
                                           TEST_CONTACT5), result);
         assertThat(result.get(0).getLogicId()).isEqualTo(TEST_CONTACT1.getLogicId());
         assertThat(result.get(0).getTitle()).isEqualTo(TEST_CONTACT1.getTitle());
@@ -176,7 +177,7 @@ public class ContactRepositoryIT {
         final Optional<Contact> optional = repository.findById(TEST_CONTACT1.getLogicId());
 
         Assertions.assertTrue(optional.isPresent());
-        Assertions.assertEquals(TEST_CONTACT1, optional.get());
+        assertEquals(TEST_CONTACT1, optional.get());
         Assertions.assertFalse(repository.findById("").isPresent());
     }
 
@@ -191,14 +192,14 @@ public class ContactRepositoryIT {
     public void testShouldFindSingleEntity() {
         final Contact contact = repository.findOneByTitle(TEST_CONTACT1.getTitle());
 
-        Assertions.assertEquals(TEST_CONTACT1, contact);
+        assertEquals(TEST_CONTACT1, contact);
     }
 
     @Test
     public void testShouldFindSingleOptionalEntity() {
         final Optional<Contact> contact = repository.findOptionallyByTitle(TEST_CONTACT1.getTitle());
         Assertions.assertTrue(contact.isPresent());
-        Assertions.assertEquals(TEST_CONTACT1, contact.get());
+        assertEquals(TEST_CONTACT1, contact.get());
 
         Assertions.assertFalse(repository.findOptionallyByTitle("not here").isPresent());
     }
@@ -213,28 +214,28 @@ public class ContactRepositoryIT {
     @Test
     public void testShouldAllowListAndIterableResponses() {
         final List<Contact> contactList = TestUtils.toList(repository.findByTitle(TEST_CONTACT1.getTitle()));
-        Assertions.assertEquals(TEST_CONTACT1, contactList.get(0));
-        Assertions.assertEquals(1, contactList.size());
+        assertEquals(TEST_CONTACT1, contactList.get(0));
+        assertEquals(1, contactList.size());
 
         final Iterator<Contact> contactIterator = repository.findByLogicId(TEST_CONTACT1.getLogicId()).iterator();
         Assertions.assertTrue(contactIterator.hasNext());
-        Assertions.assertEquals(TEST_CONTACT1, contactIterator.next());
+        assertEquals(TEST_CONTACT1, contactIterator.next());
         Assertions.assertFalse(contactIterator.hasNext());
     }
 
 //    @Test
 //    public void testAnnotatedQueries() {
 //        List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
-//        Assertions.assertEquals(1, valueContacts.size());
-//        Assertions.assertEquals(TEST_CONTACT5, valueContacts.get(0));
+//        assertEquals(1, valueContacts.size());
+//        assertEquals(TEST_CONTACT5, valueContacts.get(0));
 //
 //        List<Contact> contactsWithOffset = repository.getContactsWithOffsetLimit(1, 2);
-//        Assertions.assertEquals(2, contactsWithOffset.size());
-//        Assertions.assertEquals(TEST_CONTACT2, contactsWithOffset.get(0));
-//        Assertions.assertEquals(TEST_CONTACT3, contactsWithOffset.get(1));
+//        assertEquals(2, contactsWithOffset.size());
+//        assertEquals(TEST_CONTACT2, contactsWithOffset.get(0));
+//        assertEquals(TEST_CONTACT3, contactsWithOffset.get(1));
 //
 //        List<ObjectNode> groupByContacts = repository.selectGroupBy();
-//        Assertions.assertEquals(3, groupByContacts.size());
+//        assertEquals(3, groupByContacts.size());
 //    }
 
     @Test

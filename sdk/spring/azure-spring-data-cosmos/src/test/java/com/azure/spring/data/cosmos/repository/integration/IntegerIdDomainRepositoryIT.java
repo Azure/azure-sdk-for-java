@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -62,8 +63,8 @@ public class IntegerIdDomainRepositoryIT {
         final Optional<IntegerIdDomain> foundOptional = this.repository.findById(ID);
 
         Assertions.assertTrue(foundOptional.isPresent());
-        Assertions.assertEquals(DOMAIN.getNumber(), foundOptional.get().getNumber());
-        Assertions.assertEquals(DOMAIN.getName(), foundOptional.get().getName());
+        assertEquals(DOMAIN.getNumber(), foundOptional.get().getNumber());
+        assertEquals(DOMAIN.getName(), foundOptional.get().getName());
 
         this.repository.delete(DOMAIN);
 
@@ -87,7 +88,7 @@ public class IntegerIdDomainRepositoryIT {
 
         final Optional<IntegerIdDomain> savedEntity = this.repository.findById(DOMAIN.getNumber());
         Assertions.assertTrue(savedEntity.isPresent());
-        Assertions.assertEquals(DOMAIN, savedEntity.get());
+        assertEquals(DOMAIN, savedEntity.get());
     }
 
     @Test
@@ -112,14 +113,14 @@ public class IntegerIdDomainRepositoryIT {
 
     @Test
     public void testCount() {
-        Assertions.assertEquals(1, repository.count());
+        assertEquals(1, repository.count());
     }
 
     @Test
     public void testDeleteById() {
         this.repository.save(DOMAIN);
         this.repository.deleteById(DOMAIN.getNumber());
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
@@ -132,7 +133,7 @@ public class IntegerIdDomainRepositoryIT {
     public void testDelete() {
         this.repository.save(DOMAIN);
         this.repository.delete(DOMAIN);
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
@@ -145,7 +146,7 @@ public class IntegerIdDomainRepositoryIT {
     public void testDeleteAll() {
         this.repository.save(DOMAIN);
         this.repository.deleteAll(Collections.singleton(DOMAIN));
-        Assertions.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
@@ -164,17 +165,17 @@ public class IntegerIdDomainRepositoryIT {
         final List<IntegerIdDomain> ascending = StreamSupport
             .stream(this.repository.findAll(ascSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assertions.assertEquals(2, ascending.size());
-        Assertions.assertEquals(DOMAIN, ascending.get(0));
-        Assertions.assertEquals(other, ascending.get(1));
+        assertEquals(2, ascending.size());
+        assertEquals(DOMAIN, ascending.get(0));
+        assertEquals(other, ascending.get(1));
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
         final List<IntegerIdDomain> descending = StreamSupport
             .stream(this.repository.findAll(descSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assertions.assertEquals(2, descending.size());
-        Assertions.assertEquals(other, descending.get(0));
-        Assertions.assertEquals(DOMAIN, descending.get(1));
+        assertEquals(2, descending.size());
+        assertEquals(other, descending.get(0));
+        assertEquals(DOMAIN, descending.get(1));
 
     }
 
@@ -187,12 +188,12 @@ public class IntegerIdDomainRepositoryIT {
         final Page<IntegerIdDomain> page1 = this.repository.findAll(new CosmosPageRequest(0, 1, null));
         final Iterator<IntegerIdDomain> page1Iterator = page1.iterator();
         Assertions.assertTrue(page1Iterator.hasNext());
-        Assertions.assertEquals(DOMAIN, page1Iterator.next());
+        assertEquals(DOMAIN, page1Iterator.next());
 
         final Page<IntegerIdDomain> page2 = this.repository.findAll(new CosmosPageRequest(1, 1, null));
         final Iterator<IntegerIdDomain> page2Iterator = page2.iterator();
         Assertions.assertTrue(page2Iterator.hasNext());
-        Assertions.assertEquals(other, page2Iterator.next());
+        assertEquals(other, page2Iterator.next());
     }
 
     private static class InvalidDomain {

@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateLastPage;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -101,8 +102,8 @@ public class ProjectRepositorySortIT {
 
         PROJECTS.sort(Comparator.comparing(SortedProject::getStarCount));
 
-        Assertions.assertEquals(PROJECTS.size(), projects.size());
-        Assertions.assertEquals(PROJECTS, projects);
+        assertEquals(PROJECTS.size(), projects.size());
+        assertEquals(PROJECTS, projects);
     }
 
     @Test
@@ -112,8 +113,8 @@ public class ProjectRepositorySortIT {
 
         PROJECTS.sort(Comparator.comparing(SortedProject::getCreator).reversed());
 
-        Assertions.assertEquals(PROJECTS.size(), projects.size());
-        Assertions.assertEquals(PROJECTS, projects);
+        assertEquals(PROJECTS.size(), projects.size());
+        assertEquals(PROJECTS, projects);
     }
 
     @Test
@@ -124,8 +125,8 @@ public class ProjectRepositorySortIT {
         PROJECTS.sort(Comparator.comparing(SortedProject::getId));
         projects.sort(Comparator.comparing(SortedProject::getId));
 
-        Assertions.assertEquals(PROJECTS.size(), projects.size());
-        Assertions.assertEquals(PROJECTS, projects);
+        assertEquals(PROJECTS.size(), projects.size());
+        assertEquals(PROJECTS, projects);
     }
 
     @Test
@@ -159,7 +160,7 @@ public class ProjectRepositorySortIT {
             false)
                                                          .collect(Collectors.toList());
 
-        Assertions.assertEquals(projectListSortedById, results);
+        assertEquals(projectListSortedById, results);
     }
 
     @Test
@@ -171,8 +172,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getStarCount));
 
-        Assertions.assertEquals(references.size(), projects.size());
-        Assertions.assertEquals(references, projects);
+        assertEquals(references.size(), projects.size());
+        assertEquals(references, projects);
     }
 
     @Test
@@ -184,8 +185,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getStarCount));
 
-        Assertions.assertEquals(references.size(), projects.size());
-        Assertions.assertEquals(references, projects);
+        assertEquals(references.size(), projects.size());
+        assertEquals(references, projects);
     }
 
     @Test
@@ -196,8 +197,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getName).reversed());
 
-        Assertions.assertEquals(references.size(), projects.size());
-        Assertions.assertEquals(references, projects);
+        assertEquals(references.size(), projects.size());
+        assertEquals(references, projects);
     }
 
     @Test
@@ -210,8 +211,8 @@ public class ProjectRepositorySortIT {
         final List<SortedProject> references = Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_3, PROJECT_4);
         references.sort(Comparator.comparing(SortedProject::getName).reversed());
 
-        Assertions.assertEquals(references.size(), result.getContent().size());
-        Assertions.assertEquals(references, result.getContent());
+        assertEquals(references.size(), result.getContent().size());
+        assertEquals(references, result.getContent());
         validateLastPage(result, 5);
     }
 
@@ -226,8 +227,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getName).reversed());
 
-        Assertions.assertEquals(references.size(), result.getContent().size());
-        Assertions.assertEquals(references, result.getContent());
+        assertEquals(references.size(), result.getContent().size());
+        assertEquals(references, result.getContent());
         validateLastPage(result, 5);
     }
 }

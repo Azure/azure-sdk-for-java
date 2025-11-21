@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -156,7 +157,7 @@ public class StudentRepositoryIT {
         people.sort(Comparator.comparing(Student::getId));
         reference.sort(Comparator.comparing(Student::getId));
 
-        Assertions.assertEquals(reference, people);
+        assertEquals(reference, people);
     }
 
     @Test

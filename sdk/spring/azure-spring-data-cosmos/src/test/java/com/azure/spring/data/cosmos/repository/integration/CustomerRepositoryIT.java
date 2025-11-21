@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -71,12 +72,12 @@ public class CustomerRepositoryIT {
     }
 
     private void assertCustomerListEquals(@NonNull List<Customer> customers, @NonNull List<Customer> reference) {
-        Assertions.assertEquals(reference.size(), customers.size());
+        assertEquals(reference.size(), customers.size());
 
         customers.sort(Comparator.comparing(Customer::getId));
         reference.sort(Comparator.comparing(Customer::getId));
 
-        Assertions.assertEquals(reference, customers);
+        assertEquals(reference, customers);
     }
 
     @Test

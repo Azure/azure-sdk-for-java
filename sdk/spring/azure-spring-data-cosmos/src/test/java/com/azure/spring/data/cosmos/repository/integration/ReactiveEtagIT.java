@@ -27,6 +27,7 @@ import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.COURSE_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.DEPARTMENT;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -70,7 +71,7 @@ public class ReactiveEtagIT {
         CourseWithEtag foundCourseWithEtag = foundCourseWithEtagMono.block();
         Assertions.assertNotNull(foundCourseWithEtag);
         Assertions.assertNotNull(foundCourseWithEtag.getEtag());
-        Assertions.assertEquals(foundCourseWithEtag.getEtag(), updatedCourseWithEtag.getEtag());
+        assertEquals(foundCourseWithEtag.getEtag(), updatedCourseWithEtag.getEtag());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class ReactiveEtagIT {
         for (int i = 0; i < updatedCourseWithEtags.size(); i++) {
             CourseWithEtag insertedCourseWithEtag = insertedCourseWithEtags.get(i);
             CourseWithEtag updatedCourseWithEtag = updatedCourseWithEtags.get(i);
-            Assertions.assertEquals(insertedCourseWithEtag.getCourseId(), updatedCourseWithEtag.getCourseId());
+            assertEquals(insertedCourseWithEtag.getCourseId(), updatedCourseWithEtag.getCourseId());
             Assertions.assertNotNull(updatedCourseWithEtag.getEtag());
             Assertions.assertNotEquals(insertedCourseWithEtag.getEtag(), updatedCourseWithEtag.getEtag());
         }
@@ -128,23 +129,23 @@ public class ReactiveEtagIT {
     public void testBulkShouldFailIfEtagDoesNotMatch() {
         Flux<CourseWithEtag> insertedCourseWithEtagFlux = reactiveCourseWithEtagRepository.saveAll(Flux.just(createCourseWithEtag()));
         List<CourseWithEtag> insertedCourseWithEtag = insertedCourseWithEtagFlux.collectList().block();
-        Assertions.assertEquals(insertedCourseWithEtag.size(), 1);
+        assertEquals(insertedCourseWithEtag.size(), 1);
 
         insertedCourseWithEtag.get(0).setName("CHANGED");
         Flux<CourseWithEtag> updatedCourseWithEtagFlux = reactiveCourseWithEtagRepository.saveAll(insertedCourseWithEtag);
         List<CourseWithEtag> updatedCourseWithEtag = updatedCourseWithEtagFlux.collectList().block();
-        Assertions.assertEquals(updatedCourseWithEtag.size(), 1);
+        assertEquals(updatedCourseWithEtag.size(), 1);
         updatedCourseWithEtag.get(0).setEtag(insertedCourseWithEtag.get(0).getEtag());
 
 
         Flux<CourseWithEtag> courseFlux = reactiveCourseWithEtagRepository.saveAll(updatedCourseWithEtag);
         StepVerifier.create(courseFlux);
-        Assertions.assertEquals(courseFlux.collectList().block().size(), 0);
+        assertEquals(courseFlux.collectList().block().size(), 0);
 
         reactiveCourseWithEtagRepository.deleteAll(updatedCourseWithEtag);
         Flux<CourseWithEtag> courseFlux2 = reactiveCourseWithEtagRepository.findAll();
         StepVerifier.create(courseFlux2);
-        Assertions.assertEquals(courseFlux2.collectList().block().size(), 1);
+        assertEquals(courseFlux2.collectList().block().size(), 1);
     }
 
 }

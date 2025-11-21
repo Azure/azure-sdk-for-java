@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -119,7 +120,7 @@ public class CosmosAnnotationIT {
     public void testIndexingPolicyAnnotation() {
         final IndexingPolicy policy = collectionManager.getContainerProperties(Role.class).getIndexingPolicy();
 
-        Assertions.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
+        assertTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
             "unmatched collection policy indexing mode of class Role");
 
         TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths()
