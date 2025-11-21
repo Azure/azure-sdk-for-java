@@ -62,7 +62,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
-    private final int maxStreamsConstrainedRetries = 10;
+    private final int maxStreamsConstrainedRetries = 1;
     private final AtomicInteger streamsConstrainedRetries = new AtomicInteger(0);
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
     private volatile Instant lastProcessedTime;
@@ -287,7 +287,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                 logger.warn(
                                     "Lease with token : " + this.lease.getLeaseToken() + " : max item count is set to -1, will retry after setting it to 100. " + "retryCount " + retryCount + " of " + this.maxStreamsConstrainedRetries + " retries.",
                                     clientException);
-                                this.options.setMaxItemCount(100);
+                                this.options.setMaxItemCount(1);
                                 return Flux.empty();
                             }
 
@@ -298,13 +298,13 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                 return Flux.error(throwable);
                             }
 
-                            this.options.setMaxItemCount(this.options.getMaxItemCount() / 2);
+                            this.options.setMaxItemCount(1);
                             logger.warn("Lease with token : " + this.lease.getLeaseToken() + " Reducing maxItemCount, new value: " + this.options.getMaxItemCount());
                             return Flux.empty();
                         }
                         case JSON_PARSING_ERROR:
                             logger.error(
-                                "Lease with token : " + this.lease.getLeaseToken() + ": Parsing error encountered. To enable automatic retries, please set the + " + Configs.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED + " configuration to 'true'. Failing.", clientException);
+                                "Lease with token : " + this.lease.getLeaseToken() + ": Parsing error encountered.", clientException);
                             this.resultException = new RuntimeException(clientException);
                             return Flux.error(throwable);
                         default: {
