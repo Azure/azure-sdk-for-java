@@ -16,11 +16,11 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.MultiTenantTestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
@@ -40,9 +40,9 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = MultiTenantTestRepositoryConfig.class)
 public class MultiTenantContainerCosmosFactoryIT {
 
@@ -54,7 +54,7 @@ public class MultiTenantContainerCosmosFactoryIT {
     private final Person TEST_PERSON_1 = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
     private final Person TEST_PERSON_2 = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -69,7 +69,7 @@ public class MultiTenantContainerCosmosFactoryIT {
     private CosmosAsyncClient client;
     private CosmosEntityInformation<Person, String> personInfo;
 
-    @Before
+    @BeforeEach
     public void setUp() throws ClassNotFoundException {
         /// Setup
         client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
@@ -79,7 +79,7 @@ public class MultiTenantContainerCosmosFactoryIT {
         try {
             mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
 
         final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
@@ -109,7 +109,7 @@ public class MultiTenantContainerCosmosFactoryIT {
         Iterable<Person> iterableDB2 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
         List<Person> resultDB2 = new ArrayList<>();
         iterableDB2.forEach(resultDB2::add);
-        Assert.assertEquals(expectedResultsContainer2, resultDB2);
+        Assertions.assertEquals(expectedResultsContainer2, resultDB2);
 
         // Check that testContainer1 has the correct contents
         cosmosFactory.manuallySetContainerName = testContainer1;
@@ -118,7 +118,7 @@ public class MultiTenantContainerCosmosFactoryIT {
         Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
         List<Person> resultDB1 = new ArrayList<>();
         iterableDB1.forEach(resultDB1::add);
-        Assert.assertEquals(expectedResultsContainer1, resultDB1);
+        Assertions.assertEquals(expectedResultsContainer1, resultDB1);
 
         //Cleanup
         deleteDatabaseIfExists(testDB1);

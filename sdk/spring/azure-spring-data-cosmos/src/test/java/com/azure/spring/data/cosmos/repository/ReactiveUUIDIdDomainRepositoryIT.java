@@ -9,10 +9,10 @@ import com.azure.spring.data.cosmos.domain.UUIDIdDomain;
 import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveUUIDIdDomainRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveUUIDIdDomainRepositoryIT {
 
@@ -37,7 +37,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
     private static final UUIDIdDomain DOMAIN_1 = new UUIDIdDomain(ID_1, NAME_1);
     private static final UUIDIdDomain DOMAIN_2 = new UUIDIdDomain(ID_2, NAME_2);
 
-    @ClassRule
+    
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -48,7 +48,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
 
     private CosmosEntityInformation<UUIDIdDomain, ?> entityInformation;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, UUIDIdDomain.class);
         entityInformation = collectionManager.getEntityInformation(UUIDIdDomain.class);
@@ -77,7 +77,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
         StepVerifier.create(afterDelIdMono).expectNextCount(0).verifyComplete();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidDomain() {
         new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class);
     }

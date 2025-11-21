@@ -10,12 +10,12 @@ import com.azure.spring.data.cosmos.domain.HierarchicalPartitionKeyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveHierarchicalPartitionKeyRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,9 +26,9 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
@@ -38,7 +38,7 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
     private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_2 =
         new HierarchicalPartitionKeyEntity("id_2", "Michael", "Smith", "23456");
 
-    @ClassRule
+    
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     private static CosmosEntityInformation<HierarchicalPartitionKeyEntity, String> hierarchicalPartitionKeyEntityInformation
@@ -50,15 +50,15 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
     @Autowired
     ReactiveHierarchicalPartitionKeyRepository repository;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() { }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(reactiveTemplate, HierarchicalPartitionKeyEntity.class);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanUp() {
         collectionManager.deleteContainer(hierarchicalPartitionKeyEntityInformation);
     }

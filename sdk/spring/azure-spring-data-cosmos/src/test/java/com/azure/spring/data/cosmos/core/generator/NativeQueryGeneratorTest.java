@@ -6,9 +6,9 @@ package com.azure.spring.data.cosmos.core.generator;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.data.domain.Sort;
 
@@ -22,7 +22,7 @@ public class NativeQueryGeneratorTest {
     @Mock
     private EmptyQueryGenerator queryGenerator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.queryGenerator = new EmptyQueryGenerator();
     }
@@ -35,7 +35,7 @@ public class NativeQueryGeneratorTest {
         SqlQuerySpec querySpec = new SqlQuerySpec("select * from a where a.firstName = @firstName", sqlParameters);
         final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, Sort.by(ASC, "id"));
 
-        Assert.assertEquals(sortedQuerySpec.getQueryText(), "select * from a where a.firstName = @firstName ORDER BY a.id ASC");
+        Assertions.assertEquals(sortedQuerySpec.getQueryText(), "select * from a where a.firstName = @firstName ORDER BY a.id ASC");
     }
 
     private static class EmptyQueryGenerator extends NativeQueryGenerator implements QuerySpecGenerator {

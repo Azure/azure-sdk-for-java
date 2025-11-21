@@ -6,11 +6,12 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,9 +19,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ContainerLockIT {
@@ -36,7 +37,7 @@ public class ContainerLockIT {
     private ContainerLock lock;
     private ContainerLock otherLock;
 
-    @Before
+    @BeforeEach
     public void setup() {
         staticTemplate = template;
         CosmosEntityInformation entityInfo = new CosmosEntityInformation(Address.class);
@@ -46,7 +47,7 @@ public class ContainerLockIT {
         otherLock = new ContainerLock(reactiveTemplate, entityInfo.getContainerName(), SHORT_LEASE_DURATION);
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         releaseLockIgnoreException(lock);
         releaseLockIgnoreException(otherLock);
@@ -81,7 +82,7 @@ public class ContainerLockIT {
 
         try {
             otherLock.acquire(SHORT_LEASE_DURATION.minusSeconds(1));
-            Assert.fail();
+            Assertions.fail();
         } catch (ContainerLock.LockAcquisitionFailedException ex) {
         }
     }

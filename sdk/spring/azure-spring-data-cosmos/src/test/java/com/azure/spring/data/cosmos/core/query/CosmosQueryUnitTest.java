@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
@@ -22,9 +22,9 @@ public class CosmosQueryUnitTest {
 
         final CosmosQuery query = new CosmosQuery(criteria);
 
-        Assert.assertEquals(criteria, query.getCriteria());
-        Assert.assertEquals(Sort.unsorted(), query.getSort());
-        Assert.assertEquals(Pageable.unpaged(), query.getPageable());
-        Assert.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
+        Assertions.assertEquals(criteria, query.getCriteria());
+        Assertions.assertEquals(Sort.unsorted(), query.getSort());
+        Assertions.assertEquals(Pageable.unpaged(), query.getPageable());
+        Assertions.assertEquals(Part.IgnoreCaseType.NEVER, criteria.getIgnoreCase());
     }
 }

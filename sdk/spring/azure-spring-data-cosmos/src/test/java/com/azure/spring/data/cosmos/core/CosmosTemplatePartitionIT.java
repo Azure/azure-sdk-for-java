@@ -3,6 +3,9 @@
 
 package com.azure.spring.data.cosmos.core;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
@@ -22,10 +25,9 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
@@ -57,11 +59,11 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_ZIP_COD
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.ZIP_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosTemplatePartitionIT {
     private static final PartitionPerson TEST_PERSON = new PartitionPerson(ID_1, FIRST_NAME, ZIP_CODE,
@@ -73,7 +75,7 @@ public class CosmosTemplatePartitionIT {
     private static final PartitionPerson TEST_PERSON_3 = new PartitionPerson(ID_3, FIRST_NAME, NEW_ZIP_CODE,
         HOBBIES, ADDRESSES);
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static CosmosFactory cosmosFactory;
@@ -90,7 +92,7 @@ public class CosmosTemplatePartitionIT {
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
-    @Before
+    @BeforeEach
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
             //  Query plan caching is enabled by default

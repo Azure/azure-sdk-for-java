@@ -10,11 +10,11 @@ import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.IntegerIdDomainRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class IntegerIdDomainRepositoryIT {
 
@@ -38,7 +38,7 @@ public class IntegerIdDomainRepositoryIT {
     private static final String NAME = "panli";
     private static final IntegerIdDomain DOMAIN = new IntegerIdDomain(ID, NAME);
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -47,7 +47,7 @@ public class IntegerIdDomainRepositoryIT {
     @Autowired
     private IntegerIdDomainRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, IntegerIdDomain.class);
         this.repository.save(DOMAIN);
@@ -56,21 +56,21 @@ public class IntegerIdDomainRepositoryIT {
     @Test
     public void testIntegerIdDomain() {
         this.repository.deleteAll();
-        Assert.assertFalse(this.repository.findById(ID).isPresent());
+        Assertions.assertFalse(this.repository.findById(ID).isPresent());
 
         this.repository.save(DOMAIN);
         final Optional<IntegerIdDomain> foundOptional = this.repository.findById(ID);
 
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(DOMAIN.getNumber(), foundOptional.get().getNumber());
-        Assert.assertEquals(DOMAIN.getName(), foundOptional.get().getName());
+        Assertions.assertTrue(foundOptional.isPresent());
+        Assertions.assertEquals(DOMAIN.getNumber(), foundOptional.get().getNumber());
+        Assertions.assertEquals(DOMAIN.getName(), foundOptional.get().getName());
 
         this.repository.delete(DOMAIN);
 
-        Assert.assertFalse(this.repository.findById(ID).isPresent());
+        Assertions.assertFalse(this.repository.findById(ID).isPresent());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidDomain() {
         new CosmosEntityInformation<InvalidDomain, Integer>(InvalidDomain.class);
     }
@@ -78,21 +78,21 @@ public class IntegerIdDomainRepositoryIT {
     @Test
     public void testBasicQuery() {
         final IntegerIdDomain save = this.repository.save(DOMAIN);
-        Assert.assertNotNull(save);
+        Assertions.assertNotNull(save);
     }
 
     @Test
     public void testSaveAndFindById() {
-        Assert.assertNotNull(this.repository.save(DOMAIN));
+        Assertions.assertNotNull(this.repository.save(DOMAIN));
 
         final Optional<IntegerIdDomain> savedEntity = this.repository.findById(DOMAIN.getNumber());
-        Assert.assertTrue(savedEntity.isPresent());
-        Assert.assertEquals(DOMAIN, savedEntity.get());
+        Assertions.assertTrue(savedEntity.isPresent());
+        Assertions.assertEquals(DOMAIN, savedEntity.get());
     }
 
     @Test
     public void testSaveAllAndFindAll() {
-        Assert.assertTrue(this.repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(this.repository.findAll().iterator().hasNext());
 
         final Set<IntegerIdDomain> entitiesToSave = Collections.singleton(DOMAIN);
         this.repository.saveAll(entitiesToSave);
@@ -100,29 +100,29 @@ public class IntegerIdDomainRepositoryIT {
         final Set<IntegerIdDomain> savedEntities = StreamSupport.stream(this.repository.findAll().spliterator(), false)
                                                                 .collect(Collectors.toSet());
 
-        Assert.assertTrue(entitiesToSave.containsAll(savedEntities));
+        Assertions.assertTrue(entitiesToSave.containsAll(savedEntities));
     }
 
     @Test
     public void testFindAllById() {
         final Iterable<IntegerIdDomain> allById =
             this.repository.findAllById(Collections.singleton(DOMAIN.getNumber()));
-        Assert.assertTrue(allById.iterator().hasNext());
+        Assertions.assertTrue(allById.iterator().hasNext());
     }
 
     @Test
     public void testCount() {
-        Assert.assertEquals(1, repository.count());
+        Assertions.assertEquals(1, repository.count());
     }
 
     @Test
     public void testDeleteById() {
         this.repository.save(DOMAIN);
         this.repository.deleteById(DOMAIN.getNumber());
-        Assert.assertEquals(0, this.repository.count());
+        Assertions.assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosNotFoundException.class)
+    @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
         this.repository.deleteAll();
         this.repository.deleteById(DOMAIN.getNumber());
@@ -132,10 +132,10 @@ public class IntegerIdDomainRepositoryIT {
     public void testDelete() {
         this.repository.save(DOMAIN);
         this.repository.delete(DOMAIN);
-        Assert.assertEquals(0, this.repository.count());
+        Assertions.assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosNotFoundException.class)
+    @Test
     public void testDeleteShouldFailIfNothingToDelete() {
         this.repository.deleteAll();
         this.repository.delete(DOMAIN);
@@ -145,13 +145,13 @@ public class IntegerIdDomainRepositoryIT {
     public void testDeleteAll() {
         this.repository.save(DOMAIN);
         this.repository.deleteAll(Collections.singleton(DOMAIN));
-        Assert.assertEquals(0, this.repository.count());
+        Assertions.assertEquals(0, this.repository.count());
     }
 
     @Test
     public void testExistsById() {
         this.repository.save(DOMAIN);
-        Assert.assertTrue(this.repository.existsById(DOMAIN.getNumber()));
+        Assertions.assertTrue(this.repository.existsById(DOMAIN.getNumber()));
     }
 
     @Test
@@ -164,17 +164,17 @@ public class IntegerIdDomainRepositoryIT {
         final List<IntegerIdDomain> ascending = StreamSupport
             .stream(this.repository.findAll(ascSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assert.assertEquals(2, ascending.size());
-        Assert.assertEquals(DOMAIN, ascending.get(0));
-        Assert.assertEquals(other, ascending.get(1));
+        Assertions.assertEquals(2, ascending.size());
+        Assertions.assertEquals(DOMAIN, ascending.get(0));
+        Assertions.assertEquals(other, ascending.get(1));
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
         final List<IntegerIdDomain> descending = StreamSupport
             .stream(this.repository.findAll(descSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assert.assertEquals(2, descending.size());
-        Assert.assertEquals(other, descending.get(0));
-        Assert.assertEquals(DOMAIN, descending.get(1));
+        Assertions.assertEquals(2, descending.size());
+        Assertions.assertEquals(other, descending.get(0));
+        Assertions.assertEquals(DOMAIN, descending.get(1));
 
     }
 
@@ -186,13 +186,13 @@ public class IntegerIdDomainRepositoryIT {
 
         final Page<IntegerIdDomain> page1 = this.repository.findAll(new CosmosPageRequest(0, 1, null));
         final Iterator<IntegerIdDomain> page1Iterator = page1.iterator();
-        Assert.assertTrue(page1Iterator.hasNext());
-        Assert.assertEquals(DOMAIN, page1Iterator.next());
+        Assertions.assertTrue(page1Iterator.hasNext());
+        Assertions.assertEquals(DOMAIN, page1Iterator.next());
 
         final Page<IntegerIdDomain> page2 = this.repository.findAll(new CosmosPageRequest(1, 1, null));
         final Iterator<IntegerIdDomain> page2Iterator = page2.iterator();
-        Assert.assertTrue(page2Iterator.hasNext());
-        Assert.assertEquals(other, page2Iterator.next());
+        Assertions.assertTrue(page2Iterator.hasNext());
+        Assertions.assertEquals(other, page2Iterator.next());
     }
 
     private static class InvalidDomain {

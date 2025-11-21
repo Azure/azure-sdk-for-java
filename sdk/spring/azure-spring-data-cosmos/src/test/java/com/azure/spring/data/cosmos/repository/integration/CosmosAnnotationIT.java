@@ -14,10 +14,10 @@ import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.domain.TimeToLiveSample;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveRoleRepository;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosAnnotationIT {
 
@@ -42,7 +42,7 @@ public class CosmosAnnotationIT {
     private static final Role TEST_ROLE_3 = new Role(TestConstants.ID_3, true, TestConstants.LEVEL,
         TestConstants.ROLE_NAME);
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -50,7 +50,7 @@ public class CosmosAnnotationIT {
     @Autowired
     private ReactiveRoleRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() throws ClassNotFoundException {
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Role.class, TimeToLiveSample.class);
         repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3)).collectList().block();
@@ -119,7 +119,7 @@ public class CosmosAnnotationIT {
     public void testIndexingPolicyAnnotation() {
         final IndexingPolicy policy = collectionManager.getContainerProperties(Role.class).getIndexingPolicy();
 
-        Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
+        Assertions.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
             "unmatched collection policy indexing mode of class Role");
 
         TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths()

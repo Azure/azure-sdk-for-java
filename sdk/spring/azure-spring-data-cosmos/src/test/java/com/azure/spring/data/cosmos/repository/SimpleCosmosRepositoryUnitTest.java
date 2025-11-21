@@ -10,23 +10,21 @@ import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SimpleCosmosRepositoryUnitTest {
     private static final Person TEST_PERSON =
             new Person(TestConstants.ID_1, TestConstants.FIRST_NAME, TestConstants.LAST_NAME,
@@ -41,11 +39,9 @@ public class SimpleCosmosRepositoryUnitTest {
     @Mock
     CosmosEntityInformation<Person, String> entityInformation;
 
-    @SuppressWarnings("deprecation")
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(entityInformation.getJavaType()).thenReturn(Person.class);
         when(entityInformation.getContainerName()).thenReturn(Person.class.getSimpleName());

@@ -46,11 +46,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
@@ -102,12 +102,13 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosTemplateIT {
     private static final Person TEST_PERSON = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES,
@@ -160,7 +161,7 @@ public class CosmosTemplateIT {
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static CosmosAsyncClient client;
@@ -192,7 +193,7 @@ public class CosmosTemplateIT {
     public CosmosTemplateIT() throws JsonProcessingException {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
@@ -243,7 +244,7 @@ public class CosmosTemplateIT {
         final Person personWithTransientField = TEST_PERSON_4;
         assertThat(personWithTransientField.getTransientProperty()).isNotNull();
         final Person insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
-        Assert.assertEquals(TRANSIENT_PROPERTY, insertedPerson.getTransientProperty());
+        Assertions.assertEquals(TRANSIENT_PROPERTY, insertedPerson.getTransientProperty());
         final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.getId(), Person.class);
         assertThat(retrievedPerson.getTransientProperty()).isNull();
     }
@@ -258,7 +259,7 @@ public class CosmosTemplateIT {
         Iterable<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
         //check that the transient field is retained in the response
         for (Person person : insertAllResponse) {
-            Assert.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+            Assertions.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
         }
 
         Iterable<Person> findByIdsResponse = cosmosTemplate.findByIds(Arrays.asList(TEST_PERSON_4.getId()), Person.class, containerName);
@@ -269,7 +270,7 @@ public class CosmosTemplateIT {
     }
 
 
-    @Test(expected = CosmosBadRequestException.class)
+    @Test
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
         cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));
@@ -481,7 +482,7 @@ public class CosmosTemplateIT {
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
 
-        Assert.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+        Assertions.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();

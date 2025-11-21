@@ -10,9 +10,9 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
@@ -28,7 +28,7 @@ public class AbstractQueryGeneratorTest {
     @Mock
     private EmptyQueryGenerator queryGenerator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.queryGenerator = new EmptyQueryGenerator();
     }
@@ -45,7 +45,7 @@ public class AbstractQueryGeneratorTest {
         final CosmosQuery query = new CosmosQuery(and);
         SqlQuerySpec querySpec = queryGenerator.generateCosmos(query);
         List<String> parameterNames = querySpec.getParameters().stream().map(SqlParameter::getName).collect(Collectors.toList());
-        Assert.assertNotNull(querySpec.getQueryText());
+        Assertions.assertNotNull(querySpec.getQueryText());
         MatcherAssert.assertThat(querySpec.getQueryText(), Matchers.stringContainsInOrder(
             parameterNames.get(0), CriteriaType.AND.getSqlKeyword(),
             "(", parameterNames.get(1), CriteriaType.OR.getSqlKeyword(), parameterNames.get(2), ")"));
@@ -60,7 +60,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assert.assertEquals(result.getQueryText(), " WHERE STARTSWITH(r.firstName, @firstName0, true) ");
+        Assertions.assertEquals(result.getQueryText(), " WHERE STARTSWITH(r.firstName, @firstName0, true) ");
     }
 
     @Test
@@ -72,7 +72,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assert.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ORDER BY r.id ASC");
+        Assertions.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ORDER BY r.id ASC");
     }
 
     @Test
@@ -84,7 +84,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assert.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ");
+        Assertions.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ");
     }
 
     @Test
@@ -98,9 +98,9 @@ public class AbstractQueryGeneratorTest {
             SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
             if (ignoreCaseType == Part.IgnoreCaseType.NEVER) {
-                Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0) ");
+                Assertions.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0) ");
             } else {
-                Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+                Assertions.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
             }
         }
     }
@@ -114,7 +114,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assert.assertEquals(result.getQueryText(), " WHERE UPPER(r.zipcode) = UPPER(@zipcode0) ");
+        Assertions.assertEquals(result.getQueryText(), " WHERE UPPER(r.zipcode) = UPPER(@zipcode0) ");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class AbstractQueryGeneratorTest {
 
         SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+        Assertions.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
     }
 
     private static class EmptyQueryGenerator extends AbstractQueryGenerator implements QuerySpecGenerator {

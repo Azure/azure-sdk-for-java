@@ -10,11 +10,11 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ContactRepositoryIT {
 
@@ -41,7 +41,7 @@ public class ContactRepositoryIT {
     private static final Contact TEST_CONTACT4 = new Contact("testId4", "faketitle4", INT_VALUE_3, true);
     private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", INT_VALUE_3, true);
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -50,7 +50,7 @@ public class ContactRepositoryIT {
     @Autowired
     private CosmosTemplate template;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Contact.class);
         repository.save(TEST_CONTACT1);
@@ -65,7 +65,7 @@ public class ContactRepositoryIT {
         final List<Contact> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(5);
-        Assert.assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
+        Assertions.assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
                                           TEST_CONTACT5), result);
 
         final Contact contact = repository.findById(TEST_CONTACT1.getLogicId()).get();
@@ -108,7 +108,7 @@ public class ContactRepositoryIT {
         final List<Contact> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(5);
-        Assert.assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
+        Assertions.assertEquals(Arrays.asList(TEST_CONTACT1, TEST_CONTACT2, TEST_CONTACT3, TEST_CONTACT4,
                                           TEST_CONTACT5), result);
         assertThat(result.get(0).getLogicId()).isEqualTo(TEST_CONTACT1.getLogicId());
         assertThat(result.get(0).getTitle()).isEqualTo(TEST_CONTACT1.getTitle());
@@ -175,35 +175,35 @@ public class ContactRepositoryIT {
     public void testFindById() {
         final Optional<Contact> optional = repository.findById(TEST_CONTACT1.getLogicId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(TEST_CONTACT1, optional.get());
-        Assert.assertFalse(repository.findById("").isPresent());
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(TEST_CONTACT1, optional.get());
+        Assertions.assertFalse(repository.findById("").isPresent());
     }
 
     @Test
     public void testFindByIdNotFound() {
         final Optional<Contact> optional = repository.findById("unknown-id");
 
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
     }
 
     @Test
     public void testShouldFindSingleEntity() {
         final Contact contact = repository.findOneByTitle(TEST_CONTACT1.getTitle());
 
-        Assert.assertEquals(TEST_CONTACT1, contact);
+        Assertions.assertEquals(TEST_CONTACT1, contact);
     }
 
     @Test
     public void testShouldFindSingleOptionalEntity() {
         final Optional<Contact> contact = repository.findOptionallyByTitle(TEST_CONTACT1.getTitle());
-        Assert.assertTrue(contact.isPresent());
-        Assert.assertEquals(TEST_CONTACT1, contact.get());
+        Assertions.assertTrue(contact.isPresent());
+        Assertions.assertEquals(TEST_CONTACT1, contact.get());
 
-        Assert.assertFalse(repository.findOptionallyByTitle("not here").isPresent());
+        Assertions.assertFalse(repository.findOptionallyByTitle("not here").isPresent());
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test
     public void testShouldFailIfMultipleResultsReturned() {
         repository.save(new Contact("testId2", TEST_CONTACT1.getTitle()));
 
@@ -213,28 +213,28 @@ public class ContactRepositoryIT {
     @Test
     public void testShouldAllowListAndIterableResponses() {
         final List<Contact> contactList = TestUtils.toList(repository.findByTitle(TEST_CONTACT1.getTitle()));
-        Assert.assertEquals(TEST_CONTACT1, contactList.get(0));
-        Assert.assertEquals(1, contactList.size());
+        Assertions.assertEquals(TEST_CONTACT1, contactList.get(0));
+        Assertions.assertEquals(1, contactList.size());
 
         final Iterator<Contact> contactIterator = repository.findByLogicId(TEST_CONTACT1.getLogicId()).iterator();
-        Assert.assertTrue(contactIterator.hasNext());
-        Assert.assertEquals(TEST_CONTACT1, contactIterator.next());
-        Assert.assertFalse(contactIterator.hasNext());
+        Assertions.assertTrue(contactIterator.hasNext());
+        Assertions.assertEquals(TEST_CONTACT1, contactIterator.next());
+        Assertions.assertFalse(contactIterator.hasNext());
     }
 
 //    @Test
 //    public void testAnnotatedQueries() {
 //        List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
-//        Assert.assertEquals(1, valueContacts.size());
-//        Assert.assertEquals(TEST_CONTACT5, valueContacts.get(0));
+//        Assertions.assertEquals(1, valueContacts.size());
+//        Assertions.assertEquals(TEST_CONTACT5, valueContacts.get(0));
 //
 //        List<Contact> contactsWithOffset = repository.getContactsWithOffsetLimit(1, 2);
-//        Assert.assertEquals(2, contactsWithOffset.size());
-//        Assert.assertEquals(TEST_CONTACT2, contactsWithOffset.get(0));
-//        Assert.assertEquals(TEST_CONTACT3, contactsWithOffset.get(1));
+//        Assertions.assertEquals(2, contactsWithOffset.size());
+//        Assertions.assertEquals(TEST_CONTACT2, contactsWithOffset.get(0));
+//        Assertions.assertEquals(TEST_CONTACT3, contactsWithOffset.get(1));
 //
 //        List<ObjectNode> groupByContacts = repository.selectGroupBy();
-//        Assert.assertEquals(3, groupByContacts.size());
+//        Assertions.assertEquals(3, groupByContacts.size());
 //    }
 
     @Test

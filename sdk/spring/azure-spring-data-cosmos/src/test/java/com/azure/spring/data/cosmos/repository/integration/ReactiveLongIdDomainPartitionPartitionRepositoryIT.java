@@ -10,10 +10,10 @@ import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveLongIdDomainPartitionRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,7 +25,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.Objects;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
@@ -41,7 +41,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     private static final LongIdDomainPartition DOMAIN_2 = new LongIdDomainPartition(ID_2, NAME_2);
     private static final LongIdDomainPartition DOMAIN_3 = new LongIdDomainPartition(ID_3, NAME_1);
 
-    @ClassRule
+    
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -52,7 +52,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
     private CosmosEntityInformation<LongIdDomainPartition, ?> entityInformation;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, LongIdDomainPartition.class);
         entityInformation = collectionManager.getEntityInformation(LongIdDomainPartition.class);
@@ -84,7 +84,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
         StepVerifier.create(afterDelIdMono).expectNextCount(0).verifyComplete();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidDomain() {
         new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class);
     }

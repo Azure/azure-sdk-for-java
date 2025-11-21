@@ -9,22 +9,22 @@ import com.azure.spring.data.cosmos.domain.SpELBeanStudent;
 import com.azure.spring.data.cosmos.domain.SpELPropertyStudent;
 import com.azure.spring.data.cosmos.repository.TestRepositorySpELConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositorySpELConfig.class)
 public class SpELCosmosAnnotationIT {
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static final SpELPropertyStudent TEST_PROPERTY_STUDENT = new SpELPropertyStudent(TestConstants.ID_1,
@@ -33,7 +33,7 @@ public class SpELCosmosAnnotationIT {
     @Autowired
     private CosmosTemplate cosmosTemplate;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, SpELPropertyStudent.class);
     }

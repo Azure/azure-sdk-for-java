@@ -15,11 +15,11 @@ import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -43,11 +43,11 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PersonCrossPartitionIT {
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static final PersonCrossPartition TEST_PERSON_CP = new PersonCrossPartition(ID_1, FIRST_NAME, LAST_NAME, HOBBIES,
@@ -75,7 +75,7 @@ public class PersonCrossPartitionIT {
     @Autowired
     private AddressRepository addressRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         personCrossPartitionInfo = new CosmosEntityInformation<>(PersonCrossPartition.class);
         containerName = personCrossPartitionInfo.getContainerName();
@@ -83,7 +83,7 @@ public class PersonCrossPartitionIT {
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PersonCrossPartition.class);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanUp() {
         collectionManager.deleteContainer(personCrossPartitionInfo);
     }

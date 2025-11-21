@@ -9,22 +9,22 @@ import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CountIT {
 
-    @ClassRule
+    
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -34,7 +34,7 @@ public class CountIT {
     @Autowired
     private CosmosTemplate template;
 
-    @Before
+    @BeforeEach
     public void setUp() throws ClassNotFoundException {
         collectionManager.ensureContainersCreatedAndEmpty(template, Contact.class, Course.class);
     }
@@ -47,11 +47,11 @@ public class CountIT {
         Contact contact4 = new Contact("4", "other", 30, true);
         repository.saveAll(Arrays.asList(contact1, contact2, contact3, contact4));
 
-        Assert.assertEquals(3, repository.countByTitle("title"));
-        Assert.assertEquals(1, repository.countByTitle("other"));
+        Assertions.assertEquals(3, repository.countByTitle("title"));
+        Assertions.assertEquals(1, repository.countByTitle("other"));
 
-        Assert.assertEquals(Long.valueOf(1), repository.countByTitleAndIntValue("title", 25));
-        Assert.assertEquals(Long.valueOf(2), repository.countByTitleAndIntValue("title", 30));
+        Assertions.assertEquals(Long.valueOf(1), repository.countByTitleAndIntValue("title", 25));
+        Assertions.assertEquals(Long.valueOf(2), repository.countByTitleAndIntValue("title", 30));
     }
 
     @Test
@@ -61,11 +61,11 @@ public class CountIT {
         Contact contact3 = new Contact("3", "different");
         repository.saveAll(Arrays.asList(contact1, contact2, contact3));
 
-        Assert.assertEquals(2, repository.countByQueryWithPrimitive("same"));
-        Assert.assertEquals(1, repository.countByQueryWithPrimitive("different"));
+        Assertions.assertEquals(2, repository.countByQueryWithPrimitive("same"));
+        Assertions.assertEquals(1, repository.countByQueryWithPrimitive("different"));
 
-        Assert.assertEquals(Long.valueOf(2), repository.countByQueryWithNonPrimitive("same"));
-        Assert.assertEquals(Long.valueOf(1), repository.countByQueryWithNonPrimitive("different"));
+        Assertions.assertEquals(Long.valueOf(2), repository.countByQueryWithNonPrimitive("same"));
+        Assertions.assertEquals(Long.valueOf(1), repository.countByQueryWithNonPrimitive("different"));
     }
 
     @Test
@@ -75,8 +75,8 @@ public class CountIT {
         Course course3 = new Course("3", "course2", "department");
         reactiveRepository.saveAll(Arrays.asList(course1, course2, course3)).blockLast();
 
-        Assert.assertEquals(Long.valueOf(2), reactiveRepository.countByName("course").block());
-        Assert.assertEquals(Long.valueOf(1), reactiveRepository.countByName("course2").block());
+        Assertions.assertEquals(Long.valueOf(2), reactiveRepository.countByName("course").block());
+        Assertions.assertEquals(Long.valueOf(1), reactiveRepository.countByName("course2").block());
     }
 
     @Test
@@ -86,8 +86,8 @@ public class CountIT {
         Course course3 = new Course("3", "course2", "department");
         reactiveRepository.saveAll(Arrays.asList(course1, course2, course3)).blockLast();
 
-        Assert.assertEquals(Long.valueOf(2), reactiveRepository.countByQuery("course").block());
-        Assert.assertEquals(Long.valueOf(1), reactiveRepository.countByQuery("course2").block());
+        Assertions.assertEquals(Long.valueOf(2), reactiveRepository.countByQuery("course").block());
+        Assertions.assertEquals(Long.valueOf(1), reactiveRepository.countByQuery("course2").block());
     }
 
 }
