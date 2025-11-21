@@ -92,7 +92,7 @@
 /sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
 
 # PRLabel: %Voice Live
-/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang
+/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang @amber-yujueWang
 
 # ServiceLabel: %AKS
 # ServiceOwners:                                                   @Azure/aks-pm
