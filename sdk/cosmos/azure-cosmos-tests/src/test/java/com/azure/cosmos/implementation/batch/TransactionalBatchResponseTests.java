@@ -79,7 +79,9 @@ public class TransactionalBatchResponseTests {
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
-            blob.length);
+            blob.length,
+            null,
+            null);
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
@@ -143,7 +145,9 @@ public class TransactionalBatchResponseTests {
             HttpResponseStatus.OK.code(),
             new HashMap<>(),
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
-            blob.length);
+            blob.length,
+            null,
+            null);
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),

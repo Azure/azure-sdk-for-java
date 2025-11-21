@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -347,7 +349,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return new RntbdResponse(in.readSlice(end - start), frame, headers, content);
     }
 
-    StoreResponse toStoreResponse(final String serverVersion, final String endpoint) {
+    StoreResponse toStoreResponse(final String serverVersion, final String endpoint, OperationType operationType, ResourceType resourceType) {
 
         checkNotNull(serverVersion, "Argument 'serverVersion' must not be null.");
 
@@ -359,7 +361,9 @@ public final class RntbdResponse implements ReferenceCounted {
                 this.getStatus().code(),
                 this.headers.asMap(serverVersion, this.getActivityId()),
                 null,
-                0);
+                0,
+                operationType,
+                resourceType);
         }
 
         return new StoreResponse(
@@ -367,7 +371,9 @@ public final class RntbdResponse implements ReferenceCounted {
             this.getStatus().code(),
             this.headers.asMap(serverVersion, this.getActivityId()),
             new ByteBufInputStream(this.content.retain(), true),
-            length);
+            length,
+            operationType,
+            resourceType);
     }
     // endregion
 

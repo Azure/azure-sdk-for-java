@@ -20,6 +20,8 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -53,6 +55,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.JsonParseInterceptorHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -2101,6 +2104,72 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    /**
+     * Tests that ChangeFeedProcessor gracefully handles StreamConstraintsException during JSON parsing.
+     *
+     * <p>This test uses a GLOBAL interceptor to inject a StreamConstraintsException on the first
+     * JSON parse operation across all threads (including CFP worker threads from thread pools).</p>
+     *
+     * <p><strong>IMPORTANT:</strong> This test should NOT run in parallel with other tests that use
+     * the JSON parse interceptor, as the interceptor is global and would cause interference.</p>
+     *
+     * <p>Expected behavior: The ChangeFeedProcessor should retry with reduced maxItemCount and
+     * eventually process all documents successfully.</p>
+     */
+    @Test(groups = { "long-emulator" }, timeOut = 50000, singleThreaded = true)
+    public void changeFeedProcessorHandlesStreamConstraintsException() throws Exception {
+        CosmosAsyncContainer feedContainer = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer leaseContainer = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+
+            // Create documents
+            setupReadFeedDocuments(createdDocuments, feedContainer, FEED_COUNT);
+
+            // Set up GLOBAL interceptor to throw StreamConstraintsException once
+            // Works across all threads (main thread + CFP worker threads from thread pools)
+            // NOTE: Test marked as singleThreaded to prevent interference with parallel tests
+            try (AutoCloseable interceptor = JsonParseInterceptorHelper.injectStreamConstraintsExceptionOnce(OperationType.ReadFeed, ResourceType.Document)) {
+
+                ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
+                options.setMaxItemCount(100);
+                options.setStartFromBeginning(true);
+
+                ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                    .hostName(hostName)
+                    .feedContainer(feedContainer)
+                    .leaseContainer(leaseContainer)
+                    .options(options)
+                    .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
+                    .buildChangeFeedProcessor();
+
+                try {
+                    startChangeFeedProcessor(changeFeedProcessor);
+
+                    // Wait for documents to be processed
+                    Thread.sleep(10000);
+
+                    safeStopChangeFeedProcessor(changeFeedProcessor);
+
+                    // Verify all documents were processed despite the StreamConstraintsException
+                    assertThat(receivedDocuments.size()).isEqualTo(FEED_COUNT);
+
+                    logger.info("Successfully processed {} documents after handling StreamConstraintsException",
+                        receivedDocuments.size());
+
+                } finally {
+                    Thread.sleep(2000);
+                }
+            }
+
+        } finally {
+            safeDeleteCollection(feedContainer);
+            safeDeleteCollection(leaseContainer);
+        }
+    }
+
     private void startChangeFeedProcessor(ChangeFeedProcessor changeFeedProcessor) {
         changeFeedProcessor
             .start()
@@ -2321,21 +2390,21 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    @BeforeMethod(groups = { "query", "cfp-split" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "query", "cfp-split", "long-emulator" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
     public void beforeMethod() {
     }
 
-    @BeforeClass(groups = { "query", "cfp-split" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "query", "cfp-split", "long-emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterMethod(groups = { "query", "cfp-split" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "query", "cfp-split", "long-emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
     }
 
-    @AfterClass(groups = { "query", "cfp-split" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query", "cfp-split", "long-emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
