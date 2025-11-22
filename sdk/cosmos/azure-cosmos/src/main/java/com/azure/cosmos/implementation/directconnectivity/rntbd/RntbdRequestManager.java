@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.LockedException;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -24,7 +23,6 @@ import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
@@ -1003,9 +1001,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final String requestUriAsString = requestRecord.args().physicalAddressUri() != null ?
             requestRecord.args().physicalAddressUri().getURI().toString() : null;
 
-        OperationType operationType = requestRecord.args().serviceRequest().getOperationType();
-        ResourceType resourceType = requestRecord.args().serviceRequest().getResourceType();
-
         if ((HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) ||
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
@@ -1013,7 +1008,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (rntbdCtx == null) {
                 throw new IllegalStateException("Expecting non-null rntbd context.");
             }
-            final StoreResponse storeResponse = response.toStoreResponse(rntbdCtx.serverVersion(), requestUriAsString, operationType, resourceType);
+            final StoreResponse storeResponse = response.toStoreResponse(rntbdCtx.serverVersion(), requestUriAsString);
 
             if (this.serverErrorInjector != null) {
                 Consumer<Duration> completeWithInjectedDelayConsumer =

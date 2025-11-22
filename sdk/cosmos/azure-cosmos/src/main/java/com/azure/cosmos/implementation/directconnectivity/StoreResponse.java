@@ -4,9 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
@@ -48,13 +46,11 @@ public class StoreResponse {
     private final String endpoint;
 
     public StoreResponse(
-        String endpoint,
-        int status,
-        Map<String, String> headerMap,
-        ByteBufInputStream contentStream,
-        int responsePayloadLength,
-        OperationType operationType,
-        ResourceType resourceType) {
+            String endpoint,
+            int status,
+            Map<String, String> headerMap,
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
 
         checkArgument((contentStream == null) == (responsePayloadLength == 0),
             "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
@@ -74,7 +70,7 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap, operationType, resourceType);
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
             } finally {
                 try {
                     contentStream.close();

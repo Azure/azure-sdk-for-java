@@ -37,7 +37,7 @@ public class StoreResultDiagnosticsSerializerTests {
     //TODO: add more test cases
     @Test(groups = "unit")
     public void storeResultDiagnosticsSerializerTests() {
-        StoreResponse storeResponse = new StoreResponse(null, 200, new HashMap<>(), null, 0, null, null);
+        StoreResponse storeResponse = new StoreResponse(null, 200, new HashMap<>(), null, 0);
         StoreResult storeResult = new StoreResult(
                 storeResponse,
                 null,

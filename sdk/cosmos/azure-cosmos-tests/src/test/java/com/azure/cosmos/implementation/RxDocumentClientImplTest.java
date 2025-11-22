@@ -448,9 +448,7 @@ public class RxDocumentClientImplTest {
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
-            blob.length,
-            null,
-            null);
+            blob.length);
 
         RxDocumentServiceResponse documentServiceResponse = new RxDocumentServiceResponse(new DiagnosticsClientContext() {
 

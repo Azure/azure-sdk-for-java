@@ -5,8 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.exc.StreamConstraintsException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,67 +20,27 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final Logger logger = LoggerFactory.getLogger(JsonNodeStorePayload.class);
     private static final CharsetDecoder fallbackCharsetDecoder = getFallbackCharsetDecoder();
-
-    // Test-only interceptor for fault injection
-    // Using AtomicReference for thread-safe global interceptor
-    // This is a test-only feature and tests should ensure proper isolation through test orchestration
-    private static final AtomicReference<TestOnlyJsonParseInterceptor> globalTestInterceptor = new AtomicReference<>();
-
     private final int responsePayloadSize;
     private final JsonNode jsonValue;
 
-    public JsonNodeStorePayload(
-        ByteBufInputStream bufferStream,
-        int readableBytes,
-        Map<String, String> responseHeaders,
-        OperationType operationType,
-        ResourceType resourceType) {
-
+    public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
         if (readableBytes > 0) {
             this.responsePayloadSize = readableBytes;
-            this.jsonValue = fromJson(bufferStream, readableBytes, responseHeaders, operationType, resourceType);
+            this.jsonValue = fromJson(bufferStream, readableBytes, responseHeaders);
         } else {
             this.responsePayloadSize = 0;
             this.jsonValue = null;
         }
     }
 
-    private static JsonNode fromJson(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders,
-                                     OperationType operationType, ResourceType resourceType) {
+    private static JsonNode fromJson(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
         byte[] bytes = new byte[readableBytes];
         try {
             bufferStream.read(bytes);
-
-            // Allow test-only interceptor to inject faults before parsing
-            TestOnlyJsonParseInterceptor interceptor = globalTestInterceptor.get();
-            if (interceptor != null) {
-                return interceptor.intercept(bytes, responseHeaders,
-                    (b, h) -> fromJsonWithBytes(b, h), operationType, resourceType);
-            }
-
-            return fromJsonWithBytes(bytes, responseHeaders);
-        } catch (IOException e) {
-            // IOException from read operation
-            String baseErrorMessage = "Failed to read JSON document from stream.";
-            logger.error(baseErrorMessage, e);
-
-            IllegalStateException innerException = new IllegalStateException("Unable to read JSON stream.", e);
-
-            throw Utils.createCosmosException(
-                HttpConstants.StatusCodes.BADREQUEST,
-                evaluateSubStatusCode(e),
-                innerException,
-                responseHeaders);
-        }
-    }
-
-    private static JsonNode fromJsonWithBytes(byte[] bytes, Map<String, String> responseHeaders) throws IOException {
-        try {
             return Utils.getSimpleObjectMapper().readTree(bytes);
         } catch (IOException e) {
             if (fallbackCharsetDecoder != null) {
@@ -203,67 +161,5 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
         }
 
         return HttpConstants.SubStatusCodes.UNKNOWN;
-    }
-
-    /**
-     * Test-only interceptor interface for fault injection.
-     * WARNING: This is intended for testing purposes only and should not be used in production code.
-     */
-    @FunctionalInterface
-    public interface TestOnlyJsonParseInterceptor {
-        /**
-         * Intercepts JSON parsing to allow fault injection.
-         *
-         * @param bytes the byte array containing JSON
-         * @param responseHeaders the response headers
-         * @param defaultParser the default parsing logic to delegate to
-         * @return the parsed JsonNode
-         * @throws IOException if parsing fails or fault is injected
-         */
-        JsonNode intercept(
-            byte[] bytes,
-            Map<String, String> responseHeaders,
-            DefaultJsonParser defaultParser,
-            OperationType operationType,
-            ResourceType resourceType
-        ) throws IOException;
-
-        /**
-         * Functional interface for the default JSON parsing logic.
-         */
-        @FunctionalInterface
-        interface DefaultJsonParser {
-            JsonNode parse(byte[] bytes, Map<String, String> responseHeaders) throws IOException;
-        }
-    }
-
-    /**
-     * Sets a test-only interceptor for JSON parsing globally.
-     * WARNING: This is intended for testing purposes only and should not be used in production code.
-     *
-     * <p>This sets a GLOBAL interceptor that affects all threads. Tests using this interceptor
-     * should NOT run in parallel with other tests to avoid interference. Use TestNG's
-     * singleThreaded = true or similar mechanisms to ensure test isolation.</p>
-     *
-     * <p>The interceptor will be active across all threads including thread pool workers,
-     * making it suitable for testing multi-threaded components like ChangeFeedProcessor.</p>
-     *
-     * @param interceptor the interceptor to set (null to clear)
-     */
-    public static void setTestOnlyJsonParseInterceptor(TestOnlyJsonParseInterceptor interceptor) {
-        globalTestInterceptor.set(interceptor);
-        if (interceptor != null) {
-            logger.warn("GLOBAL test-only JSON parse interceptor has been set on thread {}. " +
-                "This affects ALL threads and should only be used in isolated test scenarios. " +
-                "Ensure tests using this do NOT run in parallel.",
-                Thread.currentThread().getName());
-        }
-    }
-
-    /**
-     * Clears the test-only interceptor.
-     */
-    public static void clearTestOnlyJsonParseInterceptor() {
-        globalTestInterceptor.set(null);
     }
 }
