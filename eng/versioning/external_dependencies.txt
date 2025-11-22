@@ -30,7 +30,6 @@ com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.knuddels:jtokkit;1.0.0
 com.microsoft.azure:azure-client-authentication;1.7.14
 com.microsoft.azure:azure-client-runtime;1.7.14
-com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.6
 com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
@@ -135,7 +134,6 @@ com.squareup.okio:okio-jvm;3.16.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.9.0
 org.assertj:assertj-core;3.22.0
-org.bouncycastle:bcprov-jdk15to18;1.81
 org.bouncycastle:bcprov-jdk18on;1.81
 org.bouncycastle:bcpkix-lts8on;2.73.8
 org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.58.v20250814
@@ -181,7 +179,6 @@ org.apache.maven.plugins:maven-clean-plugin;3.5.0
 org.apache.maven.plugins:maven-compiler-plugin;3.14.0
 org.apache.maven.plugins:maven-enforcer-plugin;3.6.1
 org.apache.maven.plugins:maven-failsafe-plugin;3.5.3
-org.apache.maven.plugins:maven-help-plugin;3.5.1
 org.apache.maven.plugins:maven-install-plugin;3.1.4
 org.apache.maven.plugins:maven-jar-plugin;3.4.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.11.3
@@ -406,8 +403,5 @@ springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0
 
 # Jackson dropped support for Java 7 with the release of 2.14.0.
 # Add custom Jackson dependencies for Track 1 libraries using Jackson.
-java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
-java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
-java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5
 org.mockito:mockito-junit-jupiter;4.11.0
 com.github.tomakehurst:wiremock-jre8;2.35.2
