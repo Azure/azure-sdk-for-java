@@ -32,8 +32,10 @@ import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
@@ -135,8 +137,8 @@ public class QuorumReader {
         final MutableVolatile<Boolean> shouldRetryOnSecondary = new MutableVolatile<>(false);
         final MutableVolatile<Boolean> hasPerformedReadFromPrimary = new MutableVolatile<>(false);
         final MutableVolatile<Boolean> includePrimary = new MutableVolatile<>(false);
-        final MutableVolatile<CosmosException> cosmosExceptionValueHolder = new MutableVolatile<>(null);
-        final MutableVolatile<Boolean> bailOnBarrierValueHolder = new MutableVolatile<>(false);
+        final AtomicReference<CosmosException> cosmosExceptionValueHolder = new AtomicReference<>(null);
+        final AtomicBoolean bailOnBarrierValueHolder = new AtomicBoolean(false);
 
         return Flux.defer(
             // the following will be repeated till the repeat().takeUntil(.) condition is satisfied.
@@ -297,8 +299,8 @@ public class QuorumReader {
                    .switchIfEmpty(Flux.defer(() -> {
                        logger.info("Could not complete read quorum with read quorum value of {}", readQuorumValue);
 
-                       if (cosmosExceptionValueHolder.v != null) {
-                           return Flux.error(cosmosExceptionValueHolder.v);
+                       if (cosmosExceptionValueHolder.get() != null) {
+                           return Flux.error(cosmosExceptionValueHolder.get());
                        }
 
                        return Flux.error(new GoneException(
@@ -316,8 +318,8 @@ public class QuorumReader {
         int readQuorum,
         boolean includePrimary,
         ReadMode readMode,
-        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailOnBarrierValueHolder) {
+        AtomicReference<CosmosException> cosmosExceptionValueHolder,
+        AtomicBoolean bailOnBarrierValueHolder) {
 
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Mono.error(new GoneException());
@@ -344,7 +346,7 @@ public class QuorumReader {
                         return waitForObs.flatMap(
                             waitFor -> {
 
-                                if (bailOnBarrierValueHolder.v && cosmosExceptionValueHolder.v != null) {
+                                if (bailOnBarrierValueHolder.get() && cosmosExceptionValueHolder.get() != null) {
                                     return Mono.just(new ReadQuorumResult(
                                         entity.requestContext.requestChargeTracker,
                                         ReadQuorumResultKind.QuorumNotPossibleInCurrentRegion,
@@ -352,7 +354,7 @@ public class QuorumReader {
                                         globalCommittedLSN,
                                         storeResult,
                                         storeResponses,
-                                        cosmosExceptionValueHolder.v));
+                                        cosmosExceptionValueHolder.get()));
                                 }
 
                                 if (!waitFor) {
@@ -642,8 +644,8 @@ public class QuorumReader {
         final long readBarrierLsn,
         final long targetGlobalCommittedLSN,
         ReadMode readMode,
-        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromReadBarrierLoopValueHolder) {
+        AtomicReference<CosmosException> cosmosExceptionValueHolder,
+        AtomicBoolean bailFromReadBarrierLoopValueHolder) {
         AtomicInteger readBarrierRetryCount = new AtomicInteger(maxNumberOfReadBarrierReadRetries);
         AtomicInteger readBarrierRetryCountMultiRegion = new AtomicInteger(maxBarrierRetriesForMultiRegion);
 
@@ -726,7 +728,7 @@ public class QuorumReader {
                                 return Flux.just(true);
                            }
 
-                           if (bailFromReadBarrierLoopValueHolder.v) {
+                           if (bailFromReadBarrierLoopValueHolder.get()) {
                                return Flux.just(false);
                            }
 
@@ -903,8 +905,8 @@ public class QuorumReader {
         RxDocumentServiceRequest barrierRequest,
         long readBarrierLsn,
         long targetGlobalCommittedLSN,
-        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromReadBarrierLoop,
+        AtomicReference<CosmosException> cosmosExceptionValueHolder,
+        AtomicBoolean bailFromReadBarrierLoop,
         CosmosException cosmosExceptionInStoreResult) {
 
         return performBarrierOnPrimaryAndDetermineIfBarrierCanBeSatisfied(
@@ -916,23 +918,23 @@ public class QuorumReader {
             bailFromReadBarrierLoop).flatMap(isBarrierFromPrimarySuccessful -> {
 
             if (isBarrierFromPrimarySuccessful) {
-                bailFromReadBarrierLoop.v = true;
-                cosmosExceptionValueHolder.v = null;
+                bailFromReadBarrierLoop.set(true);
+                cosmosExceptionValueHolder.set(null);
 
                 return Mono.just(true);
             }
 
-            if (bailFromReadBarrierLoop.v) {
-                bailFromReadBarrierLoop.v = true;
-                cosmosExceptionValueHolder.v = Utils.createCosmosException(
+            if (bailFromReadBarrierLoop.get()) {
+                bailFromReadBarrierLoop.set(true);
+                cosmosExceptionValueHolder.set(Utils.createCosmosException(
                     HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                     cosmosExceptionInStoreResult.getSubStatusCode(),
                     cosmosExceptionInStoreResult,
-                    null);
+                    null));
                 return Mono.just(false);
             } else {
-                bailFromReadBarrierLoop.v = false;
-                cosmosExceptionValueHolder.v = null;
+                bailFromReadBarrierLoop.set(false);
+                cosmosExceptionValueHolder.set(null);
                 return Mono.empty();
             }
         });
@@ -943,8 +945,8 @@ public class QuorumReader {
         boolean requiresValidLsn,
         long readBarrierLsn,
         long targetGlobalCommittedLSN,
-        MutableVolatile<CosmosException> cosmosExceptionValueHolder,
-        MutableVolatile<Boolean> bailFromReadBarrierLoop) {
+        AtomicReference<CosmosException> cosmosExceptionValueHolder,
+        AtomicBoolean bailFromReadBarrierLoop) {
 
         barrierRequest.requestContext.forceRefreshAddressCache = true;
         Mono<StoreResult> storeResultObs = this.storeReader.readPrimaryAsync(
@@ -970,16 +972,16 @@ public class QuorumReader {
 
                     if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
 
-                        bailFromReadBarrierLoop.v = true;
-                        cosmosExceptionValueHolder.v = cosmosException;
+                        bailFromReadBarrierLoop.set(true);
+                        cosmosExceptionValueHolder.set(cosmosException);
                         return Mono.just(false);
                     }
 
-                    bailFromReadBarrierLoop.v = false;
+                    bailFromReadBarrierLoop.set(false);
                     return Mono.just(false);
                 }
 
-                bailFromReadBarrierLoop.v = false;
+                bailFromReadBarrierLoop.set(false);
                 return Mono.just(false);
             });
     }
