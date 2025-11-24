@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 #### Renamed Models
+
 * `models.ServerHAState` -> `models.HighAvailabilityState`
 * `models.AzureManagedDiskPerformanceTiers` -> `models.AzureManagedDiskPerformanceTier`
 * `models.ServerVersion` -> `models.PostgresMajorVersion`
@@ -27,8 +28,6 @@
 * `models.VirtualEndpointResource` (and related Definition/Update stage types) -> `models.VirtualEndpoint`
 * `models.ServerThreatProtectionSettingsModel` (and related Definition/Update stage types) -> `models.AdvancedThreatProtectionSettingsModel`
 * `models.ActiveDirectoryAdministrator` (and related Add/Definition/Update stage types & list/plural forms) -> `models.AdministratorMicrosoftEntra`
-
-#### Other Breaking Changes
 
 #### `models.Backup` was modified
 
