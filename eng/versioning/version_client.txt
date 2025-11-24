@@ -214,7 +214,6 @@ com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft.azure:azure-batch;11.2.0;11.3.0-beta.1
 com.microsoft.azure:azure-eventhubs;3.3.0;3.4.0-beta.1
 com.microsoft.azure:azure-servicebus;3.6.7;3.7.0-beta.1
-com.microsoft.azure:azure-media;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;6.0.0;6.1.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config;6.0.0;6.1.0-beta.1
