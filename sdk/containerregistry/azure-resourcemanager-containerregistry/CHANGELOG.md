@@ -1,5 +1,14 @@
 # Release History
 
+## 2.54.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.4` to version `2.53.5`.
+
+
 ## 2.54.0 (2025-11-05)
 
 ### Other Changes
