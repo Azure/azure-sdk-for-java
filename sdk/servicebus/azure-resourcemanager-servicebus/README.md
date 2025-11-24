@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-servicebus</artifactId>
-    <version>2.53.4</version>
+    <version>2.53.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
