@@ -14,8 +14,8 @@ import com.azure.resourcemanager.containerservice.models.PrivateLinkServiceConne
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-09-02-preview/
-     * examples/PrivateEndpointConnectionsUpdate.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
+     * PrivateEndpointConnectionsUpdate.json
      */
     /**
      * Sample code: Update Private Endpoint Connection.

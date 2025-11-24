@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-09-02-preview/
-     * examples/PrivateEndpointConnectionsDelete.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
+     * PrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: Delete Private Endpoint Connection.

@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-09-02-preview/
-     * examples/Operation_List.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
+     * Operation_List.json
      */
     /**
      * Sample code: List available operations for the container service resource provider.
