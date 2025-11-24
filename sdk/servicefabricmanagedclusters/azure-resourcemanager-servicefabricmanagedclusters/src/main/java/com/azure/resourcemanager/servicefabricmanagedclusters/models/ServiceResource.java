@@ -252,4 +252,25 @@ public interface ServiceResource {
      * @return the refreshed resource.
      */
     ServiceResource refresh(Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartReplica(RestartReplicaRequest parameters);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartReplica(RestartReplicaRequest parameters, Context context);
 }
