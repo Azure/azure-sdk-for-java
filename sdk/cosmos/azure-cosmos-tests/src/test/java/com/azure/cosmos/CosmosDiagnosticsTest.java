@@ -569,8 +569,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             String diagnostics = createResponse.getDiagnostics().toString();
 
             // assert diagnostics shows the correct format for tracking client instances
-            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                    ":{\"%s\"", TestConfigurations.HOST));
+            String prefix = "\"clientEndpoints\":{";
+            int startIndex = diagnostics.indexOf(prefix);
+            assertThat(startIndex).isGreaterThanOrEqualTo(0);
+            startIndex += prefix.length();
+            int endIndex = diagnostics.indexOf("}", startIndex);
+            assertThat(endIndex).isGreaterThan(startIndex);
+            int matchingIndex = diagnostics.indexOf(TestConfigurations.HOST, startIndex);
+            assertThat(matchingIndex).isGreaterThanOrEqualTo(startIndex);
+            assertThat(matchingIndex).isLessThanOrEqualTo(endIndex);
+
             // track number of clients currently mapped to account
             int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
             // we do end at +120 to ensure we grab the bracket even if the account is very long or if
@@ -592,8 +600,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             createResponse = cosmosContainer.createItem(internalObjectNode);
             diagnostics = createResponse.getDiagnostics().toString();
             // assert diagnostics shows the correct format for tracking client instances
-            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                ":{\"%s\"", TestConfigurations.HOST));
+            startIndex = diagnostics.indexOf(prefix);
+            assertThat(startIndex).isGreaterThanOrEqualTo(0);
+            startIndex += prefix.length();
+            endIndex = diagnostics.indexOf("}", startIndex);
+            assertThat(endIndex).isGreaterThan(startIndex);
+            matchingIndex = diagnostics.indexOf(TestConfigurations.HOST, startIndex);
+            assertThat(matchingIndex).isGreaterThanOrEqualTo(startIndex);
+            assertThat(matchingIndex).isLessThanOrEqualTo(endIndex);
             // grab new value and assert one additional client is mapped to the same account used previously
             clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
             substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
