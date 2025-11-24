@@ -16,16 +16,6 @@ import java.io.IOException;
 @Immutable
 public final class DataCollectionRuleMetadata extends Metadata {
     /*
-     * Immutable Id of azure offering managing this resource on-behalf-of customer.
-     */
-    private String provisionedByImmutableId;
-
-    /*
-     * Resource Id of azure offering managing this resource on-behalf-of customer.
-     */
-    private String provisionedByResourceId;
-
-    /*
      * Azure offering managing this resource on-behalf-of customer.
      */
     private String provisionedBy;
@@ -34,28 +24,6 @@ public final class DataCollectionRuleMetadata extends Metadata {
      * Creates an instance of DataCollectionRuleMetadata class.
      */
     public DataCollectionRuleMetadata() {
-    }
-
-    /**
-     * Get the provisionedByImmutableId property: Immutable Id of azure offering managing this resource on-behalf-of
-     * customer.
-     * 
-     * @return the provisionedByImmutableId value.
-     */
-    @Override
-    public String provisionedByImmutableId() {
-        return this.provisionedByImmutableId;
-    }
-
-    /**
-     * Get the provisionedByResourceId property: Resource Id of azure offering managing this resource on-behalf-of
-     * customer.
-     * 
-     * @return the provisionedByResourceId value.
-     */
-    @Override
-    public String provisionedByResourceId() {
-        return this.provisionedByResourceId;
     }
 
     /**
@@ -75,6 +43,7 @@ public final class DataCollectionRuleMetadata extends Metadata {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**
@@ -103,10 +72,6 @@ public final class DataCollectionRuleMetadata extends Metadata {
 
                 if ("provisionedBy".equals(fieldName)) {
                     deserializedDataCollectionRuleMetadata.provisionedBy = reader.getString();
-                } else if ("provisionedByResourceId".equals(fieldName)) {
-                    deserializedDataCollectionRuleMetadata.provisionedByResourceId = reader.getString();
-                } else if ("provisionedByImmutableId".equals(fieldName)) {
-                    deserializedDataCollectionRuleMetadata.provisionedByImmutableId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

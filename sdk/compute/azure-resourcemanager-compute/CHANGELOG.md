@@ -1,14 +1,13 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.55.1 (2025-11-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.56.0` to version `2.57.0`.
+
 
 ## 2.55.0 (2025-11-17)
 

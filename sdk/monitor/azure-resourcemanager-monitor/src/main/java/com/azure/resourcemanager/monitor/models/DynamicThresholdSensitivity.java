@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric
- * series pattern. Previously undocumented values might be returned.
+ * series pattern.
  */
 public final class DynamicThresholdSensitivity extends ExpandableStringEnum<DynamicThresholdSensitivity> {
     /**

@@ -1,14 +1,15 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.55.2 (2025-11-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.53.3` to version `2.53.4`.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.55.1 (2025-10-27)
 
@@ -16,7 +17,7 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+
 
 ## 2.55.0 (2025-10-22)
 
