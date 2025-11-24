@@ -54,7 +54,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientOperations")
+    @ServiceInterface(name = "MonitorClientOperati")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Insights/operations")

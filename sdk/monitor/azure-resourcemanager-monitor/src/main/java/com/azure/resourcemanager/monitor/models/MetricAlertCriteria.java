@@ -19,7 +19,7 @@ import java.util.Map;
 @Fluent
 public class MetricAlertCriteria implements JsonSerializable<MetricAlertCriteria> {
     /*
-     * Specifies the type of the alert criteria. Previously undocumented values might be returned
+     * specifies the type of the alert criteria.
      */
     private Odatatype odataType = Odatatype.fromString("MetricAlertCriteria");
 
@@ -35,8 +35,7 @@ public class MetricAlertCriteria implements JsonSerializable<MetricAlertCriteria
     }
 
     /**
-     * Get the odataType property: Specifies the type of the alert criteria. Previously undocumented values might be
-     * returned.
+     * Get the odataType property: specifies the type of the alert criteria.
      * 
      * @return the odataType value.
      */
@@ -118,8 +117,6 @@ public class MetricAlertCriteria implements JsonSerializable<MetricAlertCriteria
                 } else if ("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
                     .equals(discriminatorValue)) {
                     return MetricAlertMultipleResourceMultipleMetricCriteria.fromJson(readerToUse.reset());
-                } else if ("Microsoft.Azure.Monitor.PromQLCriteria".equals(discriminatorValue)) {
-                    return PromQLCriteria.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

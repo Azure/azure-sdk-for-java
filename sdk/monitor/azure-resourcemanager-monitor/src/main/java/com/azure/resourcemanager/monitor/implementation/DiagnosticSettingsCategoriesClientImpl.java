@@ -60,7 +60,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientDiagnosticSettingsCategories")
+    @ServiceInterface(name = "MonitorClientDiagnos")
     public interface DiagnosticSettingsCategoriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories/{name}")

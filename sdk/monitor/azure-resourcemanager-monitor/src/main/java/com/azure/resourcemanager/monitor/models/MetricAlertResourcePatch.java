@@ -27,11 +27,6 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     private Map<String, String> tags;
 
     /*
-     * The identity of the resource.
-     */
-    private Identity identity;
-
-    /*
      * The alert rule properties of the resource.
      */
     private MetricAlertPropertiesPatch innerProperties;
@@ -63,26 +58,6 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the identity property: The identity of the resource.
-     * 
-     * @return the identity value.
-     */
-    public Identity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The identity of the resource.
-     * 
-     * @param identity the identity value to set.
-     * @return the MetricAlertResourcePatch object itself.
-     */
-    public MetricAlertResourcePatch withIdentity(Identity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Get the innerProperties property: The alert rule properties of the resource.
      * 
      * @return the innerProperties value.
@@ -92,7 +67,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the description property: The description of the metric alert that will be included in the alert email.
+     * Get the description property: the description of the metric alert that will be included in the alert email.
      * 
      * @return the description value.
      */
@@ -101,7 +76,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the description property: The description of the metric alert that will be included in the alert email.
+     * Set the description property: the description of the metric alert that will be included in the alert email.
      * 
      * @param description the description value to set.
      * @return the MetricAlertResourcePatch object itself.
@@ -138,7 +113,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the enabled property: The flag that indicates whether the metric alert is enabled.
+     * Get the enabled property: the flag that indicates whether the metric alert is enabled.
      * 
      * @return the enabled value.
      */
@@ -147,7 +122,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the enabled property: The flag that indicates whether the metric alert is enabled.
+     * Set the enabled property: the flag that indicates whether the metric alert is enabled.
      * 
      * @param enabled the enabled value to set.
      * @return the MetricAlertResourcePatch object itself.
@@ -161,7 +136,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the scopes property: The list of resource id's that this metric alert is scoped to.
+     * Get the scopes property: the list of resource id's that this metric alert is scoped to.
      * 
      * @return the scopes value.
      */
@@ -170,7 +145,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the scopes property: The list of resource id's that this metric alert is scoped to.
+     * Set the scopes property: the list of resource id's that this metric alert is scoped to.
      * 
      * @param scopes the scopes value to set.
      * @return the MetricAlertResourcePatch object itself.
@@ -184,7 +159,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the evaluationFrequency property: How often the metric alert is evaluated represented in ISO 8601 duration
+     * Get the evaluationFrequency property: how often the metric alert is evaluated represented in ISO 8601 duration
      * format.
      * 
      * @return the evaluationFrequency value.
@@ -194,7 +169,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the evaluationFrequency property: How often the metric alert is evaluated represented in ISO 8601 duration
+     * Set the evaluationFrequency property: how often the metric alert is evaluated represented in ISO 8601 duration
      * format.
      * 
      * @param evaluationFrequency the evaluationFrequency value to set.
@@ -209,7 +184,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the windowSize property: The period of time (in ISO 8601 duration format) that is used to monitor alert
+     * Get the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold.
      * 
      * @return the windowSize value.
@@ -219,7 +194,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the windowSize property: The period of time (in ISO 8601 duration format) that is used to monitor alert
+     * Set the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold.
      * 
      * @param windowSize the windowSize value to set.
@@ -234,7 +209,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the targetResourceType property: The resource type of the target resource(s) on which the alert is
+     * Get the targetResourceType property: the resource type of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
      * 
      * @return the targetResourceType value.
@@ -244,7 +219,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the targetResourceType property: The resource type of the target resource(s) on which the alert is
+     * Set the targetResourceType property: the resource type of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
      * 
      * @param targetResourceType the targetResourceType value to set.
@@ -259,7 +234,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the targetResourceRegion property: The region of the target resource(s) on which the alert is
+     * Get the targetResourceRegion property: the region of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
      * 
      * @return the targetResourceRegion value.
@@ -269,7 +244,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the targetResourceRegion property: The region of the target resource(s) on which the alert is
+     * Set the targetResourceRegion property: the region of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
      * 
      * @param targetResourceRegion the targetResourceRegion value to set.
@@ -284,7 +259,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the criteria property: Defines the specific alert criteria information.
+     * Get the criteria property: defines the specific alert criteria information.
      * 
      * @return the criteria value.
      */
@@ -293,7 +268,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the criteria property: Defines the specific alert criteria information.
+     * Set the criteria property: defines the specific alert criteria information.
      * 
      * @param criteria the criteria value to set.
      * @return the MetricAlertResourcePatch object itself.
@@ -307,7 +282,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the autoMitigate property: The flag that indicates whether the alert should be auto resolved or not. The
+     * Get the autoMitigate property: the flag that indicates whether the alert should be auto resolved or not. The
      * default is true.
      * 
      * @return the autoMitigate value.
@@ -317,7 +292,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the autoMitigate property: The flag that indicates whether the alert should be auto resolved or not. The
+     * Set the autoMitigate property: the flag that indicates whether the alert should be auto resolved or not. The
      * default is true.
      * 
      * @param autoMitigate the autoMitigate value to set.
@@ -332,32 +307,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the resolveConfiguration property: The configuration for how the alert is resolved. Applicable for
-     * PromQLCriteria.
-     * 
-     * @return the resolveConfiguration value.
-     */
-    public ResolveConfiguration resolveConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().resolveConfiguration();
-    }
-
-    /**
-     * Set the resolveConfiguration property: The configuration for how the alert is resolved. Applicable for
-     * PromQLCriteria.
-     * 
-     * @param resolveConfiguration the resolveConfiguration value to set.
-     * @return the MetricAlertResourcePatch object itself.
-     */
-    public MetricAlertResourcePatch withResolveConfiguration(ResolveConfiguration resolveConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withResolveConfiguration(resolveConfiguration);
-        return this;
-    }
-
-    /**
-     * Get the actions property: The array of actions that are performed when the alert rule becomes active, and when an
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
      * alert condition is resolved.
      * 
      * @return the actions value.
@@ -367,7 +317,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Set the actions property: The array of actions that are performed when the alert rule becomes active, and when an
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
      * alert condition is resolved.
      * 
      * @param actions the actions value to set.
@@ -391,7 +341,7 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the isMigrated property: The value indicating whether this alert rule is migrated.
+     * Get the isMigrated property: the value indicating whether this alert rule is migrated.
      * 
      * @return the isMigrated value.
      */
@@ -400,60 +350,11 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     }
 
     /**
-     * Get the customProperties property: The properties of an alert payload.
-     * 
-     * @return the customProperties value.
-     */
-    public Map<String, String> customProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().customProperties();
-    }
-
-    /**
-     * Set the customProperties property: The properties of an alert payload.
-     * 
-     * @param customProperties the customProperties value to set.
-     * @return the MetricAlertResourcePatch object itself.
-     */
-    public MetricAlertResourcePatch withCustomProperties(Map<String, String> customProperties) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withCustomProperties(customProperties);
-        return this;
-    }
-
-    /**
-     * Get the actionProperties property: The properties of an action properties.
-     * 
-     * @return the actionProperties value.
-     */
-    public Map<String, String> actionProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().actionProperties();
-    }
-
-    /**
-     * Set the actionProperties property: The properties of an action properties.
-     * 
-     * @param actionProperties the actionProperties value to set.
-     * @return the MetricAlertResourcePatch object itself.
-     */
-    public MetricAlertResourcePatch withActionProperties(Map<String, String> actionProperties) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withActionProperties(actionProperties);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -466,7 +367,6 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -489,8 +389,6 @@ public final class MetricAlertResourcePatch implements JsonSerializable<MetricAl
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedMetricAlertResourcePatch.tags = tags;
-                } else if ("identity".equals(fieldName)) {
-                    deserializedMetricAlertResourcePatch.identity = Identity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedMetricAlertResourcePatch.innerProperties = MetricAlertPropertiesPatch.fromJson(reader);
                 } else {

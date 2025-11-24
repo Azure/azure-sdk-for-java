@@ -62,7 +62,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientBaselines")
+    @ServiceInterface(name = "MonitorClientBaselin")
     public interface BaselinesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Insights/metricBaselines")
@@ -83,7 +83,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      * @param resourceUri The identifier of the resource.
      * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
      * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
-     * @param metricnamespace Metric namespace that contains the requested metric names.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      * 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
@@ -132,7 +132,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      * @param resourceUri The identifier of the resource.
      * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
      * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
-     * @param metricnamespace Metric namespace that contains the requested metric names.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      * 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
@@ -182,7 +182,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      * @param resourceUri The identifier of the resource.
      * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
      * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
-     * @param metricnamespace Metric namespace that contains the requested metric names.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      * 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
@@ -241,7 +241,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      * @param resourceUri The identifier of the resource.
      * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
      * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
-     * @param metricnamespace Metric namespace that contains the requested metric names.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      * 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
@@ -301,7 +301,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      * @param resourceUri The identifier of the resource.
      * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
      * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
-     * @param metricnamespace Metric namespace that contains the requested metric names.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      * 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
