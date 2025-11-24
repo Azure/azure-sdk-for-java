@@ -134,11 +134,11 @@ public class BailOutFromBarrierE2ETests extends TestSuiteBase {
             { 2, OperationType.Read, true, 18, false, ConsistencyLevel.STRONG },
             { 3, OperationType.Read, true, 18, false, ConsistencyLevel.STRONG },
             { 4, OperationType.Read, true, 18, true, ConsistencyLevel.STRONG },
-            { 1, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
-            { 2, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
-            { 3, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
-            { 4, OperationType.Read, true, 111, false, ConsistencyLevel.STRONG },
-            { 5, OperationType.Read, true, 111, true, ConsistencyLevel.STRONG }
+            { 1, OperationType.Read, true, 108, false, ConsistencyLevel.STRONG },
+            { 2, OperationType.Read, true, 108, false, ConsistencyLevel.STRONG },
+            { 3, OperationType.Read, true, 108, false, ConsistencyLevel.STRONG },
+            { 4, OperationType.Read, true, 108, false, ConsistencyLevel.STRONG },
+            { 5, OperationType.Read, true, 108, true, ConsistencyLevel.STRONG }
         };
     }
 
