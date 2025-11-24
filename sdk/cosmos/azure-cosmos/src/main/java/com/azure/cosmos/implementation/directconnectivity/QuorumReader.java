@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException;
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
 
 //
@@ -970,7 +971,7 @@ public class QuorumReader {
                 if (throwable instanceof CosmosException) {
                     CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+                    if (isAvoidQuorumSelectionException(cosmosException)) {
 
                         bailFromReadBarrierLoop.set(true);
                         cosmosExceptionValueHolder.set(cosmosException);

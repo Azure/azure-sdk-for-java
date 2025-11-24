@@ -51,6 +51,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException;
+
 /*
  * ConsistencyWriter has two modes for writing - local quorum-acked write and globally strong write.
  *
@@ -436,7 +438,11 @@ public class ConsistencyWriter {
                     }
 
                     if (isAvoidQuorumSelectionStoreResult) {
-                        writeBarrierRetryCount.getAndIncrement();
+
+                        if (writeBarrierRetryCount.getAndIncrement() == 0) {
+                            return Mono.just(false);
+                        }
+
                         return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                             barrierRequest,
                             selectedGlobalCommittedLsn,
@@ -564,7 +570,7 @@ public class ConsistencyWriter {
                 if (throwable instanceof CosmosException) {
                     CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+                    if (isAvoidQuorumSelectionException(cosmosException)) {
 
                         bailFromWriteBarrierLoop.set(true);
                         cosmosExceptionValueHolder.set(cosmosException);
