@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.hardwaresecuritymodules {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.hardwaresecuritymodules;
     exports com.azure.resourcemanager.hardwaresecuritymodules.fluent;
     exports com.azure.resourcemanager.hardwaresecuritymodules.fluent.models;
     exports com.azure.resourcemanager.hardwaresecuritymodules.models;
-
     opens com.azure.resourcemanager.hardwaresecuritymodules.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.hardwaresecuritymodules.models to com.azure.core;
     opens com.azure.resourcemanager.hardwaresecuritymodules.implementation.models to com.azure.core;

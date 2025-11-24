@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.Capability;
-import com.azure.resourcemanager.workloadorchestration.models.ContextModel;
+import com.azure.resourcemanager.workloadorchestration.models.Context;
 import com.azure.resourcemanager.workloadorchestration.models.ContextUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.Hierarchy;
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
@@ -27,7 +27,7 @@ public final class ContextsUpdateSamples {
      */
     public static void
         contextsUpdateMaximumSet(com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager) {
-        ContextModel resource = manager.contexts()
+        Context resource = manager.contexts()
             .getByResourceGroupWithResponse("rgconfigurationmanager", "testname", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()

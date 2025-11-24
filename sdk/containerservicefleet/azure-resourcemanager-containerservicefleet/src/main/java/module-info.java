@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.containerservicefleet {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.containerservicefleet;
     exports com.azure.resourcemanager.containerservicefleet.fluent;
     exports com.azure.resourcemanager.containerservicefleet.fluent.models;
     exports com.azure.resourcemanager.containerservicefleet.models;
-
     opens com.azure.resourcemanager.containerservicefleet.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.containerservicefleet.models to com.azure.core;
     opens com.azure.resourcemanager.containerservicefleet.implementation.models to com.azure.core;

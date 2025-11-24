@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.workloadorchestration {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.workloadorchestration;
     exports com.azure.resourcemanager.workloadorchestration.fluent;
     exports com.azure.resourcemanager.workloadorchestration.fluent.models;
     exports com.azure.resourcemanager.workloadorchestration.models;
-
     opens com.azure.resourcemanager.workloadorchestration.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.workloadorchestration.models to com.azure.core;
     opens com.azure.resourcemanager.workloadorchestration.implementation.models to com.azure.core;

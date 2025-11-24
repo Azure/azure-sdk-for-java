@@ -8,14 +8,14 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ContextInner;
-import com.azure.resourcemanager.workloadorchestration.models.ContextModel;
+import com.azure.resourcemanager.workloadorchestration.models.Context;
 import com.azure.resourcemanager.workloadorchestration.models.ContextProperties;
 import com.azure.resourcemanager.workloadorchestration.models.ContextUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.ContextUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
-public final class ContextModelImpl implements ContextModel, ContextModel.Definition, ContextModel.Update {
+public final class ContextImpl implements Context, Context.Definition, Context.Update {
     private ContextInner innerObject;
 
     private final com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager;
@@ -79,52 +79,52 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
 
     private ContextUpdate updateProperties;
 
-    public ContextModelImpl withExistingResourceGroup(String resourceGroupName) {
+    public ContextImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
-    public ContextModel create() {
+    public Context create() {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
             .createOrUpdate(resourceGroupName, contextName, this.innerModel(), Context.NONE);
         return this;
     }
 
-    public ContextModel create(Context context) {
+    public Context create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
             .createOrUpdate(resourceGroupName, contextName, this.innerModel(), context);
         return this;
     }
 
-    ContextModelImpl(String name,
+    ContextImpl(String name,
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = new ContextInner();
         this.serviceManager = serviceManager;
         this.contextName = name;
     }
 
-    public ContextModelImpl update() {
+    public ContextImpl update() {
         this.updateProperties = new ContextUpdate();
         return this;
     }
 
-    public ContextModel apply() {
+    public Context apply() {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
             .update(resourceGroupName, contextName, updateProperties, Context.NONE);
         return this;
     }
 
-    public ContextModel apply(Context context) {
+    public Context apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
             .update(resourceGroupName, contextName, updateProperties, context);
         return this;
     }
 
-    ContextModelImpl(ContextInner innerObject,
+    ContextImpl(ContextInner innerObject,
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -132,7 +132,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
         this.contextName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contexts");
     }
 
-    public ContextModel refresh() {
+    public Context refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
             .getByResourceGroupWithResponse(resourceGroupName, contextName, Context.NONE)
@@ -140,7 +140,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
         return this;
     }
 
-    public ContextModel refresh(Context context) {
+    public Context refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getContexts()
             .getByResourceGroupWithResponse(resourceGroupName, contextName, context)
@@ -148,17 +148,17 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
         return this;
     }
 
-    public ContextModelImpl withRegion(Region location) {
+    public ContextImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
     }
 
-    public ContextModelImpl withRegion(String location) {
+    public ContextImpl withRegion(String location) {
         this.innerModel().withLocation(location);
         return this;
     }
 
-    public ContextModelImpl withTags(Map<String, String> tags) {
+    public ContextImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
             return this;
@@ -168,12 +168,12 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
         }
     }
 
-    public ContextModelImpl withProperties(ContextProperties properties) {
+    public ContextImpl withProperties(ContextProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
     }
 
-    public ContextModelImpl withProperties(ContextUpdateProperties properties) {
+    public ContextImpl withProperties(ContextUpdateProperties properties) {
         this.updateProperties.withProperties(properties);
         return this;
     }

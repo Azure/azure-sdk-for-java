@@ -23,6 +23,8 @@ public final class PrivateEndpointConnectionsPutHeaders {
      */
     private final String azureAsyncOperation;
 
+    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PrivateEndpointConnectionsPutHeaders class.
@@ -36,7 +38,7 @@ public final class PrivateEndpointConnectionsPutHeaders {
         } else {
             this.retryAfter = null;
         }
-        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
+        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
     }
 
     /**

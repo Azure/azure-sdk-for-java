@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.onlineexperimentation {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.onlineexperimentation;
     exports com.azure.resourcemanager.onlineexperimentation.fluent;
     exports com.azure.resourcemanager.onlineexperimentation.fluent.models;
     exports com.azure.resourcemanager.onlineexperimentation.models;
-
     opens com.azure.resourcemanager.onlineexperimentation.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.onlineexperimentation.models to com.azure.core;
     opens com.azure.resourcemanager.onlineexperimentation.implementation.models to com.azure.core;

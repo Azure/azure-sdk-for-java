@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloadorchestration.fluent.ContextsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ContextInner;
-import com.azure.resourcemanager.workloadorchestration.models.ContextModel;
+import com.azure.resourcemanager.workloadorchestration.models.Context;
 import com.azure.resourcemanager.workloadorchestration.models.Contexts;
 
 public final class ContextsImpl implements Contexts {
@@ -27,45 +27,45 @@ public final class ContextsImpl implements Contexts {
         this.serviceManager = serviceManager;
     }
 
-    public Response<ContextModel> getByResourceGroupWithResponse(String resourceGroupName, String contextName,
+    public Response<Context> getByResourceGroupWithResponse(String resourceGroupName, String contextName,
         Context context) {
         Response<ContextInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, contextName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ContextModelImpl(inner.getValue(), this.manager()));
+                new ContextImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ContextModel getByResourceGroup(String resourceGroupName, String contextName) {
+    public Context getByResourceGroup(String resourceGroupName, String contextName) {
         ContextInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, contextName);
         if (inner != null) {
-            return new ContextModelImpl(inner, this.manager());
+            return new ContextImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public PagedIterable<ContextModel> listByResourceGroup(String resourceGroupName) {
+    public PagedIterable<Context> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ContextInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ContextModel> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<Context> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ContextInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ContextModel> list() {
+    public PagedIterable<Context> list() {
         PagedIterable<ContextInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ContextModel> list(Context context) {
+    public PagedIterable<Context> list(Context context) {
         PagedIterable<ContextInner> inner = this.serviceClient().list(context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextImpl(inner1, this.manager()));
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String contextName) {
@@ -76,7 +76,7 @@ public final class ContextsImpl implements Contexts {
         this.serviceClient().delete(resourceGroupName, contextName, context);
     }
 
-    public ContextModel getById(String id) {
+    public Context getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -90,7 +90,7 @@ public final class ContextsImpl implements Contexts {
         return this.getByResourceGroupWithResponse(resourceGroupName, contextName, Context.NONE).getValue();
     }
 
-    public Response<ContextModel> getByIdWithResponse(String id, Context context) {
+    public Response<Context> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -140,7 +140,7 @@ public final class ContextsImpl implements Contexts {
         return this.serviceManager;
     }
 
-    public ContextModelImpl define(String name) {
-        return new ContextModelImpl(name, this.manager());
+    public ContextImpl define(String name) {
+        return new ContextImpl(name, this.manager());
     }
 }

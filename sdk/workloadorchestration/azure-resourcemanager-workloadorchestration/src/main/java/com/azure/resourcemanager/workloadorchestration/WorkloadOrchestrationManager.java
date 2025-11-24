@@ -570,7 +570,7 @@ public final class WorkloadOrchestrationManager {
     }
 
     /**
-     * Gets the resource collection API of Contexts. It manages ContextModel.
+     * Gets the resource collection API of Contexts. It manages Context.
      * 
      * @return Resource collection API of Contexts.
      */

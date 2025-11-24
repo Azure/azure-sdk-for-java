@@ -23,8 +23,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return context Resource along with {@link Response}.
      */
-    Response<ContextModel> getByResourceGroupWithResponse(String resourceGroupName, String contextName,
-        Context context);
+    Response<Context> getByResourceGroupWithResponse(String resourceGroupName, String contextName, Context context);
 
     /**
      * Get Context Resource.
@@ -36,7 +35,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return context Resource.
      */
-    ContextModel getByResourceGroup(String resourceGroupName, String contextName);
+    Context getByResourceGroup(String resourceGroupName, String contextName);
 
     /**
      * List by specified resource group.
@@ -47,7 +46,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ContextModel> listByResourceGroup(String resourceGroupName);
+    PagedIterable<Context> listByResourceGroup(String resourceGroupName);
 
     /**
      * List by specified resource group.
@@ -59,7 +58,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ContextModel> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<Context> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * List by subscription.
@@ -68,7 +67,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ContextModel> list();
+    PagedIterable<Context> list();
 
     /**
      * List by subscription.
@@ -79,7 +78,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ContextModel> list(Context context);
+    PagedIterable<Context> list(Context context);
 
     /**
      * Delete Context Resource.
@@ -113,7 +112,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return context Resource along with {@link Response}.
      */
-    ContextModel getById(String id);
+    Context getById(String id);
 
     /**
      * Get Context Resource.
@@ -125,7 +124,7 @@ public interface Contexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return context Resource along with {@link Response}.
      */
-    Response<ContextModel> getByIdWithResponse(String id, Context context);
+    Response<Context> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Context Resource.
@@ -149,10 +148,10 @@ public interface Contexts {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ContextModel resource.
+     * Begins definition for a new Context resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new ContextModel definition.
+     * @return the first stage of the new Context definition.
      */
-    ContextModel.DefinitionStages.Blank define(String name);
+    Context.DefinitionStages.Blank define(String name);
 }
