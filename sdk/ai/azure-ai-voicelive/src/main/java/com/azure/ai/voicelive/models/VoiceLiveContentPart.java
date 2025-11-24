@@ -77,7 +77,9 @@ public class VoiceLiveContentPart implements JsonSerializable<VoiceLiveContentPa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("input_text".equals(discriminatorValue)) {
+                if ("input_image".equals(discriminatorValue)) {
+                    return RequestImageContentPart.fromJson(readerToUse.reset());
+                } else if ("input_text".equals(discriminatorValue)) {
                     return RequestTextContentPart.fromJson(readerToUse.reset());
                 } else if ("input_audio".equals(discriminatorValue)) {
                     return RequestAudioContentPart.fromJson(readerToUse.reset());
