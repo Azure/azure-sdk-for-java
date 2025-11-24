@@ -7,7 +7,6 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.PlanDataProperties;
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
@@ -18,31 +17,31 @@ public final class PlanDataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanDataProperties model = BinaryData.fromString(
-            "{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"WEEKLY\",\"planDetails\":\"rwzwbng\",\"effectiveDate\":\"2021-01-28T09:21:30Z\"},\"orgCreationSource\":\"LIFTR\",\"accountCreationSource\":\"LIFTR\"}")
+            "{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"jtckwhdso\",\"planDetails\":\"iy\",\"effectiveDate\":\"2021-01-18T03:53:41Z\"},\"orgCreationSource\":\"LIFTR\",\"accountCreationSource\":\"NEWRELIC\"}")
             .toObject(PlanDataProperties.class);
         Assertions.assertEquals(UsageType.PAYG, model.planData().usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.planData().billingCycle());
-        Assertions.assertEquals("rwzwbng", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-28T09:21:30Z"), model.planData().effectiveDate());
+        Assertions.assertEquals("jtckwhdso", model.planData().billingCycle());
+        Assertions.assertEquals("iy", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T03:53:41Z"), model.planData().effectiveDate());
         Assertions.assertEquals(OrgCreationSource.LIFTR, model.orgCreationSource());
-        Assertions.assertEquals(AccountCreationSource.LIFTR, model.accountCreationSource());
+        Assertions.assertEquals(AccountCreationSource.NEWRELIC, model.accountCreationSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlanDataProperties model = new PlanDataProperties()
             .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.WEEKLY)
-                .withPlanDetails("rwzwbng")
-                .withEffectiveDate(OffsetDateTime.parse("2021-01-28T09:21:30Z")))
+                .withBillingCycle("jtckwhdso")
+                .withPlanDetails("iy")
+                .withEffectiveDate(OffsetDateTime.parse("2021-01-18T03:53:41Z")))
             .withOrgCreationSource(OrgCreationSource.LIFTR)
-            .withAccountCreationSource(AccountCreationSource.LIFTR);
+            .withAccountCreationSource(AccountCreationSource.NEWRELIC);
         model = BinaryData.fromObject(model).toObject(PlanDataProperties.class);
         Assertions.assertEquals(UsageType.PAYG, model.planData().usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.planData().billingCycle());
-        Assertions.assertEquals("rwzwbng", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-28T09:21:30Z"), model.planData().effectiveDate());
+        Assertions.assertEquals("jtckwhdso", model.planData().billingCycle());
+        Assertions.assertEquals("iy", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T03:53:41Z"), model.planData().effectiveDate());
         Assertions.assertEquals(OrgCreationSource.LIFTR, model.orgCreationSource());
-        Assertions.assertEquals(AccountCreationSource.LIFTR, model.accountCreationSource());
+        Assertions.assertEquals(AccountCreationSource.NEWRELIC, model.accountCreationSource());
     }
 }

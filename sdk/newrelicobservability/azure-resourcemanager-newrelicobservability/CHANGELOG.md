@@ -1,14 +1,86 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2025-11-24)
 
-### Features Added
+- Azure Resource Manager NewRelicObservability client library for Java. This package contains Microsoft Azure SDK for NewRelicObservability Management SDK.  Package tag package-2025-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.BillingCycle` was removed
 
-### Other Changes
+#### `models.PlanData` was modified
+
+* `models.BillingCycle billingCycle()` -> `java.lang.String billingCycle()`
+* `withBillingCycle(models.BillingCycle)` was removed
+
+### Features Added
+
+* `models.SaaS` was added
+
+* `models.LatestLinkedSaaSResponse` was added
+
+* `models.ActivateSaaSParameterRequest` was added
+
+* `models.ResubscribeProperties` was added
+
+* `models.SaaSData` was added
+
+* `models.SaaSResourceDetailsResponse` was added
+
+#### `models.PlanData` was modified
+
+* `withBillingCycle(java.lang.String)` was added
+
+#### `models.MarketplaceSaaSInfo` was modified
+
+* `withOfferId(java.lang.String)` was added
+* `offerId()` was added
+* `withPublisherId(java.lang.String)` was added
+* `publisherId()` was added
+
+#### `models.NewRelicMonitorResource$Update` was modified
+
+* `withSaaSData(models.SaaSData)` was added
+
+#### `models.NewRelicMonitorResource` was modified
+
+* `resubscribe(models.ResubscribeProperties,com.azure.core.util.Context)` was added
+* `saaSData()` was added
+* `latestLinkedSaaSWithResponse(com.azure.core.util.Context)` was added
+* `linkSaaS(models.SaaSData,com.azure.core.util.Context)` was added
+* `resubscribe()` was added
+* `refreshIngestionKey()` was added
+* `latestLinkedSaaS()` was added
+* `linkSaaS(models.SaaSData)` was added
+* `refreshIngestionKeyWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.NewRelicMonitorResource$Definition` was modified
+
+* `withSaaSData(models.SaaSData)` was added
+
+#### `models.NewRelicMonitorResourceUpdate` was modified
+
+* `saaSData()` was added
+* `withSaaSData(models.SaaSData)` was added
+
+#### `models.MonitoredSubscriptionProperties` was modified
+
+* `systemData()` was added
+
+#### `models.Monitors` was modified
+
+* `refreshIngestionKey(java.lang.String,java.lang.String)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData,com.azure.core.util.Context)` was added
+* `refreshIngestionKeyWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resubscribe(java.lang.String,java.lang.String,models.ResubscribeProperties,com.azure.core.util.Context)` was added
+* `latestLinkedSaaSWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `latestLinkedSaaS(java.lang.String,java.lang.String)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData)` was added
+* `resubscribe(java.lang.String,java.lang.String)` was added
+
+#### `NewRelicObservabilityManager` was modified
+
+* `saaS()` was added
 
 ## 1.2.0 (2024-12-19)
 
