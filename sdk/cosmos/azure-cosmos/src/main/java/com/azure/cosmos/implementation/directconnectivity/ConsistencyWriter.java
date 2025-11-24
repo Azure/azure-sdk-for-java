@@ -414,6 +414,10 @@ public class ConsistencyWriter {
                 return Flux.error(new RequestTimeoutException());
             }
 
+            if (writeBarrierRetryCount.get() == 0) {
+                return Mono.just(false);
+            }
+
             Mono<List<StoreResult>> storeResultListObs = this.storeReader.readMultipleReplicaAsync(
                 barrierRequest,
                 true /*allowPrimary*/,
@@ -438,11 +442,7 @@ public class ConsistencyWriter {
                     }
 
                     if (isAvoidQuorumSelectionStoreResult) {
-
-                        if (writeBarrierRetryCount.getAndIncrement() == 0) {
-                            return Mono.just(false);
-                        }
-
+                        writeBarrierRetryCount.decrementAndGet();
                         return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                             barrierRequest,
                             selectedGlobalCommittedLsn,

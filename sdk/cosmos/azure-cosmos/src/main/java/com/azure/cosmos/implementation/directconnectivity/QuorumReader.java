@@ -668,6 +668,10 @@ public class QuorumReader {
                     boolean isAvoidQuorumSelectionStoreResult = false;
                     CosmosException cosmosExceptionFromStoreResult = null;
 
+                    if (readBarrierRetryCount.get() == 0) {
+                        return Mono.just(false);
+                    }
+
                     for (StoreResult storeResult : responses) {
                         if (storeResult.isAvoidQuorumSelectionException) {
                             isAvoidQuorumSelectionStoreResult = true;
@@ -739,6 +743,10 @@ public class QuorumReader {
 
                                    if (barrierRequest.requestContext.timeoutHelper.isElapsed()) {
                                         return Flux.error(new GoneException());
+                                   }
+
+                                   if (readBarrierRetryCountMultiRegion.get() == 0) {
+                                       return Flux.just(false);
                                    }
 
                                     Mono<List<StoreResult>> responsesObs = this.storeReader.readMultipleReplicaAsync(
