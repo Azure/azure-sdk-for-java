@@ -17,33 +17,34 @@ import java.io.IOException;
 @Fluent
 public final class Storage implements JsonSerializable<Storage> {
     /*
-     * Max storage allowed for a server.
+     * Size of storage assigned to a server.
      */
     private Integer storageSizeGB;
 
     /*
-     * Flag to enable / disable Storage Auto grow for flexible server.
+     * Flag to enable or disable the automatic growth of storage size of a server when available space is nearing zero
+     * and conditions allow for automatically growing storage size.
      */
     private StorageAutoGrow autoGrow;
 
     /*
-     * Name of storage tier for IOPS.
+     * Storage tier of a server.
      */
-    private AzureManagedDiskPerformanceTiers tier;
+    private AzureManagedDiskPerformanceTier tier;
 
     /*
-     * Storage IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS and UltraSSD_LRS.
+     * Maximum IOPS supported for storage. Required when type of storage is PremiumV2_LRS or UltraSSD_LRS.
      */
     private Integer iops;
 
     /*
-     * Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS and UltraSSD_LRS.
+     * Maximum throughput supported for storage. Required when type of storage is PremiumV2_LRS or UltraSSD_LRS.
      */
     private Integer throughput;
 
     /*
-     * Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and UltraSSD_LRS. Default is
-     * Premium_LRS if not specified
+     * Type of storage assigned to a server. Allowed values are Premium_LRS, PremiumV2_LRS, or UltraSSD_LRS. If not
+     * specified, it defaults to Premium_LRS.
      */
     private StorageType type;
 
@@ -54,7 +55,7 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the storageSizeGB property: Max storage allowed for a server.
+     * Get the storageSizeGB property: Size of storage assigned to a server.
      * 
      * @return the storageSizeGB value.
      */
@@ -63,7 +64,7 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the storageSizeGB property: Max storage allowed for a server.
+     * Set the storageSizeGB property: Size of storage assigned to a server.
      * 
      * @param storageSizeGB the storageSizeGB value to set.
      * @return the Storage object itself.
@@ -74,7 +75,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
+     * Get the autoGrow property: Flag to enable or disable the automatic growth of storage size of a server when
+     * available space is nearing zero and conditions allow for automatically growing storage size.
      * 
      * @return the autoGrow value.
      */
@@ -83,7 +85,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
+     * Set the autoGrow property: Flag to enable or disable the automatic growth of storage size of a server when
+     * available space is nearing zero and conditions allow for automatically growing storage size.
      * 
      * @param autoGrow the autoGrow value to set.
      * @return the Storage object itself.
@@ -94,28 +97,28 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the tier property: Name of storage tier for IOPS.
+     * Get the tier property: Storage tier of a server.
      * 
      * @return the tier value.
      */
-    public AzureManagedDiskPerformanceTiers tier() {
+    public AzureManagedDiskPerformanceTier tier() {
         return this.tier;
     }
 
     /**
-     * Set the tier property: Name of storage tier for IOPS.
+     * Set the tier property: Storage tier of a server.
      * 
      * @param tier the tier value to set.
      * @return the Storage object itself.
      */
-    public Storage withTier(AzureManagedDiskPerformanceTiers tier) {
+    public Storage withTier(AzureManagedDiskPerformanceTier tier) {
         this.tier = tier;
         return this;
     }
 
     /**
-     * Get the iops property: Storage IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
-     * and UltraSSD_LRS.
+     * Get the iops property: Maximum IOPS supported for storage. Required when type of storage is PremiumV2_LRS or
+     * UltraSSD_LRS.
      * 
      * @return the iops value.
      */
@@ -124,8 +127,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the iops property: Storage IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
-     * and UltraSSD_LRS.
+     * Set the iops property: Maximum IOPS supported for storage. Required when type of storage is PremiumV2_LRS or
+     * UltraSSD_LRS.
      * 
      * @param iops the iops value to set.
      * @return the Storage object itself.
@@ -136,8 +139,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the throughput property: Storage throughput for the server. This is required to be set for storage Type
-     * PremiumV2_LRS and UltraSSD_LRS.
+     * Get the throughput property: Maximum throughput supported for storage. Required when type of storage is
+     * PremiumV2_LRS or UltraSSD_LRS.
      * 
      * @return the throughput value.
      */
@@ -146,8 +149,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the throughput property: Storage throughput for the server. This is required to be set for storage Type
-     * PremiumV2_LRS and UltraSSD_LRS.
+     * Set the throughput property: Maximum throughput supported for storage. Required when type of storage is
+     * PremiumV2_LRS or UltraSSD_LRS.
      * 
      * @param throughput the throughput value to set.
      * @return the Storage object itself.
@@ -158,8 +161,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the type property: Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and
-     * UltraSSD_LRS. Default is Premium_LRS if not specified.
+     * Get the type property: Type of storage assigned to a server. Allowed values are Premium_LRS, PremiumV2_LRS, or
+     * UltraSSD_LRS. If not specified, it defaults to Premium_LRS.
      * 
      * @return the type value.
      */
@@ -168,8 +171,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the type property: Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and
-     * UltraSSD_LRS. Default is Premium_LRS if not specified.
+     * Set the type property: Type of storage assigned to a server. Allowed values are Premium_LRS, PremiumV2_LRS, or
+     * UltraSSD_LRS. If not specified, it defaults to Premium_LRS.
      * 
      * @param type the type value to set.
      * @return the Storage object itself.
@@ -222,7 +225,7 @@ public final class Storage implements JsonSerializable<Storage> {
                 } else if ("autoGrow".equals(fieldName)) {
                     deserializedStorage.autoGrow = StorageAutoGrow.fromString(reader.getString());
                 } else if ("tier".equals(fieldName)) {
-                    deserializedStorage.tier = AzureManagedDiskPerformanceTiers.fromString(reader.getString());
+                    deserializedStorage.tier = AzureManagedDiskPerformanceTier.fromString(reader.getString());
                 } else if ("iops".equals(fieldName)) {
                     deserializedStorage.iops = reader.getNullable(JsonReader::getInt);
                 } else if ("throughput".equals(fieldName)) {

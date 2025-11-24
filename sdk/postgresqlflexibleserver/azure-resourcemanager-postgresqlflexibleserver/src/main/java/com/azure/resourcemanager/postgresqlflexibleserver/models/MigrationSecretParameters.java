@@ -18,17 +18,17 @@ import java.io.IOException;
 @Fluent
 public final class MigrationSecretParameters implements JsonSerializable<MigrationSecretParameters> {
     /*
-     * Admin credentials for source and target servers
+     * Credentials of administrator users for source and target servers.
      */
     private AdminCredentials adminCredentials;
 
     /*
-     * Gets or sets the username for the source server. This user need not be an admin.
+     * Gets or sets the name of the user for the source server. This user doesn't need to be an administrator.
      */
     private String sourceServerUsername;
 
     /*
-     * Gets or sets the username for the target server. This user need not be an admin.
+     * Gets or sets the name of the user for the target server. This user doesn't need to be an administrator.
      */
     private String targetServerUsername;
 
@@ -39,7 +39,7 @@ public final class MigrationSecretParameters implements JsonSerializable<Migrati
     }
 
     /**
-     * Get the adminCredentials property: Admin credentials for source and target servers.
+     * Get the adminCredentials property: Credentials of administrator users for source and target servers.
      * 
      * @return the adminCredentials value.
      */
@@ -48,7 +48,7 @@ public final class MigrationSecretParameters implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the adminCredentials property: Admin credentials for source and target servers.
+     * Set the adminCredentials property: Credentials of administrator users for source and target servers.
      * 
      * @param adminCredentials the adminCredentials value to set.
      * @return the MigrationSecretParameters object itself.
@@ -59,8 +59,8 @@ public final class MigrationSecretParameters implements JsonSerializable<Migrati
     }
 
     /**
-     * Get the sourceServerUsername property: Gets or sets the username for the source server. This user need not be an
-     * admin.
+     * Get the sourceServerUsername property: Gets or sets the name of the user for the source server. This user doesn't
+     * need to be an administrator.
      * 
      * @return the sourceServerUsername value.
      */
@@ -69,8 +69,8 @@ public final class MigrationSecretParameters implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the sourceServerUsername property: Gets or sets the username for the source server. This user need not be an
-     * admin.
+     * Set the sourceServerUsername property: Gets or sets the name of the user for the source server. This user doesn't
+     * need to be an administrator.
      * 
      * @param sourceServerUsername the sourceServerUsername value to set.
      * @return the MigrationSecretParameters object itself.
@@ -81,8 +81,8 @@ public final class MigrationSecretParameters implements JsonSerializable<Migrati
     }
 
     /**
-     * Get the targetServerUsername property: Gets or sets the username for the target server. This user need not be an
-     * admin.
+     * Get the targetServerUsername property: Gets or sets the name of the user for the target server. This user doesn't
+     * need to be an administrator.
      * 
      * @return the targetServerUsername value.
      */
@@ -91,8 +91,8 @@ public final class MigrationSecretParameters implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the targetServerUsername property: Gets or sets the username for the target server. This user need not be an
-     * admin.
+     * Set the targetServerUsername property: Gets or sets the name of the user for the target server. This user doesn't
+     * need to be an administrator.
      * 
      * @param targetServerUsername the targetServerUsername value to set.
      * @return the MigrationSecretParameters object itself.

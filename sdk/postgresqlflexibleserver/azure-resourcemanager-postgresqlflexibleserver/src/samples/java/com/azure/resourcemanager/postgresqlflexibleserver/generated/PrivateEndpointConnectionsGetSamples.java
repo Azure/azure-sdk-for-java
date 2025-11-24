@@ -10,18 +10,18 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class PrivateEndpointConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * PrivateEndpointConnectionGet.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * PrivateEndpointConnectionsGet.json
      */
     /**
-     * Sample code: Gets private endpoint connection.
+     * Sample code: Get a private endpoint connection.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        getsPrivateEndpointConnection(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        getAPrivateEndpointConnection(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.privateEndpointConnections()
-            .getWithResponse("Default", "test-svr",
+            .getWithResponse("exampleresourcegroup", "exampleserver",
                 "private-endpoint-connection-name.1fa229cd-bf3f-47f0-8c49-afb36723997e",
                 com.azure.core.util.Context.NONE);
     }

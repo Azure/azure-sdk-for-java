@@ -1,14 +1,292 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 2.0.0 (2025-11-21)
 
-### Features Added
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2025-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Renamed Models
 
-### Other Changes
+* `models.ServerHAState` -> `models.HighAvailabilityState`
+* `models.AzureManagedDiskPerformanceTiers` -> `models.AzureManagedDiskPerformanceTier`
+* `models.ServerVersion` -> `models.PostgresMajorVersion`
+* `models.GeoRedundantBackupEnum` -> `models.GeographicallyRedundantBackup`
+* `models.ReplicationPromoteOption` -> `models.ReadReplicaPromoteOption`
+* `models.KeyStatusEnum` -> `models.EncryptionKeyStatus`
+* `models.ArmServerKeyType` -> `models.DataEncryptionType`
+* `models.PasswordAuthEnum` -> `models.PasswordBasedAuth`
+* `models.ActiveDirectoryAuthEnum` -> `models.MicrosoftEntraAuth`
+* `models.CancelEnum` -> `models.Cancel`
+* `models.LogicalReplicationOnSourceDbEnum` -> `models.LogicalReplicationOnSourceServer`
+* `models.TriggerCutoverEnum` -> `models.TriggerCutover`
+* `models.StartDataMigrationEnum` -> `models.StartDataMigration`
+* `models.OverwriteDbsInTargetEnum` -> `models.OverwriteDatabasesOnTargetServer`
+* `models.MigrateRolesEnum` -> `models.MigrateRolesAndPermissions`
+* `models.MigrationSubStateDetails` -> `models.MigrationSubstateDetails`
+* `models.MigrationResource` (and related Definition/Update stage types) -> `models.Migration`
+* `models.VirtualEndpointResource` (and related Definition/Update stage types) -> `models.VirtualEndpoint`
+* `models.ServerThreatProtectionSettingsModel` (and related Definition/Update stage types) -> `models.AdvancedThreatProtectionSettingsModel`
+* `models.ActiveDirectoryAdministrator` (and related Add/Definition/Update stage types & list/plural forms) -> `models.AdministratorMicrosoftEntra`
+
+#### `models.Backup` was modified
+
+* `withGeoRedundantBackup(models.GeoRedundantBackupEnum)` was removed
+* `models.GeoRedundantBackupEnum geoRedundantBackup()` -> `models.GeographicallyRedundantBackup geoRedundantBackup()`
+
+#### `models.Operations` was modified
+
+* `models.OperationListResult list()` -> `com.azure.core.http.rest.PagedIterable list()`
+* `listWithResponse(com.azure.core.util.Context)` was removed
+
+#### `models.Server$Update` was modified
+
+* `withAdministratorLogin(java.lang.String)` was removed
+* `withAuthConfig(models.AuthConfig)` was removed
+* `withMaintenanceWindow(models.MaintenanceWindow)` was removed
+* `withHighAvailability(models.HighAvailability)` was removed
+* `withCreateMode(models.CreateModeForUpdate)` was removed
+* `withVersion(models.ServerVersion)` was removed
+* `withSku(models.Sku)` was removed
+* `withBackup(models.Backup)` was removed
+
+#### `models.Server$Definition` was modified
+
+* `withVersion(models.ServerVersion)` was removed
+
+#### `PostgreSqlManager` was modified
+
+* `getPrivateDnsZoneSuffixes()` was removed
+* `locationBasedCapabilities()` was removed
+* `administrators()` was removed
+* `ltrBackupOperations()` was removed
+* `checkNameAvailabilities()` was removed
+* `checkNameAvailabilityWithLocations()` was removed
+* `serverCapabilities()` was removed
+* `flexibleServers()` was removed
+* `logFiles()` was removed
+* `backups()` was removed
+* `privateEndpointConnectionOperations()` was removed
+* `resourceProviders()` was removed
+
+#### `models.HighAvailability` was modified
+
+* `models.ServerHAState state()` -> `models.HighAvailabilityState state()`
+
+#### `models.Migrations` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.MigrationResource getById(java.lang.String)` -> `models.Migration getById(java.lang.String)`
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `listByTargetServer(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `models.MigrationResource$DefinitionStages$Blank define(java.lang.String)` -> `models.Migration$DefinitionStages$Blank define(java.lang.String)`
+* `listByTargetServer(java.lang.String,java.lang.String,java.lang.String,models.MigrationListFilter,com.azure.core.util.Context)` was removed
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Replica` was modified
+
+* `models.ReplicationPromoteOption promoteOption()` -> `models.ReadReplicaPromoteOption promoteOption()`
+* `withPromoteOption(models.ReplicationPromoteOption)` was removed
+
+#### `models.MigrationResourceForPatch` was modified
+
+* `models.CancelEnum cancel()` -> `models.Cancel cancel()`
+* `models.LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded()` -> `models.LogicalReplicationOnSourceServer setupLogicalReplicationOnSourceDbIfNeeded()`
+* `withCancel(models.CancelEnum)` was removed
+* `withSecretParameters(models.MigrationSecretParameters)` was removed
+* `withTriggerCutover(models.TriggerCutoverEnum)` was removed
+* `withMigrateRoles(models.MigrateRolesEnum)` was removed
+* `models.TriggerCutoverEnum triggerCutover()` -> `models.TriggerCutover triggerCutover()`
+* `models.MigrationSecretParameters secretParameters()` -> `models.MigrationSecretParametersForPatch secretParameters()`
+* `withStartDataMigration(models.StartDataMigrationEnum)` was removed
+* `models.StartDataMigrationEnum startDataMigration()` -> `models.StartDataMigration startDataMigration()`
+* `models.OverwriteDbsInTargetEnum overwriteDbsInTarget()` -> `models.OverwriteDatabasesOnTargetServer overwriteDbsInTarget()`
+* `withSetupLogicalReplicationOnSourceDbIfNeeded(models.LogicalReplicationOnSourceDbEnum)` was removed
+* `withOverwriteDbsInTarget(models.OverwriteDbsInTargetEnum)` was removed
+* `models.MigrateRolesEnum migrateRoles()` -> `models.MigrateRolesAndPermissions migrateRoles()`
+
+#### `models.Storage` was modified
+
+* `models.AzureManagedDiskPerformanceTiers tier()` -> `models.AzureManagedDiskPerformanceTier tier()`
+* `withTier(models.AzureManagedDiskPerformanceTiers)` was removed
+
+#### `models.VirtualEndpoints` was modified
+
+* `models.VirtualEndpointResource getById(java.lang.String)` -> `models.VirtualEndpoint getById(java.lang.String)`
+* `models.VirtualEndpointResource get(java.lang.String,java.lang.String,java.lang.String)` -> `models.VirtualEndpoint get(java.lang.String,java.lang.String,java.lang.String)`
+* `models.VirtualEndpointResource$DefinitionStages$Blank define(java.lang.String)` -> `models.VirtualEndpoint$DefinitionStages$Blank define(java.lang.String)`
+
+#### `models.MigrationStatus` was modified
+
+* `models.MigrationSubStateDetails currentSubStateDetails()` -> `models.MigrationSubstateDetails currentSubStateDetails()`
+
+#### `models.DataEncryption` was modified
+
+* `withGeoBackupEncryptionKeyStatus(models.KeyStatusEnum)` was removed
+* `models.KeyStatusEnum geoBackupEncryptionKeyStatus()` -> `models.EncryptionKeyStatus geoBackupEncryptionKeyStatus()`
+* `models.KeyStatusEnum primaryEncryptionKeyStatus()` -> `models.EncryptionKeyStatus primaryEncryptionKeyStatus()`
+* `withType(models.ArmServerKeyType)` was removed
+* `withPrimaryEncryptionKeyStatus(models.KeyStatusEnum)` was removed
+* `models.ArmServerKeyType type()` -> `models.DataEncryptionType type()`
+
+#### `models.Operation` was modified
+
+* `Operation()` was removed
+* `java.lang.Boolean isDataAction()` -> `java.lang.Boolean isDataAction()`
+* `withIsDataAction(java.lang.Boolean)` was removed
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `java.lang.String name()` -> `java.lang.String name()`
+* `models.OperationOrigin origin()` -> `models.OperationOrigin origin()`
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `validate()` was removed
+* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
+* `java.util.Map properties()` -> `java.util.Map properties()`
+
+#### `models.VirtualNetworkSubnetUsages` was modified
+
+* `execute(java.lang.String,models.VirtualNetworkSubnetUsageParameter)` was removed
+* `executeWithResponse(java.lang.String,models.VirtualNetworkSubnetUsageParameter,com.azure.core.util.Context)` was removed
+
+#### `models.Server` was modified
+
+* `models.ServerVersion version()` -> `models.PostgresMajorVersion version()`
+
+#### `models.ServerThreatProtectionSettings` was modified
+
+* `models.ServerThreatProtectionSettingsModel$DefinitionStages$Blank define(models.ThreatProtectionName)` -> `models.AdvancedThreatProtectionSettingsModel$DefinitionStages$Blank define(models.ThreatProtectionName)`
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+* `listByServer(java.lang.String,java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,models.ThreatProtectionName,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,models.ThreatProtectionName)` was removed
+* `listByServer(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AuthConfig` was modified
+
+* `withPasswordAuth(models.PasswordAuthEnum)` was removed
+* `withActiveDirectoryAuth(models.ActiveDirectoryAuthEnum)` was removed
+* `models.PasswordAuthEnum passwordAuth()` -> `models.PasswordBasedAuth passwordAuth()`
+* `models.ActiveDirectoryAuthEnum activeDirectoryAuth()` -> `models.MicrosoftEntraAuth activeDirectoryAuth()`
+
+### Features Added
+
+<Removed additive entries that are part of the above rename consolidations to reduce redundancy. Non-rename additions remain documented elsewhere.>
+
+#### `models.Backup` was modified
+
+* `withGeoRedundantBackup(models.GeographicallyRedundantBackup)` was added
+
+#### `models.ServerVersionCapability` was modified
+
+* `supportedFeatures()` was added
+
+#### `models.Operations` was modified
+
+* `list(com.azure.core.util.Context)` was added
+
+#### `models.Server$Update` was modified
+
+* `withSku(models.SkuForPatch)` was added
+* `withAuthConfig(models.AuthConfigForPatch)` was added
+* `withCluster(models.Cluster)` was added
+* `withAvailabilityZone(java.lang.String)` was added
+* `withMaintenanceWindow(models.MaintenanceWindowForPatch)` was added
+* `withHighAvailability(models.HighAvailabilityForPatch)` was added
+* `withBackup(models.BackupForPatch)` was added
+* `withCreateMode(models.CreateModeForPatch)` was added
+* `withVersion(models.PostgresMajorVersion)` was added
+
+#### `models.Server$Definition` was modified
+
+* `withCluster(models.Cluster)` was added
+* `withVersion(models.PostgresMajorVersion)` was added
+
+#### `PostgreSqlManager` was modified
+
+* `advancedThreatProtectionSettings()` was added
+* `capabilitiesByServers()` was added
+* `administratorsMicrosoftEntras()` was added
+* `quotaUsages()` was added
+* `capabilitiesByLocations()` was added
+* `nameAvailabilities()` was added
+* `backupsAutomaticAndOnDemands()` was added
+* `backupsLongTermRetentions()` was added
+* `capturedLogs()` was added
+* `tuningOptionsOperations()` was added
+* `privateDnsZoneSuffixes()` was added
+
+#### `models.Migrations` was modified
+
+* `checkNameAvailability(java.lang.String,java.lang.String,fluent.models.MigrationNameAvailabilityInner)` was added
+* `listByTargetServer(java.lang.String,java.lang.String,models.MigrationListFilter,com.azure.core.util.Context)` was added
+* `checkNameAvailabilityWithResponse(java.lang.String,java.lang.String,fluent.models.MigrationNameAvailabilityInner,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `cancelWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByTargetServer(java.lang.String,java.lang.String)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String)` was added
+* `cancel(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.Replica` was modified
+
+* `withPromoteOption(models.ReadReplicaPromoteOption)` was added
+
+#### `models.MigrationResourceForPatch` was modified
+
+* `withOverwriteDbsInTarget(models.OverwriteDatabasesOnTargetServer)` was added
+* `withCancel(models.Cancel)` was added
+* `withTriggerCutover(models.TriggerCutover)` was added
+* `withStartDataMigration(models.StartDataMigration)` was added
+* `withSecretParameters(models.MigrationSecretParametersForPatch)` was added
+* `withSetupLogicalReplicationOnSourceDbIfNeeded(models.LogicalReplicationOnSourceServer)` was added
+* `withMigrateRoles(models.MigrateRolesAndPermissions)` was added
+
+#### `models.Storage` was modified
+
+* `withTier(models.AzureManagedDiskPerformanceTier)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `principalId()` was added
+* `withPrincipalId(java.lang.String)` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,com.azure.core.util.Context)` was added
+
+#### `models.DataEncryption` was modified
+
+* `withGeoBackupEncryptionKeyStatus(models.EncryptionKeyStatus)` was added
+* `withPrimaryEncryptionKeyStatus(models.EncryptionKeyStatus)` was added
+* `withType(models.DataEncryptionType)` was added
+
+#### `models.ServerSkuCapability` was modified
+
+* `supportedFeatures()` was added
+* `securityProfile()` was added
+
+#### `models.Operation` was modified
+
+* `innerModel()` was added
+
+#### `models.VirtualNetworkSubnetUsages` was modified
+
+* `list(java.lang.String,models.VirtualNetworkSubnetUsageParameter)` was added
+* `listWithResponse(java.lang.String,models.VirtualNetworkSubnetUsageParameter,com.azure.core.util.Context)` was added
+
+#### `models.Server` was modified
+
+* `cluster()` was added
+
+#### `models.AuthConfig` was modified
+
+* `withPasswordAuth(models.PasswordBasedAuth)` was added
+* `withActiveDirectoryAuth(models.MicrosoftEntraAuth)` was added
 
 ## 1.2.0-beta.1 (2025-05-16)
 
