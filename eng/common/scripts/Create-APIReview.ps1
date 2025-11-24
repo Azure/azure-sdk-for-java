@@ -201,13 +201,13 @@ function ProcessPackage($packageInfo)
         # Check if the function supports the packageInfo parameter
         $functionInfo = Get-Command $FindArtifactForApiReviewFn -ErrorAction SilentlyContinue
         $supportsPackageInfoParam = $false
-        
+
         if ($functionInfo -and $functionInfo.Parameters) {
             # Check if function specifically supports packageInfo parameter
             $parameterNames = $functionInfo.Parameters.Keys
             $supportsPackageInfoParam = $parameterNames -contains 'packageInfo'
         }
-        
+
         # Call function with appropriate parameters
         if ($supportsPackageInfoParam) {
             LogInfo "Calling $FindArtifactForApiReviewFn with packageInfo parameter"
@@ -370,11 +370,11 @@ elseif ($ArtifactList -and $ArtifactList.Count -gt 0) {
         }
     }
 }
-elseif ($PackageInfoFiles -and $PackageInfoFiles.Count -gt 0) {
+elseif ($PackageInfoFiles -and @($PackageInfoFiles).Count -gt 0) {
     # Lowest Priority: Direct PackageInfoFiles (new method)
-    Write-Host "Using PackageInfoFiles parameter with $($PackageInfoFiles.Count) files"
+    Write-Host "Using PackageInfoFiles parameter with $(@($PackageInfoFiles).Count) files"
     # Filter out empty strings or whitespace-only entries
-    $ProcessedPackageInfoFiles = $PackageInfoFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    $ProcessedPackageInfoFiles = @($PackageInfoFiles) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
 }
 else {
     Write-Error "No package information provided. Please provide either 'PackageName', 'ArtifactList', or 'PackageInfoFiles' parameters."
