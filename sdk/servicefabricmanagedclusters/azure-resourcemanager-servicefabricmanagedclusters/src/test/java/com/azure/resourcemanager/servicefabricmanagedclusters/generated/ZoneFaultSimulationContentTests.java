@@ -15,22 +15,22 @@ public final class ZoneFaultSimulationContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZoneFaultSimulationContent model = BinaryData.fromString(
-            "{\"faultKind\":\"Zone\",\"zones\":[\"dkcrodt\",\"infwjlfltkacjve\",\"kdlfoa\"],\"force\":false,\"constraints\":{\"expirationTime\":\"2021-01-22T11:21:37Z\"}}")
+            "{\"faultKind\":\"Zone\",\"zones\":[\"wqaldsyu\"],\"force\":true,\"constraints\":{\"expirationTime\":\"2021-06-17T14:42:30Z\"}}")
             .toObject(ZoneFaultSimulationContent.class);
-        Assertions.assertFalse(model.force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T11:21:37Z"), model.constraints().expirationTime());
-        Assertions.assertEquals("dkcrodt", model.zones().get(0));
+        Assertions.assertTrue(model.force());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T14:42:30Z"), model.constraints().expirationTime());
+        Assertions.assertEquals("wqaldsyu", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZoneFaultSimulationContent model = new ZoneFaultSimulationContent().withForce(false)
+        ZoneFaultSimulationContent model = new ZoneFaultSimulationContent().withForce(true)
             .withConstraints(
-                new FaultSimulationConstraints().withExpirationTime(OffsetDateTime.parse("2021-01-22T11:21:37Z")))
-            .withZones(Arrays.asList("dkcrodt", "infwjlfltkacjve", "kdlfoa"));
+                new FaultSimulationConstraints().withExpirationTime(OffsetDateTime.parse("2021-06-17T14:42:30Z")))
+            .withZones(Arrays.asList("wqaldsyu"));
         model = BinaryData.fromObject(model).toObject(ZoneFaultSimulationContent.class);
-        Assertions.assertFalse(model.force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T11:21:37Z"), model.constraints().expirationTime());
-        Assertions.assertEquals("dkcrodt", model.zones().get(0));
+        Assertions.assertTrue(model.force());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T14:42:30Z"), model.constraints().expirationTime());
+        Assertions.assertEquals("wqaldsyu", model.zones().get(0));
     }
 }

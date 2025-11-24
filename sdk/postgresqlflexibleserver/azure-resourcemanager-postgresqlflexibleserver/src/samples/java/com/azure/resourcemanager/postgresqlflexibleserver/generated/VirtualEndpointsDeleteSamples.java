@@ -10,17 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class VirtualEndpointsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
      * VirtualEndpointDelete.json
      */
     /**
-     * Sample code: Delete a virtual endpoint.
+     * Sample code: Delete a pair of virtual endpoints.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        deleteAVirtualEndpoint(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        deleteAPairOfVirtualEndpoints(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.virtualEndpoints()
-            .delete("testrg", "pgtestsvc4", "pgVirtualEndpoint1", com.azure.core.util.Context.NONE);
+            .delete("exampleresourcegroup", "exampleserver", "examplebasename", com.azure.core.util.Context.NONE);
     }
 }

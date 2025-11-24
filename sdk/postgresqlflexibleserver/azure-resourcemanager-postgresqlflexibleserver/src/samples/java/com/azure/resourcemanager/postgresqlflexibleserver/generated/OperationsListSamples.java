@@ -10,15 +10,16 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * OperationList.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/OperationsList.
+     * json
      */
     /**
-     * Sample code: OperationList.
+     * Sample code: List all available REST API operations.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void operationList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void listAllAvailableRESTAPIOperations(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

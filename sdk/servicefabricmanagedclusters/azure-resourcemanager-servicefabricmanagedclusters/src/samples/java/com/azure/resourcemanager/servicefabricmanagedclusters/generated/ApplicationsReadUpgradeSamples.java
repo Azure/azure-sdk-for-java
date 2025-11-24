@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ApplicationsReadUpgradeSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ApplicationActionGetUpgrade_example.json
+     * x-ms-original-file: 2025-10-01-preview/ApplicationActionGetUpgrade_example.json
      */
     /**
      * Sample code: Get an application upgrade.

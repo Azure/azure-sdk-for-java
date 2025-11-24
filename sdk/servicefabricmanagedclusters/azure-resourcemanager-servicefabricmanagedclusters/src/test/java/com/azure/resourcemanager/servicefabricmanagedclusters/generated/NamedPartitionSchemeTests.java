@@ -12,17 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class NamedPartitionSchemeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamedPartitionScheme model = BinaryData.fromString(
-            "{\"partitionScheme\":\"Named\",\"names\":[\"loayqcgw\",\"tzjuzgwyzmhtxo\",\"gmtsavjcbpwxqpsr\",\"nftguvriuhpr\"]}")
+        NamedPartitionScheme model = BinaryData
+            .fromString(
+                "{\"partitionScheme\":\"Named\",\"names\":[\"bdagxt\",\"bqdxbx\",\"akbogqxndlkzgxh\",\"ripl\"]}")
             .toObject(NamedPartitionScheme.class);
-        Assertions.assertEquals("loayqcgw", model.names().get(0));
+        Assertions.assertEquals("bdagxt", model.names().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamedPartitionScheme model = new NamedPartitionScheme()
-            .withNames(Arrays.asList("loayqcgw", "tzjuzgwyzmhtxo", "gmtsavjcbpwxqpsr", "nftguvriuhpr"));
+        NamedPartitionScheme model
+            = new NamedPartitionScheme().withNames(Arrays.asList("bdagxt", "bqdxbx", "akbogqxndlkzgxh", "ripl"));
         model = BinaryData.fromObject(model).toObject(NamedPartitionScheme.class);
-        Assertions.assertEquals("loayqcgw", model.names().get(0));
+        Assertions.assertEquals("bdagxt", model.names().get(0));
     }
 }

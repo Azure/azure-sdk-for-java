@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
 
 ### 2.6.1 (2025-11-18)
 
