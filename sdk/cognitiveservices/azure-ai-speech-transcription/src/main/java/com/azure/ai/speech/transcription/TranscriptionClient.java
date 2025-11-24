@@ -138,4 +138,49 @@ public final class TranscriptionClient {
         requestContent.setOptions(options);
         return transcribe(requestContent);
     }
+
+    /**
+     * Transcribes the provided audio stream with the specified options.
+     *
+     * @param options the transcription options including audio file details or audio URL
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response containing the result of the transcribe operation.
+     */
+    public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options) {
+        TranscriptionContent requestContent = new TranscriptionContent();
+        requestContent.setOptions(options);
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response = transcribeWithResponse(
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", requestContent.getOptions())
+                .serializeFileField("audio",
+                    requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
+                    requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
+                    requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions);
+        return new Response<TranscriptionResult>() {
+
+            public int getStatusCode() {
+                return response.getStatusCode();
+            }
+
+            public com.azure.core.http.HttpHeaders getHeaders() {
+                return response.getHeaders();
+            }
+
+            public com.azure.core.http.HttpRequest getRequest() {
+                return response.getRequest();
+            }
+
+            public TranscriptionResult getValue() {
+                return response.getValue().toObject(TranscriptionResult.class);
+            }
+        };
+    }
 }

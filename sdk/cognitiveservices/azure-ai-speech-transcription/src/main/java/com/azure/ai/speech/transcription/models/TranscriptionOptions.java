@@ -72,14 +72,6 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     private PhraseListOptions phraseListOptions;
 
     /**
-     * Creates an instance of TranscriptionOptions class.
-     */
-    @Generated
-    public TranscriptionOptions() {
-        this.audioFileDetails = null;
-    }
-
-    /**
      * Get the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
      * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
      *
