@@ -1,30 +1,89 @@
 trigger: none
 pr: none
-
 parameters:
 - name: TestPipeline
   displayName: Test Run Without Version Changes
   type: boolean
   default: false
-
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     TestPipeline: ${{ parameters.TestPipeline }}
     artifacts:
-    - name: azure-sdk-template
-      groupId: com.azure
-      safeName: azuresdktemplate
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
-      groupId: com.azure
-      safeName: azuresdktemplatetwo
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
-      groupId: com.azure
-      safeName: azuresdktemplatethree
-      skipPublishDocMs: true
-      ServiceDirectory: template
+    - name: azure-resourcemanager-storage
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerstorage
+      ServiceDirectory: storage/azure-resourcemanager-storage
+    - name: azure-resourcemanager-authorization
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerauthorization
+      ServiceDirectory: authorization
+    - name: azure-resourcemanager-keyvault
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerkeyvault
+      ServiceDirectory: keyvault/azure-resourcemanager-keyvault
+    - name: azure-resourcemanager-msi
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagermsi
+      ServiceDirectory: msi
+    - name: azure-resourcemanager-compute
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercompute
+      ServiceDirectory: compute
+    - name: azure-resourcemanager-sql
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagersql
+      ServiceDirectory: sql
+    - name: azure-resourcemanager-dns
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerdns
+      ServiceDirectory: dns
+    - name: azure-resourcemanager-appservice
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerappservice
+      ServiceDirectory: appservice
+    - name: azure-resourcemanager-containerservice
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercontainerservice
+      ServiceDirectory: containerservice
+    - name: azure-resourcemanager-eventhubs
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagereventhubs
+      ServiceDirectory: eventhubs
+    - name: azure-resourcemanager-monitor
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagermonitor
+      ServiceDirectory: monitor
+    - name: azure-resourcemanager-containerregistry
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercontainerregistry
+      ServiceDirectory: containerregistry
+    - name: azure-resourcemanager-containerinstance
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercontainerinstance
+      ServiceDirectory: containerinstance
+    - name: azure-resourcemanager-privatedns
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerprivatedns
+      ServiceDirectory: privatedns
+    - name: azure-resourcemanager-redis
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerredis
+      ServiceDirectory: redis
+    - name: azure-resourcemanager-trafficmanager
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagertrafficmanager
+      ServiceDirectory: trafficmanager
+    - name: azure-resourcemanager-servicebus
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerservicebus
+      ServiceDirectory: servicebus/azure-resourcemanager-servicebus
+    - name: azure-resourcemanager-cdn
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercdn
+      ServiceDirectory: cdn
+    - name: azure-resourcemanager-search
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagersearch
+      ServiceDirectory: search
 
