@@ -1,4 +1,4 @@
-# Azure Template client library for Java
+# Azure Template client library for Java V2
 
 Use the guidelines in each section of this template to ensure consistency and readability of your README. 
 The README resides in your package's GitHub repository at the root of its directory within the repo. 
