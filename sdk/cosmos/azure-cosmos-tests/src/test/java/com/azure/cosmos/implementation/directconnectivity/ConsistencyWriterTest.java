@@ -49,6 +49,7 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTI
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 public class ConsistencyWriterTest {
     private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
@@ -80,10 +81,18 @@ public class ConsistencyWriterTest {
         };
     }
 
-    @Test(groups = "unit")
+    /*@Test(groups = "unit")
     public void ConsistencyWriter_BarrierRetriesExhaustedWith429_Throws408Async() {
         int barrierRequestCount = 0;
-    }
+
+        sessionContainer = Mockito.mock(ISessionContainer.class);
+
+        transportClient = Mockito.mock(TransportClient.class);
+        when(transportClient.invokeStoreAsync(
+                Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class))
+            .thenAnswer(i -> i.getArguments()[0]));
+    }*/
 
     @Test(groups = "unit", dataProvider = "exceptionArgProvider")
     public void exception(Exception ex, Class<Exception> klass, int expectedStatusCode, Integer expectedSubStatusCode) {
