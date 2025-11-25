@@ -1,0 +1,20 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+
+stages:
+  - stage: PowerShell_Tests
+    displayName: PowerShell Script Tests
+    jobs:
+      - job: Run_Pester_Tests
+        displayName: Run Pester Unit Tests
+        pool:
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
+        steps:
+          - template: /eng/common/pipelines/templates/steps/run-pester-tests.yml
+            parameters:
+              TargetDirectory: 'eng/scripts/tests'
+              TargetTags: 'Unit'
