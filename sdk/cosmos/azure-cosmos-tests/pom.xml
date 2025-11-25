@@ -906,10 +906,10 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>fault-injection-barrier</id>
+      <!-- tests which target a multi-region strong Cosmos DB account -->
+      <id>multi-region-strong</id>
       <properties>
-        <test.groups>fault-injection-barrier</test.groups>
+        <test.groups>multi-region-strong</test.groups>
       </properties>
       <build>
         <plugins>
@@ -919,9 +919,14 @@ Licensed under the MIT License.
             <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/fault-injection-barrier-testng.xml</suiteXmlFile>
+                <suiteXmlFile>src/test/resources/multi-region-strong.xml</suiteXmlFile>
               </suiteXmlFiles>
-
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

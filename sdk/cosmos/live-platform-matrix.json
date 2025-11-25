@@ -13,8 +13,8 @@
     "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
     "-Pcircuit-breaker-read-all-read-many": "CircuitBreakerReadAllAndReadMany",
     "-Pmulti-region": "MultiRegion",
+    "-Pmulti-region-strong": "MultiRegionStrong",
     "-Plong": "Long",
-    "-Pfault-injection-barrier": "Fault-injection-barrier",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -182,9 +182,13 @@
     {
       "DESIRED_CONSISTENCIES": "[\"Strong\"]",
       "ACCOUNT_CONSISTENCY": "Strong",
+      "ArmConfig": {
+        "MultiRegion_Strong": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }"
+        }
+      },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfault-injection-barrier" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }",
+      "ProfileFlag": [ "-Pmulti-region-strong" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

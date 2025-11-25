@@ -84,7 +84,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master", "fault-injection-barrier"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master", "multi-region-strong"}, timeOut = TIMEOUT)
     public void beforeClass() {
         clientWithoutPreferredRegions = getClientBuilder()
             .preferredRegions(new ArrayList<>())
@@ -1057,7 +1057,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    @AfterClass(groups = {"multi-region", "long", "fast", "fi-multi-master", "fault-injection-barrier"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "long", "fast", "fi-multi-master", "multi-region-strong"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(clientWithoutPreferredRegions);
     }
@@ -1475,7 +1475,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    @Test(groups = {"fault-injection-barrier"}, dataProvider = "barrierRequestServerErrorResponseProvider", timeOut = 2 * TIMEOUT)
+    @Test(groups = {"multi-region-strong"}, dataProvider = "barrierRequestServerErrorResponseProvider", timeOut = 2 * TIMEOUT)
     public void faultInjection_serverError_barrierRequest(
         OperationType operationType,
         FaultInjectionServerErrorType serverErrorType,

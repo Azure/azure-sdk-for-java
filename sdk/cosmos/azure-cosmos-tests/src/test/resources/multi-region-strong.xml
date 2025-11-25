@@ -21,14 +21,14 @@
   ~ SOFTWARE.
   -->
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="fault-injection-barrier">
+<suite name="multi-region-strong">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
   </listeners>
-  <test name="fault-injection-barrier" group-by-instances="true">
+  <test name="multi-region-strong" group-by-instances="true">
     <groups>
       <run>
-        <include name="fault-injection-barrier"/>
+        <include name="multi-region-strong"/>
       </run>
     </groups>
     <packages>
