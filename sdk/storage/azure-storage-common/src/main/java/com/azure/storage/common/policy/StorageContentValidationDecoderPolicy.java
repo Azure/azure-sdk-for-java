@@ -98,15 +98,17 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
                 .log("Received buffer in decodeStream");
 
-            // Combine with pending data if any
+            // Combine with pending data if any - always returns buffer with position=0 and LITTLE_ENDIAN
             ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
 
             try {
-                // Try to decode what we have - decoder handles partial data
-                // Create duplicate for decoder - it will advance the duplicate's position as it reads
+                // Track initial position for consumption calculation
                 int availableSize = dataToProcess.remaining();
+                int initialPosition = dataToProcess.position();
+
+                // Create a duplicate for decoder - it will advance the duplicate's position as it reads
                 ByteBuffer duplicateForDecode = dataToProcess.duplicate();
-                int initialPosition = duplicateForDecode.position();
+                duplicateForDecode.order(java.nio.ByteOrder.LITTLE_ENDIAN);
 
                 // Decode - this advances duplicateForDecode's position
                 ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
@@ -115,25 +117,35 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 int bytesConsumed = duplicateForDecode.position() - initialPosition;
                 int bytesRemaining = availableSize - bytesConsumed;
 
+                LOGGER.atVerbose()
+                    .addKeyValue("bytesConsumed", bytesConsumed)
+                    .addKeyValue("bytesRemaining", bytesRemaining)
+                    .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
+                    .log("Decode iteration complete");
+
                 // Save only unconsumed portion to pending
                 if (bytesRemaining > 0) {
                     // Position the original buffer to skip consumed bytes, then slice to get unconsumed
-                    dataToProcess.position(bytesConsumed);
+                    dataToProcess.position(initialPosition + bytesConsumed);
                     ByteBuffer unconsumed = dataToProcess.slice();
+                    unconsumed.order(java.nio.ByteOrder.LITTLE_ENDIAN);
                     state.updatePendingBuffer(unconsumed);
                 } else {
-                    // All data was consumed
+                    // All data was consumed - clear pending
                     state.pendingBuffer = null;
                 }
 
-                // Track decoded bytes
+                // Track decoded bytes - ALWAYS track, even if zero (for bookkeeping)
                 int decodedBytes = decodedData.remaining();
-                state.totalBytesDecoded.addAndGet(decodedBytes);
+                if (decodedBytes > 0) {
+                    state.totalBytesDecoded.addAndGet(decodedBytes);
+                }
 
-                // Return decoded data if any
+                // Return decoded data if any, otherwise empty flux
                 if (decodedBytes > 0) {
                     return Flux.just(decodedData);
                 } else {
+                    // Zero-length decoded payload - still successfully processed, just no output
                     return Flux.empty();
                 }
             } catch (IllegalArgumentException e) {
@@ -259,29 +271,43 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
         /**
          * Combines pending buffer with new data.
+         * Always returns a buffer with position=0 and LITTLE_ENDIAN byte order.
          *
          * @param newBuffer The new buffer to combine.
-         * @return Combined buffer.
+         * @return Combined buffer with LITTLE_ENDIAN byte order and position=0.
          */
         private ByteBuffer combineWithPending(ByteBuffer newBuffer) {
             if (pendingBuffer == null || !pendingBuffer.hasRemaining()) {
-                return newBuffer.duplicate();
+                // Return a duplicate slice with LITTLE_ENDIAN and position=0
+                ByteBuffer dup = newBuffer.duplicate().slice();
+                dup.order(java.nio.ByteOrder.LITTLE_ENDIAN);
+                return dup;
             }
 
-            ByteBuffer combined = ByteBuffer.allocate(pendingBuffer.remaining() + newBuffer.remaining());
-            combined.put(pendingBuffer.duplicate());
-            combined.put(newBuffer.duplicate());
+            // Create slices with LITTLE_ENDIAN order
+            ByteBuffer pendingSlice = pendingBuffer.duplicate().slice();
+            pendingSlice.order(java.nio.ByteOrder.LITTLE_ENDIAN);
+            ByteBuffer newSlice = newBuffer.duplicate().slice();
+            newSlice.order(java.nio.ByteOrder.LITTLE_ENDIAN);
+
+            // Allocate combined buffer with LITTLE_ENDIAN order
+            ByteBuffer combined = ByteBuffer.allocate(pendingSlice.remaining() + newSlice.remaining());
+            combined.order(java.nio.ByteOrder.LITTLE_ENDIAN);
+            combined.put(pendingSlice);
+            combined.put(newSlice);
             combined.flip();
             return combined;
         }
 
         /**
          * Updates the pending buffer with remaining data.
+         * Allocates a new buffer with LITTLE_ENDIAN byte order.
          *
          * @param dataToProcess The buffer with remaining data.
          */
         private void updatePendingBuffer(ByteBuffer dataToProcess) {
             pendingBuffer = ByteBuffer.allocate(dataToProcess.remaining());
+            pendingBuffer.order(java.nio.ByteOrder.LITTLE_ENDIAN);
             pendingBuffer.put(dataToProcess);
             pendingBuffer.flip();
         }
