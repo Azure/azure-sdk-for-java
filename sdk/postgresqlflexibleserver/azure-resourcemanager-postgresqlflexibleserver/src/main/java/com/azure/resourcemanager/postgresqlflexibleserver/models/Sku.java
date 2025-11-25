@@ -13,17 +13,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Sku information related properties of a server.
+ * Compute information of a server.
  */
 @Fluent
 public final class Sku implements JsonSerializable<Sku> {
     /*
-     * The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+     * Name by which is known a given compute size assigned to a server.
      */
     private String name;
 
     /*
-     * The tier of the particular SKU, e.g. Burstable.
+     * Tier of the compute assigned to a server.
      */
     private SkuTier tier;
 
@@ -34,7 +34,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+     * Get the name property: Name by which is known a given compute size assigned to a server.
      * 
      * @return the name value.
      */
@@ -43,7 +43,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+     * Set the name property: Name by which is known a given compute size assigned to a server.
      * 
      * @param name the name value to set.
      * @return the Sku object itself.
@@ -54,7 +54,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the tier property: The tier of the particular SKU, e.g. Burstable.
+     * Get the tier property: Tier of the compute assigned to a server.
      * 
      * @return the tier value.
      */
@@ -63,7 +63,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the tier property: The tier of the particular SKU, e.g. Burstable.
+     * Set the tier property: Tier of the compute assigned to a server.
      * 
      * @param tier the tier value to set.
      * @return the Sku object itself.

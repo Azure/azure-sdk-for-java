@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.LtrServerBackupOperationInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.BackupsLongTermRetentionOperationInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public final class LtrServerBackupOperationList implements JsonSerializable<LtrS
     /*
      * The list of long term retention server backup operations
      */
-    private List<LtrServerBackupOperationInner> value;
+    private List<BackupsLongTermRetentionOperationInner> value;
 
     /*
      * The link used to get the next page of operations.
@@ -39,7 +39,7 @@ public final class LtrServerBackupOperationList implements JsonSerializable<LtrS
      * 
      * @return the value value.
      */
-    public List<LtrServerBackupOperationInner> value() {
+    public List<BackupsLongTermRetentionOperationInner> value() {
         return this.value;
     }
 
@@ -49,7 +49,7 @@ public final class LtrServerBackupOperationList implements JsonSerializable<LtrS
      * @param value the value value to set.
      * @return the LtrServerBackupOperationList object itself.
      */
-    public LtrServerBackupOperationList withValue(List<LtrServerBackupOperationInner> value) {
+    public LtrServerBackupOperationList withValue(List<BackupsLongTermRetentionOperationInner> value) {
         this.value = value;
         return this;
     }
@@ -112,8 +112,8 @@ public final class LtrServerBackupOperationList implements JsonSerializable<LtrS
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<LtrServerBackupOperationInner> value
-                        = reader.readArray(reader1 -> LtrServerBackupOperationInner.fromJson(reader1));
+                    List<BackupsLongTermRetentionOperationInner> value
+                        = reader.readArray(reader1 -> BackupsLongTermRetentionOperationInner.fromJson(reader1));
                     deserializedLtrServerBackupOperationList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedLtrServerBackupOperationList.nextLink = reader.getString();

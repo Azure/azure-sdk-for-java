@@ -20,7 +20,8 @@ public final class LtrPreBackupResponseInner implements JsonSerializable<LtrPreB
     /*
      * Additional Properties for the pre backup response
      */
-    private LtrPreBackupResponseProperties innerProperties = new LtrPreBackupResponseProperties();
+    private BackupsLongTermRetentionResponseProperties innerProperties
+        = new BackupsLongTermRetentionResponseProperties();
 
     /**
      * Creates an instance of LtrPreBackupResponseInner class.
@@ -33,7 +34,7 @@ public final class LtrPreBackupResponseInner implements JsonSerializable<LtrPreB
      * 
      * @return the innerProperties value.
      */
-    private LtrPreBackupResponseProperties innerProperties() {
+    private BackupsLongTermRetentionResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -56,7 +57,7 @@ public final class LtrPreBackupResponseInner implements JsonSerializable<LtrPreB
      */
     public LtrPreBackupResponseInner withNumberOfContainers(int numberOfContainers) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new LtrPreBackupResponseProperties();
+            this.innerProperties = new BackupsLongTermRetentionResponseProperties();
         }
         this.innerProperties().withNumberOfContainers(numberOfContainers);
         return this;
@@ -107,7 +108,7 @@ public final class LtrPreBackupResponseInner implements JsonSerializable<LtrPreB
 
                 if ("properties".equals(fieldName)) {
                     deserializedLtrPreBackupResponseInner.innerProperties
-                        = LtrPreBackupResponseProperties.fromJson(reader);
+                        = BackupsLongTermRetentionResponseProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

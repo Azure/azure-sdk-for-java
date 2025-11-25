@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.MonitoredResource;
@@ -24,22 +24,22 @@ public final class MonitorsListMonitoredResourcesMockTests {
     @Test
     public void testListMonitoredResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"orppxebmnzbtb\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"lkfg\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"euel\"}]}";
+            = "{\"value\":[{\"id\":\"wuoegrpk\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"iyq\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"cpdggkzzlvmbmp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MonitoredResource> response
-            = manager.monitors().listMonitoredResources("mpgcjefuzmuvpbt", "d", com.azure.core.util.Context.NONE);
+            = manager.monitors().listMonitoredResources("d", "mgxcxrslpm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("orppxebmnzbtb", response.iterator().next().id());
-        Assertions.assertEquals(SendingMetricsStatus.ENABLED, response.iterator().next().sendingMetrics());
-        Assertions.assertEquals("lkfg", response.iterator().next().reasonForMetricsStatus());
+        Assertions.assertEquals("wuoegrpk", response.iterator().next().id());
+        Assertions.assertEquals(SendingMetricsStatus.DISABLED, response.iterator().next().sendingMetrics());
+        Assertions.assertEquals("iyq", response.iterator().next().reasonForMetricsStatus());
         Assertions.assertEquals(SendingLogsStatus.ENABLED, response.iterator().next().sendingLogs());
-        Assertions.assertEquals("euel", response.iterator().next().reasonForLogsStatus());
+        Assertions.assertEquals("cpdggkzzlvmbmp", response.iterator().next().reasonForLogsStatus());
     }
 }

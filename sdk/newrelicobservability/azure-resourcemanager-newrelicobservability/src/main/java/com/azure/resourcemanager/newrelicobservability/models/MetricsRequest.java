@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class MetricsRequest implements JsonSerializable<MetricsRequest> {
     /*
-     * User Email
+     * Reusable representation of an email address
      */
     private String userEmail;
 
@@ -29,7 +29,7 @@ public final class MetricsRequest implements JsonSerializable<MetricsRequest> {
     }
 
     /**
-     * Get the userEmail property: User Email.
+     * Get the userEmail property: Reusable representation of an email address.
      * 
      * @return the userEmail value.
      */
@@ -38,7 +38,7 @@ public final class MetricsRequest implements JsonSerializable<MetricsRequest> {
     }
 
     /**
-     * Set the userEmail property: User Email.
+     * Set the userEmail property: Reusable representation of an email address.
      * 
      * @param userEmail the userEmail value to set.
      * @return the MetricsRequest object itself.
