@@ -14,11 +14,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecoder;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -78,6 +81,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     /**
      * Decodes a stream of byte buffers using the decoder state.
+     * Uses relative indexing based on decoder's message offset to correctly
+     * slice encoded segments and handle pending buffers across chunks.
      *
      * @param encodedFlux The flux of encoded byte buffers.
      * @param state The decoder state.
@@ -85,80 +90,142 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
-            // Track the NEW bytes received from the network (before combining with pending)
+            // Capture absoluteStartOfCombined BEFORE adding new bytes
+            long absoluteStartOfCombined = state.totalEncodedBytesProcessed.get();
+
+            // Track the NEW bytes received from the network
             int newBytesReceived = encodedBuffer.remaining();
-            state.totalEncodedBytesProcessed.addAndGet(newBytesReceived);
+            // Note: we add to totalEncodedBytesProcessed AFTER we're done processing this chunk
 
             int pendingSize = (state.pendingBuffer != null) ? state.pendingBuffer.remaining() : 0;
+            // Adjust absoluteStartOfCombined to account for pending bytes that came before
+            absoluteStartOfCombined -= pendingSize;
+
             LOGGER.atInfo()
                 .addKeyValue("newBytes", newBytesReceived)
                 .addKeyValue("pendingBytes", pendingSize)
-                .addKeyValue("totalProcessed", state.totalEncodedBytesProcessed.get())
+                .addKeyValue("absoluteStartOfCombined", absoluteStartOfCombined)
                 .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
                 .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
                 .log("Received buffer in decodeStream");
 
             // Combine with pending data if any - always returns buffer with position=0 and LITTLE_ENDIAN
-            ByteBuffer dataToProcess = state.combineWithPending(encodedBuffer);
+            ByteBuffer combined = state.combineWithPending(encodedBuffer);
 
             try {
-                // Track initial position for consumption calculation
-                int availableSize = dataToProcess.remaining();
-                int initialPosition = dataToProcess.position();
+                java.io.ByteArrayOutputStream decodedOutput = new java.io.ByteArrayOutputStream();
 
-                // Create a duplicate for decoder - it will advance the duplicate's position as it reads
-                ByteBuffer duplicateForDecode = dataToProcess.duplicate();
-                duplicateForDecode.order(java.nio.ByteOrder.LITTLE_ENDIAN);
+                // Loop to decode complete segments from combined buffer
+                while (true) {
+                    long decoderOffset = state.decoder.getMessageOffset();
+                    int relativeIndex = (int) (decoderOffset - absoluteStartOfCombined);
 
-                // Decode - this advances duplicateForDecode's position
-                ByteBuffer decodedData = state.decoder.decode(duplicateForDecode, availableSize);
+                    // Defensive check
+                    if (relativeIndex < 0) {
+                        LOGGER.error(
+                            "Negative relative index detected: relativeIndex={}, decoderOffset={}, absoluteStart={}",
+                            relativeIndex, decoderOffset, absoluteStartOfCombined);
+                        throw new IllegalStateException("Negative relative index: " + relativeIndex);
+                    }
 
-                // Calculate how much of the input buffer was consumed by checking the duplicate's position
-                int bytesConsumed = duplicateForDecode.position() - initialPosition;
-                int bytesRemaining = availableSize - bytesConsumed;
+                    // Check if we have enough for segment header
+                    if (relativeIndex + StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH > combined.limit()) {
+                        // Save remaining as pending and break
+                        if (relativeIndex < combined.limit()) {
+                            combined.position(relativeIndex);
+                            state.updatePendingBuffer(combined.slice());
+                        } else {
+                            state.pendingBuffer = null;
+                        }
+                        break;
+                    }
 
-                LOGGER.atVerbose()
-                    .addKeyValue("bytesConsumed", bytesConsumed)
-                    .addKeyValue("bytesRemaining", bytesRemaining)
-                    .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
-                    .log("Decode iteration complete");
+                    // For the first chunk, we need to read message header first
+                    if (decoderOffset == 0) {
+                        // Decode up to message header length to bootstrap
+                        ByteBuffer headerSlice = combined.duplicate();
+                        headerSlice.position(relativeIndex);
+                        headerSlice.order(ByteOrder.LITTLE_ENDIAN);
+                        ByteBuffer decoded
+                            = state.decoder.decode(headerSlice, StructuredMessageConstants.V1_HEADER_LENGTH);
+                        // After header is read, continue loop to process segments
+                        continue;
+                    }
 
-                // Save only unconsumed portion to pending
-                if (bytesRemaining > 0) {
-                    // Position the original buffer to skip consumed bytes, then slice to get unconsumed
-                    dataToProcess.position(initialPosition + bytesConsumed);
-                    ByteBuffer unconsumed = dataToProcess.slice();
-                    unconsumed.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-                    state.updatePendingBuffer(unconsumed);
-                } else {
-                    // All data was consumed - clear pending
-                    state.pendingBuffer = null;
+                    // Peek segment length
+                    long segmentLength = state.decoder.peekNextSegmentLength(combined, relativeIndex);
+                    if (segmentLength < 0) {
+                        // Not enough bytes to read segment header
+                        combined.position(relativeIndex);
+                        state.updatePendingBuffer(combined.slice());
+                        break;
+                    }
+
+                    // Calculate encoded segment size
+                    int crcLength = (state.decoder.getFlags() == StructuredMessageFlags.STORAGE_CRC64)
+                        ? StructuredMessageConstants.CRC64_LENGTH
+                        : 0;
+                    long encodedSegmentSize
+                        = StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH + segmentLength + crcLength;
+
+                    // Check if we have the complete segment
+                    if (relativeIndex + encodedSegmentSize > combined.limit()) {
+                        // Save pending and break
+                        combined.position(relativeIndex);
+                        state.updatePendingBuffer(combined.slice());
+                        break;
+                    }
+
+                    // Slice encoded segment
+                    ByteBuffer encodedSlice = combined.duplicate();
+                    encodedSlice.position(relativeIndex);
+                    encodedSlice.limit(relativeIndex + (int) encodedSegmentSize);
+                    encodedSlice = encodedSlice.slice();
+                    encodedSlice.order(ByteOrder.LITTLE_ENDIAN);
+
+                    // Decode the segment
+                    ByteBuffer decoded = state.decoder.decode(encodedSlice);
+
+                    LOGGER.atVerbose()
+                        .addKeyValue("relativeIndex", relativeIndex)
+                        .addKeyValue("encodedSegmentSize", encodedSegmentSize)
+                        .addKeyValue("decodedBytes", decoded.remaining())
+                        .addKeyValue("newDecoderOffset", state.decoder.getMessageOffset())
+                        .log("Decoded segment");
+
+                    // Update tracked bytes
+                    state.totalEncodedBytesProcessed.addAndGet(encodedSegmentSize);
+                    if (decoded.remaining() > 0) {
+                        state.totalBytesDecoded.addAndGet(decoded.remaining());
+                        // Accumulate decoded bytes
+                        byte[] decodedBytes = new byte[decoded.remaining()];
+                        decoded.get(decodedBytes);
+                        decodedOutput.write(decodedBytes, 0, decodedBytes.length);
+                    }
+
+                    // Check if we've completed the message
+                    if (state.decoder.getMessageOffset() >= state.expectedContentLength) {
+                        state.pendingBuffer = null;
+                        break;
+                    }
                 }
 
-                // Track decoded bytes - ALWAYS track, even if zero (for bookkeeping)
-                int decodedBytes = decodedData.remaining();
-                if (decodedBytes > 0) {
-                    state.totalBytesDecoded.addAndGet(decodedBytes);
-                }
-
-                // Return decoded data if any, otherwise empty flux
-                if (decodedBytes > 0) {
-                    return Flux.just(decodedData);
+                // Return decoded data if any
+                byte[] decodedBytes = decodedOutput.toByteArray();
+                if (decodedBytes.length > 0) {
+                    return Flux.just(ByteBuffer.wrap(decodedBytes));
                 } else {
-                    // Zero-length decoded payload - still successfully processed, just no output
                     return Flux.empty();
                 }
+
             } catch (IllegalArgumentException e) {
                 // Handle decoder exceptions - check if it's due to incomplete data
                 String errorMsg = e.getMessage();
                 if (errorMsg != null && (errorMsg.contains("not long enough") || errorMsg.contains("is incomplete"))) {
                     // Not enough data to decode yet - preserve all data in pending buffer
-                    state.updatePendingBuffer(dataToProcess);
-
-                    // Don't fail - just return empty and wait for more data
+                    state.updatePendingBuffer(combined);
                     return Flux.empty();
                 } else {
-                    // Other errors should propagate
                     LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
                     return Flux.error(e);
                 }

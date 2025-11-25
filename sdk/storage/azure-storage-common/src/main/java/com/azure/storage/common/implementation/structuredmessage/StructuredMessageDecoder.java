@@ -146,6 +146,32 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Peeks the next segment length without consuming from the buffer.
+     * Used by the policy to calculate encoded segment size before slicing.
+     *
+     * @param buffer The buffer to peek from.
+     * @param relativeIndex The position in the buffer to start reading from.
+     * @return The segment content length, or -1 if not enough bytes.
+     */
+    public long peekNextSegmentLength(ByteBuffer buffer, int relativeIndex) {
+        // Need at least V1_SEGMENT_HEADER_LENGTH bytes to read segment number (2) + segment size (8)
+        if (relativeIndex + V1_SEGMENT_HEADER_LENGTH > buffer.limit()) {
+            return -1;
+        }
+        // Segment size is at offset 2 (after segment number which is 2 bytes)
+        return buffer.getLong(relativeIndex + 2);
+    }
+
+    /**
+     * Gets the flags for the current message (needed to determine if CRC is present).
+     *
+     * @return The message flags, or null if header not yet read.
+     */
+    public StructuredMessageFlags getFlags() {
+        return flags;
+    }
+
+    /**
      * Reads and validates segment length with diagnostic logging.
      */
     private long readAndValidateSegmentLength(ByteBuffer buffer, long remaining) {
