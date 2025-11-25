@@ -51,16 +51,6 @@
           "version": "3.8.1"
         }
       }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "commons-codec",
-          "artifactId": "commons-codec",
-          "version": "1.14"
-        }
-      }
     }
   ]
 }
