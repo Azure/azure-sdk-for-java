@@ -1,6 +1,6 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
+## 2.57.0 (2025-11-25)
 
 ### azure-resourcemanager-containerregistry
 
@@ -41,6 +41,18 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2025-10-15`
+
+### azure-resourcemanager-resources
+
+#### Other Changes
+
+- Optimized `AzureServiceClient` to load library versions during class initialization.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.56.0 (2025-10-31)
 
