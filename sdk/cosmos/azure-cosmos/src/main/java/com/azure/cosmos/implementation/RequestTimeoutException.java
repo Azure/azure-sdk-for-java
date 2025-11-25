@@ -20,6 +20,13 @@ public class RequestTimeoutException extends CosmosException {
     /**
      * Instantiates a new Request timeout exception.
      */
+    public RequestTimeoutException(int subStatusCode) {
+        this(RMResources.RequestTimeout, null, subStatusCode);
+    }
+
+    /**
+     * Instantiates a new Request timeout exception.
+     */
     public RequestTimeoutException() {
         this(RMResources.RequestTimeout, null);
     }

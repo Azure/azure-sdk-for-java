@@ -27,7 +27,6 @@ import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -386,6 +386,7 @@ public class ConsistencyWriter {
 
     private Mono<Boolean> waitForWriteBarrierAsync(RxDocumentServiceRequest barrierRequest, long selectedGlobalCommittedLsn) {
         AtomicInteger writeBarrierRetryCount = new AtomicInteger(ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES);
+        AtomicBoolean lastAttemptWasThrottled = new AtomicBoolean(false);
         AtomicLong maxGlobalCommittedLsnReceived = new AtomicLong(0);
         return Flux.defer(() -> {
             if (barrierRequest.requestContext.timeoutHelper.isElapsed()) {
@@ -403,8 +404,35 @@ public class ConsistencyWriter {
                 false /*forceReadAll*/);
             return storeResultListObs.flatMap(
                 responses -> {
-                    if (responses != null && responses.stream().anyMatch(response -> response.globalCommittedLSN >= selectedGlobalCommittedLsn)) {
-                        return Mono.just(Boolean.TRUE);
+                    //if (responses != null && responses.stream().anyMatch(response -> response.globalCommittedLSN >= selectedGlobalCommittedLsn)) {
+                    //    return Mono.just(Boolean.TRUE);
+                    //}
+
+                    if (responses != null) {
+                        // Check if all replicas returned 429, but don't exit early.
+                        if (responses.stream().count() > 0 && responses.stream().allMatch(response -> response.getStoreResponse().getStatus() == HttpConstants.StatusCodes.TOO_MANY_REQUESTS)) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("waitForWriteBarrierAsync: All replicas returned 429 Too Many Requests. Continuing retries." +
+                                        "StatusCode: {}, SubStatusCode: {}, PkRangeId :{}.",
+                                    responses.get(0).getStoreResponse().getStatus(),
+                                    responses.get(0).getStoreResponse().getSubStatusCode(),
+                                    responses.get(0).getStoreResponse().getPartitionKeyRangeId());
+                            }
+                            lastAttemptWasThrottled.set(true);
+                        } else {
+                            lastAttemptWasThrottled.set(false);
+                        }
+
+                        // Check if any response satisfies the barrier condition
+                        if (responses.stream().anyMatch(response -> response.globalCommittedLSN >= selectedGlobalCommittedLsn)) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("ConsistencyWriter: WaitForWriteBarrierAsync - Barrier met. Responses: {}",
+                                             responses.stream().map(StoreResult::toString).collect(Collectors.joining("; ")));
+                            }
+                            return Mono.just(Boolean.TRUE);
+                        }
+                    } else {
+                        lastAttemptWasThrottled.set(false);
                     }
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
@@ -415,6 +443,14 @@ public class ConsistencyWriter {
 
                     //only refresh on first barrier call, set to false for subsequent attempts.
                     barrierRequest.requestContext.forceRefreshAddressCache = false;
+
+                    if (lastAttemptWasThrottled.get())
+                    {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("ConsistencyWriter: Write barrier failed after all retries due to consistent throttling (429). Throwing RequestTimeoutException (408).");
+                        }
+                        throw new RequestTimeoutException(HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+                    }
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     if (writeBarrierRetryCount.getAndDecrement() == 0) {

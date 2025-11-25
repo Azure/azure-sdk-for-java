@@ -155,6 +155,14 @@ public class QuorumReader {
                     secondaryQuorumReadResult -> {
 
                         switch (secondaryQuorumReadResult.quorumResult) {
+                            case QuorumThrottled:
+                                try {
+                                    logger.warn("QuorumThrottled: ReadQuorumResult StoreResponses: {}",
+                                        String.join(";", secondaryQuorumReadResult.storeResponses));
+                                    return Flux.just(secondaryQuorumReadResult.getResponse());
+                                } catch (CosmosException e) {
+                                    return Flux.error(e);
+                                }
                             case QuorumNotPossibleInCurrentRegion:
                                 try {
                                     logger.warn("QuorumNotPossibleInCurrentRegion: ReadQuorumResult StoreResponses: {}",
@@ -179,7 +187,7 @@ public class QuorumReader {
                                     secondaryQuorumReadResult.globalCommittedSelectedLsn);
 
                                         return barrierRequestObs.flux().flatMap(barrierRequest -> {
-                                    Mono<Boolean> readBarrierObs = this.waitForReadBarrierAsync(
+                                    Mono<WaitForReadBarrierResult> readBarrierObs = this.waitForReadBarrierAsync(
                                         barrierRequest,
                                         true /* include primary */,
                                         readQuorumValue,
@@ -190,9 +198,14 @@ public class QuorumReader {
                                             return readBarrierObs.flux().flatMap(
                                         readBarrier -> {
 
-                                            if (readBarrier) {
+                                            if (readBarrier.throttledResponse != null) {
+                                                // handle throttling by delegating to ResourceThrottleRetryPolicy
+                                                return Flux.just(readBarrier.throttledResponse);
+                                            }
+
+                                            if (readBarrier.isSuccess) {
                                                 try {
-                                                                return Flux.just(secondaryQuorumReadResult.getResponse());
+                                                    return Flux.just(secondaryQuorumReadResult.getResponse());
                                                 } catch (Exception e) {
                                                     return Flux.error(e);
                                                 }
@@ -327,10 +340,10 @@ public class QuorumReader {
                 Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, entity, this.authorizationTokenProvider, readLsn, globalCommittedLSN);
                 return barrierRequestObs.flatMap(
                     barrierRequest -> {
-                        Mono<Boolean> waitForObs = this.waitForReadBarrierAsync(barrierRequest, false, readQuorum, readLsn, globalCommittedLSN, readMode);
+                        Mono<WaitForReadBarrierResult> waitForObs = this.waitForReadBarrierAsync(barrierRequest, false, readQuorum, readLsn, globalCommittedLSN, readMode);
                         return waitForObs.flatMap(
                             waitFor -> {
-                                if (!waitFor) {
+                                if (waitFor.isSuccess) {
                                     return Mono.just(new ReadQuorumResult(
                                         entity.requestContext.requestChargeTracker,
                                         ReadQuorumResultKind.QuorumSelected,
@@ -610,7 +623,7 @@ public class QuorumReader {
 
     }
 
-    private Mono<Boolean> waitForReadBarrierAsync(
+    private Mono<WaitForReadBarrierResult> waitForReadBarrierAsync(
         RxDocumentServiceRequest barrierRequest,
         boolean allowPrimary,
         final int readQuorum,
@@ -641,7 +654,7 @@ public class QuorumReader {
 
                     if ((responses.stream().filter(response -> response.lsn >= readBarrierLsn).count() >= readQuorum) &&
                         (!(targetGlobalCommittedLSN > 0) || maxGlobalCommittedLsnInResponses >= targetGlobalCommittedLSN)) {
-                            return Flux.just(true);
+                            return Flux.just(new WaitForReadBarrierResult(true, null));
                     }
 
                     maxGlobalCommittedLsn.set(Math.max(maxGlobalCommittedLsn.get(), maxGlobalCommittedLsnInResponses));
@@ -655,7 +668,7 @@ public class QuorumReader {
                                          JavaStreamUtils.toString(responses, "; "));
                         }
                         // retries exhausted
-                            return Flux.just(false);
+                            return Flux.just(new WaitForReadBarrierResult(false, null));
 
                     } else {
                         // delay
@@ -673,8 +686,8 @@ public class QuorumReader {
                    .flatMap(barrierRequestSucceeded ->
                         Flux.defer(() -> {
 
-                           if (barrierRequestSucceeded) {
-                                return Flux.just(true);
+                           if (barrierRequestSucceeded.isSuccess) {
+                                return Flux.just(barrierRequestSucceeded);
                            }
 
                            // we will go into global strong read barrier mode for global strong requests after regular barrier calls have been exhausted.
@@ -696,7 +709,7 @@ public class QuorumReader {
 
                                            if ((responses.stream().filter(response -> response.lsn >= readBarrierLsn).count() >= readQuorum) &&
                                                maxGlobalCommittedLsnInResponses >= targetGlobalCommittedLSN) {
-                                                    return Flux.just(true);
+                                                    return Flux.just(new WaitForReadBarrierResult(true, null));
                                            }
 
                                            maxGlobalCommittedLsn.set(
@@ -708,7 +721,7 @@ public class QuorumReader {
                                                    logger.debug("QuorumReader: waitForReadBarrierAsync - Last barrier for mult-region strong requests. Responses: {}",
                                                                 JavaStreamUtils.toString(responses, "; "));
                                                }
-                                               return Flux.just(false);
+                                               return Flux.just(new WaitForReadBarrierResult(false, null));
                                            } else {
                                                return Flux.empty();
                                            }
@@ -737,11 +750,11 @@ public class QuorumReader {
                    //   In case the above flux returns empty (which it will after all the retries have been exhausted),
                    //   We will just return false
                    .switchIfEmpty(
-                                Flux.defer(() -> {
-                               logger.debug("QuorumReader: waitForReadBarrierAsync - TargetGlobalCommittedLsn: {}, MaxGlobalCommittedLsn: {}.", targetGlobalCommittedLSN, maxGlobalCommittedLsn);
-                                    return Flux.just(false);
-                           })
-                       ).take(1).single();
+                       Flux.defer(() -> {
+                           logger.debug("QuorumReader: waitForReadBarrierAsync - TargetGlobalCommittedLsn: {}, MaxGlobalCommittedLsn: {}.", targetGlobalCommittedLSN, maxGlobalCommittedLsn);
+                           return Flux.just(new WaitForReadBarrierResult(false, null));
+                       })
+                   ).take(1).single();
     }
 
     private boolean isQuorumMet(
@@ -827,7 +840,18 @@ public class QuorumReader {
         QuorumMet,
         QuorumSelected,
         QuorumNotSelected,
-        QuorumNotPossibleInCurrentRegion
+        QuorumNotPossibleInCurrentRegion,
+        QuorumThrottled
+    }
+
+    private class WaitForReadBarrierResult {
+        private final boolean isSuccess;
+        private final StoreResponse throttledResponse;
+
+        private WaitForReadBarrierResult(boolean isSuccess, StoreResponse throttledResponse) {
+            this.isSuccess = isSuccess;
+            this.throttledResponse = throttledResponse;
+        }
     }
 
     private abstract class ReadResult {
