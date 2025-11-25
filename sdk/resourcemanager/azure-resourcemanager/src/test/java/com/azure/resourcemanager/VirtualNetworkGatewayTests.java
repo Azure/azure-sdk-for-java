@@ -141,6 +141,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      * @throws Exception
      */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
         new TestVirtualNetworkGateway().new SiteToSite(azureResourceManager.virtualNetworkGateways().manager())
             .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
@@ -153,6 +154,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      * @throws Exception
      */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
         new TestVirtualNetworkGateway().new VNetToVNet(azureResourceManager.virtualNetworkGateways().manager())
             .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());
