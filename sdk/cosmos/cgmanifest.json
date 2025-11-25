@@ -8,16 +8,6 @@
         "maven": {
           "groupId": "com.google.guava",
           "artifactId": "guava",
-          "version": "27.0.1-jre"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "com.google.guava",
-          "artifactId": "guava",
           "version": "25.0-jre"
         }
       }
