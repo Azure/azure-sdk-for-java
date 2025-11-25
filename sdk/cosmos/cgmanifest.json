@@ -56,16 +56,6 @@
       "component": {
         "type": "maven",
         "maven": {
-          "groupId": "org.apache.commons",
-          "artifactId": "commons-math3",
-          "version": "3.6.1"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
           "groupId": "commons-codec",
           "artifactId": "commons-codec",
           "version": "1.14"
