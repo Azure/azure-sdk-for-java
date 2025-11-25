@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.56.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.56.0 (2025-11-10)
 
 ### Other Changes
