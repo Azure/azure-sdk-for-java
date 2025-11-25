@@ -19,10 +19,6 @@
  *
  * Detect. Returns the source code language code and a boolean variable denoting whether the detected language is
  * supported for text translation and transliteration.
- *
- * Dictionary lookup. Returns equivalent words for the source term in the target language.
- *
- * Dictionary example Returns grammatical structure and context examples for the source term and target term pair.
  * <!-- end generated doc -->
  */
 package com.azure.ai.translation.text.models;

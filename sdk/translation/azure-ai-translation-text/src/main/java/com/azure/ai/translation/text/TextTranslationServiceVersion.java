@@ -13,7 +13,12 @@ public enum TextTranslationServiceVersion implements ServiceVersion {
     /**
      * Enum value 3.0.
      */
-    V3_0("3.0");
+    V3_0("3.0"),
+
+    /**
+     * Enum value 2025-10-01-preview.
+     */
+    V2025_10_01_PREVIEW("2025-10-01-preview");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum TextTranslationServiceVersion implements ServiceVersion {
      * @return The latest {@link TextTranslationServiceVersion}.
      */
     public static TextTranslationServiceVersion getLatest() {
-        return V3_0;
+        return V2025_10_01_PREVIEW;
     }
 }

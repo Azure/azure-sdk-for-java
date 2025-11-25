@@ -23,44 +23,16 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     @Generated
     private final String text;
 
-    /*
-     * An object giving the translated text in the script specified by the toScript parameter.
-     */
-    @Generated
-    private TransliteratedText transliteration;
-
-    /*
-     * Alignment information.
-     */
-    @Generated
-    private TranslatedTextAlignment alignment;
-
-    /*
-     * Sentence boundaries in the input and output texts.
-     */
-    @Generated
-    private SentenceBoundaries sentenceBoundaries;
-
     /**
      * Creates an instance of TranslationText class.
      *
-     * @param targetLanguage the targetLanguage value to set.
+     * @param language the language value to set.
      * @param text the text value to set.
      */
     @Generated
-    private TranslationText(String targetLanguage, String text) {
-        this.targetLanguage = targetLanguage;
+    private TranslationText(String language, String text) {
+        this.language = language;
         this.text = text;
-    }
-
-    /**
-     * Get the targetLanguage property: A string representing the language code of the target language.
-     *
-     * @return the targetLanguage value.
-     */
-    @Generated
-    public String getTargetLanguage() {
-        return this.targetLanguage;
     }
 
     /**
@@ -74,54 +46,19 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the transliteration property: An object giving the translated text in the script specified by the toScript
-     * parameter.
-     *
-     * @return the transliteration value.
-     */
-    @Generated
-    public TransliteratedText getTransliteration() {
-        return this.transliteration;
-    }
-
-    /**
-     * Get the alignment property: Alignment information.
-     *
-     * @return the alignment value.
-     */
-    @Generated
-    public TranslatedTextAlignment getAlignment() {
-        return this.alignment;
-    }
-
-    /**
-     * Get the sentenceBoundaries property: Sentence boundaries in the input and output texts.
-     *
-     * @return the sentenceBoundaries value.
-     */
-    @Generated
-    public SentenceBoundaries getSentenceBoundaries() {
-        return this.sentenceBoundaries;
-    }
-
-    /*
-     * A string representing the language code of the target language.
-     */
-    @Generated
-    private final String targetLanguage;
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("to", this.targetLanguage);
+        jsonWriter.writeStringField("language", this.language);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeJsonField("transliteration", this.transliteration);
-        jsonWriter.writeJsonField("alignment", this.alignment);
-        jsonWriter.writeJsonField("sentLen", this.sentenceBoundaries);
+        jsonWriter.writeNumberField("sourceCharacters", this.sourceCharacters);
+        jsonWriter.writeNumberField("instructionTokens", this.instructionTokens);
+        jsonWriter.writeNumberField("sourceTokens", this.sourceTokens);
+        jsonWriter.writeNumberField("responseTokens", this.responseTokens);
+        jsonWriter.writeNumberField("targetTokens", this.targetTokens);
         return jsonWriter.writeEndObject();
     }
 
@@ -137,33 +74,138 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     @Generated
     public static TranslationText fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String targetLanguage = null;
+            String language = null;
             String text = null;
-            TransliteratedText transliteration = null;
-            TranslatedTextAlignment alignment = null;
-            SentenceBoundaries sentenceBoundaries = null;
+            Integer sourceCharacters = null;
+            Integer instructionTokens = null;
+            Integer sourceTokens = null;
+            Integer responseTokens = null;
+            Integer targetTokens = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("to".equals(fieldName)) {
-                    targetLanguage = reader.getString();
+                if ("language".equals(fieldName)) {
+                    language = reader.getString();
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
-                } else if ("transliteration".equals(fieldName)) {
-                    transliteration = TransliteratedText.fromJson(reader);
-                } else if ("alignment".equals(fieldName)) {
-                    alignment = TranslatedTextAlignment.fromJson(reader);
-                } else if ("sentLen".equals(fieldName)) {
-                    sentenceBoundaries = SentenceBoundaries.fromJson(reader);
+                } else if ("sourceCharacters".equals(fieldName)) {
+                    sourceCharacters = reader.getNullable(JsonReader::getInt);
+                } else if ("instructionTokens".equals(fieldName)) {
+                    instructionTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceTokens".equals(fieldName)) {
+                    sourceTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("responseTokens".equals(fieldName)) {
+                    responseTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("targetTokens".equals(fieldName)) {
+                    targetTokens = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            TranslationText deserializedTranslationText = new TranslationText(targetLanguage, text);
-            deserializedTranslationText.transliteration = transliteration;
-            deserializedTranslationText.alignment = alignment;
-            deserializedTranslationText.sentenceBoundaries = sentenceBoundaries;
+            TranslationText deserializedTranslationText = new TranslationText(language, text);
+            deserializedTranslationText.sourceCharacters = sourceCharacters;
+            deserializedTranslationText.instructionTokens = instructionTokens;
+            deserializedTranslationText.sourceTokens = sourceTokens;
+            deserializedTranslationText.responseTokens = responseTokens;
+            deserializedTranslationText.targetTokens = targetTokens;
             return deserializedTranslationText;
         });
+    }
+
+    /*
+     * A string representing the language code of the target language.
+     */
+    @Generated
+    private final String language;
+
+    /*
+     * An interger indicating the number of characters in the source text string
+     */
+    @Generated
+    private Integer sourceCharacters;
+
+    /*
+     * An interger indicating the number of tokens used in generating the translated text
+     */
+    @Generated
+    private Integer instructionTokens;
+
+    /*
+     * An interger indicating the number of tokens used in the source sentence
+     */
+    @Generated
+    private Integer sourceTokens;
+
+    /*
+     * An interger indicating the number of tokens used in the translation response
+     */
+    @Generated
+    private Integer responseTokens;
+
+    /*
+     * An interger indicating the number of tokens used in the target sentence
+     */
+    @Generated
+    private Integer targetTokens;
+
+    /**
+     * Get the language property: A string representing the language code of the target language.
+     *
+     * @return the language value.
+     */
+    @Generated
+    public String getLanguage() {
+        return this.language;
+    }
+
+    /**
+     * Get the sourceCharacters property: An interger indicating the number of characters in the source text string.
+     *
+     * @return the sourceCharacters value.
+     */
+    @Generated
+    public Integer getSourceCharacters() {
+        return this.sourceCharacters;
+    }
+
+    /**
+     * Get the instructionTokens property: An interger indicating the number of tokens used in generating the translated
+     * text.
+     *
+     * @return the instructionTokens value.
+     */
+    @Generated
+    public Integer getInstructionTokens() {
+        return this.instructionTokens;
+    }
+
+    /**
+     * Get the sourceTokens property: An interger indicating the number of tokens used in the source sentence.
+     *
+     * @return the sourceTokens value.
+     */
+    @Generated
+    public Integer getSourceTokens() {
+        return this.sourceTokens;
+    }
+
+    /**
+     * Get the responseTokens property: An interger indicating the number of tokens used in the translation response.
+     *
+     * @return the responseTokens value.
+     */
+    @Generated
+    public Integer getResponseTokens() {
+        return this.responseTokens;
+    }
+
+    /**
+     * Get the targetTokens property: An interger indicating the number of tokens used in the target sentence.
+     *
+     * @return the targetTokens value.
+     */
+    @Generated
+    public Integer getTargetTokens() {
+        return this.targetTokens;
     }
 }
