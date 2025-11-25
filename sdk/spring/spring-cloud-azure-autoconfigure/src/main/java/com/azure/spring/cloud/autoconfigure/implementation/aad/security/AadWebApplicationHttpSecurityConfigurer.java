@@ -12,9 +12,9 @@ import org.springframework.core.ResolvableType;
 import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.endpoint.RestClientAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestClient;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
@@ -91,7 +92,7 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
     }
 
     @Override
-    public void configure(HttpSecurity builder) throws Exception {
+    public void configure(HttpSecurity builder)  {
         if (conditionalAccessFilter != null) {
             builder.addFilterAfter(conditionalAccessFilter, OAuth2AuthorizationRequestRedirectFilter.class);
         }
@@ -137,19 +138,17 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      *
      * @return the access token response client
      */
-    @SuppressWarnings("removal")
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
-        DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        RestClientAuthorizationCodeTokenResponseClient result = new RestClientAuthorizationCodeTokenResponseClient();
+        result.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
         if (repo instanceof AadClientRegistrationRepository) {
-            AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-                new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(
-                    ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes());
+            result.addHeadersConverter(new AadOAuth2AuthorizationCodeGrantRequestHeadersConverter());
+            result.addParametersConverter(new AadOAuth2AuthorizationCodeGrantRequestParametersConverter(
+                ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes()));
             OAuth2ClientAuthenticationJwkResolver jwkResolver = jwkResolvers.getIfUnique();
             if (jwkResolver != null) {
-                converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkResolver::resolve));
+                result.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkResolver::resolve));
             }
-            result.setRequestEntityConverter(converter);
         }
         return result;
     }

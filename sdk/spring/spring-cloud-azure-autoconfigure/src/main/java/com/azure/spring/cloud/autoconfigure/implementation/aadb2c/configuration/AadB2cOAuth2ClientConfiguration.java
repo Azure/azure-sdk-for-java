@@ -25,8 +25,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.RestClientClientCredentialsTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.RestClientRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
@@ -35,6 +35,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
@@ -152,20 +153,18 @@ class AadB2cOAuth2ClientConfiguration {
         return manager;
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
     private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider() {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
-        DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        RestClientRefreshTokenTokenResponseClient responseClient = new RestClientRefreshTokenTokenResponseClient();
+        responseClient.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
     private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider() {
         ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
-        DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        RestClientClientCredentialsTokenResponseClient responseClient = new RestClientClientCredentialsTokenResponseClient();
+        responseClient.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
