@@ -214,7 +214,6 @@ com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft.azure:azure-batch;11.2.0;11.3.0-beta.1
 com.microsoft.azure:azure-eventhubs;3.3.0;3.4.0-beta.1
 com.microsoft.azure:azure-servicebus;3.6.7;3.7.0-beta.1
-com.microsoft.azure:azure-media;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;6.0.0;6.1.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config;6.0.0;6.1.0-beta.1
@@ -379,7 +378,7 @@ com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-maps;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.6.0;1.7.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.1.0;1.2.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.1.0;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.1.0;1.2.0-beta.1
@@ -513,7 +512,7 @@ com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2

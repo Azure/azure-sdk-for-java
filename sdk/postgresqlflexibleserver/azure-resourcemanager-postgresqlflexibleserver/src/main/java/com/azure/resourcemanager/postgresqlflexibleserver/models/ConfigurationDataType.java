@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Data type of the configuration.
+ * Data type of the configuration (also known as server parameter).
  */
 public final class ConfigurationDataType extends ExpandableStringEnum<ConfigurationDataType> {
     /**
@@ -30,6 +30,16 @@ public final class ConfigurationDataType extends ExpandableStringEnum<Configurat
      * Static value Enumeration for ConfigurationDataType.
      */
     public static final ConfigurationDataType ENUMERATION = fromString("Enumeration");
+
+    /**
+     * Static value String for ConfigurationDataType.
+     */
+    public static final ConfigurationDataType STRING = fromString("String");
+
+    /**
+     * Static value Set for ConfigurationDataType.
+     */
+    public static final ConfigurationDataType SET = fromString("Set");
 
     /**
      * Creates a new instance of ConfigurationDataType value.

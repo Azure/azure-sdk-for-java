@@ -52,14 +52,14 @@ public interface Server {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The SKU (pricing tier) of the server.
+     * Gets the sku property: Compute tier and size of a server.
      * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
-     * Gets the identity property: Describes the identity of the application.
+     * Gets the identity property: User assigned managed identities assigned to the server.
      * 
      * @return the identity value.
      */
@@ -73,43 +73,47 @@ public interface Server {
     SystemData systemData();
 
     /**
-     * Gets the administratorLogin property: The administrator's login name of a server. Can only be specified when the
-     * server is being created (and is required for creation).
+     * Gets the administratorLogin property: Name of the login designated as the first password based administrator
+     * assigned to your instance of PostgreSQL. Must be specified the first time that you enable password based
+     * authentication on a server. Once set to a given value, it cannot be changed for the rest of the life of a server.
+     * If you disable password based authentication on a server which had it enabled, this password based role isn't
+     * deleted.
      * 
      * @return the administratorLogin value.
      */
     String administratorLogin();
 
     /**
-     * Gets the administratorLoginPassword property: The administrator login password (required for server creation).
+     * Gets the administratorLoginPassword property: Password assigned to the administrator login. As long as password
+     * authentication is enabled, this password can be changed at any time.
      * 
      * @return the administratorLoginPassword value.
      */
     String administratorLoginPassword();
 
     /**
-     * Gets the version property: PostgreSQL Server version.
+     * Gets the version property: Major version of PostgreSQL database engine.
      * 
      * @return the version value.
      */
-    ServerVersion version();
+    PostgresMajorVersion version();
 
     /**
-     * Gets the minorVersion property: The minor version of the server.
+     * Gets the minorVersion property: Minor version of PostgreSQL database engine.
      * 
      * @return the minorVersion value.
      */
     String minorVersion();
 
     /**
-     * Gets the state property: A state of a server that is visible to user.
+     * Gets the state property: Possible states of a server.
      * 
      * @return the state value.
      */
     ServerState state();
 
     /**
-     * Gets the fullyQualifiedDomainName property: The fully qualified domain name of a server.
+     * Gets the fullyQualifiedDomainName property: Fully qualified domain name of a server.
      * 
      * @return the fullyQualifiedDomainName value.
      */
@@ -123,7 +127,7 @@ public interface Server {
     Storage storage();
 
     /**
-     * Gets the authConfig property: AuthConfig properties of a server.
+     * Gets the authConfig property: Authentication configuration properties of a server.
      * 
      * @return the authConfig value.
      */
@@ -144,8 +148,8 @@ public interface Server {
     Backup backup();
 
     /**
-     * Gets the network property: Network properties of a server. This Network property is required to be passed only in
-     * case you want the server to be Private access server.
+     * Gets the network property: Network properties of a server. Only required if you want your server to be integrated
+     * into a virtual network provided by customer.
      * 
      * @return the network value.
      */
@@ -166,53 +170,53 @@ public interface Server {
     MaintenanceWindow maintenanceWindow();
 
     /**
-     * Gets the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * Gets the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * Required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', 'Replica', or 'ReviveDropped'. This property is
+     * returned only when the target server is a read replica.
      * 
      * @return the sourceServerResourceId value.
      */
     String sourceServerResourceId();
 
     /**
-     * Gets the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * Gets the pointInTimeUtc property: Creation time (in ISO8601 format) of the backup which you want to restore in
+     * the new server. It's required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', or 'ReviveDropped'.
      * 
      * @return the pointInTimeUtc value.
      */
     OffsetDateTime pointInTimeUtc();
 
     /**
-     * Gets the availabilityZone property: availability zone information of the server.
+     * Gets the availabilityZone property: Availability zone of a server.
      * 
      * @return the availabilityZone value.
      */
     String availabilityZone();
 
     /**
-     * Gets the replicationRole property: Replication role of the server.
+     * Gets the replicationRole property: Role of the server in a replication set.
      * 
      * @return the replicationRole value.
      */
     ReplicationRole replicationRole();
 
     /**
-     * Gets the replicaCapacity property: Replicas allowed for a server.
+     * Gets the replicaCapacity property: Maximum number of read replicas allowed for a server.
      * 
      * @return the replicaCapacity value.
      */
     Integer replicaCapacity();
 
     /**
-     * Gets the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Gets the replica property: Read replica properties of a server. Required only in case that you want to promote a
+     * server.
      * 
      * @return the replica value.
      */
     Replica replica();
 
     /**
-     * Gets the createMode property: The mode to create a new PostgreSQL server.
+     * Gets the createMode property: Creation mode of a new server.
      * 
      * @return the createMode value.
      */
@@ -220,7 +224,7 @@ public interface Server {
 
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connections associated with the specified
-     * resource.
+     * server.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -357,9 +361,9 @@ public interface Server {
          */
         interface WithSku {
             /**
-             * Specifies the sku property: The SKU (pricing tier) of the server..
+             * Specifies the sku property: Compute tier and size of a server..
              * 
-             * @param sku The SKU (pricing tier) of the server.
+             * @param sku Compute tier and size of a server.
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
@@ -370,9 +374,9 @@ public interface Server {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Describes the identity of the application..
+             * Specifies the identity property: User assigned managed identities assigned to the server..
              * 
-             * @param identity Describes the identity of the application.
+             * @param identity User assigned managed identities assigned to the server.
              * @return the next definition stage.
              */
             WithCreate withIdentity(UserAssignedIdentity identity);
@@ -383,11 +387,17 @@ public interface Server {
          */
         interface WithAdministratorLogin {
             /**
-             * Specifies the administratorLogin property: The administrator's login name of a server. Can only be
-             * specified when the server is being created (and is required for creation)..
+             * Specifies the administratorLogin property: Name of the login designated as the first password based
+             * administrator assigned to your instance of PostgreSQL. Must be specified the first time that you enable
+             * password based authentication on a server. Once set to a given value, it cannot be changed for the rest
+             * of the life of a server. If you disable password based authentication on a server which had it enabled,
+             * this password based role isn't deleted..
              * 
-             * @param administratorLogin The administrator's login name of a server. Can only be specified when the
-             * server is being created (and is required for creation).
+             * @param administratorLogin Name of the login designated as the first password based administrator assigned
+             * to your instance of PostgreSQL. Must be specified the first time that you enable password based
+             * authentication on a server. Once set to a given value, it cannot be changed for the rest of the life of a
+             * server. If you disable password based authentication on a server which had it enabled, this password
+             * based role isn't deleted.
              * @return the next definition stage.
              */
             WithCreate withAdministratorLogin(String administratorLogin);
@@ -398,10 +408,11 @@ public interface Server {
          */
         interface WithAdministratorLoginPassword {
             /**
-             * Specifies the administratorLoginPassword property: The administrator login password (required for server
-             * creation)..
+             * Specifies the administratorLoginPassword property: Password assigned to the administrator login. As long
+             * as password authentication is enabled, this password can be changed at any time..
              * 
-             * @param administratorLoginPassword The administrator login password (required for server creation).
+             * @param administratorLoginPassword Password assigned to the administrator login. As long as password
+             * authentication is enabled, this password can be changed at any time.
              * @return the next definition stage.
              */
             WithCreate withAdministratorLoginPassword(String administratorLoginPassword);
@@ -412,12 +423,12 @@ public interface Server {
          */
         interface WithVersion {
             /**
-             * Specifies the version property: PostgreSQL Server version..
+             * Specifies the version property: Major version of PostgreSQL database engine..
              * 
-             * @param version PostgreSQL Server version.
+             * @param version Major version of PostgreSQL database engine.
              * @return the next definition stage.
              */
-            WithCreate withVersion(ServerVersion version);
+            WithCreate withVersion(PostgresMajorVersion version);
         }
 
         /**
@@ -438,9 +449,9 @@ public interface Server {
          */
         interface WithAuthConfig {
             /**
-             * Specifies the authConfig property: AuthConfig properties of a server..
+             * Specifies the authConfig property: Authentication configuration properties of a server..
              * 
-             * @param authConfig AuthConfig properties of a server.
+             * @param authConfig Authentication configuration properties of a server.
              * @return the next definition stage.
              */
             WithCreate withAuthConfig(AuthConfig authConfig);
@@ -477,11 +488,11 @@ public interface Server {
          */
         interface WithNetwork {
             /**
-             * Specifies the network property: Network properties of a server. This Network property is required to be
-             * passed only in case you want the server to be Private access server..
+             * Specifies the network property: Network properties of a server. Only required if you want your server to
+             * be integrated into a virtual network provided by customer..
              * 
-             * @param network Network properties of a server. This Network property is required to be passed only in
-             * case you want the server to be Private access server.
+             * @param network Network properties of a server. Only required if you want your server to be integrated
+             * into a virtual network provided by customer.
              * @return the next definition stage.
              */
             WithCreate withNetwork(Network network);
@@ -505,13 +516,13 @@ public interface Server {
          */
         interface WithSourceServerResourceId {
             /**
-             * Specifies the sourceServerResourceId property: The source server resource ID to restore from. It's
-             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This
-             * property is returned only for Replica server.
+             * Specifies the sourceServerResourceId property: Identifier of the server to be used as the source of the
+             * new server. Required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', 'Replica', or
+             * 'ReviveDropped'. This property is returned only when the target server is a read replica..
              * 
-             * @param sourceServerResourceId The source server resource ID to restore from. It's required when
-             * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is
-             * returned only for Replica server.
+             * @param sourceServerResourceId Identifier of the server to be used as the source of the new server.
+             * Required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', 'Replica', or 'ReviveDropped'. This
+             * property is returned only when the target server is a read replica.
              * @return the next definition stage.
              */
             WithCreate withSourceServerResourceId(String sourceServerResourceId);
@@ -522,12 +533,12 @@ public interface Server {
          */
         interface WithPointInTimeUtc {
             /**
-             * Specifies the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time
-             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or
+             * Specifies the pointInTimeUtc property: Creation time (in ISO8601 format) of the backup which you want to
+             * restore in the new server. It's required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', or
              * 'ReviveDropped'..
              * 
-             * @param pointInTimeUtc Restore point creation time (ISO8601 format), specifying the time to restore from.
-             * It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+             * @param pointInTimeUtc Creation time (in ISO8601 format) of the backup which you want to restore in the
+             * new server. It's required when 'createMode' is 'PointInTimeRestore', 'GeoRestore', or 'ReviveDropped'.
              * @return the next definition stage.
              */
             WithCreate withPointInTimeUtc(OffsetDateTime pointInTimeUtc);
@@ -538,9 +549,9 @@ public interface Server {
          */
         interface WithAvailabilityZone {
             /**
-             * Specifies the availabilityZone property: availability zone information of the server..
+             * Specifies the availabilityZone property: Availability zone of a server..
              * 
-             * @param availabilityZone availability zone information of the server.
+             * @param availabilityZone Availability zone of a server.
              * @return the next definition stage.
              */
             WithCreate withAvailabilityZone(String availabilityZone);
@@ -551,9 +562,9 @@ public interface Server {
          */
         interface WithReplicationRole {
             /**
-             * Specifies the replicationRole property: Replication role of the server.
+             * Specifies the replicationRole property: Role of the server in a replication set..
              * 
-             * @param replicationRole Replication role of the server.
+             * @param replicationRole Role of the server in a replication set.
              * @return the next definition stage.
              */
             WithCreate withReplicationRole(ReplicationRole replicationRole);
@@ -564,9 +575,9 @@ public interface Server {
          */
         interface WithCreateMode {
             /**
-             * Specifies the createMode property: The mode to create a new PostgreSQL server..
+             * Specifies the createMode property: Creation mode of a new server..
              * 
-             * @param createMode The mode to create a new PostgreSQL server.
+             * @param createMode Creation mode of a new server.
              * @return the next definition stage.
              */
             WithCreate withCreateMode(CreateMode createMode);
@@ -597,9 +608,9 @@ public interface Server {
      * The template for Server update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
-        UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithVersion,
-        UpdateStages.WithStorage, UpdateStages.WithBackup, UpdateStages.WithHighAvailability,
-        UpdateStages.WithMaintenanceWindow, UpdateStages.WithAuthConfig, UpdateStages.WithDataEncryption,
+        UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithVersion, UpdateStages.WithStorage,
+        UpdateStages.WithBackup, UpdateStages.WithHighAvailability, UpdateStages.WithMaintenanceWindow,
+        UpdateStages.WithAuthConfig, UpdateStages.WithDataEncryption, UpdateStages.WithAvailabilityZone,
         UpdateStages.WithCreateMode, UpdateStages.WithReplicationRole, UpdateStages.WithReplica,
         UpdateStages.WithNetwork, UpdateStages.WithCluster {
         /**
@@ -640,12 +651,12 @@ public interface Server {
          */
         interface WithSku {
             /**
-             * Specifies the sku property: The SKU (pricing tier) of the server..
+             * Specifies the sku property: Compute tier and size of a server..
              * 
-             * @param sku The SKU (pricing tier) of the server.
+             * @param sku Compute tier and size of a server.
              * @return the next definition stage.
              */
-            Update withSku(Sku sku);
+            Update withSku(SkuForPatch sku);
         }
 
         /**
@@ -662,29 +673,15 @@ public interface Server {
         }
 
         /**
-         * The stage of the Server update allowing to specify administratorLogin.
-         */
-        interface WithAdministratorLogin {
-            /**
-             * Specifies the administratorLogin property: The administrator's login name of a server. Can only be
-             * specified when the server is trying to switch to password authentication and does not have default
-             * administrator login..
-             * 
-             * @param administratorLogin The administrator's login name of a server. Can only be specified when the
-             * server is trying to switch to password authentication and does not have default administrator login.
-             * @return the next definition stage.
-             */
-            Update withAdministratorLogin(String administratorLogin);
-        }
-
-        /**
          * The stage of the Server update allowing to specify administratorLoginPassword.
          */
         interface WithAdministratorLoginPassword {
             /**
-             * Specifies the administratorLoginPassword property: The password of the administrator login..
+             * Specifies the administratorLoginPassword property: Password assigned to the administrator login. As long
+             * as password authentication is enabled, this password can be changed at any time..
              * 
-             * @param administratorLoginPassword The password of the administrator login.
+             * @param administratorLoginPassword Password assigned to the administrator login. As long as password
+             * authentication is enabled, this password can be changed at any time.
              * @return the next definition stage.
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
@@ -695,13 +692,12 @@ public interface Server {
          */
         interface WithVersion {
             /**
-             * Specifies the version property: PostgreSQL Server version. Version 17 is currently not supported for
-             * MVU..
+             * Specifies the version property: Major version of PostgreSQL database engine..
              * 
-             * @param version PostgreSQL Server version. Version 17 is currently not supported for MVU.
+             * @param version Major version of PostgreSQL database engine.
              * @return the next definition stage.
              */
-            Update withVersion(ServerVersion version);
+            Update withVersion(PostgresMajorVersion version);
         }
 
         /**
@@ -727,7 +723,7 @@ public interface Server {
              * @param backup Backup properties of a server.
              * @return the next definition stage.
              */
-            Update withBackup(Backup backup);
+            Update withBackup(BackupForPatch backup);
         }
 
         /**
@@ -740,7 +736,7 @@ public interface Server {
              * @param highAvailability High availability properties of a server.
              * @return the next definition stage.
              */
-            Update withHighAvailability(HighAvailability highAvailability);
+            Update withHighAvailability(HighAvailabilityForPatch highAvailability);
         }
 
         /**
@@ -753,7 +749,7 @@ public interface Server {
              * @param maintenanceWindow Maintenance window properties of a server.
              * @return the next definition stage.
              */
-            Update withMaintenanceWindow(MaintenanceWindow maintenanceWindow);
+            Update withMaintenanceWindow(MaintenanceWindowForPatch maintenanceWindow);
         }
 
         /**
@@ -761,12 +757,12 @@ public interface Server {
          */
         interface WithAuthConfig {
             /**
-             * Specifies the authConfig property: AuthConfig properties of a server..
+             * Specifies the authConfig property: Authentication configuration properties of a server..
              * 
-             * @param authConfig AuthConfig properties of a server.
+             * @param authConfig Authentication configuration properties of a server.
              * @return the next definition stage.
              */
-            Update withAuthConfig(AuthConfig authConfig);
+            Update withAuthConfig(AuthConfigForPatch authConfig);
         }
 
         /**
@@ -783,16 +779,29 @@ public interface Server {
         }
 
         /**
+         * The stage of the Server update allowing to specify availabilityZone.
+         */
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availabilityZone property: Availability zone of a server..
+             * 
+             * @param availabilityZone Availability zone of a server.
+             * @return the next definition stage.
+             */
+            Update withAvailabilityZone(String availabilityZone);
+        }
+
+        /**
          * The stage of the Server update allowing to specify createMode.
          */
         interface WithCreateMode {
             /**
-             * Specifies the createMode property: The mode to update a new PostgreSQL server..
+             * Specifies the createMode property: Update mode of an existing server..
              * 
-             * @param createMode The mode to update a new PostgreSQL server.
+             * @param createMode Update mode of an existing server.
              * @return the next definition stage.
              */
-            Update withCreateMode(CreateModeForUpdate createMode);
+            Update withCreateMode(CreateModeForPatch createMode);
         }
 
         /**
@@ -800,9 +809,9 @@ public interface Server {
          */
         interface WithReplicationRole {
             /**
-             * Specifies the replicationRole property: Replication role of the server.
+             * Specifies the replicationRole property: Role of the server in a replication set..
              * 
-             * @param replicationRole Replication role of the server.
+             * @param replicationRole Role of the server in a replication set.
              * @return the next definition stage.
              */
             Update withReplicationRole(ReplicationRole replicationRole);
@@ -813,11 +822,11 @@ public interface Server {
          */
         interface WithReplica {
             /**
-             * Specifies the replica property: Replica properties of a server. These Replica properties are required to
-             * be passed only in case you want to Promote a server..
+             * Specifies the replica property: Read replica properties of a server. Required only in case that you want
+             * to promote a server..
              * 
-             * @param replica Replica properties of a server. These Replica properties are required to be passed only in
-             * case you want to Promote a server.
+             * @param replica Read replica properties of a server. Required only in case that you want to promote a
+             * server.
              * @return the next definition stage.
              */
             Update withReplica(Replica replica);
@@ -828,11 +837,11 @@ public interface Server {
          */
         interface WithNetwork {
             /**
-             * Specifies the network property: Network properties of a server. These are required to be passed only in
-             * case if server is a private access server..
+             * Specifies the network property: Network properties of a server. Only required if you want your server to
+             * be integrated into a virtual network provided by customer..
              * 
-             * @param network Network properties of a server. These are required to be passed only in case if server is
-             * a private access server.
+             * @param network Network properties of a server. Only required if you want your server to be integrated
+             * into a virtual network provided by customer.
              * @return the next definition stage.
              */
             Update withNetwork(Network network);
@@ -868,7 +877,7 @@ public interface Server {
     Server refresh(Context context);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -876,9 +885,9 @@ public interface Server {
     void restart();
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -887,7 +896,7 @@ public interface Server {
     void restart(RestartParameter parameters, Context context);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,7 +904,7 @@ public interface Server {
     void start();
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

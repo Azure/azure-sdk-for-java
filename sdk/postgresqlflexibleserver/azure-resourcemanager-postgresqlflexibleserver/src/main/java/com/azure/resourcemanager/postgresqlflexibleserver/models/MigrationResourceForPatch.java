@@ -9,21 +9,21 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationResourcePropertiesForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationPropertiesForPatch;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a migration resource for patch.
+ * Migration.
  */
 @Fluent
 public final class MigrationResourceForPatch implements JsonSerializable<MigrationResourceForPatch> {
     /*
-     * Migration resource properties.
+     * Migration properties.
      */
-    private MigrationResourcePropertiesForPatch innerProperties;
+    private MigrationPropertiesForPatch innerProperties;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
@@ -37,11 +37,11 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Get the innerProperties property: Migration resource properties.
+     * Get the innerProperties property: Migration properties.
      * 
      * @return the innerProperties value.
      */
-    private MigrationResourcePropertiesForPatch innerProperties() {
+    private MigrationPropertiesForPatch innerProperties() {
         return this.innerProperties;
     }
 
@@ -66,7 +66,9 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Get the sourceDbServerResourceId property: ResourceId of the source database server.
+     * Get the sourceDbServerResourceId property: Identifier of the source database server resource, when 'sourceType'
+     * is 'PostgreSQLSingleServer'. For other source types this must be set to ipaddress:port&#064;username or
+     * hostname:port&#064;username.
      * 
      * @return the sourceDbServerResourceId value.
      */
@@ -75,22 +77,25 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the sourceDbServerResourceId property: ResourceId of the source database server.
+     * Set the sourceDbServerResourceId property: Identifier of the source database server resource, when 'sourceType'
+     * is 'PostgreSQLSingleServer'. For other source types this must be set to ipaddress:port&#064;username or
+     * hostname:port&#064;username.
      * 
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withSourceDbServerResourceId(String sourceDbServerResourceId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withSourceDbServerResourceId(sourceDbServerResourceId);
         return this;
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
-     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * Get the sourceDbServerFullyQualifiedDomainName property: Fully qualified domain name (FQDN) or IP address of the
+     * source server. This property is optional. When provided, the migration service will always use it to connect to
+     * the source server.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -99,8 +104,9 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
-     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * Set the sourceDbServerFullyQualifiedDomainName property: Fully qualified domain name (FQDN) or IP address of the
+     * source server. This property is optional. When provided, the migration service will always use it to connect to
+     * the source server.
      * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceForPatch object itself.
@@ -108,15 +114,16 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     public MigrationResourceForPatch
         withSourceDbServerFullyQualifiedDomainName(String sourceDbServerFullyQualifiedDomainName) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withSourceDbServerFullyQualifiedDomainName(sourceDbServerFullyQualifiedDomainName);
         return this;
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
-     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * Get the targetDbServerFullyQualifiedDomainName property: Fully qualified domain name (FQDN) or IP address of the
+     * target server. This property is optional. When provided, the migration service will always use it to connect to
+     * the target server.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -125,8 +132,9 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
-     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * Set the targetDbServerFullyQualifiedDomainName property: Fully qualified domain name (FQDN) or IP address of the
+     * target server. This property is optional. When provided, the migration service will always use it to connect to
+     * the target server.
      * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceForPatch object itself.
@@ -134,7 +142,7 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     public MigrationResourceForPatch
         withTargetDbServerFullyQualifiedDomainName(String targetDbServerFullyQualifiedDomainName) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withTargetDbServerFullyQualifiedDomainName(targetDbServerFullyQualifiedDomainName);
         return this;
@@ -145,7 +153,7 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
      * 
      * @return the secretParameters value.
      */
-    public MigrationSecretParameters secretParameters() {
+    public MigrationSecretParametersForPatch secretParameters() {
         return this.innerProperties() == null ? null : this.innerProperties().secretParameters();
     }
 
@@ -155,16 +163,16 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
      * @param secretParameters the secretParameters value to set.
      * @return the MigrationResourceForPatch object itself.
      */
-    public MigrationResourceForPatch withSecretParameters(MigrationSecretParameters secretParameters) {
+    public MigrationResourceForPatch withSecretParameters(MigrationSecretParametersForPatch secretParameters) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withSecretParameters(secretParameters);
         return this;
     }
 
     /**
-     * Get the dbsToMigrate property: Number of databases to migrate.
+     * Get the dbsToMigrate property: Names of databases to migrate.
      * 
      * @return the dbsToMigrate value.
      */
@@ -173,76 +181,76 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the dbsToMigrate property: Number of databases to migrate.
+     * Set the dbsToMigrate property: Names of databases to migrate.
      * 
      * @param dbsToMigrate the dbsToMigrate value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withDbsToMigrate(List<String> dbsToMigrate) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withDbsToMigrate(dbsToMigrate);
         return this;
     }
 
     /**
-     * Get the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
-     * LogicalReplicationOnSourceDb, if needed.
+     * Get the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup logical replication on
+     * source server, if needed.
      * 
      * @return the setupLogicalReplicationOnSourceDbIfNeeded value.
      */
-    public LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded() {
+    public LogicalReplicationOnSourceServer setupLogicalReplicationOnSourceDbIfNeeded() {
         return this.innerProperties() == null
             ? null
             : this.innerProperties().setupLogicalReplicationOnSourceDbIfNeeded();
     }
 
     /**
-     * Set the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
-     * LogicalReplicationOnSourceDb, if needed.
+     * Set the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup logical replication on
+     * source server, if needed.
      * 
      * @param setupLogicalReplicationOnSourceDbIfNeeded the setupLogicalReplicationOnSourceDbIfNeeded value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withSetupLogicalReplicationOnSourceDbIfNeeded(
-        LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded) {
+        LogicalReplicationOnSourceServer setupLogicalReplicationOnSourceDbIfNeeded) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withSetupLogicalReplicationOnSourceDbIfNeeded(setupLogicalReplicationOnSourceDbIfNeeded);
         return this;
     }
 
     /**
-     * Get the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
-     * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
-     * database already exists.
+     * Get the overwriteDbsInTarget property: Indicates if databases on the target server can be overwritten when
+     * already present. If set to 'False', when the migration workflow detects that the database already exists on the
+     * target server, it will wait for a confirmation.
      * 
      * @return the overwriteDbsInTarget value.
      */
-    public OverwriteDbsInTargetEnum overwriteDbsInTarget() {
+    public OverwriteDatabasesOnTargetServer overwriteDbsInTarget() {
         return this.innerProperties() == null ? null : this.innerProperties().overwriteDbsInTarget();
     }
 
     /**
-     * Set the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
-     * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
-     * database already exists.
+     * Set the overwriteDbsInTarget property: Indicates if databases on the target server can be overwritten when
+     * already present. If set to 'False', when the migration workflow detects that the database already exists on the
+     * target server, it will wait for a confirmation.
      * 
      * @param overwriteDbsInTarget the overwriteDbsInTarget value to set.
      * @return the MigrationResourceForPatch object itself.
      */
-    public MigrationResourceForPatch withOverwriteDbsInTarget(OverwriteDbsInTargetEnum overwriteDbsInTarget) {
+    public MigrationResourceForPatch withOverwriteDbsInTarget(OverwriteDatabasesOnTargetServer overwriteDbsInTarget) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withOverwriteDbsInTarget(overwriteDbsInTarget);
         return this;
     }
 
     /**
-     * Get the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
+     * Get the migrationWindowStartTimeInUtc property: Start time (UTC) for migration window.
      * 
      * @return the migrationWindowStartTimeInUtc value.
      */
@@ -251,91 +259,91 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
+     * Set the migrationWindowStartTimeInUtc property: Start time (UTC) for migration window.
      * 
      * @param migrationWindowStartTimeInUtc the migrationWindowStartTimeInUtc value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withMigrationWindowStartTimeInUtc(OffsetDateTime migrationWindowStartTimeInUtc) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withMigrationWindowStartTimeInUtc(migrationWindowStartTimeInUtc);
         return this;
     }
 
     /**
-     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * Get the migrateRoles property: Indicates if roles and permissions must be migrated.
      * 
      * @return the migrateRoles value.
      */
-    public MigrateRolesEnum migrateRoles() {
+    public MigrateRolesAndPermissions migrateRoles() {
         return this.innerProperties() == null ? null : this.innerProperties().migrateRoles();
     }
 
     /**
-     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * Set the migrateRoles property: Indicates if roles and permissions must be migrated.
      * 
      * @param migrateRoles the migrateRoles value to set.
      * @return the MigrationResourceForPatch object itself.
      */
-    public MigrationResourceForPatch withMigrateRoles(MigrateRolesEnum migrateRoles) {
+    public MigrationResourceForPatch withMigrateRoles(MigrateRolesAndPermissions migrateRoles) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withMigrateRoles(migrateRoles);
         return this;
     }
 
     /**
-     * Get the startDataMigration property: Indicates whether the data migration should start right away.
+     * Get the startDataMigration property: Indicates if data migration must start right away.
      * 
      * @return the startDataMigration value.
      */
-    public StartDataMigrationEnum startDataMigration() {
+    public StartDataMigration startDataMigration() {
         return this.innerProperties() == null ? null : this.innerProperties().startDataMigration();
     }
 
     /**
-     * Set the startDataMigration property: Indicates whether the data migration should start right away.
+     * Set the startDataMigration property: Indicates if data migration must start right away.
      * 
      * @param startDataMigration the startDataMigration value to set.
      * @return the MigrationResourceForPatch object itself.
      */
-    public MigrationResourceForPatch withStartDataMigration(StartDataMigrationEnum startDataMigration) {
+    public MigrationResourceForPatch withStartDataMigration(StartDataMigration startDataMigration) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withStartDataMigration(startDataMigration);
         return this;
     }
 
     /**
-     * Get the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
+     * Get the triggerCutover property: Indicates if cutover must be triggered for the entire migration.
      * 
      * @return the triggerCutover value.
      */
-    public TriggerCutoverEnum triggerCutover() {
+    public TriggerCutover triggerCutover() {
         return this.innerProperties() == null ? null : this.innerProperties().triggerCutover();
     }
 
     /**
-     * Set the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
+     * Set the triggerCutover property: Indicates if cutover must be triggered for the entire migration.
      * 
      * @param triggerCutover the triggerCutover value to set.
      * @return the MigrationResourceForPatch object itself.
      */
-    public MigrationResourceForPatch withTriggerCutover(TriggerCutoverEnum triggerCutover) {
+    public MigrationResourceForPatch withTriggerCutover(TriggerCutover triggerCutover) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withTriggerCutover(triggerCutover);
         return this;
     }
 
     /**
-     * Get the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
-     * triggerCutover flag as True and database names in this array.
+     * Get the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases set
+     * 'triggerCutover' to 'True' and the names of the specific databases in this array.
      * 
      * @return the dbsToTriggerCutoverOn value.
      */
@@ -344,46 +352,46 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
-     * triggerCutover flag as True and database names in this array.
+     * Set the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases set
+     * 'triggerCutover' to 'True' and the names of the specific databases in this array.
      * 
      * @param dbsToTriggerCutoverOn the dbsToTriggerCutoverOn value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withDbsToTriggerCutoverOn(List<String> dbsToTriggerCutoverOn) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withDbsToTriggerCutoverOn(dbsToTriggerCutoverOn);
         return this;
     }
 
     /**
-     * Get the cancel property: To trigger cancel for entire migration we need to send this flag as True.
+     * Get the cancel property: Indicates if cancel must be triggered for the entire migration.
      * 
      * @return the cancel value.
      */
-    public CancelEnum cancel() {
+    public Cancel cancel() {
         return this.innerProperties() == null ? null : this.innerProperties().cancel();
     }
 
     /**
-     * Set the cancel property: To trigger cancel for entire migration we need to send this flag as True.
+     * Set the cancel property: Indicates if cancel must be triggered for the entire migration.
      * 
      * @param cancel the cancel value to set.
      * @return the MigrationResourceForPatch object itself.
      */
-    public MigrationResourceForPatch withCancel(CancelEnum cancel) {
+    public MigrationResourceForPatch withCancel(Cancel cancel) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withCancel(cancel);
         return this;
     }
 
     /**
-     * Get the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
-     * as True and database names in this array.
+     * Get the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases set
+     * 'triggerCutover' to 'True' and the names of the specific databases in this array.
      * 
      * @return the dbsToCancelMigrationOn value.
      */
@@ -392,22 +400,22 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
-     * as True and database names in this array.
+     * Set the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases set
+     * 'triggerCutover' to 'True' and the names of the specific databases in this array.
      * 
      * @param dbsToCancelMigrationOn the dbsToCancelMigrationOn value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withDbsToCancelMigrationOn(List<String> dbsToCancelMigrationOn) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withDbsToCancelMigrationOn(dbsToCancelMigrationOn);
         return this;
     }
 
     /**
-     * Get the migrationMode property: There are two types of migration modes Online and Offline.
+     * Get the migrationMode property: Mode used to perform the migration: Online or Offline.
      * 
      * @return the migrationMode value.
      */
@@ -416,14 +424,14 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
     }
 
     /**
-     * Set the migrationMode property: There are two types of migration modes Online and Offline.
+     * Set the migrationMode property: Mode used to perform the migration: Online or Offline.
      * 
      * @param migrationMode the migrationMode value to set.
      * @return the MigrationResourceForPatch object itself.
      */
     public MigrationResourceForPatch withMigrationMode(MigrationMode migrationMode) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new MigrationResourcePropertiesForPatch();
+            this.innerProperties = new MigrationPropertiesForPatch();
         }
         this.innerProperties().withMigrationMode(migrationMode);
         return this;
@@ -468,7 +476,7 @@ public final class MigrationResourceForPatch implements JsonSerializable<Migrati
 
                 if ("properties".equals(fieldName)) {
                     deserializedMigrationResourceForPatch.innerProperties
-                        = MigrationResourcePropertiesForPatch.fromJson(reader);
+                        = MigrationPropertiesForPatch.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedMigrationResourceForPatch.tags = tags;

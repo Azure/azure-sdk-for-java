@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The endpoint type for the virtual endpoint.
+ * Type of endpoint for the virtual endpoints.
  */
 public final class VirtualEndpointType extends ExpandableStringEnum<VirtualEndpointType> {
     /**

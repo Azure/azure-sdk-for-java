@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The mode to create a new PostgreSQL server.
+ * Creation mode of a new server.
  */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /**
