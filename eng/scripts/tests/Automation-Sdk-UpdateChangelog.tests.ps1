@@ -25,8 +25,8 @@ BeforeAll {
         . $commonScriptPath
     }
     
-    # Import the ChangelogAutomation module
-    $modulePath = Join-Path $PSScriptRoot ".." "modules" "ChangelogAutomation.psm1"
+    # Import the ChangelogAutomationHelper module
+    $modulePath = Join-Path $PSScriptRoot ".." "modules" "ChangelogAutomationHelper.psm1"
     Import-Module $modulePath -Force
     
     # Create a test directory structure
@@ -172,7 +172,7 @@ Describe "Get-MavenArtifactInfo" {
 
 Describe "Get-LatestReleasedStableVersion" {
     It "Should return the latest stable version when available" {
-        Mock -ModuleName ChangelogAutomation Invoke-WebRequest {
+        Mock -ModuleName ChangelogAutomationHelper Invoke-WebRequest {
             return @{
                 Content = $script:SampleMavenMetadata
             }
@@ -181,11 +181,11 @@ Describe "Get-LatestReleasedStableVersion" {
         $result = Get-LatestReleasedStableVersion -GroupId "com.azure.resourcemanager" -ArtifactId "azure-resourcemanager-healthdataaiservices"
         
         $result | Should -Be "1.0.0"
-        Should -Invoke -ModuleName ChangelogAutomation Invoke-WebRequest -Times 1
+        Should -Invoke -ModuleName ChangelogAutomationHelper Invoke-WebRequest -Times 1
     }
     
     It "Should return the latest beta version when no stable version exists" {
-        Mock -ModuleName ChangelogAutomation Invoke-WebRequest {
+        Mock -ModuleName ChangelogAutomationHelper Invoke-WebRequest {
             return @{
                 Content = $script:SampleMavenMetadataOnlyBeta
             }
@@ -194,11 +194,11 @@ Describe "Get-LatestReleasedStableVersion" {
         $result = Get-LatestReleasedStableVersion -GroupId "com.azure.resourcemanager" -ArtifactId "azure-resourcemanager-newservice"
         
         $result | Should -Be "1.0.0-beta.2"
-        Should -Invoke -ModuleName ChangelogAutomation Invoke-WebRequest -Times 1
+        Should -Invoke -ModuleName ChangelogAutomationHelper Invoke-WebRequest -Times 1
     }
     
     It "Should return null when Maven Central request fails" {
-        Mock -ModuleName ChangelogAutomation Invoke-WebRequest {
+        Mock -ModuleName ChangelogAutomationHelper Invoke-WebRequest {
             throw "Network error"
         }
         
@@ -208,7 +208,7 @@ Describe "Get-LatestReleasedStableVersion" {
     }
     
     It "Should construct correct Maven Central metadata URL" {
-        Mock -ModuleName ChangelogAutomation Invoke-WebRequest {
+        Mock -ModuleName ChangelogAutomationHelper Invoke-WebRequest {
             param($Uri)
             $Uri | Should -Be "https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthdataaiservices/maven-metadata.xml"
             return @{
@@ -218,7 +218,7 @@ Describe "Get-LatestReleasedStableVersion" {
         
         Get-LatestReleasedStableVersion -GroupId "com.azure.resourcemanager" -ArtifactId "azure-resourcemanager-healthdataaiservices"
         
-        Should -Invoke -ModuleName ChangelogAutomation Invoke-WebRequest -Times 1
+        Should -Invoke -ModuleName ChangelogAutomationHelper Invoke-WebRequest -Times 1
     }
 }
 
@@ -361,7 +361,7 @@ Describe "Update-ChangelogFile" {
     }
     
     It "Should call New-ChangelogContent to parse the text" {
-        Mock -ModuleName ChangelogAutomation New-ChangelogContent {
+        Mock -ModuleName ChangelogAutomationHelper New-ChangelogContent {
             return [PSCustomObject]@{
                 ReleaseContent = @("### Breaking Changes", "* validate() was removed")
                 Sections = @{ "Breaking Changes" = @("* validate() was removed") }
@@ -370,7 +370,7 @@ Describe "Update-ChangelogFile" {
         
         Update-ChangelogFile -ChangelogPath $script:TestChangelogPath -NewChangelogText $script:SampleChangelogText
         
-        Should -Invoke -ModuleName ChangelogAutomation New-ChangelogContent -Times 1
+        Should -Invoke -ModuleName ChangelogAutomationHelper New-ChangelogContent -Times 1
     }
     
     It "Should handle parsing errors gracefully" {
@@ -412,7 +412,7 @@ Describe "Update-ChangelogFile" {
     }
     
     It "Should preserve the structure when updating" {
-        Mock -ModuleName ChangelogAutomation New-ChangelogContent {
+        Mock -ModuleName ChangelogAutomationHelper New-ChangelogContent {
             param($NewChangelogText, $InitialAtxHeader)
             return [PSCustomObject]@{
                 ReleaseContent = @("### Breaking Changes", "* validate() was removed")
@@ -436,7 +436,7 @@ Describe "Script Integration" {
         
         # Verify the script imports the module
         $scriptContent | Should -Match 'Import-Module'
-        $scriptContent | Should -Match 'ChangelogAutomation'
+        $scriptContent | Should -Match 'ChangelogAutomationHelper'
         
         # Verify the script doesn't have duplicate function definitions
         $scriptContent | Should -Not -Match 'function Get-MavenArtifactInfo'
@@ -448,8 +448,8 @@ Describe "Script Integration" {
     }
     
     It "Should verify the module exports all required functions" {
-        $modulePath = Join-Path $PSScriptRoot ".." "modules" "ChangelogAutomation.psm1"
-        $module = Get-Module -Name ChangelogAutomation
+        $modulePath = Join-Path $PSScriptRoot ".." "modules" "ChangelogAutomationHelper.psm1"
+        $module = Get-Module -Name ChangelogAutomationHelper
         
         $module.ExportedFunctions.Keys | Should -Contain "Get-MavenArtifactInfo"
         $module.ExportedFunctions.Keys | Should -Contain "Get-LatestReleasedStableVersion"

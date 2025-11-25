@@ -39,8 +39,8 @@ $ErrorActionPreference = "Stop"
 $commonScriptPath = Join-Path $PSScriptRoot ".." "common" "scripts" "common.ps1"
 . $commonScriptPath
 
-# Import ChangelogAutomation module
-$modulePath = Join-Path $PSScriptRoot "modules" "ChangelogAutomation.psm1"
+# Import ChangelogAutomationHelper module
+$modulePath = Join-Path $PSScriptRoot "modules" "ChangelogAutomationHelper.psm1"
 Import-Module $modulePath -Force
 
 try {
