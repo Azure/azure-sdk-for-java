@@ -66,16 +66,6 @@
       "component": {
         "type": "maven",
         "maven": {
-          "groupId": "com.fasterxml.uuid",
-          "artifactId": "java-uuid-generator",
-          "version": "4.0.1"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
           "groupId": "commons-codec",
           "artifactId": "commons-codec",
           "version": "1.14"
