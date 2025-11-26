@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.VolumeRevert;
  */
 public final class VolumesRevertSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_Revert.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_Revert.json
      */
     /**
      * Sample code: Volumes_Revert.

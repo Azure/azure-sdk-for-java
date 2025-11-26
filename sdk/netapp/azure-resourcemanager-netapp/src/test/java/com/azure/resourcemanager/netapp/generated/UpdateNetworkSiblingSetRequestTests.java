@@ -13,24 +13,25 @@ public final class UpdateNetworkSiblingSetRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateNetworkSiblingSetRequest model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"m\",\"subnetId\":\"rafwgckhocxvdf\",\"networkSiblingSetStateId\":\"fwafqrouda\",\"networkFeatures\":\"Standard\"}")
+            "{\"networkSiblingSetId\":\"jelaqacigele\",\"subnetId\":\"hdbvqvwzkjop\",\"networkSiblingSetStateId\":\"beonrlkwzdq\",\"networkFeatures\":\"Standard\"}")
             .toObject(UpdateNetworkSiblingSetRequest.class);
-        Assertions.assertEquals("m", model.networkSiblingSetId());
-        Assertions.assertEquals("rafwgckhocxvdf", model.subnetId());
-        Assertions.assertEquals("fwafqrouda", model.networkSiblingSetStateId());
+        Assertions.assertEquals("jelaqacigele", model.networkSiblingSetId());
+        Assertions.assertEquals("hdbvqvwzkjop", model.subnetId());
+        Assertions.assertEquals("beonrlkwzdq", model.networkSiblingSetStateId());
         Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateNetworkSiblingSetRequest model = new UpdateNetworkSiblingSetRequest().withNetworkSiblingSetId("m")
-            .withSubnetId("rafwgckhocxvdf")
-            .withNetworkSiblingSetStateId("fwafqrouda")
-            .withNetworkFeatures(NetworkFeatures.STANDARD);
+        UpdateNetworkSiblingSetRequest model
+            = new UpdateNetworkSiblingSetRequest().withNetworkSiblingSetId("jelaqacigele")
+                .withSubnetId("hdbvqvwzkjop")
+                .withNetworkSiblingSetStateId("beonrlkwzdq")
+                .withNetworkFeatures(NetworkFeatures.STANDARD);
         model = BinaryData.fromObject(model).toObject(UpdateNetworkSiblingSetRequest.class);
-        Assertions.assertEquals("m", model.networkSiblingSetId());
-        Assertions.assertEquals("rafwgckhocxvdf", model.subnetId());
-        Assertions.assertEquals("fwafqrouda", model.networkSiblingSetStateId());
+        Assertions.assertEquals("jelaqacigele", model.networkSiblingSetId());
+        Assertions.assertEquals("hdbvqvwzkjop", model.subnetId());
+        Assertions.assertEquals("beonrlkwzdq", model.networkSiblingSetStateId());
         Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
     }
 }

@@ -13,25 +13,25 @@ public final class QuotaAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"dwdigumb\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"aauzzptjazysd\"}")
+            "{\"name\":\"xuifmcsypobkdqz\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"zsylollgt\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("dwdigumb", model.name());
+        Assertions.assertEquals("xuifmcsypobkdqz", model.name());
         Assertions.assertEquals(
             CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
             model.type());
-        Assertions.assertEquals("aauzzptjazysd", model.resourceGroup());
+        Assertions.assertEquals("zsylollgt", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("dwdigumb")
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("xuifmcsypobkdqz")
             .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-            .withResourceGroup("aauzzptjazysd");
+            .withResourceGroup("zsylollgt");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("dwdigumb", model.name());
+        Assertions.assertEquals("xuifmcsypobkdqz", model.name());
         Assertions.assertEquals(
             CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
             model.type());
-        Assertions.assertEquals("aauzzptjazysd", model.resourceGroup());
+        Assertions.assertEquals("zsylollgt", model.resourceGroup());
     }
 }
