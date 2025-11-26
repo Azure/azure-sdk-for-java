@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.core.exc.StreamConstraintsException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.internal.StringUtil;
@@ -60,7 +61,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
 
                 throw Utils.createCosmosException(
                     HttpConstants.StatusCodes.BADREQUEST,
-                    HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
+                    evaluateSubStatusCode(e),
                     innerException,
                     responseHeaders);
             }
@@ -91,7 +92,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
 
             throw Utils.createCosmosException(
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
+                evaluateSubStatusCode(e),
                 nestedException,
                 responseHeaders);
         }
@@ -146,5 +147,19 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
         }
 
         return charsetDecoder;
+    }
+
+    private static int evaluateSubStatusCode(IOException exception) {
+
+        if (exception instanceof IOException) {
+
+            if (exception instanceof StreamConstraintsException) {
+                return HttpConstants.SubStatusCodes.JACKSON_STREAMS_CONSTRAINED;
+            }
+
+            return HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE;
+        }
+
+        return HttpConstants.SubStatusCodes.UNKNOWN;
     }
 }

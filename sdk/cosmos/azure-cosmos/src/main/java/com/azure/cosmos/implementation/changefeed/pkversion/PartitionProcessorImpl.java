@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -36,6 +37,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -58,6 +60,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
+    private final int maxStreamsConstrainedRetries = 1;
+    private final AtomicInteger streamsConstrainedRetries = new AtomicInteger(0);
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
     private volatile Instant lastProcessedTime;
 
@@ -77,6 +81,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
+
         // For pk version, merge is not support, exclude it from the capabilities header
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
             .setHeader(
@@ -194,6 +199,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (this.options.getMaxItemCount() != this.settings.getMaxItemCount()) {
                     this.options.setMaxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
                 }
+
+                this.streamsConstrainedRetries.set(0);
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
@@ -251,8 +258,58 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                                     }).flatMap(values -> Flux.empty());
                             }
+
+                            break;
                         }
-                        break;
+                        case JACKSON_STREAMS_CONSTRAINED: {
+
+                            if (!Configs.isChangeFeedProcessorMalformedResponseRecoveryEnabled()) {
+                                logger.error(
+                                    "Partition : " + this.lease.getLeaseToken() + " : Streams constrained exception encountered. To enable automatic retries, please set the " + Configs.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED + " configuration to 'true'. Failing.",
+                                    clientException);
+                                this.resultException = new RuntimeException(clientException);
+                                return Flux.error(throwable);
+                            }
+
+                            int retryCount = this.streamsConstrainedRetries.incrementAndGet();
+                            boolean shouldRetry = retryCount <= this.maxStreamsConstrainedRetries;
+
+                            if (!shouldRetry) {
+                                logger.error(
+                                    "Partition : " + this.lease.getLeaseToken() + ": Reached max retries for streams constrained exception with statusCode : [" + clientException.getStatusCode() + "]" + " : subStatusCode " + clientException.getSubStatusCode() + " : message " + clientException.getMessage() + ", failing.",
+                                    clientException);
+                                this.resultException = new RuntimeException(clientException);
+                                return Flux.error(throwable);
+                            }
+
+                            logger.warn(
+                                "Partition : " + this.lease.getLeaseToken() + " : Streams constrained exception encountered, will retry. " + "retryCount " + retryCount + " of " + this.maxStreamsConstrainedRetries + " retries.",
+                                clientException);
+
+                            if (this.options.getMaxItemCount() == -1) {
+                                logger.warn(
+                                    "Partition : " + this.lease.getLeaseToken() + " : max item count is set to -1, will retry after setting it to 100. " + "retryCount " + retryCount + " of " + this.maxStreamsConstrainedRetries + " retries.",
+                                    clientException);
+                                this.options.setMaxItemCount(1);
+                                return Flux.empty();
+                            }
+
+                            if (this.options.getMaxItemCount() <= 1) {
+                                logger.error(
+                                    "Cannot reduce maxItemCount further as it's already at :" + this.options.getMaxItemCount(), clientException);
+                                this.resultException = new RuntimeException(clientException);
+                                return Flux.error(throwable);
+                            }
+
+                            this.options.setMaxItemCount(1);
+                            logger.warn("Reducing maxItemCount, new value: " + this.options.getMaxItemCount());
+                            return Flux.empty();
+                        }
+                        case JSON_PARSING_ERROR:
+                            logger.error(
+                                "Partition : " + this.lease.getLeaseToken() + ": Parsing error encountered.", clientException);
+                            this.resultException = new RuntimeException(clientException);
+                            return Flux.error(throwable);
                         default: {
                             logger.error("Unrecognized Cosmos exception returned error code " + docDbError, clientException);
                             this.resultException = new RuntimeException(clientException);
