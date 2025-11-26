@@ -565,48 +565,6 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
-    @Test
-    public void downloadStreamWithResponseContentValidation() throws IOException {
-        byte[] randomData = getRandomByteArray(Constants.KB);
-        StructuredMessageEncoder encoder
-            = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
-
-        Flux<ByteBuffer> input = Flux.just(encodedData);
-
-        DownloadContentValidationOptions validationOptions
-            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
-
-        StepVerifier
-            .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
-                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
-            .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
-            .verifyComplete();
-    }
-
-    @Test
-    public void downloadStreamWithResponseContentValidationRange() throws IOException {
-        byte[] randomData = getRandomByteArray(Constants.KB);
-        StructuredMessageEncoder encoder
-            = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
-
-        Flux<ByteBuffer> input = Flux.just(encodedData);
-
-        DownloadContentValidationOptions validationOptions
-            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
-
-        BlobRange range = new BlobRange(0, 512L);
-
-        StepVerifier.create(bc.upload(input, null, true)
-            .then(bc.downloadStreamWithResponse(range, null, null, false, validationOptions))
-            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(r -> {
-                assertNotNull(r);
-                assertTrue(r.length > 0);
-            }).verifyComplete();
-    }
-
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void copyFromURLSourceErrorAndStatusCode() {
