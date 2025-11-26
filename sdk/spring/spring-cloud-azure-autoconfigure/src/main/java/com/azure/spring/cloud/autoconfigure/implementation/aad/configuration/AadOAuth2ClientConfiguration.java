@@ -3,10 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
-import com.azure.spring.cloud.autoconfigure.implementation.aad.security.*;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ClientCertificatePropertiesCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ClientRegistrationCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadJwtBearerGrantRequestParametersConverter;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadJwtClientAuthenticationParametersConverter;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadOAuth2ClientAuthenticationJwkResolver;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadOidcIdTokenDecoderFactory;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.JacksonHttpSessionOAuth2AuthorizedClientRepository;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.OAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadProfileProperties;
 import org.springframework.beans.factory.ObjectProvider;

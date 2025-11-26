@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
  * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow">OAuth 2.0 On-Behalf-Of</a>
  */
 public class AadJwtBearerGrantRequestParametersConverter
-    implements Converter<JwtBearerGrantRequest, MultiValueMap<String,String>> {
+    implements Converter<JwtBearerGrantRequest, MultiValueMap<String, String>> {
 
     @Override
     public MultiValueMap<String, String> convert(JwtBearerGrantRequest jwtBearerGrantRequest) {
