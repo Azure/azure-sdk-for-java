@@ -95,8 +95,7 @@ public class ClientTestBase extends TestProxyTestBase {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-        sanitizers.add(new TestProxySanitizer("$..endpoint", "https://.+?/api/projects/.+?/", "https://REDACTED/",
-            TestProxySanitizerType.URL));
+        sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
         sanitizers.add(new TestProxySanitizer("Content-Type",
             "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
