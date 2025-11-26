@@ -31,6 +31,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -3980,5 +3981,17 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient("my directory");
         String expectedName = "my%20directory";
         assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
+
+    @Test
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
+
+        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
+            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options, null)));
+
+        StepVerifier.create(response.collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
     }
 }

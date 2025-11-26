@@ -714,12 +714,13 @@ public class DataLakeFileSystemClient {
         boolean recursive = finalOptions.isRecursive();
         boolean upn = finalOptions.isUserPrincipalNameReturned();
         String path = finalOptions.getPath();
+        String beginFrom = finalOptions.getStartFrom();
 
         BiFunction<String, Integer, PagedResponse<PathItem>> pageRetriever = (continuation, pageSize) -> {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
                 = () -> this.azureDataLakeStorage.getFileSystems()
                     .listPathsWithResponse(recursive, null, null, continuation, path,
-                        pageSize == null ? maxResults : pageSize, upn, Context.NONE);
+                        pageSize == null ? maxResults : pageSize, upn, beginFrom, Context.NONE);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response
                 = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);

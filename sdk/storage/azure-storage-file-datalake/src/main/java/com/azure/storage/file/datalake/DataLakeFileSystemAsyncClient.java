@@ -745,7 +745,8 @@ public class DataLakeFileSystemAsyncClient {
                     finalOptions = new ListPathsOptions().setMaxResults(pageSize)
                         .setPath(options.getPath())
                         .setRecursive(options.isRecursive())
-                        .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned());
+                        .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned())
+                        .setStartFrom(options.getStartFrom());
                 }
             } else {
                 finalOptions = options;
@@ -768,7 +769,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(this.azureDataLakeStorage.getFileSystems()
             .listPathsWithResponseAsync(options.isRecursive(), null, null, marker, options.getPath(),
-                options.getMaxResults(), options.isUserPrincipalNameReturned(), Context.NONE),
+                options.getMaxResults(), options.isUserPrincipalNameReturned(), options.getStartFrom(), Context.NONE),
             timeout);
     }
 

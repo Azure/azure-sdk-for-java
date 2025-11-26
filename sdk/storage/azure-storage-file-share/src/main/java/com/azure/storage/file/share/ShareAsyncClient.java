@@ -34,6 +34,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
@@ -370,7 +371,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -939,7 +940,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1087,7 +1088,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1116,7 +1117,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetAccessPolicyOptions}
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1160,7 +1161,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @return The {@link ShareInfo information about the share}
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
@@ -1193,7 +1194,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status
      * code
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
@@ -1691,7 +1692,7 @@ public class ShareAsyncClient {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
-                requestConditions, context)
+                requestConditions, null, null, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
@@ -2313,7 +2314,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2340,7 +2341,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2369,7 +2370,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2384,5 +2385,37 @@ public class ShareAsyncClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }

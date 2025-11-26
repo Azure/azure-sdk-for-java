@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.52'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/596d8d2a8c1c50bd6ebe60036143f4c4787fc816/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-11-05/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-02-06/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -26,7 +26,7 @@ enable-sync-stack: true
 default-http-exception-type: com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,ShareFileHandleAccessRights,FilePermissionFormat,NfsFileType,ModeCopyMode,OwnerCopyMode
+custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,ShareFileHandleAccessRights,FilePermissionFormat,NfsFileType,ModeCopyMode,OwnerCopyMode,UserDelegationKey,KeyInfo,ShareNfsSettingsEncryptionInTransit,ShareSmbSettingsEncryptionInTransit,ShareNfsSettings,FilePropertySemantics
 customization-class: src/main/java/ShareStorageCustomization.java
 use-input-stream-for-binary: true
 disable-client-builder: true
@@ -438,4 +438,14 @@ directive:
   transform: >
     $.xml = {"name": "AccessRight"};
     $["x-ms-enum"].name = "ShareFileHandleAccessRights";
+```
+
+### Rename UserDelegationKey SignedOid and SignedTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.UserDelegationKey
+  transform: >
+    $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
+    $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
 ```
