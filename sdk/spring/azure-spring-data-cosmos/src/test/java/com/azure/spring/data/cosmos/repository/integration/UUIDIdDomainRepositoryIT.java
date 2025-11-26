@@ -46,7 +46,7 @@ public class UUIDIdDomainRepositoryIT {
     private static final UUIDIdDomain DOMAIN_1 = new UUIDIdDomain(ID_1, NAME_1);
     private static final UUIDIdDomain DOMAIN_2 = new UUIDIdDomain(ID_2, NAME_2);
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -81,7 +81,9 @@ public class UUIDIdDomainRepositoryIT {
 
     @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, UUID>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, UUID>(InvalidDomain.class));
+
     }
 
     @Test
@@ -143,8 +145,10 @@ public class UUIDIdDomainRepositoryIT {
 
     @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.deleteById(DOMAIN_1.getNumber());
+        assertThrows(CosmosNotFoundException.class, () -> {
+            this.repository.deleteAll();
+            this.repository.deleteById(DOMAIN_1.getNumber());
+        });
     }
 
     @Test
@@ -156,8 +160,10 @@ public class UUIDIdDomainRepositoryIT {
 
     @Test
     public void testDeleteShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.delete(DOMAIN_1);
+        assertThrows(CosmosNotFoundException.class, () -> {
+            this.repository.deleteAll();
+            this.repository.delete(DOMAIN_1);
+        });
     }
 
     @Test

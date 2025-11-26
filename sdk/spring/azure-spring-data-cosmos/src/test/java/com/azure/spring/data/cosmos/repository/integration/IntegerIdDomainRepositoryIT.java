@@ -39,7 +39,7 @@ public class IntegerIdDomainRepositoryIT {
     private static final String NAME = "panli";
     private static final IntegerIdDomain DOMAIN = new IntegerIdDomain(ID, NAME);
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -73,7 +73,8 @@ public class IntegerIdDomainRepositoryIT {
 
     @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, Integer>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, Integer>(InvalidDomain.class));
     }
 
     @Test
@@ -125,8 +126,10 @@ public class IntegerIdDomainRepositoryIT {
 
     @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.deleteById(DOMAIN.getNumber());
+        assertThrows(CosmosNotFoundException.class, () -> {
+            this.repository.deleteAll();
+            this.repository.deleteById(DOMAIN.getNumber());
+        });
     }
 
     @Test
@@ -138,8 +141,10 @@ public class IntegerIdDomainRepositoryIT {
 
     @Test
     public void testDeleteShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.delete(DOMAIN);
+        assertThrows(CosmosNotFoundException.class, () -> {
+            this.repository.deleteAll();
+            this.repository.delete(DOMAIN);
+        });
     }
 
     @Test

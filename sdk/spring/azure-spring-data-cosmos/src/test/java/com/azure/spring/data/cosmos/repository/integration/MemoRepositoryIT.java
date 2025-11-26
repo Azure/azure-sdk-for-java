@@ -48,7 +48,7 @@ public class MemoRepositoryIT {
     private static Memo testMemo2;
     private static Memo testMemo3;
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -234,7 +234,7 @@ public class MemoRepositoryIT {
     @Test
     @Disabled // TODO(pan): Ignore this test case for now, will update this from service update.
     public void testFindByStartsWithWithException() {
-        repository.findByMessageStartsWith(testMemo1.getMessage());
+        assertThrows(CosmosAccessException.class, () -> repository.findByMessageStartsWith(testMemo1.getMessage()));
     }
 
     @Test

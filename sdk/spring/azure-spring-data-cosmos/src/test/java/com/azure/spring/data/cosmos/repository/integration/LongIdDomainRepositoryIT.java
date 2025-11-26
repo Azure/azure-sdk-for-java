@@ -48,7 +48,7 @@ public class LongIdDomainRepositoryIT {
     private static final LongIdDomain DOMAIN_1 = new LongIdDomain(ID_1, NAME_1);
     private static final LongIdDomain DOMAIN_2 = new LongIdDomain(ID_2, NAME_2);
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -83,7 +83,8 @@ public class LongIdDomainRepositoryIT {
 
     @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class));
     }
 
     @Test
@@ -145,8 +146,10 @@ public class LongIdDomainRepositoryIT {
 
     @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.deleteById(DOMAIN_1.getNumber());
+        assertThrows(CosmosNotFoundException.class, () ->{
+            this.repository.deleteAll();
+            this.repository.deleteById(DOMAIN_1.getNumber());
+        });
     }
 
     @Test
@@ -158,8 +161,10 @@ public class LongIdDomainRepositoryIT {
 
     @Test
     public void testDeleteShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.delete(DOMAIN_1);
+        assertThrows(CosmosNotFoundException.class, () ->{
+            this.repository.deleteAll();
+            this.repository.delete(DOMAIN_1);
+        });
     }
 
     @Test

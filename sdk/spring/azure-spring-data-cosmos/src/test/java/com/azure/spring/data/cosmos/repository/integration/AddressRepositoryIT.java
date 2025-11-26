@@ -26,7 +26,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -47,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AddressRepositoryIT {
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -182,8 +181,8 @@ public class AddressRepositoryIT {
 
     @Test
     public void deleteWithoutPartitionedColumnShouldFail() {
-
-        repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode());
+        assertThrows(Exception.class, () ->
+            repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode()));
     }
 
     @Test

@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveUUIDIdDomainRepositoryIT {
@@ -37,7 +39,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
     private static final UUIDIdDomain DOMAIN_1 = new UUIDIdDomain(ID_1, NAME_1);
     private static final UUIDIdDomain DOMAIN_2 = new UUIDIdDomain(ID_2, NAME_2);
 
-    
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -79,7 +81,8 @@ public class ReactiveUUIDIdDomainRepositoryIT {
 
     @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class));
     }
 
     @Test

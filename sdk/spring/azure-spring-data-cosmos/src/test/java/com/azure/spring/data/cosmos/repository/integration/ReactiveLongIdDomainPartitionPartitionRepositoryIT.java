@@ -17,13 +17,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -41,7 +42,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     private static final LongIdDomainPartition DOMAIN_2 = new LongIdDomainPartition(ID_2, NAME_2);
     private static final LongIdDomainPartition DOMAIN_3 = new LongIdDomainPartition(ID_3, NAME_1);
 
-    
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -86,7 +87,8 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
     @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class));
     }
 
     @Test

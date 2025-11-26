@@ -16,15 +16,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestRepositoryConfig.class, ErrorEventListenerConfig.class})
 public class ApplicationContextEventErrorIT {
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -40,6 +40,8 @@ public class ApplicationContextEventErrorIT {
 
     @Test
     public void shouldThrowExceptionIfEventListenerThrowsException() {
-        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
+        assertThrows(CosmosAccessException.class, () ->
+            repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
+                new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())));
     }
 }

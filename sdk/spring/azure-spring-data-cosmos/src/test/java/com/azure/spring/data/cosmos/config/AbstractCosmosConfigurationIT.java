@@ -26,10 +26,11 @@ import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AbstractCosmosConfigurationIT {
 
-    
+
 
     @Test
     public void containsExpressionResolver() {
@@ -49,10 +50,12 @@ public class AbstractCosmosConfigurationIT {
 
     @Test
     public void defaultObjectMapperBeanNotExists() {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            TestCosmosConfiguration.class);
+        assertThrows(NoSuchBeanDefinitionException.class, () -> {
+            final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
+                TestCosmosConfiguration.class);
 
-        context.getBean(ObjectMapper.class);
+            context.getBean(ObjectMapper.class);
+        });
     }
 
     @Test

@@ -80,7 +80,7 @@ public class ProjectRepositorySortIT {
     private static final List<SortedProject> PROJECTS = Arrays.asList(PROJECT_4, PROJECT_3,
         PROJECT_2, PROJECT_1, PROJECT_0);
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -131,24 +131,30 @@ public class ProjectRepositorySortIT {
 
     @Test
     public void testFindAllSortMoreThanOneOrderException() {
-        final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
+        assertThrows(CosmosBadRequestException.class, () -> {
+            final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
 
-        this.repository.findAll(sort).iterator().next();
+            this.repository.findAll(sort).iterator().next();
+        });
     }
 
     @Test
     public void testFindAllSortIgnoreCaseException() {
-        final Sort.Order order = Sort.Order.by("name").ignoreCase();
-        final Sort sort = Sort.by(order);
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Sort.Order order = Sort.Order.by("name").ignoreCase();
+            final Sort sort = Sort.by(order);
 
-        this.repository.findAll(sort);
+            this.repository.findAll(sort);
+        });
     }
 
     @Test
     public void testFindAllSortMissMatchException() {
-        final Sort sort = Sort.by(Sort.Direction.ASC, "fake-name");
+        assertThrows(CosmosAccessException.class, () -> {
+            final Sort sort = Sort.by(Sort.Direction.ASC, "fake-name");
 
-        this.repository.findAll(sort).iterator().next();
+            this.repository.findAll(sort).iterator().next();
+        });
     }
 
     public void testFindAllSortWithIdName() {
