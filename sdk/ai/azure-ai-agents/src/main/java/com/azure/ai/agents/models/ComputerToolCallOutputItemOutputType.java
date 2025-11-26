@@ -5,7 +5,6 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
 /**
