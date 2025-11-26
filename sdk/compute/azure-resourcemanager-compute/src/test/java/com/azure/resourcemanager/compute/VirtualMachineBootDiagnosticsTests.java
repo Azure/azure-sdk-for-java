@@ -4,13 +4,13 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,6 +52,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withBootDiagnostics()
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -79,6 +80,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withBootDiagnostics(creatableStorageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
@@ -107,6 +109,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withBootDiagnostics(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -136,6 +139,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withBootDiagnostics()
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -172,6 +176,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             // well
             .withBootDiagnostics()
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -206,6 +211,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withUnmanagedDisks()
             .withBootDiagnostics()
             .withExistingStorageAccount(storageAccount) // This storage account must be shared by disk and boot diagnostics
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -235,6 +241,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withUnmanagedDisks()
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         String osDiskVhd = virtualMachine1.osUnmanagedDiskVhdUri();
@@ -258,6 +265,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withSpecializedOSUnmanagedDisk(osDiskVhd, OperatingSystemTypes.LINUX)
             .withBootDiagnostics() // A new storage account should be created and used
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine2);
@@ -299,6 +307,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withBootDiagnostics(creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage
             // account
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
@@ -323,7 +332,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withBootDiagnosticsOnManagedStorageAccount()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);

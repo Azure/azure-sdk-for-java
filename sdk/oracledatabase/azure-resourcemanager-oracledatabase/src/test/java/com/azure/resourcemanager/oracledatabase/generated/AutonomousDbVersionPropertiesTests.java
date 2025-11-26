@@ -13,13 +13,13 @@ public final class AutonomousDbVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionProperties model = BinaryData.fromString(
-            "{\"version\":\"gsj\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false}")
+            "{\"version\":\"ggcula\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true}")
             .toObject(AutonomousDbVersionProperties.class);
-        Assertions.assertEquals("gsj", model.version());
-        Assertions.assertEquals(WorkloadType.DW, model.dbWorkload());
+        Assertions.assertEquals("ggcula", model.version());
+        Assertions.assertEquals(WorkloadType.APEX, model.dbWorkload());
         Assertions.assertTrue(model.isDefaultForFree());
         Assertions.assertTrue(model.isDefaultForPaid());
-        Assertions.assertTrue(model.isFreeTierEnabled());
-        Assertions.assertFalse(model.isPaidEnabled());
+        Assertions.assertFalse(model.isFreeTierEnabled());
+        Assertions.assertTrue(model.isPaidEnabled());
     }
 }

@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Status model = BinaryData.fromString("{\"state\":\"jfkgiawxk\",\"reason\":\"ypl\"}").toObject(Status.class);
-        Assertions.assertEquals("jfkgiawxk", model.state());
-        Assertions.assertEquals("ypl", model.reason());
+        Status model
+            = BinaryData.fromString("{\"state\":\"chcbonqvpkvlrxnj\",\"reason\":\"seiphe\"}").toObject(Status.class);
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.state());
+        Assertions.assertEquals("seiphe", model.reason());
     }
 }

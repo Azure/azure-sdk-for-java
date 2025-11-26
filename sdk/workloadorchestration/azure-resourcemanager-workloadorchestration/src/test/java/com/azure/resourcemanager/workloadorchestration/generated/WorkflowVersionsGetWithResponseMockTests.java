@@ -22,7 +22,7 @@ public final class WorkflowVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"revision\":1660876742,\"configuration\":\"dkkgjiiytssikizb\",\"stageSpec\":[{\"name\":\"fqb\",\"specification\":{},\"tasks\":[{\"name\":\"gmqsorhcekxg\",\"specification\":{}},{\"name\":\"lykmxcpwzvmdo\",\"specification\":{}}],\"taskOption\":{\"concurrency\":502016456,\"errorAction\":{}}},{\"name\":\"iw\",\"specification\":{},\"tasks\":[{\"name\":\"oncqbazqicqch\",\"specification\":{}},{\"name\":\"gtvxbyj\",\"specification\":{}},{\"name\":\"nepubdpkxyqvgx\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1008631704,\"errorAction\":{}}},{\"name\":\"tvo\",\"specification\":{},\"tasks\":[{\"name\":\"uwsaifmcwn\",\"specification\":{}},{\"name\":\"s\",\"specification\":{}}],\"taskOption\":{\"concurrency\":914020378,\"errorAction\":{}}}],\"reviewId\":\"cvk\",\"state\":\"ExternalValidationFailed\",\"specification\":{},\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"jy\",\"type\":\"CustomLocation\"},\"eTag\":\"velsz\",\"id\":\"qzevxoqeint\",\"name\":\"waljglzoblqwaaf\",\"type\":\"qulhmzy\"}";
+            = "{\"properties\":{\"revision\":1288458710,\"configuration\":\"ztekxbyjgmsfep\",\"stageSpec\":[{\"name\":\"ihpq\",\"specification\":{},\"tasks\":[{\"name\":\"hrdicxdwyjfo\",\"specification\":{}},{\"name\":\"xwyovcxjsgbip\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1208173457,\"errorAction\":{}}},{\"name\":\"eksbuhoduchvls\",\"specification\":{},\"tasks\":[{\"name\":\"bfdyjduss\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1022332024,\"errorAction\":{}}},{\"name\":\"kbhwlkaaggkrehbf\",\"specification\":{},\"tasks\":[{\"name\":\"ff\",\"specification\":{}},{\"name\":\"jfiimreoa\",\"specification\":{}},{\"name\":\"sqtaadusrexxfa\",\"specification\":{}},{\"name\":\"sqwudohzilfmnli\",\"specification\":{}}],\"taskOption\":{\"concurrency\":12668329,\"errorAction\":{}}}],\"reviewId\":\"feypofqpmb\",\"state\":\"InReview\",\"specification\":{},\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"mttjxophgerh\",\"type\":\"EdgeZone\"},\"eTag\":\"gohtwz\",\"id\":\"ilrixysf\",\"name\":\"imsqywwwmhk\",\"type\":\"uwaedrympmlqoi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class WorkflowVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkflowVersion response = manager.workflowVersions()
-            .getWithResponse("lhjym", "cgqtag", "rclsso", "jomevtfycnlb", com.azure.core.util.Context.NONE)
+            .getWithResponse("pq", "evhamfowg", "btmkekxpkzwaq", "ofqovchiqbplv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fqb", response.properties().stageSpec().get(0).name());
-        Assertions.assertEquals("gmqsorhcekxg", response.properties().stageSpec().get(0).tasks().get(0).name());
-        Assertions.assertEquals(502016456, response.properties().stageSpec().get(0).taskOption().concurrency());
-        Assertions.assertEquals("jy", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("ihpq", response.properties().stageSpec().get(0).name());
+        Assertions.assertEquals("hrdicxdwyjfo", response.properties().stageSpec().get(0).tasks().get(0).name());
+        Assertions.assertEquals(1208173457, response.properties().stageSpec().get(0).taskOption().concurrency());
+        Assertions.assertEquals("mttjxophgerh", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

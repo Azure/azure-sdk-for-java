@@ -19,6 +19,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -31,7 +32,6 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -201,6 +202,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
 
+    private static final Object staticLock = new Object();
+
+    // A map containing the clientId with the callstack from where the Client was initialized.
+    // this can help to identify where clients leak.
+    // The leak detection via System property "COSMOS.CLIENT_LEAK_DETECTION_ENABLED" is disabled by
+    // default - CI pipeline tests will enable it.
+    private final static Map<Integer, String> activeClients = new HashMap<>();
+
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final CosmosItemSerializer defaultCustomSerializer;
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
@@ -278,6 +287,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
+    private Consumer<DatabaseAccount> perPartitionFailoverConfigModifier;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -505,6 +515,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionRetryOptions = sessionRetryOptions;
         this.defaultCustomSerializer = defaultCustomSerializer;
 
+        this.addToActiveClients();
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
@@ -642,7 +653,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
 
-            // enablement of PPAF is revaluated in RxDocumentClientImpl#init
+            // enablement of PPAF is reevaluated in RxDocumentClientImpl#init
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, false);
 
@@ -792,7 +803,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient);
 
+            this.perPartitionFailoverConfigModifier
+                = (databaseAccount -> {
+                this.initializePerPartitionFailover(databaseAccount);
+                this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+            });
+
+            this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionFailoverConfigModifier);
             this.globalEndpointManager.init();
+            this.initializePerPartitionCircuitBreaker();
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
@@ -857,7 +876,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
-            this.initializePerPartitionFailover(databaseAccountSnapshot);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -1291,6 +1309,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             UUID activityId,
             final AtomicBoolean isQueryCancelledOnTimeout) {
 
+        // reevaluate e2e policy config on cosmosQueryRequestOptions
+        if (options != null) {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfigFromRequestOptions =
+                getEndToEndOperationLatencyPolicyConfig(
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .toRequestOptions(options),
+                    resourceTypeEnum,
+                    OperationType.Query);
+
+            if (endToEndPolicyConfigFromRequestOptions != null) {
+                options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfigFromRequestOptions);
+            }
+        }
+
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
                 .createDocumentQueryExecutionContextAsync(diagnosticsClientContext, queryClient, resourceTypeEnum, klass, sqlQuery,
@@ -1343,6 +1377,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
+    }
+
+    private void addToActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            logger.warn(
+                "Cosmos Client leak detection is enabled - "
+                + "this will impact performance negatively - disable it in production scenarios.");
+            synchronized (staticLock) {
+                activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
+            }
+        }
+    }
+
+    private void removeFromActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            synchronized (staticLock) {
+                activeClients.remove(this.clientId);
+            }
+        }
+    }
+
+    /**
+     * Returns a snapshot of the active clients. The key is the clientId, the value is the callstack showing
+     * where the client was created.
+     * @return a snapshot of the active clients.
+     */
+    public static Map<Integer, String> getActiveClientsSnapshot() {
+        synchronized (staticLock) {
+            return new HashMap<>(activeClients);
+        }
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -1450,6 +1514,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (!this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
+        }
+
+        if (!Configs.isThinClientEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.ThinClient);
+        }
+
+        if (!Configs.isHttp2Enabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
+        }
+
+        if (this.connectionPolicy.getHttp2ConnectionConfig() != null) {
+            Http2ConnectionConfig http2ConnectionConfig = this.connectionPolicy.getHttp2ConnectionConfig();
+            if (http2ConnectionConfig.isEnabled() != null) {
+                if (http2ConnectionConfig.isEnabled()) {
+                    userAgentFeatureFlags.add(UserAgentFeatureFlags.Http2);
+                } else {
+                    userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
+                }
+            }
         }
 
         if (!(this.sessionContainer instanceof RegionScopedSessionContainer)) {

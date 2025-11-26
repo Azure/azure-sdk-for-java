@@ -15,9 +15,11 @@ import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DnsEndpointType;
+import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.ExtendedLocation;
+import com.azure.resourcemanager.storage.models.GeoPriorityReplicationStatus;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
@@ -27,6 +29,7 @@ import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
+import com.azure.resourcemanager.storage.models.Placement;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
@@ -62,6 +65,16 @@ public final class StorageAccountInner extends Resource {
      * The extendedLocation of the resource.
      */
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Optional. Gets or sets the pinned logical availability zone for the storage account.
+     */
+    private List<String> zones;
+
+    /*
+     * Optional. Gets or sets the zonal placement details for the storage account.
+     */
+    private Placement placement;
 
     /*
      * Properties of the storage account.
@@ -144,6 +157,46 @@ public final class StorageAccountInner extends Resource {
      */
     public StorageAccountInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the zones property: Optional. Gets or sets the pinned logical availability zone for the storage account.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Optional. Gets or sets the pinned logical availability zone for the storage account.
+     * 
+     * @param zones the zones value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the placement property: Optional. Gets or sets the zonal placement details for the storage account.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: Optional. Gets or sets the zonal placement details for the storage account.
+     * 
+     * @param placement the placement value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withPlacement(Placement placement) {
+        this.placement = placement;
         return this;
     }
 
@@ -579,6 +632,32 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.innerProperties() == null ? null : this.innerProperties().dualStackEndpointPreference();
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withDualStackEndpointPreference(dualStackEndpointPreference);
+        return this;
+    }
+
+    /**
      * Get the blobRestoreStatus property: Blob restore status.
      * 
      * @return the blobRestoreStatus value.
@@ -893,6 +972,32 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
+     * Get the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @return the geoPriorityReplicationStatus value.
+     */
+    public GeoPriorityReplicationStatus geoPriorityReplicationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoPriorityReplicationStatus();
+    }
+
+    /**
+     * Set the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @param geoPriorityReplicationStatus the geoPriorityReplicationStatus value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner
+        withGeoPriorityReplicationStatus(GeoPriorityReplicationStatus geoPriorityReplicationStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withGeoPriorityReplicationStatus(geoPriorityReplicationStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -906,6 +1011,9 @@ public final class StorageAccountInner extends Resource {
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();
+        }
+        if (placement() != null) {
+            placement().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -922,6 +1030,8 @@ public final class StorageAccountInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("placement", this.placement);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -961,6 +1071,11 @@ public final class StorageAccountInner extends Resource {
                     deserializedStorageAccountInner.identity = Identity.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedStorageAccountInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStorageAccountInner.zones = zones;
+                } else if ("placement".equals(fieldName)) {
+                    deserializedStorageAccountInner.placement = Placement.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedStorageAccountInner.innerProperties = StorageAccountPropertiesInner.fromJson(reader);
                 } else {

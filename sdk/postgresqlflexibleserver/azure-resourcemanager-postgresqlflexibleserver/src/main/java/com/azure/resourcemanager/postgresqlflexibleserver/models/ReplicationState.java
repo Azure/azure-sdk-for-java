@@ -8,8 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Gets the replication state of a replica server. This property is returned only for replicas api call. Supported
- * values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
+ * Indicates the replication state of a read replica. This property is returned only when the target server is a read
+ * replica. Possible values are Active, Broken, Catchup, Provisioning, Reconfiguring, and Updating.
  */
 public final class ReplicationState extends ExpandableStringEnum<ReplicationState> {
     /**

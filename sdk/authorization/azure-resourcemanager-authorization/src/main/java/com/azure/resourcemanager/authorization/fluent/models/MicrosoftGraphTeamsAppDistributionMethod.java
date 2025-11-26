@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * teamsAppDistributionMethod.
+ * Represents a teams app distribution method.
  */
 public final class MicrosoftGraphTeamsAppDistributionMethod
     extends ExpandableStringEnum<MicrosoftGraphTeamsAppDistributionMethod> {

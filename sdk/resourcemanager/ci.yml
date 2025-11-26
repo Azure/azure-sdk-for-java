@@ -12,11 +12,8 @@ trigger:
     exclude:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
 
 pr:
@@ -32,28 +29,13 @@ pr:
     exclude:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
 
 parameters:
 - name: release_azureresourcemanager
   displayName: 'azure-resourcemanager'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerappplatform
-  displayName: 'azure-resourcemanager-appplatform'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercosmos
-  displayName: 'azure-resourcemanager-cosmos'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerservicebus
-  displayName: 'azure-resourcemanager-servicebus'
   type: boolean
   default: true
 - name: release_azureresourcemanagertest
@@ -70,18 +52,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanager
         releaseInBatch: ${{ parameters.release_azureresourcemanager }}
-      - name: azure-resourcemanager-appplatform
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerappplatform
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerappplatform }}
-      - name: azure-resourcemanager-cosmos
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercosmos
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercosmos }}
-      - name: azure-resourcemanager-servicebus
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerservicebus
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerservicebus }}
       - name: azure-resourcemanager-test
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertest

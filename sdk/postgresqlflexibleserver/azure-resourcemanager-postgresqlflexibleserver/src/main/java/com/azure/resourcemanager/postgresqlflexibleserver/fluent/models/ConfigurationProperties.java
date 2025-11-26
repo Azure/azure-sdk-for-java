@@ -13,62 +13,68 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationDa
 import java.io.IOException;
 
 /**
- * The properties of a configuration.
+ * Properties of a configuration (also known as server parameter).
  */
 @Fluent
 public final class ConfigurationProperties implements JsonSerializable<ConfigurationProperties> {
     /*
-     * Value of the configuration. Required to update the configuration.
+     * Value of the configuration (also known as server parameter). Required to update the value assigned to a specific
+     * modifiable configuration.
      */
     private String value;
 
     /*
-     * Description of the configuration.
+     * Description of the configuration (also known as server parameter).
      */
     private String description;
 
     /*
-     * Default value of the configuration.
+     * Value assigned by default to the configuration (also known as server parameter).
      */
     private String defaultValue;
 
     /*
-     * Data type of the configuration.
+     * Data type of the configuration (also known as server parameter).
      */
     private ConfigurationDataType dataType;
 
     /*
-     * Allowed values of the configuration.
+     * Allowed values of the configuration (also known as server parameter).
      */
     private String allowedValues;
 
     /*
-     * Source of the configuration. Required to update the configuration.
+     * Source of the value assigned to the configuration (also known as server parameter). Required to update the value
+     * assigned to a specific modifiable configuration.
      */
     private String source;
 
     /*
-     * Configuration dynamic or static.
+     * Indicates if it's a dynamic (true) or static (false) configuration (also known as server parameter). Static
+     * server parameters require a server restart after changing the value assigned to them, for the change to take
+     * effect. Dynamic server parameters do not require a server restart after changing the value assigned to them, for
+     * the change to take effect.
      */
     private Boolean isDynamicConfig;
 
     /*
-     * Configuration read-only or not.
+     * Indicates if it's a read-only (true) or modifiable (false) configuration (also known as server parameter).
      */
     private Boolean isReadOnly;
 
     /*
-     * Configuration is pending restart or not.
+     * Indicates if the value assigned to the configuration (also known as server parameter) is pending a server restart
+     * for it to take effect.
      */
     private Boolean isConfigPendingRestart;
 
     /*
-     * Configuration unit.
+     * Units in which the configuration (also known as server parameter) value is expressed.
      */
     private String unit;
 
     /*
-     * Configuration documentation link.
+     * Link pointing to the documentation of the configuration (also known as server parameter).
      */
     private String documentationLink;
 
@@ -79,7 +85,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the value property: Value of the configuration. Required to update the configuration.
+     * Get the value property: Value of the configuration (also known as server parameter). Required to update the value
+     * assigned to a specific modifiable configuration.
      * 
      * @return the value value.
      */
@@ -88,7 +95,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Set the value property: Value of the configuration. Required to update the configuration.
+     * Set the value property: Value of the configuration (also known as server parameter). Required to update the value
+     * assigned to a specific modifiable configuration.
      * 
      * @param value the value value to set.
      * @return the ConfigurationProperties object itself.
@@ -99,7 +107,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the description property: Description of the configuration.
+     * Get the description property: Description of the configuration (also known as server parameter).
      * 
      * @return the description value.
      */
@@ -108,7 +116,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the defaultValue property: Default value of the configuration.
+     * Get the defaultValue property: Value assigned by default to the configuration (also known as server parameter).
      * 
      * @return the defaultValue value.
      */
@@ -117,7 +125,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the dataType property: Data type of the configuration.
+     * Get the dataType property: Data type of the configuration (also known as server parameter).
      * 
      * @return the dataType value.
      */
@@ -126,7 +134,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the allowedValues property: Allowed values of the configuration.
+     * Get the allowedValues property: Allowed values of the configuration (also known as server parameter).
      * 
      * @return the allowedValues value.
      */
@@ -135,7 +143,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the source property: Source of the configuration. Required to update the configuration.
+     * Get the source property: Source of the value assigned to the configuration (also known as server parameter).
+     * Required to update the value assigned to a specific modifiable configuration.
      * 
      * @return the source value.
      */
@@ -144,7 +153,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Set the source property: Source of the configuration. Required to update the configuration.
+     * Set the source property: Source of the value assigned to the configuration (also known as server parameter).
+     * Required to update the value assigned to a specific modifiable configuration.
      * 
      * @param source the source value to set.
      * @return the ConfigurationProperties object itself.
@@ -155,7 +165,10 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the isDynamicConfig property: Configuration dynamic or static.
+     * Get the isDynamicConfig property: Indicates if it's a dynamic (true) or static (false) configuration (also known
+     * as server parameter). Static server parameters require a server restart after changing the value assigned to
+     * them, for the change to take effect. Dynamic server parameters do not require a server restart after changing the
+     * value assigned to them, for the change to take effect.
      * 
      * @return the isDynamicConfig value.
      */
@@ -164,7 +177,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the isReadOnly property: Configuration read-only or not.
+     * Get the isReadOnly property: Indicates if it's a read-only (true) or modifiable (false) configuration (also known
+     * as server parameter).
      * 
      * @return the isReadOnly value.
      */
@@ -173,7 +187,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the isConfigPendingRestart property: Configuration is pending restart or not.
+     * Get the isConfigPendingRestart property: Indicates if the value assigned to the configuration (also known as
+     * server parameter) is pending a server restart for it to take effect.
      * 
      * @return the isConfigPendingRestart value.
      */
@@ -182,7 +197,7 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the unit property: Configuration unit.
+     * Get the unit property: Units in which the configuration (also known as server parameter) value is expressed.
      * 
      * @return the unit value.
      */
@@ -191,7 +206,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the documentationLink property: Configuration documentation link.
+     * Get the documentationLink property: Link pointing to the documentation of the configuration (also known as server
+     * parameter).
      * 
      * @return the documentationLink value.
      */

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadorchestration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -36,21 +35,6 @@ public final class RemoveVersionResponseInner implements JsonSerializable<Remove
     public String status() {
         return this.status;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property status in model RemoveVersionResponseInner"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RemoveVersionResponseInner.class);
 
     /**
      * {@inheritDoc}

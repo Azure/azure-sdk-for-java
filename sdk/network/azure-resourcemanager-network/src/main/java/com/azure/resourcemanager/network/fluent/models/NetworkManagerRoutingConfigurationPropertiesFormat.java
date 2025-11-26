@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RouteTableUsageMode;
 import java.io.IOException;
 
 /**
@@ -32,6 +33,12 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
      * Unique identifier for this resource.
      */
     private String resourceGuid;
+
+    /*
+     * Route table usage mode defines which route table will be used by the configuration. If not defined, this will
+     * default to 'ManagedOnly'.
+     */
+    private RouteTableUsageMode routeTableUsageMode;
 
     /**
      * Creates an instance of NetworkManagerRoutingConfigurationPropertiesFormat class.
@@ -78,6 +85,29 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
     }
 
     /**
+     * Get the routeTableUsageMode property: Route table usage mode defines which route table will be used by the
+     * configuration. If not defined, this will default to 'ManagedOnly'.
+     * 
+     * @return the routeTableUsageMode value.
+     */
+    public RouteTableUsageMode routeTableUsageMode() {
+        return this.routeTableUsageMode;
+    }
+
+    /**
+     * Set the routeTableUsageMode property: Route table usage mode defines which route table will be used by the
+     * configuration. If not defined, this will default to 'ManagedOnly'.
+     * 
+     * @param routeTableUsageMode the routeTableUsageMode value to set.
+     * @return the NetworkManagerRoutingConfigurationPropertiesFormat object itself.
+     */
+    public NetworkManagerRoutingConfigurationPropertiesFormat
+        withRouteTableUsageMode(RouteTableUsageMode routeTableUsageMode) {
+        this.routeTableUsageMode = routeTableUsageMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -92,6 +122,8 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("routeTableUsageMode",
+            this.routeTableUsageMode == null ? null : this.routeTableUsageMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -119,6 +151,9 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("routeTableUsageMode".equals(fieldName)) {
+                    deserializedNetworkManagerRoutingConfigurationPropertiesFormat.routeTableUsageMode
+                        = RouteTableUsageMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

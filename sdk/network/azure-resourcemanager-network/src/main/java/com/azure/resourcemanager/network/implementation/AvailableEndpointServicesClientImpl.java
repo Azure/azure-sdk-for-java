@@ -60,7 +60,7 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientAvailableEndpointServices")
     public interface AvailableEndpointServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/virtualNetworkAvailableEndpointServices")
@@ -102,7 +102,7 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
@@ -136,7 +136,7 @@ public final class AvailableEndpointServicesClientImpl implements AvailableEndpo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

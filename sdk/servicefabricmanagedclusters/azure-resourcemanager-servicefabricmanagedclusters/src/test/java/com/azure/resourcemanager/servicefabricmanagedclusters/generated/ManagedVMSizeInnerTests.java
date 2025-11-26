@@ -12,7 +12,7 @@ public final class ManagedVMSizeInnerTests {
     public void testDeserialize() throws Exception {
         ManagedVMSizeInner model = BinaryData
             .fromString(
-                "{\"properties\":{\"size\":\"lvpnpp\"},\"id\":\"flrwd\",\"name\":\"dlxyjrxs\",\"type\":\"afcnih\"}")
+                "{\"properties\":{\"size\":\"k\"},\"id\":\"oxafn\",\"name\":\"lpichk\",\"type\":\"mkcdyhbpkkpwdre\"}")
             .toObject(ManagedVMSizeInner.class);
     }
 }

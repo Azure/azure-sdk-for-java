@@ -1,14 +1,21 @@
 ## Release History
 
-### 1.0.0-beta.15 (Unreleased)
+### 1.0.0-beta.16 (Unreleased)
 
 #### Features Added
+* Added support for `FaultInjectionOperationType.HEAD_COLLECTION` - See [PR 47231](https://github.com/Azure/azure-sdk-for-java/pull/47231)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+* Added support for `CosmosTransportClientInterceptor` which allow to modify the store response on direct layer. - See [PR 47231](https://github.com/Azure/azure-sdk-for-java/pull/47231)
+
+### 1.0.0-beta.15 (2025-10-21)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.75.0`.
 
 ### 1.0.0-beta.14 (2025-09-05)
 

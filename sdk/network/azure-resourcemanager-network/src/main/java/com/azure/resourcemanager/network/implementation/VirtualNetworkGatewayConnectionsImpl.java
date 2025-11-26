@@ -80,7 +80,7 @@ class VirtualNetworkGatewayConnectionsImpl extends
 
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listAsync() {
-        return PagedConverter
+        return PagedConverterForMergedPagedFlux
             .mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
                 rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }

@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.19.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.19.0-beta.2</version><!-- {x-version-update;com.azure:azure-identity;current} -->
 
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
@@ -35,13 +35,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <dependency>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -75,24 +75,6 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.13.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-      <version>6.2.0</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.lettuce</groupId>
-      <artifactId>lettuce-core</artifactId>
-      <version>6.8.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.redisson</groupId>
-      <artifactId>redisson</artifactId>
-      <version>3.51.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

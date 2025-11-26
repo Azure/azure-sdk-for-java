@@ -12,11 +12,6 @@ import java.util.Collection;
  */
 public final class SensitivityType extends ExpandableStringEnum<SensitivityType> {
     /**
-     * Static value None for SensitivityType.
-     */
-    public static final SensitivityType NONE = fromString("None");
-
-    /**
      * Static value Low for SensitivityType.
      */
     public static final SensitivityType LOW = fromString("Low");

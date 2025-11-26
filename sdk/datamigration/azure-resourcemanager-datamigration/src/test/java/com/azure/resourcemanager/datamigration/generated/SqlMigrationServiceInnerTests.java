@@ -14,19 +14,19 @@ public final class SqlMigrationServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlMigrationServiceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"qreyfkzi\",\"integrationRuntimeState\":\"jawneaiv\"},\"systemData\":{\"createdBy\":\"zel\",\"createdByType\":\"Application\",\"createdAt\":\"2021-01-21T19:39:29Z\",\"lastModifiedBy\":\"sfeaenwabfat\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-04-08T15:13:01Z\"},\"location\":\"bjhwuaan\",\"tags\":{\"jrvxaglrv\":\"osphyoul\"},\"id\":\"mjwosytx\",\"name\":\"tcs\",\"type\":\"fcktqumiekke\"}")
+            "{\"properties\":{\"provisioningState\":\"kfcktqum\",\"integrationRuntimeState\":\"kkezzikhlyfjhdgq\"},\"location\":\"ebdunyg\",\"tags\":{\"fatpxllrxcyjmoa\":\"idb\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\"},\"id\":\"kgymareqnajxqug\",\"name\":\"hky\",\"type\":\"ubeddg\"}")
             .toObject(SqlMigrationServiceInner.class);
-        Assertions.assertEquals("bjhwuaan", model.location());
-        Assertions.assertEquals("osphyoul", model.tags().get("jrvxaglrv"));
+        Assertions.assertEquals("ebdunyg", model.location());
+        Assertions.assertEquals("idb", model.tags().get("fatpxllrxcyjmoa"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlMigrationServiceInner model
-            = new SqlMigrationServiceInner().withLocation("bjhwuaan").withTags(mapOf("jrvxaglrv", "osphyoul"));
+        SqlMigrationServiceInner model = new SqlMigrationServiceInner().withLocation("ebdunyg")
+            .withTags(mapOf("fatpxllrxcyjmoa", "idb", "arm", "su", "rw", "wdmjsjqbjhhyx", "duhpk", "yc"));
         model = BinaryData.fromObject(model).toObject(SqlMigrationServiceInner.class);
-        Assertions.assertEquals("bjhwuaan", model.location());
-        Assertions.assertEquals("osphyoul", model.tags().get("jrvxaglrv"));
+        Assertions.assertEquals("ebdunyg", model.location());
+        Assertions.assertEquals("idb", model.tags().get("fatpxllrxcyjmoa"));
     }
 
     // Use "Map.of" if available

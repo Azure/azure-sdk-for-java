@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.56.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.55.0 (2025-11-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-09-30)
+
+### Other Changes
+
+- Deprecated `KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER`. 
+  Refer [New options for Windows Server 2012/R2 end of support from Azure](https://www.microsoft.com/windows-server/blog/2023/07/18/new-options-for-windows-server-2012-r2-end-of-support-from-azure).
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-04-01`.
+
+## 2.53.3 (2025-09-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.2 (2025-08-27)
 

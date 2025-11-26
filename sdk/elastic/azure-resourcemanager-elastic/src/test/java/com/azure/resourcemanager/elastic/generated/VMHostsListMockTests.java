@@ -7,8 +7,8 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.VMResources;
@@ -21,18 +21,18 @@ import reactor.core.publisher.Mono;
 public final class VMHostsListMockTests {
     @Test
     public void testList() throws Exception {
-        String responseStr = "{\"value\":[{\"vmResourceId\":\"ky\"}]}";
+        String responseStr = "{\"value\":[{\"vmResourceId\":\"kpj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VMResources> response
-            = manager.vMHosts().list("duhpk", "kgymareqnajxqug", com.azure.core.util.Context.NONE);
+            = manager.vMHosts().list("aysjkixqtnqttez", "wfff", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ky", response.iterator().next().vmResourceId());
+        Assertions.assertEquals("kpj", response.iterator().next().vmResourceId());
     }
 }

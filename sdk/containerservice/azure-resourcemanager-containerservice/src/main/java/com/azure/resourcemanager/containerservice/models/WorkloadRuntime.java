@@ -22,6 +22,11 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
     public static final WorkloadRuntime WASM_WASI = fromString("WasmWasi");
 
     /**
+     * Static value KataVmIsolation for WorkloadRuntime.
+     */
+    public static final WorkloadRuntime KATA_VM_ISOLATION = fromString("KataVmIsolation");
+
+    /**
      * Creates a new instance of WorkloadRuntime value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

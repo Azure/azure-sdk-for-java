@@ -6,6 +6,7 @@ package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,11 @@ public final class MonitoredSubscriptionPropertiesInner extends ProxyResource {
      * The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
      */
     private SubscriptionList properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -63,6 +69,15 @@ public final class MonitoredSubscriptionPropertiesInner extends ProxyResource {
     public MonitoredSubscriptionPropertiesInner withProperties(SubscriptionList properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -141,6 +156,8 @@ public final class MonitoredSubscriptionPropertiesInner extends ProxyResource {
                     deserializedMonitoredSubscriptionPropertiesInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedMonitoredSubscriptionPropertiesInner.properties = SubscriptionList.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMonitoredSubscriptionPropertiesInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

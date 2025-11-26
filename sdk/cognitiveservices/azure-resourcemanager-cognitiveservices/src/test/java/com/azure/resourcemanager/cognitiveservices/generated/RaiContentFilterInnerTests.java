@@ -14,22 +14,22 @@ public final class RaiContentFilterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterInner model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"qtgqqqxhrnxr\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"isavok\",\"name\":\"dzf\",\"type\":\"azivjlfrqttbajl\"}")
+            "{\"properties\":{\"name\":\"maqxzhemjyh\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"},\"id\":\"t\",\"name\":\"kozzwculkb\",\"type\":\"wpfaj\"}")
             .toObject(RaiContentFilterInner.class);
-        Assertions.assertEquals("qtgqqqxhrnxr", model.properties().name());
+        Assertions.assertEquals("maqxzhemjyh", model.properties().name());
         Assertions.assertFalse(model.properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.properties().source());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.properties().source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiContentFilterInner model
-            = new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("qtgqqqxhrnxr")
+            = new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("maqxzhemjyh")
                 .withIsMultiLevelFilter(false)
-                .withSource(RaiPolicyContentSource.PROMPT));
+                .withSource(RaiPolicyContentSource.COMPLETION));
         model = BinaryData.fromObject(model).toObject(RaiContentFilterInner.class);
-        Assertions.assertEquals("qtgqqqxhrnxr", model.properties().name());
+        Assertions.assertEquals("maqxzhemjyh", model.properties().name());
         Assertions.assertFalse(model.properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.properties().source());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.properties().source());
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -26,6 +27,11 @@ public final class ModelCapacityListResultValueItemInner extends ProxyResource {
      * Cognitive Services account ModelSkuCapacity.
      */
     private ModelSkuCapacityProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -86,6 +92,15 @@ public final class ModelCapacityListResultValueItemInner extends ProxyResource {
     public ModelCapacityListResultValueItemInner withProperties(ModelSkuCapacityProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -168,6 +183,8 @@ public final class ModelCapacityListResultValueItemInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedModelCapacityListResultValueItemInner.properties
                         = ModelSkuCapacityProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedModelCapacityListResultValueItemInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

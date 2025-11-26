@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -97,28 +96,6 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
         this.name = name;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (group() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property group in model CertManagerIssuerRef"));
-        }
-        if (kind() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property kind in model CertManagerIssuerRef"));
-        }
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model CertManagerIssuerRef"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CertManagerIssuerRef.class);
 
     /**
      * {@inheritDoc}

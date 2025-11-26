@@ -74,7 +74,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkProfiles")
     public interface NetworkProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles/{networkProfileName}")
@@ -178,7 +178,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkProfileName,
@@ -216,7 +216,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion,
@@ -385,7 +385,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -425,7 +425,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion,
@@ -518,7 +518,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -562,7 +562,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion,
@@ -657,7 +657,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkProfileName,
@@ -701,7 +701,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion,
@@ -778,7 +778,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -808,7 +808,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -893,7 +893,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -929,7 +929,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1006,8 +1006,8 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkProfiles API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the network profiles in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1034,8 +1034,8 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkProfiles API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the network profiles in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -1060,8 +1060,8 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkProfiles API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all network profiles in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listNextSinglePageAsync(String nextLink) {
@@ -1087,8 +1087,8 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkProfiles API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all network profiles in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listNextSinglePageAsync(String nextLink, Context context) {

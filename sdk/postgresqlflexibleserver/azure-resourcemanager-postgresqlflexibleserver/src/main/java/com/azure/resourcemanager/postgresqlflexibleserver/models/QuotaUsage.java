@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.QuotaUsa
  */
 public interface QuotaUsage {
     /**
-     * Gets the name property: Name of quota usage for flexible servers.
+     * Gets the name property: Name of quota usage for servers.
      * 
      * @return the name value.
      */

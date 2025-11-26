@@ -20,6 +20,10 @@ public final class VirtualMachineImpl implements VirtualMachine {
         this.serviceManager = serviceManager;
     }
 
+    public String name() {
+        return this.innerModel().name();
+    }
+
     public String id() {
         return this.innerModel().id();
     }

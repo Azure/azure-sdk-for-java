@@ -57,7 +57,7 @@ public final class NetworkSecurityPerimeterOperationStatusesClientImpl
      * be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkSecurityPerimeterOperationStatuses")
     public interface NetworkSecurityPerimeterOperationStatusesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/networkSecurityPerimeterOperationStatuses/{operationId}")
@@ -96,7 +96,7 @@ public final class NetworkSecurityPerimeterOperationStatusesClientImpl
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
@@ -133,7 +133,7 @@ public final class NetworkSecurityPerimeterOperationStatusesClientImpl
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, operationId,

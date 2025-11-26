@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * contact.
+ * Represents a contact.
  */
 @Fluent
 public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {

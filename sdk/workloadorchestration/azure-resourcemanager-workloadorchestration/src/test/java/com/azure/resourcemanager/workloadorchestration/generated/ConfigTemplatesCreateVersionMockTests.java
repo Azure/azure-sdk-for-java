@@ -25,7 +25,7 @@ public final class ConfigTemplatesCreateVersionMockTests {
     @Test
     public void testCreateVersion() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"tbxoee\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"nfwmyymvqdbpb\",\"id\":\"ckdvez\",\"name\":\"rcssbzhddubbnq\",\"type\":\"b\"}";
+            = "{\"properties\":{\"configurations\":\"lutixmq\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"izcbfzmcrunfhiuc\",\"id\":\"fbcpaqktkrumzu\",\"name\":\"dkyzbfvxov\",\"type\":\"kxiuxqggvqr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,13 @@ public final class ConfigTemplatesCreateVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplateVersion response = manager.configTemplates()
-            .createVersion("mbmslzoyov", "zdbpqv",
-                new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
-                    .withVersion("gvmxnok")
+            .createVersion("agynoi", "rnzcalinc",
+                new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
+                    .withVersion("zxaqzibm")
                     .withConfigTemplateVersion(new ConfigTemplateVersionInner()
-                        .withProperties(new ConfigTemplateVersionProperties().withConfigurations("t"))),
+                        .withProperties(new ConfigTemplateVersionProperties().withConfigurations("miymqruqguhfupet"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tbxoee", response.properties().configurations());
+        Assertions.assertEquals("lutixmq", response.properties().configurations());
     }
 }

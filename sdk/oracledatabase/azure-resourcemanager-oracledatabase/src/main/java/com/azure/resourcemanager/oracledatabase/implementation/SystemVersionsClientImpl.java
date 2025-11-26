@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.SystemVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.SystemVersionInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.SystemVersionListResult;
@@ -126,21 +125,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SystemVersionInner>> getWithResponseAsync(String location, String systemversionname) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (systemversionname == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter systemversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -176,24 +160,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SystemVersionInner> getWithResponse(String location, String systemversionname, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (systemversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter systemversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, systemversionname, accept, context);
@@ -226,17 +192,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SystemVersionInner>> listByLocationSinglePageAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -272,20 +227,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SystemVersionInner> listByLocationSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SystemVersionListResult> res = service.listByLocationSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
@@ -305,20 +246,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SystemVersionInner> listByLocationSinglePage(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SystemVersionListResult> res = service.listByLocationSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, context);
@@ -369,13 +296,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SystemVersionInner>> listByLocationNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocationNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -395,15 +315,6 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SystemVersionInner> listByLocationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SystemVersionListResult> res
             = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -423,21 +334,10 @@ public final class SystemVersionsClientImpl implements SystemVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SystemVersionInner> listByLocationNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SystemVersionListResult> res
             = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SystemVersionsClientImpl.class);
 }

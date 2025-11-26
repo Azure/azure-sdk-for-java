@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CapabilityHostInner;
 import com.azure.resourcemanager.cognitiveservices.models.CapabilityHost;
@@ -28,6 +29,10 @@ public final class CapabilityHostImpl implements CapabilityHost, CapabilityHost.
 
     public CapabilityHostProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

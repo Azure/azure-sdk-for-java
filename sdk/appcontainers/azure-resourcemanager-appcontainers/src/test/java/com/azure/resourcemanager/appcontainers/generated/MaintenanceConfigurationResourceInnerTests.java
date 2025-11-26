@@ -15,29 +15,32 @@ public final class MaintenanceConfigurationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceConfigurationResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Tuesday\",\"startHourUtc\":1675076969,\"durationHours\":439270672},{\"weekDay\":\"Thursday\",\"startHourUtc\":720401408,\"durationHours\":357896673},{\"weekDay\":\"Sunday\",\"startHourUtc\":284686585,\"durationHours\":758100106}]},\"id\":\"dr\",\"name\":\"bfcmkrfts\",\"type\":\"cwjjxsgmbawvif\"}")
+            "{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Monday\",\"startHourUtc\":1709096498,\"durationHours\":1835022726},{\"weekDay\":\"Sunday\",\"startHourUtc\":1860426462,\"durationHours\":444812162},{\"weekDay\":\"Tuesday\",\"startHourUtc\":1439571591,\"durationHours\":1548261318},{\"weekDay\":\"Friday\",\"startHourUtc\":1233897437,\"durationHours\":1425095527}]},\"id\":\"afgfugsnn\",\"name\":\"hyet\",\"type\":\"fypococtfjgti\"}")
             .toObject(MaintenanceConfigurationResourceInner.class);
-        Assertions.assertEquals(WeekDay.TUESDAY, model.scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(1675076969, model.scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(439270672, model.scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(WeekDay.MONDAY, model.scheduledEntries().get(0).weekDay());
+        Assertions.assertEquals(1709096498, model.scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(1835022726, model.scheduledEntries().get(0).durationHours());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceConfigurationResourceInner model
             = new MaintenanceConfigurationResourceInner().withScheduledEntries(Arrays.asList(
-                new ScheduledEntry().withWeekDay(WeekDay.TUESDAY)
-                    .withStartHourUtc(1675076969)
-                    .withDurationHours(439270672),
-                new ScheduledEntry().withWeekDay(WeekDay.THURSDAY)
-                    .withStartHourUtc(720401408)
-                    .withDurationHours(357896673),
+                new ScheduledEntry().withWeekDay(WeekDay.MONDAY)
+                    .withStartHourUtc(1709096498)
+                    .withDurationHours(1835022726),
                 new ScheduledEntry().withWeekDay(WeekDay.SUNDAY)
-                    .withStartHourUtc(284686585)
-                    .withDurationHours(758100106)));
+                    .withStartHourUtc(1860426462)
+                    .withDurationHours(444812162),
+                new ScheduledEntry().withWeekDay(WeekDay.TUESDAY)
+                    .withStartHourUtc(1439571591)
+                    .withDurationHours(1548261318),
+                new ScheduledEntry().withWeekDay(WeekDay.FRIDAY)
+                    .withStartHourUtc(1233897437)
+                    .withDurationHours(1425095527)));
         model = BinaryData.fromObject(model).toObject(MaintenanceConfigurationResourceInner.class);
-        Assertions.assertEquals(WeekDay.TUESDAY, model.scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(1675076969, model.scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(439270672, model.scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(WeekDay.MONDAY, model.scheduledEntries().get(0).weekDay());
+        Assertions.assertEquals(1709096498, model.scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(1835022726, model.scheduledEntries().get(0).durationHours());
     }
 }

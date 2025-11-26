@@ -15,7 +15,7 @@ import java.util.Map;
 public final class RestorePointCollectionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
      */
     /**
@@ -39,7 +39,7 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * restorePointExamples/RestorePointCollection_CreateOrUpdate.json
      */
     /**
@@ -56,8 +56,8 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
                 .withLocation("norwayeast")
                 .withTags(mapOf("myTag1", "tagValue1"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                com.azure.core.util.Context.NONE);
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
+                .withInstantAccess(true), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -1,5 +1,31 @@
 # Release History
 
+## 1.3.2 (2025-11-04)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.3.1 (2025-10-10)
+
+### Breaking Changes
+
+- Removed the following libraries from the BOM:
+    - `azure-mixedreality-remoterendering` - Service is deprecated and non-functional since 2025-10-01 see: [retirement notice](https://azure.microsoft.com/updates?id=azure-remote-rendering-retirement)
+
+
+## 1.3.0 (2025-10-02)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+### Breaking Changes
+
+- Removed the following libraries from the BOM:
+    - `azure-ai-formrecognizer` - See the [migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/MIGRATION_GUIDE.md) for details.
+    - `azure-monitor-query` - See the [migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/migration-guide-query.md) for details.
+
 ## 1.2.38 (2025-09-03)
 
 ### Dependency Updates

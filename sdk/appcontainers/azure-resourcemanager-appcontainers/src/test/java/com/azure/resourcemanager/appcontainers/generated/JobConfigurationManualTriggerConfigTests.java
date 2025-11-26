@@ -12,19 +12,19 @@ public final class JobConfigurationManualTriggerConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobConfigurationManualTriggerConfig model
-            = BinaryData.fromString("{\"replicaCompletionCount\":574841417,\"parallelism\":950168078}")
+            = BinaryData.fromString("{\"replicaCompletionCount\":1730417051,\"parallelism\":378855798}")
                 .toObject(JobConfigurationManualTriggerConfig.class);
-        Assertions.assertEquals(574841417, model.replicaCompletionCount());
-        Assertions.assertEquals(950168078, model.parallelism());
+        Assertions.assertEquals(1730417051, model.replicaCompletionCount());
+        Assertions.assertEquals(378855798, model.parallelism());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobConfigurationManualTriggerConfig model
-            = new JobConfigurationManualTriggerConfig().withReplicaCompletionCount(574841417)
-                .withParallelism(950168078);
+            = new JobConfigurationManualTriggerConfig().withReplicaCompletionCount(1730417051)
+                .withParallelism(378855798);
         model = BinaryData.fromObject(model).toObject(JobConfigurationManualTriggerConfig.class);
-        Assertions.assertEquals(574841417, model.replicaCompletionCount());
-        Assertions.assertEquals(950168078, model.parallelism());
+        Assertions.assertEquals(1730417051, model.replicaCompletionCount());
+        Assertions.assertEquals(378855798, model.parallelism());
     }
 }
