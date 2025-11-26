@@ -6,8 +6,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.BillingInfoResponse;
@@ -21,25 +21,27 @@ public final class BillingInfoesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"marketplaceSaasInfo\":{\"marketplaceSubscriptionId\":\"mkcxozapvh\",\"marketplaceSubscriptionName\":\"xprglyatddc\",\"marketplaceResourceId\":\"bcuejrjxgci\",\"marketplaceStatus\":\"brh\",\"billedAzureSubscriptionId\":\"xsdqrhzoymibmrqy\"},\"partnerBillingEntity\":{\"organizationId\":\"hwflu\",\"organizationName\":\"dtmhrkwofyyvoqa\"}}";
+            = "{\"marketplaceSaasInfo\":{\"marketplaceSubscriptionId\":\"kallatmel\",\"marketplaceSubscriptionName\":\"ipicc\",\"marketplaceResourceId\":\"kzivgvvcnayrh\",\"marketplaceStatus\":\"nxxmueedndrdv\",\"billedAzureSubscriptionId\":\"kwqqtchealmf\",\"publisherId\":\"d\",\"offerId\":\"ygdvwv\"},\"partnerBillingEntity\":{\"organizationId\":\"ohgwxrtfudxepxg\",\"organizationName\":\"agvrvmnpkuk\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BillingInfoResponse response = manager.billingInfoes()
-            .getWithResponse("gkopkwhojvpajqgx", "smocmbq", com.azure.core.util.Context.NONE)
+            .getWithResponse("oocrkvcikhnv", "amqgxqquezikyw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mkcxozapvh", response.marketplaceSaasInfo().marketplaceSubscriptionId());
-        Assertions.assertEquals("xprglyatddc", response.marketplaceSaasInfo().marketplaceSubscriptionName());
-        Assertions.assertEquals("bcuejrjxgci", response.marketplaceSaasInfo().marketplaceResourceId());
-        Assertions.assertEquals("brh", response.marketplaceSaasInfo().marketplaceStatus());
-        Assertions.assertEquals("xsdqrhzoymibmrqy", response.marketplaceSaasInfo().billedAzureSubscriptionId());
-        Assertions.assertEquals("hwflu", response.partnerBillingEntity().organizationId());
-        Assertions.assertEquals("dtmhrkwofyyvoqa", response.partnerBillingEntity().organizationName());
+        Assertions.assertEquals("kallatmel", response.marketplaceSaasInfo().marketplaceSubscriptionId());
+        Assertions.assertEquals("ipicc", response.marketplaceSaasInfo().marketplaceSubscriptionName());
+        Assertions.assertEquals("kzivgvvcnayrh", response.marketplaceSaasInfo().marketplaceResourceId());
+        Assertions.assertEquals("nxxmueedndrdv", response.marketplaceSaasInfo().marketplaceStatus());
+        Assertions.assertEquals("kwqqtchealmf", response.marketplaceSaasInfo().billedAzureSubscriptionId());
+        Assertions.assertEquals("d", response.marketplaceSaasInfo().publisherId());
+        Assertions.assertEquals("ygdvwv", response.marketplaceSaasInfo().offerId());
+        Assertions.assertEquals("ohgwxrtfudxepxg", response.partnerBillingEntity().organizationId());
+        Assertions.assertEquals("agvrvmnpkuk", response.partnerBillingEntity().organizationName());
     }
 }

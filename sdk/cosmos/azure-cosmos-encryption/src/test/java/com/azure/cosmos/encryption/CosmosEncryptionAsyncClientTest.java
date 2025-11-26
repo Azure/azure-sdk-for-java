@@ -20,6 +20,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.lang.management.BufferPoolMXBean;
 import java.lang.management.ManagementFactory;
@@ -29,16 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
 public abstract class CosmosEncryptionAsyncClientTest implements ITest {
     protected static Logger logger = LoggerFactory.getLogger(CosmosEncryptionAsyncClientTest.class.getSimpleName());
     protected static final int SUITE_SETUP_TIMEOUT = 120000;
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor cosmosClientBuilderAccessor =
         ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
-    private final static AtomicInteger instancesUsed = new AtomicInteger(0);
 
     private final CosmosClientBuilder clientBuilder;
     private String testName;
-    private volatile Map<Integer, String> activeClientsAtBegin = new HashMap<>();
 
     public CosmosEncryptionAsyncClientTest() {
         this(new CosmosClientBuilder());
@@ -50,78 +50,6 @@ public abstract class CosmosEncryptionAsyncClientTest implements ITest {
 
     public final CosmosClientBuilder getClientBuilder() {
         return this.clientBuilder;
-    }
-
-    @BeforeClass(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
-
-    public void beforeClassSetupLeakDetection() {
-        if (instancesUsed.getAndIncrement() == 0) {
-            this.activeClientsAtBegin = RxDocumentClientImpl.getActiveClientsSnapshot();
-            this.logMemoryUsage("BEFORE");
-        }
-    }
-
-    private void logMemoryUsage(String name) {
-        long pooledDirectBytes = PooledByteBufAllocator.DEFAULT.metric()
-                                                               .directArenas().stream()
-                                                               .mapToLong(io.netty.buffer.PoolArenaMetric::numActiveBytes)
-                                                               .sum();
-
-        long used = PlatformDependent.usedDirectMemory();
-        long max  = PlatformDependent.maxDirectMemory();
-        logger.info("MEMORY USAGE: {}:{}", this.getClass().getCanonicalName(), name);
-        logger.info("Netty Direct Memory: {}/{}/{} bytes", used, pooledDirectBytes, max);
-        for (BufferPoolMXBean pool : ManagementFactory.getPlatformMXBeans(BufferPoolMXBean.class)) {
-            logger.info("Pool {}: used={} bytes, capacity={} bytes, count={}",
-                pool.getName(), pool.getMemoryUsed(), pool.getTotalCapacity(), pool.getCount());
-        }
-    }
-
-    @AfterClass(groups = {"fast", "long", "direct", "multi-master", "encryption"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public void afterClassSetupLeakDetection() {
-        if (instancesUsed.decrementAndGet() == 0) {
-            Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
-            StringBuilder sb = new StringBuilder();
-            Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
-
-            for (Integer clientId : leakedClientSnapshotNow.keySet()) {
-                if (!leakedClientSnapshotAtBegin.containsKey(clientId)) {
-                    // this client was leaked in this class
-                    sb
-                        .append("CosmosClient [")
-                        .append(clientId)
-                        .append("] leaked. Callstack of initialization:\n")
-                        .append(leakedClientSnapshotNow.get(clientId))
-                        .append("\n\n");
-                }
-            }
-
-            if (sb.length() > 0) {
-                String msg = "COSMOS CLIENT LEAKS detected in test class: "
-                    + this.getClass().getCanonicalName()
-                    + "\n\n"
-                    + sb;
-
-                logger.error(msg);
-                // fail(msg);
-            }
-
-            List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
-            if (nettyLeaks.size() > 0) {
-                sb.append("\n");
-                for (String leak : nettyLeaks) {
-                    sb.append(leak).append("\n");
-                }
-
-                String msg = "NETTY LEAKS detected in test class: "
-                    + this.getClass().getCanonicalName()
-                    + sb;
-
-                logger.error(msg);
-                // fail(msg);
-            }
-            this.logMemoryUsage("AFTER");
-        }
     }
 
     @Override

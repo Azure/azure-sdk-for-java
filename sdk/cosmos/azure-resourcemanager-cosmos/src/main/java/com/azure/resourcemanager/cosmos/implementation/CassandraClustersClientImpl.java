@@ -77,7 +77,7 @@ public final class CassandraClustersClientImpl implements InnerSupportsGet<Clust
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientCassandraClusters")
     public interface CassandraClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/cassandraClusters")

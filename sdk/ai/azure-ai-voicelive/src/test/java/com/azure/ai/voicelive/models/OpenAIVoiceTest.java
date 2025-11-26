@@ -46,10 +46,14 @@ class OpenAIVoiceTest {
         OpenAIVoice alloyVoice = new OpenAIVoice(OpenAIVoiceName.ALLOY);
         OpenAIVoice echoVoice = new OpenAIVoice(OpenAIVoiceName.ECHO);
         OpenAIVoice shimmerVoice = new OpenAIVoice(OpenAIVoiceName.SHIMMER);
+        OpenAIVoice marinVoice = new OpenAIVoice(OpenAIVoiceName.MARIN);
+        OpenAIVoice cedarVoice = new OpenAIVoice(OpenAIVoiceName.CEDAR);
 
         assertEquals(OpenAIVoiceName.ALLOY, alloyVoice.getName());
         assertEquals(OpenAIVoiceName.ECHO, echoVoice.getName());
         assertEquals(OpenAIVoiceName.SHIMMER, shimmerVoice.getName());
+        assertEquals(OpenAIVoiceName.MARIN, marinVoice.getName());
+        assertEquals(OpenAIVoiceName.CEDAR, cedarVoice.getName());
     }
 
     @Test

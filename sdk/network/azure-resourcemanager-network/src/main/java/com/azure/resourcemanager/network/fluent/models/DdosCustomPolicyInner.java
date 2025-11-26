@@ -6,11 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DdosDetectionRule;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -143,6 +146,54 @@ public final class DdosCustomPolicyInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the detectionRules property: The list of DDoS detection rules associated with the custom policy.
+     * 
+     * @return the detectionRules value.
+     */
+    public List<DdosDetectionRule> detectionRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().detectionRules();
+    }
+
+    /**
+     * Set the detectionRules property: The list of DDoS detection rules associated with the custom policy.
+     * 
+     * @param detectionRules the detectionRules value to set.
+     * @return the DdosCustomPolicyInner object itself.
+     */
+    public DdosCustomPolicyInner withDetectionRules(List<DdosDetectionRule> detectionRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DdosCustomPolicyPropertiesFormat();
+        }
+        this.innerProperties().withDetectionRules(detectionRules);
+        return this;
+    }
+
+    /**
+     * Get the frontEndIpConfiguration property: The list of frontend IP configurations associated with the custom
+     * policy.
+     * 
+     * @return the frontEndIpConfiguration value.
+     */
+    public List<SubResource> frontEndIpConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().frontEndIpConfiguration();
+    }
+
+    /**
+     * Set the frontEndIpConfiguration property: The list of frontend IP configurations associated with the custom
+     * policy.
+     * 
+     * @param frontEndIpConfiguration the frontEndIpConfiguration value to set.
+     * @return the DdosCustomPolicyInner object itself.
+     */
+    public DdosCustomPolicyInner withFrontEndIpConfiguration(List<SubResource> frontEndIpConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DdosCustomPolicyPropertiesFormat();
+        }
+        this.innerProperties().withFrontEndIpConfiguration(frontEndIpConfiguration);
+        return this;
     }
 
     /**

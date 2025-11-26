@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.AppServiceInfo;
@@ -24,23 +24,24 @@ public final class MonitorsListAppServicesMockTests {
     @Test
     public void testListAppServices() throws Exception {
         String responseStr
-            = "{\"value\":[{\"azureResourceId\":\"dvxzbncblylpst\",\"agentVersion\":\"hh\",\"agentStatus\":\"rzdzucerscdnt\"}]}";
+            = "{\"value\":[{\"azureResourceId\":\"vithh\",\"agentVersion\":\"o\",\"agentStatus\":\"sg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AppServiceInfo> response = manager.monitors()
-            .listAppServices("r", "gccymvaolpssl",
-                new AppServicesGetRequest().withAzureResourceIds(Arrays.asList("mmdnbbglzps", "iydmcwyhzdxs"))
-                    .withUserEmail("adbzmnvdfznud"),
+            .listAppServices("pbttdum", "rp",
+                new AppServicesGetRequest()
+                    .withAzureResourceIds(Arrays.asList("bmnzbtbhjpgl", "fgohdneuelfphs", "yhtozfikdowwqu", "v"))
+                    .withUserEmail("zx"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dvxzbncblylpst", response.iterator().next().azureResourceId());
-        Assertions.assertEquals("hh", response.iterator().next().agentVersion());
-        Assertions.assertEquals("rzdzucerscdnt", response.iterator().next().agentStatus());
+        Assertions.assertEquals("vithh", response.iterator().next().azureResourceId());
+        Assertions.assertEquals("o", response.iterator().next().agentVersion());
+        Assertions.assertEquals("sg", response.iterator().next().agentStatus());
     }
 }

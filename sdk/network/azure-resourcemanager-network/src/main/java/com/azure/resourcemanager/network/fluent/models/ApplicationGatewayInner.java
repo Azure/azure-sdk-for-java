@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
+import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
@@ -997,6 +998,34 @@ public final class ApplicationGatewayInner extends Resource {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
         this.innerProperties().withLoadDistributionPolicies(loadDistributionPolicies);
+        return this;
+    }
+
+    /**
+     * Get the entraJwtValidationConfigs property: Entra JWT validation configurations for the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @return the entraJwtValidationConfigs value.
+     */
+    public List<ApplicationGatewayEntraJwtValidationConfig> entraJwtValidationConfigs() {
+        return this.innerProperties() == null ? null : this.innerProperties().entraJwtValidationConfigs();
+    }
+
+    /**
+     * Set the entraJwtValidationConfigs property: Entra JWT validation configurations for the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @param entraJwtValidationConfigs the entraJwtValidationConfigs value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner
+        withEntraJwtValidationConfigs(List<ApplicationGatewayEntraJwtValidationConfig> entraJwtValidationConfigs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withEntraJwtValidationConfigs(entraJwtValidationConfigs);
         return this;
     }
 

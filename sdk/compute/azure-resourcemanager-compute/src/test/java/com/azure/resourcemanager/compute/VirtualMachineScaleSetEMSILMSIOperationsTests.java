@@ -29,7 +29,7 @@ import java.util.Set;
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
     // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
     private String rgName = "";
-    private Region region = Region.US_WEST2;
+    private Region region = Region.US_WEST3;
     private final String vmssName = "javavmss";
     private ResourceGroup resourceGroup;
 
@@ -104,7 +104,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1_V2)
             .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -322,7 +322,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1_V2)
             .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -431,7 +431,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1_V2)
             .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
             .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)

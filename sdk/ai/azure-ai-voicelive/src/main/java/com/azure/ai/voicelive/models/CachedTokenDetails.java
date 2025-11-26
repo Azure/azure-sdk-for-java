@@ -30,18 +30,6 @@ public final class CachedTokenDetails implements JsonSerializable<CachedTokenDet
     private final int audioTokens;
 
     /**
-     * Creates an instance of CachedTokenDetails class.
-     *
-     * @param textTokens the textTokens value to set.
-     * @param audioTokens the audioTokens value to set.
-     */
-    @Generated
-    private CachedTokenDetails(int textTokens, int audioTokens) {
-        this.textTokens = textTokens;
-        this.audioTokens = audioTokens;
-    }
-
-    /**
      * Get the textTokens property: Number of cached text tokens.
      *
      * @return the textTokens value.
@@ -70,6 +58,7 @@ public final class CachedTokenDetails implements JsonSerializable<CachedTokenDet
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("text_tokens", this.textTokens);
         jsonWriter.writeIntField("audio_tokens", this.audioTokens);
+        jsonWriter.writeIntField("image_tokens", this.imageTokens);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +76,7 @@ public final class CachedTokenDetails implements JsonSerializable<CachedTokenDet
         return jsonReader.readObject(reader -> {
             int textTokens = 0;
             int audioTokens = 0;
+            int imageTokens = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -94,11 +84,43 @@ public final class CachedTokenDetails implements JsonSerializable<CachedTokenDet
                     textTokens = reader.getInt();
                 } else if ("audio_tokens".equals(fieldName)) {
                     audioTokens = reader.getInt();
+                } else if ("image_tokens".equals(fieldName)) {
+                    imageTokens = reader.getInt();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new CachedTokenDetails(textTokens, audioTokens);
+            return new CachedTokenDetails(textTokens, audioTokens, imageTokens);
         });
+    }
+
+    /*
+     * Number of cached image tokens.
+     */
+    @Generated
+    private final int imageTokens;
+
+    /**
+     * Creates an instance of CachedTokenDetails class.
+     *
+     * @param textTokens the textTokens value to set.
+     * @param audioTokens the audioTokens value to set.
+     * @param imageTokens the imageTokens value to set.
+     */
+    @Generated
+    private CachedTokenDetails(int textTokens, int audioTokens, int imageTokens) {
+        this.textTokens = textTokens;
+        this.audioTokens = audioTokens;
+        this.imageTokens = imageTokens;
+    }
+
+    /**
+     * Get the imageTokens property: Number of cached image tokens.
+     *
+     * @return the imageTokens value.
+     */
+    @Generated
+    public int getImageTokens() {
+        return this.imageTokens;
     }
 }

@@ -202,7 +202,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -249,7 +249,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -412,7 +412,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         } else {
             body.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -462,7 +462,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         } else {
             body.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -722,7 +722,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -770,7 +770,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -869,7 +869,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -911,7 +911,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1004,7 +1004,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1048,7 +1048,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1287,7 +1287,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPoolUsage(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1329,7 +1329,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPoolUsage(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1421,7 +1421,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1466,7 +1466,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

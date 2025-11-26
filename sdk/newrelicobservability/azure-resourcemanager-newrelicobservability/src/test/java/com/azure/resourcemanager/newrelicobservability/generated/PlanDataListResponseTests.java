@@ -7,7 +7,6 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.PlanDataResourceInner;
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.PlanDataListResponse;
@@ -20,35 +19,53 @@ public final class PlanDataListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanDataListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"WEEKLY\",\"planDetails\":\"mbe\",\"effectiveDate\":\"2021-10-01T04:14:33Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"rolfpfp\",\"name\":\"algbquxigjyjg\",\"type\":\"jaoyfhrtx\"}],\"nextLink\":\"n\"}")
+            "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"qux\",\"planDetails\":\"jyj\",\"effectiveDate\":\"2021-06-25T17:47:27Z\"},\"orgCreationSource\":\"LIFTR\",\"accountCreationSource\":\"NEWRELIC\"},\"id\":\"rtxilner\",\"name\":\"ujysvle\",\"type\":\"uvfqawrlyxwj\"},{\"properties\":{\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"wbxgjvt\",\"planDetails\":\"p\",\"effectiveDate\":\"2021-04-27T05:48:18Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"jq\",\"name\":\"uhmuouqfprwzwbn\",\"type\":\"uitnwuiz\"},{\"properties\":{\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"izuckyfihrfidfvz\",\"planDetails\":\"zuhtymwisdkfthwx\",\"effectiveDate\":\"2021-12-09T20:21:41Z\"},\"orgCreationSource\":\"LIFTR\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"pvkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}],\"nextLink\":\"c\"}")
             .toObject(PlanDataListResponse.class);
         Assertions.assertEquals(UsageType.PAYG, model.value().get(0).planData().usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.value().get(0).planData().billingCycle());
-        Assertions.assertEquals("mbe", model.value().get(0).planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T04:14:33Z"),
+        Assertions.assertEquals("qux", model.value().get(0).planData().billingCycle());
+        Assertions.assertEquals("jyj", model.value().get(0).planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T17:47:27Z"),
             model.value().get(0).planData().effectiveDate());
-        Assertions.assertEquals(OrgCreationSource.NEWRELIC, model.value().get(0).orgCreationSource());
-        Assertions.assertEquals(AccountCreationSource.LIFTR, model.value().get(0).accountCreationSource());
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals(OrgCreationSource.LIFTR, model.value().get(0).orgCreationSource());
+        Assertions.assertEquals(AccountCreationSource.NEWRELIC, model.value().get(0).accountCreationSource());
+        Assertions.assertEquals("c", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanDataListResponse model = new PlanDataListResponse().withValue(Arrays.asList(new PlanDataResourceInner()
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.WEEKLY)
-                .withPlanDetails("mbe")
-                .withEffectiveDate(OffsetDateTime.parse("2021-10-01T04:14:33Z")))
-            .withOrgCreationSource(OrgCreationSource.NEWRELIC)
-            .withAccountCreationSource(AccountCreationSource.LIFTR))).withNextLink("n");
+        PlanDataListResponse model
+            = new PlanDataListResponse()
+                .withValue(Arrays.asList(
+                    new PlanDataResourceInner()
+                        .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                            .withBillingCycle("qux")
+                            .withPlanDetails("jyj")
+                            .withEffectiveDate(OffsetDateTime.parse("2021-06-25T17:47:27Z")))
+                        .withOrgCreationSource(OrgCreationSource.LIFTR)
+                        .withAccountCreationSource(AccountCreationSource.NEWRELIC),
+                    new PlanDataResourceInner()
+                        .withPlanData(new PlanData().withUsageType(UsageType.COMMITTED)
+                            .withBillingCycle("wbxgjvt")
+                            .withPlanDetails("p")
+                            .withEffectiveDate(OffsetDateTime.parse("2021-04-27T05:48:18Z")))
+                        .withOrgCreationSource(OrgCreationSource.NEWRELIC)
+                        .withAccountCreationSource(AccountCreationSource.LIFTR),
+                    new PlanDataResourceInner()
+                        .withPlanData(new PlanData().withUsageType(UsageType.COMMITTED)
+                            .withBillingCycle("izuckyfihrfidfvz")
+                            .withPlanDetails("zuhtymwisdkfthwx")
+                            .withEffectiveDate(OffsetDateTime.parse("2021-12-09T20:21:41Z")))
+                        .withOrgCreationSource(OrgCreationSource.LIFTR)
+                        .withAccountCreationSource(AccountCreationSource.LIFTR)))
+                .withNextLink("c");
         model = BinaryData.fromObject(model).toObject(PlanDataListResponse.class);
         Assertions.assertEquals(UsageType.PAYG, model.value().get(0).planData().usageType());
-        Assertions.assertEquals(BillingCycle.WEEKLY, model.value().get(0).planData().billingCycle());
-        Assertions.assertEquals("mbe", model.value().get(0).planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T04:14:33Z"),
+        Assertions.assertEquals("qux", model.value().get(0).planData().billingCycle());
+        Assertions.assertEquals("jyj", model.value().get(0).planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T17:47:27Z"),
             model.value().get(0).planData().effectiveDate());
-        Assertions.assertEquals(OrgCreationSource.NEWRELIC, model.value().get(0).orgCreationSource());
-        Assertions.assertEquals(AccountCreationSource.LIFTR, model.value().get(0).accountCreationSource());
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals(OrgCreationSource.LIFTR, model.value().get(0).orgCreationSource());
+        Assertions.assertEquals(AccountCreationSource.NEWRELIC, model.value().get(0).accountCreationSource());
+        Assertions.assertEquals("c", model.nextLink());
     }
 }

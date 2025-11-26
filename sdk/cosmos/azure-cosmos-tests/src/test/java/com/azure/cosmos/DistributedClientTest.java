@@ -44,13 +44,18 @@ public class DistributedClientTest extends TestSuiteBase {
         CosmosClientMetadataCachesSnapshot state = new CosmosClientMetadataCachesSnapshot();
         RxClientCollectionCache.serialize(state, cache);
 
-        CosmosAsyncClient newClient = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+        try (CosmosAsyncClient newClient = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                                .key(TestConfigurations.MASTER_KEY)
                                                                .metadataCaches(state)
-                                                               .buildAsyncClient();
+                                                               .buildAsyncClient()) {
 
-        // TODO: moderakh we should somehow verify that to collection fetch request is made and the existing collection cache is used.
-        newClient.getDatabase(container.getDatabase().getId()).getContainer(container.getId()).readItem(id, new PartitionKey(id), ObjectNode.class).block();
+            // TODO: moderakh we should somehow verify that to collection fetch request is made and the existing collection cache is used.
+            newClient
+                .getDatabase(container.getDatabase().getId())
+                .getContainer(container.getId())
+                .readItem(id, new PartitionKey(id), ObjectNode.class)
+                .block();
+        }
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)

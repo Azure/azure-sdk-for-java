@@ -56,8 +56,8 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
                 .withLocation("norwayeast")
                 .withTags(mapOf("myTag1", "tagValue1"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                com.azure.core.util.Context.NONE);
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
+                .withInstantAccess(true), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

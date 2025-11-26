@@ -314,6 +314,31 @@ public final class BareMetalMachineKeySetInner extends Resource {
     }
 
     /**
+     * Get the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @return the privilegeLevelName value.
+     */
+    public String privilegeLevelName() {
+        return this.innerProperties() == null ? null : this.innerProperties().privilegeLevelName();
+    }
+
+    /**
+     * Set the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @param privilegeLevelName the privilegeLevelName value to set.
+     * @return the BareMetalMachineKeySetInner object itself.
+     */
+    public BareMetalMachineKeySetInner withPrivilegeLevelName(String privilegeLevelName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BareMetalMachineKeySetProperties();
+        }
+        this.innerProperties().withPrivilegeLevelName(privilegeLevelName);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the bare metal machine key set.
      * 
      * @return the provisioningState value.

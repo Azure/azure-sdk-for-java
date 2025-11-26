@@ -4,66 +4,39 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.TuningOptionsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.TuningOptionsResourceInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptionEnum;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.TuningOptionsInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptions;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptionsResource;
 
 public final class TuningOptionsImpl implements TuningOptions {
-    private static final ClientLogger LOGGER = new ClientLogger(TuningOptionsImpl.class);
-
-    private final TuningOptionsClient innerClient;
+    private TuningOptionsInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public TuningOptionsImpl(TuningOptionsClient innerClient,
+    TuningOptionsImpl(TuningOptionsInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
-        this.innerClient = innerClient;
+        this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public Response<TuningOptionsResource> getWithResponse(String resourceGroupName, String serverName,
-        TuningOptionEnum tuningOption, Context context) {
-        Response<TuningOptionsResourceInner> inner
-            = this.serviceClient().getWithResponse(resourceGroupName, serverName, tuningOption, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TuningOptionsResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public String id() {
+        return this.innerModel().id();
     }
 
-    public TuningOptionsResource get(String resourceGroupName, String serverName, TuningOptionEnum tuningOption) {
-        TuningOptionsResourceInner inner = this.serviceClient().get(resourceGroupName, serverName, tuningOption);
-        if (inner != null) {
-            return new TuningOptionsResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public String name() {
+        return this.innerModel().name();
     }
 
-    public PagedIterable<TuningOptionsResource> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<TuningOptionsResourceInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TuningOptionsResourceImpl(inner1, this.manager()));
+    public String type() {
+        return this.innerModel().type();
     }
 
-    public PagedIterable<TuningOptionsResource> listByServer(String resourceGroupName, String serverName,
-        Context context) {
-        PagedIterable<TuningOptionsResourceInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TuningOptionsResourceImpl(inner1, this.manager()));
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    private TuningOptionsClient serviceClient() {
-        return this.innerClient;
+    public TuningOptionsInner innerModel() {
+        return this.innerObject;
     }
 
     private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {

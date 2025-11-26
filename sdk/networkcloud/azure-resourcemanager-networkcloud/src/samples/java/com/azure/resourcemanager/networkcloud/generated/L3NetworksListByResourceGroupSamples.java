@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class L3NetworksListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * L3Networks_ListByResourceGroup.json
      */
     /**
@@ -20,6 +20,6 @@ public final class L3NetworksListByResourceGroupSamples {
      */
     public static void
         listL3NetworksForResourceGroup(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.l3Networks().listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
+        manager.l3Networks().listByResourceGroup("resourceGroupName", null, null, com.azure.core.util.Context.NONE);
     }
 }

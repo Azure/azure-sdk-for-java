@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Represents a virtual endpoint for a server.
+ * Pair of virtual endpoints for a server.
  */
 @Fluent
 public class VirtualEndpointResourceForPatch implements JsonSerializable<VirtualEndpointResourceForPatch> {
     /*
-     * Properties of the virtual endpoint resource.
+     * Properties of the pair of virtual endpoints.
      */
     private VirtualEndpointResourceProperties innerProperties;
 
@@ -30,7 +30,7 @@ public class VirtualEndpointResourceForPatch implements JsonSerializable<Virtual
     }
 
     /**
-     * Get the innerProperties property: Properties of the virtual endpoint resource.
+     * Get the innerProperties property: Properties of the pair of virtual endpoints.
      * 
      * @return the innerProperties value.
      */
@@ -39,7 +39,7 @@ public class VirtualEndpointResourceForPatch implements JsonSerializable<Virtual
     }
 
     /**
-     * Set the innerProperties property: Properties of the virtual endpoint resource.
+     * Set the innerProperties property: Properties of the pair of virtual endpoints.
      * 
      * @param innerProperties the innerProperties value to set.
      * @return the VirtualEndpointResourceForPatch object itself.
@@ -50,7 +50,7 @@ public class VirtualEndpointResourceForPatch implements JsonSerializable<Virtual
     }
 
     /**
-     * Get the endpointType property: The endpoint type for the virtual endpoint.
+     * Get the endpointType property: Type of endpoint for the virtual endpoints.
      * 
      * @return the endpointType value.
      */
@@ -59,7 +59,7 @@ public class VirtualEndpointResourceForPatch implements JsonSerializable<Virtual
     }
 
     /**
-     * Set the endpointType property: The endpoint type for the virtual endpoint.
+     * Set the endpointType property: Type of endpoint for the virtual endpoints.
      * 
      * @param endpointType the endpointType value to set.
      * @return the VirtualEndpointResourceForPatch object itself.
@@ -73,7 +73,7 @@ public class VirtualEndpointResourceForPatch implements JsonSerializable<Virtual
     }
 
     /**
-     * Get the members property: List of members for a virtual endpoint.
+     * Get the members property: List of servers that one of the virtual endpoints can refer to.
      * 
      * @return the members value.
      */
@@ -82,7 +82,7 @@ public class VirtualEndpointResourceForPatch implements JsonSerializable<Virtual
     }
 
     /**
-     * Set the members property: List of members for a virtual endpoint.
+     * Set the members property: List of servers that one of the virtual endpoints can refer to.
      * 
      * @param members the members value to set.
      * @return the VirtualEndpointResourceForPatch object itself.
