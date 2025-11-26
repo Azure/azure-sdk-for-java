@@ -184,12 +184,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     encodedSlice = encodedSlice.slice();
                     encodedSlice.order(ByteOrder.LITTLE_ENDIAN);
 
+                    // Track the last complete segment before decoding
+                    long lastCompleteSegmentBefore = state.decoder.getLastCompleteSegmentStart();
+
                     // Decode the segment
                     ByteBuffer decoded = state.decoder.decode(encodedSlice);
 
                     // Track decoded bytes - update counter regardless of whether bytes were produced
                     int decodedProduced = (decoded != null) ? decoded.remaining() : 0;
-                    
+
                     LOGGER.atInfo()
                         .addKeyValue("relativeIndex", relativeIndex)
                         .addKeyValue("encodedSegmentSize", encodedSegmentSize)
@@ -200,7 +203,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
                     // Update tracked bytes
                     state.totalEncodedBytesProcessed.addAndGet(encodedSegmentSize);
-                    
+
                     // Always update decoded byte counter (even if zero bytes produced)
                     if (decodedProduced > 0) {
                         state.totalBytesDecoded.addAndGet(decodedProduced);
@@ -214,6 +217,16 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                             .addKeyValue("encodedSegmentSize", encodedSegmentSize)
                             .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
                             .log("No decoded bytes produced from segment");
+                    }
+
+                    // Check if a segment was completed - if so, snapshot decoded bytes count
+                    long lastCompleteSegmentAfter = state.decoder.getLastCompleteSegmentStart();
+                    if (lastCompleteSegmentAfter > lastCompleteSegmentBefore) {
+                        state.decodedBytesAtLastCompleteSegment = state.totalBytesDecoded.get();
+                        LOGGER.atInfo()
+                            .addKeyValue("lastCompleteSegment", lastCompleteSegmentAfter)
+                            .addKeyValue("decodedBytesSnapshot", state.decodedBytesAtLastCompleteSegment)
+                            .log("Segment completed, snapshotting decoded bytes");
                     }
 
                     // Check if we've completed the message
@@ -335,6 +348,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
         private ByteBuffer pendingBuffer;
+        private long decodedBytesAtLastCompleteSegment;
 
         /**
          * Creates a new decoder state.
@@ -347,6 +361,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             this.totalBytesDecoded = new AtomicLong(0);
             this.totalEncodedBytesProcessed = new AtomicLong(0);
             this.pendingBuffer = null;
+            this.decodedBytesAtLastCompleteSegment = 0;
         }
 
         /**
@@ -426,17 +441,26 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             long retryOffset = decoder.getLastCompleteSegmentStart();
             long decoderOffsetBefore = decoder.getMessageOffset();
             int pendingSize = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
+            long totalProcessedBefore = totalEncodedBytesProcessed.get();
 
             LOGGER.atInfo()
                 .addKeyValue("retryOffset", retryOffset)
                 .addKeyValue("decoderOffsetBefore", decoderOffsetBefore)
                 .addKeyValue("pendingBytes", pendingSize)
-                .addKeyValue("totalProcessed", totalEncodedBytesProcessed.get())
+                .addKeyValue("totalProcessedBefore", totalProcessedBefore)
                 .log("Computing retry offset");
 
             // Reset decoder to the last complete segment boundary
             // This ensures messageOffset and segment state match the retry offset
             decoder.resetToLastCompleteSegment();
+
+            // Reset totalEncodedBytesProcessed to match the retry offset
+            // This ensures absoluteStartOfCombined calculation is correct for retry data
+            totalEncodedBytesProcessed.set(retryOffset);
+
+            // Reset totalBytesDecoded to the snapshot at last complete segment
+            // This ensures decoded byte counting is correct for retry
+            totalBytesDecoded.set(decodedBytesAtLastCompleteSegment);
 
             // Clear pending buffer since we're restarting from the segment boundary
             // Any bytes in pending are from after this boundary and will be re-fetched
@@ -450,6 +474,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
             LOGGER.atInfo()
                 .addKeyValue("retryOffset", retryOffset)
+                .addKeyValue("totalProcessedAfter", totalEncodedBytesProcessed.get())
+                .addKeyValue("totalDecodedAfter", totalBytesDecoded.get())
                 .log("Retry offset calculated (last complete segment boundary)");
             return retryOffset;
         }
