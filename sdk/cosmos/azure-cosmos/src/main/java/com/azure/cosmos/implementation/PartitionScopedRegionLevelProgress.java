@@ -68,7 +68,7 @@ public class PartitionScopedRegionLevelProgress {
 
                 // bloom filter is used only when the request is targeted to a specific logical partition and
                 // multiple write locations are configured
-                // and a global session token is not alre used for the partition key range
+                // and a global session token is not already used for the partition key range
                 boolean shouldUseBloomFilter = shouldUseBloomFilter(
                     request,
                     partitionKeyRangeId,
