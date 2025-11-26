@@ -4949,8 +4949,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
-            Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
+        return nonDocumentReadFeedInternal(
+            options,
+            ResourceType.PartitionKeyRange,
+            PartitionKeyRange.class,
+            Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT),
+            true);
     }
 
     private RxDocumentServiceRequest getStoredProcedureRequest(String collectionLink, StoredProcedure storedProcedure,
@@ -6239,19 +6243,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
-
-        return nonDocumentReadFeed(state.getQueryOptions(), resourceType, klass, resourceLink);
-    }
-
-    private <T> Flux<FeedResponse<T>> nonDocumentReadFeed(
-        CosmosQueryRequestOptions options,
-        ResourceType resourceType,
-        Class<T> klass,
-        String resourceLink) {
-        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> nonDocumentReadFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
-            retryPolicy);
+        return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink, false);
     }
 
     private <T> Flux<FeedResponse<T>> nonDocumentReadFeedInternal(
@@ -6259,7 +6251,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink,
-        DocumentClientRetryPolicy retryPolicy) {
+        boolean isChangeFeed) {
 
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
@@ -6269,31 +6261,50 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // readFeed is only used for non-document operations - no need to wire up hedging
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
-            if (continuationToken != null) {
-                requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-            }
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
+            if (isChangeFeed) {
+                requestHeaders.put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+            }
+
+            if (StringUtils.isNotEmpty(continuationToken)) {
+                requestHeaders.put(
+                    isChangeFeed ? HttpConstants.HttpHeaders.IF_NONE_MATCH : HttpConstants.HttpHeaders.CONTINUATION,
+                    continuationToken);
+            }
+
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
-            retryPolicy.onBeforeSendRequest(request);
             return request;
         };
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
-            request -> readFeed(request)
-                .map(response -> feedResponseAccessor.createFeedResponse(
-                                    response,
-                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
-                                    klass));
+            request -> {
+                return readFeed(request)
+                    .map(response -> {
+                        if (isChangeFeed) {
+                            return feedResponseAccessor.createChangeFeedResponse(
+                                response,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                klass);
+                        } else {
+                            return feedResponseAccessor.createFeedResponse(
+                                response,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                klass);
+                        }
+                    });
+            };
 
         return Paginator
-            .getPaginatedQueryResultAsObservable(
+            .getPaginatedNonDocumentReadFeedResultAsObservable(
+                this,
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,
                 maxPageSize,
                 this.globalEndpointManager,
-                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
+                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                isChangeFeed);
     }
 
     @Override
@@ -6475,6 +6486,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
+            this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
 
@@ -6497,6 +6509,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.throughputControlStore.close();
             }
 
+            this.perPartitionFailoverConfigModifier = null;
             logger.info("Shutting down completed.");
         } else {
             logger.warn("Already shutdown!");
@@ -6575,6 +6588,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public String getMasterKeyOrResourceToken() {
         return this.masterKeyOrResourceToken;
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeModel.registerTransportClientInterceptor(transportClientInterceptor);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
@@ -7480,8 +7498,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (Configs.isReadAvailabilityStrategyEnabledWithPpaf()) {
 
-            logger.warn("Availability strategy for reads, queries, read all and read many" +
-                " is enabled when PerPartitionAutomaticFailover is enabled.");
+            logger.info("ATTN: As Per-Partition Automatic Failover (PPAF) is enabled a default End-to-End Operation Latency Policy will be applied for read, query, readAll and readyMany operation types.");
 
             if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
                 Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
@@ -7852,10 +7869,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (firstContactedLocationEndpoint != null) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint, true);
         } else {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(failedRequest, failedRequest.requestContext.regionalRoutingContextToRoute);
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, failedRequest.requestContext.regionalRoutingContextToRoute, true);
         }
     }
 
@@ -7921,6 +7938,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
 
         this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
+        this.diagnosticsClientConfig.withIsPerPartitionAutomaticFailoverEnabled(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled());
     }
 
     private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
@@ -7930,34 +7948,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (isPerPartitionAutomaticFailoverEnabledAsMandatedByService != null) {
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabledAsMandatedByService);
-        } else {
-            boolean isPerPartitionAutomaticFailoverOptedIntoByClient
-                = Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true");
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverOptedIntoByClient);
         }
     }
 
     private void initializePerPartitionCircuitBreaker() {
+
+        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig;
+
         if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
-
-            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
-
-            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
-                logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
-                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
-            }
+            // Override custom config to enabled if PPAF is enabled
+            logger.info("ATTN: Per-Partition Circuit Breaker is enabled because Per-Partition Automatic Failover is enabled.");
+            partitionLevelCircuitBreakerConfig = PartitionLevelCircuitBreakerConfig.fromExplicitArgs(Boolean.TRUE);
+        } else {
+            logger.info("ATTN: As Per-Partition Automatic Failover is disabled, Per-Partition Circuit Breaker will be enabled or disabled based on client configuration.");
+            partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         }
 
-        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig();
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig(partitionLevelCircuitBreakerConfig);
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
     }
 
     private void enableAvailabilityStrategyForReads() {
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
-            this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
-                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                this.connectionPolicy
-            );
+        this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            this.connectionPolicy
+        );
+
+        if (this.ppafEnforcedE2ELatencyPolicyConfigForReads != null) {
+            logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is enabled.");
+        } else {
+            logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is disabled.");
         }
     }
 
