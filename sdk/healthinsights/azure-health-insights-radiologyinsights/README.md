@@ -997,7 +997,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [ri_async_sample_guidance]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleGuidanceInferenceAsync.java
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/
 [radiology_insights_inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
-[azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/
