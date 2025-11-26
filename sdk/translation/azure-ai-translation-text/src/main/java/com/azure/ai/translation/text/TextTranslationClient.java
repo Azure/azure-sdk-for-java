@@ -483,7 +483,7 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    private List<TranslatedTextItem> translateInner(List<TranslateInputItem> body) {
+    public List<TranslatedTextItem> translate(List<TranslateInputItem> body) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         TranslateBody translateBody = new TranslateBody(body);
@@ -491,6 +491,22 @@ public final class TextTranslationClient {
             = translateWithResponse(BinaryData.fromObject(translateBody), requestOptions).getValue()
                 .toObject(TranslationResult.class);
         return result.getValue();
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param body Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    public TranslatedTextItem translate(TranslateInputItem input) {
+        return translate(Arrays.asList(input)).get(0);
     }
 
     /**
@@ -521,7 +537,7 @@ public final class TextTranslationClient {
                 = new TranslateInputItem(text, Arrays.asList(new TranslationTarget(targetLanguage)));
             body.add(translateInputItem);
         }
-        return translateInner(body);
+        return translate(body);
     }
 
     /**
@@ -547,29 +563,6 @@ public final class TextTranslationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TranslatedTextItem translate(String targetLanguage, String text) {
         return translate(targetLanguage, Arrays.asList(text)).get(0);
-    }
-
-    /**
-     * Translate Text.
-     * <p>
-     * This method is used when you have one input text and the optional parameters are needed such as specification
-     * of a source language, profanity handling etc.
-     * </p>
-     *
-     * @param text Text to translate.
-     * @param target Translation target language and options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranslatedTextItem translate(String text, TranslationTarget target) {
-        TranslateInputItem translateInputItem = new TranslateInputItem(text, Arrays.asList(target));
-        return translateInner(Arrays.asList(translateInputItem)).get(0);
     }
 
     private List<InputTextItem> convertTextsToInputTextItems(List<String> texts) {

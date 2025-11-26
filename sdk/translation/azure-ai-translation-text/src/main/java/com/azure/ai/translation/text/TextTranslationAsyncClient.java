@@ -496,7 +496,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    private Mono<List<TranslatedTextItem>> translateInner(List<TranslateInputItem> body) {
+    public Mono<List<TranslatedTextItem>> translate(List<TranslateInputItem> body) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         TranslateBody translateBody = new TranslateBody(body);
@@ -505,6 +505,24 @@ public final class TextTranslationAsyncClient {
                 TranslationResult result = protocolMethodData.toObject(TranslationResult.class);
                 return result.getValue();
             });
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param body Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    public Mono<TranslatedTextItem> translate(TranslateInputItem input) {
+        return translate(Arrays.asList(input))
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
+                .defaultIfEmpty(null);
     }
 
     /**
@@ -535,7 +553,7 @@ public final class TextTranslationAsyncClient {
                 = new TranslateInputItem(text, Arrays.asList(new TranslationTarget(targetLanguage)));
             body.add(translateInputItem);
         }
-        return translateInner(body);
+        return translate(body);
     }
 
     /**
@@ -561,31 +579,6 @@ public final class TextTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranslatedTextItem> translate(String targetLanguage, String text) {
         return translate(targetLanguage, Arrays.asList(text))
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
-    }
-
-    /**
-     * Translate Text.
-     * <p>
-     * This method is used when you have one input text and the optional parameters are needed such as specification
-     * of a source language, profanity handling etc.
-     * </p>
-     *
-     * @param text Text to translate.
-     * @param target Translation target language and options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TranslatedTextItem> translate(String text, TranslationTarget target) {
-        TranslateInputItem translateInputItem = new TranslateInputItem(text, Arrays.asList(target));
-        return translateInner(Arrays.asList(translateInputItem))
             .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
             .defaultIfEmpty(null);
     }
