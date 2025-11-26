@@ -15,7 +15,7 @@ import com.azure.ai.agents.models.ListAgentsRequestOrder;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
-import com.azure.ai.agents.models.MemoryStoreObject;
+import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreSearchResponse;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
 import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
@@ -63,7 +63,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Create a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -78,9 +78,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -119,7 +119,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Update a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -130,9 +130,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -172,7 +172,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Retrieve a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -230,7 +230,7 @@ public final class MemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -266,7 +266,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Delete a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -294,7 +294,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Search for relevant memories from a memory store based on conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -311,9 +311,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -364,7 +364,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Update memory store with conversation memories.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -379,9 +379,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -452,7 +452,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Get memory store update result.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -537,7 +537,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreObject> createMemoryStore(String name, MemoryStoreDefinition definition, String description,
+    public Mono<MemoryStoreDetails> createMemoryStore(String name, MemoryStoreDefinition definition, String description,
         Map<String, String> metadata) {
         // Generated convenience method for createMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -545,7 +545,7 @@ public final class MemoryStoresAsyncClient {
             = new CreateMemoryStoreRequest(name, definition).setDescription(description).setMetadata(metadata);
         BinaryData createMemoryStoreRequest = BinaryData.fromObject(createMemoryStoreRequestObj);
         return createMemoryStoreWithResponse(createMemoryStoreRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -563,13 +563,13 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreObject> createMemoryStore(String name, MemoryStoreDefinition definition) {
+    public Mono<MemoryStoreDetails> createMemoryStore(String name, MemoryStoreDefinition definition) {
         // Generated convenience method for createMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateMemoryStoreRequest createMemoryStoreRequestObj = new CreateMemoryStoreRequest(name, definition);
         BinaryData createMemoryStoreRequest = BinaryData.fromObject(createMemoryStoreRequestObj);
         return createMemoryStoreWithResponse(createMemoryStoreRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -586,11 +586,11 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreObject> getMemoryStore(String name) {
+    public Mono<MemoryStoreDetails> getMemoryStore(String name) {
         // Generated convenience method for getMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMemoryStoreWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -616,7 +616,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MemoryStoreObject> listMemoryStores(Integer limit, ListAgentsRequestOrder order, String after,
+    public PagedFlux<MemoryStoreDetails> listMemoryStores(Integer limit, ListAgentsRequestOrder order, String after,
         String before) {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
@@ -637,11 +637,11 @@ public final class MemoryStoresAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, MemoryStoreObject>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, MemoryStoreDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -659,7 +659,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MemoryStoreObject> listMemoryStores() {
+    public PagedFlux<MemoryStoreDetails> listMemoryStores() {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listMemoryStores(requestOptions);
@@ -667,11 +667,11 @@ public final class MemoryStoresAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, MemoryStoreObject>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, MemoryStoreDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -771,7 +771,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Delete all memories associated with a specific scope from a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -779,9 +779,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -826,14 +826,14 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreObject> updateMemoryStore(String name, String description, Map<String, String> metadata) {
+    public Mono<MemoryStoreDetails> updateMemoryStore(String name, String description, Map<String, String> metadata) {
         // Generated convenience method for updateMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoryStoreRequest updateMemoryStoreRequestObj
             = new UpdateMemoryStoreRequest().setDescription(description).setMetadata(metadata);
         BinaryData updateMemoryStoreRequest = BinaryData.fromObject(updateMemoryStoreRequestObj);
         return updateMemoryStoreWithResponse(name, updateMemoryStoreRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -850,13 +850,13 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreObject> updateMemoryStore(String name) {
+    public Mono<MemoryStoreDetails> updateMemoryStore(String name) {
         // Generated convenience method for updateMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoryStoreRequest updateMemoryStoreRequestObj = new UpdateMemoryStoreRequest();
         BinaryData updateMemoryStoreRequest = BinaryData.fromObject(updateMemoryStoreRequestObj);
         return updateMemoryStoreWithResponse(name, updateMemoryStoreRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDetails.class));
     }
 
     /**

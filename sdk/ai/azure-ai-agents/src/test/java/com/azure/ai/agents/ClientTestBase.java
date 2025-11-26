@@ -81,6 +81,16 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildResponsesAsyncClient();
     }
 
+    protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresClient();
+    }
+
+    protected MemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresAsyncClient();
+    }
+
     private void addTestRecordCustomSanitizers() {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
@@ -97,6 +107,17 @@ public class ClientTestBase extends TestProxyTestBase {
 
     private void addCustomMatchers() {
         interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
+    }
+
+    protected void sleep(long millis) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
