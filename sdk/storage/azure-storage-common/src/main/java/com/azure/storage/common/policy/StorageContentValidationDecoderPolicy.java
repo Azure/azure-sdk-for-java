@@ -125,7 +125,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                         LOGGER.error(
                             "Negative relative index detected: relativeIndex={}, decoderOffset={}, absoluteStart={}",
                             relativeIndex, decoderOffset, absoluteStartOfCombined);
-                        throw new IllegalStateException("Negative relative index: " + relativeIndex);
+                        throw LOGGER.logExceptionAsError(
+                            new IllegalStateException("Negative relative index: " + relativeIndex));
                     }
 
                     // Check if we have enough for segment header
@@ -186,21 +187,33 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     // Decode the segment
                     ByteBuffer decoded = state.decoder.decode(encodedSlice);
 
-                    LOGGER.atVerbose()
+                    // Track decoded bytes - update counter regardless of whether bytes were produced
+                    int decodedProduced = (decoded != null) ? decoded.remaining() : 0;
+                    
+                    LOGGER.atInfo()
                         .addKeyValue("relativeIndex", relativeIndex)
                         .addKeyValue("encodedSegmentSize", encodedSegmentSize)
-                        .addKeyValue("decodedBytes", decoded.remaining())
-                        .addKeyValue("newDecoderOffset", state.decoder.getMessageOffset())
+                        .addKeyValue("decodedProduced", decodedProduced)
+                        .addKeyValue("totalDecodedSoFar", state.totalBytesDecoded.get())
+                        .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
                         .log("Decoded segment");
 
                     // Update tracked bytes
                     state.totalEncodedBytesProcessed.addAndGet(encodedSegmentSize);
-                    if (decoded.remaining() > 0) {
-                        state.totalBytesDecoded.addAndGet(decoded.remaining());
+                    
+                    // Always update decoded byte counter (even if zero bytes produced)
+                    if (decodedProduced > 0) {
+                        state.totalBytesDecoded.addAndGet(decodedProduced);
                         // Accumulate decoded bytes
-                        byte[] decodedBytes = new byte[decoded.remaining()];
+                        byte[] decodedBytes = new byte[decodedProduced];
                         decoded.get(decodedBytes);
                         decodedOutput.write(decodedBytes, 0, decodedBytes.length);
+                    } else {
+                        // Log when no decoded bytes are produced from a segment
+                        LOGGER.atInfo()
+                            .addKeyValue("encodedSegmentSize", encodedSegmentSize)
+                            .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
+                            .log("No decoded bytes produced from segment");
                     }
 
                     // Check if we've completed the message

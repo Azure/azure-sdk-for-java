@@ -69,6 +69,23 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Advances the message offset by the specified number of bytes.
+     * This should be called after consuming an encoded segment to maintain
+     * the authoritative encoded offset.
+     *
+     * @param bytes The number of bytes to advance.
+     */
+    public void advanceMessageOffset(long bytes) {
+        long priorOffset = messageOffset;
+        messageOffset += bytes;
+        LOGGER.atInfo()
+            .addKeyValue("priorOffset", priorOffset)
+            .addKeyValue("bytesAdvanced", bytes)
+            .addKeyValue("newOffset", messageOffset)
+            .log("Advanced message offset");
+    }
+
+    /**
      * Resets the decoder position to the last complete segment boundary.
      * This is used during smart retry to ensure the decoder is in sync with
      * the data being provided from the retry offset.
@@ -139,8 +156,9 @@ public class StructuredMessageDecoder {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < out.length; i++) {
             sb.append(String.format("%02X", out[i]));
-            if (i < out.length - 1)
+            if (i < out.length - 1) {
                 sb.append(' ');
+            }
         }
         return sb.toString();
     }
@@ -175,11 +193,11 @@ public class StructuredMessageDecoder {
      * Reads and validates segment length with diagnostic logging.
      */
     private long readAndValidateSegmentLength(ByteBuffer buffer, long remaining) {
-        final int SEGMENT_SIZE_BYTES = 8; // segment size is 8 bytes (long)
-        if (buffer.remaining() < SEGMENT_SIZE_BYTES) {
+        final int segmentSizeBytes = 8; // segment size is 8 bytes (long)
+        if (buffer.remaining() < segmentSizeBytes) {
             LOGGER.error("Not enough bytes to read segment size. pos={}, remaining={}", buffer.position(),
                 buffer.remaining());
-            throw new IllegalStateException("Not enough bytes to read segment size");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Not enough bytes to read segment size"));
         }
 
         // Diagnostic: dump first 16 bytes at this position so we can see what's being read
@@ -200,8 +218,8 @@ public class StructuredMessageDecoder {
                 "Invalid segment length read: segmentLength={}, remaining={}, decoderOffset={}, "
                     + "lastCompleteSegment={}, bufferPos={}, peek-next-bytes={}",
                 segmentLength, remaining, messageOffset, lastCompleteSegmentStart, buffer.position(), peekNext);
-            throw new IllegalArgumentException("Invalid segment size detected: " + segmentLength + " (remaining="
-                + remaining + ", decoderOffset=" + messageOffset + ")");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid segment size detected: "
+                + segmentLength + " (remaining=" + remaining + ", decoderOffset=" + messageOffset + ")"));
         }
 
         LOGGER.atVerbose()
@@ -394,14 +412,18 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Finalizes the decoding process and validates that the entire message has been decoded.
+     * Finalizes the decoding process and returns any final decoded bytes still buffered internally.
+     * The policy should aggregate decoded byte counts and perform the final length comparison.
      *
-     * @throws IllegalArgumentException if the decoded message length does not match the expected length.
+     * @return A ByteBuffer containing any final decoded bytes, or null if none remain.
+     * @throws IllegalArgumentException if the encoded message offset doesn't match expected length.
      */
-    public void finalizeDecoding() {
+    public ByteBuffer finalizeDecoding() {
         if (messageOffset != messageLength) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Decoded message length does not match "
                 + "expected length. Expected: " + messageLength + ", but was: " + messageOffset));
         }
+        // No buffered decoded bytes in current implementation
+        return null;
     }
 }
