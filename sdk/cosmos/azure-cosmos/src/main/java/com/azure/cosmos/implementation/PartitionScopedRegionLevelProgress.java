@@ -13,9 +13,7 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -23,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -141,14 +138,13 @@ public class PartitionScopedRegionLevelProgress {
                             request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of region : " + normalizedRegionRoutedTo + ".");
 
                             if (shouldUseBloomFilter) {
-                                this.recordPartitionKeyInBloomFilter(
+                                partitionKeyBasedBloomFilter.tryRecordPartitionKey(
                                     request,
                                     collectionRid,
+                                    firstEffectivePreferredReadableRegion,
                                     normalizedRegionRoutedTo,
                                     request.getPartitionKeyInternal(),
-                                    request.getPartitionKeyDefinition(),
-                                    partitionKeyBasedBloomFilter,
-                                    firstEffectivePreferredReadableRegion);
+                                    request.getPartitionKeyDefinition());
                             }
 
                             if (regionLevelProgressAsValInner == null) {
@@ -173,14 +169,13 @@ public class PartitionScopedRegionLevelProgress {
                             request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of region : " + normalizedRegionRoutedTo + ".");
 
                             if (shouldUseBloomFilter) {
-                                this.recordPartitionKeyInBloomFilter(
+                                partitionKeyBasedBloomFilter.tryRecordPartitionKey(
                                     request,
                                     collectionRid,
+                                    firstEffectivePreferredReadableRegion,
                                     normalizedRegionRoutedTo,
                                     request.getPartitionKeyInternal(),
-                                    request.getPartitionKeyDefinition(),
-                                    partitionKeyBasedBloomFilter,
-                                    firstEffectivePreferredReadableRegion);
+                                    request.getPartitionKeyDefinition());
                             }
 
                             if (regionLevelProgressAsValInner == null) {
@@ -206,14 +201,13 @@ public class PartitionScopedRegionLevelProgress {
                             request.requestContext.getSessionTokenEvaluationResults().add("Recording region specific progress of first preferred region : " + regionRoutedTo + ".");
 
                             if (shouldUseBloomFilter) {
-                                this.recordPartitionKeyInBloomFilter(
+                                partitionKeyBasedBloomFilter.tryRecordPartitionKey(
                                     request,
                                     collectionRid,
+                                    firstEffectivePreferredReadableRegion,
                                     normalizedRegionRoutedTo,
                                     request.getPartitionKeyInternal(),
-                                    request.getPartitionKeyDefinition(),
-                                    partitionKeyBasedBloomFilter,
-                                    firstEffectivePreferredReadableRegion);
+                                    request.getPartitionKeyDefinition());
                             }
 
                             if (regionLevelProgressAsValInner == null) {
@@ -458,23 +452,23 @@ public class PartitionScopedRegionLevelProgress {
         }
     }
 
-    private void recordPartitionKeyInBloomFilter(
-        RxDocumentServiceRequest request,
-        Long collectionRid,
-        String regionRoutedTo,
-        PartitionKeyInternal partitionKeyInternal,
-        PartitionKeyDefinition partitionKeyDefinition,
-        PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
-        String firstEffectivePreferredReadableRegion) {
-
-        partitionKeyBasedBloomFilter.tryRecordPartitionKey(
-            request,
-            collectionRid,
-            firstEffectivePreferredReadableRegion,
-            regionRoutedTo,
-            partitionKeyInternal,
-            partitionKeyDefinition);
-    }
+//    private void recordPartitionKeyInBloomFilter(
+//        RxDocumentServiceRequest request,
+//        Long collectionRid,
+//        String regionRoutedTo,
+//        PartitionKeyInternal partitionKeyInternal,
+//        PartitionKeyDefinition partitionKeyDefinition,
+//        PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
+//        String firstEffectivePreferredReadableRegion) {
+//
+//        partitionKeyBasedBloomFilter.tryRecordPartitionKey(
+//            request,
+//            collectionRid,
+//            firstEffectivePreferredReadableRegion,
+//            regionRoutedTo,
+//            partitionKeyInternal,
+//            partitionKeyDefinition);
+//    }
 
     public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
         return this.partitionKeyRangeIdToRegionLevelProgress.containsKey(partitionKeyRangeId);
