@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Added continuation token support for ARM Long-Running Operations (LROs):
+  - `PollingState.toContinuationToken()` - Serialize polling state to a Base64-encoded token
+  - `PollingState.fromContinuationToken()` - Deserialize token back to polling state
+  - `SyncPollerFactory.resumeFromToken()` - Resume a SyncPoller from a continuation token
+  - `ArmLroSyncPoller` - New implementation that supports continuation tokens for ARM LROs
+
 ### Breaking Changes
 
 ### Bugs Fixed
