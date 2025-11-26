@@ -9,14 +9,12 @@ import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CountIT {
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired

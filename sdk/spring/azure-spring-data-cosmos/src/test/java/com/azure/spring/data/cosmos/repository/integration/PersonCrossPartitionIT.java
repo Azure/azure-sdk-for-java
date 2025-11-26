@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PersonCrossPartitionIT {
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static final PersonCrossPartition TEST_PERSON_CP = new PersonCrossPartition(ID_1, FIRST_NAME, LAST_NAME, HOBBIES,

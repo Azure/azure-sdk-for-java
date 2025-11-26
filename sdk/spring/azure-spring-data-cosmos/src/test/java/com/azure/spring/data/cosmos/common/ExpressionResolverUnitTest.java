@@ -11,7 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ExpressionResolverUnitTest {
     private static final String LITERAL_EXPRESSION = "literal expression";

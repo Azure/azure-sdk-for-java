@@ -26,7 +26,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +37,7 @@ import static org.assertj.core.api.Assertions.fail;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class UniqueKeyPolicyIT {
 
-    
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     private static final UniqueKeyPolicyEntity ENTITY_1 = new UniqueKeyPolicyEntity("id-1", "firstName-1", "lastName"

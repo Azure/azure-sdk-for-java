@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -48,7 +47,7 @@ public class ReactiveTeacherRepositoryIT {
 
     private static final ReactiveTeacher TEACHER_3 = new ReactiveTeacher(TEACHER_ID_3, TEACHER_FIRST_NAME_2, DEPARTMENT_LAST_NAME_1);
 
-    
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
