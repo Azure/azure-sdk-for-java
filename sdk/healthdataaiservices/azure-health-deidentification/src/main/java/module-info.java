@@ -4,9 +4,7 @@
 
 module com.azure.health.deidentification {
     requires transitive com.azure.core;
-
     exports com.azure.health.deidentification;
     exports com.azure.health.deidentification.models;
-
     opens com.azure.health.deidentification.models to com.azure.core;
 }

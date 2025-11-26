@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.arizeaiobservabilityeval {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.arizeaiobservabilityeval;
     exports com.azure.resourcemanager.arizeaiobservabilityeval.fluent;
     exports com.azure.resourcemanager.arizeaiobservabilityeval.fluent.models;
     exports com.azure.resourcemanager.arizeaiobservabilityeval.models;
-
     opens com.azure.resourcemanager.arizeaiobservabilityeval.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.arizeaiobservabilityeval.models to com.azure.core;
     opens com.azure.resourcemanager.arizeaiobservabilityeval.implementation.models to com.azure.core;

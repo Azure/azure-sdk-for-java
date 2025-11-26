@@ -4,9 +4,7 @@
 
 module com.azure.compute.batch {
     requires transitive com.azure.core;
-
     exports com.azure.compute.batch;
     exports com.azure.compute.batch.models;
-
     opens com.azure.compute.batch.models to com.azure.core;
 }

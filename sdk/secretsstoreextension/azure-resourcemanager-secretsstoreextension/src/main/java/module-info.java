@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.secretsstoreextension {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.secretsstoreextension;
     exports com.azure.resourcemanager.secretsstoreextension.fluent;
     exports com.azure.resourcemanager.secretsstoreextension.fluent.models;
     exports com.azure.resourcemanager.secretsstoreextension.models;
-
     opens com.azure.resourcemanager.secretsstoreextension.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.secretsstoreextension.models to com.azure.core;
     opens com.azure.resourcemanager.secretsstoreextension.implementation.models to com.azure.core;

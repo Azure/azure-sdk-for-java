@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BackupsUnderBackupVaultRestoreFilesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupsUnderBackupVault_SingleFileRestore.json
+     * x-ms-original-file: 2025-09-01-preview/BackupsUnderBackupVault_SingleFileRestore.json
      */
     /**
      * Sample code: Backups_SingleFileRestore.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
  */
 public final class NetAppResourceCheckFilePathAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01/CheckFilePathAvailability.json
+     * x-ms-original-file: 2025-09-01-preview/CheckFilePathAvailability.json
      */
     /**
      * Sample code: CheckFilePathAvailability.
@@ -23,7 +23,7 @@ public final class NetAppResourceCheckFilePathAvailabilitySamples {
             .checkFilePathAvailabilityWithResponse("eastus", new FilePathAvailabilityRequest()
                 .withName("my-exact-filepth")
                 .withSubnetId(
-                    "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
                 com.azure.core.util.Context.NONE);
     }
 }

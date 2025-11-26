@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.iotfirmwaredefense {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.iotfirmwaredefense;
     exports com.azure.resourcemanager.iotfirmwaredefense.fluent;
     exports com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
     exports com.azure.resourcemanager.iotfirmwaredefense.models;
-
     opens com.azure.resourcemanager.iotfirmwaredefense.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.iotfirmwaredefense.models to com.azure.core;
     opens com.azure.resourcemanager.iotfirmwaredefense.implementation.models to com.azure.core;

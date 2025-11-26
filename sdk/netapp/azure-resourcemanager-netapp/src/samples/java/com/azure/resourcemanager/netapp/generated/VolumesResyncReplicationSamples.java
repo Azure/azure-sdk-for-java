@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesResyncReplicationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_ResyncReplication.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_ResyncReplication.json
      */
     /**
      * Sample code: Volumes_ResyncReplication.

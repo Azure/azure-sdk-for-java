@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Get_SapHana.json
+     * x-ms-original-file: 2025-09-01-preview/VolumeGroups_Get_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Get_SapHana.
@@ -21,7 +21,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Get_Oracle.json
+     * x-ms-original-file: 2025-09-01-preview/VolumeGroups_Get_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Get_Oracle.
