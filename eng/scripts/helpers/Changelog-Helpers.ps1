@@ -3,20 +3,12 @@
 
 <#
 .SYNOPSIS
-    Module for changelog automation functions.
+    Helper functions for changelog automation.
 
 .DESCRIPTION
-    This module provides functions for automating changelog updates by comparing
+    This file provides helper functions for automating changelog updates by comparing
     JAR files and updating CHANGELOG.md files.
 #>
-
-# Import common scripts
-$commonScriptPath = Join-Path $PSScriptRoot .. .. common scripts common.ps1
-if (Test-Path $commonScriptPath) {
-    . $commonScriptPath
-} else {
-    throw "Common script not found at: $commonScriptPath"
-}
 
 function Get-MavenArtifactInfo {
     <#
@@ -238,7 +230,15 @@ function Get-BuiltJarPath {
     }
     
     # Return the first matching JAR (should be the main artifact)
-    return $jarFiles[0].FullName
+    $selectedJar = $jarFiles[0].FullName
+    
+    # Validate the JAR file is not empty
+    $jarFileInfo = Get-Item $selectedJar
+    if ($jarFileInfo.Length -eq 0) {
+        throw "JAR file is empty: $selectedJar"
+    }
+    
+    return $selectedJar
 }
 
 function Invoke-ChangelogGeneration {
@@ -485,6 +485,7 @@ function Update-ChangelogFile {
     }
 
     # Find the first unreleased version entry
+    # Note: $CHANGELOG_UNRELEASED_STATUS is defined in common.ps1 (typically "Unreleased")
     $firstEntry = $null
     foreach ($key in $changeLogEntries.Keys) {
         $entry = $changeLogEntries[$key]
@@ -528,14 +529,3 @@ function Update-ChangelogFile {
         LogInfo "CHANGELOG.md successfully updated"
     }
 }
-
-# Export module members
-Export-ModuleMember -Function @(
-    'Get-MavenArtifactInfo',
-    'Get-LatestReleasedStableVersion',
-    'Get-MavenJar',
-    'Get-BuiltJarPath',
-    'Invoke-ChangelogGeneration',
-    'New-ChangelogContent',
-    'Update-ChangelogFile'
-)
