@@ -18,9 +18,12 @@ import com.azure.storage.common.implementation.structuredmessage.StructuredMessa
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a decoding policy in an {@link com.azure.core.http.HttpPipeline} to decode structured messages in
@@ -38,9 +41,37 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
 
     /**
+     * Machine-readable token pattern for extracting retry start offset from exception messages.
+     * Format: RETRY-START-OFFSET={number}
+     */
+    private static final String RETRY_OFFSET_TOKEN = "RETRY-START-OFFSET=";
+    private static final Pattern RETRY_OFFSET_PATTERN = Pattern.compile("RETRY-START-OFFSET=(\\d+)");
+
+    /**
      * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
      */
     public StorageContentValidationDecoderPolicy() {
+    }
+
+    /**
+     * Parses the retry start offset from an exception message containing the RETRY-START-OFFSET token.
+     *
+     * @param message The exception message to parse.
+     * @return The retry start offset, or -1 if not found.
+     */
+    public static long parseRetryStartOffset(String message) {
+        if (message == null) {
+            return -1;
+        }
+        Matcher matcher = RETRY_OFFSET_PATTERN.matcher(message);
+        if (matcher.find()) {
+            try {
+                return Long.parseLong(matcher.group(1));
+            } catch (NumberFormatException e) {
+                return -1;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -79,6 +110,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     /**
      * Decodes a stream of byte buffers using the decoder state.
      * The decoder properly handles partial headers and segments split across chunks.
+     * 
+     * <p>When an error occurs or the stream ends prematurely, an IOException is thrown with a
+     * machine-readable token RETRY-START-OFFSET=&lt;number&gt; that can be parsed to determine
+     * the correct offset for retry requests.</p>
      *
      * @param encodedFlux The flux of encoded byte buffers.
      * @param state The decoder state.
@@ -122,7 +157,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
                     case INVALID:
                         LOGGER.error("Invalid data during decode: {}", result.getMessage());
-                        return Flux.error(new IllegalArgumentException(
+                        return Flux.error(createRetryableException(state,
                             "Failed to decode structured message: " + result.getMessage()));
 
                     default:
@@ -131,8 +166,18 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
             } catch (Exception e) {
                 LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
-                return Flux.error(e);
+                return Flux.error(createRetryableException(state, e.getMessage(), e));
             }
+        }).onErrorResume(throwable -> {
+            // Wrap any error with retry offset information
+            if (throwable instanceof IOException) {
+                // Check if already has retry offset token
+                if (throwable.getMessage() != null && throwable.getMessage().contains(RETRY_OFFSET_TOKEN)) {
+                    return Flux.error(throwable);
+                }
+            }
+            // Wrap the error with retry offset
+            return Flux.error(createRetryableException(state, throwable.getMessage(), throwable));
         }).doOnComplete(() -> {
             // Finalize when stream completes
             if (!state.decoder.isComplete()) {
@@ -149,6 +194,46 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     .log("Stream complete and decode finalized successfully");
             }
         });
+    }
+
+    /**
+     * Creates an IOException with the retry start offset encoded in the message.
+     *
+     * @param state The decoder state.
+     * @param message The error message.
+     * @return An IOException with retry offset information.
+     */
+    private IOException createRetryableException(DecoderState state, String message) {
+        return createRetryableException(state, message, null);
+    }
+
+    /**
+     * Creates an IOException with the retry start offset encoded in the message.
+     *
+     * @param state The decoder state.
+     * @param message The error message.
+     * @param cause The original cause, may be null.
+     * @return An IOException with retry offset information.
+     */
+    private IOException createRetryableException(DecoderState state, String message, Throwable cause) {
+        long retryOffset = state.decoder.getRetryStartOffset();
+        long decodedSoFar = state.decoder.getTotalDecodedPayloadBytes();
+        long expectedLength = state.decoder.getMessageLength();
+
+        String fullMessage = String.format("Incomplete structured message: decoded %d of %d bytes. %s%d. %s",
+            decodedSoFar, expectedLength > 0 ? expectedLength : 0, RETRY_OFFSET_TOKEN, retryOffset,
+            message != null ? message : "");
+
+        LOGGER.atInfo()
+            .addKeyValue("retryOffset", retryOffset)
+            .addKeyValue("decodedSoFar", decodedSoFar)
+            .addKeyValue("expectedLength", expectedLength)
+            .log("Creating retryable exception with offset");
+
+        if (cause != null) {
+            return new IOException(fullMessage, cause);
+        }
+        return new IOException(fullMessage);
     }
 
     /**

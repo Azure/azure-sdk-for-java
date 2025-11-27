@@ -1421,8 +1421,22 @@ public class BlobAsyncClientBase {
                                 retryContext = retryContext
                                     .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
                             } else {
-                                // No decoder state yet, use the normal retry logic
-                                retryRange = new BlobRange(initialOffset + offset, newCount);
+                                // No decoder state available, try to parse retry offset from exception message
+                                // The exception message contains RETRY-START-OFFSET=<number> token
+                                long retryStartOffset = StorageContentValidationDecoderPolicy
+                                    .parseRetryStartOffset(throwable.getMessage());
+                                if (retryStartOffset >= 0) {
+                                    long remainingCount = finalCount - retryStartOffset;
+                                    retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
+
+                                    LOGGER.info(
+                                        "Structured message smart retry from exception: resuming from offset {} "
+                                            + "(initial={}, parsed={})",
+                                        initialOffset + retryStartOffset, initialOffset, retryStartOffset);
+                                } else {
+                                    // Fallback to normal retry logic if no offset found
+                                    retryRange = new BlobRange(initialOffset + offset, newCount);
+                                }
                             }
                         } else {
                             // For non-structured downloads, use smart retry from the interrupted offset

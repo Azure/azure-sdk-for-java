@@ -128,6 +128,16 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Returns the canonical absolute byte index (0-based) that should be used to resume a failed/incomplete download.
+     * This MUST be used directly as the Range header start value: "Range: bytes={retryStartOffset}-"
+     *
+     * @return The absolute byte index for the retry start offset.
+     */
+    public long getRetryStartOffset() {
+        return lastCompleteSegmentStart;
+    }
+
+    /**
      * Gets the current message offset (total bytes consumed from the structured message).
      *
      * @return The current message offset.
