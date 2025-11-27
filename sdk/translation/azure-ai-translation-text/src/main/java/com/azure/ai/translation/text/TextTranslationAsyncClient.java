@@ -522,7 +522,7 @@ public final class TextTranslationAsyncClient {
     public Mono<TranslatedTextItem> translate(TranslateInputItem input) {
         return translate(Arrays.asList(input))
             .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-                .defaultIfEmpty(null);
+            .defaultIfEmpty(null);
     }
 
     /**
