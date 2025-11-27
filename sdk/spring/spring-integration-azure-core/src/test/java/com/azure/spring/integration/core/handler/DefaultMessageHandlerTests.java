@@ -11,7 +11,9 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.integration.MessageTimeoutException;
+import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -60,7 +62,11 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         valueMap.put("key2", "value2");
         message = new GenericMessage<>("testPayload", valueMap);
     }
-    public abstract void setUp();
+    public void setUp() {
+        StandardEvaluationContext sec = new StandardEvaluationContext();
+        when(beanFactory.containsBean(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME)).thenReturn(true);
+        when(beanFactory.getBean(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME, StandardEvaluationContext.class)).thenReturn(sec);
+    }
 
     @Test
     @SuppressWarnings("unchecked")
