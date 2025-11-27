@@ -107,18 +107,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 switch (result.getStatus()) {
                     case SUCCESS:
                     case NEED_MORE_BYTES:
-                        // Update state counters
-                        state.totalEncodedBytesProcessed.set(state.decoder.getMessageOffset());
-                        state.totalBytesDecoded.set(state.decoder.getTotalDecodedPayloadBytes());
-                        state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();
-
-                        if (result.getDecodedPayload() != null && result.getDecodedPayload().hasRemaining()) {
-                            return Flux.just(result.getDecodedPayload());
-                        }
-                        return Flux.empty();
-
                     case COMPLETED:
-                        // Update state counters
+                        // All three cases update counters and return any decoded payload
+                        // SUCCESS and NEED_MORE_BYTES: partial decode, more data expected
+                        // COMPLETED: decode finished successfully
                         state.totalEncodedBytesProcessed.set(state.decoder.getMessageOffset());
                         state.totalBytesDecoded.set(state.decoder.getTotalDecodedPayloadBytes());
                         state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();

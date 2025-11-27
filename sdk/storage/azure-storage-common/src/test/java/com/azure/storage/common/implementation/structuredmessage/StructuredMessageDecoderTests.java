@@ -10,6 +10,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -175,7 +178,7 @@ public class StructuredMessageDecoderTests {
 
         // Parse first segment completely, then simulate interruption
         // First segment ends after: header(13) + segment_header(10) + content(256) + crc(8) = 287
-        int firstSegmentEnd = 13 + 10 + 256 + 8;
+        int firstSegmentEnd = V1_HEADER_LENGTH + V1_SEGMENT_HEADER_LENGTH + 256 + CRC64_LENGTH;
         ByteBuffer chunk1 = ByteBuffer.wrap(encodedBytes, 0, firstSegmentEnd + 5); // 5 bytes into second segment header
         chunk1.order(ByteOrder.LITTLE_ENDIAN);
 

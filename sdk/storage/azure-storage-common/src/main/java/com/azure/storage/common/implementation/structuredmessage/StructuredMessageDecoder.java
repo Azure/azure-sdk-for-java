@@ -415,8 +415,10 @@ public class StructuredMessageDecoder {
                 "Unexpected segment number. Expected: " + (currentSegmentNumber + 1) + ", got: " + segmentNum));
         }
 
-        // Validate segment size
-        if (segmentSize < 0 || segmentSize > Integer.MAX_VALUE) {
+        // Validate segment size - must be non-negative and reasonable
+        // We can't have segments larger than the remaining message length
+        long remainingMessageBytes = messageLength - messageOffset - V1_SEGMENT_HEADER_LENGTH;
+        if (segmentSize < 0 || segmentSize > remainingMessageBytes) {
             LOGGER.error("Invalid segment length read: segmentLength={}, decoderOffset={}, lastCompleteSegment={}",
                 segmentSize, messageOffset, lastCompleteSegmentStart);
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -626,8 +628,8 @@ public class StructuredMessageDecoder {
                         "Decode completed");
                 }
 
-                // If we couldn't read any bytes and buffer is empty, need more
-                if (payloadRead == 0 && buffer.remaining() == 0 && pendingBytes.size() == 0) {
+                // If we couldn't read any bytes and no data available, need more
+                if (payloadRead == 0 && getAvailableBytes(buffer) == 0) {
                     break;
                 }
             }
