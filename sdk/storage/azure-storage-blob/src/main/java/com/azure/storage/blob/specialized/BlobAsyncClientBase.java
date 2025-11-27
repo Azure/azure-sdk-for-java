@@ -1427,12 +1427,19 @@ public class BlobAsyncClientBase {
                                     .parseRetryStartOffset(throwable.getMessage());
                                 if (retryStartOffset >= 0) {
                                     long remainingCount = finalCount - retryStartOffset;
-                                    retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
+                                    // Validate remainingCount to avoid negative values
+                                    if (remainingCount <= 0) {
+                                        LOGGER.warning("Retry offset {} exceeds finalCount {}, using fallback",
+                                            retryStartOffset, finalCount);
+                                        retryRange = new BlobRange(initialOffset + offset, newCount);
+                                    } else {
+                                        retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
 
-                                    LOGGER.info(
-                                        "Structured message smart retry from exception: resuming from offset {} "
-                                            + "(initial={}, parsed={})",
-                                        initialOffset + retryStartOffset, initialOffset, retryStartOffset);
+                                        LOGGER.info(
+                                            "Structured message smart retry from exception: resuming from offset {} "
+                                                + "(initial={}, parsed={})",
+                                            initialOffset + retryStartOffset, initialOffset, retryStartOffset);
+                                    }
                                 } else {
                                     // Fallback to normal retry logic if no offset found
                                     retryRange = new BlobRange(initialOffset + offset, newCount);

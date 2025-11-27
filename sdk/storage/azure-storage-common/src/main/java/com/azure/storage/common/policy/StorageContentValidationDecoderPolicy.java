@@ -220,9 +220,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         long decodedSoFar = state.decoder.getTotalDecodedPayloadBytes();
         long expectedLength = state.decoder.getMessageLength();
 
+        // Build message components for clarity
+        long displayExpected = expectedLength > 0 ? expectedLength : 0;
+        String originalMessage = message != null ? message : "";
+
         String fullMessage = String.format("Incomplete structured message: decoded %d of %d bytes. %s%d. %s",
-            decodedSoFar, expectedLength > 0 ? expectedLength : 0, RETRY_OFFSET_TOKEN, retryOffset,
-            message != null ? message : "");
+            decodedSoFar, displayExpected, RETRY_OFFSET_TOKEN, retryOffset, originalMessage);
 
         LOGGER.atInfo()
             .addKeyValue("retryOffset", retryOffset)
