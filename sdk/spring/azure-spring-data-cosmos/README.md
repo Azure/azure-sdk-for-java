@@ -131,6 +131,7 @@ Set `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS
 ```java readme-sample-AppConfiguration
 @Configuration
 @EnableCosmosRepositories
+@SuppressWarnings("deprecation")
 public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
