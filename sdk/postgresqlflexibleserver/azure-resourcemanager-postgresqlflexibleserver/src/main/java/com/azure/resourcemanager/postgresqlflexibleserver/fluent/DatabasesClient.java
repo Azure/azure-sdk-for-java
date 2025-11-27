@@ -23,124 +23,132 @@ import reactor.core.publisher.Mono;
  */
 public interface DatabasesClient {
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents a database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, DatabaseInner parameters);
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a Database.
+     * @return the {@link PollerFlux} for polling of represents a database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(String resourceGroupName, String serverName,
         String databaseName, DatabaseInner parameters);
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Database.
+     * @return the {@link SyncPoller} for polling of represents a database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName, String serverName,
         String databaseName, DatabaseInner parameters);
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a Database.
+     * @return the {@link SyncPoller} for polling of represents a database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName, String serverName,
         String databaseName, DatabaseInner parameters, Context context);
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database on successful completion of {@link Mono}.
+     * @return represents a database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> createAsync(String resourceGroupName, String serverName, String databaseName,
         DatabaseInner parameters);
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database.
+     * @return represents a database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DatabaseInner create(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
 
     /**
-     * Creates a new database or updates an existing database.
+     * Creates a new database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The required parameters for creating or updating a database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
+     * @param parameters Parameters required to create a new database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database.
+     * @return represents a database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DatabaseInner create(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters,
         Context context);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -151,11 +159,12 @@ public interface DatabasesClient {
         String databaseName);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,11 +175,12 @@ public interface DatabasesClient {
         String databaseName);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -180,11 +190,12 @@ public interface DatabasesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -196,11 +207,12 @@ public interface DatabasesClient {
         Context context);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,11 +222,12 @@ public interface DatabasesClient {
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,11 +236,12 @@ public interface DatabasesClient {
     void delete(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * Deletes a database.
+     * Deletes an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,92 +251,97 @@ public interface DatabasesClient {
     void delete(String resourceGroupName, String serverName, String databaseName, Context context);
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about an existing database along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName);
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database on successful completion of {@link Mono}.
+     * @return information about an existing database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database along with {@link Response}.
+     * @return information about an existing database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
         Context context);
 
     /**
-     * Gets information about a database.
+     * Gets information about an existing database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database.
+     * @param databaseName Name of the database (case-sensitive). Exact database names can be retrieved by getting the
+     * list of all existing databases in a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
+     * @return information about an existing database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DatabaseInner get(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases as paginated response with {@link PagedFlux}.
+     * @return list of all databases in a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases as paginated response with {@link PagedIterable}.
+     * @return list of all databases in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the databases in a given server.
+     * Lists all databases in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -330,7 +349,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases as paginated response with {@link PagedIterable}.
+     * @return list of all databases in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Context context);

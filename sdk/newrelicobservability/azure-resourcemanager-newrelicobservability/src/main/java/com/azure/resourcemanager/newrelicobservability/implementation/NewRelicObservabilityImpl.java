@@ -15,12 +15,15 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.newrelicobservability.fluent.AccountsClient;
@@ -32,6 +35,7 @@ import com.azure.resourcemanager.newrelicobservability.fluent.NewRelicObservabil
 import com.azure.resourcemanager.newrelicobservability.fluent.OperationsClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.OrganizationsClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.PlansClient;
+import com.azure.resourcemanager.newrelicobservability.fluent.SaaSClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.TagRulesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -160,6 +164,20 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
     }
 
     /**
+     * The SaaSClient object to access its operations.
+     */
+    private final SaaSClient saaS;
+
+    /**
+     * Gets the SaaSClient object to access its operations.
+     * 
+     * @return the SaaSClient object.
+     */
+    public SaaSClient getSaaS() {
+        return this.saaS;
+    }
+
+    /**
      * The MonitorsClient object to access its operations.
      */
     private final MonitorsClient monitors;
@@ -230,20 +248,6 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
     }
 
     /**
-     * The TagRulesClient object to access its operations.
-     */
-    private final TagRulesClient tagRules;
-
-    /**
-     * Gets the TagRulesClient object to access its operations.
-     * 
-     * @return the TagRulesClient object.
-     */
-    public TagRulesClient getTagRules() {
-        return this.tagRules;
-    }
-
-    /**
      * The MonitoredSubscriptionsClient object to access its operations.
      */
     private final MonitoredSubscriptionsClient monitoredSubscriptions;
@@ -255,6 +259,20 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
      */
     public MonitoredSubscriptionsClient getMonitoredSubscriptions() {
         return this.monitoredSubscriptions;
+    }
+
+    /**
+     * The TagRulesClient object to access its operations.
+     */
+    private final TagRulesClient tagRules;
+
+    /**
+     * Gets the TagRulesClient object to access its operations.
+     * 
+     * @return the TagRulesClient object.
+     */
+    public TagRulesClient getTagRules() {
+        return this.tagRules;
     }
 
     /**
@@ -274,16 +292,17 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-01-01";
+        this.apiVersion = "2025-05-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
+        this.saaS = new SaaSClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
         this.plans = new PlansClientImpl(this);
         this.billingInfoes = new BillingInfoesClientImpl(this);
         this.connectedPartnerResources = new ConnectedPartnerResourcesClientImpl(this);
-        this.tagRules = new TagRulesClientImpl(this);
         this.monitoredSubscriptions = new MonitoredSubscriptionsClientImpl(this);
+        this.tagRules = new TagRulesClientImpl(this);
     }
 
     /**
@@ -321,6 +340,23 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

@@ -13,11 +13,11 @@ import com.azure.core.util.Context;
  */
 public interface VirtualEndpoints {
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,11 +25,11 @@ public interface VirtualEndpoints {
     void delete(String resourceGroupName, String serverName, String virtualEndpointName);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,47 +38,47 @@ public interface VirtualEndpoints {
     void delete(String resourceGroupName, String serverName, String virtualEndpointName, Context context);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response}.
+     * @return information about a pair of virtual endpoints along with {@link Response}.
      */
-    Response<VirtualEndpointResource> getWithResponse(String resourceGroupName, String serverName,
-        String virtualEndpointName, Context context);
+    Response<VirtualEndpoint> getWithResponse(String resourceGroupName, String serverName, String virtualEndpointName,
+        Context context);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param virtualEndpointName Base name of the virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint.
+     * @return information about a pair of virtual endpoints.
      */
-    VirtualEndpointResource get(String resourceGroupName, String serverName, String virtualEndpointName);
+    VirtualEndpoint get(String resourceGroupName, String serverName, String virtualEndpointName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists pair of virtual endpoints associated to a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints as paginated response with {@link PagedIterable}.
+     * @return list of virtual endpoints as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<VirtualEndpointResource> listByServer(String resourceGroupName, String serverName);
+    PagedIterable<VirtualEndpoint> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists pair of virtual endpoints associated to a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -86,35 +86,35 @@ public interface VirtualEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints as paginated response with {@link PagedIterable}.
+     * @return list of virtual endpoints as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<VirtualEndpointResource> listByServer(String resourceGroupName, String serverName, Context context);
+    PagedIterable<VirtualEndpoint> listByServer(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response}.
+     * @return information about a pair of virtual endpoints along with {@link Response}.
      */
-    VirtualEndpointResource getById(String id);
+    VirtualEndpoint getById(String id);
 
     /**
-     * Gets information about a virtual endpoint.
+     * Gets information about a pair of virtual endpoints.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response}.
+     * @return information about a pair of virtual endpoints along with {@link Response}.
      */
-    Response<VirtualEndpointResource> getByIdWithResponse(String id, Context context);
+    Response<VirtualEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +124,7 @@ public interface VirtualEndpoints {
     void deleteById(String id);
 
     /**
-     * Deletes a virtual endpoint.
+     * Deletes a pair of virtual endpoints.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -135,10 +135,10 @@ public interface VirtualEndpoints {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new VirtualEndpointResource resource.
+     * Begins definition for a new VirtualEndpoint resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new VirtualEndpointResource definition.
+     * @return the first stage of the new VirtualEndpoint definition.
      */
-    VirtualEndpointResource.DefinitionStages.Blank define(String name);
+    VirtualEndpoint.DefinitionStages.Blank define(String name);
 }

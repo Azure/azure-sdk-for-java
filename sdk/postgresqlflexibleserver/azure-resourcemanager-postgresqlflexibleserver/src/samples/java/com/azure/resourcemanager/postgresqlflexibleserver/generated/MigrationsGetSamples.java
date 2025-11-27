@@ -10,85 +10,85 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class MigrationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_GetMigrationWithSuccessfulValidationOnly.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * MigrationsGetMigrationWithSuccessfulValidationOnly.json
      */
     /**
-     * Sample code: Migrations_GetMigrationWithSuccessfulValidationOnly.
+     * Sample code: Get information about a migration with successful validation only.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void migrationsGetMigrationWithSuccessfulValidationOnly(
+    public static void getInformationAboutAMigrationWithSuccessfulValidationOnly(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget",
-                "testmigrationwithsuccessfulvalidationonly", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_Get.json
-     */
-    /**
-     * Sample code: Migrations_Get.
-     * 
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void migrationsGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplemigration",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
      */
     /**
-     * Sample code: Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.
+     * Sample code: Get information about a migration with successful validation and successful migration.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void migrationsGetMigrationWithSuccessfulValidationButMigrationFailure(
+    public static void getInformationAboutAMigrationWithSuccessfulValidationAndSuccessfulMigration(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget",
-                "testmigrationwithsuccessfulvalidationbutmigrationfailure", com.azure.core.util.Context.NONE);
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplemigration",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_GetMigrationWithSuccessfulValidationAndMigration.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
      */
     /**
-     * Sample code: Migrations_GetMigrationWithSuccessfulValidationAndMigration.
+     * Sample code: Get information about a migration with successful validation but failed migration.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void migrationsGetMigrationWithSuccessfulValidationAndMigration(
+    public static void getInformationAboutAMigrationWithSuccessfulValidationButFailedMigration(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget",
-                "testmigrationwithsuccessfulvalidationandmigration", com.azure.core.util.Context.NONE);
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplemigration",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_GetMigrationWithValidationFailures.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * MigrationsGetMigrationWithValidationFailures.json
      */
     /**
-     * Sample code: Migrations_GetMigrationWithValidationFailures.
+     * Sample code: Get information about a migration with validation failures.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void migrationsGetMigrationWithValidationFailures(
+    public static void getInformationAboutAMigrationWithValidationFailures(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget",
-                "testmigrationwithvalidationfailure", com.azure.core.util.Context.NONE);
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplemigration",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsGet.json
+     */
+    /**
+     * Sample code: Get information about a migration.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void
+        getInformationAboutAMigration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.migrations()
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplemigration",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -25,61 +25,51 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.AdministratorsImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.BackupsImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CheckNameAvailabilitiesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CheckNameAvailabilityWithLocationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.AdministratorsMicrosoftEntrasImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.AdvancedThreatProtectionSettingsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.BackupsAutomaticAndOnDemandsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.BackupsLongTermRetentionsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CapabilitiesByLocationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CapabilitiesByServersImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CapturedLogsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.DatabasesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.FirewallRulesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.FlexibleServersImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.GetPrivateDnsZoneSuffixesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LocationBasedCapabilitiesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LogFilesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LtrBackupOperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.MigrationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.NameAvailabilitiesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.OperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PostgreSqlManagementClientBuilder;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionOperationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateDnsZoneSuffixesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.QuotaUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ResourceProvidersImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerCapabilitiesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerThreatProtectionSettingsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningConfigurationsImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningIndexesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningOptionsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningOptionsOperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualEndpointsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualNetworkSubnetUsagesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Administrators;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Backups;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilities;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityWithLocations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AdministratorsMicrosoftEntras;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AdvancedThreatProtectionSettings;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupsAutomaticAndOnDemands;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupsLongTermRetentions;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilitiesByLocations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilitiesByServers;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CapturedLogs;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Databases;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRules;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServers;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.LocationBasedCapabilities;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.LogFiles;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.LtrBackupOperations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Migrations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnectionOperations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateDnsZoneSuffixes;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResources;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsages;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ResourceProviders;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerCapabilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettings;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningConfigurations;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningIndexes;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptions;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptionsOperations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoints;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 import java.time.Duration;
@@ -92,22 +82,24 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to PostgreSqlManager.
- * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL
- * resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and
- * configurations with new business model.
+ * The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure
+ * PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies,
+ * log files and configurations with new business model.
  */
 public final class PostgreSqlManager {
-    private Administrators administrators;
+    private AdministratorsMicrosoftEntras administratorsMicrosoftEntras;
 
-    private Backups backups;
+    private AdvancedThreatProtectionSettings advancedThreatProtectionSettings;
 
-    private LocationBasedCapabilities locationBasedCapabilities;
+    private ServerThreatProtectionSettings serverThreatProtectionSettings;
 
-    private ServerCapabilities serverCapabilities;
+    private BackupsAutomaticAndOnDemands backupsAutomaticAndOnDemands;
 
-    private CheckNameAvailabilities checkNameAvailabilities;
+    private CapabilitiesByLocations capabilitiesByLocations;
 
-    private CheckNameAvailabilityWithLocations checkNameAvailabilityWithLocations;
+    private CapabilitiesByServers capabilitiesByServers;
+
+    private CapturedLogs capturedLogs;
 
     private Configurations configurations;
 
@@ -115,23 +107,17 @@ public final class PostgreSqlManager {
 
     private FirewallRules firewallRules;
 
-    private Servers servers;
-
-    private FlexibleServers flexibleServers;
-
-    private LtrBackupOperations ltrBackupOperations;
+    private BackupsLongTermRetentions backupsLongTermRetentions;
 
     private Migrations migrations;
 
-    private ResourceProviders resourceProviders;
+    private NameAvailabilities nameAvailabilities;
 
     private Operations operations;
 
-    private GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes;
+    private PrivateDnsZoneSuffixes privateDnsZoneSuffixes;
 
     private PrivateEndpointConnections privateEndpointConnections;
-
-    private PrivateEndpointConnectionOperations privateEndpointConnectionOperations;
 
     private PrivateLinkResources privateLinkResources;
 
@@ -139,15 +125,9 @@ public final class PostgreSqlManager {
 
     private Replicas replicas;
 
-    private LogFiles logFiles;
+    private Servers servers;
 
-    private ServerThreatProtectionSettings serverThreatProtectionSettings;
-
-    private TuningOptions tuningOptions;
-
-    private TuningIndexes tuningIndexes;
-
-    private TuningConfigurations tuningConfigurations;
+    private TuningOptionsOperations tuningOptionsOperations;
 
     private VirtualEndpoints virtualEndpoints;
 
@@ -369,78 +349,93 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of Administrators. It manages ActiveDirectoryAdministrator.
+     * Gets the resource collection API of AdministratorsMicrosoftEntras. It manages AdministratorMicrosoftEntra.
      * 
-     * @return Resource collection API of Administrators.
+     * @return Resource collection API of AdministratorsMicrosoftEntras.
      */
-    public Administrators administrators() {
-        if (this.administrators == null) {
-            this.administrators = new AdministratorsImpl(clientObject.getAdministrators(), this);
+    public AdministratorsMicrosoftEntras administratorsMicrosoftEntras() {
+        if (this.administratorsMicrosoftEntras == null) {
+            this.administratorsMicrosoftEntras
+                = new AdministratorsMicrosoftEntrasImpl(clientObject.getAdministratorsMicrosoftEntras(), this);
         }
-        return administrators;
+        return administratorsMicrosoftEntras;
     }
 
     /**
-     * Gets the resource collection API of Backups.
+     * Gets the resource collection API of AdvancedThreatProtectionSettings.
      * 
-     * @return Resource collection API of Backups.
+     * @return Resource collection API of AdvancedThreatProtectionSettings.
      */
-    public Backups backups() {
-        if (this.backups == null) {
-            this.backups = new BackupsImpl(clientObject.getBackups(), this);
+    public AdvancedThreatProtectionSettings advancedThreatProtectionSettings() {
+        if (this.advancedThreatProtectionSettings == null) {
+            this.advancedThreatProtectionSettings
+                = new AdvancedThreatProtectionSettingsImpl(clientObject.getAdvancedThreatProtectionSettings(), this);
         }
-        return backups;
+        return advancedThreatProtectionSettings;
     }
 
     /**
-     * Gets the resource collection API of LocationBasedCapabilities.
+     * Gets the resource collection API of ServerThreatProtectionSettings. It manages
+     * AdvancedThreatProtectionSettingsModel.
      * 
-     * @return Resource collection API of LocationBasedCapabilities.
+     * @return Resource collection API of ServerThreatProtectionSettings.
      */
-    public LocationBasedCapabilities locationBasedCapabilities() {
-        if (this.locationBasedCapabilities == null) {
-            this.locationBasedCapabilities
-                = new LocationBasedCapabilitiesImpl(clientObject.getLocationBasedCapabilities(), this);
+    public ServerThreatProtectionSettings serverThreatProtectionSettings() {
+        if (this.serverThreatProtectionSettings == null) {
+            this.serverThreatProtectionSettings
+                = new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
         }
-        return locationBasedCapabilities;
+        return serverThreatProtectionSettings;
     }
 
     /**
-     * Gets the resource collection API of ServerCapabilities.
+     * Gets the resource collection API of BackupsAutomaticAndOnDemands.
      * 
-     * @return Resource collection API of ServerCapabilities.
+     * @return Resource collection API of BackupsAutomaticAndOnDemands.
      */
-    public ServerCapabilities serverCapabilities() {
-        if (this.serverCapabilities == null) {
-            this.serverCapabilities = new ServerCapabilitiesImpl(clientObject.getServerCapabilities(), this);
+    public BackupsAutomaticAndOnDemands backupsAutomaticAndOnDemands() {
+        if (this.backupsAutomaticAndOnDemands == null) {
+            this.backupsAutomaticAndOnDemands
+                = new BackupsAutomaticAndOnDemandsImpl(clientObject.getBackupsAutomaticAndOnDemands(), this);
         }
-        return serverCapabilities;
+        return backupsAutomaticAndOnDemands;
     }
 
     /**
-     * Gets the resource collection API of CheckNameAvailabilities.
+     * Gets the resource collection API of CapabilitiesByLocations.
      * 
-     * @return Resource collection API of CheckNameAvailabilities.
+     * @return Resource collection API of CapabilitiesByLocations.
      */
-    public CheckNameAvailabilities checkNameAvailabilities() {
-        if (this.checkNameAvailabilities == null) {
-            this.checkNameAvailabilities
-                = new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
+    public CapabilitiesByLocations capabilitiesByLocations() {
+        if (this.capabilitiesByLocations == null) {
+            this.capabilitiesByLocations
+                = new CapabilitiesByLocationsImpl(clientObject.getCapabilitiesByLocations(), this);
         }
-        return checkNameAvailabilities;
+        return capabilitiesByLocations;
     }
 
     /**
-     * Gets the resource collection API of CheckNameAvailabilityWithLocations.
+     * Gets the resource collection API of CapabilitiesByServers.
      * 
-     * @return Resource collection API of CheckNameAvailabilityWithLocations.
+     * @return Resource collection API of CapabilitiesByServers.
      */
-    public CheckNameAvailabilityWithLocations checkNameAvailabilityWithLocations() {
-        if (this.checkNameAvailabilityWithLocations == null) {
-            this.checkNameAvailabilityWithLocations = new CheckNameAvailabilityWithLocationsImpl(
-                clientObject.getCheckNameAvailabilityWithLocations(), this);
+    public CapabilitiesByServers capabilitiesByServers() {
+        if (this.capabilitiesByServers == null) {
+            this.capabilitiesByServers = new CapabilitiesByServersImpl(clientObject.getCapabilitiesByServers(), this);
         }
-        return checkNameAvailabilityWithLocations;
+        return capabilitiesByServers;
+    }
+
+    /**
+     * Gets the resource collection API of CapturedLogs.
+     * 
+     * @return Resource collection API of CapturedLogs.
+     */
+    public CapturedLogs capturedLogs() {
+        if (this.capturedLogs == null) {
+            this.capturedLogs = new CapturedLogsImpl(clientObject.getCapturedLogs(), this);
+        }
+        return capturedLogs;
     }
 
     /**
@@ -480,43 +475,20 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of Servers. It manages Server.
+     * Gets the resource collection API of BackupsLongTermRetentions.
      * 
-     * @return Resource collection API of Servers.
+     * @return Resource collection API of BackupsLongTermRetentions.
      */
-    public Servers servers() {
-        if (this.servers == null) {
-            this.servers = new ServersImpl(clientObject.getServers(), this);
+    public BackupsLongTermRetentions backupsLongTermRetentions() {
+        if (this.backupsLongTermRetentions == null) {
+            this.backupsLongTermRetentions
+                = new BackupsLongTermRetentionsImpl(clientObject.getBackupsLongTermRetentions(), this);
         }
-        return servers;
+        return backupsLongTermRetentions;
     }
 
     /**
-     * Gets the resource collection API of FlexibleServers.
-     * 
-     * @return Resource collection API of FlexibleServers.
-     */
-    public FlexibleServers flexibleServers() {
-        if (this.flexibleServers == null) {
-            this.flexibleServers = new FlexibleServersImpl(clientObject.getFlexibleServers(), this);
-        }
-        return flexibleServers;
-    }
-
-    /**
-     * Gets the resource collection API of LtrBackupOperations.
-     * 
-     * @return Resource collection API of LtrBackupOperations.
-     */
-    public LtrBackupOperations ltrBackupOperations() {
-        if (this.ltrBackupOperations == null) {
-            this.ltrBackupOperations = new LtrBackupOperationsImpl(clientObject.getLtrBackupOperations(), this);
-        }
-        return ltrBackupOperations;
-    }
-
-    /**
-     * Gets the resource collection API of Migrations. It manages MigrationResource.
+     * Gets the resource collection API of Migrations. It manages Migration.
      * 
      * @return Resource collection API of Migrations.
      */
@@ -528,15 +500,15 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of ResourceProviders.
+     * Gets the resource collection API of NameAvailabilities.
      * 
-     * @return Resource collection API of ResourceProviders.
+     * @return Resource collection API of NameAvailabilities.
      */
-    public ResourceProviders resourceProviders() {
-        if (this.resourceProviders == null) {
-            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+    public NameAvailabilities nameAvailabilities() {
+        if (this.nameAvailabilities == null) {
+            this.nameAvailabilities = new NameAvailabilitiesImpl(clientObject.getNameAvailabilities(), this);
         }
-        return resourceProviders;
+        return nameAvailabilities;
     }
 
     /**
@@ -552,16 +524,16 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of GetPrivateDnsZoneSuffixes.
+     * Gets the resource collection API of PrivateDnsZoneSuffixes.
      * 
-     * @return Resource collection API of GetPrivateDnsZoneSuffixes.
+     * @return Resource collection API of PrivateDnsZoneSuffixes.
      */
-    public GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes() {
-        if (this.getPrivateDnsZoneSuffixes == null) {
-            this.getPrivateDnsZoneSuffixes
-                = new GetPrivateDnsZoneSuffixesImpl(clientObject.getGetPrivateDnsZoneSuffixes(), this);
+    public PrivateDnsZoneSuffixes privateDnsZoneSuffixes() {
+        if (this.privateDnsZoneSuffixes == null) {
+            this.privateDnsZoneSuffixes
+                = new PrivateDnsZoneSuffixesImpl(clientObject.getPrivateDnsZoneSuffixes(), this);
         }
-        return getPrivateDnsZoneSuffixes;
+        return privateDnsZoneSuffixes;
     }
 
     /**
@@ -575,19 +547,6 @@ public final class PostgreSqlManager {
                 = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
-    }
-
-    /**
-     * Gets the resource collection API of PrivateEndpointConnectionOperations.
-     * 
-     * @return Resource collection API of PrivateEndpointConnectionOperations.
-     */
-    public PrivateEndpointConnectionOperations privateEndpointConnectionOperations() {
-        if (this.privateEndpointConnectionOperations == null) {
-            this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsImpl(
-                clientObject.getPrivateEndpointConnectionOperations(), this);
-        }
-        return privateEndpointConnectionOperations;
     }
 
     /**
@@ -627,69 +586,32 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of LogFiles.
+     * Gets the resource collection API of Servers. It manages Server.
      * 
-     * @return Resource collection API of LogFiles.
+     * @return Resource collection API of Servers.
      */
-    public LogFiles logFiles() {
-        if (this.logFiles == null) {
-            this.logFiles = new LogFilesImpl(clientObject.getLogFiles(), this);
+    public Servers servers() {
+        if (this.servers == null) {
+            this.servers = new ServersImpl(clientObject.getServers(), this);
         }
-        return logFiles;
+        return servers;
     }
 
     /**
-     * Gets the resource collection API of ServerThreatProtectionSettings. It manages
-     * ServerThreatProtectionSettingsModel.
+     * Gets the resource collection API of TuningOptionsOperations.
      * 
-     * @return Resource collection API of ServerThreatProtectionSettings.
+     * @return Resource collection API of TuningOptionsOperations.
      */
-    public ServerThreatProtectionSettings serverThreatProtectionSettings() {
-        if (this.serverThreatProtectionSettings == null) {
-            this.serverThreatProtectionSettings
-                = new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
+    public TuningOptionsOperations tuningOptionsOperations() {
+        if (this.tuningOptionsOperations == null) {
+            this.tuningOptionsOperations
+                = new TuningOptionsOperationsImpl(clientObject.getTuningOptionsOperations(), this);
         }
-        return serverThreatProtectionSettings;
+        return tuningOptionsOperations;
     }
 
     /**
-     * Gets the resource collection API of TuningOptions.
-     * 
-     * @return Resource collection API of TuningOptions.
-     */
-    public TuningOptions tuningOptions() {
-        if (this.tuningOptions == null) {
-            this.tuningOptions = new TuningOptionsImpl(clientObject.getTuningOptions(), this);
-        }
-        return tuningOptions;
-    }
-
-    /**
-     * Gets the resource collection API of TuningIndexes.
-     * 
-     * @return Resource collection API of TuningIndexes.
-     */
-    public TuningIndexes tuningIndexes() {
-        if (this.tuningIndexes == null) {
-            this.tuningIndexes = new TuningIndexesImpl(clientObject.getTuningIndexes(), this);
-        }
-        return tuningIndexes;
-    }
-
-    /**
-     * Gets the resource collection API of TuningConfigurations.
-     * 
-     * @return Resource collection API of TuningConfigurations.
-     */
-    public TuningConfigurations tuningConfigurations() {
-        if (this.tuningConfigurations == null) {
-            this.tuningConfigurations = new TuningConfigurationsImpl(clientObject.getTuningConfigurations(), this);
-        }
-        return tuningConfigurations;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualEndpoints. It manages VirtualEndpointResource.
+     * Gets the resource collection API of VirtualEndpoints. It manages VirtualEndpoint.
      * 
      * @return Resource collection API of VirtualEndpoints.
      */

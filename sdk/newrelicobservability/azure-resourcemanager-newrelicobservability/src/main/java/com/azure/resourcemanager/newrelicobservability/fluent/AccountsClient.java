@@ -15,7 +15,8 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.AccountReso
  */
 public interface AccountsClient {
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -28,7 +29,8 @@ public interface AccountsClient {
     PagedIterable<AccountResourceInner> list(String userEmail, String location);
 
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.

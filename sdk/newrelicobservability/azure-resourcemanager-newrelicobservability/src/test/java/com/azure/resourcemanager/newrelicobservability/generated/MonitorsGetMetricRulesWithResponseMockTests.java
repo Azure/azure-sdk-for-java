@@ -6,8 +6,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.MetricRules;
@@ -24,24 +24,24 @@ public final class MonitorsGetMetricRulesWithResponseMockTests {
     @Test
     public void testGetMetricRulesWithResponse() throws Exception {
         String responseStr
-            = "{\"sendMetrics\":\"Enabled\",\"filteringTags\":[{\"name\":\"bsrfbj\",\"value\":\"twss\",\"action\":\"Exclude\"},{\"name\":\"pvjzbe\",\"value\":\"l\",\"action\":\"Include\"},{\"name\":\"qqnvwpmq\",\"value\":\"ruoujmk\",\"action\":\"Include\"}],\"userEmail\":\"qytjrybnwjewgd\"}";
+            = "{\"sendMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"qig\",\"value\":\"duhavhqlkt\",\"action\":\"Exclude\"},{\"name\":\"qolbgyc\",\"value\":\"iertgccymvaolp\",\"action\":\"Include\"},{\"name\":\"lfmmdnbbglzpswi\",\"value\":\"mcwyhzdxssadb\",\"action\":\"Exclude\"}],\"userEmail\":\"dfznudaodv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetricRules response = manager.monitors()
-            .getMetricRulesWithResponse("bfovasrruvwbhsq", "sub", new MetricsRequest().withUserEmail("gjb"),
+            .getMetricRulesWithResponse("ervnaenqpehi", "doy", new MetricsRequest().withUserEmail("mifthnzdnd"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(SendMetricsStatus.ENABLED, response.sendMetrics());
-        Assertions.assertEquals("bsrfbj", response.filteringTags().get(0).name());
-        Assertions.assertEquals("twss", response.filteringTags().get(0).value());
+        Assertions.assertEquals(SendMetricsStatus.DISABLED, response.sendMetrics());
+        Assertions.assertEquals("qig", response.filteringTags().get(0).name());
+        Assertions.assertEquals("duhavhqlkt", response.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, response.filteringTags().get(0).action());
-        Assertions.assertEquals("qytjrybnwjewgd", response.userEmail());
+        Assertions.assertEquals("dfznudaodv", response.userEmail());
     }
 }
