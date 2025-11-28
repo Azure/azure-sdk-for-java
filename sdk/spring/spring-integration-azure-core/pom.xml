@@ -48,7 +48,7 @@
     <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
-      <version>7.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+      <version>7.0.0</version> <!-- {x-version-update;springboot4_org.springframework.integration:spring-integration-core;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -56,14 +56,14 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot4_com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.20.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <version>5.20.0</version> <!-- {x-version-update;springboot4_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -71,31 +71,31 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.1</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>6.0.1</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.27.6</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.6</version> <!-- {x-version-update;springboot4_org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -105,7 +105,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -136,12 +136,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.integration:spring-integration-core:[7.0.0-RC2]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[7.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.integration:spring-integration-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -150,7 +150,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>

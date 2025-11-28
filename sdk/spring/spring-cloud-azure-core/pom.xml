@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-context;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.20.0</version><!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <version>5.20.0</version><!-- {x-version-update;springboot4_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -106,25 +106,25 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.1</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>6.0.1</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -135,7 +135,7 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot4_com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -145,7 +145,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -176,12 +176,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-context:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[7.0.1]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -190,7 +190,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

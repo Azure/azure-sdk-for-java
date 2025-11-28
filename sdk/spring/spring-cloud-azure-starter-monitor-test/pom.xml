@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!--By default Maven assumes the parent pom is in the parent folder. This line avoids a Maven warning.
      In Maven, a profile can only be shared with inheritance and a pom can only have one parent.
      spring-boot-starter-parent contains a native-test profile gathering the configuration allowing to execute a Spring native test.-->
@@ -48,23 +48,23 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc</artifactId>
-      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jdbc</artifactId>
-      <version>4.0.0-RC2</version><!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
+      <version>4.0.0</version><!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-resttestclient</artifactId>
-      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-resttestclient;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-resttestclient;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

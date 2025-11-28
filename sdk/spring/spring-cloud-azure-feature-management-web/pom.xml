@@ -29,12 +29,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-web;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>7.0.0-RC3</version> <!-- {x-version-update;springboot3_org.springframework:spring-webmvc;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -44,26 +44,26 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.1.0</version> <!-- {x-version-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+      <version>6.1.0</version> <!-- {x-version-update;springboot4_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.0-RC2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito to work with Java 21.-->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -72,7 +72,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>
@@ -88,7 +88,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -122,15 +122,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <include>com.azure.spring:spring-cloud-azure-feature-management:[6.1.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
-                <include>jakarta.servlet:jakarta.servlet-api:[6.1.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
-                <include>org.springframework:spring-web:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[7.0.0-RC3]</include> <!-- {x-include-update;springboot3_org.springframework:spring-webmvc;external_dependency} -->
+                <include>jakarta.servlet:jakarta.servlet-api:[6.1.0]</include> <!-- {x-include-update;springboot4_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+                <include>org.springframework:spring-web:[7.0.1]</include> <!-- {x-include-update;springboot4_org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-webmvc:[7.0.1]</include> <!-- {x-include-update;springboot4_org.springframework:spring-webmvc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
