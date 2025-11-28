@@ -112,4 +112,150 @@ object CosmosItemsDataSource {
 
     readManyReader.readMany(df.rdd, readManyFilterExtraction)
   }
+
+  /**
+   * Execute transactional batch operations against Cosmos DB.
+   * Operations with the same partition key are executed atomically.
+   * 
+   * Input DataFrame schema:
+   * - id: String (required)
+   * - partitionKey: String (required)
+   * - operationType: String (required - "create", "replace", "upsert", "delete", "read")
+   * - document: String (optional - JSON document, required for create/replace/upsert)
+   * 
+   * Output DataFrame schema:
+   * - id: String
+   * - partitionKey: String
+   * - operationType: String
+   * - statusCode: Int
+   * - success: Boolean
+   * - resultDocument: String (optional - for read operations)
+   * - errorMessage: String (optional)
+   * 
+   * @param df DataFrame containing batch operations
+   * @param userConfig Cosmos DB configuration
+   * @return DataFrame with execution results
+   */
+  def writeTransactionalBatch(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
+    writeTransactionalBatch(df, userConfig, null)
+  }
+
+  /**
+   * Execute transactional batch operations against Cosmos DB with custom output schema.
+   * 
+   * @param df DataFrame containing batch operations
+   * @param userConfig Cosmos DB configuration
+   * @param userProvidedSchema Custom output schema (optional)
+   * @return DataFrame with execution results
+   */
+  def writeTransactionalBatch(df: DataFrame, userConfig: java.util.Map[String, String], userProvidedSchema: StructType): DataFrame = {
+    val batchWriter = new TransactionalBatchWriter(
+      userProvidedSchema,
+      userConfig.asScala.toMap)
+
+    // Create default extraction function based on DataFrame schema
+    val defaultOperationExtraction = createBatchOperationExtraction(df)
+
+    batchWriter.writeTransactionalBatch(df.rdd, defaultOperationExtraction)
+  }
+
+  /**
+   * Execute transactional batch operations with custom extraction logic.
+   * This allows advanced users to provide their own logic for extracting batch operations from rows.
+   * 
+   * @param df DataFrame containing batch operations
+   * @param operationExtraction Custom function to extract BatchOperation from Row
+   * @param userConfig Cosmos DB configuration
+   * @return DataFrame with execution results
+   */
+  def writeTransactionalBatch(
+    df: DataFrame,
+    operationExtraction: Row => BatchOperation,
+    userConfig: java.util.Map[String, String]
+  ): DataFrame = {
+    writeTransactionalBatch(df, operationExtraction, userConfig, null)
+  }
+
+  /**
+   * Execute transactional batch operations with custom extraction logic and output schema.
+   * 
+   * @param df DataFrame containing batch operations
+   * @param operationExtraction Custom function to extract BatchOperation from Row
+   * @param userConfig Cosmos DB configuration
+   * @param userProvidedSchema Custom output schema (optional)
+   * @return DataFrame with execution results
+   */
+  def writeTransactionalBatch(
+    df: DataFrame,
+    operationExtraction: Row => BatchOperation,
+    userConfig: java.util.Map[String, String],
+    userProvidedSchema: StructType
+  ): DataFrame = {
+    val batchWriter = new TransactionalBatchWriter(
+      userProvidedSchema,
+      userConfig.asScala.toMap)
+
+    batchWriter.writeTransactionalBatch(df.rdd, operationExtraction)
+  }
+
+  /**
+   * Creates default batch operation extraction function from DataFrame schema.
+   * Follows the same pattern as standard Cosmos writes - converts flat DataFrame rows to JSON documents.
+   * 
+   * Supports schemas with or without operationType column:
+   * - With operationType: Uses specified operation (create, upsert, replace, delete, read)
+   * - Without operationType: Defaults all operations to "upsert"
+   * 
+   * @param df Input DataFrame
+   * @return Extraction function that converts Row to BatchOperation
+   */
+  private def createBatchOperationExtraction(df: DataFrame): Row => BatchOperation = {
+    val schema = df.schema
+    val serializationConfig = CosmosSerializationConfig.parseSerializationConfig(Map.empty)
+    
+    // Check if operationType column exists
+    val hasOperationType = schema.fields.exists(_.name == "operationType")
+    val operationTypeIndex = if (hasOperationType) Some(schema.fieldIndex("operationType")) else None
+    
+    (row: Row) => {
+      // Create row converter inside the lambda to avoid serialization issues
+      // The serializationConfig (Map) is serializable, but CosmosRowConverter is not
+      val rowConverter = CosmosRowConverter.get(serializationConfig)
+      
+      // Convert entire row to ObjectNode (just like standard writes)
+      val documentNode = rowConverter.fromRowToObjectNode(row)
+      
+      // Remove operationType from the document if it was included
+      // operationType is metadata for the batch operation, not part of the document
+      if (hasOperationType) {
+        documentNode.remove("operationType")
+      }
+      
+      // Handle partitionKey column - if it exists, rename to "pk" for Cosmos DB
+      val hasPartitionKeyColumn = schema.fieldNames.contains("partitionKey")
+      if (hasPartitionKeyColumn) {
+        val pkValue = documentNode.get("partitionKey")
+        documentNode.remove("partitionKey")
+        documentNode.set("pk", pkValue)
+      }
+      
+      // Extract id and partition key from the document
+      val id = documentNode.get(CosmosConstants.Properties.Id).asText()
+      
+      // Extract partition key value for batch API
+      val partitionKey = if (documentNode.has("pk")) {
+        documentNode.get("pk").asText()
+      } else {
+        id // Fall back to id if no explicit partition key
+      }
+      
+      // Get operation type from column or default to "upsert"
+      val operationType = operationTypeIndex match {
+        case Some(index) => row.getString(index)
+        case None => "upsert"
+      }
+      
+      BatchOperation(id, partitionKey, operationType, documentNode)
+    }
+  }
 }

@@ -73,6 +73,74 @@
 | `spark.cosmos.write.flush.noProgress.maxIntervalInSeconds`      | `180`           | The time interval in seconds that write operations will wait when no progress can be made for bulk writes before forcing a retry. The retry will reinitialize the bulk write process - so, any delays on the retry can be sure to be actual service issues. The default value of 3 min should be sufficient to prevent false negatives when there is a short service-side write unavailability - like for partition splits or merges. Increase it only if you regularly see these transient errors to exceed a time period of 180 seconds.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds` | `2700`          | The time interval in seconds that write operations will wait when no progress can be made for bulk writes after the initial attempt (and restarting the bulk writer client-side). This time interval is supposed to be large enough to not fail Spark jobs even when there are transient write availability outages in the service. The default value of 45 minutes can be modified when you rather prefer Spark jobs to fail or extended when needed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
+#### Transactional Batch Config
+The Transactional Batch API enables atomic execution of multiple operations on items within the same logical partition. All operations must succeed or all will be rolled back, ensuring atomicity.
+
+**Usage Pattern (Simplified - Default Upsert):**
+```scala
+import com.azure.cosmos.spark.CosmosItemsDataSource
+
+// Create DataFrame with normal columns (like standard writes)
+val df = Seq(
+  ("item1", "pk1", "Alice", 25),
+  ("item2", "pk1", "Bob", 30)
+).toDF("id", "pk", "name", "age")
+
+// Execute batch (defaults to upsert operations)
+val cfg = Map(
+  "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+  "spark.cosmos.accountKey" -> cosmosMasterKey,
+  "spark.cosmos.database" -> cosmosDatabase,
+  "spark.cosmos.container" -> cosmosContainer
+)
+val resultDf = CosmosItemsDataSource.writeTransactionalBatch(df, cfg.asJava)
+```
+
+**Usage Pattern (Explicit Operations):**
+```scala
+// Add operationType column for mixed operations
+val df = Seq(
+  ("item1", "pk1", "Alice", 25, "create"),
+  ("item2", "pk1", "Bob", 30, "upsert"),
+  ("item3", "pk1", null, 0, "delete")
+).toDF("id", "pk", "name", "age", "operationType")
+
+val resultDf = CosmosItemsDataSource.writeTransactionalBatch(df, cfg.asJava)
+```
+
+**DataFrame Schema Requirements:**
+- `id` column (required): Document identifier
+- Partition key column (required): Column matching container's partition key path (e.g., "pk")
+- Data columns: Any number of columns representing document properties
+- `operationType` column (optional): When present, specifies operation type per row
+  - Supported values: `create`, `upsert`, `replace`, `delete`, `read`
+  - When omitted, all operations default to `upsert`
+
+**Result DataFrame Schema:**
+- `id` (String): Document identifier
+- `partitionKey` (String): Partition key value
+- `operationType` (String): Operation that was executed
+- `statusCode` (Int): HTTP status code for the operation
+- `isSuccessStatusCode` (Boolean): Whether the operation succeeded
+- `resultDocument` (String, optional): For read operations, the retrieved document
+- `errorMessage` (String, optional): Error details if operation failed
+
+**Supported Operations:**
+- `create`: Create new document (fails if exists)
+- `upsert`: Create or update document (default when operationType not specified)
+- `replace`: Update existing document (fails if not exists)
+- `delete`: Delete document
+- `read`: Read document
+
+**Important Constraints:**
+- All operations in a batch must target the same logical partition (same partition key value)
+- Maximum 100 operations per batch
+- All operations are atomic - if any operation fails, the entire batch is rolled back
+- Operations are executed in the order they appear in the DataFrame
+- DataFrame rows are converted to JSON documents using the same logic as standard writes
+- All operations are atomic - if any operation fails, the entire batch is rolled back
+- Operations are executed in the order they appear in the DataFrame
+
 #### Patch Config
 | Config Property Name                            | Default   | Description                                                                                                                                                                                                                                                                                                           |
 |:------------------------------------------------|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
