@@ -4,7 +4,7 @@
 package com.azure.spring.data.cosmos.core.mapping;
 
 import com.azure.spring.data.cosmos.domain.Person;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.util.ClassTypeInformation;
 
 import static org.assertj.core.api.Assertions.assertThat;

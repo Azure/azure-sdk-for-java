@@ -45,14 +45,12 @@ import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
@@ -61,7 +59,6 @@ import org.springframework.data.annotation.Persistent;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -95,11 +92,11 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplateIT {
     private static final Person TEST_PERSON = new Person(TestConstants.ID_1, TestConstants.FIRST_NAME,
@@ -153,7 +150,7 @@ public class ReactiveCosmosTemplateIT {
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
-    @ClassRule
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Value("${cosmos.secondaryKey}")
@@ -191,7 +188,7 @@ public class ReactiveCosmosTemplateIT {
     @Autowired
     private StubDateTimeProvider stubDateTimeProvider;
 
-    @Before
+    @BeforeEach
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
@@ -223,7 +220,7 @@ public class ReactiveCosmosTemplateIT {
         return new ReactiveCosmosTemplate(cosmosFactory, config, cosmosConverter, inah);
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         //  Reset master key
         azureKeyCredential.update(cosmosDbKey);
@@ -246,7 +243,7 @@ public class ReactiveCosmosTemplateIT {
         final Person personWithTransientField = TEST_PERSON_5;
         assertThat(personWithTransientField.getTransientProperty()).isNotNull();
         final Mono<Person> insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_5)));
-        Assert.assertEquals(TRANSIENT_PROPERTY, insertedPerson.block().getTransientProperty());
+        assertEquals(TRANSIENT_PROPERTY, insertedPerson.block().getTransientProperty());
         final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), personWithTransientField.getId(), Person.class);
         assertThat(retrievedPerson.block().getTransientProperty()).isNull();
     }
@@ -283,7 +280,7 @@ public class ReactiveCosmosTemplateIT {
             BASIC_ITEM.getId(),
             BasicItem.class);
         StepVerifier.create(findById)
-            .consumeNextWith(actual -> Assert.assertEquals(actual, BASIC_ITEM))
+            .consumeNextWith(actual -> assertEquals(actual, BASIC_ITEM))
             .verifyComplete();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
@@ -296,11 +293,11 @@ public class ReactiveCosmosTemplateIT {
             TEST_PERSON.getId(),
             Person.class);
         StepVerifier.create(findById)
-                    .consumeNextWith(actual -> Assert.assertEquals(actual, TEST_PERSON))
+                    .consumeNextWith(actual -> assertEquals(actual, TEST_PERSON))
                     .verifyComplete();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
@@ -310,13 +307,13 @@ public class ReactiveCosmosTemplateIT {
             TEST_PERSON.getId(),
             Person.class);
         StepVerifier.create(findById).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
-            Assert.assertEquals(actual.getLastName(), TEST_PERSON.getLastName());
+            assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
+            assertEquals(actual.getLastName(), TEST_PERSON.getLastName());
         }).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
@@ -326,20 +323,20 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
     public void testFindByIdWithContainerName() {
         StepVerifier.create(cosmosTemplate.findById(Person.class.getSimpleName(),
             TEST_PERSON.getId(), Person.class))
-                    .consumeNextWith(actual -> Assert.assertEquals(actual, TEST_PERSON))
+                    .consumeNextWith(actual -> assertEquals(actual, TEST_PERSON))
                     .verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
@@ -349,29 +346,29 @@ public class ReactiveCosmosTemplateIT {
         stubDateTimeProvider.setNow(now);
         StepVerifier.create(cosmosTemplate.insert(TEST_AUDITABLE_ENTITY_1))
             .consumeNextWith(actual -> {
-                Assert.assertEquals(actual.getId(), UUID_1);
+                assertEquals(actual.getId(), UUID_1);
             }).verifyComplete();
         StepVerifier.create(cosmosTemplate.insert(TEST_AUDITABLE_ENTITY_2))
             .consumeNextWith(actual -> {
-                Assert.assertEquals(actual.getId(), UUID_2);
+                assertEquals(actual.getId(), UUID_2);
             }).verifyComplete();
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
         StepVerifier.create(flux).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_1);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+            assertEquals(actual.getId(), UUID_1);
+            assertEquals(actual.getCreatedBy(), "test-auditor");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now);
         }).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_2);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+            assertEquals(actual.getId(), UUID_2);
+            assertEquals(actual.getCreatedBy(), "test-auditor");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now);
         }).verifyComplete();
     }
 
@@ -383,22 +380,22 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
                 TEST_AUDITABLE_ENTITY_2))).expectNextCount(2).verifyComplete();
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
         StepVerifier.create(flux).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_1);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+            assertEquals(actual.getId(), UUID_1);
+            assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now);
         }).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_2);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+            assertEquals(actual.getId(), UUID_2);
+            assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now);
         }).verifyComplete();
     }
 
@@ -410,7 +407,7 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
             TEST_AUDITABLE_ENTITY_2, TEST_AUDITABLE_ENTITY_3))).expectNextCount(3).verifyComplete();
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         final List<AuditableEntity> result = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class).collectList().block();
@@ -421,28 +418,28 @@ public class ReactiveCosmosTemplateIT {
         stubDateTimeProvider.setNow(now2);
 
         StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, result))
-            .consumeNextWith(actual -> Assert.assertEquals(actual.getId(), UUID_1))
-            .consumeNextWith(actual -> Assert.assertEquals(actual.getId(), UUID_3)).verifyComplete();
+            .consumeNextWith(actual -> assertEquals(actual.getId(), UUID_1))
+            .consumeNextWith(actual -> assertEquals(actual.getId(), UUID_3)).verifyComplete();
 
         final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
         StepVerifier.create(flux).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_1);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now2);
+            assertEquals(actual.getId(), UUID_1);
+            assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now2);
         }).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_2);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+            assertEquals(actual.getId(), UUID_2);
+            assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now);
         }).consumeNextWith(actual -> {
-            Assert.assertEquals(actual.getId(), UUID_3);
-            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
-            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
-            Assert.assertEquals(actual.getCreatedDate(), now);
-            Assert.assertEquals(actual.getLastModifiedByDate(), now2);
+            assertEquals(actual.getId(), UUID_3);
+            assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
+            assertEquals(actual.getCreatedDate(), now);
+            assertEquals(actual.getLastModifiedByDate(), now2);
         }).verifyComplete();
     }
 
@@ -453,7 +450,7 @@ public class ReactiveCosmosTemplateIT {
                     .expectNext(TEST_PERSON_3).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
@@ -465,7 +462,7 @@ public class ReactiveCosmosTemplateIT {
                     .expectNext(TEST_PERSON_3).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
@@ -476,7 +473,7 @@ public class ReactiveCosmosTemplateIT {
                     .expectNext(TEST_PERSON_2).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
@@ -509,7 +506,7 @@ public class ReactiveCosmosTemplateIT {
         p.setHobbies(hobbies);
         final Mono<Person> upsert = cosmosTemplate.upsert(p);
         StepVerifier.create(upsert).expectNextCount(1).verifyComplete();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
@@ -525,7 +522,7 @@ public class ReactiveCosmosTemplateIT {
 
         final Mono<Person> person = cosmosTemplate.upsert(Person.class.getSimpleName(), newPerson);
 
-        Assert.assertEquals(TRANSIENT_PROPERTY, person.block().getTransientProperty());
+        assertEquals(TRANSIENT_PROPERTY, person.block().getTransientProperty());
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
@@ -605,7 +602,7 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(upsert).expectNextCount(1).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
@@ -619,7 +616,7 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(upsert).expectNextCount(1).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
@@ -629,15 +626,15 @@ public class ReactiveCosmosTemplateIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         Flux<Person> flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(2).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
 
         final Mono<Void> voidMono = cosmosTemplate.deleteById(Person.class.getSimpleName(),
@@ -646,15 +643,15 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(voidMono).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
     }
 
@@ -664,30 +661,30 @@ public class ReactiveCosmosTemplateIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         Flux<Person> flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(2).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
 
         final Mono<Void> voidMono = cosmosTemplate.deleteEntity(Person.class.getSimpleName(), insertedPerson);
         StepVerifier.create(voidMono).verifyComplete();
 
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
     }
 
@@ -696,7 +693,7 @@ public class ReactiveCosmosTemplateIT {
         cosmosTemplate.insert(TEST_PERSON_4,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
 
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "id",
@@ -707,8 +704,8 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(deleteFlux).expectNextCount(1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
         Mono<Person> itemMono = cosmosTemplate.findById(TEST_PERSON_4.getId(), Person.class);
         StepVerifier.create(itemMono).expectNextCount(0).verifyComplete();
@@ -747,8 +744,8 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(personFluxIgnoreCase).expectNextCount(1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
@@ -767,8 +764,8 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(existsIgnoreCase).expectNext(true).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
@@ -787,8 +784,8 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(existsIgnoreCase).expectNext(false).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
@@ -797,8 +794,8 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(count).expectNext((long) 1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 
     @Test
