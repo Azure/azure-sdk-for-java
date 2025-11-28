@@ -178,22 +178,25 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             }
             // Wrap the error with retry offset
             return Flux.error(createRetryableException(state, throwable.getMessage(), throwable));
-        }).doOnComplete(() -> {
-            // Finalize when stream completes
+        }).concatWith(Mono.defer(() -> {
+            // Check on completion if decode is finished - if not, throw with retry offset
             if (!state.decoder.isComplete()) {
                 LOGGER.atInfo()
                     .addKeyValue("messageOffset", state.decoder.getMessageOffset())
                     .addKeyValue("messageLength", state.decoder.getMessageLength())
                     .addKeyValue("totalDecodedPayload", state.decoder.getTotalDecodedPayloadBytes())
                     .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
-                    .log("Stream complete but decode not finalized - may retry from lastCompleteSegment");
+                    .log("Stream ended but decode not finalized - throwing retryable exception");
+                return Mono.error(createRetryableException(state,
+                    "Stream ended prematurely before structured message decoding completed"));
             } else {
                 LOGGER.atInfo()
                     .addKeyValue("messageOffset", state.decoder.getMessageOffset())
                     .addKeyValue("totalDecodedPayload", state.decoder.getTotalDecodedPayloadBytes())
                     .log("Stream complete and decode finalized successfully");
+                return Mono.empty();
             }
-        });
+        }));
     }
 
     /**
