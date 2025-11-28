@@ -3,8 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryClassProvider;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -12,6 +16,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jms.connection.CachingConnectionFactory;
@@ -140,9 +145,80 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             });
     }
 
+    @Test
+    void useCustomServiceBusJmsConnectionFactoryClass() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium",
+                "spring.jms.servicebus.pool.enabled=false",
+                "spring.jms.cache.enabled=false"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
+                ServiceBusJmsConnectionFactory factory = context.getBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(factory).isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void useCustomServiceBusJmsConnectionFactoryClassWithCaching() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium",
+                "spring.jms.servicebus.pool.enabled=false"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                CachingConnectionFactory cachingFactory = context.getBean(CachingConnectionFactory.class);
+                assertThat(cachingFactory.getTargetConnectionFactory()).isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void useCustomServiceBusJmsConnectionFactoryClassWithPooling() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                JmsPoolConnectionFactory poolFactory = context.getBean(JmsPoolConnectionFactory.class);
+                assertThat(poolFactory.getConnectionFactory()).isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
     @Configuration
     @PropertySource("classpath:servicebus/additional.properties")
     static class AdditionalPropertySourceConfiguration {
 
+    }
+
+    @Configuration
+    static class CustomConnectionFactoryClassConfiguration {
+        @Bean
+        ServiceBusJmsConnectionFactoryClassProvider serviceBusJmsConnectionFactoryClassProvider() {
+            return () -> CustomServiceBusJmsConnectionFactory.class;
+        }
+    }
+
+    /**
+     * Custom subclass of ServiceBusJmsConnectionFactory for testing.
+     * Public constructors are required for reflection-based instantiation.
+     */
+    public static class CustomServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
+        public CustomServiceBusJmsConnectionFactory() {
+            super();
+        }
+
+        public CustomServiceBusJmsConnectionFactory(String connectionString, ServiceBusJmsConnectionFactorySettings settings) {
+            super(connectionString, settings);
+        }
+
+        public CustomServiceBusJmsConnectionFactory(TokenCredential tokenCredential, String host, ServiceBusJmsConnectionFactorySettings settings) {
+            super(tokenCredential, host, settings);
+        }
     }
 }

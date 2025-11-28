@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
+import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryClassProvider;
 import jakarta.jms.ConnectionFactory;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.BeansException;
@@ -118,9 +119,15 @@ class ServiceBusJmsConnectionFactoryConfiguration {
         private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
             AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
+            ObjectProvider<ServiceBusJmsConnectionFactoryClassProvider> classProvider = beanFactory.getBeanProvider(ServiceBusJmsConnectionFactoryClassProvider.class);
+            
+            Class<? extends ServiceBusJmsConnectionFactory> factoryClass = classProvider
+                .getIfAvailable(() -> () -> ServiceBusJmsConnectionFactory.class)
+                .getConnectionFactoryClass();
+            
             return new ServiceBusJmsConnectionFactoryFactory(serviceBusJmsProperties,
                 factoryCustomizers.orderedStream().collect(Collectors.toList()))
-                .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+                .createConnectionFactory(factoryClass);
         }
     }
 }
