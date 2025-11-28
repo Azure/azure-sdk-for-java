@@ -101,6 +101,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-persistence</artifactId>
       <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
