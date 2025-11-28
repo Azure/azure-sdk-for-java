@@ -14,6 +14,7 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.RepositoryQuery;
+import org.springframework.data.repository.query.ValueExpressionDelegate;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -53,18 +54,15 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    @SuppressWarnings({"deprecation", "removal"})
     protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
-        org.springframework.data.repository.query.QueryMethodEvaluationContextProvider evaluationContextProvider) {
-        return Optional.of(new CosmosDbQueryLookupStrategy(cosmosOperations, evaluationContextProvider));
+                                                                   ValueExpressionDelegate valueExpressionDelegate) {
+        return Optional.of(new CosmosDbQueryLookupStrategy(cosmosOperations, valueExpressionDelegate));
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
     private static class CosmosDbQueryLookupStrategy implements QueryLookupStrategy {
         private final CosmosOperations dbOperations;
 
-        CosmosDbQueryLookupStrategy(CosmosOperations operations,
-            org.springframework.data.repository.query.QueryMethodEvaluationContextProvider provider) {
+        CosmosDbQueryLookupStrategy(CosmosOperations operations, ValueExpressionDelegate delegate) {
             this.dbOperations = operations;
         }
 
