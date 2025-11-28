@@ -9,4 +9,5 @@
   <suppress files="com.azure.storage.common.implementation.connectionstring.StorageConnectionString.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java" checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" />
   <suppress files="com.azure.storage.common.implementation.BufferAggregator.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.common.policy.StorageContentValidationDecoderPolicy.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
 </suppressions>
