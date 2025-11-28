@@ -1535,6 +1535,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
+        if (!(this.sessionContainer instanceof RegionScopedSessionContainer)) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.RegionScopedSessionCapturing);
+        }
+
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
     }
 

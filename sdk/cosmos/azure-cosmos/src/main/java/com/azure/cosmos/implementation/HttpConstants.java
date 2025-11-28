@@ -466,6 +466,7 @@ public class HttpConstants {
         public static final int INVALID_RESULT = 20910;
         public static final int CLOSED_CLIENT = 20912;
         public static final int PPCB_INVALID_STATE = 20913;
+        public static final int REGION_SCOPED_SESSION_CONTAINER_IN_BAD_STATE = 20914;
 
         //SDK Codes (Server)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
