@@ -49,6 +49,7 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> domainType) {
         return new CosmosEntityInformation<>(domainType);
     }
