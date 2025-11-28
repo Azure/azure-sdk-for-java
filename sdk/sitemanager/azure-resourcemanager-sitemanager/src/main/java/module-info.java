@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.sitemanager {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.sitemanager;
     exports com.azure.resourcemanager.sitemanager.fluent;
     exports com.azure.resourcemanager.sitemanager.fluent.models;
     exports com.azure.resourcemanager.sitemanager.models;
-
     opens com.azure.resourcemanager.sitemanager.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.sitemanager.models to com.azure.core;
     opens com.azure.resourcemanager.sitemanager.implementation.models to com.azure.core;

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Accounts_Update.json
+     * x-ms-original-file: 2025-09-01-preview/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.

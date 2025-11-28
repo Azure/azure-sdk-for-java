@@ -2367,12 +2367,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartFaultSimulationAsync(String resourceGroupName,
-        String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
+    private PollerFlux<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulationAsync(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startFaultSimulationWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
     /**
@@ -2388,11 +2388,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationContentWrapper parameters) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
         Response<BinaryData> response
             = startFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
     }
 
     /**
@@ -2409,11 +2410,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationContentWrapper parameters, Context context) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters,
+        Context context) {
         Response<BinaryData> response
             = startFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, context);
     }
 
     /**
@@ -2426,11 +2429,11 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startFaultSimulationAsync(String resourceGroupName, String clusterName, String nodeTypeName,
-        FaultSimulationContentWrapper parameters) {
+    private Mono<FaultSimulationInner> startFaultSimulationAsync(String resourceGroupName, String clusterName,
+        String nodeTypeName, FaultSimulationContentWrapper parameters) {
         return beginStartFaultSimulationAsync(resourceGroupName, clusterName, nodeTypeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2445,11 +2448,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters) {
-        beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
     }
 
     /**
@@ -2463,11 +2467,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters, Context context) {
-        beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context)
+            .getFinalResult();
     }
 
     /**
@@ -2549,12 +2555,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopFaultSimulationAsync(String resourceGroupName,
-        String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
+    private PollerFlux<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulationAsync(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopFaultSimulationWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
     /**
@@ -2570,11 +2576,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationIdContent parameters) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
         Response<BinaryData> response
             = stopFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
     }
 
     /**
@@ -2591,11 +2598,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationIdContent parameters, Context context) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters,
+        Context context) {
         Response<BinaryData> response
             = stopFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, context);
     }
 
     /**
@@ -2608,11 +2617,11 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopFaultSimulationAsync(String resourceGroupName, String clusterName, String nodeTypeName,
-        FaultSimulationIdContent parameters) {
+    private Mono<FaultSimulationInner> stopFaultSimulationAsync(String resourceGroupName, String clusterName,
+        String nodeTypeName, FaultSimulationIdContent parameters) {
         return beginStopFaultSimulationAsync(resourceGroupName, clusterName, nodeTypeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2627,11 +2636,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters) {
-        beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
     }
 
     /**
@@ -2645,11 +2655,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters, Context context) {
-        beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context)
+            .getFinalResult();
     }
 
     /**

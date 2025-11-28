@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.containerservicesafeguards {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.containerservicesafeguards;
     exports com.azure.resourcemanager.containerservicesafeguards.fluent;
     exports com.azure.resourcemanager.containerservicesafeguards.fluent.models;
     exports com.azure.resourcemanager.containerservicesafeguards.models;
-
     opens com.azure.resourcemanager.containerservicesafeguards.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.containerservicesafeguards.models to com.azure.core;
     opens com.azure.resourcemanager.containerservicesafeguards.implementation.models to com.azure.core;

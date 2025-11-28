@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.neonpostgres {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.neonpostgres;
     exports com.azure.resourcemanager.neonpostgres.fluent;
     exports com.azure.resourcemanager.neonpostgres.fluent.models;
     exports com.azure.resourcemanager.neonpostgres.models;
-
     opens com.azure.resourcemanager.neonpostgres.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.neonpostgres.models to com.azure.core;
     opens com.azure.resourcemanager.neonpostgres.implementation.models to com.azure.core;

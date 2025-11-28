@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.dependencymap {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.dependencymap;
     exports com.azure.resourcemanager.dependencymap.fluent;
     exports com.azure.resourcemanager.dependencymap.fluent.models;
     exports com.azure.resourcemanager.dependencymap.models;
-
     opens com.azure.resourcemanager.dependencymap.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.dependencymap.models to com.azure.core;
     opens com.azure.resourcemanager.dependencymap.implementation.models to com.azure.core;

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class AccountsChangeKeyVaultSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Accounts_ChangeKeyVault.json
+     * x-ms-original-file: 2025-09-01-preview/Accounts_ChangeKeyVault.json
      */
     /**
      * Sample code: Accounts_ChangeKeyVault.

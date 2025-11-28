@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.storagediscovery {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.storagediscovery;
     exports com.azure.resourcemanager.storagediscovery.fluent;
     exports com.azure.resourcemanager.storagediscovery.fluent.models;
     exports com.azure.resourcemanager.storagediscovery.models;
-
     opens com.azure.resourcemanager.storagediscovery.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.storagediscovery.models to com.azure.core;
     opens com.azure.resourcemanager.storagediscovery.implementation.models to com.azure.core;

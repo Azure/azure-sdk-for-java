@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.computelimit {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.computelimit;
     exports com.azure.resourcemanager.computelimit.fluent;
     exports com.azure.resourcemanager.computelimit.fluent.models;
     exports com.azure.resourcemanager.computelimit.models;
-
     opens com.azure.resourcemanager.computelimit.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.computelimit.models to com.azure.core;
     opens com.azure.resourcemanager.computelimit.implementation.models to com.azure.core;
