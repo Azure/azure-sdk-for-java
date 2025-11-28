@@ -13,23 +13,23 @@ public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNameAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"laecxndticok\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"zmlqtmldgxo\"}")
+            "{\"name\":\"kgmnsghpxyc\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"drwjjkhvyom\"}")
             .toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("laecxndticok", model.name());
+        Assertions.assertEquals("kgmnsghpxyc", model.name());
         Assertions.assertEquals(
-            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS, model.type());
-        Assertions.assertEquals("zmlqtmldgxo", model.resourceGroup());
+            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
+        Assertions.assertEquals("drwjjkhvyom", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("laecxndticok")
-            .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-            .withResourceGroup("zmlqtmldgxo");
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("kgmnsghpxyc")
+            .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
+            .withResourceGroup("drwjjkhvyom");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("laecxndticok", model.name());
+        Assertions.assertEquals("kgmnsghpxyc", model.name());
         Assertions.assertEquals(
-            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS, model.type());
-        Assertions.assertEquals("zmlqtmldgxo", model.resourceGroup());
+            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
+        Assertions.assertEquals("drwjjkhvyom", model.resourceGroup());
     }
 }

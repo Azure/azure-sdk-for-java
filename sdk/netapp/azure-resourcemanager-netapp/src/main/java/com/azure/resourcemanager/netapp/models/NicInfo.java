@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * NIC information and list of volumes for which the NIC has the primary mount ip address.
+ * NIC information and list of volumes for which the NIC has the primary mount IP Address.
  */
 @Immutable
 public final class NicInfo implements JsonSerializable<NicInfo> {
     /*
-     * ipAddress
+     * IP Address
      */
     private String ipAddress;
 
@@ -34,7 +34,7 @@ public final class NicInfo implements JsonSerializable<NicInfo> {
     }
 
     /**
-     * Get the ipAddress property: ipAddress.
+     * Get the ipAddress property: IP Address.
      * 
      * @return the ipAddress value.
      */

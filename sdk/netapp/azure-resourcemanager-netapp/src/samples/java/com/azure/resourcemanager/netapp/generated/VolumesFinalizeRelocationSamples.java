@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesFinalizeRelocationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_FinalizeRelocation.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_FinalizeRelocation.json
      */
     /**
      * Sample code: Volumes_FinalizeRelocation.

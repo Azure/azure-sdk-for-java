@@ -13,21 +13,22 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"rxkpmloazuruoc\"],\"restoreFilePath\":\"oorb\",\"destinationVolumeId\":\"eoybfhjxakvvjgs\"}")
+            "{\"fileList\":[\"klelssxb\",\"ycsxzu\",\"ksrl\",\"mdesqp\"],\"restoreFilePath\":\"vmjcdoewb\",\"destinationVolumeId\":\"dyvt\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("rxkpmloazuruoc", model.fileList().get(0));
-        Assertions.assertEquals("oorb", model.restoreFilePath());
-        Assertions.assertEquals("eoybfhjxakvvjgs", model.destinationVolumeId());
+        Assertions.assertEquals("klelssxb", model.fileList().get(0));
+        Assertions.assertEquals("vmjcdoewb", model.restoreFilePath());
+        Assertions.assertEquals("dyvt", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("rxkpmloazuruoc"))
-            .withRestoreFilePath("oorb")
-            .withDestinationVolumeId("eoybfhjxakvvjgs");
+        BackupRestoreFiles model
+            = new BackupRestoreFiles().withFileList(Arrays.asList("klelssxb", "ycsxzu", "ksrl", "mdesqp"))
+                .withRestoreFilePath("vmjcdoewb")
+                .withDestinationVolumeId("dyvt");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("rxkpmloazuruoc", model.fileList().get(0));
-        Assertions.assertEquals("oorb", model.restoreFilePath());
-        Assertions.assertEquals("eoybfhjxakvvjgs", model.destinationVolumeId());
+        Assertions.assertEquals("klelssxb", model.fileList().get(0));
+        Assertions.assertEquals("vmjcdoewb", model.restoreFilePath());
+        Assertions.assertEquals("dyvt", model.destinationVolumeId());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class SnapshotPoliciesListVolumesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/SnapshotPolicies_ListVolumes.json
+     * x-ms-original-file: 2025-09-01-preview/SnapshotPolicies_ListVolumes.json
      */
     /**
      * Sample code: SnapshotPolicies_ListVolumes.
