@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticSnapshotPolicyInner;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticVolumeInner;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in ElasticSnapshotPoliciesClient.
@@ -129,7 +130,7 @@ public interface ElasticSnapshotPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticSnapshotPolicyInner>, ElasticSnapshotPolicyInner> beginUpdate(String resourceGroupName,
-        String accountName, String snapshotPolicyName, ElasticSnapshotPolicyInner body);
+        String accountName, String snapshotPolicyName, ElasticSnapshotPolicyUpdate body);
 
     /**
      * Update a ElasticSnapshotPolicy.
@@ -146,7 +147,7 @@ public interface ElasticSnapshotPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticSnapshotPolicyInner>, ElasticSnapshotPolicyInner> beginUpdate(String resourceGroupName,
-        String accountName, String snapshotPolicyName, ElasticSnapshotPolicyInner body, Context context);
+        String accountName, String snapshotPolicyName, ElasticSnapshotPolicyUpdate body, Context context);
 
     /**
      * Update a ElasticSnapshotPolicy.
@@ -162,7 +163,7 @@ public interface ElasticSnapshotPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticSnapshotPolicyInner update(String resourceGroupName, String accountName, String snapshotPolicyName,
-        ElasticSnapshotPolicyInner body);
+        ElasticSnapshotPolicyUpdate body);
 
     /**
      * Update a ElasticSnapshotPolicy.
@@ -179,7 +180,7 @@ public interface ElasticSnapshotPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticSnapshotPolicyInner update(String resourceGroupName, String accountName, String snapshotPolicyName,
-        ElasticSnapshotPolicyInner body, Context context);
+        ElasticSnapshotPolicyUpdate body, Context context);
 
     /**
      * Delete a ElasticSnapshotPolicy.

@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticSnapshotPolicyInner;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicy;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyProperties;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdate;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -82,6 +84,8 @@ public final class ElasticSnapshotPolicyImpl
 
     private String snapshotPolicyName;
 
+    private ElasticSnapshotPolicyUpdate updateBody;
+
     public ElasticSnapshotPolicyImpl withExistingElasticAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -109,20 +113,21 @@ public final class ElasticSnapshotPolicyImpl
     }
 
     public ElasticSnapshotPolicyImpl update() {
+        this.updateBody = new ElasticSnapshotPolicyUpdate();
         return this;
     }
 
     public ElasticSnapshotPolicy apply() {
         this.innerObject = serviceManager.serviceClient()
             .getElasticSnapshotPolicies()
-            .update(resourceGroupName, accountName, snapshotPolicyName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, accountName, snapshotPolicyName, updateBody, Context.NONE);
         return this;
     }
 
     public ElasticSnapshotPolicy apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getElasticSnapshotPolicies()
-            .update(resourceGroupName, accountName, snapshotPolicyName, this.innerModel(), context);
+            .update(resourceGroupName, accountName, snapshotPolicyName, updateBody, context);
         return this;
     }
 
@@ -163,12 +168,26 @@ public final class ElasticSnapshotPolicyImpl
     }
 
     public ElasticSnapshotPolicyImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public ElasticSnapshotPolicyImpl withProperties(ElasticSnapshotPolicyProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public ElasticSnapshotPolicyImpl withProperties(ElasticSnapshotPolicyUpdateProperties properties) {
+        this.updateBody.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

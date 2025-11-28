@@ -37,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.ElasticBackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticBackupVaultInner;
 import com.azure.resourcemanager.netapp.implementation.models.ElasticBackupVaultListResult;
+import com.azure.resourcemanager.netapp.models.ElasticBackupVaultUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,7 +121,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("backupVaultName") String backupVaultName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupVaultInner body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupVaultUpdate body,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}")
@@ -130,7 +131,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("backupVaultName") String backupVaultName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupVaultInner body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupVaultUpdate body,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -587,7 +588,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String backupVaultName, ElasticBackupVaultInner body) {
+        String backupVaultName, ElasticBackupVaultUpdate body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -635,7 +636,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
-        String backupVaultName, ElasticBackupVaultInner body) {
+        String backupVaultName, ElasticBackupVaultUpdate body) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -685,7 +686,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
-        String backupVaultName, ElasticBackupVaultInner body, Context context) {
+        String backupVaultName, ElasticBackupVaultUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -734,7 +735,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ElasticBackupVaultInner>, ElasticBackupVaultInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String backupVaultName, ElasticBackupVaultInner body) {
+        String resourceGroupName, String accountName, String backupVaultName, ElasticBackupVaultUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, backupVaultName, body);
         return this.client.<ElasticBackupVaultInner, ElasticBackupVaultInner>getLroResult(mono,
@@ -756,7 +757,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticBackupVaultInner>, ElasticBackupVaultInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupVaultName, ElasticBackupVaultInner body) {
+        String resourceGroupName, String accountName, String backupVaultName, ElasticBackupVaultUpdate body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, backupVaultName, body);
         return this.client.<ElasticBackupVaultInner, ElasticBackupVaultInner>getLroResult(response,
             ElasticBackupVaultInner.class, ElasticBackupVaultInner.class, Context.NONE);
@@ -777,7 +778,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticBackupVaultInner>, ElasticBackupVaultInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupVaultName, ElasticBackupVaultInner body,
+        String resourceGroupName, String accountName, String backupVaultName, ElasticBackupVaultUpdate body,
         Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, accountName, backupVaultName, body, context);
@@ -799,7 +800,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ElasticBackupVaultInner> updateAsync(String resourceGroupName, String accountName,
-        String backupVaultName, ElasticBackupVaultInner body) {
+        String backupVaultName, ElasticBackupVaultUpdate body) {
         return beginUpdateAsync(resourceGroupName, accountName, backupVaultName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -818,7 +819,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticBackupVaultInner update(String resourceGroupName, String accountName, String backupVaultName,
-        ElasticBackupVaultInner body) {
+        ElasticBackupVaultUpdate body) {
         return beginUpdate(resourceGroupName, accountName, backupVaultName, body).getFinalResult();
     }
 
@@ -837,7 +838,7 @@ public final class ElasticBackupVaultsClientImpl implements ElasticBackupVaultsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticBackupVaultInner update(String resourceGroupName, String accountName, String backupVaultName,
-        ElasticBackupVaultInner body, Context context) {
+        ElasticBackupVaultUpdate body, Context context) {
         return beginUpdate(resourceGroupName, accountName, backupVaultName, body, context).getFinalResult();
     }
 

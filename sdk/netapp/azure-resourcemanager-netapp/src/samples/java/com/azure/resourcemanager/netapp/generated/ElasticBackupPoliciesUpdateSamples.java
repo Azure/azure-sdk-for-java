@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicy;
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyProperties;
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyState;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdateProperties;
 
 /**
  * Samples for ElasticBackupPolicies Update.
@@ -25,7 +25,7 @@ public final class ElasticBackupPoliciesUpdateSamples {
             .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(5)
+            .withProperties(new ElasticBackupPolicyUpdateProperties().withDailyBackupsToKeep(5)
                 .withWeeklyBackupsToKeep(10)
                 .withMonthlyBackupsToKeep(10)
                 .withPolicyState(ElasticBackupPolicyState.ENABLED))

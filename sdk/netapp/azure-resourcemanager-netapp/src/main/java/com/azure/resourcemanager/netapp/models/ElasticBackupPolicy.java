@@ -255,7 +255,7 @@ public interface ElasticBackupPolicy {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(ElasticBackupPolicyProperties properties);
+            Update withProperties(ElasticBackupPolicyUpdateProperties properties);
         }
     }
 

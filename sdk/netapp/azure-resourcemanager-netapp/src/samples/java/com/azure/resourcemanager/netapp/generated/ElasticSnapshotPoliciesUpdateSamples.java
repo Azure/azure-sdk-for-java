@@ -9,7 +9,7 @@ import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicy;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyDailySchedule;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyHourlySchedule;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyMonthlySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyProperties;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdateProperties;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyWeeklySchedule;
 import com.azure.resourcemanager.netapp.models.PolicyStatus;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public final class ElasticSnapshotPoliciesUpdateSamples {
             .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ElasticSnapshotPolicyProperties()
+            .withProperties(new ElasticSnapshotPolicyUpdateProperties()
                 .withHourlySchedule(new ElasticSnapshotPolicyHourlySchedule().withSnapshotsToKeep(2).withMinute(50))
                 .withDailySchedule(
                     new ElasticSnapshotPolicyDailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))

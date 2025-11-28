@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticBackupVaultInner;
 import com.azure.resourcemanager.netapp.models.ElasticBackupVault;
 import com.azure.resourcemanager.netapp.models.ElasticBackupVaultProperties;
+import com.azure.resourcemanager.netapp.models.ElasticBackupVaultUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -82,6 +83,8 @@ public final class ElasticBackupVaultImpl
 
     private String backupVaultName;
 
+    private ElasticBackupVaultUpdate updateBody;
+
     public ElasticBackupVaultImpl withExistingElasticAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -109,20 +112,21 @@ public final class ElasticBackupVaultImpl
     }
 
     public ElasticBackupVaultImpl update() {
+        this.updateBody = new ElasticBackupVaultUpdate();
         return this;
     }
 
     public ElasticBackupVault apply() {
         this.innerObject = serviceManager.serviceClient()
             .getElasticBackupVaults()
-            .update(resourceGroupName, accountName, backupVaultName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, accountName, backupVaultName, updateBody, Context.NONE);
         return this;
     }
 
     public ElasticBackupVault apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getElasticBackupVaults()
-            .update(resourceGroupName, accountName, backupVaultName, this.innerModel(), context);
+            .update(resourceGroupName, accountName, backupVaultName, updateBody, context);
         return this;
     }
 
@@ -162,12 +166,21 @@ public final class ElasticBackupVaultImpl
     }
 
     public ElasticBackupVaultImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public ElasticBackupVaultImpl withProperties(ElasticBackupVaultProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

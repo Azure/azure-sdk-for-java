@@ -13,10 +13,11 @@ public final class RegionInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfoInner model = BinaryData.fromString(
-            "{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"wahzjmucftbyr\",\"isAvailable\":true},{\"availabilityZone\":\"hkpigqfusuckzmkw\",\"isAvailable\":true}]}")
+            "{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"wnupgahxku\",\"isAvailable\":true},{\"availabilityZone\":\"caac\",\"isAvailable\":false}]}")
             .toObject(RegionInfoInner.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT, model.storageToNetworkProximity());
-        Assertions.assertEquals("wahzjmucftbyr", model.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
+            model.storageToNetworkProximity());
+        Assertions.assertEquals("wnupgahxku", model.availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertTrue(model.availabilityZoneMappings().get(0).isAvailable());
     }
 }

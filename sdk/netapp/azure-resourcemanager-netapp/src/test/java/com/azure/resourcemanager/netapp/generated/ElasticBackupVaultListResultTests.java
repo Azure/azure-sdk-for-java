@@ -12,10 +12,10 @@ public final class ElasticBackupVaultListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupVaultListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"eTag\":\"stmninwjizcilng\",\"location\":\"shejjtbxqm\",\"tags\":{\"rsbycucrwn\":\"xlxqzvn\",\"qbsms\":\"mikzeb\",\"kzruswh\":\"ziqgfuh\"},\"id\":\"hczznvf\",\"name\":\"ycjsx\",\"type\":\"wwixzvumw\"}],\"nextLink\":\"qhndvnoam\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\"},\"eTag\":\"elfclducc\",\"location\":\"rds\",\"tags\":{\"i\":\"cobiegstmninwjiz\",\"tbxqmuluxlxq\":\"nghgshej\"},\"id\":\"vnersbycucrw\",\"name\":\"amikzebrqbsm\",\"type\":\"wziqgfuhokzr\"}],\"nextLink\":\"whvhczznvfb\"}")
             .toObject(ElasticBackupVaultListResult.class);
-        Assertions.assertEquals("shejjtbxqm", model.value().get(0).location());
-        Assertions.assertEquals("xlxqzvn", model.value().get(0).tags().get("rsbycucrwn"));
-        Assertions.assertEquals("qhndvnoam", model.nextLink());
+        Assertions.assertEquals("rds", model.value().get(0).location());
+        Assertions.assertEquals("cobiegstmninwjiz", model.value().get(0).tags().get("i"));
+        Assertions.assertEquals("whvhczznvfb", model.nextLink());
     }
 }

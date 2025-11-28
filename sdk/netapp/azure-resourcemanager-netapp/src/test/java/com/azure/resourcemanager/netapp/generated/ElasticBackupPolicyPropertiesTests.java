@@ -13,24 +13,24 @@ public final class ElasticBackupPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupPolicyProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":451045794,\"weeklyBackupsToKeep\":756303284,\"monthlyBackupsToKeep\":1979879685,\"assignedVolumesCount\":1106517654,\"policyState\":\"Disabled\"}")
+            "{\"provisioningState\":\"Patching\",\"dailyBackupsToKeep\":938836666,\"weeklyBackupsToKeep\":1090450036,\"monthlyBackupsToKeep\":1667275200,\"assignedVolumesCount\":1141313452,\"policyState\":\"Enabled\"}")
             .toObject(ElasticBackupPolicyProperties.class);
-        Assertions.assertEquals(451045794, model.dailyBackupsToKeep());
-        Assertions.assertEquals(756303284, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1979879685, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, model.policyState());
+        Assertions.assertEquals(938836666, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1090450036, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1667275200, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, model.policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticBackupPolicyProperties model = new ElasticBackupPolicyProperties().withDailyBackupsToKeep(451045794)
-            .withWeeklyBackupsToKeep(756303284)
-            .withMonthlyBackupsToKeep(1979879685)
-            .withPolicyState(ElasticBackupPolicyState.DISABLED);
+        ElasticBackupPolicyProperties model = new ElasticBackupPolicyProperties().withDailyBackupsToKeep(938836666)
+            .withWeeklyBackupsToKeep(1090450036)
+            .withMonthlyBackupsToKeep(1667275200)
+            .withPolicyState(ElasticBackupPolicyState.ENABLED);
         model = BinaryData.fromObject(model).toObject(ElasticBackupPolicyProperties.class);
-        Assertions.assertEquals(451045794, model.dailyBackupsToKeep());
-        Assertions.assertEquals(756303284, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1979879685, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, model.policyState());
+        Assertions.assertEquals(938836666, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1090450036, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1667275200, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, model.policyState());
     }
 }

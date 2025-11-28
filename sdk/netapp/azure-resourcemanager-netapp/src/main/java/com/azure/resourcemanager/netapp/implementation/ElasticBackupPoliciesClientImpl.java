@@ -37,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.ElasticBackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticBackupPolicyInner;
 import com.azure.resourcemanager.netapp.implementation.models.ElasticBackupPolicyListResult;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,7 +121,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("backupPolicyName") String backupPolicyName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupPolicyInner body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupPolicyUpdate body,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupPolicies/{backupPolicyName}")
@@ -130,7 +131,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("backupPolicyName") String backupPolicyName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupPolicyInner body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticBackupPolicyUpdate body,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -587,7 +588,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String backupPolicyName, ElasticBackupPolicyInner body) {
+        String backupPolicyName, ElasticBackupPolicyUpdate body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -635,7 +636,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
-        String backupPolicyName, ElasticBackupPolicyInner body) {
+        String backupPolicyName, ElasticBackupPolicyUpdate body) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -685,7 +686,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
-        String backupPolicyName, ElasticBackupPolicyInner body, Context context) {
+        String backupPolicyName, ElasticBackupPolicyUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -734,7 +735,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ElasticBackupPolicyInner>, ElasticBackupPolicyInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, ElasticBackupPolicyInner body) {
+        String resourceGroupName, String accountName, String backupPolicyName, ElasticBackupPolicyUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body);
         return this.client.<ElasticBackupPolicyInner, ElasticBackupPolicyInner>getLroResult(mono,
@@ -756,7 +757,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticBackupPolicyInner>, ElasticBackupPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupPolicyName, ElasticBackupPolicyInner body) {
+        String resourceGroupName, String accountName, String backupPolicyName, ElasticBackupPolicyUpdate body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, backupPolicyName, body);
         return this.client.<ElasticBackupPolicyInner, ElasticBackupPolicyInner>getLroResult(response,
             ElasticBackupPolicyInner.class, ElasticBackupPolicyInner.class, Context.NONE);
@@ -777,7 +778,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticBackupPolicyInner>, ElasticBackupPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupPolicyName, ElasticBackupPolicyInner body,
+        String resourceGroupName, String accountName, String backupPolicyName, ElasticBackupPolicyUpdate body,
         Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, accountName, backupPolicyName, body, context);
@@ -799,7 +800,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ElasticBackupPolicyInner> updateAsync(String resourceGroupName, String accountName,
-        String backupPolicyName, ElasticBackupPolicyInner body) {
+        String backupPolicyName, ElasticBackupPolicyUpdate body) {
         return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -818,7 +819,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticBackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
-        ElasticBackupPolicyInner body) {
+        ElasticBackupPolicyUpdate body) {
         return beginUpdate(resourceGroupName, accountName, backupPolicyName, body).getFinalResult();
     }
 
@@ -837,7 +838,7 @@ public final class ElasticBackupPoliciesClientImpl implements ElasticBackupPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticBackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
-        ElasticBackupPolicyInner body, Context context) {
+        ElasticBackupPolicyUpdate body, Context context) {
         return beginUpdate(resourceGroupName, accountName, backupPolicyName, body, context).getFinalResult();
     }
 

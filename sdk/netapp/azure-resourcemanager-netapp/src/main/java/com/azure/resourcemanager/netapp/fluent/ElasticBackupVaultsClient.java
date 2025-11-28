@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticBackupVaultInner;
+import com.azure.resourcemanager.netapp.models.ElasticBackupVaultUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in ElasticBackupVaultsClient.
@@ -128,7 +129,7 @@ public interface ElasticBackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticBackupVaultInner>, ElasticBackupVaultInner> beginUpdate(String resourceGroupName,
-        String accountName, String backupVaultName, ElasticBackupVaultInner body);
+        String accountName, String backupVaultName, ElasticBackupVaultUpdate body);
 
     /**
      * Patch the specified NetApp Elastic Backup Vault.
@@ -145,7 +146,7 @@ public interface ElasticBackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticBackupVaultInner>, ElasticBackupVaultInner> beginUpdate(String resourceGroupName,
-        String accountName, String backupVaultName, ElasticBackupVaultInner body, Context context);
+        String accountName, String backupVaultName, ElasticBackupVaultUpdate body, Context context);
 
     /**
      * Patch the specified NetApp Elastic Backup Vault.
@@ -161,7 +162,7 @@ public interface ElasticBackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticBackupVaultInner update(String resourceGroupName, String accountName, String backupVaultName,
-        ElasticBackupVaultInner body);
+        ElasticBackupVaultUpdate body);
 
     /**
      * Patch the specified NetApp Elastic Backup Vault.
@@ -178,7 +179,7 @@ public interface ElasticBackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticBackupVaultInner update(String resourceGroupName, String accountName, String backupVaultName,
-        ElasticBackupVaultInner body, Context context);
+        ElasticBackupVaultUpdate body, Context context);
 
     /**
      * Delete the specified Elastic Backup Vault.

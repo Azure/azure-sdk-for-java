@@ -1836,8 +1836,8 @@ public final class ElasticBackupPoliciesListByElasticAccountSamples {
 
 ```java
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicy;
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyProperties;
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyState;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdateProperties;
 
 /**
  * Samples for ElasticBackupPolicies Update.
@@ -1856,7 +1856,7 @@ public final class ElasticBackupPoliciesUpdateSamples {
             .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(5)
+            .withProperties(new ElasticBackupPolicyUpdateProperties().withDailyBackupsToKeep(5)
                 .withWeeklyBackupsToKeep(10)
                 .withMonthlyBackupsToKeep(10)
                 .withPolicyState(ElasticBackupPolicyState.ENABLED))
@@ -2477,7 +2477,7 @@ import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicy;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyDailySchedule;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyHourlySchedule;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyMonthlySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyProperties;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdateProperties;
 import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyWeeklySchedule;
 import com.azure.resourcemanager.netapp.models.PolicyStatus;
 import java.util.Arrays;
@@ -2499,7 +2499,7 @@ public final class ElasticSnapshotPoliciesUpdateSamples {
             .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ElasticSnapshotPolicyProperties()
+            .withProperties(new ElasticSnapshotPolicyUpdateProperties()
                 .withHourlySchedule(new ElasticSnapshotPolicyHourlySchedule().withSnapshotsToKeep(2).withMinute(50))
                 .withDailySchedule(
                     new ElasticSnapshotPolicyDailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))

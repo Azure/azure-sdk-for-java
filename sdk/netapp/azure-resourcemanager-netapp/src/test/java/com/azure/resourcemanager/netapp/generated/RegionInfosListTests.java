@@ -13,12 +13,12 @@ public final class RegionInfosListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfosList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"gwydyy\",\"isAvailable\":false}]},\"id\":\"khgb\",\"name\":\"qtanarfdlpuk\",\"type\":\"py\"},{\"properties\":{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"pe\",\"isAvailable\":true},{\"availabilityZone\":\"nmg\",\"isAvailable\":true},{\"availabilityZone\":\"xddbhfhpfpaz\",\"isAvailable\":true}]},\"id\":\"wjxhpdulon\",\"name\":\"acn\",\"type\":\"qwtehtuevr\"},{\"properties\":{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"gwxhnsduugwbsreu\",\"isAvailable\":false},{\"availabilityZone\":\"fuarenlvhht\",\"isAvailable\":false},{\"availabilityZone\":\"nafvvkyfedev\",\"isAvailable\":false},{\"availabilityZone\":\"lcqxypokk\",\"isAvailable\":true}]},\"id\":\"q\",\"name\":\"ymc\",\"type\":\"ngnbdxxew\"},{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"bchaqd\",\"isAvailable\":true},{\"availabilityZone\":\"crqctmxxdtddmflh\",\"isAvailable\":false},{\"availabilityZone\":\"zv\",\"isAvailable\":true}]},\"id\":\"pxbannovvoxc\",\"name\":\"ytprwnwvroev\",\"type\":\"tlyo\"}],\"nextLink\":\"rrouuxvnsasbcry\"}")
+            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"zeh\",\"isAvailable\":false},{\"availabilityZone\":\"qhnlbqnbld\",\"isAvailable\":true},{\"availabilityZone\":\"lgsc\",\"isAvailable\":false}]},\"id\":\"mkrsrrmoucsofl\",\"name\":\"puviyfcaabe\",\"type\":\"lhbhl\"},{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"bsxtkcudfbsfarfs\",\"isAvailable\":false}]},\"id\":\"kjxnqpvwgfstmhq\",\"name\":\"kizmdksaoafclu\",\"type\":\"v\"},{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"mr\",\"isAvailable\":true},{\"availabilityZone\":\"cwwp\",\"isAvailable\":false},{\"availabilityZone\":\"w\",\"isAvailable\":false},{\"availabilityZone\":\"sxwef\",\"isAvailable\":false}]},\"id\":\"bvopwndyqle\",\"name\":\"llklmtk\",\"type\":\"lowkxxpvb\"}],\"nextLink\":\"fjmzsyzfho\"}")
             .toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT,
             model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("gwydyy", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals("zeh", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("rrouuxvnsasbcry", model.nextLink());
+        Assertions.assertEquals("fjmzsyzfho", model.nextLink());
     }
 }

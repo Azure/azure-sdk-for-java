@@ -255,7 +255,7 @@ public interface ElasticSnapshotPolicy {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(ElasticSnapshotPolicyProperties properties);
+            Update withProperties(ElasticSnapshotPolicyUpdateProperties properties);
         }
     }
 

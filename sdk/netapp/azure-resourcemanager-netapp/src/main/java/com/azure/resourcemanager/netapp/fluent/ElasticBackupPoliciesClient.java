@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticBackupPolicyInner;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in ElasticBackupPoliciesClient.
@@ -128,7 +129,7 @@ public interface ElasticBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticBackupPolicyInner>, ElasticBackupPolicyInner> beginUpdate(String resourceGroupName,
-        String accountName, String backupPolicyName, ElasticBackupPolicyInner body);
+        String accountName, String backupPolicyName, ElasticBackupPolicyUpdate body);
 
     /**
      * Patch the specified NetApp Elastic Backup Policy.
@@ -145,7 +146,7 @@ public interface ElasticBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticBackupPolicyInner>, ElasticBackupPolicyInner> beginUpdate(String resourceGroupName,
-        String accountName, String backupPolicyName, ElasticBackupPolicyInner body, Context context);
+        String accountName, String backupPolicyName, ElasticBackupPolicyUpdate body, Context context);
 
     /**
      * Patch the specified NetApp Elastic Backup Policy.
@@ -161,7 +162,7 @@ public interface ElasticBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticBackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
-        ElasticBackupPolicyInner body);
+        ElasticBackupPolicyUpdate body);
 
     /**
      * Patch the specified NetApp Elastic Backup Policy.
@@ -178,7 +179,7 @@ public interface ElasticBackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticBackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
-        ElasticBackupPolicyInner body, Context context);
+        ElasticBackupPolicyUpdate body, Context context);
 
     /**
      * Delete the specified Elastic Policy.

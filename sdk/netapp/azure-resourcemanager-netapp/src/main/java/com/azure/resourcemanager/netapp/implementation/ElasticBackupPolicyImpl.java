@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.ElasticBackupPolicyInner;
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicy;
 import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyProperties;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdate;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -82,6 +84,8 @@ public final class ElasticBackupPolicyImpl
 
     private String backupPolicyName;
 
+    private ElasticBackupPolicyUpdate updateBody;
+
     public ElasticBackupPolicyImpl withExistingElasticAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -109,20 +113,21 @@ public final class ElasticBackupPolicyImpl
     }
 
     public ElasticBackupPolicyImpl update() {
+        this.updateBody = new ElasticBackupPolicyUpdate();
         return this;
     }
 
     public ElasticBackupPolicy apply() {
         this.innerObject = serviceManager.serviceClient()
             .getElasticBackupPolicies()
-            .update(resourceGroupName, accountName, backupPolicyName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, accountName, backupPolicyName, updateBody, Context.NONE);
         return this;
     }
 
     public ElasticBackupPolicy apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getElasticBackupPolicies()
-            .update(resourceGroupName, accountName, backupPolicyName, this.innerModel(), context);
+            .update(resourceGroupName, accountName, backupPolicyName, updateBody, context);
         return this;
     }
 
@@ -162,12 +167,26 @@ public final class ElasticBackupPolicyImpl
     }
 
     public ElasticBackupPolicyImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public ElasticBackupPolicyImpl withProperties(ElasticBackupPolicyProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public ElasticBackupPolicyImpl withProperties(ElasticBackupPolicyUpdateProperties properties) {
+        this.updateBody.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

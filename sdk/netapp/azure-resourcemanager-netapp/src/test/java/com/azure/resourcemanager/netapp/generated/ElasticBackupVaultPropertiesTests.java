@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.ElasticBackupVaultProperties;
 public final class ElasticBackupVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticBackupVaultProperties model = BinaryData.fromString("{\"provisioningState\":\"Succeeded\"}")
+        ElasticBackupVaultProperties model = BinaryData.fromString("{\"provisioningState\":\"Accepted\"}")
             .toObject(ElasticBackupVaultProperties.class);
     }
 

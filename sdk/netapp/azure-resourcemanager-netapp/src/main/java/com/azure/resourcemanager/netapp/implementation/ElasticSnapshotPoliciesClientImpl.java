@@ -39,6 +39,7 @@ import com.azure.resourcemanager.netapp.fluent.models.ElasticSnapshotPolicyInner
 import com.azure.resourcemanager.netapp.fluent.models.ElasticVolumeInner;
 import com.azure.resourcemanager.netapp.implementation.models.ElasticSnapshotPolicyListResult;
 import com.azure.resourcemanager.netapp.implementation.models.ElasticSnapshotPolicyVolumeList;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -122,7 +123,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("snapshotPolicyName") String snapshotPolicyName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticSnapshotPolicyInner body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticSnapshotPolicyUpdate body,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticSnapshotPolicies/{snapshotPolicyName}")
@@ -132,7 +133,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("snapshotPolicyName") String snapshotPolicyName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticSnapshotPolicyInner body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ElasticSnapshotPolicyUpdate body,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -625,7 +626,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String snapshotPolicyName, ElasticSnapshotPolicyInner body) {
+        String snapshotPolicyName, ElasticSnapshotPolicyUpdate body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -673,7 +674,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
-        String snapshotPolicyName, ElasticSnapshotPolicyInner body) {
+        String snapshotPolicyName, ElasticSnapshotPolicyUpdate body) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -723,7 +724,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
-        String snapshotPolicyName, ElasticSnapshotPolicyInner body, Context context) {
+        String snapshotPolicyName, ElasticSnapshotPolicyUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -772,7 +773,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ElasticSnapshotPolicyInner>, ElasticSnapshotPolicyInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, ElasticSnapshotPolicyInner body) {
+        String resourceGroupName, String accountName, String snapshotPolicyName, ElasticSnapshotPolicyUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body);
         return this.client.<ElasticSnapshotPolicyInner, ElasticSnapshotPolicyInner>getLroResult(mono,
@@ -794,7 +795,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSnapshotPolicyInner>, ElasticSnapshotPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String snapshotPolicyName, ElasticSnapshotPolicyInner body) {
+        String resourceGroupName, String accountName, String snapshotPolicyName, ElasticSnapshotPolicyUpdate body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, snapshotPolicyName, body);
         return this.client.<ElasticSnapshotPolicyInner, ElasticSnapshotPolicyInner>getLroResult(response,
             ElasticSnapshotPolicyInner.class, ElasticSnapshotPolicyInner.class, Context.NONE);
@@ -815,7 +816,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSnapshotPolicyInner>, ElasticSnapshotPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String snapshotPolicyName, ElasticSnapshotPolicyInner body,
+        String resourceGroupName, String accountName, String snapshotPolicyName, ElasticSnapshotPolicyUpdate body,
         Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, accountName, snapshotPolicyName, body, context);
@@ -837,7 +838,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ElasticSnapshotPolicyInner> updateAsync(String resourceGroupName, String accountName,
-        String snapshotPolicyName, ElasticSnapshotPolicyInner body) {
+        String snapshotPolicyName, ElasticSnapshotPolicyUpdate body) {
         return beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -856,7 +857,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSnapshotPolicyInner update(String resourceGroupName, String accountName, String snapshotPolicyName,
-        ElasticSnapshotPolicyInner body) {
+        ElasticSnapshotPolicyUpdate body) {
         return beginUpdate(resourceGroupName, accountName, snapshotPolicyName, body).getFinalResult();
     }
 
@@ -875,7 +876,7 @@ public final class ElasticSnapshotPoliciesClientImpl implements ElasticSnapshotP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSnapshotPolicyInner update(String resourceGroupName, String accountName, String snapshotPolicyName,
-        ElasticSnapshotPolicyInner body, Context context) {
+        ElasticSnapshotPolicyUpdate body, Context context) {
         return beginUpdate(resourceGroupName, accountName, snapshotPolicyName, body, context).getFinalResult();
     }
 
