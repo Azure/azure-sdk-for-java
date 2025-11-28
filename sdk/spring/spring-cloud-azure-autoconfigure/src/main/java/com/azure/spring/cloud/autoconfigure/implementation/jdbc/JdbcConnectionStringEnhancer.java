@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
+
 
 import java.util.Arrays;
 import java.util.Map;
@@ -31,7 +31,7 @@ public final class JdbcConnectionStringEnhancer {
     private final JdbcConnectionString connectionString;
     private final DatabaseType databaseType;
 
-    public JdbcConnectionStringEnhancer(@NonNull JdbcConnectionString connectionString) {
+    public JdbcConnectionStringEnhancer(JdbcConnectionString connectionString) {
         this.connectionString = connectionString;
         this.databaseType = connectionString.getDatabaseType();
     }

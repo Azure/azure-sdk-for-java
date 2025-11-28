@@ -15,7 +15,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
+
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -70,7 +70,7 @@ public class CustomerRepositoryIT {
         collectionManager.deleteContainer(new CosmosEntityInformation<>(Customer.class));
     }
 
-    private void assertCustomerListEquals(@NonNull List<Customer> customers, @NonNull List<Customer> reference) {
+    private void assertCustomerListEquals(List<Customer> customers, List<Customer> reference) {
         Assert.assertEquals(reference.size(), customers.size());
 
         customers.sort(Comparator.comparing(Customer::getId));

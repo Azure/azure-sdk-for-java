@@ -23,7 +23,7 @@ import argparse
 from version_util import version_greater_than
 
 from log import log
-from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, get_spring_boot_version_tag_prefix
+from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, SPRING_BOOT_MAJOR_4_VERSION_NAME, get_spring_boot_version_tag_prefix
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SKIP_IDS = [
@@ -50,7 +50,7 @@ def get_args():
         '-sbmvn',
         '--spring-boot-major-version-number',
         type=str,
-        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
+        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, SPRING_BOOT_MAJOR_4_VERSION_NAME],
         required=False,
         default=SPRING_BOOT_MAJOR_2_VERSION_NAME,
         help='Update the dependencies of Spring Boot major version. The default is ' + SPRING_BOOT_MAJOR_2_VERSION_NAME + '.'

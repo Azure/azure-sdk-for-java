@@ -25,7 +25,7 @@ import com.azure.spring.messaging.servicebus.implementation.properties.merger.Pr
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.lang.NonNull;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -155,8 +155,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     private ServiceBusProcessorClient doCreateProcessor(String name,
                                                         @Nullable String subscription,
-                                                        @NonNull MessageListener<?> messageListener,
-                                                        @NonNull ServiceBusErrorHandler errorHandler,
+                                                        MessageListener<?> messageListener,
+                                                        ServiceBusErrorHandler errorHandler,
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
 

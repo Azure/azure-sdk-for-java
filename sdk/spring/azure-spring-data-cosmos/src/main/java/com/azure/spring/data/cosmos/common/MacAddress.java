@@ -9,7 +9,7 @@
 
 package com.azure.spring.data.cosmos.common;
 
-import org.springframework.lang.NonNull;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -39,7 +39,7 @@ public final class MacAddress {
     private MacAddress() {
     }
 
-    private static boolean isValidHashMacFormat(@NonNull String hashMac) {
+    private static boolean isValidHashMacFormat(String hashMac) {
         if (hashMac.isEmpty()) {
             return false;
         }
@@ -92,7 +92,7 @@ public final class MacAddress {
         return hex.substring(1);
     }
 
-    private static String hash(@NonNull String mac) {
+    private static String hash(String mac) {
         if (mac.isEmpty()) {
             return "";
         }
