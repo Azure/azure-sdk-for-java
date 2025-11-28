@@ -27,6 +27,7 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITIO
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryNoMetricsConfig.class)
 public class AddressRepositoryNoMetricsIT {

@@ -26,6 +26,7 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
+@SuppressWarnings("deprecation")
 public class CustomerRepositoryIT {
 
     private static final String USER_NAME_0 = "username-0";

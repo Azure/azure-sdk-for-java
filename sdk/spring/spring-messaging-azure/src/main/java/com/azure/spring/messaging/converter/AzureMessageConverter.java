@@ -17,6 +17,7 @@ import java.util.Map;
  * @param <I> The Azure message type when sending to the broker using Azure SDK.
  * @param <O> The Azure message type when receiving from the broker using Azure SDK.
  */
+@SuppressWarnings("deprecation")
 public interface AzureMessageConverter<I, O> {
 
     /**

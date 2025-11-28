@@ -31,6 +31,7 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateLastPage;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ProjectRepositorySortIT {

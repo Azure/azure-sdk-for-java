@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.client.endpoint.AbstractOAuth2AuthorizationGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -17,46 +17,32 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.A
 
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
- *
- * @see AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
  */
-public class AadOAuth2AuthorizationCodeGrantRequestEntityConverter
-    extends AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter {
+public class AadOAuth2AuthorizationCodeGrantRequestParametersConverter
+    implements Converter<OAuth2AuthorizationCodeGrantRequest, MultiValueMap<String, String>> {
 
     private final Set<String> azureClientAccessTokenScopes;
 
     /**
-     * Creates a new instance of {@link AadOAuth2AuthorizationCodeGrantRequestEntityConverter}.
+     * Creates a new instance of {@link AadOAuth2AuthorizationCodeGrantRequestParametersConverter}.
      *
      * @param azureClientAccessTokenScopes the Azure client access token scopes
      */
-    public AadOAuth2AuthorizationCodeGrantRequestEntityConverter(Set<String> azureClientAccessTokenScopes) {
+    public AadOAuth2AuthorizationCodeGrantRequestParametersConverter(Set<String> azureClientAccessTokenScopes) {
         this.azureClientAccessTokenScopes = azureClientAccessTokenScopes;
     }
 
-    /**
-     * Get application id.
-     *
-     * @return application id
-     */
     @Override
-    protected String getApplicationId() {
-        return AzureSpringIdentifier.AZURE_SPRING_AAD;
-    }
+    public MultiValueMap<String, String> convert(OAuth2AuthorizationCodeGrantRequest request) {
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
-    /**
-     * Get http body.
-     *
-     * @return http body
-     */
-    @Override
-    public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        // Add custom scope for Azure client
         String scopes = String.join(" ", isRequestForAzureClient(request)
             ? azureClientAccessTokenScopes
             : request.getClientRegistration().getScopes());
-        body.add("scope", scopes);
-        return body;
+        parameters.add("scope", scopes);
+
+        return parameters;
     }
 
     private boolean isRequestForAzureClient(OAuth2AuthorizationCodeGrantRequest request) {

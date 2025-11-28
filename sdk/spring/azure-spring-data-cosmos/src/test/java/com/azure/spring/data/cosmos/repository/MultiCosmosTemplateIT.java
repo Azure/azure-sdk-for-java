@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepositoryConfig.class, SecondaryTestRepositoryConfig.class})
 public class MultiCosmosTemplateIT {

@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  * @since 5.22.0
  */
+@SuppressWarnings("deprecation")
 public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceBusConsumerFactory, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceConsumerFactory.class);
     private final List<Listener> listeners = new ArrayList<>();

@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegi
 class PasswordlessRuntimeHints implements RuntimeHintsRegistrar {
 
     @Override
+    @SuppressWarnings("removal")
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
         BindableRuntimeHintsRegistrar.forTypes(AzurePasswordlessProperties.class)
                 .registerHints(hints);

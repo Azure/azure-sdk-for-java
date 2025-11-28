@@ -44,82 +44,82 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     private final Processor processor = new Processor();
 
     public Producer buildProducerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Producer properties = new Producer();
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
-        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
-        propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
-        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.getDomainName()).always().to(properties::setDomainName);
+        propertyMapper.from(this.getNamespace()).always().to(properties::setNamespace);
+        propertyMapper.from(this.getEventHubName()).always().to(properties::setEventHubName);
+        propertyMapper.from(this.getConnectionString()).always().to(properties::setConnectionString);
+        propertyMapper.from(this.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
 
-        propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
-        propertyMapper.from(this.producer.getEventHubName()).to(properties::setEventHubName);
-        propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.producer.getDomainName()).always().to(properties::setDomainName);
+        propertyMapper.from(this.producer.getNamespace()).always().to(properties::setNamespace);
+        propertyMapper.from(this.producer.getEventHubName()).always().to(properties::setEventHubName);
+        propertyMapper.from(this.producer.getConnectionString()).always().to(properties::setConnectionString);
+        propertyMapper.from(this.producer.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
 
         return properties;
     }
 
     public Consumer buildConsumerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Consumer properties = new Consumer();
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
-        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
-        propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
-        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.getDomainName()).always().to(properties::setDomainName);
+        propertyMapper.from(this.getNamespace()).always().to(properties::setNamespace);
+        propertyMapper.from(this.getEventHubName()).always().to(properties::setEventHubName);
+        propertyMapper.from(this.getConnectionString()).always().to(properties::setConnectionString);
+        propertyMapper.from(this.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
 
-        propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
-        propertyMapper.from(this.consumer.getEventHubName()).to(properties::setEventHubName);
-        propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.consumer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.consumer.getPrefetchCount()).to(properties::setPrefetchCount);
-        propertyMapper.from(this.consumer.getConsumerGroup()).to(properties::setConsumerGroup);
+        propertyMapper.from(this.consumer.getDomainName()).always().to(properties::setDomainName);
+        propertyMapper.from(this.consumer.getNamespace()).always().to(properties::setNamespace);
+        propertyMapper.from(this.consumer.getEventHubName()).always().to(properties::setEventHubName);
+        propertyMapper.from(this.consumer.getConnectionString()).always().to(properties::setConnectionString);
+        propertyMapper.from(this.consumer.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.consumer.getPrefetchCount()).always().to(properties::setPrefetchCount);
+        propertyMapper.from(this.consumer.getConsumerGroup()).always().to(properties::setConsumerGroup);
 
         return properties;
     }
 
     public Processor buildProcessorProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Processor properties = new Processor();
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
-        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
-        propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
-        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.getDomainName()).always().to(properties::setDomainName);
+        propertyMapper.from(this.getNamespace()).always().to(properties::setNamespace);
+        propertyMapper.from(this.getEventHubName()).always().to(properties::setEventHubName);
+        propertyMapper.from(this.getConnectionString()).always().to(properties::setConnectionString);
+        propertyMapper.from(this.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
 
-        propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
-        propertyMapper.from(this.processor.getEventHubName()).to(properties::setEventHubName);
-        propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.processor.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
-        propertyMapper.from(this.processor.getConsumerGroup()).to(properties::setConsumerGroup);
+        propertyMapper.from(this.processor.getDomainName()).always().to(properties::setDomainName);
+        propertyMapper.from(this.processor.getNamespace()).always().to(properties::setNamespace);
+        propertyMapper.from(this.processor.getEventHubName()).always().to(properties::setEventHubName);
+        propertyMapper.from(this.processor.getConnectionString()).always().to(properties::setConnectionString);
+        propertyMapper.from(this.processor.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.processor.getPrefetchCount()).always().to(properties::setPrefetchCount);
+        propertyMapper.from(this.processor.getConsumerGroup()).always().to(properties::setConsumerGroup);
 
-        propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
+        propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).always().to(properties::setTrackLastEnqueuedEventProperties);
         propertyMapper.from(this.processor.initialPartitionEventPosition).when(c -> !CollectionUtils.isEmpty(c))
-                      .to(m -> {
+                      .always().to(m -> {
                           Map<String, Processor.StartPosition> eventPositionMap = m.entrySet()
                                                                                    .stream()
                                                                                    .filter(entry -> entry.getValue() != null)
                                                                                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
                           properties.getInitialPartitionEventPosition().putAll(eventPositionMap);
                       });
-        propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
-        propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
-        propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
-        propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).to(properties.loadBalancing::setUpdateInterval);
+        propertyMapper.from(this.processor.batch.getMaxSize()).always().to(properties.batch::setMaxSize);
+        propertyMapper.from(this.processor.batch.getMaxWaitTime()).always().to(properties.batch::setMaxWaitTime);
+        propertyMapper.from(this.processor.loadBalancing.getStrategy()).always().to(properties.loadBalancing::setStrategy);
+        propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).always().to(properties.loadBalancing::setUpdateInterval);
 
         AzurePropertiesUtils.mergeAzureCommonProperties(properties, this.processor.getCheckpointStore(), properties.checkpointStore);
         BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);

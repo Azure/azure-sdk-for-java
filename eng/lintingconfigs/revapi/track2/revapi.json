@@ -341,6 +341,12 @@
           "justification" : "Remove deprecated method"
         },
         {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
+          "new" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
+          "name" : "Replace deprecated parameterType"
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",
