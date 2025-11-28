@@ -12,24 +12,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the
- * kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters for
- * details.
+ * Kube State Metrics for prometheus addon profile for the container service cluster.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileKubeStateMetrics
     implements JsonSerializable<ManagedClusterAzureMonitorProfileKubeStateMetrics> {
     /*
-     * Comma-separated list of additional Kubernetes label keys that will be used in the resource's labels metric
-     * (Example: 'namespaces=[k8s-label-1,k8s-label-n,...],pods=[app],...'). By default the metric contains only
-     * resource name and namespace labels.
+     * Comma-separated list of Kubernetes annotations keys that will be used in the resource's labels metric.
      */
     private String metricLabelsAllowlist;
 
     /*
-     * Comma-separated list of Kubernetes annotation keys that will be used in the resource's labels metric (Example:
-     * 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...'). By default the metric contains only
-     * resource name and namespace labels.
+     * Comma-separated list of additional Kubernetes label keys that will be used in the resource's labels metric.
      */
     private String metricAnnotationsAllowList;
 
@@ -40,9 +34,8 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics
     }
 
     /**
-     * Get the metricLabelsAllowlist property: Comma-separated list of additional Kubernetes label keys that will be
-     * used in the resource's labels metric (Example: 'namespaces=[k8s-label-1,k8s-label-n,...],pods=[app],...'). By
-     * default the metric contains only resource name and namespace labels.
+     * Get the metricLabelsAllowlist property: Comma-separated list of Kubernetes annotations keys that will be used in
+     * the resource's labels metric.
      * 
      * @return the metricLabelsAllowlist value.
      */
@@ -51,9 +44,8 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics
     }
 
     /**
-     * Set the metricLabelsAllowlist property: Comma-separated list of additional Kubernetes label keys that will be
-     * used in the resource's labels metric (Example: 'namespaces=[k8s-label-1,k8s-label-n,...],pods=[app],...'). By
-     * default the metric contains only resource name and namespace labels.
+     * Set the metricLabelsAllowlist property: Comma-separated list of Kubernetes annotations keys that will be used in
+     * the resource's labels metric.
      * 
      * @param metricLabelsAllowlist the metricLabelsAllowlist value to set.
      * @return the ManagedClusterAzureMonitorProfileKubeStateMetrics object itself.
@@ -64,9 +56,8 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics
     }
 
     /**
-     * Get the metricAnnotationsAllowList property: Comma-separated list of Kubernetes annotation keys that will be used
-     * in the resource's labels metric (Example: 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...').
-     * By default the metric contains only resource name and namespace labels.
+     * Get the metricAnnotationsAllowList property: Comma-separated list of additional Kubernetes label keys that will
+     * be used in the resource's labels metric.
      * 
      * @return the metricAnnotationsAllowList value.
      */
@@ -75,9 +66,8 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics
     }
 
     /**
-     * Set the metricAnnotationsAllowList property: Comma-separated list of Kubernetes annotation keys that will be used
-     * in the resource's labels metric (Example: 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...').
-     * By default the metric contains only resource name and namespace labels.
+     * Set the metricAnnotationsAllowList property: Comma-separated list of additional Kubernetes label keys that will
+     * be used in the resource's labels metric.
      * 
      * @param metricAnnotationsAllowList the metricAnnotationsAllowList value to set.
      * @return the ManagedClusterAzureMonitorProfileKubeStateMetrics object itself.

@@ -12,16 +12,27 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Azure Monitor addon profiles for monitoring the managed cluster.
+ * Prometheus addon profile for the container service cluster.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfile implements JsonSerializable<ManagedClusterAzureMonitorProfile> {
     /*
-     * Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes
-     * infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom
-     * targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Metrics profile for the prometheus service addon
      */
     private ManagedClusterAzureMonitorProfileMetrics metrics;
+
+    /*
+     * Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout & stderr logs etc.
+     * See aka.ms/AzureMonitorContainerInsights for an overview.
+     */
+    private ManagedClusterAzureMonitorProfileContainerInsights containerInsights;
+
+    /*
+     * Application Monitoring Profile for Kubernetes Application Container. Collects application logs, metrics and
+     * traces through auto-instrumentation of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     */
+    private ManagedClusterAzureMonitorProfileAppMonitoring appMonitoring;
 
     /**
      * Creates an instance of ManagedClusterAzureMonitorProfile class.
@@ -30,9 +41,7 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     }
 
     /**
-     * Get the metrics property: Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect
-     * out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional
-     * scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Get the metrics property: Metrics profile for the prometheus service addon.
      * 
      * @return the metrics value.
      */
@@ -41,15 +50,61 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     }
 
     /**
-     * Set the metrics property: Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect
-     * out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional
-     * scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Set the metrics property: Metrics profile for the prometheus service addon.
      * 
      * @param metrics the metrics value to set.
      * @return the ManagedClusterAzureMonitorProfile object itself.
      */
     public ManagedClusterAzureMonitorProfile withMetrics(ManagedClusterAzureMonitorProfileMetrics metrics) {
         this.metrics = metrics;
+        return this;
+    }
+
+    /**
+     * Get the containerInsights property: Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and
+     * Container stdout &amp; stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
+     * 
+     * @return the containerInsights value.
+     */
+    public ManagedClusterAzureMonitorProfileContainerInsights containerInsights() {
+        return this.containerInsights;
+    }
+
+    /**
+     * Set the containerInsights property: Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and
+     * Container stdout &amp; stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
+     * 
+     * @param containerInsights the containerInsights value to set.
+     * @return the ManagedClusterAzureMonitorProfile object itself.
+     */
+    public ManagedClusterAzureMonitorProfile
+        withContainerInsights(ManagedClusterAzureMonitorProfileContainerInsights containerInsights) {
+        this.containerInsights = containerInsights;
+        return this;
+    }
+
+    /**
+     * Get the appMonitoring property: Application Monitoring Profile for Kubernetes Application Container. Collects
+     * application logs, metrics and traces through auto-instrumentation of the application using Azure Monitor
+     * OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * 
+     * @return the appMonitoring value.
+     */
+    public ManagedClusterAzureMonitorProfileAppMonitoring appMonitoring() {
+        return this.appMonitoring;
+    }
+
+    /**
+     * Set the appMonitoring property: Application Monitoring Profile for Kubernetes Application Container. Collects
+     * application logs, metrics and traces through auto-instrumentation of the application using Azure Monitor
+     * OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * 
+     * @param appMonitoring the appMonitoring value to set.
+     * @return the ManagedClusterAzureMonitorProfile object itself.
+     */
+    public ManagedClusterAzureMonitorProfile
+        withAppMonitoring(ManagedClusterAzureMonitorProfileAppMonitoring appMonitoring) {
+        this.appMonitoring = appMonitoring;
         return this;
     }
 
@@ -62,6 +117,12 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
         if (metrics() != null) {
             metrics().validate();
         }
+        if (containerInsights() != null) {
+            containerInsights().validate();
+        }
+        if (appMonitoring() != null) {
+            appMonitoring().validate();
+        }
     }
 
     /**
@@ -71,6 +132,8 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metrics", this.metrics);
+        jsonWriter.writeJsonField("containerInsights", this.containerInsights);
+        jsonWriter.writeJsonField("appMonitoring", this.appMonitoring);
         return jsonWriter.writeEndObject();
     }
 
@@ -93,6 +156,12 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
                 if ("metrics".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfile.metrics
                         = ManagedClusterAzureMonitorProfileMetrics.fromJson(reader);
+                } else if ("containerInsights".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfile.containerInsights
+                        = ManagedClusterAzureMonitorProfileContainerInsights.fromJson(reader);
+                } else if ("appMonitoring".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfile.appMonitoring
+                        = ManagedClusterAzureMonitorProfileAppMonitoring.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,14 +13,50 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * network properties of the machine.
+ * The network properties of the machine.
  */
-@Immutable
+@Fluent
 public final class MachineNetworkProperties implements JsonSerializable<MachineNetworkProperties> {
     /*
      * IPv4, IPv6 addresses of the machine
      */
     private List<MachineIpAddress> ipAddresses;
+
+    /*
+     * The ID of the subnet which node and optionally pods will join on startup. If this is not specified, a VNET and
+     * subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it
+     * applies to just nodes. This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{
+     * virtualNetworkName}/subnets/{subnetName}
+     */
+    private String vnetSubnetId;
+
+    /*
+     * The ID of the subnet which pods will join when launched. If omitted, pod IPs are statically assigned on the node
+     * subnet (see vnetSubnetID for more details). This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{
+     * virtualNetworkName}/subnets/{subnetName}
+     */
+    private String podSubnetId;
+
+    /*
+     * Whether the machine is allocated its own public IP. Some scenarios may require the machine to receive their own
+     * dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct
+     * connection to a cloud virtual machine to minimize hops. The default is false.
+     */
+    private Boolean enableNodePublicIp;
+
+    /*
+     * The public IP prefix ID which VM node should use IPs from. This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{
+     * publicIPPrefixName}
+     */
+    private String nodePublicIpPrefixId;
+
+    /*
+     * IPTags of instance-level public IPs.
+     */
+    private List<IpTag> nodePublicIpTags;
 
     /**
      * Creates an instance of MachineNetworkProperties class.
@@ -38,6 +74,126 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     }
 
     /**
+     * Get the vnetSubnetId property: The ID of the subnet which node and optionally pods will join on startup. If this
+     * is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
+     * nodes and pods, otherwise it applies to just nodes. This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * 
+     * @return the vnetSubnetId value.
+     */
+    public String vnetSubnetId() {
+        return this.vnetSubnetId;
+    }
+
+    /**
+     * Set the vnetSubnetId property: The ID of the subnet which node and optionally pods will join on startup. If this
+     * is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
+     * nodes and pods, otherwise it applies to just nodes. This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * 
+     * @param vnetSubnetId the vnetSubnetId value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withVnetSubnetId(String vnetSubnetId) {
+        this.vnetSubnetId = vnetSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
+     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * 
+     * @return the podSubnetId value.
+     */
+    public String podSubnetId() {
+        return this.podSubnetId;
+    }
+
+    /**
+     * Set the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
+     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * 
+     * @param podSubnetId the podSubnetId value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withPodSubnetId(String podSubnetId) {
+        this.podSubnetId = podSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the enableNodePublicIp property: Whether the machine is allocated its own public IP. Some scenarios may
+     * require the machine to receive their own dedicated public IP addresses. A common scenario is for gaming
+     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. The
+     * default is false.
+     * 
+     * @return the enableNodePublicIp value.
+     */
+    public Boolean enableNodePublicIp() {
+        return this.enableNodePublicIp;
+    }
+
+    /**
+     * Set the enableNodePublicIp property: Whether the machine is allocated its own public IP. Some scenarios may
+     * require the machine to receive their own dedicated public IP addresses. A common scenario is for gaming
+     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. The
+     * default is false.
+     * 
+     * @param enableNodePublicIp the enableNodePublicIp value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withEnableNodePublicIp(Boolean enableNodePublicIp) {
+        this.enableNodePublicIp = enableNodePublicIp;
+        return this;
+    }
+
+    /**
+     * Get the nodePublicIpPrefixId property: The public IP prefix ID which VM node should use IPs from. This is of the
+     * form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
+     * 
+     * @return the nodePublicIpPrefixId value.
+     */
+    public String nodePublicIpPrefixId() {
+        return this.nodePublicIpPrefixId;
+    }
+
+    /**
+     * Set the nodePublicIpPrefixId property: The public IP prefix ID which VM node should use IPs from. This is of the
+     * form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
+     * 
+     * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
+        this.nodePublicIpPrefixId = nodePublicIpPrefixId;
+        return this;
+    }
+
+    /**
+     * Get the nodePublicIpTags property: IPTags of instance-level public IPs.
+     * 
+     * @return the nodePublicIpTags value.
+     */
+    public List<IpTag> nodePublicIpTags() {
+        return this.nodePublicIpTags;
+    }
+
+    /**
+     * Set the nodePublicIpTags property: IPTags of instance-level public IPs.
+     * 
+     * @param nodePublicIpTags the nodePublicIpTags value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withNodePublicIpTags(List<IpTag> nodePublicIpTags) {
+        this.nodePublicIpTags = nodePublicIpTags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -45,6 +201,9 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     public void validate() {
         if (ipAddresses() != null) {
             ipAddresses().forEach(e -> e.validate());
+        }
+        if (nodePublicIpTags() != null) {
+            nodePublicIpTags().forEach(e -> e.validate());
         }
     }
 
@@ -54,6 +213,12 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vnetSubnetID", this.vnetSubnetId);
+        jsonWriter.writeStringField("podSubnetID", this.podSubnetId);
+        jsonWriter.writeBooleanField("enableNodePublicIP", this.enableNodePublicIp);
+        jsonWriter.writeStringField("nodePublicIPPrefixID", this.nodePublicIpPrefixId);
+        jsonWriter.writeArrayField("nodePublicIPTags", this.nodePublicIpTags,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -76,6 +241,18 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
                     List<MachineIpAddress> ipAddresses
                         = reader.readArray(reader1 -> MachineIpAddress.fromJson(reader1));
                     deserializedMachineNetworkProperties.ipAddresses = ipAddresses;
+                } else if ("vnetSubnetID".equals(fieldName)) {
+                    deserializedMachineNetworkProperties.vnetSubnetId = reader.getString();
+                } else if ("podSubnetID".equals(fieldName)) {
+                    deserializedMachineNetworkProperties.podSubnetId = reader.getString();
+                } else if ("enableNodePublicIP".equals(fieldName)) {
+                    deserializedMachineNetworkProperties.enableNodePublicIp
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nodePublicIPPrefixID".equals(fieldName)) {
+                    deserializedMachineNetworkProperties.nodePublicIpPrefixId = reader.getString();
+                } else if ("nodePublicIPTags".equals(fieldName)) {
+                    List<IpTag> nodePublicIpTags = reader.readArray(reader1 -> IpTag.fromJson(reader1));
+                    deserializedMachineNetworkProperties.nodePublicIpTags = nodePublicIpTags;
                 } else {
                     reader.skipChildren();
                 }

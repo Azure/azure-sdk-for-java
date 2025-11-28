@@ -593,7 +593,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(aksName)
             .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.30.3")
+            .withVersion("1.31.8")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
