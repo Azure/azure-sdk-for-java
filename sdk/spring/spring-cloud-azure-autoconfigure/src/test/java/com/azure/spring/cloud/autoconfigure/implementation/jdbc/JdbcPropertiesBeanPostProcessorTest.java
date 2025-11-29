@@ -39,11 +39,14 @@ class JdbcPropertiesBeanPostProcessorTest {
     private static final String POSTGRESQL_CONNECTION_STRING = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
     private static final String PASSWORD = "password";
     private static final String US_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/";
+    private static final String CHINA_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.chinacloudapi.cn/";
     public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=";
     private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
         + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
     protected static final String MANAGED_IDENTITY_ENABLED_DEFAULT = "azure.managedIdentityEnabled=false";
     protected static final String SCOPES_DEFAULT = "azure.scopes=https://ossrdbms-aad.database.windows.net/.default";
+    protected static final String SCOPES_AZURE_US_GOVERNMENT = "azure.scopes=https://ossrdbms-aad.database.usgovcloudapi.net/.default";
+    protected static final String SCOPES_AZURE_CHINA = "azure.scopes=https://ossrdbms-aad.database.chinacloudapi.cn/.default";
     private static final String DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX = ".spring.datasource.azure";
     private MockEnvironment mockEnvironment;
 
@@ -153,9 +156,33 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
             MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
+            SCOPES_AZURE_US_GOVERNMENT,
             MYSQL_USER_AGENT,
             US_AUTHORITY_HOST_STRING
+        );
+
+        assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
+    }
+
+    @Test
+    void shouldGetCloudTypeFromAzureChina() {
+        AzureProfileConfigurationProperties azureProfileConfigurationProperties = new AzureProfileConfigurationProperties();
+        azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+        when(this.azureGlobalProperties.getProfile()).thenReturn(azureProfileConfigurationProperties);
+
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
+
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+
+        String expectedJdbcUrl = enhanceJdbcUrl(
+            DatabaseType.MYSQL,
+            MYSQL_CONNECTION_STRING,
+            MANAGED_IDENTITY_ENABLED_DEFAULT,
+            SCOPES_AZURE_CHINA,
+            MYSQL_USER_AGENT,
+            CHINA_AUTHORITY_HOST_STRING
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
