@@ -25,7 +25,6 @@ import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Function;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -489,7 +488,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             try {
                 truncateCollection(cosmosContainer);
             } catch (Throwable lastChanceException) {
-                String message = Strings.lenientFormat("container %s truncation failed due to first chance %s followed by last chance %s",
+                String message = String.format("container %s truncation failed due to first chance %s followed by last chance %s",
                     cosmosContainer,
                     firstChanceException,
                     lastChanceException);

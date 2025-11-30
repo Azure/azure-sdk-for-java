@@ -60,7 +60,6 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @JsonSerialize(using = RntbdServiceEndpoint.JsonSerializer.class)
@@ -544,7 +543,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            throw new TransportException(lenientFormat("%s is closed", this), new IllegalStateException());
+            throw new TransportException(String.format("%s is closed", this), new IllegalStateException());
         }
     }
 
@@ -602,7 +601,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final String reason = cause.toString();
 
             final GoneException goneException = new GoneException(
-                lenientFormat("failed to establish connection to %s due to %s", this.remoteAddress, reason),
+                String.format("failed to establish connection to %s due to %s", this.remoteAddress, reason),
                 cause instanceof Exception ? (Exception) cause : new IOException(reason, cause),
                 ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
                 requestArgs.replicaPath(),

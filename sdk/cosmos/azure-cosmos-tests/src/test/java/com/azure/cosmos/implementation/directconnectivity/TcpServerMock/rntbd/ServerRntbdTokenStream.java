@@ -13,7 +13,6 @@ import io.netty.util.ReferenceCounted;
 import java.util.stream.Collector;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * Methods included in this class are copied from com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdTokenStream.
@@ -69,7 +68,7 @@ abstract class ServerRntbdTokenStream <T extends Enum<T> & ServerRntbdConstants.
 
         for (final ServerRntbdToken token : stream.tokens.values()) {
             if (!token.isPresent() && token.isRequired()) {
-                final String message = lenientFormat("Required header not found on token stream: %s", token);
+                final String message = String.format("Required header not found on token stream: %s", token);
                 throw new CorruptedFrameException(message);
             }
         }
