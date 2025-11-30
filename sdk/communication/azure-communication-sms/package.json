@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@autorest/java": "^4.1.58"
+  }
+}

@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.2.0-beta.1</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -66,13 +66,14 @@ A `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via t
 are needed to create a DefaultAzureCredential object.
 
 ```java readme-sample-createSmsClientWithAAD
-// You can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure
+// Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
 SmsClient smsClient = new SmsClientBuilder()
-    .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 ```
 
 ### Access Key Authentication
@@ -80,14 +81,15 @@ SMS uses HMAC authentication with the resource access key.
 The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
 ```java readme-sample-createSmsClientUsingAzureKeyCredential
-// You can find your endpoint and access key from your resource in the Azure Portal
+// You can find your endpoint and access key from your resource in the Azure
+// Portal
 String endpoint = "https://<resource-name>.communication.azure.com";
 AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
 SmsClient smsClient = new SmsClientBuilder()
-    .endpoint(endpoint)
-    .credential(azureKeyCredential)
-    .buildClient();
+        .endpoint(endpoint)
+        .credential(azureKeyCredential)
+        .buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
@@ -97,30 +99,51 @@ Alternatively, you can provide the entire connection string using the connection
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
 SmsClient smsClient = new SmsClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
+        .connectionString(connectionString)
+        .buildClient();
 ```
 
 ## Key concepts
 
 There are two different forms of authentication to use the Azure Communication SMS Service.
 
+### API Versions
+
+You can specify which version of the Azure Communication SMS API to use by setting the service version:
+
+```java readme-sample-createSmsClientWithApiVersion
+String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
+SmsClient smsClient = new SmsClientBuilder()
+        .connectionString(connectionString)
+        .serviceVersion(SmsServiceVersion.V2026_01_23) // Specify API version
+        .buildClient();
+```
+
+If no service version is specified, the latest supported version will be used. Available versions:
+
+- `SmsServiceVersion.V2021_03_07` - API version 2021-03-07
+- `SmsServiceVersion.V2026_01_23` - API version 2026-01-23 (latest)
+
 ## Examples
 
 ### Send a 1:1 SMS Message
+
 Use the `send` or `sendWithResponse` function to send an SMS message to a single phone number.
 
 ```java readme-sample-sendMessageToOneRecipient
 SmsSendResult sendResult = smsClient.send(
-    "<from-phone-number>",
-    "<to-phone-number>",
-    "Weekly Promotion");
+        "<from-phone-number>",
+        "<to-phone-number>",
+        "Weekly Promotion");
 
 System.out.println("Message Id: " + sendResult.getMessageId());
 System.out.println("Recipient Number: " + sendResult.getTo());
 System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ```
+
 ### Send a 1:N SMS Message
+
 To send an SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
 ```java readme-sample-sendMessageToGroupWithOptions
@@ -129,11 +152,11 @@ options.setDeliveryReportEnabled(true);
 options.setTag("Marketing");
 
 Iterable<SmsSendResult> sendResults = smsClient.sendWithResponse(
-    "<from-phone-number>",
-    Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-    "Weekly Promotion",
-    options /* Optional */,
-    Context.NONE).getValue();
+        "<from-phone-number>",
+        Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+        "Weekly Promotion",
+        options /* Optional */,
+        Context.NONE).getValue();
 
 for (SmsSendResult result : sendResults) {
     System.out.println("Message Id: " + result.getMessageId());
@@ -141,6 +164,58 @@ for (SmsSendResult result : sendResults) {
     System.out.println("Send Result Successful:" + result.isSuccessful());
 }
 ```
+
+### Retrieve Delivery Reports
+
+When you enable delivery reports by setting `setDeliveryReportEnabled(true)` in your SMS options, you can retrieve delivery status information for your sent messages using the message ID.
+
+**Note:** Delivery report retrieval is currently available only through the async client (`SmsAsyncClient`).
+
+```java
+SmsAsyncClient smsAsyncClient = new SmsClientBuilder()
+    .connectionString(connectionString)
+    .buildAsyncClient();
+
+// Send SMS with delivery report enabled
+SmsSendOptions options = new SmsSendOptions();
+options.setDeliveryReportEnabled(true);
+options.setTag("OrderConfirmation");
+
+smsAsyncClient.send(
+        "<from-phone-number>",
+        "<to-phone-number>",
+        "Your order has been shipped!",
+        options)
+    .flatMap(sendResult -> {
+        System.out.println("Message sent. Message ID: " + sendResult.getMessageId());
+        
+        // Wait a moment for delivery processing
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        // Retrieve delivery report
+        return smsAsyncClient.getDeliveryReport(sendResult.getMessageId());
+    })
+    .subscribe(
+        deliveryReport -> {
+            System.out.println("Delivery Status: " + deliveryReport.getDeliveryStatus());
+            System.out.println("Message ID: " + deliveryReport.getMessageId());
+            System.out.println("From: " + deliveryReport.getFrom());
+            System.out.println("To: " + deliveryReport.getTo());
+            System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());
+            System.out.println("Tag: " + deliveryReport.getTag());
+        },
+        error -> {
+            System.err.println("Error retrieving delivery report: " + error.getMessage());
+        }
+    );
+```
+
+For more comprehensive examples of working with delivery reports, including error handling scenarios, see:
+`src/samples/java/com/azure/communication/sms/samples/quickstart/GetDeliveryReportExample.java`
 
 ## Troubleshooting
 
@@ -155,19 +230,22 @@ try {
     options.setTag("Marketing");
 
     Response<Iterable<SmsSendResult>> sendResults = smsClient.sendWithResponse(
-        "<from-phone-number>",
-        Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
-        "Weekly Promotion",
-        options /* Optional */,
-        Context.NONE);
+            "<from-phone-number>",
+            Arrays.asList("<to-phone-number1>", "<to-phone-number2>"),
+            "Weekly Promotion",
+            options /* Optional */,
+            Context.NONE);
 
     Iterable<SmsSendResult> smsSendResults = sendResults.getValue();
     for (SmsSendResult result : smsSendResults) {
         if (result.isSuccessful()) {
-            System.out.println("Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
+            System.out.println(
+                    "Successfully sent this message: " + result.getMessageId() + " to " + result.getTo());
         } else {
-            System.out.println("Something went wrong when trying to send this message " + result.getMessageId() + " to " + result.getTo());
-            System.out.println("Status code " + result.getHttpStatusCode() + " and error message " + result.getErrorMessage());
+            System.out.println("Something went wrong when trying to send this message " + result.getMessageId()
+                    + " to " + result.getTo());
+            System.out.println("Status code " + result.getHttpStatusCode() + " and error message "
+                    + result.getErrorMessage());
         }
     }
 } catch (RuntimeException ex) {
