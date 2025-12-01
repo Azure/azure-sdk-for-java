@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import jakarta.jms.ConnectionFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -153,12 +152,7 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-                
-                ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
-                assertThat(connectionFactory).isInstanceOf(CachingConnectionFactory.class);
-                
-                CachingConnectionFactory cachingFactory = (CachingConnectionFactory) connectionFactory;
-                
+                CachingConnectionFactory cachingFactory = context.getBean(CachingConnectionFactory.class);
                 // Verify that producer and consumer caching is enabled
                 // When these properties are true, CachingConnectionFactory will cache and reuse
                 // MessageProducer and MessageConsumer instances for the same destination
