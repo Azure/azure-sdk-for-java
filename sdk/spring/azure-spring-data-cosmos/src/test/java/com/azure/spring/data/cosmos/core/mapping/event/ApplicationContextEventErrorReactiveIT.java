@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import reactor.test.StepVerifier;
 
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,9 +41,7 @@ public class ApplicationContextEventErrorReactiveIT {
 
     @Test
     public void shouldThrowExceptionIfEventListenerThrowsException() {
-        assertThrows(CosmosAccessException.class, () ->
-            repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
-                new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())).block()
-        );
+        StepVerifier.create(repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
+            new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()))).expectError(CosmosAccessException.class).verify();
     }
 }
