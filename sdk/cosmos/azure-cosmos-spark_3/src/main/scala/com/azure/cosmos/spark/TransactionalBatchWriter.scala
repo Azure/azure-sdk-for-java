@@ -253,23 +253,23 @@ private class TransactionalBatchPartitionExecutor(
 
   private def executeAllBatches(): Iterator[Row] = {
     val allResults = mutable.ArrayBuffer[Row]()
-
-    operationsByPartitionKey.foreach { case (partitionKeyValue, ops) =>
-      val batchResults = executeBatchForPartitionKey(partitionKeyValue, ops.toSeq)
-      allResults ++= batchResults
-    }
-
-    // Clean up clients
     try {
-      clientCacheItem.close()
-      if (throughputControlClientCacheItemOpt.isDefined) {
-        throughputControlClientCacheItemOpt.get.close()
+      operationsByPartitionKey.foreach { case (partitionKeyValue, ops) =>
+        val batchResults = executeBatchForPartitionKey(partitionKeyValue, ops.toSeq)
+        allResults ++= batchResults
       }
-    } catch {
-      case e: Exception =>
-        logWarning(s"Error closing client cache items: ${e.getMessage}")
+    } finally {
+      // Clean up clients
+      try {
+        clientCacheItem.close()
+        if (throughputControlClientCacheItemOpt.isDefined) {
+          throughputControlClientCacheItemOpt.get.close()
+        }
+      } catch {
+        case e: Exception =>
+          logWarning(s"Error closing client cache items: ${e.getMessage}")
+      }
     }
-
     allResults.iterator
   }
 
