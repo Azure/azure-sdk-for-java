@@ -300,15 +300,15 @@ private class TransactionalBatchPartitionExecutor(
     
     Try {
       // Create CosmosBatch for this partition key
-      logDebug(s"Creating batch with partition key: '$partitionKeyValue' (type: ${partitionKeyValue.getClass.getName})")
+      logTrace(s"Creating batch with partition key: '$partitionKeyValue' (type: ${partitionKeyValue.getClass.getName})")
       val batch = CosmosBatch.createCosmosBatch(new PartitionKey(partitionKeyValue))
 
       // Add operations to batch
       operations.foreach { op =>
         op.operationType.toLowerCase match {
           case "create" =>
-            logDebug(s"Adding create operation for id=${op.documentNode.get("id").asText()}, pk='${op.partitionKey}'")
-            logDebug(s"Document JSON: ${op.documentNode.toString}")
+            logTrace(s"Adding create operation for id=${op.documentNode.get("id").asText()}, pk='${op.partitionKey}'")
+            logTrace(s"Document JSON: ${op.documentNode.toString}")
             batch.createItemOperation(op.documentNode)
 
           case "replace" =>
@@ -331,14 +331,14 @@ private class TransactionalBatchPartitionExecutor(
       // Execute batch
       val batchResponse: CosmosBatchResponse = container.executeCosmosBatch(batch).block()
       
-      logDebug(s"Batch response status: ${batchResponse.getStatusCode}, isSuccessStatusCode: ${batchResponse.isSuccessStatusCode}")
-      logDebug(s"Batch response error message: ${batchResponse.getErrorMessage}")
-      logDebug(s"Batch response diagnostics: ${batchResponse.getDiagnostics}")
+      logTrace(s"Batch response status: ${batchResponse.getStatusCode}, isSuccessStatusCode: ${batchResponse.isSuccessStatusCode}")
+      logTrace(s"Batch response error message: ${batchResponse.getErrorMessage}")
+      logTrace(s"Batch response diagnostics: ${batchResponse.getDiagnostics}")
       
       // Check individual operation results
       if (batchResponse.getResults != null) {
         batchResponse.getResults.asScala.zipWithIndex.foreach { case (result, idx) =>
-          logDebug(s"Operation $idx: statusCode=${result.getStatusCode}, subStatusCode=${result.getSubStatusCode}")
+          logTrace(s"Operation $idx: statusCode=${result.getStatusCode}, subStatusCode=${result.getSubStatusCode}")
         }
       }
 
