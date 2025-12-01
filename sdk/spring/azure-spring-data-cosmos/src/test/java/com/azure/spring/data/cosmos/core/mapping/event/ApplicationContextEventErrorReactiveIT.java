@@ -10,13 +10,11 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressRepository;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import reactor.test.StepVerifier;
 
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,15 +31,12 @@ public class ApplicationContextEventErrorReactiveIT {
     @Autowired
     private CosmosTemplate template;
 
-    @BeforeEach
-    public void setUp() {
-        collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
-        repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1)).collectList().block();
-    }
-
     @Test
     public void shouldThrowExceptionIfEventListenerThrowsException() {
-        StepVerifier.create(repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
-            new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()))).expectError(CosmosAccessException.class).verify();
+        assertThrows(CosmosAccessException.class, () -> {
+            collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
+            repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1)).collectList().block();
+            repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())).block();
+        });
     }
 }
