@@ -240,7 +240,13 @@ object CosmosItemsDataSource {
       }
       
       // Extract id and partition key from the document
-      val id = documentNode.get(CosmosConstants.Properties.Id).asText()
+      val idNode = documentNode.get(CosmosConstants.Properties.Id)
+      if (idNode == null || idNode.isNull) {
+        throw new IllegalArgumentException(
+          s"Missing or null 'id' field in document. Each item must have a non-null 'id' property. Document: ${documentNode.toString}"
+        )
+      }
+      val id = idNode.asText()
       
       // Extract partition key value for batch API
       val partitionKey = if (documentNode.has("pk")) {
