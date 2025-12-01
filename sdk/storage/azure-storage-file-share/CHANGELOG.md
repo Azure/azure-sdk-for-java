@@ -3,6 +3,9 @@
 ## 12.29.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for User Delegation SAS.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for the `ShareServiceProperties.Protocol.SMB.EncryptionInTransit` parameter on `ShareServiceClient.setProperties()` APIs. 
 
 ### Breaking Changes
 
