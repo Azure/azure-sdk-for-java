@@ -213,7 +213,7 @@ public class ConsistencyWriterTest {
         headers.put(WFConstants.BackendHeaders.LSN, "3");
         headers.put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2");
 
-        StoreResponse sr = new StoreResponse(null, 0, headers, null, 0);
+        StoreResponse sr = new StoreResponse(null, 0, headers, null, 0, null, null);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);
         Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-2l);
         ConsistencyWriter.getLsnAndGlobalCommittedLsn(sr, lsn, globalCommittedLsn);

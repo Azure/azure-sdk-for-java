@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -29,7 +28,9 @@ class ResponseUtils {
                     httpClientResponse.statusCode(),
                     HttpUtils.unescape(httpResponseHeaders.toMap()),
                     null,
-                    0);
+                    0,
+                    null,
+                    null);
             }
 
             return new StoreResponse(
@@ -37,7 +38,9 @@ class ResponseUtils {
                 httpClientResponse.statusCode(),
                 HttpUtils.unescape(httpResponseHeaders.toMap()),
                 new ByteBufInputStream(byteBufContent, true),
-                size);
+                size,
+                null,
+                null);
         });
     }
 }

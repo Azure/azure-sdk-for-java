@@ -25,8 +25,6 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -233,7 +231,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 statusCode,
                 HttpUtils.unescape(headers.toLowerCaseMap()),
                 new ByteBufInputStream(retainedContent, true),
-                size);
+                size,
+                request.getOperationType(),
+                request.getResourceType());
         } else {
             retainedContent.release();
         }
@@ -243,7 +243,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             statusCode,
             HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
-            0);
+            0,
+            request.getOperationType(),
+            request.getResourceType());
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {

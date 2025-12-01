@@ -28,7 +28,7 @@ public class JsonNodeStorePayloadTests {
         try {
             byte[] bytes = hexStringToByteArray(invalidHexString);
             ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
-            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length, new HashMap<>());
+            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length, new HashMap<>(), null, null);
             jsonNodeStorePayload.getPayload().toString();
         } finally {
             System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT");
