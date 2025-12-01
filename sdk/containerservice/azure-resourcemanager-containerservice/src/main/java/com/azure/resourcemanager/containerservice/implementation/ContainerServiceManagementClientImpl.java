@@ -10,12 +10,19 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServiceOperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
+import com.azure.resourcemanager.containerservice.fluent.IdentityBindingsClient;
+import com.azure.resourcemanager.containerservice.fluent.JwtAuthenticatorsClient;
+import com.azure.resourcemanager.containerservice.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClusterSnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedNamespacesClient;
+import com.azure.resourcemanager.containerservice.fluent.MeshMembershipsClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.OperationStatusResultsClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
@@ -161,6 +168,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The ContainerServiceOperationsClient object to access its operations.
+     */
+    private final ContainerServiceOperationsClient containerServiceOperations;
+
+    /**
+     * Gets the ContainerServiceOperationsClient object to access its operations.
+     * 
+     * @return the ContainerServiceOperationsClient object.
+     */
+    public ContainerServiceOperationsClient getContainerServiceOperations() {
+        return this.containerServiceOperations;
+    }
+
+    /**
      * The MaintenanceConfigurationsClient object to access its operations.
      */
     private final MaintenanceConfigurationsClient maintenanceConfigurations;
@@ -200,6 +221,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public AgentPoolsClient getAgentPools() {
         return this.agentPools;
+    }
+
+    /**
+     * The MachinesClient object to access its operations.
+     */
+    private final MachinesClient machines;
+
+    /**
+     * Gets the MachinesClient object to access its operations.
+     * 
+     * @return the MachinesClient object.
+     */
+    public MachinesClient getMachines() {
+        return this.machines;
     }
 
     /**
@@ -245,6 +280,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The OperationStatusResultsClient object to access its operations.
+     */
+    private final OperationStatusResultsClient operationStatusResults;
+
+    /**
+     * Gets the OperationStatusResultsClient object to access its operations.
+     * 
+     * @return the OperationStatusResultsClient object.
+     */
+    public OperationStatusResultsClient getOperationStatusResults() {
+        return this.operationStatusResults;
+    }
+
+    /**
      * The SnapshotsClient object to access its operations.
      */
     private final SnapshotsClient snapshots;
@@ -259,17 +308,17 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
-     * The TrustedAccessRoleBindingsClient object to access its operations.
+     * The ManagedClusterSnapshotsClient object to access its operations.
      */
-    private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
+    private final ManagedClusterSnapshotsClient managedClusterSnapshots;
 
     /**
-     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
+     * Gets the ManagedClusterSnapshotsClient object to access its operations.
      * 
-     * @return the TrustedAccessRoleBindingsClient object.
+     * @return the ManagedClusterSnapshotsClient object.
      */
-    public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
-        return this.trustedAccessRoleBindings;
+    public ManagedClusterSnapshotsClient getManagedClusterSnapshots() {
+        return this.managedClusterSnapshots;
     }
 
     /**
@@ -287,17 +336,73 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
-     * The MachinesClient object to access its operations.
+     * The TrustedAccessRoleBindingsClient object to access its operations.
      */
-    private final MachinesClient machines;
+    private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
 
     /**
-     * Gets the MachinesClient object to access its operations.
+     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
      * 
-     * @return the MachinesClient object.
+     * @return the TrustedAccessRoleBindingsClient object.
      */
-    public MachinesClient getMachines() {
-        return this.machines;
+    public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
+        return this.trustedAccessRoleBindings;
+    }
+
+    /**
+     * The LoadBalancersClient object to access its operations.
+     */
+    private final LoadBalancersClient loadBalancers;
+
+    /**
+     * Gets the LoadBalancersClient object to access its operations.
+     * 
+     * @return the LoadBalancersClient object.
+     */
+    public LoadBalancersClient getLoadBalancers() {
+        return this.loadBalancers;
+    }
+
+    /**
+     * The IdentityBindingsClient object to access its operations.
+     */
+    private final IdentityBindingsClient identityBindings;
+
+    /**
+     * Gets the IdentityBindingsClient object to access its operations.
+     * 
+     * @return the IdentityBindingsClient object.
+     */
+    public IdentityBindingsClient getIdentityBindings() {
+        return this.identityBindings;
+    }
+
+    /**
+     * The JwtAuthenticatorsClient object to access its operations.
+     */
+    private final JwtAuthenticatorsClient jwtAuthenticators;
+
+    /**
+     * Gets the JwtAuthenticatorsClient object to access its operations.
+     * 
+     * @return the JwtAuthenticatorsClient object.
+     */
+    public JwtAuthenticatorsClient getJwtAuthenticators() {
+        return this.jwtAuthenticators;
+    }
+
+    /**
+     * The MeshMembershipsClient object to access its operations.
+     */
+    private final MeshMembershipsClient meshMemberships;
+
+    /**
+     * Gets the MeshMembershipsClient object to access its operations.
+     * 
+     * @return the MeshMembershipsClient object.
+     */
+    public MeshMembershipsClient getMeshMemberships() {
+        return this.meshMemberships;
     }
 
     /**
@@ -323,15 +428,22 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.containerServices = new ContainerServicesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
+        this.containerServiceOperations = new ContainerServiceOperationsClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
         this.managedNamespaces = new ManagedNamespacesClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
+        this.machines = new MachinesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
+        this.operationStatusResults = new OperationStatusResultsClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
-        this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
+        this.managedClusterSnapshots = new ManagedClusterSnapshotsClientImpl(this);
         this.trustedAccessRoles = new TrustedAccessRolesClientImpl(this);
-        this.machines = new MachinesClientImpl(this);
+        this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
+        this.loadBalancers = new LoadBalancersClientImpl(this);
+        this.identityBindings = new IdentityBindingsClientImpl(this);
+        this.jwtAuthenticators = new JwtAuthenticatorsClientImpl(this);
+        this.meshMemberships = new MeshMembershipsClientImpl(this);
     }
 }
