@@ -452,24 +452,6 @@ public class PartitionScopedRegionLevelProgress {
         }
     }
 
-//    private void recordPartitionKeyInBloomFilter(
-//        RxDocumentServiceRequest request,
-//        Long collectionRid,
-//        String regionRoutedTo,
-//        PartitionKeyInternal partitionKeyInternal,
-//        PartitionKeyDefinition partitionKeyDefinition,
-//        PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
-//        String firstEffectivePreferredReadableRegion) {
-//
-//        partitionKeyBasedBloomFilter.tryRecordPartitionKey(
-//            request,
-//            collectionRid,
-//            firstEffectivePreferredReadableRegion,
-//            regionRoutedTo,
-//            partitionKeyInternal,
-//            partitionKeyDefinition);
-//    }
-
     public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
         return this.partitionKeyRangeIdToRegionLevelProgress.containsKey(partitionKeyRangeId);
     }
