@@ -29,8 +29,9 @@ public final class VolumesAuthorizeReplicationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .authorizeReplication("prlpy", "nuciqdsmexiit", "fuxtyasiibmiybnn", "stgnl",
-                new AuthorizeRequest().withRemoteVolumeResourceId("nmgixh"), com.azure.core.util.Context.NONE);
+            .authorizeReplication("syeipqd", "mjtgrqg", "gkkileplkcsmkn", "wtbbaedorvvmqf",
+                new AuthorizeRequest().withRemoteVolumeResourceId("ygbdgwumgxdgdhpa"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

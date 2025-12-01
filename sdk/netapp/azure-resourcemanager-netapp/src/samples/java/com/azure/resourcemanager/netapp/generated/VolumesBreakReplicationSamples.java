@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
  */
 public final class VolumesBreakReplicationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_BreakReplication.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_BreakReplication.json
      */
     /**
      * Sample code: Volumes_BreakReplication.

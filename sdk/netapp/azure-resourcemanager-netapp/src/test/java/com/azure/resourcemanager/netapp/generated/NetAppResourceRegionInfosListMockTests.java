@@ -23,7 +23,7 @@ public final class NetAppResourceRegionInfosListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"yzlwh\",\"isAvailable\":true},{\"availabilityZone\":\"hoocl\",\"isAvailable\":false},{\"availabilityZone\":\"qmemc\",\"isAvailable\":true},{\"availabilityZone\":\"mykyujxsglhs\",\"isAvailable\":false}]},\"id\":\"ejylmbkzu\",\"name\":\"nigrfihotjewl\",\"type\":\"xuzzjgnrefq\"}]}";
+            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"lbefvwc\",\"isAvailable\":true},{\"availabilityZone\":\"pylrwoxzgwpsy\",\"isAvailable\":true},{\"availabilityZone\":\"eypdvrbk\",\"isAvailable\":true}]},\"id\":\"dkgaw\",\"name\":\"wjxildfkcefeyg\",\"type\":\"q\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class NetAppResourceRegionInfosListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RegionInfoResource> response
-            = manager.netAppResourceRegionInfos().list("bfdpyflubhv", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceRegionInfos().list("j", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1,
             response.iterator().next().storageToNetworkProximity());
-        Assertions.assertEquals("yzlwh",
+        Assertions.assertEquals("lbefvwc",
             response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertTrue(response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
     }

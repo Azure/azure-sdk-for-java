@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class SubvolumesGetMetadataSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Subvolumes_Metadata.json
+     * x-ms-original-file: 2025-09-01-preview/Subvolumes_Metadata.json
      */
     /**
      * Sample code: Subvolumes_Metadata.

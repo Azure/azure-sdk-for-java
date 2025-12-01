@@ -12,6 +12,7 @@
 #### Other Changes
 * Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
 * Changed to use incremental change feed to get partition key ranges. - [46810](https://github.com/Azure/azure-sdk-for-java/pull/46810)
+* Optimized 410 `Lease Not Found` handling for Strong Consistency account by avoiding unnecessary retries in the barrier attainment flow. - [PR 47232](https://github.com/Azure/azure-sdk-for-java/pull/47232)
 
 ### 4.75.0 (2025-10-21)
 > [!IMPORTANT]
