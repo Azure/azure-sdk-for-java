@@ -16,6 +16,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public class BlobRequestConditions extends BlobLeaseRequestConditions {
     private String leaseId;
+    private OffsetDateTime accessTierIfModifiedSince;
+    private OffsetDateTime accessTierIfUnmodifiedSince;
 
     /**
      * Creates a new instance of {@link BlobRequestConditions}.
@@ -102,6 +104,50 @@ public class BlobRequestConditions extends BlobLeaseRequestConditions {
      */
     public BlobRequestConditions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
+    }
+
+    /**
+     * Gets the access-tier {@link OffsetDateTime} that the resource must have been modified since.
+     *
+     * @return The access-tier {@link OffsetDateTime} that the resource must have been modified since.
+     */
+    public OffsetDateTime getAccessTierIfModifiedSince() {
+        return accessTierIfModifiedSince;
+    }
+
+    /**
+     * Optionally limits requests to resources that have had their access-tier modified since the specified
+     * {@link OffsetDateTime}.
+     *
+     * @param accessTierIfModifiedSince The access-tier {@link OffsetDateTime} that the resource must have been modified
+     * since.
+     * @return The updated BlobRequestConditions object.
+     */
+    public BlobRequestConditions setAccessTierIfModifiedSince(OffsetDateTime accessTierIfModifiedSince) {
+        this.accessTierIfModifiedSince = accessTierIfModifiedSince;
+        return this;
+    }
+
+    /**
+     * Gets the access-tier {@link OffsetDateTime} that the resource must have remained unmodified since.
+     *
+     * @return The access-tier {@link OffsetDateTime} that the resource must have remained unmodified since.
+     */
+    public OffsetDateTime getAccessTierIfUnmodifiedSince() {
+        return accessTierIfUnmodifiedSince;
+    }
+
+    /**
+     * Optionally limits requests to resources that have not had their access-tier modified since the specified
+     * {@link OffsetDateTime}.
+     *
+     * @param accessTierIfUnmodifiedSince The access-tier {@link OffsetDateTime} that the resource must have remained
+     * unmodified since.
+     * @return The updated BlobRequestConditions object.
+     */
+    public BlobRequestConditions setAccessTierIfUnmodifiedSince(OffsetDateTime accessTierIfUnmodifiedSince) {
+        this.accessTierIfUnmodifiedSince = accessTierIfUnmodifiedSince;
         return this;
     }
 }

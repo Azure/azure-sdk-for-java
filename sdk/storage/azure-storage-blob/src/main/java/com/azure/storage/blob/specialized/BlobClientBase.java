@@ -1624,7 +1624,9 @@ public class BlobClientBase {
                 finalRequestConditions.getLeaseId(), deleteBlobSnapshotOptions,
                 finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
                 finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
-                finalRequestConditions.getTagsConditions(), null, null, finalContext);
+                finalRequestConditions.getTagsConditions(), null, null,
+                finalRequestConditions.getAccessTierIfModifiedSince(),
+                finalRequestConditions.getAccessTierIfUnmodifiedSince(), finalContext);
 
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
@@ -2027,7 +2029,7 @@ public class BlobClientBase {
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
             .setTagsNoCustomHeadersWithResponse(containerName, blobName, null, versionId, null, null, null,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, null, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
