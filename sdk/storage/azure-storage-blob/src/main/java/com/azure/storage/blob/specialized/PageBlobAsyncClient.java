@@ -43,6 +43,7 @@ import com.azure.storage.blob.models.ClearRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -698,6 +699,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth
             = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
+        // Extract source CPK properties only if non-null
+        CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
+        String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
+        String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
+        EncryptionAlgorithmType sourceCpkAlgorithm = sourceCustomerProvidedKey != null
+            ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
+
         return this.azureBlobStorage.getPageBlobs()
             .uploadPagesFromURLWithResponseAsync(containerName, blobName, options.getSourceUrl(), sourceRangeString, 0,
                 rangeString, options.getSourceContentMd5(), null, null, destRequestConditions.getLeaseId(),
@@ -708,7 +716,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
                 sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
-                getCustomerProvidedKey(), encryptionScope, context)
+                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

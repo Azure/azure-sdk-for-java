@@ -33,6 +33,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
@@ -385,9 +386,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the
@@ -415,9 +415,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the
@@ -608,6 +607,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth
             = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
+        // Extract source CPK properties only if non-null
+        CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
+        String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
+        String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
+        EncryptionAlgorithmType sourceCpkAlgorithm = sourceCustomerProvidedKey != null
+            ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
+
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockFromUrlWithResponseAsync(containerName, blobName, options.getSourceUrl(), 0,
                 sourceRange.toString(), options.getSourceContentMd5(), null, null, null,
@@ -617,7 +623,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
                 sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
                 sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null, sourceAuth,
-                options.getSourceShareTokenIntent(), getCustomerProvidedKey(), encryptionScope, context)
+                options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
+                getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
