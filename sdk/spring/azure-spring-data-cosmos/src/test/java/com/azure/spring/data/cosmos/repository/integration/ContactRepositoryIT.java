@@ -6,6 +6,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Contact;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import org.assertj.core.util.Lists;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -204,9 +206,11 @@ public class ContactRepositoryIT {
 
     @Test
     public void testShouldFailIfMultipleResultsReturned() {
-        repository.save(new Contact("testId2", TEST_CONTACT1.getTitle()));
+        assertThrows(CosmosAccessException.class, () -> {
+            repository.save(new Contact("testId2", TEST_CONTACT1.getTitle()));
 
-        repository.findOneByTitle(TEST_CONTACT1.getTitle());
+            repository.findOneByTitle(TEST_CONTACT1.getTitle());
+        });
     }
 
     @Test

@@ -37,6 +37,7 @@ import com.azure.spring.data.cosmos.domain.PersonWithTransientEtag;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosBadRequestException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -99,10 +100,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -268,8 +266,10 @@ public class CosmosTemplateIT {
 
     @Test
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
-        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-        cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));
+        assertThrows(CosmosBadRequestException.class, () -> {
+            final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));
+        });
     }
 
     @Test
