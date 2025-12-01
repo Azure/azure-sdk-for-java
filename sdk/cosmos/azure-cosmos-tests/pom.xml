@@ -146,6 +146,7 @@ Licensed under the MIT License.
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
