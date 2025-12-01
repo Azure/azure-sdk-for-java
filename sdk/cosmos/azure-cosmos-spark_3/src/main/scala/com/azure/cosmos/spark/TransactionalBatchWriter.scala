@@ -257,11 +257,15 @@ private class TransactionalBatchPartitionExecutor(
     try {
       operationsByPartitionKey.foreach { case (partitionKeyValue, ops) =>
         // Cosmos DB transactional batch limit: 100 operations per batch
-        // Split into smaller batches if needed
-        ops.grouped(100).foreach { opsBatch =>
-          val batchResults = executeBatchForPartitionKey(partitionKeyValue, opsBatch.toSeq)
-          allResults ++= batchResults
+        if (ops.size > 100) {
+          throw new IllegalArgumentException(
+            s"Partition key '$partitionKeyValue' has ${ops.size} operations, which exceeds the " +
+            s"Cosmos DB transactional batch limit of 100 operations per partition key. " +
+            s"Please reduce the number of operations for this partition key."
+          )
         }
+        val batchResults = executeBatchForPartitionKey(partitionKeyValue, ops.toSeq)
+        allResults ++= batchResults
       }
     } finally {
       // Clean up clients

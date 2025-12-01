@@ -281,4 +281,40 @@ class TransactionalBatchITest extends IntegrationSpec
     updatedItem.getItem.get("name").asText() shouldEqual "UpdatedName"
     updatedItem.getItem.get("version").asInt() shouldEqual 2
   }
+
+  it should "fail when more than 100 operations for a single partition key" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val partitionKeyValue = UUID.randomUUID().toString
+
+    // Create 101 operations for the same partition key
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("name", StringType, nullable = false)
+    ))
+
+    val batchOperations = (1 to 101).map { i =>
+      Row(s"item-$i-${UUID.randomUUID()}", partitionKeyValue, s"Name-$i")
+    }
+
+    val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey
+    )
+
+    // Should throw IllegalArgumentException
+    val exception = intercept[Exception] {
+      CosmosItemsDataSource.writeTransactionalBatch(operationsDf, cfg.asJava).collect()
+    }
+
+    exception.getMessage should include("exceeds the")
+    exception.getMessage should include("100 operations per partition key")
+    exception.getMessage should include(partitionKeyValue)
+  }
 }
