@@ -626,9 +626,8 @@ public interface IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDeletePrivateEndpointConnection(String resourceGroupName, String resourceName,
-            String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName);
 
     /**
      * Delete private endpoint connection with the specified name.
@@ -644,9 +643,8 @@ public interface IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDeletePrivateEndpointConnection(String resourceGroupName, String resourceName,
-            String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName, Context context);
 
     /**
      * Delete private endpoint connection with the specified name.
@@ -658,10 +656,9 @@ public interface IotDpsResourcesClient {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName);
 
     /**
@@ -675,10 +672,9 @@ public interface IotDpsResourcesClient {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, Context context);
 
     /**
