@@ -27,10 +27,11 @@ import scala.collection.JavaConverters._
  * Follows the same pattern as CosmosReadManyReader for consistency.
  * 
  * Input DataFrame schema:
- * - id: String (required)
- * - partitionKey: String (required)
- * - operationType: String (required - "create", "replace", "upsert", "delete", "read")
- * - document: String (optional - JSON document, required for create/replace/upsert)
+ * - Flat columns corresponding to the properties of the Cosmos DB item to be operated on.
+ * - The partition key column name must match the container's partition key path (e.g., "pk" if the path is "/pk").
+ * - The "id" column (String) is required.
+ * - An optional "operationType" column (String) can be provided to specify the operation ("create", "replace", "upsert", "delete", "read") for each row.
+ *   If not provided, the default operation is "upsert".
  * 
  * Output DataFrame schema:
  * - id: String
@@ -42,7 +43,7 @@ import scala.collection.JavaConverters._
  * - errorMessage: String (optional)
  */
 private[spark] class TransactionalBatchWriter(
-  val userProvidedSchema: StructType,
+  val outputSchema: StructType,
   val userConfig: Map[String, String]
 ) extends BasicLoggingTrait with Serializable {
 
@@ -169,8 +170,8 @@ private[spark] class TransactionalBatchWriter(
   }
 
   private def getOutputSchema(): StructType = {
-    if (userProvidedSchema != null) {
-      userProvidedSchema
+    if (outputSchema != null) {
+      outputSchema
     } else {
       StructType(Seq(
         StructField("id", StringType, nullable = false),
@@ -255,19 +256,28 @@ private class TransactionalBatchPartitionExecutor(
     val allResults = mutable.ArrayBuffer[Row]()
     try {
       operationsByPartitionKey.foreach { case (partitionKeyValue, ops) =>
-        val batchResults = executeBatchForPartitionKey(partitionKeyValue, ops.toSeq)
-        allResults ++= batchResults
+        // Cosmos DB transactional batch limit: 100 operations per batch
+        // Split into smaller batches if needed
+        ops.grouped(100).foreach { opsBatch =>
+          val batchResults = executeBatchForPartitionKey(partitionKeyValue, opsBatch.toSeq)
+          allResults ++= batchResults
+        }
       }
     } finally {
       // Clean up clients
       try {
         clientCacheItem.close()
-        if (throughputControlClientCacheItemOpt.isDefined) {
-          throughputControlClientCacheItemOpt.get.close()
-        }
       } catch {
         case e: Exception =>
-          logWarning(s"Error closing client cache items: ${e.getMessage}")
+          logError(s"Error closing main client cache item: ${e.getMessage}", e)
+      }
+      if (throughputControlClientCacheItemOpt.isDefined) {
+        try {
+          throughputControlClientCacheItemOpt.get.close()
+        } catch {
+          case e: Exception =>
+            logError(s"Error closing throughput control client cache item: ${e.getMessage}", e)
+        }
       }
     }
     allResults.iterator
@@ -277,17 +287,28 @@ private class TransactionalBatchPartitionExecutor(
     partitionKeyValue: String,
     operations: Seq[BatchOperation]
   ): Seq[Row] = {
+    // Validate that all operations have the same partition key
+    val mismatchedOps = operations.filter(_.partitionKey != partitionKeyValue)
+    if (mismatchedOps.nonEmpty) {
+      val mismatchedKeys = mismatchedOps.map(_.partitionKey).distinct.mkString(", ")
+      throw new IllegalArgumentException(
+        s"All operations in a transactional batch must have the same partition key. " +
+        s"Expected: '$partitionKeyValue', but found: [$mismatchedKeys]. " +
+        s"Number of mismatched operations: ${mismatchedOps.size}."
+      )
+    }
+    
     Try {
       // Create CosmosBatch for this partition key
-      logInfo(s"Creating batch with partition key: '$partitionKeyValue' (type: ${partitionKeyValue.getClass.getName})")
+      logDebug(s"Creating batch with partition key: '$partitionKeyValue' (type: ${partitionKeyValue.getClass.getName})")
       val batch = CosmosBatch.createCosmosBatch(new PartitionKey(partitionKeyValue))
 
       // Add operations to batch
       operations.foreach { op =>
         op.operationType.toLowerCase match {
           case "create" =>
-            logInfo(s"Adding create operation for id=${op.documentNode.get("id").asText()}, pk='${op.partitionKey}'")
-            logInfo(s"Document JSON: ${op.documentNode.toString}")
+            logDebug(s"Adding create operation for id=${op.documentNode.get("id").asText()}, pk='${op.partitionKey}'")
+            logDebug(s"Document JSON: ${op.documentNode.toString}")
             batch.createItemOperation(op.documentNode)
 
           case "replace" =>
@@ -310,14 +331,14 @@ private class TransactionalBatchPartitionExecutor(
       // Execute batch
       val batchResponse: CosmosBatchResponse = container.executeCosmosBatch(batch).block()
       
-      logInfo(s"Batch response status: ${batchResponse.getStatusCode}, isSuccessStatusCode: ${batchResponse.isSuccessStatusCode}")
-      logInfo(s"Batch response error message: ${batchResponse.getErrorMessage}")
-      logInfo(s"Batch response diagnostics: ${batchResponse.getDiagnostics}")
+      logDebug(s"Batch response status: ${batchResponse.getStatusCode}, isSuccessStatusCode: ${batchResponse.isSuccessStatusCode}")
+      logDebug(s"Batch response error message: ${batchResponse.getErrorMessage}")
+      logDebug(s"Batch response diagnostics: ${batchResponse.getDiagnostics}")
       
       // Check individual operation results
       if (batchResponse.getResults != null) {
         batchResponse.getResults.asScala.zipWithIndex.foreach { case (result, idx) =>
-          logInfo(s"Operation $idx: statusCode=${result.getStatusCode}, subStatusCode=${result.getSubStatusCode}")
+          logDebug(s"Operation $idx: statusCode=${result.getStatusCode}, subStatusCode=${result.getSubStatusCode}")
         }
       }
 
@@ -325,9 +346,13 @@ private class TransactionalBatchPartitionExecutor(
       processResponse(batchResponse, operations)
     } match {
       case Success(results) => results
+      case Failure(exception: CosmosException) =>
+        logError(s"Cosmos batch execution failed for partition key $partitionKeyValue: ${exception.getMessage}", exception)
+        operations.map { op =>
+          createErrorRow(op, exception.getStatusCode, exception.getMessage)
+        }
       case Failure(exception) =>
         logError(s"Batch execution failed for partition key $partitionKeyValue: ${exception.getMessage}", exception)
-        // Return error results for all operations
         operations.map { op =>
           createErrorRow(op, 500, exception.getMessage)
         }
@@ -370,9 +395,7 @@ private class TransactionalBatchPartitionExecutor(
         }
 
         val errorMessage = if (!isSuccess) {
-          Try {
-            Option(result.toString)
-          }.getOrElse(Some("Operation failed"))
+          Some(s"Operation failed with status code ${statusCode}")
         } else {
           None
         }
@@ -414,9 +437,5 @@ private class TransactionalBatchPartitionExecutor(
       null,
       errorMessage
     )
-  }
-
-  private def parseDocument(documentJson: String): ObjectNode = {
-    Utils.getSimpleObjectMapper.readValue(documentJson, classOf[ObjectNode])
   }
 }

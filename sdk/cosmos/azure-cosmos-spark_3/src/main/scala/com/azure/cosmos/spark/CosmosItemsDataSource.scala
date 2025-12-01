@@ -118,17 +118,18 @@ object CosmosItemsDataSource {
    * Operations with the same partition key are executed atomically.
    * 
    * Input DataFrame schema:
-   * - id: String (required)
-   * - partitionKey: String (required)
-   * - operationType: String (required - "create", "replace", "upsert", "delete", "read")
-   * - document: String (optional - JSON document, required for create/replace/upsert)
+   * - Flat columns corresponding to the properties of the Cosmos DB item to be operated on.
+   * - The partition key column name must match the container's partition key path (e.g., "pk" if the path is "/pk").
+   * - The "id" column (String) is required.
+   * - An optional "operationType" column (String) can be provided to specify the operation ("create", "replace", "upsert", "delete", "read") for each row.
+   *   If not provided, the default operation is "upsert".
    * 
    * Output DataFrame schema:
    * - id: String
    * - partitionKey: String
    * - operationType: String
    * - statusCode: Int
-   * - success: Boolean
+   * - isSuccessStatusCode: Boolean
    * - resultDocument: String (optional - for read operations)
    * - errorMessage: String (optional)
    * 

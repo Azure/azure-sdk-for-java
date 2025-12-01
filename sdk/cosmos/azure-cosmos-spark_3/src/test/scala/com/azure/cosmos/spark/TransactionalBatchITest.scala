@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.CosmosException
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SaveMode}
@@ -126,7 +127,7 @@ class TransactionalBatchITest extends IntegrationSpec
       container.readItem(item1Id, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
       fail("Item1 should not exist after batch rollback")
     } catch {
-      case _: Exception => // Expected - item doesn't exist
+      case _: CosmosException => // Expected - item doesn't exist (404 Not Found)
     }
   }
 

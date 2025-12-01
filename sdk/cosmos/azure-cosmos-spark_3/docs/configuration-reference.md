@@ -134,12 +134,10 @@ val resultDf = CosmosItemsDataSource.writeTransactionalBatch(df, cfg.asJava)
 
 **Important Constraints:**
 - All operations in a batch must target the same logical partition (same partition key value)
-- Maximum 100 operations per batch
+- Maximum 100 operations per batch (automatically split if needed)
 - All operations are atomic - if any operation fails, the entire batch is rolled back
 - Operations are executed in the order they appear in the DataFrame
 - DataFrame rows are converted to JSON documents using the same logic as standard writes
-- All operations are atomic - if any operation fails, the entire batch is rolled back
-- Operations are executed in the order they appear in the DataFrame
 
 #### Patch Config
 | Config Property Name                            | Default   | Description                                                                                                                                                                                                                                                                                                           |
