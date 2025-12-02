@@ -25,7 +25,7 @@ import com.azure.spring.messaging.eventhubs.implementation.properties.merger.Pro
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.lang.NonNull;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -108,9 +108,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     }
 
     @Override
-    public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                @NonNull MessageListener<?> listener,
-                                                @NonNull EventHubsErrorHandler errorHandler) {
+    public EventProcessorClient createProcessor(String eventHub, String consumerGroup,
+                                                MessageListener<?> listener,
+                                                EventHubsErrorHandler errorHandler) {
         return doCreateProcessor(eventHub, consumerGroup, listener, errorHandler, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
@@ -145,9 +145,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
         this.listeners.clear();
     }
 
-    private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                   @NonNull MessageListener<?> messageListener,
-                                                   @NonNull EventHubsErrorHandler errorHandler,
+    private EventProcessorClient doCreateProcessor(String eventHub, String consumerGroup,
+                                                   MessageListener<?> messageListener,
+                                                   EventHubsErrorHandler errorHandler,
                                                    @Nullable Consumer<InitializationContext> initializationContextConsumer,
                                                    @Nullable Consumer<CloseContext> closeContextConsumer,
                                                    @Nullable ProcessorProperties properties) {
