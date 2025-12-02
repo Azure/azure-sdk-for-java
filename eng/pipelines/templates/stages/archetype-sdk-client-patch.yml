@@ -282,19 +282,11 @@ extends:
                 SourceDirectory: $(Build.SourcesDirectory)
                 BasePathLength: 38
 
-            # Verify changelog, the way it currently works would require a complete overhaul in order to be able to deal
-            # with multiple artifacts and multiple service directories. Even ignoring this, there's still the fact that each
-            # artifact's metadata can cause this step to be skipped, so we still need to loop over this.
             - ${{if ne(parameters.SDKType, 'data')}}:
-              - ${{ each artifact in parameters.Artifacts }}:
-                - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-                  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                    parameters:
-                      PackageName: ${{artifact.name}}
-                      ServiceName: ${{artifact.ServiceDirectory}}
-                      # Note: For the patch release pipeline there's no point in verifying the non-release changelog since
-                      # the only time this pipeline should run is for a patch release.
-                      ForRelease: true
+              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+                parameters:
+                  PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+                  ForRelease: true
 
             - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
