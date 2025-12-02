@@ -257,6 +257,67 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         connection.close();
     }
 
+    @Test
+    void cachingConnectionFactoryFailsToReuseProducerWithUniqueToString() throws JMSException {
+        // This test demonstrates the bug in azure-servicebus-jms 2.0.0 where each Queue instance
+        // had a unique toString() like "ServiceBusJmsQueue@11655", preventing CachingConnectionFactory
+        // from reusing producers for the same queue name.
+        
+        // Create mock objects for JMS components
+        ConnectionFactory mockTargetConnectionFactory = mock(ConnectionFactory.class);
+        Connection mockConnection = mock(Connection.class);
+        Session mockSession = mock(Session.class);
+        Queue mockQueue1FirstCall = mock(Queue.class);
+        Queue mockQueue1SecondCall = mock(Queue.class);
+        MessageProducer mockProducer1 = mock(MessageProducer.class);
+        MessageProducer mockProducer2 = mock(MessageProducer.class);
+
+        // Setup mock behavior
+        when(mockTargetConnectionFactory.createConnection()).thenReturn(mockConnection);
+        when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(mockSession);
+        when(mockSession.createQueue("queue1"))
+            .thenReturn(mockQueue1FirstCall)
+            .thenReturn(mockQueue1SecondCall);
+        when(mockSession.createProducer(mockQueue1FirstCall)).thenReturn(mockProducer1);
+        when(mockSession.createProducer(mockQueue1SecondCall)).thenReturn(mockProducer2);
+        // Simulate azure-servicebus-jms 2.0.0 behavior: each Queue has unique toString()
+        // This prevents CachingConnectionFactory from caching because it uses toString() as key
+        when(mockQueue1FirstCall.toString()).thenReturn("ServiceBusJmsQueue@11655");
+        when(mockQueue1SecondCall.toString()).thenReturn("ServiceBusJmsQueue@22766");
+
+        // Create CachingConnectionFactory with caching enabled
+        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(mockTargetConnectionFactory);
+        cachingConnectionFactory.setCacheProducers(true);
+
+        // Get connection and session
+        Connection connection = cachingConnectionFactory.createConnection();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+        // Create queues - these are separate Queue instances with unique toString() values
+        Queue queue1FirstCall = session.createQueue("queue1");
+        Queue queue1SecondCall = session.createQueue("queue1");
+
+        // First call: create producer for queue1 (first Queue instance)
+        MessageProducer producer1ForQueue1 = session.createProducer(queue1FirstCall);
+        // Second call: create producer for queue1 (second Queue instance with different toString())
+        // With azure-servicebus-jms 2.0.0, this creates a NEW producer because toString() differs
+        MessageProducer producer2ForQueue1 = session.createProducer(queue1SecondCall);
+
+        // Verify: different producers are returned because toString() values differ
+        // This demonstrates the bug in azure-servicebus-jms 2.0.0
+        assertThat(producer1ForQueue1.toString())
+            .as("Different producers returned when destination.toString() differs (2.0.0 bug)")
+            .isNotEqualTo(producer2ForQueue1.toString());
+
+        // Verify createProducer was called TWICE - once for each unique toString() value
+        // This proves caching is NOT working due to unique toString() values in 2.0.0
+        verify(mockSession, times(1)).createProducer(mockQueue1FirstCall);
+        verify(mockSession, times(1)).createProducer(mockQueue1SecondCall);
+
+        // Cleanup
+        connection.close();
+    }
+
     @Configuration
     @PropertySource("classpath:servicebus/additional.properties")
     static class AdditionalPropertySourceConfiguration {
