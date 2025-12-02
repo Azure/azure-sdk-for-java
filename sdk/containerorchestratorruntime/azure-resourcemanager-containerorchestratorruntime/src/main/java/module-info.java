@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.containerorchestratorruntime {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.containerorchestratorruntime;
     exports com.azure.resourcemanager.containerorchestratorruntime.fluent;
     exports com.azure.resourcemanager.containerorchestratorruntime.fluent.models;
     exports com.azure.resourcemanager.containerorchestratorruntime.models;
-
     opens com.azure.resourcemanager.containerorchestratorruntime.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.containerorchestratorruntime.models to com.azure.core;
     opens com.azure.resourcemanager.containerorchestratorruntime.implementation.models to com.azure.core;

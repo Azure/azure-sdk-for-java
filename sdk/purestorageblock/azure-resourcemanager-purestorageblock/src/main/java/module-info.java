@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.purestorageblock {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.purestorageblock;
     exports com.azure.resourcemanager.purestorageblock.fluent;
     exports com.azure.resourcemanager.purestorageblock.fluent.models;
     exports com.azure.resourcemanager.purestorageblock.models;
-
     opens com.azure.resourcemanager.purestorageblock.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.purestorageblock.models to com.azure.core;
     opens com.azure.resourcemanager.purestorageblock.implementation.models to com.azure.core;
