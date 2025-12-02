@@ -13,17 +13,16 @@ import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.PageableMemo;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageableMemoRepository;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -38,14 +37,13 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("deprecation")
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PageableMemoRepositoryIT {
 
     private static final int TOTAL_CONTENT_SIZE = 500;
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -65,7 +63,7 @@ public class PageableMemoRepositoryIT {
 
     private static boolean isSetupDone;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreated(template, PageableMemo.class);
 

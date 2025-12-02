@@ -9,23 +9,22 @@ import com.azure.spring.data.cosmos.domain.Question;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.QuestionRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SuppressWarnings("deprecation")
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class QuestionRepositoryIT {
 
@@ -37,7 +36,7 @@ public class QuestionRepositoryIT {
 
     private static final Question QUESTION = new Question(QUESTION_ID, QUESTION_URL);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -49,7 +48,7 @@ public class QuestionRepositoryIT {
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Question.class);
         this.repository.save(QUESTION);
@@ -59,34 +58,34 @@ public class QuestionRepositoryIT {
     public void testFindById() {
         final Optional<Question> optional = this.repository.findById(QUESTION_ID);
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(QUESTION, optional.get());
+        Assertions.assertTrue(optional.isPresent());
+        assertEquals(QUESTION, optional.get());
     }
 
     @Test
     public void testFindByIdNull() {
         final Optional<Question> byId = this.repository.findById(NULL_ID);
-        Assert.assertFalse(byId.isPresent());
+        Assertions.assertFalse(byId.isPresent());
     }
 
     @Test
     public void testFindAll() {
         final List<Question> questions = Lists.newArrayList(this.repository.findAll());
 
-        Assert.assertEquals(Collections.singletonList(QUESTION), questions);
+        assertEquals(Collections.singletonList(QUESTION), questions);
     }
 
     @Test
     public void testDelete() {
         Optional<Question> optional = this.repository.findById(QUESTION_ID);
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(QUESTION, optional.get());
+        Assertions.assertTrue(optional.isPresent());
+        assertEquals(QUESTION, optional.get());
 
         this.repository.delete(QUESTION);
         optional = this.repository.findById(QUESTION_ID);
 
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
     }
 }
 

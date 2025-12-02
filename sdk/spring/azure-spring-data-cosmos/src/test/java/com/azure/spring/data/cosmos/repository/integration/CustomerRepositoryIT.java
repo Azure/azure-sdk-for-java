@@ -8,23 +8,23 @@ import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.CustomerRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 @SuppressWarnings("deprecation")
 public class CustomerRepositoryIT {
@@ -51,7 +51,7 @@ public class CustomerRepositoryIT {
     private static final Customer CUSTOMER_1 = new Customer(CUSTOMER_ID_1, CUSTOMER_LEVEL_1, USER_1);
     private static final Customer CUSTOMER_2 = new Customer(CUSTOMER_ID_2, CUSTOMER_LEVEL_1, USER_2);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -60,24 +60,24 @@ public class CustomerRepositoryIT {
     @Autowired
     private CosmosTemplate template;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Customer.class);
         this.repository.saveAll(Arrays.asList(CUSTOMER_0, CUSTOMER_1, CUSTOMER_2));
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanUp() {
         collectionManager.deleteContainer(new CosmosEntityInformation<>(Customer.class));
     }
 
     private void assertCustomerListEquals(@NonNull List<Customer> customers, @NonNull List<Customer> reference) {
-        Assert.assertEquals(reference.size(), customers.size());
+        assertEquals(reference.size(), customers.size());
 
         customers.sort(Comparator.comparing(Customer::getId));
         reference.sort(Comparator.comparing(Customer::getId));
 
-        Assert.assertEquals(reference, customers);
+        assertEquals(reference, customers);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class CustomerRepositoryIT {
 
         customers = this.repository.findByUser_Name(FAKE_USER_NAME);
 
-        Assert.assertFalse(customers.iterator().hasNext());
+        Assertions.assertFalse(customers.iterator().hasNext());
     }
 
 }

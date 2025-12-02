@@ -10,13 +10,12 @@ import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.repository.TestRepositoryNoMetricsConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -24,8 +23,7 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("deprecation")
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryNoMetricsConfig.class)
 public class ReactiveCourseRepositoryNoMetricsIT {
 
@@ -41,7 +39,7 @@ public class ReactiveCourseRepositoryNoMetricsIT {
     private static final Course COURSE_1 = new Course(COURSE_ID_1, COURSE_NAME_1, DEPARTMENT_NAME_1);
     private static final Course COURSE_2 = new Course(COURSE_ID_2, COURSE_NAME_2, DEPARTMENT_NAME_2);
 
-    @ClassRule
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -58,7 +56,7 @@ public class ReactiveCourseRepositoryNoMetricsIT {
 
     private CosmosEntityInformation<Course, ?> entityInformation;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Course.class);
         entityInformation = collectionManager.getEntityInformation(Course.class);

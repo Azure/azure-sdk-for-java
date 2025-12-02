@@ -11,15 +11,12 @@ import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +27,11 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITIO
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("deprecation")
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ApplicationContextEventIT {
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -45,11 +41,9 @@ public class ApplicationContextEventIT {
     @Autowired
     private SimpleCosmosMappingEventListener simpleCosmosMappingEventListener;
 
-    @SuppressWarnings("deprecation")
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
-    @Before
+
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,

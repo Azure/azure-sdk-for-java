@@ -9,15 +9,14 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Project;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ProjectRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,9 +26,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 @SuppressWarnings("deprecation")
 public class ProjectRepositoryIT {
@@ -74,7 +74,7 @@ public class ProjectRepositoryIT {
 
     private static final List<Project> PROJECTS = Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_3, PROJECT_4);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -83,19 +83,19 @@ public class ProjectRepositoryIT {
     @Autowired
     private ProjectRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Project.class);
         this.repository.saveAll(PROJECTS);
     }
 
     private void assertProjectListEquals(@NonNull List<Project> projects, @NonNull List<Project> reference) {
-        Assert.assertEquals(reference.size(), projects.size());
+        assertEquals(reference.size(), projects.size());
 
         projects.sort(Comparator.comparing(Project::getId));
         reference.sort(Comparator.comparing(Project::getId));
 
-        Assert.assertEquals(reference, projects);
+        assertEquals(reference, projects);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(this.repository.findByNameAndStarCount(NAME_0, STAR_COUNT_1));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(this.repository.findByNameAndStarCount(NAME_0, STAR_COUNT_0));
 
@@ -121,7 +121,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(this.repository.findByNameOrForkCount(FAKE_NAME, FAKE_COUNT));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(this.repository.findByNameOrForkCount(NAME_0, FORK_COUNT_1));
 
@@ -136,7 +136,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(this.repository.findByNameAndCreator(NAME_0, CREATOR_1));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(this.repository.findByNameAndCreator(NAME_0, CREATOR_0));
 
@@ -158,7 +158,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(this.repository.findByNameOrCreator(FAKE_NAME, FAKE_CREATOR));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(this.repository.findByNameOrCreator(NAME_0, CREATOR_1));
 
@@ -174,7 +174,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(repository.findByNameAndCreatorOrForkCount(NAME_1, CREATOR_2, FAKE_COUNT));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByNameAndCreatorOrForkCount(NAME_1, CREATOR_1, FORK_COUNT_2));
 
@@ -190,7 +190,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCount(FAKE_NAME, CREATOR_1, FORK_COUNT_2));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCount(NAME_1, CREATOR_2, FORK_COUNT_2));
 
@@ -206,7 +206,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(repository.findByNameOrCreatorOrForkCount(FAKE_NAME, FAKE_CREATOR, FAKE_COUNT));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
     }
 
     @Test
@@ -225,7 +225,7 @@ public class ProjectRepositoryIT {
         projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCountOrStarCount(FAKE_NAME, CREATOR_1,
             FORK_COUNT_0, FAKE_COUNT));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
     }
 
     @Test
@@ -236,7 +236,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(repository.findByForkCountGreaterThan(FAKE_COUNT));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
     }
 
     @Test
@@ -248,7 +248,7 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(repository.findByCreatorAndForkCountGreaterThan(CREATOR_0, FORK_COUNT_1));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByCreatorOrForkCountGreaterThan(CREATOR_0, FORK_COUNT_2));
 
@@ -259,7 +259,7 @@ public class ProjectRepositoryIT {
     public void testFindByLessThan() {
         List<Project> projects = TestUtils.toList(repository.findByStarCountLessThan(STAR_COUNT_0));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByStarCountLessThan(STAR_COUNT_2));
 
@@ -270,7 +270,7 @@ public class ProjectRepositoryIT {
     public void testFindByLessThanEqual() {
         List<Project> projects = TestUtils.toList(repository.findByForkCountLessThanEqual(STAR_COUNT_MIN));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByForkCountLessThanEqual(STAR_COUNT_2));
 
@@ -282,7 +282,7 @@ public class ProjectRepositoryIT {
         List<Project> projects =
             TestUtils.toList(repository.findByStarCountLessThanAndForkCountGreaterThan(STAR_COUNT_0, FORK_COUNT_3));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByStarCountLessThanAndForkCountGreaterThan(STAR_COUNT_3,
             FORK_COUNT_0));
@@ -295,7 +295,7 @@ public class ProjectRepositoryIT {
         List<Project> projects = TestUtils.toList(repository.findByForkCountLessThanEqualAndStarCountGreaterThan(
             STAR_COUNT_MIN, FORK_COUNT_0));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByForkCountLessThanEqualAndStarCountGreaterThan(STAR_COUNT_3,
             FORK_COUNT_0));
@@ -307,7 +307,7 @@ public class ProjectRepositoryIT {
     public void testFindByGreaterThanEqual() {
         List<Project> projects = TestUtils.toList(repository.findByStarCountGreaterThanEqual(STAR_COUNT_MAX));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByStarCountGreaterThanEqual(STAR_COUNT_2));
 
@@ -319,7 +319,7 @@ public class ProjectRepositoryIT {
         List<Project> projects = TestUtils.toList(repository
             .findByForkCountGreaterThanEqualAndCreator(FORK_COUNT_MAX, CREATOR_2));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByForkCountGreaterThanEqualAndCreator(FORK_COUNT_0, CREATOR_0));
 
@@ -363,9 +363,9 @@ public class ProjectRepositoryIT {
         final Optional<Project> project = repository.findById(PROJECT_0.getId(),
             new PartitionKey(collectionManager.getEntityInformation(Project.class).getPartitionKeyFieldValue(PROJECT_0)));
 
-        Assert.assertTrue(project.isPresent());
+        Assertions.assertTrue(project.isPresent());
 
-        Assert.assertEquals(project.get(), PROJECT_0);
+        assertEquals(project.get(), PROJECT_0);
     }
 
     @Test
@@ -373,7 +373,7 @@ public class ProjectRepositoryIT {
         final Optional<Project> project = repository.findById("unknown-id",
             new PartitionKey("unknown-partition-key"));
 
-        Assert.assertFalse(project.isPresent());
+        Assertions.assertFalse(project.isPresent());
     }
 
 
@@ -381,7 +381,7 @@ public class ProjectRepositoryIT {
     public void testFindByIn() {
         List<Project> projects = TestUtils.toList(repository.findByCreatorIn(Collections.singleton(FAKE_CREATOR)));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByCreatorIn(Arrays.asList(CREATOR_1, CREATOR_2)));
 
@@ -402,7 +402,7 @@ public class ProjectRepositoryIT {
             CREATOR_1),
             Arrays.asList(STAR_COUNT_2, STAR_COUNT_3)));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByCreatorInAndStarCountIn(Arrays.asList(CREATOR_0, CREATOR_1),
             Arrays.asList(STAR_COUNT_0, STAR_COUNT_2)));
@@ -439,7 +439,7 @@ public class ProjectRepositoryIT {
         List<Project> projects = TestUtils.toList(repository.findByCreatorNotIn(
             Arrays.asList(CREATOR_0, CREATOR_1, CREATOR_2, CREATOR_3)));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByCreatorNotIn(Arrays.asList(CREATOR_1, CREATOR_2)));
 
@@ -456,7 +456,7 @@ public class ProjectRepositoryIT {
             TestUtils.toList(repository.findByCreatorInAndStarCountNotIn(Collections.singletonList(FAKE_CREATOR),
                 Arrays.asList(STAR_COUNT_2, STAR_COUNT_3)));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         projects = TestUtils.toList(repository.findByCreatorInAndStarCountNotIn(Arrays.asList(CREATOR_0, CREATOR_1),
             Arrays.asList(STAR_COUNT_0, STAR_COUNT_2)));
@@ -474,7 +474,7 @@ public class ProjectRepositoryIT {
     public void testFindByNameIsNull() {
         List<Project> projects = TestUtils.toList(repository.findByNameIsNull());
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         final Project nullNameProject = new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0,
             FORK_COUNT_0);
@@ -496,14 +496,14 @@ public class ProjectRepositoryIT {
 
         projects = TestUtils.toList(repository.findByNameIsNotNull());
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
     }
 
     @Test
     public void testFindByNameIsNullWithAnd() {
         List<Project> projects = TestUtils.toList(repository.findByNameIsNullAndForkCount(FORK_COUNT_MAX));
 
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
 
         final Project nullNameProject = new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0,
             FORK_COUNT_0);
@@ -524,7 +524,7 @@ public class ProjectRepositoryIT {
         this.repository.save(new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0, FORK_COUNT_0));
 
         projects = TestUtils.toList(repository.findByNameIsNotNullAndHasReleased(true));
-        Assert.assertTrue(projects.isEmpty());
+        Assertions.assertTrue(projects.isEmpty());
     }
 
     @Test

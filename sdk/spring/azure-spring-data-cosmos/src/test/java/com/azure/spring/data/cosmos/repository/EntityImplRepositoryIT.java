@@ -12,24 +12,22 @@ import com.azure.spring.data.cosmos.domain.ParentEntity;
 import com.azure.spring.data.cosmos.repository.repository.EntityImplRepository;
 import com.azure.spring.data.cosmos.repository.repository.ParentEntityRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("deprecation")
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class EntityImplRepositoryIT {
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -53,7 +51,7 @@ public class EntityImplRepositoryIT {
     private final ParentEntity PARENTENTITY_1 = new ParentEntity();
     private final ParentEntity PARENTENTITY_2 = new ParentEntity();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         ENTITYIMPL_1.setId("entityImpl1");
