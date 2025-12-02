@@ -1,0 +1,191 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.agents.implementation.http;
+
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.openai.core.RequestOptions;
+import com.openai.core.http.Headers;
+import com.openai.core.http.HttpRequest;
+import com.openai.core.http.HttpRequestBody;
+import com.openai.core.http.HttpResponse;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+
+/**
+ * Utility entry point that adapts an Azure {@link com.azure.core.http.HttpClient} so it can be consumed by
+ * the OpenAI SDK generated clients. The helper performs request/response translation so that existing Azure
+ * pipelines, diagnostics, and retry policies can be reused without exposing the Azure HTTP primitives to
+ * callers that only understand the OpenAI surface area.
+ */
+public final class HttpClientHelper {
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientHelper.class);
+
+    private HttpClientHelper() {
+    }
+
+    /**
+     * Wraps the given Azure {@link com.azure.core.http.HttpClient} with an implementation of the OpenAI
+     * {@link com.openai.core.http.HttpClient} interface. All requests and responses are converted on the fly.
+     *
+     * @param azureHttpClient The Azure HTTP client that should execute requests.
+     * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
+     */
+    public static com.openai.core.http.HttpClient httpClientMapper(com.azure.core.http.HttpClient azureHttpClient) {
+        return new HttpClientWrapper(azureHttpClient);
+    }
+
+    private static final class HttpClientWrapper implements com.openai.core.http.HttpClient {
+
+        private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.CONTENT_TYPE;
+
+        private final com.azure.core.http.HttpClient azureHttpClient;
+
+        private HttpClientWrapper(com.azure.core.http.HttpClient azureHttpClient) {
+            this.azureHttpClient = Objects.requireNonNull(azureHttpClient, "'azureHttpClient' cannot be null.");
+        }
+
+        @Override
+        public void close() {
+            // no-op
+        }
+
+        @Override
+        public HttpResponse execute(HttpRequest request) {
+            return execute(request, RequestOptions.none());
+        }
+
+        @Override
+        public HttpResponse execute(HttpRequest request, RequestOptions requestOptions) {
+            Objects.requireNonNull(request, "request");
+            Objects.requireNonNull(requestOptions, "requestOptions");
+
+            com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
+            com.azure.core.http.HttpResponse azureResponse = this.azureHttpClient.sendSync(azureRequest, Context.NONE);
+            return new AzureHttpResponseAdapter(azureResponse);
+        }
+
+        @Override
+        public CompletableFuture<HttpResponse> executeAsync(HttpRequest request) {
+            return executeAsync(request, RequestOptions.none());
+        }
+
+        @Override
+        public CompletableFuture<HttpResponse> executeAsync(HttpRequest request, RequestOptions requestOptions) {
+            Objects.requireNonNull(request, "request");
+            Objects.requireNonNull(requestOptions, "requestOptions");
+
+            final com.azure.core.http.HttpRequest azureRequest;
+            try {
+                azureRequest = buildAzureRequest(request);
+            } catch (RuntimeException runtimeException) {
+                return failedFuture(runtimeException);
+            }
+
+            return this.azureHttpClient.send(azureRequest)
+                .map(AzureHttpResponseAdapter::new)
+                .map(response -> (HttpResponse) response)
+                .toFuture();
+        }
+
+        /**
+         * Converts the OpenAI request metadata and body into an Azure {@link com.azure.core.http.HttpRequest}.
+         */
+        private static com.azure.core.http.HttpRequest buildAzureRequest(HttpRequest request) {
+            HttpRequestBody requestBody = request.body();
+            String contentType = requestBody != null ? requestBody.contentType() : null;
+            BinaryData bodyData = null;
+
+            if (requestBody != null) {
+                try {
+                    bodyData = toBinaryData(requestBody);
+                } finally {
+                    closeQuietly(requestBody);
+                }
+            }
+
+            HttpHeaders headers = toAzureHeaders(request.headers());
+            if (!CoreUtils.isNullOrEmpty(contentType) && headers.getValue(CONTENT_TYPE) == null) {
+                headers.set(CONTENT_TYPE, contentType);
+            }
+
+            com.azure.core.http.HttpRequest azureRequest
+                = new com.azure.core.http.HttpRequest(com.azure.core.http.HttpMethod.valueOf(request.method().name()),
+                    OpenAiRequestUrlBuilder.buildUrl(request), headers);
+
+            if (bodyData != null) {
+                azureRequest.setBody(bodyData);
+            }
+
+            return azureRequest;
+        }
+
+        /**
+         * Copies OpenAI headers into an {@link HttpHeaders} instance so the Azure pipeline can process them.
+         */
+        private static HttpHeaders toAzureHeaders(Headers sourceHeaders) {
+            HttpHeaders target = new HttpHeaders();
+            sourceHeaders.names().forEach(name -> {
+                List<String> values = sourceHeaders.values(name);
+                HttpHeaderName headerName = HttpHeaderName.fromString(name);
+                if (values.isEmpty()) {
+                    target.set(headerName, "");
+                } else {
+                    target.set(headerName, values);
+                }
+            });
+            return target;
+        }
+
+        /**
+         * Buffers the OpenAI {@link HttpRequestBody} into {@link BinaryData} so it can be attached to the Azure
+         * request. The body is consumed exactly once and closed afterwards.
+         */
+        private static BinaryData toBinaryData(HttpRequestBody requestBody) {
+            if (requestBody == null) {
+                return null;
+            }
+
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                requestBody.writeTo(outputStream);
+                return BinaryData.fromBytes(outputStream.toByteArray());
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to buffer request body", e));
+            }
+        }
+
+        /**
+         * Closes the OpenAI request body while suppressing any exceptions (to avoid masking the root cause).
+         */
+        private static void closeQuietly(HttpRequestBody body) {
+            if (body == null) {
+                return;
+            }
+            try {
+                body.close();
+            } catch (Exception ignored) {
+                // no-op
+            }
+        }
+
+        /**
+         * Creates a failed {@link CompletableFuture} for callers that require a future even when conversion fails.
+         */
+        private static <T> CompletableFuture<T> failedFuture(Throwable throwable) {
+            CompletableFuture<T> future = new CompletableFuture<>();
+            future.completeExceptionally(throwable);
+            return future;
+        }
+    }
+}

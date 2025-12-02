@@ -1,0 +1,176 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.agents.implementation.http;
+
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.Context;
+import com.openai.core.http.HttpRequestBody;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class HttpClientHelperTests {
+
+    private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-request-id");
+    private static final HttpHeaderName CUSTOM_HEADER_NAME = HttpHeaderName.fromString("custom-header");
+    private static final HttpHeaderName X_TEST_HEADER = HttpHeaderName.fromString("X-Test");
+    private static final HttpHeaderName X_MULTI_HEADER = HttpHeaderName.fromString("X-Multi");
+
+    @Test
+    void executeMapsRequestAndResponse() throws Exception {
+        RecordingHttpClient recordingClient = new RecordingHttpClient(request -> createMockResponse(request, 201,
+            new HttpHeaders().set(REQUEST_ID_HEADER, "req-123").set(CUSTOM_HEADER_NAME, "custom-value"), "pong"));
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = createOpenAiRequest();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            HttpRequest sentRequest = recordingClient.getLastRequest();
+            assertNotNull(sentRequest, "Azure HttpClient should receive a request");
+            assertEquals(HttpMethod.POST, sentRequest.getHttpMethod());
+            assertEquals("https://example.com/path/segment?q=a%20b", sentRequest.getUrl().toString());
+            assertEquals("alpha", sentRequest.getHeaders().getValue(X_TEST_HEADER));
+            assertArrayEquals(new String[] { "first", "second" }, sentRequest.getHeaders().getValues(X_MULTI_HEADER));
+            assertEquals("text/plain", sentRequest.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            assertEquals("payload", new String(sentRequest.getBodyAsBinaryData().toBytes(), StandardCharsets.UTF_8));
+
+            assertEquals(201, response.statusCode());
+            assertEquals("req-123", response.requestId().orElseThrow(() -> new AssertionError("Missing request id")));
+            assertEquals("custom-value", response.headers().values("custom-header").get(0));
+            assertEquals("pong", new String(readAllBytes(response.body()), StandardCharsets.UTF_8));
+        }
+    }
+
+    @Test
+    void executeAsyncCompletesSuccessfully() throws Exception {
+        RecordingHttpClient recordingClient
+            = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = createOpenAiRequest();
+
+        CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
+        try (com.openai.core.http.HttpResponse response = future.join()) {
+            assertEquals(204, response.statusCode());
+        }
+        assertEquals(1, recordingClient.getSendCount());
+    }
+
+    private static com.openai.core.http.HttpRequest createOpenAiRequest() {
+        return com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("path")
+            .addPathSegment("segment")
+            .putHeader("X-Test", "alpha")
+            .putHeaders("X-Multi", Arrays.asList("first", "second"))
+            .putQueryParam("q", "a b")
+            .body(new TestHttpRequestBody("payload", "text/plain"))
+            .build();
+    }
+
+    private static MockHttpResponse createMockResponse(HttpRequest request, int statusCode, HttpHeaders headers,
+        String body) {
+        byte[] bytes = body == null ? new byte[0] : body.getBytes(StandardCharsets.UTF_8);
+        return new MockHttpResponse(request, statusCode, headers, bytes);
+    }
+
+    private static byte[] readAllBytes(InputStream stream) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] chunk = new byte[4096];
+        int read;
+        while ((read = stream.read(chunk)) != -1) {
+            buffer.write(chunk, 0, read);
+        }
+        return buffer.toByteArray();
+    }
+
+    private static final class RecordingHttpClient implements HttpClient {
+        private final Function<HttpRequest, HttpResponse> responseFactory;
+        private HttpRequest lastRequest;
+        private int sendCount;
+
+        private RecordingHttpClient(Function<HttpRequest, HttpResponse> responseFactory) {
+            this.responseFactory = responseFactory;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            this.lastRequest = request;
+            this.sendCount++;
+            return Mono.just(responseFactory.apply(request));
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            return send(request);
+        }
+
+        HttpRequest getLastRequest() {
+            return lastRequest;
+        }
+
+        int getSendCount() {
+            return sendCount;
+        }
+    }
+
+    private static final class TestHttpRequestBody implements HttpRequestBody {
+        private final byte[] content;
+        private final String contentType;
+
+        private TestHttpRequestBody(String content, String contentType) {
+            this.content = content.getBytes(StandardCharsets.UTF_8);
+            this.contentType = contentType;
+        }
+
+        @Override
+        public void writeTo(OutputStream outputStream) {
+            try {
+                outputStream.write(content);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+
+        @Override
+        public String contentType() {
+            return contentType;
+        }
+
+        @Override
+        public long contentLength() {
+            return content.length;
+        }
+
+        @Override
+        public boolean repeatable() {
+            return true;
+        }
+
+        @Override
+        public void close() {
+            // no-op
+        }
+    }
+}

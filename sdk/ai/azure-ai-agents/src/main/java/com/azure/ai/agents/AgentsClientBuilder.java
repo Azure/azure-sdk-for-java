@@ -5,6 +5,8 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
+import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.implementation.http.PolicyDecoratingHttpClient;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -43,6 +45,7 @@ import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -328,7 +331,12 @@ public final class AgentsClientBuilder
      * @return an instance of ConversationsAsyncClient.
      */
     public ConversationsAsyncClient buildConversationsAsyncClient() {
-        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build());
+        HttpClient decoratedHttpClient = getOpenAIHttpClient();
+        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder -> {
+            if (decoratedHttpClient != null) {
+                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+            }
+        }));
     }
 
     /**
@@ -337,7 +345,12 @@ public final class AgentsClientBuilder
      * @return an instance of ConversationsClient.
      */
     public ConversationsClient buildConversationsClient() {
-        return new ConversationsClient(getOpenAIClientBuilder().build());
+        HttpClient decoratedHttpClient = getOpenAIHttpClient();
+        return new ConversationsClient(getOpenAIClientBuilder().build().withOptions(optionBuilder -> {
+            if (decoratedHttpClient != null) {
+                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+            }
+        }));
     }
 
     /**
@@ -346,8 +359,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
-        OpenAIOkHttpClient.Builder builder = getOpenAIClientBuilder();
-        return new ResponsesClient(builder.build());
+        HttpClient decoratedHttpClient = getOpenAIHttpClient();
+        return new ResponsesClient(getOpenAIClientBuilder().build().withOptions(optionBuilder -> {
+            if (decoratedHttpClient != null) {
+                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+            }
+        }));
     }
 
     /**
@@ -356,7 +373,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build());
+        HttpClient decoratedHttpClient = getOpenAIHttpClient();
+        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder -> {
+            if (decoratedHttpClient != null) {
+                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+            }
+        }));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
@@ -394,6 +416,36 @@ public final class AgentsClientBuilder
         String sdkVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         return UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration);
+    }
+
+    private HttpClient getOpenAIHttpClient() {
+        if (this.httpClient == null) {
+            return null;
+        }
+        List<HttpPipelinePolicy> orderedPolicies = getOrderedCustomPolicies();
+        if (orderedPolicies.isEmpty()) {
+            return this.httpClient;
+        }
+        return new PolicyDecoratingHttpClient(this.httpClient, orderedPolicies);
+    }
+
+    private List<HttpPipelinePolicy> getOrderedCustomPolicies() {
+        if (this.pipelinePolicies.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<HttpPipelinePolicy> orderedPolicies = new ArrayList<>();
+        this.pipelinePolicies.stream()
+                .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_CALL)
+                .forEach(orderedPolicies::add);
+        this.pipelinePolicies.stream()
+                .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_RETRY)
+                .forEach(orderedPolicies::add);
+        return orderedPolicies;
+    }
+
+    private static HttpPipelinePosition pipelinePosition(HttpPipelinePolicy policy) {
+        HttpPipelinePosition position = policy.getPipelinePosition();
+        return position == null ? HttpPipelinePosition.PER_RETRY : position;
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);
