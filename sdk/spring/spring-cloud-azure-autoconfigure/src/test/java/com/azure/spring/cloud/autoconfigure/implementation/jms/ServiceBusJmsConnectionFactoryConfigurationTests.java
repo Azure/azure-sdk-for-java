@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsQueue;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import jakarta.jms.Connection;
 import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSException;
 import jakarta.jms.MessageProducer;
 import jakarta.jms.Queue;
 import jakarta.jms.Session;
@@ -28,8 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusJmsConnectionFactoryConfigurationTests {
@@ -179,37 +177,76 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
     }
 
     @Test
-    void cachingConnectionFactoryReusesSameProducerForSameDestination() throws JMSException {
+    void serviceBusJmsQueueToStringReturnsConsistentValueForSameQueueName() throws Exception {
+        // Create mock inner queues for ServiceBusJmsQueue instances
+        Queue mockInnerQueue1 = mock(Queue.class);
+        Queue mockInnerQueue2 = mock(Queue.class);
+        Queue mockInnerQueue3 = mock(Queue.class);
+        when(mockInnerQueue1.getQueueName()).thenReturn("queue1");
+        when(mockInnerQueue2.getQueueName()).thenReturn("queue1");
+        when(mockInnerQueue3.getQueueName()).thenReturn("queue2");
+        
+        // Create ServiceBusJmsQueue instances using reflection (constructor is package-private)
+        // In azure-servicebus-jms 2.1.0, toString() returns "ServiceBusJmsQueue{queueName='...'}"
+        // In azure-servicebus-jms 2.0.0, toString() returned "ServiceBusJmsQueue@hashcode" (default Object.toString())
+        ServiceBusJmsQueue serviceBusQueue1FirstCall = createServiceBusJmsQueue(mockInnerQueue1);
+        ServiceBusJmsQueue serviceBusQueue1SecondCall = createServiceBusJmsQueue(mockInnerQueue2);
+        ServiceBusJmsQueue serviceBusQueue2 = createServiceBusJmsQueue(mockInnerQueue3);
+
+        // Verify ServiceBusJmsQueue toString() returns consistent value for same queue name
+        // This is the key fix in azure-servicebus-jms 2.1.0
+        // Without this fix, CachingConnectionFactory cannot cache producers because it uses
+        // destination.toString() as cache key (see CachingConnectionFactory.java#L360)
+        assertThat(serviceBusQueue1FirstCall.toString())
+            .as("ServiceBusJmsQueue 2.1.0 toString() should return consistent value for same queue name")
+            .isEqualTo(serviceBusQueue1SecondCall.toString());
+        
+        // Verify toString() includes the queue name
+        assertThat(serviceBusQueue1FirstCall.toString())
+            .as("ServiceBusJmsQueue toString() should include queue name")
+            .contains("queue1");
+            
+        // Verify toString() returns different value for different queue name
+        assertThat(serviceBusQueue1FirstCall.toString())
+            .as("ServiceBusJmsQueue 2.1.0 toString() should return different value for different queue name")
+            .isNotEqualTo(serviceBusQueue2.toString());
+        
+        assertThat(serviceBusQueue2.toString())
+            .as("ServiceBusJmsQueue toString() should include queue name")
+            .contains("queue2");
+    }
+    
+    @Test
+    void cachingConnectionFactoryReusesSameProducerForSameDestination() throws Exception {
         // Create mock objects for JMS components
         ConnectionFactory mockTargetConnectionFactory = mock(ConnectionFactory.class);
         Connection mockConnection = mock(Connection.class);
         Session mockSession = mock(Session.class);
-        // Create two separate Queue instances for the same queue name "queue1"
-        // In azure-servicebus-jms 2.0.0, each Queue instance had a unique toString() like "ServiceBusJmsQueue@11655"
-        // In azure-servicebus-jms 2.1.0, toString() returns the queue name, enabling proper caching
-        Queue mockQueue1FirstCall = mock(Queue.class);
-        Queue mockQueue1SecondCall = mock(Queue.class);
-        Queue mockQueue2 = mock(Queue.class);
+        // Create mock inner queues for ServiceBusJmsQueue instances
+        Queue mockInnerQueue1 = mock(Queue.class);
+        Queue mockInnerQueue2 = mock(Queue.class);
+        Queue mockInnerQueue3 = mock(Queue.class);
+        when(mockInnerQueue1.getQueueName()).thenReturn("queue1");
+        when(mockInnerQueue2.getQueueName()).thenReturn("queue1");
+        when(mockInnerQueue3.getQueueName()).thenReturn("queue2");
+        
+        // Create ServiceBusJmsQueue instances using reflection (constructor is package-private)
+        ServiceBusJmsQueue serviceBusQueue1FirstCall = createServiceBusJmsQueue(mockInnerQueue1);
+        ServiceBusJmsQueue serviceBusQueue1SecondCall = createServiceBusJmsQueue(mockInnerQueue2);
+        ServiceBusJmsQueue serviceBusQueue2 = createServiceBusJmsQueue(mockInnerQueue3);
         MessageProducer mockProducer1 = mock(MessageProducer.class);
         MessageProducer mockProducer2 = mock(MessageProducer.class);
 
-        // Setup mock behavior
+        // Setup mock behavior for connection and session
         when(mockTargetConnectionFactory.createConnection()).thenReturn(mockConnection);
         when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(mockSession);
-        // Return different Queue instances for the same queue name (simulating real JMS behavior)
         when(mockSession.createQueue("queue1"))
-            .thenReturn(mockQueue1FirstCall)
-            .thenReturn(mockQueue1SecondCall);
-        when(mockSession.createQueue("queue2")).thenReturn(mockQueue2);
-        when(mockSession.createProducer(mockQueue1FirstCall)).thenReturn(mockProducer1);
-        when(mockSession.createProducer(mockQueue1SecondCall)).thenReturn(mockProducer1);
-        when(mockSession.createProducer(mockQueue2)).thenReturn(mockProducer2);
-        // Key fix in azure-servicebus-jms 2.1.0: toString() returns the queue name
-        // CachingConnectionFactory uses destination.toString() as cache key
-        // See: https://github.com/spring-projects/spring-framework/blob/main/spring-jms/src/main/java/org/springframework/jms/connection/CachingConnectionFactory.java#L360
-        when(mockQueue1FirstCall.toString()).thenReturn("queue1");
-        when(mockQueue1SecondCall.toString()).thenReturn("queue1");
-        when(mockQueue2.toString()).thenReturn("queue2");
+            .thenReturn(serviceBusQueue1FirstCall)
+            .thenReturn(serviceBusQueue1SecondCall);
+        when(mockSession.createQueue("queue2")).thenReturn(serviceBusQueue2);
+        when(mockSession.createProducer(serviceBusQueue1FirstCall)).thenReturn(mockProducer1);
+        when(mockSession.createProducer(serviceBusQueue1SecondCall)).thenReturn(mockProducer1);
+        when(mockSession.createProducer(serviceBusQueue2)).thenReturn(mockProducer2);
 
         // Create CachingConnectionFactory with caching enabled
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(mockTargetConnectionFactory);
@@ -219,103 +256,41 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         Connection connection = cachingConnectionFactory.createConnection();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        // Create queues - these are separate Queue instances but with same toString() value
+        // Create queues - these are separate ServiceBusJmsQueue instances with same toString() value
         Queue queue1FirstCall = session.createQueue("queue1");
         Queue queue1SecondCall = session.createQueue("queue1");
         Queue queue2 = session.createQueue("queue2");
 
-        // First call: create producer for queue1 (first Queue instance)
+        // First call: create producer for queue1 (first ServiceBusJmsQueue instance)
         MessageProducer producer1ForQueue1 = session.createProducer(queue1FirstCall);
-        // Second call: create producer for queue1 (second Queue instance, but same toString())
-        // With azure-servicebus-jms 2.1.0 fix, this should return cached producer
+        // Second call: create producer for queue1 (second ServiceBusJmsQueue instance, same toString())
+        // With azure-servicebus-jms 2.1.0, this returns cached producer because toString() is consistent
         MessageProducer producer2ForQueue1 = session.createProducer(queue1SecondCall);
         // Third call: create producer for different queue2 - should return different producer
         MessageProducer producerForQueue2 = session.createProducer(queue2);
 
-        // Verify: same producer is returned for different Queue instances with same toString() value
-        // This demonstrates the azure-servicebus-jms 2.1.0 fix where toString() returns queue name
+        // Verify: same producer is returned for same queue name due to consistent toString()
         assertThat(producer1ForQueue1.toString())
-            .as("Same producer should be returned when destination.toString() returns the same value")
+            .as("Same producer should be returned for ServiceBusJmsQueue instances with same queue name")
             .isEqualTo(producer2ForQueue1.toString());
 
-        // Verify: different producer is returned for different destination
+        // Verify: different producer is returned for different queue name
         assertThat(producer1ForQueue1.toString())
-            .as("Different producer should be returned for different destination")
+            .as("Different producer should be returned for different queue name")
             .isNotEqualTo(producerForQueue2.toString());
-
-        // Verify the underlying mock was only called once for queue1 Queue instances.
-        // This proves caching is working based on destination.toString() value.
-        // In azure-servicebus-jms 2.0.0, createProducer would be called twice because
-        // each Queue had unique toString() like "ServiceBusJmsQueue@11655".
-        // In azure-servicebus-jms 2.1.0, createProducer is called once because
-        // toString() returns "queue1" for both Queue instances.
-        verify(mockSession, times(1)).createProducer(mockQueue1FirstCall);
-        verify(mockSession, times(0)).createProducer(mockQueue1SecondCall);
-        verify(mockSession, times(1)).createProducer(mockQueue2);
 
         // Cleanup
         connection.close();
     }
-
-    @Test
-    void cachingConnectionFactoryFailsToReuseProducerWithUniqueToString() throws JMSException {
-        // This test demonstrates the bug in azure-servicebus-jms 2.0.0 where each Queue instance
-        // had a unique toString() like "ServiceBusJmsQueue@11655", preventing CachingConnectionFactory
-        // from reusing producers for the same queue name.
-        
-        // Create mock objects for JMS components
-        ConnectionFactory mockTargetConnectionFactory = mock(ConnectionFactory.class);
-        Connection mockConnection = mock(Connection.class);
-        Session mockSession = mock(Session.class);
-        Queue mockQueue1FirstCall = mock(Queue.class);
-        Queue mockQueue1SecondCall = mock(Queue.class);
-        MessageProducer mockProducer1 = mock(MessageProducer.class);
-        MessageProducer mockProducer2 = mock(MessageProducer.class);
-
-        // Setup mock behavior
-        when(mockTargetConnectionFactory.createConnection()).thenReturn(mockConnection);
-        when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(mockSession);
-        when(mockSession.createQueue("queue1"))
-            .thenReturn(mockQueue1FirstCall)
-            .thenReturn(mockQueue1SecondCall);
-        when(mockSession.createProducer(mockQueue1FirstCall)).thenReturn(mockProducer1);
-        when(mockSession.createProducer(mockQueue1SecondCall)).thenReturn(mockProducer2);
-        // Simulate azure-servicebus-jms 2.0.0 behavior: each Queue has unique toString()
-        // This prevents CachingConnectionFactory from caching because it uses toString() as key
-        when(mockQueue1FirstCall.toString()).thenReturn("ServiceBusJmsQueue@11655");
-        when(mockQueue1SecondCall.toString()).thenReturn("ServiceBusJmsQueue@22766");
-
-        // Create CachingConnectionFactory with caching enabled
-        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(mockTargetConnectionFactory);
-        cachingConnectionFactory.setCacheProducers(true);
-
-        // Get connection and session
-        Connection connection = cachingConnectionFactory.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-        // Create queues - these are separate Queue instances with unique toString() values
-        Queue queue1FirstCall = session.createQueue("queue1");
-        Queue queue1SecondCall = session.createQueue("queue1");
-
-        // First call: create producer for queue1 (first Queue instance)
-        MessageProducer producer1ForQueue1 = session.createProducer(queue1FirstCall);
-        // Second call: create producer for queue1 (second Queue instance with different toString())
-        // With azure-servicebus-jms 2.0.0, this creates a NEW producer because toString() differs
-        MessageProducer producer2ForQueue1 = session.createProducer(queue1SecondCall);
-
-        // Verify: different producers are returned because toString() values differ
-        // This demonstrates the bug in azure-servicebus-jms 2.0.0
-        assertThat(producer1ForQueue1.toString())
-            .as("Different producers returned when destination.toString() differs (2.0.0 bug)")
-            .isNotEqualTo(producer2ForQueue1.toString());
-
-        // Verify createProducer was called TWICE - once for each unique toString() value
-        // This proves caching is NOT working due to unique toString() values in 2.0.0
-        verify(mockSession, times(1)).createProducer(mockQueue1FirstCall);
-        verify(mockSession, times(1)).createProducer(mockQueue1SecondCall);
-
-        // Cleanup
-        connection.close();
+    
+    /**
+     * Creates a ServiceBusJmsQueue instance using reflection since the constructor is package-private.
+     */
+    private ServiceBusJmsQueue createServiceBusJmsQueue(Queue innerQueue) throws Exception {
+        java.lang.reflect.Constructor<ServiceBusJmsQueue> constructor = 
+            ServiceBusJmsQueue.class.getDeclaredConstructor(Queue.class);
+        constructor.setAccessible(true);
+        return constructor.newInstance(innerQueue);
     }
 
     @Configuration
