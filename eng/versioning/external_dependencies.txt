@@ -322,7 +322,6 @@ springboot4_io.projectreactor:reactor-test;3.8.0
 springboot4_jakarta.servlet:jakarta.servlet-api;6.1.0
 springboot4_jakarta.validation:jakarta.validation-api;3.1.1
 springboot4_javax.annotation:javax.annotation-api;1.3.2
-springboot4_junit:junit;4.13.2
 springboot4_net.bytebuddy:byte-buddy-agent;1.17.8
 springboot4_net.bytebuddy:byte-buddy;1.17.8
 springboot4_org.apache.commons:commons-lang3;3.19.0
@@ -338,7 +337,6 @@ springboot4_org.assertj:assertj-core;3.27.6
 springboot4_org.hibernate.validator:hibernate-validator;9.0.1.Final
 springboot4_org.javatuples:javatuples;1.2
 springboot4_org.junit.jupiter:junit-jupiter;6.0.1
-springboot4_org.junit.vintage:junit-vintage-engine;6.0.1
 springboot4_org.messaginghub:pooled-jms;3.1.7
 springboot4_org.mockito:mockito-core;5.20.0
 springboot4_org.postgresql:postgresql;42.7.8
