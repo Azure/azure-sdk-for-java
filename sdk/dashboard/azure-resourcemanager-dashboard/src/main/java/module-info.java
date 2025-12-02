@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.dashboard {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.dashboard;
     exports com.azure.resourcemanager.dashboard.fluent;
     exports com.azure.resourcemanager.dashboard.fluent.models;
     exports com.azure.resourcemanager.dashboard.models;
-
     opens com.azure.resourcemanager.dashboard.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.dashboard.models to com.azure.core;
     opens com.azure.resourcemanager.dashboard.implementation.models to com.azure.core;

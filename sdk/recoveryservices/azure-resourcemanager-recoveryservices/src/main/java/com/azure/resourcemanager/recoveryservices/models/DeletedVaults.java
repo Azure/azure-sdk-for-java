@@ -69,9 +69,8 @@ public interface DeletedVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    DeletedVault undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body);
+    void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body);
 
     /**
      * Start undelete of a deleted vault.
@@ -83,9 +82,8 @@ public interface DeletedVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    DeletedVault undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context);
+    void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context);
 
     /**
      * Get the operation status of a deleted vault.

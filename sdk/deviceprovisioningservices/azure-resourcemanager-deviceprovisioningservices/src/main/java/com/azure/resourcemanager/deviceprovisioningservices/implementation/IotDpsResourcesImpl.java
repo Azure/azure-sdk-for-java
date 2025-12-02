@@ -235,26 +235,16 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public PrivateEndpointConnection deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    public void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
+        this.serviceClient()
             .deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
-    public PrivateEndpointConnection deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    public void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, Context context) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
+        this.serviceClient()
             .deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<List<PrivateEndpointConnection>>
@@ -407,7 +397,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         this.delete(provisioningServiceName, resourceGroupName, context);
     }
 
-    public PrivateEndpointConnection deletePrivateEndpointConnectionById(String id) {
+    public void deletePrivateEndpointConnectionById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -424,11 +414,11 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
         }
-        return this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
+        this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
             Context.NONE);
     }
 
-    public PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(String id, Context context) {
+    public void deletePrivateEndpointConnectionByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -445,8 +435,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
         }
-        return this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
-            context);
+        this.deletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName, context);
     }
 
     private IotDpsResourcesClient serviceClient() {

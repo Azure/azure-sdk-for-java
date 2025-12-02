@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.disconnectedoperations {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.disconnectedoperations;
     exports com.azure.resourcemanager.disconnectedoperations.fluent;
     exports com.azure.resourcemanager.disconnectedoperations.fluent.models;
     exports com.azure.resourcemanager.disconnectedoperations.models;
-
     opens com.azure.resourcemanager.disconnectedoperations.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.disconnectedoperations.models to com.azure.core;
     opens com.azure.resourcemanager.disconnectedoperations.implementation.models to com.azure.core;
