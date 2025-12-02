@@ -168,7 +168,6 @@ extends:
 
         - job: 'AnalyzeAndVerify'
           condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
-          dependsOn: Build
 
           variables:
             - name: ArtifactsJson
