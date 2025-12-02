@@ -155,6 +155,10 @@ public abstract class FeedOperationState {
         return ctxAccessor.getSpanName(this.ctxHolder.get());
     }
 
+    public CosmosAsyncClient getClient() {
+        return this.cosmosAsyncClient;
+    }
+
     public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
         return this.ctxHolder.get();
     }

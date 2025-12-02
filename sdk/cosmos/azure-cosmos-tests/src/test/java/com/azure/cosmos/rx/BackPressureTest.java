@@ -251,6 +251,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
         client = new ClientUnderTestBuilder(
             getClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
@@ -269,25 +270,29 @@ public class BackPressureTest extends TestSuiteBase {
             rxClient
         );
 
-        // increase throughput to max for a single partition collection to avoid throttling
-        // for bulk insert and later queries.
-        Offer offer = rxClient.queryOffers(
+        try {
+            // increase throughput to max for a single partition collection to avoid throttling
+            // for bulk insert and later queries.
+            Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
                     createdCollection.read().block().getProperties().getResourceId())
-                        , state).take(1).map(FeedResponse::getResults).single().block().get(0);
-        offer.setThroughput(6000);
-        offer = rxClient.replaceOffer(offer).block().getResource();
-        assertThat(offer.getThroughput()).isEqualTo(6000);
+                , state).take(1).map(FeedResponse::getResults).single().block().get(0);
+            offer.setThroughput(6000);
+            offer = rxClient.replaceOffer(offer).block().getResource();
+            assertThat(offer.getThroughput()).isEqualTo(6000);
 
-        ArrayList<InternalObjectNode> docDefList = new ArrayList<>();
-        for(int i = 0; i < 1000; i++) {
-            docDefList.add(getDocumentDefinition(i));
+            ArrayList<InternalObjectNode> docDefList = new ArrayList<>();
+            for (int i = 0; i < 1000; i++) {
+                docDefList.add(getDocumentDefinition(i));
+            }
+
+            createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
+
+            waitIfNeededForReplicasToCatchUp(getClientBuilder());
+            warmUp();
+        } finally {
+            safeClose(state);
         }
-
-        createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
-
-        waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        warmUp();
     }
 
     private void warmUp() {

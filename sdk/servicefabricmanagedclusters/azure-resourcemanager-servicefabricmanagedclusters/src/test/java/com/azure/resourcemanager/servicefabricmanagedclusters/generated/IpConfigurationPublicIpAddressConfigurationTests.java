@@ -15,27 +15,24 @@ public final class IpConfigurationPublicIpAddressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpConfigurationPublicIpAddressConfiguration model = BinaryData.fromString(
-            "{\"name\":\"hxjbdhqxvc\",\"ipTags\":[{\"ipTagType\":\"rpdsof\",\"tag\":\"shrnsvbuswdvz\"},{\"ipTagType\":\"ybycnunvj\",\"tag\":\"rtkfawnopq\"},{\"ipTagType\":\"ikyzirtxdy\",\"tag\":\"x\"},{\"ipTagType\":\"ejnt\",\"tag\":\"sewgioilqukr\"}],\"publicIPAddressVersion\":\"IPv6\"}")
+            "{\"name\":\"lvtno\",\"ipTags\":[{\"ipTagType\":\"zgemjdftuljlt\",\"tag\":\"ucea\"}],\"publicIPAddressVersion\":\"IPv4\"}")
             .toObject(IpConfigurationPublicIpAddressConfiguration.class);
-        Assertions.assertEquals("hxjbdhqxvc", model.name());
-        Assertions.assertEquals("rpdsof", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("shrnsvbuswdvz", model.ipTags().get(0).tag());
-        Assertions.assertEquals(PublicIpAddressVersion.IPV6, model.publicIpAddressVersion());
+        Assertions.assertEquals("lvtno", model.name());
+        Assertions.assertEquals("zgemjdftuljlt", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("ucea", model.ipTags().get(0).tag());
+        Assertions.assertEquals(PublicIpAddressVersion.IPV4, model.publicIpAddressVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpConfigurationPublicIpAddressConfiguration model
-            = new IpConfigurationPublicIpAddressConfiguration().withName("hxjbdhqxvc")
-                .withIpTags(Arrays.asList(new IpTag().withIpTagType("rpdsof").withTag("shrnsvbuswdvz"),
-                    new IpTag().withIpTagType("ybycnunvj").withTag("rtkfawnopq"),
-                    new IpTag().withIpTagType("ikyzirtxdy").withTag("x"),
-                    new IpTag().withIpTagType("ejnt").withTag("sewgioilqukr")))
-                .withPublicIpAddressVersion(PublicIpAddressVersion.IPV6);
+            = new IpConfigurationPublicIpAddressConfiguration().withName("lvtno")
+                .withIpTags(Arrays.asList(new IpTag().withIpTagType("zgemjdftuljlt").withTag("ucea")))
+                .withPublicIpAddressVersion(PublicIpAddressVersion.IPV4);
         model = BinaryData.fromObject(model).toObject(IpConfigurationPublicIpAddressConfiguration.class);
-        Assertions.assertEquals("hxjbdhqxvc", model.name());
-        Assertions.assertEquals("rpdsof", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("shrnsvbuswdvz", model.ipTags().get(0).tag());
-        Assertions.assertEquals(PublicIpAddressVersion.IPV6, model.publicIpAddressVersion());
+        Assertions.assertEquals("lvtno", model.name());
+        Assertions.assertEquals("zgemjdftuljlt", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("ucea", model.ipTags().get(0).tag());
+        Assertions.assertEquals(PublicIpAddressVersion.IPV4, model.publicIpAddressVersion());
     }
 }

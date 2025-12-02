@@ -12,12 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents server restart parameters.
+ * PostgreSQL database engine restart parameters.
  */
 @Fluent
 public final class RestartParameter implements JsonSerializable<RestartParameter> {
     /*
-     * Indicates whether to restart the server with failover.
+     * Indicates if restart the PostgreSQL database engine should failover or switch over from primary to standby. This
+     * only works if server has high availability enabled.
      */
     private Boolean restartWithFailover;
 
@@ -33,7 +34,8 @@ public final class RestartParameter implements JsonSerializable<RestartParameter
     }
 
     /**
-     * Get the restartWithFailover property: Indicates whether to restart the server with failover.
+     * Get the restartWithFailover property: Indicates if restart the PostgreSQL database engine should failover or
+     * switch over from primary to standby. This only works if server has high availability enabled.
      * 
      * @return the restartWithFailover value.
      */
@@ -42,7 +44,8 @@ public final class RestartParameter implements JsonSerializable<RestartParameter
     }
 
     /**
-     * Set the restartWithFailover property: Indicates whether to restart the server with failover.
+     * Set the restartWithFailover property: Indicates if restart the PostgreSQL database engine should failover or
+     * switch over from primary to standby. This only works if server has high availability enabled.
      * 
      * @param restartWithFailover the restartWithFailover value to set.
      * @return the RestartParameter object itself.

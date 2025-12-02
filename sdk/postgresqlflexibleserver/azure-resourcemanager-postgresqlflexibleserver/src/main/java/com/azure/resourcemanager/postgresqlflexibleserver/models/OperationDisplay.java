@@ -17,22 +17,22 @@ import java.io.IOException;
 @Immutable
 public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * Operation resource provider name.
+     * Name of the resource provider.
      */
     private String provider;
 
     /*
-     * Resource on which the operation is performed.
+     * Type of resource on which the operation is performed.
      */
     private String resource;
 
     /*
-     * Localized friendly name for the operation.
+     * Name of the operation.
      */
     private String operation;
 
     /*
-     * Operation description.
+     * Description of the operation.
      */
     private String description;
 
@@ -43,7 +43,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the provider property: Operation resource provider name.
+     * Get the provider property: Name of the resource provider.
      * 
      * @return the provider value.
      */
@@ -52,7 +52,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the resource property: Resource on which the operation is performed.
+     * Get the resource property: Type of resource on which the operation is performed.
      * 
      * @return the resource value.
      */
@@ -61,7 +61,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the operation property: Localized friendly name for the operation.
+     * Get the operation property: Name of the operation.
      * 
      * @return the operation value.
      */
@@ -70,7 +70,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the description property: Operation description.
+     * Get the description property: Description of the operation.
      * 
      * @return the description value.
      */

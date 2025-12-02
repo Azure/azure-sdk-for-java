@@ -10,15 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ConfigurationsListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ConfigurationListByServer.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ConfigurationsListByServer.json
      */
     /**
-     * Sample code: ConfigurationList.
+     * Sample code: List all configurations (also known as server parameters) of a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void configurationList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.configurations().listByServer("testrg", "testserver", com.azure.core.util.Context.NONE);
+    public static void listAllConfigurationsAlsoKnownAsServerParametersOfAServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.configurations()
+            .listByServer("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 }

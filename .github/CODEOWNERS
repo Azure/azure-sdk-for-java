@@ -92,7 +92,7 @@
 /sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
 
 # PRLabel: %Voice Live
-/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang
+/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang @amber-yujueWang
 
 # ServiceLabel: %AKS
 # ServiceOwners:                                                   @Azure/aks-pm
@@ -918,7 +918,7 @@
 /common/perf-test-core/                                            @alzimmermsft @srnagar @g2vinay @Azure/azure-java-sdk
 
 # PRLabel: %common
-/.vscode/                                                          @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
+/.vscode/                                                          @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk @raych1
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                                  @alzimmermsft @srnagar

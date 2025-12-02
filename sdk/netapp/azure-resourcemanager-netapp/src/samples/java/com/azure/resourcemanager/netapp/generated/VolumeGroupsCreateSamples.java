@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Create_SapHana.json
+     * x-ms-original-file: 2025-09-01-preview/VolumeGroups_Create_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Create_SapHana.
@@ -177,7 +177,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Create_Oracle.json
+     * x-ms-original-file: 2025-09-01-preview/VolumeGroups_Create_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Create_Oracle.

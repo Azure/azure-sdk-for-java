@@ -155,9 +155,13 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("character", this.character);
         jsonWriter.writeBooleanField("customized", this.customized);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("ice_servers", this.iceServers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("style", this.style);
+        jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeJsonField("video", this.video);
+        jsonWriter.writeStringField("output_protocol",
+            this.outputProtocol == null ? null : this.outputProtocol.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -175,9 +179,12 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
         return jsonReader.readObject(reader -> {
             String character = null;
             boolean customized = false;
+            AvatarConfigTypes type = null;
             List<IceServer> iceServers = null;
             String style = null;
+            PhotoAvatarBaseModes model = null;
             VideoParams video = null;
+            AvatarOutputProtocol outputProtocol = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -185,21 +192,114 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
                     character = reader.getString();
                 } else if ("customized".equals(fieldName)) {
                     customized = reader.getBoolean();
+                } else if ("type".equals(fieldName)) {
+                    type = AvatarConfigTypes.fromString(reader.getString());
                 } else if ("ice_servers".equals(fieldName)) {
                     iceServers = reader.readArray(reader1 -> IceServer.fromJson(reader1));
                 } else if ("style".equals(fieldName)) {
                     style = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = PhotoAvatarBaseModes.fromString(reader.getString());
                 } else if ("video".equals(fieldName)) {
                     video = VideoParams.fromJson(reader);
+                } else if ("output_protocol".equals(fieldName)) {
+                    outputProtocol = AvatarOutputProtocol.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             AvatarConfiguration deserializedAvatarConfiguration = new AvatarConfiguration(character, customized);
+            deserializedAvatarConfiguration.type = type;
             deserializedAvatarConfiguration.iceServers = iceServers;
             deserializedAvatarConfiguration.style = style;
+            deserializedAvatarConfiguration.model = model;
             deserializedAvatarConfiguration.video = video;
+            deserializedAvatarConfiguration.outputProtocol = outputProtocol;
             return deserializedAvatarConfiguration;
         });
+    }
+
+    /*
+     * Type of avatar to use.
+     */
+    @Generated
+    private AvatarConfigTypes type;
+
+    /*
+     * Base model to use for the avatar. Required for photo avatar.
+     */
+    @Generated
+    private PhotoAvatarBaseModes model;
+
+    /*
+     * Output protocol for avatar streaming. Default is 'webrtc'.
+     */
+    @Generated
+    private AvatarOutputProtocol outputProtocol;
+
+    /**
+     * Get the type property: Type of avatar to use.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public AvatarConfigTypes getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of avatar to use.
+     *
+     * @param type the type value to set.
+     * @return the AvatarConfiguration object itself.
+     */
+    @Generated
+    public AvatarConfiguration setType(AvatarConfigTypes type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the model property: Base model to use for the avatar. Required for photo avatar.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public PhotoAvatarBaseModes getModel() {
+        return this.model;
+    }
+
+    /**
+     * Set the model property: Base model to use for the avatar. Required for photo avatar.
+     *
+     * @param model the model value to set.
+     * @return the AvatarConfiguration object itself.
+     */
+    @Generated
+    public AvatarConfiguration setModel(PhotoAvatarBaseModes model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the outputProtocol property: Output protocol for avatar streaming. Default is 'webrtc'.
+     *
+     * @return the outputProtocol value.
+     */
+    @Generated
+    public AvatarOutputProtocol getOutputProtocol() {
+        return this.outputProtocol;
+    }
+
+    /**
+     * Set the outputProtocol property: Output protocol for avatar streaming. Default is 'webrtc'.
+     *
+     * @param outputProtocol the outputProtocol value to set.
+     * @return the AvatarConfiguration object itself.
+     */
+    @Generated
+    public AvatarConfiguration setOutputProtocol(AvatarOutputProtocol outputProtocol) {
+        this.outputProtocol = outputProtocol;
+        return this;
     }
 }

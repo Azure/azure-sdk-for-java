@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesReInitializeReplicationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_ReInitializeReplication.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_ReInitializeReplication.json
      */
     /**
      * Sample code: Volumes_ReInitializeReplication.

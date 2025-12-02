@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.IllegalReferenceCountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,12 +72,14 @@ public class StoreResponse {
         if (contentStream != null) {
             try {
                 this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
-            }
-            finally {
+            } finally {
                 try {
                     contentStream.close();
-                } catch (IOException e) {
-                    logger.debug("Could not successfully close content stream.", e);
+                } catch (Throwable e) {
+                    if (!(e instanceof IllegalReferenceCountException)) {
+                        // Log as warning instead of debug to make ByteBuf leak issues more visible
+                        logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                    }
                 }
             }
         } else {
@@ -202,7 +205,7 @@ public class StoreResponse {
     }
 
     //NOTE: only used for testing purpose to change the response header value
-    private void setHeaderValue(String headerName, String value) {
+    void setHeaderValue(String headerName, String value) {
         if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
             return;
         }
