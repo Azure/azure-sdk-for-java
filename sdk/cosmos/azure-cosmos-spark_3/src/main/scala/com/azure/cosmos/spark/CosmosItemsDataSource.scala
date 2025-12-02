@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
+import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
@@ -154,10 +154,15 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
-    // Create default extraction function based on DataFrame schema
-    val defaultOperationExtraction = createBatchOperationExtraction(df)
+    // Initialize and broadcast the client states with partition key definition
+    val (clientMetadataBroadcast, partitionKeyDefBroadcast) = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
+    val partitionKeyDefinition = partitionKeyDefBroadcast.value
 
-    batchWriter.writeTransactionalBatch(df.rdd, defaultOperationExtraction)
+    // Create default extraction function based on DataFrame schema and partition key definition
+    val defaultOperationExtraction = createBatchOperationExtraction(df, partitionKeyDefinition)
+
+    // Execute the batch with the pre-initialized client states
+    batchWriter.writeTransactionalBatchWithClientStates(df.rdd, defaultOperationExtraction, (clientMetadataBroadcast, partitionKeyDefBroadcast))
   }
 
   /**
@@ -207,16 +212,22 @@ object CosmosItemsDataSource {
    * - With operationType: Uses specified operation (create, upsert, replace, delete, read)
    * - Without operationType: Defaults all operations to "upsert"
    * 
+   * Supports hierarchical partition keys by extracting values based on the partition key definition.
+   * 
    * @param df Input DataFrame
+   * @param partitionKeyDefinition Partition key definition from container
    * @return Extraction function that converts Row to BatchOperation
    */
-  private def createBatchOperationExtraction(df: DataFrame): Row => BatchOperation = {
+  private def createBatchOperationExtraction(df: DataFrame, partitionKeyDefinition: PartitionKeyDefinition): Row => BatchOperation = {
     val schema = df.schema
     val serializationConfig = CosmosSerializationConfig.parseSerializationConfig(Map.empty)
     
     // Check if operationType column exists
     val hasOperationType = schema.fields.exists(_.name == "operationType")
     val operationTypeIndex = if (hasOperationType) Some(schema.fieldIndex("operationType")) else None
+    
+    // Get partition key paths from definition (e.g., ["/PermId", "/SourceId"])
+    val partitionKeyPaths: Seq[String] = partitionKeyDefinition.getPaths.asScala.toSeq
     
     (row: Row) => {
       // Create row converter inside the lambda to avoid serialization issues
@@ -232,15 +243,7 @@ object CosmosItemsDataSource {
         documentNode.remove("operationType")
       }
       
-      // Handle partitionKey column - if it exists, rename to "pk" for Cosmos DB
-      val hasPartitionKeyColumn = schema.fieldNames.contains("partitionKey")
-      if (hasPartitionKeyColumn) {
-        val pkValue = documentNode.get("partitionKey")
-        documentNode.remove("partitionKey")
-        documentNode.set("pk", pkValue)
-      }
-      
-      // Extract id and partition key from the document
+      // Extract id from the document
       val idNode = documentNode.get(CosmosConstants.Properties.Id)
       if (idNode == null || idNode.isNull) {
         throw new IllegalArgumentException(
@@ -249,11 +252,32 @@ object CosmosItemsDataSource {
       }
       val id = idNode.asText()
       
-      // Extract partition key value for batch API
-      val partitionKey = if (documentNode.has("pk")) {
-        documentNode.get("pk").asText()
-      } else {
-        id // Fall back to id if no explicit partition key
+      // Extract partition key values based on paths from container definition
+      val partitionKeyValues: Seq[Any] = partitionKeyPaths.map { path =>
+        // Remove leading "/" from path (e.g., "/PermId" -> "PermId")
+        val fieldName = if (path.startsWith("/")) path.substring(1) else path
+        val valueNode = documentNode.get(fieldName)
+        if (valueNode == null || valueNode.isNull) {
+          throw new IllegalArgumentException(
+            s"Missing or null partition key field '$fieldName' in document. " +
+            s"Document must contain all partition key fields: ${partitionKeyPaths.mkString(", ")}. " +
+            s"Document: ${documentNode.toString}"
+          )
+        }
+        // Extract the actual value based on node type
+        if (valueNode.isTextual) {
+          valueNode.asText()
+        } else if (valueNode.isNumber) {
+          if (valueNode.isInt) valueNode.asInt()
+          else if (valueNode.isLong) valueNode.asLong()
+          else if (valueNode.isDouble) valueNode.asDouble()
+          else valueNode.numberValue()
+        } else if (valueNode.isBoolean) {
+          valueNode.asBoolean()
+        } else {
+          // For complex types, use text representation
+          valueNode.asText()
+        }
       }
       
       // Get operation type from column or default to "upsert"
@@ -262,7 +286,7 @@ object CosmosItemsDataSource {
         case None => "upsert"
       }
       
-      BatchOperation(id, partitionKey, operationType, documentNode)
+      BatchOperation(id, partitionKeyValues, operationType, documentNode)
     }
   }
 }

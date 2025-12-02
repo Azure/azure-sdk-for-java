@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse, PartitionKey}
+import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse, CosmosContainerProperties, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosException, SparkBridgeInternal}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs, Utils}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
@@ -68,7 +68,7 @@ private[spark] class TransactionalBatchWriter(
   val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
   logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
 
-  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
+  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[PartitionKeyDefinition]) = {
     val calledFrom = s"TransactionalBatchWriter($tableName).initializeAndBroadcastCosmosClientStateForContainer"
     Loan(
       List[Option[CosmosClientCacheItem]](
@@ -94,6 +94,12 @@ private[spark] class TransactionalBatchWriter(
             clientCacheItems(0).get,
             clientCacheItems(1))
         
+        // Read container properties to get partition key definition
+        val containerProperties: CosmosContainerProperties = 
+          SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
+        val partitionKeyDefinition: PartitionKeyDefinition = 
+          containerProperties.getPartitionKeyDefinition()
+        
         // Warm up the client by attempting a read
         try {
           container.readItem(
@@ -115,7 +121,10 @@ private[spark] class TransactionalBatchWriter(
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
-        sparkSession.sparkContext.broadcast(metadataSnapshots)
+        val metadataBroadcast = sparkSession.sparkContext.broadcast(metadataSnapshots)
+        val partitionKeyDefBroadcast = sparkSession.sparkContext.broadcast(partitionKeyDefinition)
+        
+        (metadataBroadcast, partitionKeyDefBroadcast)
       })
   }
 
@@ -132,13 +141,29 @@ private[spark] class TransactionalBatchWriter(
     inputRdd: RDD[Row],
     operationExtraction: Row => BatchOperation
   ): DataFrame = {
+    val clientStates = initializeAndBroadcastCosmosClientStatesForContainer()
+    writeTransactionalBatchWithClientStates(inputRdd, operationExtraction, clientStates)
+  }
+
+  /**
+   * Execute transactional batch operations with pre-initialized client states.
+   * This version is used when the partition key definition is needed for extraction logic.
+   * 
+   * @param inputRdd RDD containing rows with batch operation data
+   * @param operationExtraction Function to extract BatchOperation from each Row
+   * @param clientStates Tuple of broadcasts (metadata caches, partition key definition)
+   * @return DataFrame with execution results
+   */
+  def writeTransactionalBatchWithClientStates(
+    inputRdd: RDD[Row],
+    operationExtraction: Row => BatchOperation,
+    clientStates: (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[PartitionKeyDefinition])
+  ): DataFrame = {
     val correlationActivityId = UUIDs.nonBlockingRandomUUID()
     val calledFrom = s"TransactionalBatchWriter.writeTransactionalBatch($correlationActivityId)"
 
     // Determine output schema
     val outputSchema = getOutputSchema()
-
-    val clientStates = initializeAndBroadcastCosmosClientStatesForContainer()
 
     sparkSession.sqlContext.createDataFrame(
       inputRdd.mapPartitionsWithIndex(
@@ -153,7 +178,8 @@ private[spark] class TransactionalBatchWriter(
             effectiveUserConfig,
             outputSchema,
             DiagnosticsContext(correlationActivityId, partitionIndex.toString),
-            clientStates,
+            clientStates._1,
+            clientStates._2,
             DiagnosticsConfig.parseDiagnosticsConfig(effectiveUserConfig),
             sparkEnvironmentInfo,
             TaskContext.get,
@@ -191,10 +217,13 @@ private[spark] class TransactionalBatchWriter(
  */
 private case class BatchOperation(
   id: String,
-  partitionKey: String,
+  partitionKeyValues: Seq[Any],
   operationType: String,
   documentNode: ObjectNode
-)
+) {
+  // Backwards compatibility helper: get partition key as string
+  def partitionKey: String = partitionKeyValues.mkString(",")
+}
 
 /**
  * Executes transactional batch operations for a single partition.
@@ -205,6 +234,7 @@ private class TransactionalBatchPartitionExecutor(
   outputSchema: StructType,
   diagnosticsContext: DiagnosticsContext,
   cosmosClientStates: Broadcast[CosmosClientMetadataCachesSnapshots],
+  partitionKeyDefinitionBroadcast: Broadcast[PartitionKeyDefinition],
   diagnosticsConfig: DiagnosticsConfig,
   sparkEnvironmentInfo: String,
   taskContext: TaskContext,
@@ -213,6 +243,7 @@ private class TransactionalBatchPartitionExecutor(
 
   private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
+  private val partitionKeyDefinition: PartitionKeyDefinition = partitionKeyDefinitionBroadcast.value
 
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(
@@ -238,10 +269,11 @@ private class TransactionalBatchPartitionExecutor(
       throughputControlClientCacheItemOpt)
 
   // Group operations by partition key
-  private val operationsByPartitionKey: mutable.Map[String, mutable.ArrayBuffer[BatchOperation]] = {
-    val grouped = mutable.Map[String, mutable.ArrayBuffer[BatchOperation]]()
+  // Use the full partition key values sequence as the key
+  private val operationsByPartitionKey: mutable.Map[Seq[Any], mutable.ArrayBuffer[BatchOperation]] = {
+    val grouped = mutable.Map[Seq[Any], mutable.ArrayBuffer[BatchOperation]]()
     operations.foreach { op =>
-      val buffer = grouped.getOrElseUpdate(op.partitionKey, mutable.ArrayBuffer[BatchOperation]())
+      val buffer = grouped.getOrElseUpdate(op.partitionKeyValues, mutable.ArrayBuffer[BatchOperation]())
       buffer += op
     }
     grouped
@@ -255,16 +287,17 @@ private class TransactionalBatchPartitionExecutor(
   private def executeAllBatches(): Iterator[Row] = {
     val allResults = mutable.ArrayBuffer[Row]()
     try {
-      operationsByPartitionKey.foreach { case (partitionKeyValue, ops) =>
+      operationsByPartitionKey.foreach { case (partitionKeyValues, ops) =>
         // Cosmos DB transactional batch limit: 100 operations per batch
         if (ops.size > 100) {
+          val pkDescription = partitionKeyValues.mkString(", ")
           throw new IllegalArgumentException(
-            s"Partition key '$partitionKeyValue' has ${ops.size} operations, which exceeds the " +
+            s"Partition key [$pkDescription] has ${ops.size} operations, which exceeds the " +
             s"Cosmos DB transactional batch limit of 100 operations per partition key. " +
             s"Please reduce the number of operations for this partition key."
           )
         }
-        val batchResults = executeBatchForPartitionKey(partitionKeyValue, ops.toSeq)
+        val batchResults = executeBatchForPartitionKey(partitionKeyValues, ops.toSeq)
         allResults ++= batchResults
       }
     } finally {
@@ -288,30 +321,45 @@ private class TransactionalBatchPartitionExecutor(
   }
 
   private def executeBatchForPartitionKey(
-    partitionKeyValue: String,
+    partitionKeyValues: Seq[Any],
     operations: Seq[BatchOperation]
   ): Seq[Row] = {
     // Validate that all operations have the same partition key
-    val mismatchedOps = operations.filter(_.partitionKey != partitionKeyValue)
+    val mismatchedOps = operations.filter(_.partitionKeyValues != partitionKeyValues)
     if (mismatchedOps.nonEmpty) {
-      val mismatchedKeys = mismatchedOps.map(_.partitionKey).distinct.mkString(", ")
+      val mismatchedKeys = mismatchedOps.map(_.partitionKeyValues.mkString("[", ", ", "]")).distinct.mkString(", ")
+      val expectedKey = partitionKeyValues.mkString("[", ", ", "]")
       throw new IllegalArgumentException(
         s"All operations in a transactional batch must have the same partition key. " +
-        s"Expected: '$partitionKeyValue', but found: [$mismatchedKeys]. " +
+        s"Expected: $expectedKey, but found: $mismatchedKeys. " +
         s"Number of mismatched operations: ${mismatchedOps.size}."
       )
     }
     
     Try {
-      // Create CosmosBatch for this partition key
-      logTrace(s"Creating batch with partition key: '$partitionKeyValue' (type: ${partitionKeyValue.getClass.getName})")
-      val batch = CosmosBatch.createCosmosBatch(new PartitionKey(partitionKeyValue))
+      // Create PartitionKey based on the number of values (hierarchical or single)
+      val partitionKey: PartitionKey = partitionKeyValues.size match {
+        case 1 => 
+          new PartitionKey(partitionKeyValues.head)
+        case 2 => 
+          new PartitionKey(partitionKeyValues(0), partitionKeyValues(1))
+        case 3 => 
+          new PartitionKey(partitionKeyValues(0), partitionKeyValues(1), partitionKeyValues(2))
+        case n => 
+          throw new IllegalArgumentException(
+            s"Cosmos DB supports up to 3 hierarchical partition key levels, but got $n values: ${partitionKeyValues.mkString("[", ", ", "]")}"
+          )
+      }
+      
+      val pkDescription = partitionKeyValues.mkString("[", ", ", "]")
+      logTrace(s"Creating batch with partition key: $pkDescription (${partitionKeyValues.size} levels)")
+      val batch = CosmosBatch.createCosmosBatch(partitionKey)
 
       // Add operations to batch
       operations.foreach { op =>
         op.operationType.toLowerCase match {
           case "create" =>
-            logTrace(s"Adding create operation for id=${op.documentNode.get("id").asText()}, pk='${op.partitionKey}'")
+            logTrace(s"Adding create operation for id=${op.documentNode.get("id").asText()}, pk=$pkDescription")
             logTrace(s"Document JSON: ${op.documentNode.toString}")
             batch.createItemOperation(op.documentNode)
 
@@ -351,12 +399,14 @@ private class TransactionalBatchPartitionExecutor(
     } match {
       case Success(results) => results
       case Failure(exception: CosmosException) =>
-        logError(s"Cosmos batch execution failed for partition key $partitionKeyValue: ${exception.getMessage}", exception)
+        val pkDescription = partitionKeyValues.mkString("[", ", ", "]")
+        logError(s"Cosmos batch execution failed for partition key $pkDescription: ${exception.getMessage}", exception)
         operations.map { op =>
           createErrorRow(op, exception.getStatusCode, exception.getMessage)
         }
       case Failure(exception) =>
-        logError(s"Batch execution failed for partition key $partitionKeyValue: ${exception.getMessage}", exception)
+        val pkDescription = partitionKeyValues.mkString("[", ", ", "]")
+        logError(s"Batch execution failed for partition key $pkDescription: ${exception.getMessage}", exception)
         operations.map { op =>
           createErrorRow(op, 500, exception.getMessage)
         }

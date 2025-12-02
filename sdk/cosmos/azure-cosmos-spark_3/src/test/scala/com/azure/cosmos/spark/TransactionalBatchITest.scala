@@ -317,4 +317,286 @@ class TransactionalBatchITest extends IntegrationSpec
     exception.getMessage should include("100 operations per partition key")
     exception.getMessage should include(partitionKeyValue)
   }
+
+  "Transactional Batch with Hierarchical Partition Keys" should "create items atomically with PermId and SourceId" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    
+    // Create container with hierarchical partition keys (PermId, SourceId)
+    val containerName = s"test-hpk-${UUID.randomUUID()}"
+    val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
+      containerName,
+      new com.azure.cosmos.models.PartitionKeyDefinition()
+    )
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/PermId")
+    paths.add("/SourceId")
+    containerProperties.getPartitionKeyDefinition.setPaths(paths)
+    containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
+    containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
+    
+    cosmosClient.getDatabase(cosmosDatabase).createContainer(containerProperties).block()
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+
+    try {
+      val permId = "MSFT"
+      val sourceId = "Bloomberg"
+      val item1Id = s"${UUID.randomUUID()}"
+      val item2Id = s"${UUID.randomUUID()}"
+
+      // Create batch operations with hierarchical partition keys
+      val schema = StructType(Seq(
+        StructField("id", StringType, nullable = false),
+        StructField("PermId", StringType, nullable = false),
+        StructField("SourceId", StringType, nullable = false),
+        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false)
+      ))
+
+      val batchOperations = Seq(
+        Row(item1Id, permId, sourceId, 100.5),
+        Row(item2Id, permId, sourceId, 101.25)
+      )
+
+      val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+      val cfg = Map(
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerName
+      )
+
+      val resultDf = CosmosItemsDataSource.writeTransactionalBatch(operationsDf, cfg.asJava)
+
+      // Verify results
+      val results = resultDf.collect()
+      results.length shouldEqual 2
+      results.foreach { row =>
+        row.getAs[Int]("statusCode") shouldEqual 201
+        row.getAs[Boolean]("isSuccessStatusCode") shouldBe true
+      }
+
+      // Verify items were created
+      val item1 = container.readItem(item1Id, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      item1 should not be null
+      item1.getItem.get("price").asDouble() shouldEqual 100.5
+
+      val item2 = container.readItem(item2Id, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      item2 should not be null
+      item2.getItem.get("price").asDouble() shouldEqual 101.25
+    } finally {
+      // Clean up container
+      container.delete().block()
+    }
+  }
+
+  it should "handle temporal updates for financial instrument timelines" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    
+    // Create container with hierarchical partition keys (PermId, SourceId)
+    val containerName = s"test-hpk-temporal-${UUID.randomUUID()}"
+    val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
+      containerName,
+      new com.azure.cosmos.models.PartitionKeyDefinition()
+    )
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/PermId")
+    paths.add("/SourceId")
+    containerProperties.getPartitionKeyDefinition.setPaths(paths)
+    containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
+    containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
+    
+    cosmosClient.getDatabase(cosmosDatabase).createContainer(containerProperties).block()
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+
+    try {
+      val permId = "MSFT"
+      val sourceId = "Bloomberg"
+      val oldRecordId = "2024-01-01T00:00:00Z"
+      val newRecordId = "2024-06-01T00:00:00Z"
+
+      // First, create initial record
+      val initialDoc = Utils.getSimpleObjectMapper.createObjectNode()
+      initialDoc.put("id", oldRecordId)
+      initialDoc.put("PermId", permId)
+      initialDoc.put("SourceId", sourceId)
+      initialDoc.put("price", 100.0)
+      initialDoc.putNull("valid_to")
+      container.createItem(initialDoc).block()
+
+      // Now perform atomic temporal update: close old record + create new record
+      val schema = StructType(Seq(
+        StructField("id", StringType, nullable = false),
+        StructField("PermId", StringType, nullable = false),
+        StructField("SourceId", StringType, nullable = false),
+        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false),
+        StructField("valid_to", StringType, nullable = true),
+        StructField("operationType", StringType, nullable = false)
+      ))
+
+      val batchOperations = Seq(
+        // Close old record by setting valid_to
+        Row(oldRecordId, permId, sourceId, 100.0, "2024-06-01T00:00:00Z", "replace"),
+        // Create new record with new price
+        Row(newRecordId, permId, sourceId, 150.0, null, "create")
+      )
+
+      val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+      val cfg = Map(
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerName
+      )
+
+      val resultDf = CosmosItemsDataSource.writeTransactionalBatch(operationsDf, cfg.asJava)
+
+      // Verify results
+      val results = resultDf.collect()
+      results.length shouldEqual 2
+      results.foreach { row =>
+        row.getAs[Boolean]("isSuccessStatusCode") shouldBe true
+      }
+
+      // Verify old record was closed
+      val oldRecord = container.readItem(oldRecordId, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      oldRecord should not be null
+      oldRecord.getItem.get("valid_to").asText() shouldEqual "2024-06-01T00:00:00Z"
+
+      // Verify new record was created
+      val newRecord = container.readItem(newRecordId, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      newRecord should not be null
+      newRecord.getItem.get("price").asDouble() shouldEqual 150.0
+      newRecord.getItem.get("valid_to").isNull shouldBe true
+    } finally {
+      // Clean up container
+      container.delete().block()
+    }
+  }
+
+  it should "handle operations across multiple PermId/SourceId combinations" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    
+    // Create container with hierarchical partition keys (PermId, SourceId)
+    val containerName = s"test-hpk-multi-${UUID.randomUUID()}"
+    val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
+      containerName,
+      new com.azure.cosmos.models.PartitionKeyDefinition()
+    )
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/PermId")
+    paths.add("/SourceId")
+    containerProperties.getPartitionKeyDefinition.setPaths(paths)
+    containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
+    containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
+    
+    cosmosClient.getDatabase(cosmosDatabase).createContainer(containerProperties).block()
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+
+    try {
+      // Create operations for different PermId/SourceId combinations
+      val schema = StructType(Seq(
+        StructField("id", StringType, nullable = false),
+        StructField("PermId", StringType, nullable = false),
+        StructField("SourceId", StringType, nullable = false),
+        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false)
+      ))
+
+      val batchOperations = Seq(
+        // MSFT from Bloomberg
+        Row(s"${UUID.randomUUID()}", "MSFT", "Bloomberg", 100.0),
+        Row(s"${UUID.randomUUID()}", "MSFT", "Bloomberg", 101.0),
+        // MSFT from Reuters
+        Row(s"${UUID.randomUUID()}", "MSFT", "Reuters", 100.5),
+        // AAPL from Bloomberg
+        Row(s"${UUID.randomUUID()}", "AAPL", "Bloomberg", 150.0)
+      )
+
+      val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+      val cfg = Map(
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerName
+      )
+
+      val resultDf = CosmosItemsDataSource.writeTransactionalBatch(operationsDf, cfg.asJava)
+
+      // Verify all operations succeeded
+      val results = resultDf.collect()
+      results.length shouldEqual 4
+      results.foreach { row =>
+        row.getAs[Int]("statusCode") shouldEqual 201
+        row.getAs[Boolean]("isSuccessStatusCode") shouldBe true
+      }
+    } finally {
+      // Clean up container
+      container.delete().block()
+    }
+  }
+
+  it should "fail when more than 100 operations for a single hierarchical partition key" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    
+    // Create container with hierarchical partition keys (PermId, SourceId)
+    val containerName = s"test-hpk-limit-${UUID.randomUUID()}"
+    val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
+      containerName,
+      new com.azure.cosmos.models.PartitionKeyDefinition()
+    )
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/PermId")
+    paths.add("/SourceId")
+    containerProperties.getPartitionKeyDefinition.setPaths(paths)
+    containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
+    containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
+    
+    cosmosClient.getDatabase(cosmosDatabase).createContainer(containerProperties).block()
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+
+    try {
+      val permId = "MSFT"
+      val sourceId = "Bloomberg"
+
+      // Create 101 operations for the same hierarchical partition key
+      val schema = StructType(Seq(
+        StructField("id", StringType, nullable = false),
+        StructField("PermId", StringType, nullable = false),
+        StructField("SourceId", StringType, nullable = false),
+        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false)
+      ))
+
+      val batchOperations = (1 to 101).map { i =>
+        Row(s"${UUID.randomUUID()}", permId, sourceId, 100.0 + i)
+      }
+
+      val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+      val cfg = Map(
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerName
+      )
+
+      // Should throw IllegalArgumentException
+      val exception = intercept[Exception] {
+        CosmosItemsDataSource.writeTransactionalBatch(operationsDf, cfg.asJava).collect()
+      }
+
+      exception.getMessage should include("exceeds the")
+      exception.getMessage should include("100 operations per partition key")
+      exception.getMessage should include("MSFT")
+      exception.getMessage should include("Bloomberg")
+    } finally {
+      // Clean up container
+      container.delete().block()
+    }
+  }
 }
+
