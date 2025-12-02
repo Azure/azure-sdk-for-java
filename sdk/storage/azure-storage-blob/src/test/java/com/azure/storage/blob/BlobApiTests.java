@@ -328,33 +328,31 @@ public class BlobApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void uploadFailWithSmallTimeoutsForServiceClient() {
-        // setting very small timeout values for the service client
+        // Use realistic but small timeout values that will fail for upload but are deterministic in their behavior
+        HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofMillis(1))
+            .setReadTimeout(Duration.ofMillis(1))
+            .setWriteTimeout(Duration.ofMillis(1))
+            .setConnectTimeout(Duration.ofMillis(1));
+
+        BlobServiceClient serviceClient
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
+                .clientOptions(clientOptions)
+                .buildClient();
+
         liveTestScenarioWithRetry(() -> {
-            HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
-                .setResponseTimeout(Duration.ofNanos(1))
-                .setReadTimeout(Duration.ofNanos(1))
-                .setWriteTimeout(Duration.ofNanos(1))
-                .setConnectTimeout(Duration.ofNanos(1));
-
-            BlobServiceClientBuilder clientBuilder
-                = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-                    .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                    .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
-                    .clientOptions(clientOptions);
-
-            BlobServiceClient serviceClient = clientBuilder.buildClient();
-
             int size = 1024;
             byte[] randomData = getRandomByteArray(size);
             ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-            BlobContainerClient blobContainer = serviceClient.createBlobContainer(generateContainerName());
+            BlobContainerClient blobContainer = serviceClient.getBlobContainerClient(cc.getBlobContainerName());
             BlobClient blobClient = blobContainer.getBlobClient(generateBlobName());
             // test whether failure occurs due to small timeout intervals set on the service client
             assertThrows(RuntimeException.class, () -> blobClient.uploadWithResponse(input, size, null, null, null,
                 null, null, Duration.ofSeconds(10), null));
         });
-
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")

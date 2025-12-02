@@ -63,6 +63,18 @@
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
+            "name": "[guid(concat('queueDataContributorRoleId', variables('primaryAccountName')))]",
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('queueDataContributorRoleId')]",
+                "principalId": "[parameters('testApplicationOid')]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[guid(concat('contributorRoleId', variables('primaryAccountName')))]",
             "dependsOn": [
                 "[variables('primaryAccountName')]"

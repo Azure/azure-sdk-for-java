@@ -269,7 +269,7 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
                 assertEquals(2, messageItemList.size());
                 assertEquals("test", messageItemList.get(0).getBody().toString());
                 assertEquals(DATA.getDefaultText(), messageItemList.get(1).getBody().toString());
-            });
+            }).verifyComplete();
         });
     }
 
