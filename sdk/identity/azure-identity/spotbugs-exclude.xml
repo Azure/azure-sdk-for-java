@@ -14,7 +14,6 @@
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
       <Class name="com.azure.identity.credential.JavaDocCodeSnippets" />
-      <Class name="com.azure.redisson.sample.HelloWorld" />
     </Or>
   </Match>
   <Match>
@@ -45,11 +44,6 @@
     <Or>
       <Class name="com.azure.identity.implementation.SynchronizedAccessorTests" />
       <Class name="com.azure.identity.implementation.util.ValidationUtil" />
-      <Class name="com.azure.jedis.Authenticator" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.AuthenticateWithTokenCache$AzureRedisCredentials" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.HandleReauthentication$AzureRedisCredentials" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.HelloWorld$AzureRedisCredentials" />
-      <Class name="com.azure.redisson.sample.HelloWorld" />
     </Or>
   </Match>
   <Match>
@@ -73,10 +67,17 @@
   </Match>
   <Match>
     <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
-    <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
+    <Or>
+      <Class name="com.azure.identity.implementation.WindowsCredentialApi$CREDENTIAL" />
+      <Class name="com.azure.identity.implementation.WindowsCredentialApi$PCREDENTIAL" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE" />
     <Class name="com.azure.identity.implementation.models.AzureCliTokenTests" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+    <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError" />
   </Match>
 </FindBugsFilter>

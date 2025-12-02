@@ -7,7 +7,6 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -1107,23 +1106,31 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Validates the instance.
+     * Get the enableOutboundOnlyNodeTypes property: Enable the creation of node types with only outbound traffic
+     * enabled. If set, a separate load balancer backend pool will be created for node types with inbound traffic
+     * enabled. Can only be set at the time of cluster creation.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the enableOutboundOnlyNodeTypes value.
      */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model ManagedClusterInner"));
-        } else {
-            sku().validate();
-        }
+    public Boolean enableOutboundOnlyNodeTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableOutboundOnlyNodeTypes();
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterInner.class);
+    /**
+     * Set the enableOutboundOnlyNodeTypes property: Enable the creation of node types with only outbound traffic
+     * enabled. If set, a separate load balancer backend pool will be created for node types with inbound traffic
+     * enabled. Can only be set at the time of cluster creation.
+     * 
+     * @param enableOutboundOnlyNodeTypes the enableOutboundOnlyNodeTypes value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withEnableOutboundOnlyNodeTypes(Boolean enableOutboundOnlyNodeTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withEnableOutboundOnlyNodeTypes(enableOutboundOnlyNodeTypes);
+        return this;
+    }
 
     /**
      * {@inheritDoc}

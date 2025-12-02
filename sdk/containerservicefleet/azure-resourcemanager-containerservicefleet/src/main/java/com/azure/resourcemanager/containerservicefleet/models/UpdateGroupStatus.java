@@ -32,6 +32,16 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
      */
     private List<MemberUpdateStatus> members;
 
+    /*
+     * The list of Gates that will run before this UpdateGroup.
+     */
+    private List<UpdateRunGateStatus> beforeGates;
+
+    /*
+     * The list of Gates that will run after this UpdateGroup.
+     */
+    private List<UpdateRunGateStatus> afterGates;
+
     /**
      * Creates an instance of UpdateGroupStatus class.
      */
@@ -66,17 +76,21 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
     }
 
     /**
-     * Validates the instance.
+     * Get the beforeGates property: The list of Gates that will run before this UpdateGroup.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the beforeGates value.
      */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (members() != null) {
-            members().forEach(e -> e.validate());
-        }
+    public List<UpdateRunGateStatus> beforeGates() {
+        return this.beforeGates;
+    }
+
+    /**
+     * Get the afterGates property: The list of Gates that will run after this UpdateGroup.
+     * 
+     * @return the afterGates value.
+     */
+    public List<UpdateRunGateStatus> afterGates() {
+        return this.afterGates;
     }
 
     /**
@@ -111,6 +125,14 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
                     List<MemberUpdateStatus> members
                         = reader.readArray(reader1 -> MemberUpdateStatus.fromJson(reader1));
                     deserializedUpdateGroupStatus.members = members;
+                } else if ("beforeGates".equals(fieldName)) {
+                    List<UpdateRunGateStatus> beforeGates
+                        = reader.readArray(reader1 -> UpdateRunGateStatus.fromJson(reader1));
+                    deserializedUpdateGroupStatus.beforeGates = beforeGates;
+                } else if ("afterGates".equals(fieldName)) {
+                    List<UpdateRunGateStatus> afterGates
+                        = reader.readArray(reader1 -> UpdateRunGateStatus.fromJson(reader1));
+                    deserializedUpdateGroupStatus.afterGates = afterGates;
                 } else {
                     reader.skipChildren();
                 }

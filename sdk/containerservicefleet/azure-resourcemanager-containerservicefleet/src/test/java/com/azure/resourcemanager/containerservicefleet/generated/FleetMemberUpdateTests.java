@@ -6,20 +6,38 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberUpdate;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class FleetMemberUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetMemberUpdate model
-            = BinaryData.fromString("{\"properties\":{\"group\":\"szdnr\"}}").toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("szdnr", model.group());
+        FleetMemberUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"group\":\"fycc\",\"labels\":{\"flnrosfqpteehzz\":\"wmdwzjeiachboo\",\"swjdkirso\":\"ypyqrimzinp\"}}}")
+            .toObject(FleetMemberUpdate.class);
+        Assertions.assertEquals("fycc", model.group());
+        Assertions.assertEquals("wmdwzjeiachboo", model.labels().get("flnrosfqpteehzz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("szdnr");
+        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("fycc")
+            .withLabels(mapOf("flnrosfqpteehzz", "wmdwzjeiachboo", "swjdkirso", "ypyqrimzinp"));
         model = BinaryData.fromObject(model).toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("szdnr", model.group());
+        Assertions.assertEquals("fycc", model.group());
+        Assertions.assertEquals("wmdwzjeiachboo", model.labels().get("flnrosfqpteehzz"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

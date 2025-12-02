@@ -22,7 +22,7 @@ public final class DefenderForAISettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"etqmmli\",\"tags\":{\"dchpojxlehzl\":\"jxnw\",\"rwkwbpjxljtxbus\":\"pgfquwzpwiibelwc\",\"hg\":\"tbxxniuisd\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"pagsecnad\",\"name\":\"u\",\"type\":\"qrgxf\"}";
+            = "{\"etag\":\"akvlbishj\",\"tags\":{\"fgcdiykkcxw\":\"aptuoskaoizjix\",\"dmuqohhi\":\"ujvqynvavit\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"uddrwjc\",\"name\":\"jbrhlhpvzadbw\",\"type\":\"nnin\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DefenderForAISettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DefenderForAISetting response = manager.defenderForAISettings()
-            .getWithResponse("lxrdhabsrwrsn", "hpqatiwkkvyanxk", "vcsemsvuvdj", com.azure.core.util.Context.NONE)
+            .getWithResponse("xwr", "lvzkl", "vbgikyj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jxnw", response.tags().get("dchpojxlehzl"));
+        Assertions.assertEquals("aptuoskaoizjix", response.tags().get("fgcdiykkcxw"));
         Assertions.assertEquals(DefenderForAISettingState.DISABLED, response.state());
     }
 }

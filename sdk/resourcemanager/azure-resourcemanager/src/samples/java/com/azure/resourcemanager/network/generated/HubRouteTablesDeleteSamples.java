@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class HubRouteTablesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/HubRouteTableDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/HubRouteTableDelete.json
      */
     /**
      * Sample code: RouteTableDelete.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.Appl
 public final class ApplicationTypeResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeResourceProperties model = BinaryData.fromString("{\"provisioningState\":\"iqzbq\"}")
+        ApplicationTypeResourceProperties model = BinaryData.fromString("{\"provisioningState\":\"jancu\"}")
             .toObject(ApplicationTypeResourceProperties.class);
     }
 

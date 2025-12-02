@@ -201,7 +201,7 @@ public interface Association {
     /**
      * The template for Association update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAssociationType, UpdateStages.WithSubnet {
         /**
          * Executes the update request.
          * 
@@ -236,16 +236,29 @@ public interface Association {
         }
 
         /**
-         * The stage of the Association update allowing to specify properties.
+         * The stage of the Association update allowing to specify associationType.
          */
-        interface WithProperties {
+        interface WithAssociationType {
             /**
-             * Specifies the properties property: The resource-specific properties for this resource..
+             * Specifies the associationType property: Association Type.
              * 
-             * @param properties The resource-specific properties for this resource.
+             * @param associationType Association Type.
              * @return the next definition stage.
              */
-            Update withProperties(AssociationUpdateProperties properties);
+            Update withAssociationType(AssociationType associationType);
+        }
+
+        /**
+         * The stage of the Association update allowing to specify subnet.
+         */
+        interface WithSubnet {
+            /**
+             * Specifies the subnet property: Association Subnet.
+             * 
+             * @param subnet Association Subnet.
+             * @return the next definition stage.
+             */
+            Update withSubnet(AssociationSubnetUpdate subnet);
         }
     }
 

@@ -12,21 +12,21 @@ public final class DiagnosticDataTableResponseColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticDataTableResponseColumn model = BinaryData
-            .fromString("{\"columnName\":\"ygqdnfwqzdz\",\"dataType\":\"ilaxhn\",\"columnType\":\"qlyvijo\"}")
+            .fromString("{\"columnName\":\"mdy\",\"dataType\":\"dwdigumb\",\"columnType\":\"aauzzptjazysd\"}")
             .toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("ygqdnfwqzdz", model.columnName());
-        Assertions.assertEquals("ilaxhn", model.dataType());
-        Assertions.assertEquals("qlyvijo", model.columnType());
+        Assertions.assertEquals("mdy", model.columnName());
+        Assertions.assertEquals("dwdigumb", model.dataType());
+        Assertions.assertEquals("aauzzptjazysd", model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticDataTableResponseColumn model = new DiagnosticDataTableResponseColumn().withColumnName("ygqdnfwqzdz")
-            .withDataType("ilaxhn")
-            .withColumnType("qlyvijo");
+        DiagnosticDataTableResponseColumn model = new DiagnosticDataTableResponseColumn().withColumnName("mdy")
+            .withDataType("dwdigumb")
+            .withColumnType("aauzzptjazysd");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("ygqdnfwqzdz", model.columnName());
-        Assertions.assertEquals("ilaxhn", model.dataType());
-        Assertions.assertEquals("qlyvijo", model.columnType());
+        Assertions.assertEquals("mdy", model.columnName());
+        Assertions.assertEquals("dwdigumb", model.dataType());
+        Assertions.assertEquals("aauzzptjazysd", model.columnType());
     }
 }

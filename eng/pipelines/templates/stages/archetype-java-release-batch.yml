@@ -38,16 +38,11 @@ stages:
           image: $(WINDOWSVMIMAGE)
           os: windows
         steps:
+          - checkout: self
+            fetchDepth: 1
+            path: azure-sdk-for-java
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipCheckoutNone: true
-              Repositories:
-                - Name: Azure/azure-sdk-for-java
-                  Commitish: $(Build.SourceVersion)
-                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
           - download: current
             displayName: 'Download Artifact: packages'
@@ -256,7 +251,6 @@ stages:
                   - Name: Azure/azure-sdk-for-java
                     Commitish: $(Build.SourceVersion)
                     WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-            - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
             - download: current
               displayName: 'Download Artifacts'
               artifact: packages-signed
@@ -277,12 +271,20 @@ stages:
 
             - template: /eng/common/pipelines/templates/steps/create-apireview.yml
               parameters:
+                PackageInfoFiles:
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - $(Pipeline.Workspace)/packages-signed/PackageInfo/${{artifact.name}}.json
                 ArtifactPath: $(Pipeline.Workspace)/packages-signed
-                Artifacts: ${{parameters.Artifacts}}
                 ConfigFileDir: $(Pipeline.Workspace)/packages-signed/PackageInfo
                 MarkPackageAsShipped: true
                 ArtifactName: packages-signed
                 SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
+            - ${{ each artifact in parameters.Artifacts }}:
+              - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
+                parameters:
+                  ConfigFileDir: $(Pipeline.Workspace)/packages-signed/PackageInfo
+                  SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
+                  PackageArtifactName: ${{artifact.name}}
 
         - job: UpdatePackageVersion
           displayName: "Update Package Version"
@@ -421,15 +423,9 @@ stages:
         steps:
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            SkipCheckoutNone: true
-            Repositories:
-              - Name: Azure/azure-sdk-for-java
-                Commitish: $(Build.SourceVersion)
-                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-
-        - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+        - checkout: self
+          path: azure-sdk-for-java
+          fetchDepth: 1
 
         - download: current
           displayName: 'Download Artifact: packages-signed'

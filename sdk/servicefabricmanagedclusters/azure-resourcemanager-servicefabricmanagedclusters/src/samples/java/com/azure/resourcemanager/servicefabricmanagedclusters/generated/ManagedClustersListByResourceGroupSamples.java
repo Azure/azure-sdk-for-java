@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ManagedClusterListByResourceGroupOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedClusterListByResourceGroupOperation_example.json
      */
     /**
      * Sample code: List cluster by resource group.

@@ -16,6 +16,13 @@
     <Class name="io.clientcore.http.netty4.implementation.HttpResponseDrainsBufferTests" />
   </Match>
   <Match>
+    <Bug pattern="DP_DO_INSIDE_DO_PRIVILEGED" />
+    <Or>
+      <Class name="io.clientcore.http.netty4.NettyHttpClientBuilderTests" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ConnectionPoolTests" />
+    </Or>
+  </Match>
+  <Match>
     <Bug pattern="MS_MUTABLE_ARRAY" />
     <Class name="io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer" />
   </Match>
@@ -44,6 +51,13 @@
     <Or>
       <Class name="io.clientcore.http.netty4.implementation.HttpResponseDrainsBufferTests" />
       <Class name="io.clientcore.http.netty4.implementation.Netty4Http11ChannelInputStreamTests" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+    <Or>
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelInputStream" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ConnectionPoolTests" />
     </Or>
   </Match>
   <Match>

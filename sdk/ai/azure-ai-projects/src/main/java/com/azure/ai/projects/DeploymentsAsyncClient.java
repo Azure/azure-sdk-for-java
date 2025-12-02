@@ -67,8 +67,8 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getDeploymentWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -104,8 +104,8 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeployments(RequestOptions requestOptions) {
-        return this.serviceClient.listDeploymentsAsync(requestOptions);
+    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(requestOptions);
     }
 
     /**
@@ -122,10 +122,10 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Deployment> getDeployment(String name) {
-        // Generated convenience method for getDeploymentWithResponse
+    public Mono<Deployment> get(String name) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDeploymentWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Deployment.class));
     }
 
@@ -145,9 +145,8 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Deployment> listDeployments(String modelPublisher, String modelName,
-        DeploymentType deploymentType) {
-        // Generated convenience method for listDeployments
+    public PagedFlux<Deployment> list(String modelPublisher, String modelName, DeploymentType deploymentType) {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
         if (modelPublisher != null) {
             requestOptions.addQueryParam("modelPublisher", modelPublisher, false);
@@ -158,7 +157,7 @@ public final class DeploymentsAsyncClient {
         if (deploymentType != null) {
             requestOptions.addQueryParam("deploymentType", deploymentType.toString(), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listDeployments(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -185,10 +184,10 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Deployment> listDeployments() {
-        // Generated convenience method for listDeployments
+    public PagedFlux<Deployment> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listDeployments(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)

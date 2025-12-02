@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedClustersListFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
+     * x-ms-original-file: 2025-10-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
      */
     /**
      * Sample code: List Managed Cluster Fault Simulation.

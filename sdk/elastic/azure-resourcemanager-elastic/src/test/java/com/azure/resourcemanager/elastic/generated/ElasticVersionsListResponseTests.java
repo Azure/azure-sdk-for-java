@@ -15,24 +15,23 @@ public final class ElasticVersionsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVersionsListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"ukdkexxppofmxa\"}},{\"properties\":{\"version\":\"jpgd\"}},{\"properties\":{\"version\":\"c\"}},{\"properties\":{\"version\":\"hvpmoue\"}}],\"nextLink\":\"dzxibqeojnxqbzvd\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"twnpzaoqvuhrhcf\"}},{\"properties\":{\"version\":\"ddglm\"}},{\"properties\":{\"version\":\"jqkwpyeicx\"}}],\"nextLink\":\"ciwqvhk\"}")
             .toObject(ElasticVersionsListResponse.class);
-        Assertions.assertEquals("ukdkexxppofmxa", model.value().get(0).properties().version());
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.nextLink());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.value().get(0).properties().version());
+        Assertions.assertEquals("ciwqvhk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticVersionsListResponse model = new ElasticVersionsListResponse().withValue(Arrays.asList(
             new ElasticVersionListFormatInner()
-                .withProperties(new ElasticVersionListProperties().withVersion("ukdkexxppofmxa")),
-            new ElasticVersionListFormatInner().withProperties(new ElasticVersionListProperties().withVersion("jpgd")),
-            new ElasticVersionListFormatInner().withProperties(new ElasticVersionListProperties().withVersion("c")),
+                .withProperties(new ElasticVersionListProperties().withVersion("twnpzaoqvuhrhcf")),
+            new ElasticVersionListFormatInner().withProperties(new ElasticVersionListProperties().withVersion("ddglm")),
             new ElasticVersionListFormatInner()
-                .withProperties(new ElasticVersionListProperties().withVersion("hvpmoue"))))
-            .withNextLink("dzxibqeojnxqbzvd");
+                .withProperties(new ElasticVersionListProperties().withVersion("jqkwpyeicx"))))
+            .withNextLink("ciwqvhk");
         model = BinaryData.fromObject(model).toObject(ElasticVersionsListResponse.class);
-        Assertions.assertEquals("ukdkexxppofmxa", model.value().get(0).properties().version());
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.nextLink());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.value().get(0).properties().version());
+        Assertions.assertEquals("ciwqvhk", model.nextLink());
     }
 }

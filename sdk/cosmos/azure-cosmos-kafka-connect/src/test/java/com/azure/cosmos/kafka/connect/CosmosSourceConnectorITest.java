@@ -26,6 +26,7 @@ import org.rnorth.ducttape.unreliables.Unreliables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -86,6 +88,46 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         };
     }
 
+    @DataProvider(name = "sourceWithWrongContainerNameConfig")
+    public static Object[][] sourceWithWrongContainerNameConfig() {
+        return new Object[][]
+            {
+                // configs, error message
+                // test case1: wrong container name in includedList
+                {
+                    new HashMap<String, String>() {
+                        {
+                            put("azure.cosmos.source.containers.includeAll", "false");
+                            put("azure.cosmos.source.containers.includedList", "wrongContainerName");
+                            put("azure.cosmos.source.containers.topicMap", "testTopic#WrongContainerName");
+                        }},
+                    "java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account."
+                },
+                // test case2: includeAll true
+                // wrong container name in includeList will be ignored
+                // wrong container name in topic map config will throw exception
+                {
+                    new HashMap<String, String>() {
+                        {
+                            put("azure.cosmos.source.containers.includeAll", "true");
+                            put("azure.cosmos.source.containers.includedList", "wrongContainerName");
+                            put("azure.cosmos.source.containers.topicMap", "testTopic#WrongContainerName");
+                        }},
+                    "java.lang.IllegalStateException: Containers specified in the topic map do not exist in the CosmosDB account."
+                },
+                // test case3: wrong container name in topic map
+                {
+                    new HashMap<String, String>() {
+                        {
+                            put("azure.cosmos.source.containers.includeAll", "false");
+                            put("azure.cosmos.source.containers.includedList", singlePartitionContainerName);
+                            put("azure.cosmos.source.containers.topicMap", "testTopic#WrongContainerName");
+                        }},
+                    "java.lang.IllegalStateException: Containers specified in the topic map do not exist in the CosmosDB account."
+                },
+            };
+    }
+
     @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
     public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
         logger.info("read from single container " + useMasterKey);
@@ -108,6 +150,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
@@ -159,20 +202,16 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
             List<ConsumerRecord<String, JsonNode>> itemRecords = new ArrayList<>();
             int expectedMetadataRecordsCount = metadataStorageType == CosmosMetadataStorageType.COSMOS ? 0 : 2;
-            int expectedItemRecords = createdItems.size();
+            int expectedItemRecordsCount = createdItems.size();
 
-            Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {
-                kafkaConsumer.poll(Duration.ofMillis(1000))
-                    .iterator()
-                    .forEachRemaining(consumerRecord -> {
-                        if (consumerRecord.topic().equals(topicName)) {
-                            itemRecords.add(consumerRecord);
-                        } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getStorageName())) {
-                            metadataRecords.add(consumerRecord);
-                        }
-                    });
-                return metadataRecords.size() >= expectedMetadataRecordsCount && itemRecords.size() >= expectedItemRecords;
-            });
+            pollChangesForSingleTopic(
+                kafkaConsumer,
+                topicName,
+                sourceConfig.getMetadataConfig().getStorageName(),
+                itemRecords,
+                metadataRecords,
+                expectedItemRecordsCount,
+                expectedMetadataRecordsCount);
 
             assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
             if (metadataStorageType == CosmosMetadataStorageType.KAFKA) {
@@ -228,15 +267,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().size()).isEqualTo(1);
             }
 
-            // validate the item records
-            assertThat(itemRecords.size()).isEqualTo(createdItems.size());
-            List<String> receivedItems =
-                itemRecords.stream().map(consumerRecord -> {
-                    JsonNode jsonNode = consumerRecord.value();
-                    return jsonNode.get("payload").get("id").asText();
-                }).collect(Collectors.toList());
-
-            assertThat(receivedItems.containsAll(createdItems)).isTrue();
+            validateFeedRangeItemRecords(itemRecords, createdItems);
 
         } finally {
             if (client != null) {
@@ -256,50 +287,23 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         }
     }
 
-    @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider")
-    public void createConnectorWithWrongContainerName(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
+    @Test(groups = { "kafka-integration" }, dataProvider = "sourceWithWrongContainerNameConfig")
+    public void createConnectorWithWrongContainerName(Map<String, String> configs, String errorMessage) {
 
-        logger.info("createConnectorWithWrongContainerName " + useMasterKey);
-        String wrongContainerName = "wrongContainerName";
-        String topicName = wrongContainerName + "-" + UUID.randomUUID();
-        String metadataStorageName = "Metadata-" + UUID.randomUUID();
+        logger.info("createConnectorWithWrongContainerName");
 
         Map<String, String> sourceConnectorConfig = new HashMap<>();
         sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
         sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
         sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
-        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
-        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", wrongContainerName);
-        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + wrongContainerName);
-
-        if (useMasterKey) {
-            sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
-        } else {
-            sourceConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
-            sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
-            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
-            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
-        }
-
-        if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.name", metadataStorageName);
-            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
-        }
+        sourceConnectorConfig.putAll(configs);
 
         // Create topic ahead of time
-        kafkaCosmosConnectContainer.createTopic(topicName, 1);
         String connectorName = "simpleTest-" + UUID.randomUUID();
 
         try {
-            // if using cosmos container to persiste the metadata, pre-create it
-            if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                logger.info("Creating metadata container");
-                client.getDatabase(databaseName)
-                    .createContainerIfNotExists(metadataStorageName, "/id")
-                    .block();
-            }
-
             kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
 
             // give some time for the connector to start up
@@ -307,18 +311,9 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             // verify connector tasks
             ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
             assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
-            assertThat(connectorStatus.getConnector().get("trace")
-                .contains("java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account.")).isTrue();
+            assertThat(connectorStatus.getConnector().get("trace").contains(errorMessage)).isTrue();
         }  catch (InterruptedException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (client != null) {
-
-                // delete the metadata container if created
-                if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                    client.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
-                }
-            }
         }
     }
 
@@ -346,6 +341,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
@@ -415,6 +411,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         // Create topic ahead of time
@@ -470,5 +467,352 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 kafkaCosmosConnectContainer.deleteConnector(connectorName);
             }
         }
+    }
+
+    @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
+    public void readFromAllContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
+        logger.info("read from all containers with useMasterKey={}, metadataStorageType={}", useMasterKey, metadataStorageType);
+        String topicName = "all-containers-" + UUID.randomUUID();
+        String metadataStorageName = "Metadata-" + UUID.randomUUID();
+
+        Map<String, String> sourceConnectorConfig = new HashMap<>();
+        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
+        sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "true");
+        // Mapping topics for all test containers
+        String topicMapConfig = String.format("%s#%s,%s#%s,%s#%s",
+            topicName + "-single", singlePartitionContainerName,
+            topicName + "-multi", multiPartitionContainerName,
+            topicName + "-multiId", multiPartitionContainerWithIdAsPartitionKeyName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicMapConfig);
+
+        if (useMasterKey) {
+            sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        } else {
+            sourceConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+            sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
+        }
+
+        if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.name", metadataStorageName);
+            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
+        }
+
+        // Create topics ahead of time for each container
+        kafkaCosmosConnectContainer.createTopic(topicName + "-single", 1);
+        kafkaCosmosConnectContainer.createTopic(topicName + "-multi", 1);
+        kafkaCosmosConnectContainer.createTopic(topicName + "-multiId", 1);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
+        String connectorName = "simpleTest-" + UUID.randomUUID();
+
+        // Get containers
+        CosmosAsyncContainer singleContainer = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
+        CosmosAsyncContainer multiContainer = client.getDatabase(databaseName).getContainer(multiPartitionContainerName);
+        CosmosAsyncContainer multiIdContainer = client.getDatabase(databaseName).getContainer(multiPartitionContainerWithIdAsPartitionKeyName);
+
+       try {
+            // if using cosmos container to persist the metadata, pre-create it
+            if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                logger.info("Creating metadata container");
+                client.getDatabase(databaseName)
+                    .createContainerIfNotExists(metadataStorageName, "/id")
+                    .block();
+            }
+
+            // Create items in all containers
+            logger.info("Creating items in multiple containers");
+            Map<String, List<String>> createdItemsByContainer = new HashMap<>();
+
+            // Create items in single partition container
+            List<String> singleContainerItems = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                singleContainer.createItem(testItem).block();
+                singleContainerItems.add(testItem.getId());
+            }
+            createdItemsByContainer.put(singlePartitionContainerName, singleContainerItems);
+
+            // Create items in multi partition container
+            List<String> multiContainerItems = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                multiContainer.createItem(testItem).block();
+                multiContainerItems.add(testItem.getId());
+            }
+            createdItemsByContainer.put(multiPartitionContainerName, multiContainerItems);
+
+            // Create items in multi partition container with id as partition key
+            List<String> multiIdContainerItems = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                multiIdContainer.createItem(testItem).block();
+                multiIdContainerItems.add(testItem.getId());
+            }
+            createdItemsByContainer.put(multiPartitionContainerWithIdAsPartitionKeyName, multiIdContainerItems);
+
+            kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
+
+            logger.info("Getting consumer and subscribing to topics");
+            Properties consumerProperties = kafkaCosmosConnectContainer.getConsumerProperties();
+            consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+            consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+            KafkaConsumer<String, JsonNode> kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+
+            // Subscribe to all container topics and metadata topic
+            List<String> topics = Arrays.asList(
+                topicName + "-single",
+                topicName + "-multi",
+                topicName + "-multiId",
+                sourceConfig.getMetadataConfig().getStorageName()
+            );
+            kafkaConsumer.subscribe(topics);
+
+            Map<String, List<ConsumerRecord<String, JsonNode>>> recordsByTopic = new HashMap<>();
+            List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
+
+            // Calculate expected metadata records based on storage type and number of containers
+            int expectedMetadataRecordsCount = metadataStorageType == CosmosMetadataStorageType.COSMOS ? 0 : 4; // 1 containers metadata + 3 feed ranges metadata
+            int totalExpectedRecords = createdItemsByContainer.values().stream().mapToInt(List::size).sum();
+
+            Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {
+                kafkaConsumer.poll(Duration.ofMillis(1000))
+                    .iterator()
+                    .forEachRemaining(consumerRecord -> {
+                        String topic = consumerRecord.topic();
+                        if (topic.equals(sourceConfig.getMetadataConfig().getStorageName())) {
+                            metadataRecords.add(consumerRecord);
+                        } else {
+                            recordsByTopic.computeIfAbsent(topic, k -> new ArrayList<>()).add(consumerRecord);
+                        }
+                    });
+
+                int currentTotalRecords = recordsByTopic.values().stream()
+                    .mapToInt(List::size)
+                    .sum();
+
+                return metadataRecords.size() >= expectedMetadataRecordsCount &&
+                       currentTotalRecords >= totalExpectedRecords;
+            });
+
+            // Verify metadata records
+            if (metadataStorageType == CosmosMetadataStorageType.KAFKA) {
+                assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
+                // Validate containers metadata record
+                ConsumerRecord<String, JsonNode> containerMetadataRecord = metadataRecords.get(0);
+                assertThat(containerMetadataRecord.key()).isEqualTo(databaseName + "_" + connectorName);
+
+                JsonNode rootJsonNode = containerMetadataRecord.value().get("payload");
+                assertThat(rootJsonNode).isNotNull();
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME)).isNotNull();
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME).textValue())
+                    .isEqualTo(MetadataEntityTypes.CONTAINERS_METADATA_V1);
+
+                JsonNode jsonValueNode = rootJsonNode.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
+                assertThat(jsonValueNode).isNotNull();
+                String jsonValue = jsonValueNode.textValue();
+                assertThat(jsonValue).isNotNull();
+
+                ContainersMetadataTopicOffset containersMetadataTopicOffset = null;
+                try {
+                    containersMetadataTopicOffset = ContainersMetadataTopicOffset.fromMap(
+                        Utils.getSimpleObjectMapper()
+                            .readValue(jsonValue, new TypeReference<Map<String, Object>>() {})
+                    );
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // Verify that all container RIDs are present
+                assertThat(containersMetadataTopicOffset.getContainerRids().size()).isEqualTo(3);
+            }
+
+            // Validate records from each container
+            for (Map.Entry<String, List<String>> entry : createdItemsByContainer.entrySet()) {
+                String containerName = entry.getKey();
+                List<String> expectedItems = entry.getValue();
+                String containerTopic = topicName +
+                    (containerName.equals(singlePartitionContainerName) ? "-single" :
+                     containerName.equals(multiPartitionContainerName) ? "-multi" : "-multiId");
+
+                List<ConsumerRecord<String, JsonNode>> containerRecords = recordsByTopic.get(containerTopic);
+                assertThat(containerRecords).isNotNull();
+                assertThat(containerRecords.size()).isEqualTo(expectedItems.size());
+
+                List<String> receivedItems = containerRecords.stream()
+                    .map(record -> record.value().get("payload").get("id").asText())
+                    .collect(Collectors.toList());
+                assertThat(receivedItems.containsAll(expectedItems)).isTrue();
+            }
+
+        } finally {
+            if (client != null) {
+                logger.info("Cleaning up test containers");
+                cleanUpContainer(client, databaseName, singlePartitionContainerName);
+                cleanUpContainer(client, databaseName, multiPartitionContainerName);
+                cleanUpContainer(client, databaseName, multiPartitionContainerWithIdAsPartitionKeyName);
+
+                // Delete the metadata container if created
+                if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                    client.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
+                }
+            }
+
+            // IMPORTANT: remove the connector after use
+            if (kafkaCosmosConnectContainer != null) {
+                kafkaCosmosConnectContainer.deleteConnector(connectorName);
+            }
+        }
+    }
+
+    @Test(groups = { "kafka-integration" }, timeOut = 2 * TIMEOUT)
+    public void readFromSingleContainer_pause_and_resume() {
+        logger.info("Pause and resume connector for single container ");
+        String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
+
+        Map<String, String> sourceConnectorConfig = new HashMap<>();
+        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
+        sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+
+        // Create topic ahead of time
+        kafkaCosmosConnectContainer.createTopic(topicName, 1);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
+        CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
+
+        String connectorName = "simpleTest-" + UUID.randomUUID();
+
+        try {
+            // create few items in the container
+            logger.info("creating items in container {}", singlePartitionContainerName);
+            List<String> createdItems = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                container.createItem(testItem).block();
+                createdItems.add(testItem.getId());
+            }
+
+            kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
+
+            logger.info("Getting consumer and subscribe to topic {}", singlePartitionContainerName);
+
+            Properties consumerProperties = kafkaCosmosConnectContainer.getConsumerProperties();
+            consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+            consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+            KafkaConsumer<String, JsonNode> kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+
+            kafkaConsumer.subscribe(
+                Arrays.asList(
+                    topicName,
+                    sourceConfig.getMetadataConfig().getStorageName()));
+
+            List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
+            List<ConsumerRecord<String, JsonNode>> itemRecords = new ArrayList<>();
+            int expectedMetadataRecordsCount = 2;
+            int expectedItemRecordsCount = createdItems.size();
+
+            pollChangesForSingleTopic(
+                kafkaConsumer,
+                topicName,
+                sourceConfig.getMetadataConfig().getStorageName(),
+                itemRecords,
+                metadataRecords,
+                expectedItemRecordsCount,
+                expectedMetadataRecordsCount);
+
+            assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
+            validateFeedRangeItemRecords(itemRecords, createdItems);
+
+            // now pause the connector
+            kafkaCosmosConnectContainer.pauseConnector(connectorName);
+
+            // create few items
+            createdItems.clear();
+            metadataRecords.clear();
+            itemRecords.clear();
+
+            for (int i = 0; i < 5; i++) {
+                TestItem testItem = TestItem.createNewItem();
+                container.createItem(testItem).block();
+                createdItems.add(testItem.getId());
+            }
+
+            // resume the connector
+            kafkaCosmosConnectContainer.resumeConnector(connectorName);
+            // poll again, poll a little bit longer to make sure no duplicate records are being returned
+            Instant startPollTime = Instant.now();
+            while (Duration.between(startPollTime, Instant.now()).toMillis() < 60 * 1000 ) {
+                kafkaConsumer.poll(Duration.ofMillis(1000))
+                    .iterator()
+                    .forEachRemaining(consumerRecord -> {
+                        if (consumerRecord.topic().equals(topicName)) {
+                            itemRecords.add(consumerRecord);
+                        } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getStorageName())) {
+                            metadataRecords.add(consumerRecord);
+                        }
+                    });
+            }
+
+            assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
+            validateFeedRangeItemRecords(itemRecords, createdItems);
+        } finally {
+            if (client != null) {
+                logger.info("cleaning container {}", singlePartitionContainerName);
+                cleanUpContainer(client, databaseName, singlePartitionContainerName);
+            }
+
+            // IMPORTANT: remove the connector after use
+            if (kafkaCosmosConnectContainer != null) {
+                kafkaCosmosConnectContainer.deleteConnector(connectorName);
+            }
+        }
+    }
+
+    private void pollChangesForSingleTopic(
+        KafkaConsumer<String, JsonNode> kafkaConsumer,
+        String topicName,
+        String storageName,
+        List<ConsumerRecord<String, JsonNode>> itemRecords,
+        List<ConsumerRecord<String, JsonNode>> metadataRecords,
+        int expectedItemRecords,
+        int expectedMetadataRecordsCount) {
+
+        Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {
+            kafkaConsumer.poll(Duration.ofMillis(1000))
+                .iterator()
+                .forEachRemaining(consumerRecord -> {
+                    if (consumerRecord.topic().equals(topicName)) {
+                        itemRecords.add(consumerRecord);
+                    } else if (consumerRecord.topic().equals(storageName)) {
+                        metadataRecords.add(consumerRecord);
+                    }
+                });
+            return metadataRecords.size() >= expectedMetadataRecordsCount && itemRecords.size() >= expectedItemRecords;
+        });
+    }
+
+    private void validateFeedRangeItemRecords(
+        List<ConsumerRecord<String, JsonNode>> itemRecords,
+        List<String> expectedItems) {
+        // validate the item records
+        assertThat(itemRecords.size()).isEqualTo(expectedItems.size());
+        List<String> receivedItems =
+            itemRecords.stream().map(consumerRecord -> {
+                JsonNode jsonNode = consumerRecord.value();
+                return jsonNode.get("payload").get("id").asText();
+            }).collect(Collectors.toList());
+
+        assertThat(receivedItems.containsAll(expectedItems)).isTrue();
     }
 }

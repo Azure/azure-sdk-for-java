@@ -14,17 +14,15 @@ public final class ManagedClusterUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedClusterUpdateParameters model
-            = BinaryData.fromString("{\"tags\":{\"tcs\":\"mjwosytx\",\"zikhl\":\"fcktqumiekke\"}}")
-                .toObject(ManagedClusterUpdateParameters.class);
-        Assertions.assertEquals("mjwosytx", model.tags().get("tcs"));
+            = BinaryData.fromString("{\"tags\":{\"fltkacjv\":\"wj\"}}").toObject(ManagedClusterUpdateParameters.class);
+        Assertions.assertEquals("wj", model.tags().get("fltkacjv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedClusterUpdateParameters model
-            = new ManagedClusterUpdateParameters().withTags(mapOf("tcs", "mjwosytx", "zikhl", "fcktqumiekke"));
+        ManagedClusterUpdateParameters model = new ManagedClusterUpdateParameters().withTags(mapOf("fltkacjv", "wj"));
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpdateParameters.class);
-        Assertions.assertEquals("mjwosytx", model.tags().get("tcs"));
+        Assertions.assertEquals("wj", model.tags().get("fltkacjv"));
     }
 
     // Use "Map.of" if available

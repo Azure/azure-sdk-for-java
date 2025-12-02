@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfiguration;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public final class SolutionConfigurationsUpdateSamples {
             .getWithResponse("ymuj", "dxt", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new SolutionConfigurationProperties().withSolutionType("myzljlstvmgkp")
+            .withProperties(new SolutionConfigurationPropertiesUpdate().withSolutionType("myzljlstvmgkp")
                 .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf())))
             .apply();
     }

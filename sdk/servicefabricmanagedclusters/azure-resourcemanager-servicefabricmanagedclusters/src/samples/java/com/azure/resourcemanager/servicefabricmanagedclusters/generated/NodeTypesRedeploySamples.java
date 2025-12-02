@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesRedeploySamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/RedeployNodes_UD_example.json
+     * x-ms-original-file: 2025-10-01-preview/RedeployNodes_UD_example.json
      */
     /**
      * Sample code: Redeploy all nodes by upgrade domain.
@@ -29,7 +29,7 @@ public final class NodeTypesRedeploySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/RedeployNodes_example.json
+     * x-ms-original-file: 2025-10-01-preview/RedeployNodes_example.json
      */
     /**
      * Sample code: Redeploy nodes.

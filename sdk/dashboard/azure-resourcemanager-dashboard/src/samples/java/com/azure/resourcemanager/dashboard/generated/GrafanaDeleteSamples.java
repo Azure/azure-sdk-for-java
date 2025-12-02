@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class GrafanaDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Delete.json
+     * x-ms-original-file: 2025-08-01/Grafana_Delete.json
      */
     /**
      * Sample code: Grafana_Delete.

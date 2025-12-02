@@ -11,9 +11,8 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentia
  */
 public final class WebAppsUpdateScmAllowedSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/UpdatePublishingCredentialsPolicySlot
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * UpdatePublishingCredentialsPolicySlot.json
      */
     /**
      * Sample code: Update SCM Allowed.

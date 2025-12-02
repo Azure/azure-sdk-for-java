@@ -9,7 +9,7 @@
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
       "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
-    "JavaTestVersion": [ "1.17", "1.21" ],
+    "JavaTestVersion": [ "1.17", "1.25" ],
     "TEST_HTTP_CLIENT_IMPLEMENTATION": [ "io.clientcore.core.http.client.DefaultHttpClientProvider", "io.clientcore.http.okhttp3.OkHttpHttpClientProvider" ],
     "Options": {
       "NotFromSource_TestsOnly": {
@@ -23,7 +23,7 @@
   "exclude": [
     {
       "Pool": "env:LINUXPOOL",
-      "JavaTestVersion": "1.21"
+      "JavaTestVersion": "1.25"
     }
   ],
   "include": [
@@ -59,9 +59,24 @@
     },
     {
       "Agent": {
-          "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+          "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.25",
       "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
       "Options": {
         "TestFromSource_SkipRebuild_Verify": {
@@ -76,7 +91,7 @@
       "Agent": {
         "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.25",
       "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
       "Options": {
         "NotFromSource_AggregateReports_SkipRebuild_Verify": {

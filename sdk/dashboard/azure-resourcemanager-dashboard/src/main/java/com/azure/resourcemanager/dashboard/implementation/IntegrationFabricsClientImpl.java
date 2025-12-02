@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dashboard.fluent.IntegrationFabricsClient;
@@ -134,25 +133,23 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") IntegrationFabricUpdateParameters requestBodyParameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationFabricName") String integrationFabricName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("integrationFabricName") String integrationFabricName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics/{integrationFabricName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationFabricName") String integrationFabricName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("integrationFabricName") String integrationFabricName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/integrationFabrics")
@@ -203,25 +200,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationFabricInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
         String integrationFabricName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept, context))
@@ -261,28 +239,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationFabricInner> getWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, workspaceName, integrationFabricName, accept, context);
@@ -320,31 +276,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricInner requestBodyParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        if (requestBodyParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter requestBodyParameters is required and cannot be null."));
-        } else {
-            requestBodyParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -369,34 +300,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricInner requestBodyParameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        if (requestBodyParameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBodyParameters is required and cannot be null."));
-        } else {
-            requestBodyParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -420,34 +323,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricInner requestBodyParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        if (requestBodyParameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBodyParameters is required and cannot be null."));
-        } else {
-            requestBodyParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -596,31 +471,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricUpdateParameters requestBodyParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        if (requestBodyParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter requestBodyParameters is required and cannot be null."));
-        } else {
-            requestBodyParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -645,34 +495,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricUpdateParameters requestBodyParameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        if (requestBodyParameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBodyParameters is required and cannot be null."));
-        } else {
-            requestBodyParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -696,34 +518,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, IntegrationFabricUpdateParameters requestBodyParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        if (requestBodyParameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBodyParameters is required and cannot be null."));
-        } else {
-            requestBodyParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -870,28 +664,9 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
         String integrationFabricName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -909,32 +684,8 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, Context.NONE);
     }
 
     /**
@@ -952,31 +703,8 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String integrationFabricName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (integrationFabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter integrationFabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationFabricName, context);
     }
 
     /**
@@ -1099,21 +827,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationFabricInner>> listSinglePageAsync(String resourceGroupName,
         String workspaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1151,24 +864,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IntegrationFabricInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IntegrationFabricListResponse> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -1191,24 +886,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IntegrationFabricInner> listSinglePage(String resourceGroupName, String workspaceName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IntegrationFabricListResponse> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -1262,13 +939,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationFabricInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<IntegrationFabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -1287,15 +957,6 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IntegrationFabricInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IntegrationFabricListResponse> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1315,21 +976,10 @@ public final class IntegrationFabricsClientImpl implements IntegrationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IntegrationFabricInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<IntegrationFabricListResponse> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(IntegrationFabricsClientImpl.class);
 }

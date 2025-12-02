@@ -138,7 +138,6 @@ public final class AssociationsInterfaceListByTrafficControllerSamples {
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 
 /**
  * Samples for AssociationsInterface Update.
@@ -157,9 +156,9 @@ public final class AssociationsInterfaceUpdateSamples {
             .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
+            .withAssociationType(AssociationType.SUBNETS)
+            .withSubnet(new AssociationSubnetUpdate().withId(
+                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"))
             .apply();
     }
 }
@@ -349,7 +348,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
             .withRegion("NorthCentralUS")
             .withExistingTrafficController("rg1", "tc1")
             .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .create();
     }
 }
@@ -467,7 +466,7 @@ public final class SecurityPoliciesInterfaceUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .apply();
     }
 }

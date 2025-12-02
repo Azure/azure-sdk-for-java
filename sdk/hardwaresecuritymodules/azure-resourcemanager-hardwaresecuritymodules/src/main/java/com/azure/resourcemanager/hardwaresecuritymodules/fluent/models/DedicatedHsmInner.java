@@ -7,7 +7,6 @@ package com.azure.resourcemanager.hardwaresecuritymodules.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,6 +22,11 @@ import java.util.Map;
 @Fluent
 public final class DedicatedHsmInner extends Resource {
     /*
+     * Properties of the dedicated HSM
+     */
+    private DedicatedHsmProperties properties;
+
+    /*
      * SKU details
      */
     private Sku sku;
@@ -31,11 +35,6 @@ public final class DedicatedHsmInner extends Resource {
      * The availability zones.
      */
     private List<String> zones;
-
-    /*
-     * Properties of the dedicated HSM
-     */
-    private DedicatedHsmProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -61,6 +60,26 @@ public final class DedicatedHsmInner extends Resource {
      * Creates an instance of DedicatedHsmInner class.
      */
     public DedicatedHsmInner() {
+    }
+
+    /**
+     * Get the properties property: Properties of the dedicated HSM.
+     * 
+     * @return the properties value.
+     */
+    public DedicatedHsmProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of the dedicated HSM.
+     * 
+     * @param properties the properties value to set.
+     * @return the DedicatedHsmInner object itself.
+     */
+    public DedicatedHsmInner withProperties(DedicatedHsmProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -100,26 +119,6 @@ public final class DedicatedHsmInner extends Resource {
      */
     public DedicatedHsmInner withZones(List<String> zones) {
         this.zones = zones;
-        return this;
-    }
-
-    /**
-     * Get the properties property: Properties of the dedicated HSM.
-     * 
-     * @return the properties value.
-     */
-    public DedicatedHsmProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Properties of the dedicated HSM.
-     * 
-     * @param properties the properties value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
-    public DedicatedHsmInner withProperties(DedicatedHsmProperties properties) {
-        this.properties = properties;
         return this;
     }
 
@@ -181,28 +180,6 @@ public final class DedicatedHsmInner extends Resource {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model DedicatedHsmInner"));
-        } else {
-            sku().validate();
-        }
-        if (properties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property properties in model DedicatedHsmInner"));
-        } else {
-            properties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DedicatedHsmInner.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -210,8 +187,8 @@ public final class DedicatedHsmInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -243,10 +220,10 @@ public final class DedicatedHsmInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDedicatedHsmInner.withTags(tags);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedDedicatedHsmInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDedicatedHsmInner.properties = DedicatedHsmProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.sku = Sku.fromJson(reader);
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedDedicatedHsmInner.zones = zones;

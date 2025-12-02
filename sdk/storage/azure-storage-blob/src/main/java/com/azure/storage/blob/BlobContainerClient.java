@@ -53,6 +53,7 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -150,9 +151,7 @@ public final class BlobContainerClient {
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     *  pass in the url encoded version of the blob name.
-     *
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getBlobClient#String -->
@@ -178,8 +177,7 @@ public final class BlobContainerClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String -->
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @param snapshot the snapshot identifier for the blob.
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
@@ -192,8 +190,7 @@ public final class BlobContainerClient {
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
@@ -236,7 +233,7 @@ public final class BlobContainerClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl() + "/" + containerName;
+        return azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName);
     }
 
     /**

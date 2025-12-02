@@ -14,22 +14,22 @@ public final class ChaosTargetQuerySelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosTargetQuerySelector model = BinaryData.fromString(
-            "{\"type\":\"Query\",\"queryString\":\"kzsmodm\",\"subscriptionIds\":[\"ougpbkwt\",\"utduqktapspwgcu\"],\"id\":\"rtumkdosvq\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}")
+            "{\"type\":\"Query\",\"queryString\":\"gvcl\",\"subscriptionIds\":[\"gsncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\",\"ec\"],\"id\":\"godebfqkkrbmpu\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}")
             .toObject(ChaosTargetQuerySelector.class);
-        Assertions.assertEquals("rtumkdosvq", model.id());
-        Assertions.assertEquals("kzsmodm", model.queryString());
-        Assertions.assertEquals("ougpbkwt", model.subscriptionIds().get(0));
+        Assertions.assertEquals("godebfqkkrbmpu", model.id());
+        Assertions.assertEquals("gvcl", model.queryString());
+        Assertions.assertEquals("gsncghkjeszz", model.subscriptionIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetQuerySelector model = new ChaosTargetQuerySelector().withId("rtumkdosvq")
+        ChaosTargetQuerySelector model = new ChaosTargetQuerySelector().withId("godebfqkkrbmpu")
             .withFilter(new ChaosTargetFilter())
-            .withQueryString("kzsmodm")
-            .withSubscriptionIds(Arrays.asList("ougpbkwt", "utduqktapspwgcu"));
+            .withQueryString("gvcl")
+            .withSubscriptionIds(Arrays.asList("gsncghkjeszz", "bijhtxfvgxbf", "mxnehmp", "ec"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetQuerySelector.class);
-        Assertions.assertEquals("rtumkdosvq", model.id());
-        Assertions.assertEquals("kzsmodm", model.queryString());
-        Assertions.assertEquals("ougpbkwt", model.subscriptionIds().get(0));
+        Assertions.assertEquals("godebfqkkrbmpu", model.id());
+        Assertions.assertEquals("gvcl", model.queryString());
+        Assertions.assertEquals("gsncghkjeszz", model.subscriptionIds().get(0));
     }
 }

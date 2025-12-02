@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ManagedClustersStartFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
+     * x-ms-original-file: 2025-10-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
      */
     /**
      * Sample code: Start Managed Cluster Fault Simulation.

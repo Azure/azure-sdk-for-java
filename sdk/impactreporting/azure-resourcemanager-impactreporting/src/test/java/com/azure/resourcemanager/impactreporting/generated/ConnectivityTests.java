@@ -14,24 +14,24 @@ public final class ConnectivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Connectivity model = BinaryData.fromString(
-            "{\"protocol\":\"HTTP\",\"port\":751944111,\"source\":{\"azureResourceId\":\"xxjtfe\"},\"target\":{\"azureResourceId\":\"wfzitonpeqfpjk\"}}")
+            "{\"protocol\":\"SSH\",\"port\":1190609144,\"source\":{\"azureResourceId\":\"wfzitonpeqfpjk\"},\"target\":{\"azureResourceId\":\"ofpdvh\"}}")
             .toObject(Connectivity.class);
-        Assertions.assertEquals(Protocol.HTTP, model.protocol());
-        Assertions.assertEquals(751944111, model.port());
-        Assertions.assertEquals("xxjtfe", model.source().azureResourceId());
-        Assertions.assertEquals("wfzitonpeqfpjk", model.target().azureResourceId());
+        Assertions.assertEquals(Protocol.SSH, model.protocol());
+        Assertions.assertEquals(1190609144, model.port());
+        Assertions.assertEquals("wfzitonpeqfpjk", model.source().azureResourceId());
+        Assertions.assertEquals("ofpdvh", model.target().azureResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Connectivity model = new Connectivity().withProtocol(Protocol.HTTP)
-            .withPort(751944111)
-            .withSource(new SourceOrTarget().withAzureResourceId("xxjtfe"))
-            .withTarget(new SourceOrTarget().withAzureResourceId("wfzitonpeqfpjk"));
+        Connectivity model = new Connectivity().withProtocol(Protocol.SSH)
+            .withPort(1190609144)
+            .withSource(new SourceOrTarget().withAzureResourceId("wfzitonpeqfpjk"))
+            .withTarget(new SourceOrTarget().withAzureResourceId("ofpdvh"));
         model = BinaryData.fromObject(model).toObject(Connectivity.class);
-        Assertions.assertEquals(Protocol.HTTP, model.protocol());
-        Assertions.assertEquals(751944111, model.port());
-        Assertions.assertEquals("xxjtfe", model.source().azureResourceId());
-        Assertions.assertEquals("wfzitonpeqfpjk", model.target().azureResourceId());
+        Assertions.assertEquals(Protocol.SSH, model.protocol());
+        Assertions.assertEquals(1190609144, model.port());
+        Assertions.assertEquals("wfzitonpeqfpjk", model.source().azureResourceId());
+        Assertions.assertEquals("ofpdvh", model.target().azureResourceId());
     }
 }

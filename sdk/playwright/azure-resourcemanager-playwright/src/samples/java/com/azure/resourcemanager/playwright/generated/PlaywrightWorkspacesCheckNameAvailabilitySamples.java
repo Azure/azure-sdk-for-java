@@ -11,7 +11,7 @@ import com.azure.resourcemanager.playwright.models.CheckNameAvailabilityRequest;
  */
 public final class PlaywrightWorkspacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
+     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_CheckNameAvailability.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_CheckNameAvailability.

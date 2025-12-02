@@ -182,7 +182,7 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     /*
      * The list of scheduled operations.
      */
-    private ScheduledOperationsType scheduledOperations;
+    private List<ScheduledOperationsType> scheduledOperationsList;
 
     /*
      * The private endpoint Ip address for the resource.
@@ -1068,22 +1068,23 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
-     * Get the scheduledOperations property: The list of scheduled operations.
+     * Get the scheduledOperationsList property: The list of scheduled operations.
      * 
-     * @return the scheduledOperations value.
+     * @return the scheduledOperationsList value.
      */
-    public ScheduledOperationsType scheduledOperations() {
-        return this.scheduledOperations;
+    public List<ScheduledOperationsType> scheduledOperationsList() {
+        return this.scheduledOperationsList;
     }
 
     /**
-     * Set the scheduledOperations property: The list of scheduled operations.
+     * Set the scheduledOperationsList property: The list of scheduled operations.
      * 
-     * @param scheduledOperations the scheduledOperations value to set.
+     * @param scheduledOperationsList the scheduledOperationsList value to set.
      * @return the AutonomousDatabaseBaseProperties object itself.
      */
-    public AutonomousDatabaseBaseProperties withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        this.scheduledOperations = scheduledOperations;
+    public AutonomousDatabaseBaseProperties
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        this.scheduledOperationsList = scheduledOperationsList;
         return this;
     }
 
@@ -2023,38 +2024,6 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -2084,7 +2053,8 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
             this.isPreviewVersionWithServiceTermsAccepted);
         jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
         jsonWriter.writeStringField("ncharacterSet", this.ncharacterSet);
-        jsonWriter.writeJsonField("scheduledOperations", this.scheduledOperations);
+        jsonWriter.writeArrayField("scheduledOperationsList", this.scheduledOperationsList,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", this.privateEndpointIp);
         jsonWriter.writeStringField("privateEndpointLabel", this.privateEndpointLabel);
         jsonWriter.writeStringField("subnetId", this.subnetId);
@@ -2237,9 +2207,10 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseBaseProperties.lifecycleState
                         = AutonomousDatabaseLifecycleState.fromString(reader.getString());
-                } else if ("scheduledOperations".equals(fieldName)) {
-                    deserializedAutonomousDatabaseBaseProperties.scheduledOperations
-                        = ScheduledOperationsType.fromJson(reader);
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
+                    deserializedAutonomousDatabaseBaseProperties.scheduledOperationsList = scheduledOperationsList;
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseBaseProperties.privateEndpointIp = reader.getString();
                 } else if ("privateEndpointLabel".equals(fieldName)) {

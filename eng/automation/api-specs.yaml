@@ -5,6 +5,8 @@
   # suffix: suffix for sdk automation, usually it is due to premium sdk
 app:
   service: appcontainers
+app/Microsoft.App/ContainerApps:
+  service: appcontainers
 appplatform:
   suffix: generated
 authorization:
@@ -17,6 +19,8 @@ azurestackhci/Microsoft.AzureStackHCI/StackHCI:
   service: azurestackhci
 cdn:
   suffix: generated
+certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
+  service: certificateregistration
 compute:
   suffix: generated
 containerinstance:
@@ -42,12 +46,16 @@ datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+datamigration/Microsoft.DataMigration/DataMigration:
+  service: datamigration
 developerhub:
   service: devhub
 dnc:
   service: delegatednetwork
 dns:
   suffix: generated
+domainregistration/Microsoft.DomainRegistration/DomainRegistration:
+  service: domainregistration
 eventhub:
   service: eventhubs
   suffix: generated
@@ -55,15 +63,14 @@ fist:
   service: iotfirmwaredefense
 graphservicesprod:
   service: graphservices
-hdinsight/Microsoft.HDInsight/HDInsightOnAks:
-  service: hdinsight
-  suffix: containers
 help:
   service: selfhelp
 hybridaks:
   service: hybridcontainerservice
 informatica:
   service: informaticadatamanagement
+iothub/Microsoft.Devices/IoTHub:
+  service: iothub
 keyvault:
   suffix: generated
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
@@ -117,6 +124,8 @@ redhatopenshift/Microsoft.RedHatOpenShift/openshiftclusters:
   service: redhatopenshift
 redis:
   suffix: generated
+redisenterprise/Microsoft.Cache/RedisEnterprise:
+  service: redisenterprise
 resources:
   suffix: generated
 resources/Microsoft.Resources/bicep:

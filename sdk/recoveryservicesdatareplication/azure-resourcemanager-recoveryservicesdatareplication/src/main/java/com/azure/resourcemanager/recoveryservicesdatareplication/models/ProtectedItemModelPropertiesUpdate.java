@@ -49,17 +49,6 @@ public final class ProtectedItemModelPropertiesUpdate implements JsonSerializabl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customProperties() != null) {
-            customProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

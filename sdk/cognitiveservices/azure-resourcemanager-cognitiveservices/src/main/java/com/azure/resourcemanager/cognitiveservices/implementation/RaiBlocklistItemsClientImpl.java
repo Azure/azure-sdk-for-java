@@ -1225,7 +1225,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services RAI Blocklist Items along with {@link PagedResponse} on successful
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1251,7 +1251,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services RAI Blocklist Items along with {@link PagedResponse}.
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBlocklistItemInner> listNextSinglePage(String nextLink) {
@@ -1279,7 +1279,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services RAI Blocklist Items along with {@link PagedResponse}.
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBlocklistItemInner> listNextSinglePage(String nextLink, Context context) {

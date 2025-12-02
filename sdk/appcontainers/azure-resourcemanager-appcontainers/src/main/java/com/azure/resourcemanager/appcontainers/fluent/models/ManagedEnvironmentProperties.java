@@ -13,9 +13,11 @@ import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
+import com.azure.resourcemanager.appcontainers.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.io.IOException;
@@ -111,6 +113,21 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
      * Peer traffic settings for the Managed Environment
      */
     private ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration;
+
+    /*
+     * Ingress configuration for the Managed Environment.
+     */
+    private IngressConfiguration ingressConfiguration;
+
+    /*
+     * Private endpoint connections to the resource.
+     */
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled'.
+     */
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Creates an instance of ManagedEnvironmentProperties class.
@@ -417,6 +434,57 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     }
 
     /**
+     * Get the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @return the ingressConfiguration value.
+     */
+    public IngressConfiguration ingressConfiguration() {
+        return this.ingressConfiguration;
+    }
+
+    /**
+     * Set the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @param ingressConfiguration the ingressConfiguration value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withIngressConfiguration(IngressConfiguration ingressConfiguration) {
+        this.ingressConfiguration = ingressConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections to the resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -446,6 +514,12 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
         if (peerTrafficConfiguration() != null) {
             peerTrafficConfiguration().validate();
         }
+        if (ingressConfiguration() != null) {
+            ingressConfiguration().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -467,6 +541,9 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
         jsonWriter.writeStringField("infrastructureResourceGroup", this.infrastructureResourceGroup);
         jsonWriter.writeJsonField("peerAuthentication", this.peerAuthentication);
         jsonWriter.writeJsonField("peerTrafficConfiguration", this.peerTrafficConfiguration);
+        jsonWriter.writeJsonField("ingressConfiguration", this.ingressConfiguration);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -526,6 +603,16 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
                 } else if ("peerTrafficConfiguration".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.peerTrafficConfiguration
                         = ManagedEnvironmentPropertiesPeerTrafficConfiguration.fromJson(reader);
+                } else if ("ingressConfiguration".equals(fieldName)) {
+                    deserializedManagedEnvironmentProperties.ingressConfiguration
+                        = IngressConfiguration.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedManagedEnvironmentProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedManagedEnvironmentProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

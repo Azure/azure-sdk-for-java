@@ -20,9 +20,11 @@ import java.util.List;
  * <li>{@link WorkloadIdentityCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
  * <li>{@link IntelliJCredential}</li>
+ * <li>{@link VisualStudioCodeCredential}</li>
  * <li>{@link AzureCliCredential}</li>
  * <li>{@link AzurePowerShellCredential}</li>
  * <li>{@link AzureDeveloperCliCredential}</li>
+ * <li>A broker-enabled instance of {@link InteractiveBrowserCredential}</li>
  * </ol>
  *
  * <p>Consult the documentation of these credentials for more information on how they attempt authentication.</p>
@@ -76,13 +78,15 @@ import java.util.List;
  *
  * @see com.azure.identity
  * @see DefaultAzureCredentialBuilder
- * @see ManagedIdentityCredential
  * @see EnvironmentCredential
- * @see ClientSecretCredential
- * @see ClientCertificateCredential
- * @see UsernamePasswordCredential
- * @see AzureCliCredential
+ * @see WorkloadIdentityCredential
+ * @see ManagedIdentityCredential
  * @see IntelliJCredential
+ * @see VisualStudioCodeCredential
+ * @see AzureCliCredential
+ * @see AzurePowerShellCredential
+ * @see AzureDeveloperCliCredential
+ * @see InteractiveBrowserCredential
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {

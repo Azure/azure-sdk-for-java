@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DataflowEndpointLocalStorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowEndpointLocalStorage model = BinaryData.fromString("{\"persistentVolumeClaimRef\":\"uzsoi\"}")
+        DataflowEndpointLocalStorage model = BinaryData.fromString("{\"persistentVolumeClaimRef\":\"qkvpuvksgplsakn\"}")
             .toObject(DataflowEndpointLocalStorage.class);
-        Assertions.assertEquals("uzsoi", model.persistentVolumeClaimRef());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.persistentVolumeClaimRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowEndpointLocalStorage model = new DataflowEndpointLocalStorage().withPersistentVolumeClaimRef("uzsoi");
+        DataflowEndpointLocalStorage model
+            = new DataflowEndpointLocalStorage().withPersistentVolumeClaimRef("qkvpuvksgplsakn");
         model = BinaryData.fromObject(model).toObject(DataflowEndpointLocalStorage.class);
-        Assertions.assertEquals("uzsoi", model.persistentVolumeClaimRef());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.persistentVolumeClaimRef());
     }
 }

@@ -172,7 +172,7 @@ public final class StorageDiscoveryManagementClientImpl implements StorageDiscov
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-01-preview";
+        this.apiVersion = "2025-09-01";
         this.storageDiscoveryWorkspaces = new StorageDiscoveryWorkspacesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }

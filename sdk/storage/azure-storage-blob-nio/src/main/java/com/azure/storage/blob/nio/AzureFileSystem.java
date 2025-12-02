@@ -157,8 +157,8 @@ public final class AzureFileSystem extends FileSystem {
     private final Long blockSize;
     private final Long putBlobThreshold;
     private final Integer maxConcurrencyPerRequest;
-    private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
+    private final AzureSasCredential sasCredential;
     private FileStore defaultFileStore;
     private boolean closed;
 
@@ -177,7 +177,7 @@ public final class AzureFileSystem extends FileSystem {
             this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
             this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
             this.maxConcurrencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
-            this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
+            this.sasCredential = (AzureSasCredential) config.get(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL);
 
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
@@ -335,7 +335,7 @@ public final class AzureFileSystem extends FileSystem {
      * <p>
      * Each name element will be {@code String}-joined to the other elements by this file system's first path separator.
      * Naming conventions and allowed characters are as
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Naming-and-Referencing-Containers--Blobs--and-Metadata">defined</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/Naming-and-Referencing-Containers--Blobs--and-Metadata">defined</a>
      * by the Azure Blob Storage service. The root component is interpreted as the container name and all name elements
      * are interpreted as a part of the blob name. The character {@code ':'} is only allowed in the root component and
      * must be the last character of the root component.
@@ -490,5 +490,9 @@ public final class AzureFileSystem extends FileSystem {
 
     Integer getMaxConcurrencyPerRequest() {
         return this.maxConcurrencyPerRequest;
+    }
+
+    AzureSasCredential getSasCredential() {
+        return this.sasCredential;
     }
 }

@@ -53,19 +53,19 @@ import java.util.stream.Collectors;
  * Chaos Management Client.
  */
 public final class ChaosManager {
-    private Experiments experiments;
-
     private Capabilities capabilities;
-
-    private CapabilityTypes capabilityTypes;
 
     private Operations operations;
 
-    private OperationStatuses operationStatuses;
-
     private Targets targets;
 
+    private CapabilityTypes capabilityTypes;
+
+    private Experiments experiments;
+
     private TargetTypes targetTypes;
+
+    private OperationStatuses operationStatuses;
 
     private final ChaosManagementClient clientObject;
 
@@ -283,18 +283,6 @@ public final class ChaosManager {
     }
 
     /**
-     * Gets the resource collection API of Experiments. It manages Experiment.
-     * 
-     * @return Resource collection API of Experiments.
-     */
-    public Experiments experiments() {
-        if (this.experiments == null) {
-            this.experiments = new ExperimentsImpl(clientObject.getExperiments(), this);
-        }
-        return experiments;
-    }
-
-    /**
      * Gets the resource collection API of Capabilities.
      * 
      * @return Resource collection API of Capabilities.
@@ -304,18 +292,6 @@ public final class ChaosManager {
             this.capabilities = new CapabilitiesImpl(clientObject.getCapabilities(), this);
         }
         return capabilities;
-    }
-
-    /**
-     * Gets the resource collection API of CapabilityTypes.
-     * 
-     * @return Resource collection API of CapabilityTypes.
-     */
-    public CapabilityTypes capabilityTypes() {
-        if (this.capabilityTypes == null) {
-            this.capabilityTypes = new CapabilityTypesImpl(clientObject.getCapabilityTypes(), this);
-        }
-        return capabilityTypes;
     }
 
     /**
@@ -331,18 +307,6 @@ public final class ChaosManager {
     }
 
     /**
-     * Gets the resource collection API of OperationStatuses.
-     * 
-     * @return Resource collection API of OperationStatuses.
-     */
-    public OperationStatuses operationStatuses() {
-        if (this.operationStatuses == null) {
-            this.operationStatuses = new OperationStatusesImpl(clientObject.getOperationStatuses(), this);
-        }
-        return operationStatuses;
-    }
-
-    /**
      * Gets the resource collection API of Targets.
      * 
      * @return Resource collection API of Targets.
@@ -355,6 +319,30 @@ public final class ChaosManager {
     }
 
     /**
+     * Gets the resource collection API of CapabilityTypes.
+     * 
+     * @return Resource collection API of CapabilityTypes.
+     */
+    public CapabilityTypes capabilityTypes() {
+        if (this.capabilityTypes == null) {
+            this.capabilityTypes = new CapabilityTypesImpl(clientObject.getCapabilityTypes(), this);
+        }
+        return capabilityTypes;
+    }
+
+    /**
+     * Gets the resource collection API of Experiments. It manages Experiment.
+     * 
+     * @return Resource collection API of Experiments.
+     */
+    public Experiments experiments() {
+        if (this.experiments == null) {
+            this.experiments = new ExperimentsImpl(clientObject.getExperiments(), this);
+        }
+        return experiments;
+    }
+
+    /**
      * Gets the resource collection API of TargetTypes.
      * 
      * @return Resource collection API of TargetTypes.
@@ -364,6 +352,18 @@ public final class ChaosManager {
             this.targetTypes = new TargetTypesImpl(clientObject.getTargetTypes(), this);
         }
         return targetTypes;
+    }
+
+    /**
+     * Gets the resource collection API of OperationStatuses.
+     * 
+     * @return Resource collection API of OperationStatuses.
+     */
+    public OperationStatuses operationStatuses() {
+        if (this.operationStatuses == null) {
+            this.operationStatuses = new OperationStatusesImpl(clientObject.getOperationStatuses(), this);
+        }
+        return operationStatuses;
     }
 
     /**

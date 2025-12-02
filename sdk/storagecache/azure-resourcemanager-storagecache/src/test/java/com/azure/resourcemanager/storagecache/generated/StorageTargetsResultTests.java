@@ -23,75 +23,133 @@ public final class StorageTargetsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTargetsResult model = BinaryData.fromString(
-            "{\"nextLink\":\"sfgytguslfead\",\"value\":[{\"properties\":{\"junctions\":[{\"namespacePath\":\"hejhzisx\",\"targetPath\":\"pelol\",\"nfsExport\":\"vk\",\"nfsAccessPolicy\":\"pqvujzraehtwdwrf\"},{\"namespacePath\":\"wib\",\"targetPath\":\"cdl\",\"nfsExport\":\"shfwpracstwity\",\"nfsAccessPolicy\":\"evxccedcp\"},{\"namespacePath\":\"dyodnwzxltj\",\"targetPath\":\"nhltiugcxn\",\"nfsExport\":\"vwxqibyqunyo\",\"nfsAccessPolicy\":\"wlmdjrkv\"}],\"targetType\":\"nfs3\",\"provisioningState\":\"Updating\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"bodacizsjq\",\"usageModel\":\"krribdeibqi\",\"verificationTimer\":840101476,\"writeBackTimer\":2080529192},\"clfs\":{\"target\":\"ndzwmkrefa\"},\"unknown\":{\"attributes\":{\"yhgbijtjivfx\":\"rwkq\",\"stawfsdjpvkv\":\"sjabibs\"}},\"blobNfs\":{\"target\":\"xbkzbzkdvncj\",\"usageModel\":\"udurgkakmokz\",\"verificationTimer\":523614486,\"writeBackTimer\":615814676},\"allocationPercentage\":1622584038},\"location\":\"mouwqlgzrfzeey\",\"id\":\"izikayuhq\",\"name\":\"bjbsybb\",\"type\":\"wrv\"}]}")
+            "{\"nextLink\":\"clewyhm\",\"value\":[{\"properties\":{\"junctions\":[{\"namespacePath\":\"pofncck\",\"targetPath\":\"fz\",\"nfsExport\":\"hxx\",\"nfsAccessPolicy\":\"yq\"},{\"namespacePath\":\"zfeqztppri\",\"targetPath\":\"xorjaltolmncwsob\",\"nfsExport\":\"csdbnwdcfhuc\",\"nfsAccessPolicy\":\"pfuvglsbjjca\"},{\"namespacePath\":\"xbvtvudu\",\"targetPath\":\"cormr\",\"nfsExport\":\"qtvcofudflvkgj\",\"nfsAccessPolicy\":\"gdknnqv\"},{\"namespacePath\":\"znqntoru\",\"targetPath\":\"gsahmkycgrauw\",\"nfsExport\":\"etaebu\",\"nfsAccessPolicy\":\"vdmovsmzlxwabm\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Deleting\",\"state\":\"Busy\",\"nfs3\":{\"target\":\"vtpuqujmqlgk\",\"usageModel\":\"tndoaongbjc\",\"verificationTimer\":905406491,\"writeBackTimer\":175195194},\"clfs\":{\"target\":\"jed\"},\"unknown\":{\"attributes\":{\"kojvd\":\"ae\",\"ybxarzgszu\":\"pzfoqoui\",\"hkh\":\"oxciqopidoamcio\"}},\"blobNfs\":{\"target\":\"khnzbonlw\",\"usageModel\":\"oegokdwbwh\",\"verificationTimer\":83276112,\"writeBackTimer\":2115458799},\"allocationPercentage\":2022074677},\"location\":\"exztvbtq\",\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"},{\"properties\":{\"junctions\":[{\"namespacePath\":\"bykutw\",\"targetPath\":\"hpagm\",\"nfsExport\":\"skdsnfdsdoakg\",\"nfsAccessPolicy\":\"lmkk\"},{\"namespacePath\":\"vdlhewpusdsttwv\",\"targetPath\":\"vbbejdcng\",\"nfsExport\":\"m\",\"nfsAccessPolicy\":\"kufgmj\"},{\"namespacePath\":\"wr\",\"targetPath\":\"rtwaenuuzko\",\"nfsExport\":\"minrfdw\",\"nfsAccessPolicy\":\"uhhziuiefozbhdm\"}],\"targetType\":\"nfs3\",\"provisioningState\":\"Failed\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"ft\",\"usageModel\":\"ae\",\"verificationTimer\":2084931512,\"writeBackTimer\":674060065},\"clfs\":{\"target\":\"cslfaoqzpiyylha\"},\"unknown\":{\"attributes\":{\"sp\":\"hc\",\"scywuggwoluhc\":\"kaivwit\"}},\"blobNfs\":{\"target\":\"emh\",\"usageModel\":\"rsbrgzdwm\",\"verificationTimer\":1592939681,\"writeBackTimer\":827255205},\"allocationPercentage\":101691596},\"location\":\"xggicccnxqhuexmk\",\"id\":\"lstvlzywe\",\"name\":\"hz\",\"type\":\"ncsdtclusiyp\"},{\"properties\":{\"junctions\":[{\"namespacePath\":\"tg\",\"targetPath\":\"lfeadcygq\",\"nfsExport\":\"yhejhzisxgfp\",\"nfsAccessPolicy\":\"olppvksrpqvujz\"},{\"namespacePath\":\"ehtwdwrft\",\"targetPath\":\"iby\",\"nfsExport\":\"dl\",\"nfsAccessPolicy\":\"shfwpracstwity\"},{\"namespacePath\":\"evxccedcp\",\"targetPath\":\"dyodnwzxltj\",\"nfsExport\":\"nhltiugcxn\",\"nfsAccessPolicy\":\"vwxqibyqunyo\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Canceled\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"kv\",\"usageModel\":\"bvfvpdbod\",\"verificationTimer\":467562141,\"writeBackTimer\":789130782},\"clfs\":{\"target\":\"lhkrribdeibqipqk\"},\"unknown\":{\"attributes\":{\"pjorwkqnyhg\":\"ndzwmkrefa\",\"jivfxzsjabib\":\"ij\"}},\"blobNfs\":{\"target\":\"tawfsdjpvkvp\",\"usageModel\":\"xbkzbzkdvncj\",\"verificationTimer\":1067469550,\"writeBackTimer\":1574886958},\"allocationPercentage\":1625369627},\"location\":\"akmokzhjjklf\",\"id\":\"mouwqlgzrfzeey\",\"name\":\"bizikayuhq\",\"type\":\"bjbsybb\"}]}")
             .toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("sfgytguslfead", model.nextLink());
-        Assertions.assertEquals("hejhzisx", model.value().get(0).junctions().get(0).namespacePath());
-        Assertions.assertEquals("pelol", model.value().get(0).junctions().get(0).targetPath());
-        Assertions.assertEquals("vk", model.value().get(0).junctions().get(0).nfsExport());
-        Assertions.assertEquals("pqvujzraehtwdwrf", model.value().get(0).junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
-        Assertions.assertEquals(OperationalStateType.SUSPENDED, model.value().get(0).state());
-        Assertions.assertEquals("bodacizsjq", model.value().get(0).nfs3().target());
-        Assertions.assertEquals("krribdeibqi", model.value().get(0).nfs3().usageModel());
-        Assertions.assertEquals(840101476, model.value().get(0).nfs3().verificationTimer());
-        Assertions.assertEquals(2080529192, model.value().get(0).nfs3().writeBackTimer());
-        Assertions.assertEquals("ndzwmkrefa", model.value().get(0).clfs().target());
-        Assertions.assertEquals("rwkq", model.value().get(0).unknown().attributes().get("yhgbijtjivfx"));
-        Assertions.assertEquals("xbkzbzkdvncj", model.value().get(0).blobNfs().target());
-        Assertions.assertEquals("udurgkakmokz", model.value().get(0).blobNfs().usageModel());
-        Assertions.assertEquals(523614486, model.value().get(0).blobNfs().verificationTimer());
-        Assertions.assertEquals(615814676, model.value().get(0).blobNfs().writeBackTimer());
+        Assertions.assertEquals("clewyhm", model.nextLink());
+        Assertions.assertEquals("pofncck", model.value().get(0).junctions().get(0).namespacePath());
+        Assertions.assertEquals("fz", model.value().get(0).junctions().get(0).targetPath());
+        Assertions.assertEquals("hxx", model.value().get(0).junctions().get(0).nfsExport());
+        Assertions.assertEquals("yq", model.value().get(0).junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.CLFS, model.value().get(0).targetType());
+        Assertions.assertEquals(OperationalStateType.BUSY, model.value().get(0).state());
+        Assertions.assertEquals("vtpuqujmqlgk", model.value().get(0).nfs3().target());
+        Assertions.assertEquals("tndoaongbjc", model.value().get(0).nfs3().usageModel());
+        Assertions.assertEquals(905406491, model.value().get(0).nfs3().verificationTimer());
+        Assertions.assertEquals(175195194, model.value().get(0).nfs3().writeBackTimer());
+        Assertions.assertEquals("jed", model.value().get(0).clfs().target());
+        Assertions.assertEquals("ae", model.value().get(0).unknown().attributes().get("kojvd"));
+        Assertions.assertEquals("khnzbonlw", model.value().get(0).blobNfs().target());
+        Assertions.assertEquals("oegokdwbwh", model.value().get(0).blobNfs().usageModel());
+        Assertions.assertEquals(83276112, model.value().get(0).blobNfs().verificationTimer());
+        Assertions.assertEquals(2115458799, model.value().get(0).blobNfs().writeBackTimer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageTargetsResult model = new StorageTargetsResult().withNextLink("sfgytguslfead")
-            .withValue(Arrays.asList(new StorageTargetInner()
-                .withJunctions(Arrays.asList(
-                    new NamespaceJunction().withNamespacePath("hejhzisx")
-                        .withTargetPath("pelol")
-                        .withNfsExport("vk")
-                        .withNfsAccessPolicy("pqvujzraehtwdwrf"),
-                    new NamespaceJunction().withNamespacePath("wib")
-                        .withTargetPath("cdl")
-                        .withNfsExport("shfwpracstwity")
-                        .withNfsAccessPolicy("evxccedcp"),
-                    new NamespaceJunction().withNamespacePath("dyodnwzxltj")
-                        .withTargetPath("nhltiugcxn")
-                        .withNfsExport("vwxqibyqunyo")
-                        .withNfsAccessPolicy("wlmdjrkv")))
-                .withTargetType(StorageTargetType.NFS3)
-                .withState(OperationalStateType.SUSPENDED)
-                .withNfs3(new Nfs3Target().withTarget("bodacizsjq")
-                    .withUsageModel("krribdeibqi")
-                    .withVerificationTimer(840101476)
-                    .withWriteBackTimer(2080529192))
-                .withClfs(new ClfsTarget().withTarget("ndzwmkrefa"))
-                .withUnknown(
-                    new UnknownTarget().withAttributes(mapOf("yhgbijtjivfx", "rwkq", "stawfsdjpvkv", "sjabibs")))
-                .withBlobNfs(new BlobNfsTarget().withTarget("xbkzbzkdvncj")
-                    .withUsageModel("udurgkakmokz")
-                    .withVerificationTimer(523614486)
-                    .withWriteBackTimer(615814676))));
+        StorageTargetsResult model = new StorageTargetsResult().withNextLink("clewyhm")
+            .withValue(Arrays.asList(
+                new StorageTargetInner()
+                    .withJunctions(Arrays.asList(
+                        new NamespaceJunction().withNamespacePath("pofncck")
+                            .withTargetPath("fz")
+                            .withNfsExport("hxx")
+                            .withNfsAccessPolicy("yq"),
+                        new NamespaceJunction().withNamespacePath("zfeqztppri")
+                            .withTargetPath("xorjaltolmncwsob")
+                            .withNfsExport("csdbnwdcfhuc")
+                            .withNfsAccessPolicy("pfuvglsbjjca"),
+                        new NamespaceJunction().withNamespacePath("xbvtvudu")
+                            .withTargetPath("cormr")
+                            .withNfsExport("qtvcofudflvkgj")
+                            .withNfsAccessPolicy("gdknnqv"),
+                        new NamespaceJunction().withNamespacePath("znqntoru")
+                            .withTargetPath("gsahmkycgrauw")
+                            .withNfsExport("etaebu")
+                            .withNfsAccessPolicy("vdmovsmzlxwabm")))
+                    .withTargetType(StorageTargetType.CLFS)
+                    .withState(OperationalStateType.BUSY)
+                    .withNfs3(new Nfs3Target().withTarget("vtpuqujmqlgk")
+                        .withUsageModel("tndoaongbjc")
+                        .withVerificationTimer(905406491)
+                        .withWriteBackTimer(175195194))
+                    .withClfs(new ClfsTarget().withTarget("jed"))
+                    .withUnknown(new UnknownTarget()
+                        .withAttributes(mapOf("kojvd", "ae", "ybxarzgszu", "pzfoqoui", "hkh", "oxciqopidoamcio")))
+                    .withBlobNfs(new BlobNfsTarget().withTarget("khnzbonlw")
+                        .withUsageModel("oegokdwbwh")
+                        .withVerificationTimer(83276112)
+                        .withWriteBackTimer(2115458799)),
+                new StorageTargetInner()
+                    .withJunctions(Arrays.asList(
+                        new NamespaceJunction().withNamespacePath("bykutw")
+                            .withTargetPath("hpagm")
+                            .withNfsExport("skdsnfdsdoakg")
+                            .withNfsAccessPolicy("lmkk"),
+                        new NamespaceJunction().withNamespacePath("vdlhewpusdsttwv")
+                            .withTargetPath("vbbejdcng")
+                            .withNfsExport("m")
+                            .withNfsAccessPolicy("kufgmj"),
+                        new NamespaceJunction().withNamespacePath("wr")
+                            .withTargetPath("rtwaenuuzko")
+                            .withNfsExport("minrfdw")
+                            .withNfsAccessPolicy("uhhziuiefozbhdm")))
+                    .withTargetType(StorageTargetType.NFS3)
+                    .withState(OperationalStateType.FLUSHING)
+                    .withNfs3(new Nfs3Target().withTarget("ft")
+                        .withUsageModel("ae")
+                        .withVerificationTimer(2084931512)
+                        .withWriteBackTimer(674060065))
+                    .withClfs(new ClfsTarget().withTarget("cslfaoqzpiyylha"))
+                    .withUnknown(new UnknownTarget().withAttributes(mapOf("sp", "hc", "scywuggwoluhc", "kaivwit")))
+                    .withBlobNfs(new BlobNfsTarget().withTarget("emh")
+                        .withUsageModel("rsbrgzdwm")
+                        .withVerificationTimer(1592939681)
+                        .withWriteBackTimer(827255205)),
+                new StorageTargetInner()
+                    .withJunctions(Arrays.asList(
+                        new NamespaceJunction().withNamespacePath("tg")
+                            .withTargetPath("lfeadcygq")
+                            .withNfsExport("yhejhzisxgfp")
+                            .withNfsAccessPolicy("olppvksrpqvujz"),
+                        new NamespaceJunction().withNamespacePath("ehtwdwrft")
+                            .withTargetPath("iby")
+                            .withNfsExport("dl")
+                            .withNfsAccessPolicy("shfwpracstwity"),
+                        new NamespaceJunction().withNamespacePath("evxccedcp")
+                            .withTargetPath("dyodnwzxltj")
+                            .withNfsExport("nhltiugcxn")
+                            .withNfsAccessPolicy("vwxqibyqunyo")))
+                    .withTargetType(StorageTargetType.CLFS)
+                    .withState(OperationalStateType.FLUSHING)
+                    .withNfs3(new Nfs3Target().withTarget("kv")
+                        .withUsageModel("bvfvpdbod")
+                        .withVerificationTimer(467562141)
+                        .withWriteBackTimer(789130782))
+                    .withClfs(new ClfsTarget().withTarget("lhkrribdeibqipqk"))
+                    .withUnknown(
+                        new UnknownTarget().withAttributes(mapOf("pjorwkqnyhg", "ndzwmkrefa", "jivfxzsjabib", "ij")))
+                    .withBlobNfs(new BlobNfsTarget().withTarget("tawfsdjpvkvp")
+                        .withUsageModel("xbkzbzkdvncj")
+                        .withVerificationTimer(1067469550)
+                        .withWriteBackTimer(1574886958))));
         model = BinaryData.fromObject(model).toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("sfgytguslfead", model.nextLink());
-        Assertions.assertEquals("hejhzisx", model.value().get(0).junctions().get(0).namespacePath());
-        Assertions.assertEquals("pelol", model.value().get(0).junctions().get(0).targetPath());
-        Assertions.assertEquals("vk", model.value().get(0).junctions().get(0).nfsExport());
-        Assertions.assertEquals("pqvujzraehtwdwrf", model.value().get(0).junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
-        Assertions.assertEquals(OperationalStateType.SUSPENDED, model.value().get(0).state());
-        Assertions.assertEquals("bodacizsjq", model.value().get(0).nfs3().target());
-        Assertions.assertEquals("krribdeibqi", model.value().get(0).nfs3().usageModel());
-        Assertions.assertEquals(840101476, model.value().get(0).nfs3().verificationTimer());
-        Assertions.assertEquals(2080529192, model.value().get(0).nfs3().writeBackTimer());
-        Assertions.assertEquals("ndzwmkrefa", model.value().get(0).clfs().target());
-        Assertions.assertEquals("rwkq", model.value().get(0).unknown().attributes().get("yhgbijtjivfx"));
-        Assertions.assertEquals("xbkzbzkdvncj", model.value().get(0).blobNfs().target());
-        Assertions.assertEquals("udurgkakmokz", model.value().get(0).blobNfs().usageModel());
-        Assertions.assertEquals(523614486, model.value().get(0).blobNfs().verificationTimer());
-        Assertions.assertEquals(615814676, model.value().get(0).blobNfs().writeBackTimer());
+        Assertions.assertEquals("clewyhm", model.nextLink());
+        Assertions.assertEquals("pofncck", model.value().get(0).junctions().get(0).namespacePath());
+        Assertions.assertEquals("fz", model.value().get(0).junctions().get(0).targetPath());
+        Assertions.assertEquals("hxx", model.value().get(0).junctions().get(0).nfsExport());
+        Assertions.assertEquals("yq", model.value().get(0).junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.CLFS, model.value().get(0).targetType());
+        Assertions.assertEquals(OperationalStateType.BUSY, model.value().get(0).state());
+        Assertions.assertEquals("vtpuqujmqlgk", model.value().get(0).nfs3().target());
+        Assertions.assertEquals("tndoaongbjc", model.value().get(0).nfs3().usageModel());
+        Assertions.assertEquals(905406491, model.value().get(0).nfs3().verificationTimer());
+        Assertions.assertEquals(175195194, model.value().get(0).nfs3().writeBackTimer());
+        Assertions.assertEquals("jed", model.value().get(0).clfs().target());
+        Assertions.assertEquals("ae", model.value().get(0).unknown().attributes().get("kojvd"));
+        Assertions.assertEquals("khnzbonlw", model.value().get(0).blobNfs().target());
+        Assertions.assertEquals("oegokdwbwh", model.value().get(0).blobNfs().usageModel());
+        Assertions.assertEquals(83276112, model.value().get(0).blobNfs().verificationTimer());
+        Assertions.assertEquals(2115458799, model.value().get(0).blobNfs().writeBackTimer());
     }
 
     // Use "Map.of" if available

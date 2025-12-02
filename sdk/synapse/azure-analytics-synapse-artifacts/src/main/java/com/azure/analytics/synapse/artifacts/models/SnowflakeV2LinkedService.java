@@ -86,10 +86,23 @@ public class SnowflakeV2LinkedService extends LinkedService {
     private Object scope;
 
     /*
-     * The host name of the Snowflake account.
+     * The default access control role to use in the Snowflake session. Type: string (or Expression with resultType
+     * string).
+     */
+    @Generated
+    private Object role;
+
+    /*
+     * The host name of the Snowflake account. Type: string (or Expression with resultType string).
      */
     @Generated
     private Object host;
+
+    /*
+     * Schema name for connection. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object schema;
 
     /*
      * The Azure key vault secret reference of privateKey for KeyPair auth.
@@ -359,7 +372,32 @@ public class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the host property: The host name of the Snowflake account.
+     * Get the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the role value.
+     */
+    @Generated
+    public Object getRole() {
+        return this.role;
+    }
+
+    /**
+     * Set the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param role the role value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    @Generated
+    public SnowflakeV2LinkedService setRole(Object role) {
+        this.role = role;
+        return this;
+    }
+
+    /**
+     * Get the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the host value.
      */
@@ -369,7 +407,8 @@ public class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the host property: The host name of the Snowflake account.
+     * Set the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
      * 
      * @param host the host value to set.
      * @return the SnowflakeV2LinkedService object itself.
@@ -377,6 +416,28 @@ public class SnowflakeV2LinkedService extends LinkedService {
     @Generated
     public SnowflakeV2LinkedService setHost(Object host) {
         this.host = host;
+        return this;
+    }
+
+    /**
+     * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @return the schema value.
+     */
+    @Generated
+    public Object getSchema() {
+        return this.schema;
+    }
+
+    /**
+     * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @param schema the schema value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    @Generated
+    public SnowflakeV2LinkedService setSchema(Object schema) {
+        this.schema = schema;
         return this;
     }
 
@@ -523,7 +584,9 @@ public class SnowflakeV2LinkedService extends LinkedService {
             || clientSecret != null
             || tenantId != null
             || scope != null
+            || role != null
             || host != null
+            || schema != null
             || privateKey != null
             || privateKeyPassphrase != null
             || encryptedCredential != null) {
@@ -547,8 +610,14 @@ public class SnowflakeV2LinkedService extends LinkedService {
             if (this.scope != null) {
                 jsonWriter.writeUntypedField("scope", this.scope);
             }
+            if (this.role != null) {
+                jsonWriter.writeUntypedField("role", this.role);
+            }
             if (this.host != null) {
                 jsonWriter.writeUntypedField("host", this.host);
+            }
+            if (this.schema != null) {
+                jsonWriter.writeUntypedField("schema", this.schema);
             }
             jsonWriter.writeJsonField("privateKey", this.privateKey);
             jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
@@ -622,8 +691,12 @@ public class SnowflakeV2LinkedService extends LinkedService {
                             deserializedSnowflakeV2LinkedService.tenantId = reader.readUntyped();
                         } else if ("scope".equals(fieldName)) {
                             deserializedSnowflakeV2LinkedService.scope = reader.readUntyped();
+                        } else if ("role".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.role = reader.readUntyped();
                         } else if ("host".equals(fieldName)) {
                             deserializedSnowflakeV2LinkedService.host = reader.readUntyped();
+                        } else if ("schema".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.schema = reader.readUntyped();
                         } else if ("privateKey".equals(fieldName)) {
                             deserializedSnowflakeV2LinkedService.privateKey = SecretBase.fromJson(reader);
                         } else if ("privateKeyPassphrase".equals(fieldName)) {

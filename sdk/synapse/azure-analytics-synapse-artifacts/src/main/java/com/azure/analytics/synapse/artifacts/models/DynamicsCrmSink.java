@@ -44,6 +44,20 @@ public final class DynamicsCrmSink extends CopySink {
     @Generated
     private Object alternateKeyName;
 
+    /*
+     * Controls the bypass of Dataverse custom business logic. Type: string (or Expression with resultType string).
+     * Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object bypassBusinessLogicExecution;
+
+    /*
+     * Controls the bypass of Power Automate flows. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
+     */
+    @Generated
+    private Object bypassPowerAutomateFlows;
+
     /**
      * Creates an instance of DynamicsCrmSink class.
      */
@@ -133,6 +147,54 @@ public final class DynamicsCrmSink extends CopySink {
     }
 
     /**
+     * Get the bypassBusinessLogicExecution property: Controls the bypass of Dataverse custom business logic. Type:
+     * string (or Expression with resultType string). Type: string (or Expression with resultType string).
+     * 
+     * @return the bypassBusinessLogicExecution value.
+     */
+    @Generated
+    public Object getBypassBusinessLogicExecution() {
+        return this.bypassBusinessLogicExecution;
+    }
+
+    /**
+     * Set the bypassBusinessLogicExecution property: Controls the bypass of Dataverse custom business logic. Type:
+     * string (or Expression with resultType string). Type: string (or Expression with resultType string).
+     * 
+     * @param bypassBusinessLogicExecution the bypassBusinessLogicExecution value to set.
+     * @return the DynamicsCrmSink object itself.
+     */
+    @Generated
+    public DynamicsCrmSink setBypassBusinessLogicExecution(Object bypassBusinessLogicExecution) {
+        this.bypassBusinessLogicExecution = bypassBusinessLogicExecution;
+        return this;
+    }
+
+    /**
+     * Get the bypassPowerAutomateFlows property: Controls the bypass of Power Automate flows. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     * 
+     * @return the bypassPowerAutomateFlows value.
+     */
+    @Generated
+    public Object getBypassPowerAutomateFlows() {
+        return this.bypassPowerAutomateFlows;
+    }
+
+    /**
+     * Set the bypassPowerAutomateFlows property: Controls the bypass of Power Automate flows. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     * 
+     * @param bypassPowerAutomateFlows the bypassPowerAutomateFlows value to set.
+     * @return the DynamicsCrmSink object itself.
+     */
+    @Generated
+    public DynamicsCrmSink setBypassPowerAutomateFlows(Object bypassPowerAutomateFlows) {
+        this.bypassPowerAutomateFlows = bypassPowerAutomateFlows;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -212,6 +274,12 @@ public final class DynamicsCrmSink extends CopySink {
         if (this.alternateKeyName != null) {
             jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
         }
+        if (this.bypassBusinessLogicExecution != null) {
+            jsonWriter.writeUntypedField("bypassBusinessLogicExecution", this.bypassBusinessLogicExecution);
+        }
+        if (this.bypassPowerAutomateFlows != null) {
+            jsonWriter.writeUntypedField("bypassPowerAutomateFlows", this.bypassPowerAutomateFlows);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -257,6 +325,10 @@ public final class DynamicsCrmSink extends CopySink {
                     deserializedDynamicsCrmSink.ignoreNullValues = reader.readUntyped();
                 } else if ("alternateKeyName".equals(fieldName)) {
                     deserializedDynamicsCrmSink.alternateKeyName = reader.readUntyped();
+                } else if ("bypassBusinessLogicExecution".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.bypassBusinessLogicExecution = reader.readUntyped();
+                } else if ("bypassPowerAutomateFlows".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.bypassPowerAutomateFlows = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

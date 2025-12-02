@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
-      <version>2.73.6</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <version>2.73.8</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Apache HttpClient -->
@@ -79,13 +79,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- For some reason upgrading past Mockito 4.6.1 requires this to be added. -->
@@ -98,26 +98,26 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -162,6 +162,11 @@
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
                     <exclude>META-INF/services/java.security.Provider</exclude>
+                    <!-- Exclude OSGI metadata since it references original (unshaded) package names
+                         and is not applicable after relocation -->
+                    <exclude>**/OSGI-INF/**</exclude>
+                    <!-- Exclude Bouncy Castle's module-info since it references unshaded packages. -->
+                    <exclude>**/module-info.class</exclude>
                   </excludes>
                 </filter>
               </filters>
@@ -169,6 +174,21 @@
                 <relocation>
                   <pattern>org.bouncycastle</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
+                </relocation>
+                <!-- Manually relocate Bouncy Castle multi-release classes to the correct shaded package.
+                     This workaround is needed because the maven-shade-plugin (as of 3.6.1) relocates the
+                     bytecode but does not move the class files to the shaded directory structure (MSHADE-406).
+                     This additional relocation rule matches the file path pattern and moves multi-release
+                     classes to preserve Java 9+ optimizations while preventing package leakage.
+                     Based on: https://github.com/datafaker-net/datafaker/pull/1008
+                     See:
+                       - https://github.com/apache/maven-shade-plugin/pull/202
+                       - https://issues.apache.org/jira/browse/MSHADE-406
+                       - https://github.com/Azure/azure-sdk-for-java/issues/45277 -->
+                <relocation>
+                  <pattern>META-INF/versions/(\d+)/org/bouncycastle</pattern>
+                  <shadedPattern>META-INF/versions/$1/com/azure/security/keyvault/jca/implementation/shaded/org/bouncycastle</shadedPattern>
+                  <rawString>true</rawString>
                 </relocation>
               </relocations>
               <transformers>
@@ -269,12 +289,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.bouncycastle:bcpkix-lts8on:[2.73.6]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+                <include>org.bouncycastle:bcpkix-lts8on:[2.73.8]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                 <include>org.apache.httpcomponents.client5:httpclient5:[5.4.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
                 <include>org.brotli:dec:[0.1.2]</include> <!-- {x-include-update;org.brotli:dec;external_dependency} -->

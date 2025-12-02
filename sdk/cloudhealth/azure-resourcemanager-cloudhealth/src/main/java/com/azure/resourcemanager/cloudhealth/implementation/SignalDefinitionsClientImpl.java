@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cloudhealth.fluent.SignalDefinitionsClient;
 import com.azure.resourcemanager.cloudhealth.fluent.models.SignalDefinitionInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.SignalDefinitionListResult;
@@ -111,7 +110,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SignalDefinitionInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -119,10 +118,9 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("signalDefinitionName") String signalDefinitionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("signalDefinitionName") String signalDefinitionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -130,8 +128,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("signalDefinitionName") String signalDefinitionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("signalDefinitionName") String signalDefinitionName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions")
@@ -184,26 +181,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SignalDefinitionInner>> getWithResponseAsync(String resourceGroupName, String healthModelName,
         String signalDefinitionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, accept, context))
@@ -243,28 +220,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SignalDefinitionInner> getWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, healthModelName, signalDefinitionName, accept, context);
@@ -302,31 +257,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SignalDefinitionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String signalDefinitionName, SignalDefinitionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -371,34 +301,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SignalDefinitionInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -439,29 +341,9 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String signalDefinitionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -497,31 +379,8 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, context);
     }
 
     /**
@@ -555,22 +414,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalDefinitionInner>> listByHealthModelSinglePageAsync(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModel(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -631,24 +474,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -673,24 +498,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -749,13 +556,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalDefinitionInner>> listByHealthModelNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModelNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -775,15 +575,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -803,21 +594,10 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SignalDefinitionsClientImpl.class);
 }

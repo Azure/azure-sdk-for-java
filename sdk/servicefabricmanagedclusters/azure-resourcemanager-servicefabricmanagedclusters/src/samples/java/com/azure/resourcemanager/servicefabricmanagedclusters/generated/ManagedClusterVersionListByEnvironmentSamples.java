@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClus
  */
 public final class ManagedClusterVersionListByEnvironmentSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ManagedClusterVersionListByEnvironment.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedClusterVersionListByEnvironment.json
      */
     /**
      * Sample code: List cluster versions by environment.

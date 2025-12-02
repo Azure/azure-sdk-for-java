@@ -4,6 +4,7 @@
 
 /**
  * Package containing the inner data models for ContainerAppsApiClient.
- * null.
+ * Logic app is an extension resource on container app and the extension resource enables logic specific operations on
+ * the container app through the APIs listed.
  */
 package com.azure.resourcemanager.appcontainers.fluent.models;

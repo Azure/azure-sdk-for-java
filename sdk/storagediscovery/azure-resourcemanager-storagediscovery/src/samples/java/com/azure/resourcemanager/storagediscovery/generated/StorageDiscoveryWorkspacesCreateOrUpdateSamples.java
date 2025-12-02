@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/StorageDiscoveryWorkspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a StorageDiscoveryWorkspace.

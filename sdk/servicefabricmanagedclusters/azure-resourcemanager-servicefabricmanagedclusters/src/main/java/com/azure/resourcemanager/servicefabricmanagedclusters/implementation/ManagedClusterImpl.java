@@ -292,6 +292,10 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
         return this.innerModel().vmImage();
     }
 
+    public Boolean enableOutboundOnlyNodeTypes() {
+        return this.innerModel().enableOutboundOnlyNodeTypes();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -352,16 +356,14 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
     public ManagedCluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getManagedClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
         return this;
     }
 
     public ManagedCluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getManagedClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateParameters, context)
-            .getValue();
+            .update(resourceGroupName, clusterName, updateParameters, context);
         return this;
     }
 
@@ -622,6 +624,11 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
 
     public ManagedClusterImpl withVmImage(String vmImage) {
         this.innerModel().withVmImage(vmImage);
+        return this;
+    }
+
+    public ManagedClusterImpl withEnableOutboundOnlyNodeTypes(Boolean enableOutboundOnlyNodeTypes) {
+        this.innerModel().withEnableOutboundOnlyNodeTypes(enableOutboundOnlyNodeTypes);
         return this;
     }
 

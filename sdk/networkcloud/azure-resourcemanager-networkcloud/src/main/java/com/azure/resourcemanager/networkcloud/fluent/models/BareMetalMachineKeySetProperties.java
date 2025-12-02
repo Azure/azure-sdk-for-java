@@ -69,6 +69,11 @@ public final class BareMetalMachineKeySetProperties implements JsonSerializable<
     private BareMetalMachineKeySetPrivilegeLevel privilegeLevel;
 
     /*
+     * The name of the access level to apply when the privilege level is set to Other.
+     */
+    private String privilegeLevelName;
+
+    /*
      * The provisioning state of the bare metal machine key set.
      */
     private BareMetalMachineKeySetProvisioningState provisioningState;
@@ -225,6 +230,28 @@ public final class BareMetalMachineKeySetProperties implements JsonSerializable<
     }
 
     /**
+     * Get the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @return the privilegeLevelName value.
+     */
+    public String privilegeLevelName() {
+        return this.privilegeLevelName;
+    }
+
+    /**
+     * Set the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @param privilegeLevelName the privilegeLevelName value to set.
+     * @return the BareMetalMachineKeySetProperties object itself.
+     */
+    public BareMetalMachineKeySetProperties withPrivilegeLevelName(String privilegeLevelName) {
+        this.privilegeLevelName = privilegeLevelName;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the bare metal machine key set.
      * 
      * @return the provisioningState value.
@@ -317,6 +344,7 @@ public final class BareMetalMachineKeySetProperties implements JsonSerializable<
             this.privilegeLevel == null ? null : this.privilegeLevel.toString());
         jsonWriter.writeArrayField("userList", this.userList, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("osGroupName", this.osGroupName);
+        jsonWriter.writeStringField("privilegeLevelName", this.privilegeLevelName);
         return jsonWriter.writeEndObject();
     }
 
@@ -361,6 +389,8 @@ public final class BareMetalMachineKeySetProperties implements JsonSerializable<
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("osGroupName".equals(fieldName)) {
                     deserializedBareMetalMachineKeySetProperties.osGroupName = reader.getString();
+                } else if ("privilegeLevelName".equals(fieldName)) {
+                    deserializedBareMetalMachineKeySetProperties.privilegeLevelName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBareMetalMachineKeySetProperties.provisioningState
                         = BareMetalMachineKeySetProvisioningState.fromString(reader.getString());

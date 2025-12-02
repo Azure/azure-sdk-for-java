@@ -111,6 +111,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private Boolean dynamicThrottlingEnabled;
 
     /*
+     * The flag to disable stored completions.
+     */
+    private Boolean storedCompletionsDisabled;
+
+    /*
      * The quotaLimit property.
      */
     private QuotaLimit quotaLimit;
@@ -171,11 +176,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private RaiMonitorConfig raiMonitorConfig;
 
     /*
-     * Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely within
-     * the user's private network, eliminating public internet exposure while maintaining control over network
-     * configurations and resources.
+     * The networkInjections property.
      */
-    private NetworkInjections networkInjections;
+    private List<NetworkInjection> networkInjections;
 
     /*
      * Specifies whether this resource support project management as child resources, used as containers for access
@@ -465,6 +468,26 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the storedCompletionsDisabled property: The flag to disable stored completions.
+     * 
+     * @return the storedCompletionsDisabled value.
+     */
+    public Boolean storedCompletionsDisabled() {
+        return this.storedCompletionsDisabled;
+    }
+
+    /**
+     * Set the storedCompletionsDisabled property: The flag to disable stored completions.
+     * 
+     * @param storedCompletionsDisabled the storedCompletionsDisabled value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withStoredCompletionsDisabled(Boolean storedCompletionsDisabled) {
+        this.storedCompletionsDisabled = storedCompletionsDisabled;
+        return this;
+    }
+
+    /**
      * Get the quotaLimit property: The quotaLimit property.
      * 
      * @return the quotaLimit value.
@@ -639,25 +662,21 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the networkInjections property: Specifies in AI Foundry where virtual network injection occurs to secure
-     * scenarios like Agents entirely within the user's private network, eliminating public internet exposure while
-     * maintaining control over network configurations and resources.
+     * Get the networkInjections property: The networkInjections property.
      * 
      * @return the networkInjections value.
      */
-    public NetworkInjections networkInjections() {
+    public List<NetworkInjection> networkInjections() {
         return this.networkInjections;
     }
 
     /**
-     * Set the networkInjections property: Specifies in AI Foundry where virtual network injection occurs to secure
-     * scenarios like Agents entirely within the user's private network, eliminating public internet exposure while
-     * maintaining control over network configurations and resources.
+     * Set the networkInjections property: The networkInjections property.
      * 
      * @param networkInjections the networkInjections value to set.
      * @return the AccountProperties object itself.
      */
-    public AccountProperties withNetworkInjections(NetworkInjections networkInjections) {
+    public AccountProperties withNetworkInjections(List<NetworkInjection> networkInjections) {
         this.networkInjections = networkInjections;
         return this;
     }
@@ -777,7 +796,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
             raiMonitorConfig().validate();
         }
         if (networkInjections() != null) {
-            networkInjections().validate();
+            networkInjections().forEach(e -> e.validate());
         }
     }
 
@@ -798,6 +817,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeJsonField("apiProperties", this.apiProperties);
         jsonWriter.writeBooleanField("dynamicThrottlingEnabled", this.dynamicThrottlingEnabled);
+        jsonWriter.writeBooleanField("storedCompletionsDisabled", this.storedCompletionsDisabled);
         jsonWriter.writeBooleanField("restrictOutboundNetworkAccess", this.restrictOutboundNetworkAccess);
         jsonWriter.writeArrayField("allowedFqdnList", this.allowedFqdnList,
             (writer, element) -> writer.writeString(element));
@@ -805,7 +825,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeBooleanField("restore", this.restore);
         jsonWriter.writeJsonField("locations", this.locations);
         jsonWriter.writeJsonField("raiMonitorConfig", this.raiMonitorConfig);
-        jsonWriter.writeJsonField("networkInjections", this.networkInjections);
+        jsonWriter.writeArrayField("networkInjections", this.networkInjections,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("allowProjectManagement", this.allowProjectManagement);
         jsonWriter.writeStringField("defaultProject", this.defaultProject);
         jsonWriter.writeArrayField("associatedProjects", this.associatedProjects,
@@ -870,6 +891,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.callRateLimit = CallRateLimit.fromJson(reader);
                 } else if ("dynamicThrottlingEnabled".equals(fieldName)) {
                     deserializedAccountProperties.dynamicThrottlingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storedCompletionsDisabled".equals(fieldName)) {
+                    deserializedAccountProperties.storedCompletionsDisabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("quotaLimit".equals(fieldName)) {
                     deserializedAccountProperties.quotaLimit = QuotaLimit.fromJson(reader);
                 } else if ("restrictOutboundNetworkAccess".equals(fieldName)) {
@@ -900,7 +924,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                 } else if ("raiMonitorConfig".equals(fieldName)) {
                     deserializedAccountProperties.raiMonitorConfig = RaiMonitorConfig.fromJson(reader);
                 } else if ("networkInjections".equals(fieldName)) {
-                    deserializedAccountProperties.networkInjections = NetworkInjections.fromJson(reader);
+                    List<NetworkInjection> networkInjections
+                        = reader.readArray(reader1 -> NetworkInjection.fromJson(reader1));
+                    deserializedAccountProperties.networkInjections = networkInjections;
                 } else if ("allowProjectManagement".equals(fieldName)) {
                     deserializedAccountProperties.allowProjectManagement = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultProject".equals(fieldName)) {

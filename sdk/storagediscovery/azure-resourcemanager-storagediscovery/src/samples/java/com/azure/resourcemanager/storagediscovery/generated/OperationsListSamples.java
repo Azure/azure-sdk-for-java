@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagediscovery.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Operation_List.json
+     * x-ms-original-file: 2025-09-01/Operation_List.json
      */
     /**
      * Sample code: List all provider operations.

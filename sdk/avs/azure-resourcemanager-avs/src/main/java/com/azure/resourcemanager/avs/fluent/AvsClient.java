@@ -47,13 +47,6 @@ public interface AvsClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     * 
-     * @return the WorkloadNetworksClient object.
-     */
-    WorkloadNetworksClient getWorkloadNetworks();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
@@ -61,18 +54,25 @@ public interface AvsClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the LocationsClient object to access its operations.
+     * Gets the AddonsClient object to access its operations.
      * 
-     * @return the LocationsClient object.
+     * @return the AddonsClient object.
      */
-    LocationsClient getLocations();
+    AddonsClient getAddons();
 
     /**
-     * Gets the PrivateCloudsClient object to access its operations.
+     * Gets the AuthorizationsClient object to access its operations.
      * 
-     * @return the PrivateCloudsClient object.
+     * @return the AuthorizationsClient object.
      */
-    PrivateCloudsClient getPrivateClouds();
+    AuthorizationsClient getAuthorizations();
+
+    /**
+     * Gets the CloudLinksClient object to access its operations.
+     * 
+     * @return the CloudLinksClient object.
+     */
+    CloudLinksClient getCloudLinks();
 
     /**
      * Gets the ClustersClient object to access its operations.
@@ -89,20 +89,6 @@ public interface AvsClient {
     DatastoresClient getDatastores();
 
     /**
-     * Gets the HcxEnterpriseSitesClient object to access its operations.
-     * 
-     * @return the HcxEnterpriseSitesClient object.
-     */
-    HcxEnterpriseSitesClient getHcxEnterpriseSites();
-
-    /**
-     * Gets the AuthorizationsClient object to access its operations.
-     * 
-     * @return the AuthorizationsClient object.
-     */
-    AuthorizationsClient getAuthorizations();
-
-    /**
      * Gets the GlobalReachConnectionsClient object to access its operations.
      * 
      * @return the GlobalReachConnectionsClient object.
@@ -110,25 +96,32 @@ public interface AvsClient {
     GlobalReachConnectionsClient getGlobalReachConnections();
 
     /**
-     * Gets the CloudLinksClient object to access its operations.
+     * Gets the HcxEnterpriseSitesClient object to access its operations.
      * 
-     * @return the CloudLinksClient object.
+     * @return the HcxEnterpriseSitesClient object.
      */
-    CloudLinksClient getCloudLinks();
+    HcxEnterpriseSitesClient getHcxEnterpriseSites();
 
     /**
-     * Gets the AddonsClient object to access its operations.
+     * Gets the HostsClient object to access its operations.
      * 
-     * @return the AddonsClient object.
+     * @return the HostsClient object.
      */
-    AddonsClient getAddons();
+    HostsClient getHosts();
 
     /**
-     * Gets the VirtualMachinesClient object to access its operations.
+     * Gets the IscsiPathsClient object to access its operations.
      * 
-     * @return the VirtualMachinesClient object.
+     * @return the IscsiPathsClient object.
      */
-    VirtualMachinesClient getVirtualMachines();
+    IscsiPathsClient getIscsiPaths();
+
+    /**
+     * Gets the LocationsClient object to access its operations.
+     * 
+     * @return the LocationsClient object.
+     */
+    LocationsClient getLocations();
 
     /**
      * Gets the PlacementPoliciesClient object to access its operations.
@@ -138,11 +131,25 @@ public interface AvsClient {
     PlacementPoliciesClient getPlacementPolicies();
 
     /**
-     * Gets the ScriptPackagesClient object to access its operations.
+     * Gets the PrivateCloudsClient object to access its operations.
      * 
-     * @return the ScriptPackagesClient object.
+     * @return the PrivateCloudsClient object.
      */
-    ScriptPackagesClient getScriptPackages();
+    PrivateCloudsClient getPrivateClouds();
+
+    /**
+     * Gets the ProvisionedNetworksClient object to access its operations.
+     * 
+     * @return the ProvisionedNetworksClient object.
+     */
+    ProvisionedNetworksClient getProvisionedNetworks();
+
+    /**
+     * Gets the PureStoragePoliciesClient object to access its operations.
+     * 
+     * @return the PureStoragePoliciesClient object.
+     */
+    PureStoragePoliciesClient getPureStoragePolicies();
 
     /**
      * Gets the ScriptCmdletsClient object to access its operations.
@@ -159,25 +166,11 @@ public interface AvsClient {
     ScriptExecutionsClient getScriptExecutions();
 
     /**
-     * Gets the IscsiPathsClient object to access its operations.
+     * Gets the ScriptPackagesClient object to access its operations.
      * 
-     * @return the IscsiPathsClient object.
+     * @return the ScriptPackagesClient object.
      */
-    IscsiPathsClient getIscsiPaths();
-
-    /**
-     * Gets the HostsClient object to access its operations.
-     * 
-     * @return the HostsClient object.
-     */
-    HostsClient getHosts();
-
-    /**
-     * Gets the ProvisionedNetworksClient object to access its operations.
-     * 
-     * @return the ProvisionedNetworksClient object.
-     */
-    ProvisionedNetworksClient getProvisionedNetworks();
+    ScriptPackagesClient getScriptPackages();
 
     /**
      * Gets the SkusClient object to access its operations.
@@ -187,9 +180,16 @@ public interface AvsClient {
     SkusClient getSkus();
 
     /**
-     * Gets the PureStoragePoliciesClient object to access its operations.
+     * Gets the VirtualMachinesClient object to access its operations.
      * 
-     * @return the PureStoragePoliciesClient object.
+     * @return the VirtualMachinesClient object.
      */
-    PureStoragePoliciesClient getPureStoragePolicies();
+    VirtualMachinesClient getVirtualMachines();
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
+     */
+    WorkloadNetworksClient getWorkloadNetworks();
 }

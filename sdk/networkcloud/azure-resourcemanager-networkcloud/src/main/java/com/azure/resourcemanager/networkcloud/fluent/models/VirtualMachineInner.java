@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
 import com.azure.resourcemanager.networkcloud.models.StorageProfile;
@@ -42,6 +43,11 @@ public final class VirtualMachineInner extends Resource {
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
+
+    /*
+     * The identity for the resource.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * The list of the resource properties.
@@ -100,6 +106,26 @@ public final class VirtualMachineInner extends Resource {
      */
     public VirtualMachineInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The identity for the resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity for the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -405,7 +431,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the networkData property: The Base64 encoded cloud-init network data.
+     * Get the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
+     * property will be used in preference to this property.
      * 
      * @return the networkData value.
      */
@@ -414,7 +441,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the networkData property: The Base64 encoded cloud-init network data.
+     * Set the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
+     * property will be used in preference to this property.
      * 
      * @param networkData the networkData value to set.
      * @return the VirtualMachineInner object itself.
@@ -424,6 +452,29 @@ public final class VirtualMachineInner extends Resource {
             this.innerProperties = new VirtualMachineProperties();
         }
         this.innerProperties().withNetworkData(networkData);
+        return this;
+    }
+
+    /**
+     * Get the networkDataContent property: The Base64 encoded cloud-init network data.
+     * 
+     * @return the networkDataContent value.
+     */
+    public String networkDataContent() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkDataContent();
+    }
+
+    /**
+     * Set the networkDataContent property: The Base64 encoded cloud-init network data.
+     * 
+     * @param networkDataContent the networkDataContent value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withNetworkDataContent(String networkDataContent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineProperties();
+        }
+        this.innerProperties().withNetworkDataContent(networkDataContent);
         return this;
     }
 
@@ -519,7 +570,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the userData property: The Base64 encoded cloud-init user data.
+     * Get the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will
+     * be used in preference to this property.
      * 
      * @return the userData value.
      */
@@ -528,7 +580,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the userData property: The Base64 encoded cloud-init user data.
+     * Set the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will
+     * be used in preference to this property.
      * 
      * @param userData the userData value to set.
      * @return the VirtualMachineInner object itself.
@@ -538,6 +591,29 @@ public final class VirtualMachineInner extends Resource {
             this.innerProperties = new VirtualMachineProperties();
         }
         this.innerProperties().withUserData(userData);
+        return this;
+    }
+
+    /**
+     * Get the userDataContent property: The Base64 encoded cloud-init user data.
+     * 
+     * @return the userDataContent value.
+     */
+    public String userDataContent() {
+        return this.innerProperties() == null ? null : this.innerProperties().userDataContent();
+    }
+
+    /**
+     * Set the userDataContent property: The Base64 encoded cloud-init user data.
+     * 
+     * @param userDataContent the userDataContent value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withUserDataContent(String userDataContent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineProperties();
+        }
+        this.innerProperties().withUserDataContent(userDataContent);
         return this;
     }
 
@@ -662,6 +738,9 @@ public final class VirtualMachineInner extends Resource {
         } else {
             extendedLocation().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -683,6 +762,7 @@ public final class VirtualMachineInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -719,6 +799,8 @@ public final class VirtualMachineInner extends Resource {
                     deserializedVirtualMachineInner.innerProperties = VirtualMachineProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedVirtualMachineInner.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedVirtualMachineInner.systemData = SystemData.fromJson(reader);
                 } else {

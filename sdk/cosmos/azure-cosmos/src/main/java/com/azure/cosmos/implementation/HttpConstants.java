@@ -291,6 +291,9 @@ public class HttpConstants {
         public static final String GLOBAL_DATABASE_ACCOUNT_NAME = "GlobalDatabaseAccountName";
         public static final String THINCLIENT_START_EPK = "x-ms-thinclient-range-min";
         public static final String THINCLIENT_END_EPK = "x-ms-thinclient-range-max";
+
+        // Throughput bucket header
+        public static final String THROUGHPUT_BUCKET = "x-ms-cosmos-throughput-bucket";
     }
 
     public static class A_IMHeaderValues {
@@ -462,6 +465,7 @@ public class HttpConstants {
         public static final int UNKNOWN_QUORUM_RESULT = 20909;
         public static final int INVALID_RESULT = 20910;
         public static final int CLOSED_CLIENT = 20912;
+        public static final int PPCB_INVALID_STATE = 20913;
 
         //SDK Codes (Server)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
@@ -475,6 +479,7 @@ public class HttpConstants {
         public static final int SERVER_GENERATED_503 = 21008;
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
+        public static final int FAILED_TO_PARSE_SERVER_RESPONSE = 21011;
     }
 
     public static class HeaderValues {

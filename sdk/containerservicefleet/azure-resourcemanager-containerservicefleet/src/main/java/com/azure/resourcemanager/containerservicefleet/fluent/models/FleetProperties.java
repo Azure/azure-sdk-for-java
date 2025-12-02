@@ -79,20 +79,6 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (hubProfile() != null) {
-            hubProfile().validate();
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

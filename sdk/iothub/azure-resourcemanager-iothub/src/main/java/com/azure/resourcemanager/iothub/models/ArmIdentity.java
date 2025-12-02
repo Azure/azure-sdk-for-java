@@ -28,7 +28,7 @@ public final class ArmIdentity implements JsonSerializable<ArmIdentity> {
     private String tenantId;
 
     /*
-     * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+     * The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly
      * created identity and a set of user assigned identities. The type 'None' will remove any identities from the
      * service.
      */
@@ -64,7 +64,7 @@ public final class ArmIdentity implements JsonSerializable<ArmIdentity> {
     }
 
     /**
-     * Get the type property: The type of identity used for the resource. The type 'SystemAssigned, UserAssigned'
+     * Get the type property: The type of identity used for the resource. The type 'SystemAssigned,UserAssigned'
      * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
      * any identities from the service.
      * 
@@ -75,7 +75,7 @@ public final class ArmIdentity implements JsonSerializable<ArmIdentity> {
     }
 
     /**
-     * Set the type property: The type of identity used for the resource. The type 'SystemAssigned, UserAssigned'
+     * Set the type property: The type of identity used for the resource. The type 'SystemAssigned,UserAssigned'
      * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
      * any identities from the service.
      * 

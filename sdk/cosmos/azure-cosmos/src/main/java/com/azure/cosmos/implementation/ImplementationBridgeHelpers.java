@@ -42,6 +42,7 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -102,7 +103,7 @@ import java.util.function.Function;
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
-    private static void  initializeAllAccessors() {
+    public static void initializeAllAccessors() {
         ModelBridgeInternal.initializeAllAccessors();
         UtilBridgeInternal.initializeAllAccessors();
         BridgeInternal.initializeAllAccessors();
@@ -1470,6 +1471,10 @@ public class ImplementationBridgeHelpers {
             CosmosItemSerializer getEffectiveItemSerializer(
                 CosmosAsyncClient client,
                 CosmosItemSerializer requestOptionsItemSerializer);
+
+            void registerTransportClientInterceptor(
+                CosmosAsyncClient cosmosAsyncClient,
+                ITransportClientInterceptor transportClientInterceptor);
         }
     }
 

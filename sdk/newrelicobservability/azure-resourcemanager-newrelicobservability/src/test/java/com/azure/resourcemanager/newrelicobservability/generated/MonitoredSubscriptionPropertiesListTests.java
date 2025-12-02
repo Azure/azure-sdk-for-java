@@ -19,88 +19,41 @@ public final class MonitoredSubscriptionPropertiesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoredSubscriptionPropertiesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"patchOperation\":\"AddComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"kx\",\"status\":\"Deleting\",\"error\":\"pbh\",\"tagRules\":{}},{\"subscriptionId\":\"tkcxywnytnrsy\",\"status\":\"Active\",\"error\":\"dybyxczfclhaa\",\"tagRules\":{}},{\"subscriptionId\":\"abphlw\",\"status\":\"Active\",\"error\":\"ktsthsucocmny\",\"tagRules\":{}},{\"subscriptionId\":\"t\",\"status\":\"Active\",\"error\":\"wrqpue\",\"tagRules\":{}}],\"provisioningState\":\"Succeeded\"},\"id\":\"ywbiexzfeyueax\",\"name\":\"bxu\",\"type\":\"wbhqwal\"},{\"properties\":{\"patchOperation\":\"DeleteComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"epdkzja\",\"status\":\"InProgress\",\"error\":\"rhdwbavxbniw\",\"tagRules\":{}},{\"subscriptionId\":\"wz\",\"status\":\"Failed\",\"error\":\"pgn\",\"tagRules\":{}},{\"subscriptionId\":\"x\",\"status\":\"Failed\",\"error\":\"bzpfzab\",\"tagRules\":{}},{\"subscriptionId\":\"uhxwtctyqiklbbov\",\"status\":\"Failed\",\"error\":\"bhvgy\",\"tagRules\":{}}],\"provisioningState\":\"Succeeded\"},\"id\":\"svmkfssxquk\",\"name\":\"fpl\",\"type\":\"mg\"},{\"properties\":{\"patchOperation\":\"Active\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"deslp\",\"status\":\"InProgress\",\"error\":\"wiyighxpkdw\",\"tagRules\":{}}],\"provisioningState\":\"Updating\"},\"id\":\"uebbaumnyqup\",\"name\":\"deoj\",\"type\":\"a\"},{\"properties\":{\"patchOperation\":\"Active\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"xpsiebtfhvpes\",\"status\":\"Failed\",\"error\":\"rdqmhjjdhtldwkyz\",\"tagRules\":{}},{\"subscriptionId\":\"tkncwsc\",\"status\":\"Deleting\",\"error\":\"xotogtwrupqsxv\",\"tagRules\":{}},{\"subscriptionId\":\"cykvceo\",\"status\":\"Active\",\"error\":\"ovnotyfjfcnjbkcn\",\"tagRules\":{}}],\"provisioningState\":\"Creating\"},\"id\":\"ttkphywpnvjtoqne\",\"name\":\"mclfplphoxuscr\",\"type\":\"abgy\"}],\"nextLink\":\"sbj\"}")
+            "{\"value\":[{\"properties\":{\"patchOperation\":\"DeleteBegin\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"hoqqnwvlr\",\"status\":\"Deleting\",\"error\":\"hheunmmqhgyx\",\"tagRules\":{}},{\"subscriptionId\":\"noc\",\"status\":\"Failed\",\"error\":\"lyaxuc\",\"tagRules\":{}}],\"provisioningState\":\"Failed\"},\"id\":\"zf\",\"name\":\"beypewrmjmw\",\"type\":\"vjektcxsenh\"}],\"nextLink\":\"rsffrzpwvlqdqgbi\"}")
             .toObject(MonitoredSubscriptionPropertiesList.class);
-        Assertions.assertEquals(PatchOperation.ADD_COMPLETE, model.value().get(0).properties().patchOperation());
-        Assertions.assertEquals("kx",
+        Assertions.assertEquals(PatchOperation.DELETE_BEGIN, model.value().get(0).properties().patchOperation());
+        Assertions.assertEquals("hoqqnwvlr",
             model.value().get(0).properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.DELETING,
             model.value().get(0).properties().monitoredSubscriptionList().get(0).status());
-        Assertions.assertEquals("pbh", model.value().get(0).properties().monitoredSubscriptionList().get(0).error());
-        Assertions.assertEquals("sbj", model.nextLink());
+        Assertions.assertEquals("hheunmmqhgyx",
+            model.value().get(0).properties().monitoredSubscriptionList().get(0).error());
+        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredSubscriptionPropertiesList model = new MonitoredSubscriptionPropertiesList().withValue(Arrays.asList(
-            new MonitoredSubscriptionPropertiesInner()
-                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ADD_COMPLETE)
+        MonitoredSubscriptionPropertiesList model = new MonitoredSubscriptionPropertiesList()
+            .withValue(Arrays.asList(new MonitoredSubscriptionPropertiesInner()
+                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.DELETE_BEGIN)
                     .withMonitoredSubscriptionList(Arrays.asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("kx")
+                        new MonitoredSubscriptionInner().withSubscriptionId("hoqqnwvlr")
                             .withStatus(Status.DELETING)
-                            .withError("pbh")
+                            .withError("hheunmmqhgyx")
                             .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("tkcxywnytnrsy")
-                            .withStatus(Status.ACTIVE)
-                            .withError("dybyxczfclhaa")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("abphlw")
-                            .withStatus(Status.ACTIVE)
-                            .withError("ktsthsucocmny")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("t")
-                            .withStatus(Status.ACTIVE)
-                            .withError("wrqpue")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner())))),
-            new MonitoredSubscriptionPropertiesInner()
-                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.DELETE_COMPLETE)
-                    .withMonitoredSubscriptionList(Arrays.asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("epdkzja")
-                            .withStatus(Status.IN_PROGRESS)
-                            .withError("rhdwbavxbniw")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("wz")
+                        new MonitoredSubscriptionInner().withSubscriptionId("noc")
                             .withStatus(Status.FAILED)
-                            .withError("pgn")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("x")
-                            .withStatus(Status.FAILED)
-                            .withError("bzpfzab")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("uhxwtctyqiklbbov")
-                            .withStatus(Status.FAILED)
-                            .withError("bhvgy")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner())))),
-            new MonitoredSubscriptionPropertiesInner()
-                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ACTIVE)
-                    .withMonitoredSubscriptionList(
-                        Arrays.asList(new MonitoredSubscriptionInner().withSubscriptionId("deslp")
-                            .withStatus(Status.IN_PROGRESS)
-                            .withError("wiyighxpkdw")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner())))),
-            new MonitoredSubscriptionPropertiesInner()
-                .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ACTIVE)
-                    .withMonitoredSubscriptionList(Arrays.asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("xpsiebtfhvpes")
-                            .withStatus(Status.FAILED)
-                            .withError("rdqmhjjdhtldwkyz")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("tkncwsc")
-                            .withStatus(Status.DELETING)
-                            .withError("xotogtwrupqsxv")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()),
-                        new MonitoredSubscriptionInner().withSubscriptionId("cykvceo")
-                            .withStatus(Status.ACTIVE)
-                            .withError("ovnotyfjfcnjbkcn")
+                            .withError("lyaxuc")
                             .withTagRules(new MonitoringTagRulesPropertiesInner()))))))
-            .withNextLink("sbj");
+            .withNextLink("rsffrzpwvlqdqgbi");
         model = BinaryData.fromObject(model).toObject(MonitoredSubscriptionPropertiesList.class);
-        Assertions.assertEquals(PatchOperation.ADD_COMPLETE, model.value().get(0).properties().patchOperation());
-        Assertions.assertEquals("kx",
+        Assertions.assertEquals(PatchOperation.DELETE_BEGIN, model.value().get(0).properties().patchOperation());
+        Assertions.assertEquals("hoqqnwvlr",
             model.value().get(0).properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.DELETING,
             model.value().get(0).properties().monitoredSubscriptionList().get(0).status());
-        Assertions.assertEquals("pbh", model.value().get(0).properties().monitoredSubscriptionList().get(0).error());
-        Assertions.assertEquals("sbj", model.nextLink());
+        Assertions.assertEquals("hheunmmqhgyx",
+            model.value().get(0).properties().monitoredSubscriptionList().get(0).error());
+        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.nextLink());
     }
 }

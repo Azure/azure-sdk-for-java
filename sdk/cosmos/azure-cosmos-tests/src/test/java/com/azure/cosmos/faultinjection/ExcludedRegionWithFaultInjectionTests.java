@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -19,7 +20,6 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -150,15 +150,15 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> readItemCallback =
             (params) -> {
 
-                TestItem alreadyCreatedItem = params.createdItem;
+                TestObject alreadyCreatedItem = params.createdItem;
 
                 try {
 
-                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
+                    CosmosItemResponse<TestObject> response = params.cosmosAsyncContainer
                         .readItem(
                             alreadyCreatedItem.getId(),
                             new PartitionKey(alreadyCreatedItem.getId()),
-                            TestItem.class)
+                            TestObject.class)
                         .block();
 
                     return new OperationExecutionResult<>(response);
@@ -481,7 +481,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> queryItemCallback =
             (params) -> {
 
-                TestItem alreadyCreatedItem = params.createdItem;
+                TestObject alreadyCreatedItem = params.createdItem;
 
                 String query = String.format("SELECT * FROM c WHERE c.id = '%s'", alreadyCreatedItem.getId());
                 CosmosQueryRequestOptions queryRequestOptions = params.queryRequestOptionsForCallbackAfterMutation != null
@@ -490,8 +490,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
 
                 try {
-                    FeedResponse<TestItem> feedResponse = params.cosmosAsyncContainer
-                        .queryItems(sqlQuerySpec, queryRequestOptions, TestItem.class)
+                    FeedResponse<TestObject> feedResponse = params.cosmosAsyncContainer
+                        .queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class)
                         .byPage()
                         .blockFirst();
 
@@ -767,9 +767,9 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
                     itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
-                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
+                    CosmosItemResponse<TestObject> response = params.cosmosAsyncContainer
                         .createItem(
-                            new TestItem(newDocumentId, newDocumentId, newDocumentId),
+                            new TestObject(newDocumentId, newDocumentId, Arrays.asList(), newDocumentId),
                             new PartitionKey(newDocumentId),
                             itemRequestOptions)
                         .block();
@@ -792,8 +792,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> replaceItemCallback =
             (params) -> {
 
-                TestItem alreadyCreatedItem = params.createdItem;
-                alreadyCreatedItem.setProp(UUID.randomUUID().toString());
+                TestObject alreadyCreatedItem = params.createdItem;
+                alreadyCreatedItem.setStringProp(UUID.randomUUID().toString());
 
                 CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
                     params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
@@ -802,7 +802,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
                 try {
 
-                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
+                    CosmosItemResponse<TestObject> response = params.cosmosAsyncContainer
                         .replaceItem(
                            alreadyCreatedItem,
                            alreadyCreatedItem.getId(),
@@ -827,7 +827,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> deleteItemCallback =
             (params) -> {
 
-                TestItem alreadyCreatedItem = params.createdItem;
+                TestObject alreadyCreatedItem = params.createdItem;
 
                 CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
                     params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
@@ -860,8 +860,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> upsertExistingItemCallback =
             (params) -> {
 
-                TestItem alreadyCreatedItem = params.createdItem;
-                alreadyCreatedItem.setProp(UUID.randomUUID().toString());
+                TestObject alreadyCreatedItem = params.createdItem;
+                alreadyCreatedItem.setStringProp(UUID.randomUUID().toString());
 
                 CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
                     params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
@@ -870,7 +870,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
                 try {
 
-                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
+                    CosmosItemResponse<TestObject> response = params.cosmosAsyncContainer.upsertItem(
                         alreadyCreatedItem,
                         new PartitionKey(alreadyCreatedItem.getId()),
                         itemRequestOptions).block();
@@ -893,7 +893,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> upsertNonExistingItemCallback =
             (params) -> {
 
-                TestItem newItem = TestItem.createNewItem();
+                TestObject newItem = TestObject.create();
 
                 CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
                 params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
@@ -902,7 +902,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
                 try {
 
-                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
+                    CosmosItemResponse<TestObject> response = params.cosmosAsyncContainer.upsertItem(
                         newItem,
                         new PartitionKey(newItem.getId()),
                         itemRequestOptions).block();
@@ -933,12 +933,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 patchItemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
-                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.patchItem(
+                    CosmosItemResponse<TestObject> response = params.cosmosAsyncContainer.patchItem(
                         params.createdItem.getId(),
                         new PartitionKey(params.createdItem.getId()),
                         patchOperations,
                         (CosmosPatchItemRequestOptions) patchItemRequestOptions,
-                        TestItem.class
+                        TestObject.class
                     ).block();
 
                     return new OperationExecutionResult<>(response);
@@ -1558,7 +1558,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> batchCreateAndReadCallback = (params) -> {
 
             String documentId = UUID.randomUUID().toString();
-            TestItem testItem = new TestItem(documentId, documentId, documentId);
+            TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
             CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(documentId));
 
@@ -1933,7 +1933,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
             Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, totalCreates).map(i -> {
 
                 String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+                TestObject testItem = new TestObject(documentId, documentId, Arrays.asList(), documentId);
 
                 return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
 
@@ -2364,7 +2364,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
                 .getContainer(this.cosmosAsyncContainer.getId());
 
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
 
             Thread.sleep(5_000);
 
@@ -2422,13 +2422,13 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
-            safeCloseAsync(clientWithPreferredRegions);
+            safeClose(clientWithPreferredRegions);
         }
     }
 
     @AfterClass(groups = {"multi-master"})
     public void afterClass() {
-        safeCloseAsync(this.cosmosAsyncClient);
+        safeClose(this.cosmosAsyncClient);
     }
 
     private static List<FaultInjectionRule> buildFaultInjectionRules(
@@ -2675,11 +2675,11 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
     }
 
     private static String getRegionResolvedForDefaultEndpoint(CosmosAsyncContainer container, List<String> preferredRegions) {
-        TestItem testItem = TestItem.createNewItem();
+        TestObject testItem = TestObject.create();
         CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
         itemRequestOptions.setExcludedRegions(preferredRegions);
 
-        CosmosItemResponse<TestItem> response = container.createItem(testItem, itemRequestOptions).block();
+        CosmosItemResponse<TestObject> response = container.createItem(testItem, itemRequestOptions).block();
 
         Set<String> contactedRegion = response.getDiagnostics().getContactedRegionNames();
 
@@ -2902,7 +2902,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
     private static class ItemOperationInvocationParameters {
         public boolean nonIdempotentWriteRetriesEnabled;
         public CosmosAsyncContainer cosmosAsyncContainer;
-        public TestItem createdItem;
+        public TestObject createdItem;
         public CosmosItemRequestOptions itemRequestOptionsForCallbackAfterMutation;
         public CosmosItemRequestOptions patchItemRequestOptionsForCallbackAfterMutation;
         public CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation;

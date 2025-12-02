@@ -48,6 +48,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME
         = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    private static final Symbol GEO_REPLICATION = Symbol.valueOf(VENDOR + ":georeplication");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
     private final boolean isV2;
@@ -110,9 +111,10 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         }
         properties.put(CLIENT_RECEIVER_IDENTIFIER, clientIdentifier);
 
+        // Regardless of whether they are tracking event properties, want to advertise geo-replication support.
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME }
-            : null;
+            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME, GEO_REPLICATION }
+            : new Symbol[] { GEO_REPLICATION };
 
         final ConsumerFactory consumerFactory;
         if (isV2) {
@@ -126,7 +128,10 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, consumerFactory);
     }
 
-    private String getExpression(EventPosition eventPosition) {
+    /**
+     * Gets the receiver filter based on {@code eventPosition}.
+     */
+    static String getExpression(EventPosition eventPosition) {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference

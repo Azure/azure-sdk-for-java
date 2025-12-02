@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Operations_List.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Operations_List.json
      */
     /**
      * Sample code: List all operations.

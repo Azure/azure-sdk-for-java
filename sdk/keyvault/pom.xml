@@ -9,6 +9,7 @@
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
   <modules>
+    <module>azure-resourcemanager-keyvault</module>
     <module>azure-security-test-keyvault-jca</module>
     <module>azure-security-keyvault-administration</module>
     <module>azure-security-keyvault-certificates</module>

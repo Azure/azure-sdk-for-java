@@ -24,7 +24,7 @@ public final class VolumesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"uqk\",\"extendedLocation\":{\"name\":\"vzgjyp\",\"type\":\"nhxmpdxxze\"},\"properties\":{\"attachedTo\":[\"zjwotnxlkfhglh\",\"foxqwecrsn\",\"pcs\",\"lqxov\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bukk\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"lrmlccmetjscz\",\"sizeMiB\":7711263849402374951},\"location\":\"bqnasdsyenzs\",\"tags\":{\"xlyzkxit\":\"scplhyvd\",\"kol\":\"shezs\",\"mozsayebrazwz\":\"upjo\"},\"id\":\"pzbtzuyk\",\"name\":\"kipfsdyepf\",\"type\":\"ocmbezacf\"}";
+            = "{\"etag\":\"sozjvxdzciggbnv\",\"extendedLocation\":{\"name\":\"xofwalzy\",\"type\":\"whoea\"},\"properties\":{\"allocatedSizeMiB\":1090560148574517969,\"attachedTo\":[\"oeysfp\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"wuuhauegnkwmnfe\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"jyrkwfug\",\"sizeMiB\":9221982839205722630,\"storageApplianceId\":\"rkuumn\"},\"location\":\"urhzzf\",\"tags\":{\"svwlujop\":\"eoq\",\"fmwc\":\"nibittoztjdqumq\",\"rbelfnzz\":\"ddtgctxegtvgwy\"},\"id\":\"yizwbxgdebxla\",\"name\":\"unomir\",\"type\":\"p\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +34,23 @@ public final class VolumesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .define("nxmlbmuoswk")
-            .withRegion("tsffo")
-            .withExistingResourceGroup("covqseusrfjbdxzf")
-            .withExtendedLocation(new ExtendedLocation().withName("zjnufzrfg").withType("dq"))
-            .withSizeMiB(3631579267195242575L)
-            .withTags(
-                mapOf("gwd", "nmhkscauwaz", "zokscvg", "riwgybjp", "gbyfgwe", "lix", "xlcskltez", "qkjvxprwpxsoohu"))
-            .withIfMatch("resrgvtshuvft")
-            .withIfNoneMatch("ai")
+            .define("hnxlzbuwodmachb")
+            .withRegion("jwayhi")
+            .withExistingResourceGroup("sqc")
+            .withExtendedLocation(new ExtendedLocation().withName("rmvgoqplehmumkz").withType("llcz"))
+            .withSizeMiB(8672131710381210963L)
+            .withTags(mapOf("kslvlizedvb", "wwvg", "srgekzyqxadyfhb", "abv", "aqjsgyzstujr", "wkhojqttbspvkhg"))
+            .withStorageApplianceId("nhczbutoucgjt")
+            .withIfMatch("qwrldaxur")
+            .withIfNoneMatch("qa")
             .create();
 
-        Assertions.assertEquals("bqnasdsyenzs", response.location());
-        Assertions.assertEquals("scplhyvd", response.tags().get("xlyzkxit"));
-        Assertions.assertEquals("vzgjyp", response.extendedLocation().name());
-        Assertions.assertEquals("nhxmpdxxze", response.extendedLocation().type());
-        Assertions.assertEquals(7711263849402374951L, response.sizeMiB());
+        Assertions.assertEquals("urhzzf", response.location());
+        Assertions.assertEquals("eoq", response.tags().get("svwlujop"));
+        Assertions.assertEquals("xofwalzy", response.extendedLocation().name());
+        Assertions.assertEquals("whoea", response.extendedLocation().type());
+        Assertions.assertEquals(9221982839205722630L, response.sizeMiB());
+        Assertions.assertEquals("rkuumn", response.storageApplianceId());
     }
 
     // Use "Map.of" if available

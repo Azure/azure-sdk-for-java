@@ -15,20 +15,21 @@ public final class DataflowResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"mode\":\"Disabled\",\"operations\":[{\"operationType\":\"Source\",\"name\":\"mbmpaxmodfvuefy\",\"sourceSettings\":{\"endpointRef\":\"bpfvm\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"rfouyftaakcpw\",\"dataDestination\":\"yzvqt\"}}],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"name\":\"bexkpzksmondj\",\"type\":\"CustomLocation\"},\"id\":\"xvy\",\"name\":\"omgkopkwho\",\"type\":\"v\"},{\"properties\":{\"mode\":\"Enabled\",\"operations\":[{\"operationType\":\"Destination\",\"name\":\"smocmbq\",\"sourceSettings\":{\"endpointRef\":\"vmkcx\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"pvhelxprg\",\"dataDestination\":\"yat\"}},{\"operationType\":\"Destination\",\"name\":\"kcbcue\",\"sourceSettings\":{\"endpointRef\":\"jxgciqibrh\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"sdqrhzoymibmrq\",\"dataDestination\":\"ibahwflus\"}},{\"operationType\":\"Destination\",\"name\":\"mhrkwofyyvoqacp\",\"sourceSettings\":{\"endpointRef\":\"xpbtgiwbwo\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"ashrt\",\"dataDestination\":\"tkcnqxwb\"}},{\"operationType\":\"Source\",\"name\":\"ulpiuj\",\"sourceSettings\":{\"endpointRef\":\"asipqiio\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"qerpqlpqwcc\",\"dataDestination\":\"uqgbdbutauvfbt\"}}],\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"hhmhykojoxa\",\"type\":\"CustomLocation\"},\"id\":\"dlpichkoymkcdyhb\",\"name\":\"kkpwdreqnovvq\",\"type\":\"ovljxywsu\"},{\"properties\":{\"mode\":\"Disabled\",\"operations\":[{\"operationType\":\"Destination\",\"name\":\"sytgadgvraea\",\"sourceSettings\":{\"endpointRef\":\"e\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"arrwlquu\",\"dataDestination\":\"jfqka\"}}],\"provisioningState\":\"Accepted\"},\"extendedLocation\":{\"name\":\"iipfpubj\",\"type\":\"CustomLocation\"},\"id\":\"wifto\",\"name\":\"qkvpuvksgplsakn\",\"type\":\"n\"}],\"nextLink\":\"ynl\"}")
+            "{\"value\":[{\"properties\":{\"mode\":\"Disabled\",\"requestDiskPersistence\":\"Disabled\",\"operations\":[{\"operationType\":\"Source\",\"name\":\"edplvwiwubmw\",\"sourceSettings\":{\"endpointRef\":\"esl\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"wwtppj\",\"dataDestination\":\"lcxog\"}},{\"operationType\":\"Source\",\"name\":\"onz\",\"sourceSettings\":{\"endpointRef\":\"sikvmkqzeqqkdlt\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"mhhv\",\"dataDestination\":\"gureodkwobdag\"}},{\"operationType\":\"BuiltInTransformation\",\"name\":\"bqdxbx\",\"sourceSettings\":{\"endpointRef\":\"kbogqxndlkzgx\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"iplbpodxunkbebxm\",\"dataDestination\":\"byyntwlrbqt\"}}],\"provisioningState\":\"Canceled\",\"healthState\":\"Unavailable\"},\"extendedLocation\":{\"name\":\"eotg\",\"type\":\"CustomLocation\"},\"id\":\"ltmuwlauwzizx\",\"name\":\"mpgcjefuzmuvpbt\",\"type\":\"d\"}],\"nextLink\":\"orppxebmnzbtb\"}")
             .toObject(DataflowResourceListResult.class);
         Assertions.assertEquals(OperationalMode.DISABLED, model.value().get(0).properties().mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.value().get(0).properties().requestDiskPersistence());
         Assertions.assertEquals(OperationType.SOURCE,
             model.value().get(0).properties().operations().get(0).operationType());
-        Assertions.assertEquals("mbmpaxmodfvuefy", model.value().get(0).properties().operations().get(0).name());
-        Assertions.assertEquals("bpfvm",
+        Assertions.assertEquals("edplvwiwubmw", model.value().get(0).properties().operations().get(0).name());
+        Assertions.assertEquals("esl",
             model.value().get(0).properties().operations().get(0).sourceSettings().endpointRef());
-        Assertions.assertEquals("rfouyftaakcpw",
+        Assertions.assertEquals("wwtppj",
             model.value().get(0).properties().operations().get(0).destinationSettings().endpointRef());
-        Assertions.assertEquals("yzvqt",
+        Assertions.assertEquals("lcxog",
             model.value().get(0).properties().operations().get(0).destinationSettings().dataDestination());
-        Assertions.assertEquals("bexkpzksmondj", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("eotg", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ynl", model.nextLink());
+        Assertions.assertEquals("orppxebmnzbtb", model.nextLink());
     }
 }

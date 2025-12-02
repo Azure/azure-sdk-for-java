@@ -270,10 +270,23 @@ public class EventData extends MessageContent {
      * on a <b>received</b> {@link EventData}.
      *
      * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
-     *     was not received from Event Hubs service.
+     *     was not received from Event Hubs service or the offset could not be represented as a long.
+     * @deprecated This value is obsolete and should no longer be used. Please use {@link #getOffsetString()} instead.
      */
+    @Deprecated
     public Long getOffset() {
         return systemProperties.getOffset();
+    }
+
+    /**
+     * Gets the offset of the event when it was received from the associated Event Hub partition. This is only present
+     * on a <b>received</b> {@link EventData}.
+     *
+     * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
+     *     was not received from Event Hubs service.
+     */
+    public String getOffsetString() {
+        return systemProperties.getOffsetString();
     }
 
     /**

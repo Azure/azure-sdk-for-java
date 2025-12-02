@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesDeleteNodeSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/DeleteNodes_example.json
+     * x-ms-original-file: 2025-10-01-preview/DeleteNodes_example.json
      */
     /**
      * Sample code: Delete nodes.
