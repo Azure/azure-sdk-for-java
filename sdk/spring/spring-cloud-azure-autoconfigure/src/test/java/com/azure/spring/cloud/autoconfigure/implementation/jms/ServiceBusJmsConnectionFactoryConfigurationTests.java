@@ -28,6 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusJmsConnectionFactoryConfigurationTests {
@@ -228,11 +230,11 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             .as("Different producer should be returned for different destination")
             .isNotEqualTo(producerForQueue2.toString());
 
-        // Additionally verify the underlying mock was only called once for queue1
-        // This proves caching is working - if no caching, mockSession.createProducer(queue1) 
-        // would be called twice
-        org.mockito.Mockito.verify(mockSession, org.mockito.Mockito.times(1)).createProducer(mockQueue1);
-        org.mockito.Mockito.verify(mockSession, org.mockito.Mockito.times(1)).createProducer(mockQueue2);
+        // Verify the underlying mock was only called once for each queue.
+        // This proves caching is working - without caching, mockSession.createProducer(queue1)
+        // would be called twice.
+        verify(mockSession, times(1)).createProducer(mockQueue1);
+        verify(mockSession, times(1)).createProducer(mockQueue2);
 
         // Cleanup
         connection.close();
