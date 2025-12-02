@@ -7,6 +7,7 @@ import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import jakarta.jms.Connection;
 import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Destination;
 import jakarta.jms.MessageProducer;
 import jakarta.jms.Queue;
 import jakarta.jms.Session;
@@ -24,6 +25,7 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -166,19 +168,19 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         when(mockInnerQueue3.getQueueName()).thenReturn("queue2");
         when(mockInnerSession.createQueue("queue1"))
             .thenReturn(mockInnerQueue1)
+            .thenReturn(mockInnerQueue2)
+            .thenReturn(mockInnerQueue1)
             .thenReturn(mockInnerQueue2);
-        when(mockInnerSession.createQueue("queue2")).thenReturn(mockInnerQueue3);
+        when(mockInnerSession.createQueue("queue2"))
+            .thenReturn(mockInnerQueue3)
+            .thenReturn(mockInnerQueue3);
 
         // Create ServiceBusJmsSession using reflection (constructor is package-private)
         // ServiceBusJmsSession.createQueue() wraps the inner Queue in ServiceBusJmsQueue
         // which has the proper toString() implementation in azure-servicebus-jms 2.1.0
         Session serviceBusJmsSession = createServiceBusJmsSession(mockInnerSession);
-        
-        // Create ServiceBusJmsQueue instances through ServiceBusJmsSession
-        Queue serviceBusQueue1FirstCall = serviceBusJmsSession.createQueue("queue1");
-        Queue serviceBusQueue1SecondCall = serviceBusJmsSession.createQueue("queue1");
-        Queue serviceBusQueue2 = serviceBusJmsSession.createQueue("queue2");
 
+        // Create mock producers - each call to createProducer returns a new unique producer
         MessageProducer mockProducer1 = mock(MessageProducer.class);
         MessageProducer mockProducer2 = mock(MessageProducer.class);
         MessageProducer mockProducer3 = mock(MessageProducer.class);
@@ -186,11 +188,13 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         // Setup mock behavior for connection and session
         when(mockTargetConnectionFactory.createConnection()).thenReturn(mockConnection);
         when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(serviceBusJmsSession);
-        // Each ServiceBusJmsQueue instance gets a different producer from the underlying session
-        // CachingConnectionFactory should cache based on destination.toString()
-        when(mockInnerSession.createProducer(serviceBusQueue1FirstCall)).thenReturn(mockProducer1);
-        when(mockInnerSession.createProducer(serviceBusQueue1SecondCall)).thenReturn(mockProducer2);
-        when(mockInnerSession.createProducer(serviceBusQueue2)).thenReturn(mockProducer3);
+        // Mock createProducer to return different producers for each call
+        // This simulates that each ServiceBusJmsQueue instance would get a different producer
+        // if caching doesn't work (i.e., toString() returns unique values as in 2.0.0)
+        when(mockInnerSession.createProducer(any(Destination.class)))
+            .thenReturn(mockProducer1)
+            .thenReturn(mockProducer2)
+            .thenReturn(mockProducer3);
 
         // Create CachingConnectionFactory with caching enabled
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(mockTargetConnectionFactory);
