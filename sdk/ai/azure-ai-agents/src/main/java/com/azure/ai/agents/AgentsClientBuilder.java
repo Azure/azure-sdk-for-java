@@ -435,11 +435,11 @@ public final class AgentsClientBuilder
         }
         List<HttpPipelinePolicy> orderedPolicies = new ArrayList<>();
         this.pipelinePolicies.stream()
-                .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_CALL)
-                .forEach(orderedPolicies::add);
+            .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_CALL)
+            .forEach(orderedPolicies::add);
         this.pipelinePolicies.stream()
-                .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_RETRY)
-                .forEach(orderedPolicies::add);
+            .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_RETRY)
+            .forEach(orderedPolicies::add);
         return orderedPolicies;
     }
 
