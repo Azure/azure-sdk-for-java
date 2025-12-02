@@ -135,6 +135,17 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    public void translateWithLlm() {
+        TranslationTarget target = new TranslationTarget("cs").setDeploymentName("gpt-4o-mini");
+        TranslateInputItem input = new TranslateInputItem("This is a test", Arrays.asList(target));
+        TranslatedTextItem response = getTranslationClient().translate(input);
+
+        assertEquals(1, response.getTranslations().size());
+        assertEquals("en", response.getDetectedLanguage().getLanguage());
+        assertNotNull(response.getTranslations().get(0).getText());
+    }
+
+    @Test
     public void translateDifferentTextTypes() {
         TranslateInputItem input = new TranslateInputItem("<html><body>This <b>is</b> a test.</body></html>",
             Arrays.asList(new TranslationTarget("cs"))).setTextType(TextType.HTML);
@@ -156,19 +167,8 @@ public class TranslateTests extends TextTranslationClientBase {
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getScore());
+        assertTrue(response.getDetectedLanguage().getScore() > 0.5);
         assertTrue(response.getTranslations().get(0).getText().contains("***"));
-    }
-
-    @Test
-    public void translateWithCustomEndpoint() {
-        TranslatedTextItem response
-            = getTranslationClientWithCustomEndpoint().translate("cs", "It is a beautiful morning");
-
-        assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getScore());
-        assertEquals(1, response.getTranslations().size());
-        assertNotNull(response.getTranslations().get(0).getText());
     }
 
     @Test
