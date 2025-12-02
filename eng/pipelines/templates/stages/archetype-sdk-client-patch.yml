@@ -232,6 +232,18 @@ extends:
                 Paths: $(SparseCheckoutDirectories)
                 SkipCheckoutNone: true
 
+            # Save the Package Properties
+            #
+            # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is output by the
+            # generate_from_source_pom script above.
+            - pwsh: |
+                $ServiceDirs = '$(ServiceDirectories)'
+                foreach($ServiceDir in $ServiceDirs.Split(',')) {
+                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+                }
+              workingDirectory: $(Pipeline.Workspace)
+              displayName: 'Save Package Properties'
+
             - template: /eng/common/pipelines/templates/steps/check-spelling.yml
               parameters:
                 CspellConfigPath: .vscode/cspell.json

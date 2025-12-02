@@ -337,6 +337,11 @@ jobs:
             Paths: $(SparseCheckoutDirectories)
             SkipCheckoutNone: true
 
+      # Generate PackageInfo files
+      - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+        parameters:
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
           CspellConfigPath: .vscode/cspell.json
