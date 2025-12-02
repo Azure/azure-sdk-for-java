@@ -199,7 +199,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/preview/overview
+[product_documentation]: https://learn.microsoft.com/azure/ai-services/translator/text-translation/preview/overview
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
