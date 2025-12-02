@@ -3,8 +3,6 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.core.test.annotation.LiveOnly;
-
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
@@ -13,7 +11,6 @@ import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationTarget;
 
 import org.junit.jupiter.api.Test;
-import com.azure.core.test.annotation.PlaybackOnly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TranslateTests extends TextTranslationClientBase {
 
     @Test
-    @LiveOnly
     public void translateBasic() {
         TranslatedTextItem response = getTranslationClient().translate("cs", "Hola mundo");
 
@@ -36,7 +32,6 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
-    @LiveOnly
     public void translateWithAutoDetect() {
         TranslatedTextItem response = getTranslationClient().translate("cs", "This is a test.");
 
@@ -47,7 +42,6 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
-    @LiveOnly
     public void translateWithNoTranslateTag() {
         TranslateInputItem input = new TranslateInputItem("<span class=notranslate>今天是怎么回事是</span>非常可怕的",
             Arrays.asList(new TranslationTarget("en")));
@@ -60,7 +54,6 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
-    @LiveOnly
     public void translateWithDictionaryTag() {
         TranslateInputItem input = new TranslateInputItem(
             "The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.",
@@ -75,7 +68,6 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
-    @LiveOnly
     public void translateWithTransliteration() {
         TranslateInputItem input = new TranslateInputItem("hudha akhtabar.",
             Arrays.asList(new TranslationTarget("zh-Hans").setScript("Latn"))).setLanguage("ar").setScript("Latn");
@@ -183,7 +175,6 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
-    @PlaybackOnly
     public void translateWithAad() throws Exception {
         TranslatedTextItem response = getTranslationClientWithAadAuth().translate("cs", "This is a test.");
 
