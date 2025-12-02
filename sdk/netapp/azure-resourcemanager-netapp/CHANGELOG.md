@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2025-11-28)
+## 2.1.0-beta.1 (2025-12-02)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -238,6 +238,8 @@
 
 * `models.ElasticBackupVaultProperties` was added
 
+* `models.CachePropertiesExportPolicy` was added
+
 * `models.ElasticBackupPolicy$DefinitionStages` was added
 
 * `models.ElasticNfsv4Access` was added
@@ -384,14 +386,14 @@
 #### `models.ReplicationObject` was modified
 
 * `mirrorState()` was added
+* `relationshipStatus()` was added
 * `externalReplicationSetupInfo()` was added
 * `externalReplicationSetupStatus()` was added
-* `relationshipStatus()` was added
 
 #### `models.NetAppAccountPatch` was modified
 
-* `ldapConfiguration()` was added
 * `withLdapConfiguration(models.LdapConfiguration)` was added
+* `ldapConfiguration()` was added
 
 #### `models.NetAppAccount$Update` was modified
 
@@ -399,21 +401,21 @@
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `language()` was added
-* `withLargeVolumeType(models.LargeVolumeType)` was added
-* `withBreakthroughMode(models.BreakthroughMode)` was added
-* `withLanguage(models.VolumeLanguage)` was added
-* `breakthroughMode()` was added
 * `ldapServerType()` was added
+* `language()` was added
+* `breakthroughMode()` was added
 * `withLdapServerType(models.LdapServerType)` was added
 * `largeVolumeType()` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `withBreakthroughMode(models.BreakthroughMode)` was added
 
 #### `models.Volume` was modified
 
+* `ldapServerType()` was added
+* `listQuotaReport()` was added
 * `largeVolumeType()` was added
 * `language()` was added
-* `listQuotaReport()` was added
-* `ldapServerType()` was added
 * `breakthroughMode()` was added
 * `listQuotaReport(com.azure.core.util.Context)` was added
 
@@ -424,18 +426,18 @@
 
 #### `NetAppFilesManager` was modified
 
-* `elasticAccounts()` was added
-* `ransomwareReports()` was added
-* `buckets()` was added
-* `elasticSnapshotPolicies()` was added
 * `activeDirectoryConfigs()` was added
-* `caches()` was added
-* `elasticBackupVaults()` was added
-* `elasticBackupPolicies()` was added
 * `elasticCapacityPools()` was added
+* `ransomwareReports()` was added
+* `elasticAccounts()` was added
 * `elasticVolumes()` was added
-* `elasticSnapshots()` was added
 * `elasticBackups()` was added
+* `elasticSnapshotPolicies()` was added
+* `elasticBackupPolicies()` was added
+* `elasticBackupVaults()` was added
+* `elasticSnapshots()` was added
+* `buckets()` was added
+* `caches()` was added
 
 #### `models.VolumePatchPropertiesDataProtection` was modified
 

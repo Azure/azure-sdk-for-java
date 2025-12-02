@@ -23,7 +23,7 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":7254215540772664714,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"njzrbhtmeplvu\"},\"location\":\"obrl\",\"tags\":{\"muowakywalhjy\":\"snbagnchjhg\",\"jomevtfycnlb\":\"xcgqtagdrclsso\",\"kk\":\"gjco\"},\"id\":\"ji\",\"name\":\"ytssikiz\",\"type\":\"cufqbvntnrgmqs\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":3645768848659109810,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"ydidwhepfwwtjf\"},\"location\":\"esxxhmwcdbckyoi\",\"tags\":{\"gknjzr\":\"xhn\",\"me\":\"h\",\"gsnbagnchjh\":\"lvukaobrlb\"},\"id\":\"emuowakyw\",\"name\":\"lhjym\",\"type\":\"cgqtag\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules()
-            .listByVolume("evhdlmydid", "hepfwwtjfdoes", "xhmw", "dbckyo", com.azure.core.util.Context.NONE);
+            .listByVolume("z", "vxhmtfhocnxzcmj", "ngxno", "rxtd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("obrl", response.iterator().next().location());
-        Assertions.assertEquals("snbagnchjhg", response.iterator().next().tags().get("muowakywalhjy"));
-        Assertions.assertEquals(7254215540772664714L, response.iterator().next().quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("njzrbhtmeplvu", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("esxxhmwcdbckyoi", response.iterator().next().location());
+        Assertions.assertEquals("xhn", response.iterator().next().tags().get("gknjzr"));
+        Assertions.assertEquals(3645768848659109810L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.iterator().next().quotaType());
+        Assertions.assertEquals("ydidwhepfwwtjf", response.iterator().next().quotaTarget());
     }
 }

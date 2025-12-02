@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeZoneRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeZoneRequest model = BinaryData.fromString("{\"newZone\":\"jnaeois\"}").toObject(ChangeZoneRequest.class);
-        Assertions.assertEquals("jnaeois", model.newZone());
+        ChangeZoneRequest model = BinaryData.fromString("{\"newZone\":\"ysdzhez\"}").toObject(ChangeZoneRequest.class);
+        Assertions.assertEquals("ysdzhez", model.newZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeZoneRequest model = new ChangeZoneRequest().withNewZone("jnaeois");
+        ChangeZoneRequest model = new ChangeZoneRequest().withNewZone("ysdzhez");
         model = BinaryData.fromObject(model).toObject(ChangeZoneRequest.class);
-        Assertions.assertEquals("jnaeois", model.newZone());
+        Assertions.assertEquals("ysdzhez", model.newZone());
     }
 }

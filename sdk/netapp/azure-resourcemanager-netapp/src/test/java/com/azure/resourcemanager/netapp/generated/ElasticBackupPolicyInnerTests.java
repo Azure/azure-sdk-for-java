@@ -16,30 +16,30 @@ public final class ElasticBackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"dailyBackupsToKeep\":728305495,\"weeklyBackupsToKeep\":649066801,\"monthlyBackupsToKeep\":619019093,\"assignedVolumesCount\":2058612555,\"policyState\":\"Disabled\"},\"eTag\":\"mxqhndvnoamldse\",\"location\":\"ohdjhhflzok\",\"tags\":{\"atftgzpnpbsw\":\"xpelnjetagltsx\"},\"id\":\"e\",\"name\":\"loccsrmozihm\",\"type\":\"pgawtxxpkyjcxcjx\"}")
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"dailyBackupsToKeep\":723884538,\"weeklyBackupsToKeep\":840919331,\"monthlyBackupsToKeep\":726767515,\"assignedVolumesCount\":981780547,\"policyState\":\"Disabled\"},\"eTag\":\"vnlvxbcuiiznktwf\",\"location\":\"snvpdibmi\",\"tags\":{\"yls\":\"tbzbkiwbuqnyophz\"},\"id\":\"crpfbcunez\",\"name\":\"cez\",\"type\":\"lfwyfwlwxjwetn\"}")
             .toObject(ElasticBackupPolicyInner.class);
-        Assertions.assertEquals("ohdjhhflzok", model.location());
-        Assertions.assertEquals("xpelnjetagltsx", model.tags().get("atftgzpnpbsw"));
-        Assertions.assertEquals(728305495, model.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(649066801, model.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(619019093, model.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals("snvpdibmi", model.location());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.tags().get("yls"));
+        Assertions.assertEquals(723884538, model.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(840919331, model.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(726767515, model.properties().monthlyBackupsToKeep());
         Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, model.properties().policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticBackupPolicyInner model = new ElasticBackupPolicyInner().withLocation("ohdjhhflzok")
-            .withTags(mapOf("atftgzpnpbsw", "xpelnjetagltsx"))
-            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(728305495)
-                .withWeeklyBackupsToKeep(649066801)
-                .withMonthlyBackupsToKeep(619019093)
+        ElasticBackupPolicyInner model = new ElasticBackupPolicyInner().withLocation("snvpdibmi")
+            .withTags(mapOf("yls", "tbzbkiwbuqnyophz"))
+            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(723884538)
+                .withWeeklyBackupsToKeep(840919331)
+                .withMonthlyBackupsToKeep(726767515)
                 .withPolicyState(ElasticBackupPolicyState.DISABLED));
         model = BinaryData.fromObject(model).toObject(ElasticBackupPolicyInner.class);
-        Assertions.assertEquals("ohdjhhflzok", model.location());
-        Assertions.assertEquals("xpelnjetagltsx", model.tags().get("atftgzpnpbsw"));
-        Assertions.assertEquals(728305495, model.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(649066801, model.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(619019093, model.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals("snvpdibmi", model.location());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.tags().get("yls"));
+        Assertions.assertEquals(723884538, model.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(840919331, model.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(726767515, model.properties().monthlyBackupsToKeep());
         Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, model.properties().policyState());
     }
 

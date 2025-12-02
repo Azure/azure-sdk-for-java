@@ -33,7 +33,7 @@ public final class ElasticSnapshotPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticSnapshotPolicy response = manager.elasticSnapshotPolicies()
-            .getWithResponse("qhnmhk", "ezsdsuxheq", "gcruxspinym", com.azure.core.util.Context.NONE)
+            .getWithResponse("ttqhnmhkrezsds", "xheq", "gcruxspinym", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals("etatlakf", response.location());
