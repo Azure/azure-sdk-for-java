@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.weightsandbiases {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.weightsandbiases;
     exports com.azure.resourcemanager.weightsandbiases.fluent;
     exports com.azure.resourcemanager.weightsandbiases.fluent.models;
     exports com.azure.resourcemanager.weightsandbiases.models;
-
     opens com.azure.resourcemanager.weightsandbiases.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.weightsandbiases.models to com.azure.core;
     opens com.azure.resourcemanager.weightsandbiases.implementation.models to com.azure.core;

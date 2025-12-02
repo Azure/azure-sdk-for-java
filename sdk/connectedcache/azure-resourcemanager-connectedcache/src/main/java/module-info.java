@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.connectedcache {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.connectedcache;
     exports com.azure.resourcemanager.connectedcache.fluent;
     exports com.azure.resourcemanager.connectedcache.fluent.models;
     exports com.azure.resourcemanager.connectedcache.models;
-
     opens com.azure.resourcemanager.connectedcache.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.connectedcache.models to com.azure.core;
     opens com.azure.resourcemanager.connectedcache.implementation.models to com.azure.core;

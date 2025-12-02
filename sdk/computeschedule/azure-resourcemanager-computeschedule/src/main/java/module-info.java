@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.computeschedule {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.computeschedule;
     exports com.azure.resourcemanager.computeschedule.fluent;
     exports com.azure.resourcemanager.computeschedule.fluent.models;
     exports com.azure.resourcemanager.computeschedule.models;
-
     opens com.azure.resourcemanager.computeschedule.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.computeschedule.models to com.azure.core;
     opens com.azure.resourcemanager.computeschedule.implementation.models to com.azure.core;

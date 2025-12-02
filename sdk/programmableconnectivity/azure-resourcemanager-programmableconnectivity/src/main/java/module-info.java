@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.programmableconnectivity {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.programmableconnectivity;
     exports com.azure.resourcemanager.programmableconnectivity.fluent;
     exports com.azure.resourcemanager.programmableconnectivity.fluent.models;
     exports com.azure.resourcemanager.programmableconnectivity.models;
-
     opens com.azure.resourcemanager.programmableconnectivity.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.programmableconnectivity.models to com.azure.core;
     opens com.azure.resourcemanager.programmableconnectivity.implementation.models to com.azure.core;
