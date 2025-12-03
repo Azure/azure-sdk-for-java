@@ -121,6 +121,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
+            // Skip empty buffers that may be emitted by reactor-netty
+            if (encodedBuffer == null || !encodedBuffer.hasRemaining()) {
+                LOGGER.atVerbose()
+                    .addKeyValue("bufferLength", encodedBuffer == null ? "null" : encodedBuffer.remaining())
+                    .log("Skipping empty/null buffer in decodeStream");
+                return Flux.empty();
+            }
+
             LOGGER.atInfo()
                 .addKeyValue("newBytes", encodedBuffer.remaining())
                 .addKeyValue("decoderOffset", state.decoder.getMessageOffset())

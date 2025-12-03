@@ -255,4 +255,33 @@ public class StructuredMessageDecoderTests {
         assertArrayEquals(originalData, decodedData);
         assertTrue(decoder.isComplete());
     }
+
+    @Test
+    public void handlesZeroLengthBuffer() throws IOException {
+        // Test: Decoder should handle zero-length buffers gracefully
+        byte[] originalData = new byte[256];
+        ThreadLocalRandom.current().nextBytes(originalData);
+
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(originalData.length, 128, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        int encodedLength = encodedData.remaining();
+        byte[] encodedBytes = new byte[encodedLength];
+        encodedData.get(encodedBytes);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
+
+        // Feed zero-length buffer first
+        ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
+        StructuredMessageDecoder.DecodeResult result1 = decoder.decodeChunk(emptyBuffer);
+        assertEquals(StructuredMessageDecoder.DecodeStatus.NEED_MORE_BYTES, result1.getStatus());
+        assertEquals(0, result1.getBytesConsumed());
+
+        // Then feed actual data
+        ByteBuffer dataBuffer = ByteBuffer.wrap(encodedBytes);
+        dataBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        StructuredMessageDecoder.DecodeResult result2 = decoder.decodeChunk(dataBuffer);
+        assertEquals(StructuredMessageDecoder.DecodeStatus.COMPLETED, result2.getStatus());
+        assertTrue(decoder.isComplete());
+    }
 }
