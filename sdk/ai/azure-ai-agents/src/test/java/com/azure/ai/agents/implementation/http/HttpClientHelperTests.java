@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class HttpClientHelperTests {
 
@@ -39,7 +40,7 @@ class HttpClientHelperTests {
     private static final HttpHeaderName X_MULTI_HEADER = HttpHeaderName.fromString("X-Multi");
 
     @Test
-    void executeMapsRequestAndResponse() throws Exception {
+    void executeMapsRequestAndResponse() {
         RecordingHttpClient recordingClient = new RecordingHttpClient(request -> createMockResponse(request, 201,
             new HttpHeaders().set(REQUEST_ID_HEADER, "req-123").set(CUSTOM_HEADER_NAME, "custom-value"), "pong"));
         com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
@@ -60,11 +61,13 @@ class HttpClientHelperTests {
             assertEquals("req-123", response.requestId().orElseThrow(() -> new AssertionError("Missing request id")));
             assertEquals("custom-value", response.headers().values("custom-header").get(0));
             assertEquals("pong", new String(readAllBytes(response.body()), StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            fail("Exception thrown while reading response", e);
         }
     }
 
     @Test
-    void executeAsyncCompletesSuccessfully() throws Exception {
+    void executeAsyncCompletesSuccessfully() {
         RecordingHttpClient recordingClient
             = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
         com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
@@ -74,6 +77,8 @@ class HttpClientHelperTests {
         CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
         try (com.openai.core.http.HttpResponse response = future.join()) {
             assertEquals(204, response.statusCode());
+        } catch (Exception e) {
+            fail("Exception thrown while reading response", e);
         }
         assertEquals(1, recordingClient.getSendCount());
     }
