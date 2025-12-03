@@ -13,16 +13,16 @@ public final class EventStorageDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventStorageDestination model
-            = BinaryData.fromString("{\"target\":\"Storage\",\"configuration\":{\"path\":\"ceoveilovno\"}}")
+            = BinaryData.fromString("{\"target\":\"Storage\",\"configuration\":{\"path\":\"savjcbpwxqps\"}}")
                 .toObject(EventStorageDestination.class);
-        Assertions.assertEquals("ceoveilovno", model.configuration().path());
+        Assertions.assertEquals("savjcbpwxqps", model.configuration().path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventStorageDestination model = new EventStorageDestination()
-            .withConfiguration(new StorageDestinationConfiguration().withPath("ceoveilovno"));
+            .withConfiguration(new StorageDestinationConfiguration().withPath("savjcbpwxqps"));
         model = BinaryData.fromObject(model).toObject(EventStorageDestination.class);
-        Assertions.assertEquals("ceoveilovno", model.configuration().path());
+        Assertions.assertEquals("savjcbpwxqps", model.configuration().path());
     }
 }

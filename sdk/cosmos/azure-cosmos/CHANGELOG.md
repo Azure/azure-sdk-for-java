@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed a possible memory leak (Netty buffers) in Gateway mode caused by a race condition when timeouts are happening. - [47228](https://github.com/Azure/azure-sdk-for-java/pull/47228) and [47251](https://github.com/Azure/azure-sdk-for-java/pull/47251)
+* Fixed `NullPointerException` in region-scoped session container when false positive regions are reported for session progress tracking. [PR 46758](https://github.com/Azure/azure-sdk-for-java/pull/46758)
 
 #### Other Changes
 * Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)

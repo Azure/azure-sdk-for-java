@@ -12,26 +12,28 @@ public final class NamespaceDeviceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDeviceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"v\",\"enabled\":true,\"externalDeviceId\":\"qqtch\",\"discoveredDeviceRef\":\"lmfmtdaay\",\"manufacturer\":\"v\",\"model\":\"gpiohgwxrtfudxe\",\"operatingSystem\":\"gyqagvrvmnpkuk\",\"operatingSystemVersion\":\"i\",\"endpoints\":{\"inbound\":{\"xw\":{\"endpointType\":\"xgwim\",\"address\":\"njhf\"},\"wneaiv\":{\"endpointType\":\"szkkfoqre\",\"address\":\"fkzikfj\"},\"abfatkl\":{\"endpointType\":\"wczelpci\",\"address\":\"elsfeaen\"}},\"outbound\":{\"assigned\":{\"zjosp\":{\"address\":\"bjhwuaan\"},\"rvxaglrvimjwosy\":{\"address\":\"youlp\"},\"kfcktqum\":{\"address\":\"xitc\"},\"gqggebdunygae\":{\"address\":\"ekkezzikhlyfjh\"}},\"unassigned\":{\"dsuvarmywdmjsjqb\":{\"address\":\"bqfatpxllrxcyjmo\"}}}},\"attributes\":{},\"status\":{\"config\":{\"version\":1441168522946793011,\"lastTransitionTime\":\"2021-08-21T13:48:09Z\",\"error\":{}},\"endpoints\":{\"inbound\":{\"hp\":{},\"xkgymareqnajxqu\":{},\"jhkycub\":{}}}},\"version\":5313229010418378323,\"lastTransitionTime\":\"2021-04-18T16:03:28Z\",\"provisioningState\":\"Deleting\"},\"etag\":\"qmzqalkrmnjijpx\",\"extendedLocation\":{\"type\":\"q\",\"name\":\"udfnbyxba\"},\"location\":\"bjyvay\",\"tags\":{\"zrtuzq\":\"m\",\"fdnw\":\"gsexne\",\"euzsoi\":\"wmewzsyy\"},\"id\":\"judpfrxt\",\"name\":\"thzvaytdwkqbrqu\",\"type\":\"paxh\"}],\"nextLink\":\"iilivpdtiirqtd\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"jinfw\",\"enabled\":false,\"externalDeviceId\":\"tkacj\",\"discoveredDeviceRef\":\"f\",\"manufacturer\":\"lfoakg\",\"model\":\"fpagaowpulp\",\"operatingSystem\":\"lyls\",\"operatingSystemVersion\":\"k\",\"endpoints\":{\"inbound\":{\"kfzbeyvpnqicvi\":{\"endpointType\":\"jervtia\",\"address\":\"xsdszuempsb\"},\"rbuukzclewyhmlwp\":{\"endpointType\":\"v\",\"address\":\"jjxd\"}},\"outbound\":{\"assigned\":{\"cckwyfzqwhxxbu\":{\"address\":\"zpof\"},\"zfeqztppri\":{\"address\":\"qa\"},\"bqwcsdbnwdcf\":{\"address\":\"lxorjaltolmncws\"},\"jcanvxbvtvudut\":{\"address\":\"ucqdpfuvglsb\"}},\"unassigned\":{\"dflvkg\":{\"address\":\"rmrlxqtvcof\"},\"gdknnqv\":{\"address\":\"u\"},\"sgsahmkycgr\":{\"address\":\"aznqntoru\"},\"s\":{\"address\":\"uwjuetaeburuvdmo\"}}}},\"attributes\":{},\"status\":{\"config\":{\"version\":194940168582147354,\"lastTransitionTime\":\"2021-06-22T12:18:54Z\",\"error\":{}},\"endpoints\":{\"inbound\":{\"frvtpuqu\":{},\"mqlgk\":{}}}},\"version\":2595329865796026079,\"lastTransitionTime\":\"2021-06-07T02:06:17Z\",\"provisioningState\":\"Succeeded\",\"policy\":{\"resourceId\":\"bjcntujitc\"}},\"etag\":\"df\",\"extendedLocation\":{\"type\":\"waezkojvd\",\"name\":\"pzfoqoui\"},\"location\":\"bxarzgszufoxci\",\"tags\":{\"xkhnzbonlwnto\":\"idoamciodhkha\"},\"id\":\"gokdwbwhks\",\"name\":\"zcmrvexztvb\",\"type\":\"qgsfraoyzkoow\"},{\"properties\":{\"uuid\":\"nguxawqaldsy\",\"enabled\":true,\"externalDeviceId\":\"merqfobwyznkb\",\"discoveredDeviceRef\":\"utwpfhp\",\"manufacturer\":\"m\",\"model\":\"skdsnfdsdoakg\",\"operatingSystem\":\"lmkk\",\"operatingSystemVersion\":\"vdlhewpusdsttwv\",\"endpoints\":{\"inbound\":{\"gm\":{\"endpointType\":\"bejdcn\",\"address\":\"qqmoaku\"},\"enuuzkopbm\":{\"endpointType\":\"zr\",\"address\":\"rdgrtw\"},\"efozbhdms\":{\"endpointType\":\"nrfdw\",\"address\":\"yuhhziu\"}},\"outbound\":{\"assigned\":{\"rmaequ\":{\"address\":\"zqhof\"},\"icslfaoq\":{\"address\":\"ah\"},\"kaivwit\":{\"address\":\"piyylhalnswhccsp\"},\"bwemhairs\":{\"address\":\"scywuggwoluhc\"}},\"unassigned\":{\"wmsweypqwd\":{\"address\":\"z\"}}}},\"attributes\":{},\"status\":{\"config\":{\"version\":7620570472087923252,\"lastTransitionTime\":\"2021-07-21T16:23:57Z\",\"error\":{}},\"endpoints\":{\"inbound\":{\"mkttlstvlzywem\":{},\"zrncsdt\":{}}}},\"version\":407518124888159377,\"lastTransitionTime\":\"2021-08-31T08:14:30Z\",\"provisioningState\":\"Deleting\",\"policy\":{\"resourceId\":\"ytguslf\"}},\"etag\":\"dcygqukyhejhz\",\"extendedLocation\":{\"type\":\"xgfpelolppv\",\"name\":\"srp\"},\"location\":\"ujzra\",\"tags\":{\"wrft\":\"w\"},\"id\":\"wib\",\"name\":\"rcdlbhshfwpr\",\"type\":\"cstwity\"}],\"nextLink\":\"evxccedcp\"}")
             .toObject(NamespaceDeviceListResult.class);
-        Assertions.assertEquals("bjyvay", model.value().get(0).location());
-        Assertions.assertEquals("m", model.value().get(0).tags().get("zrtuzq"));
-        Assertions.assertTrue(model.value().get(0).properties().enabled());
-        Assertions.assertEquals("qqtch", model.value().get(0).properties().externalDeviceId());
-        Assertions.assertEquals("lmfmtdaay", model.value().get(0).properties().discoveredDeviceRef());
-        Assertions.assertEquals("v", model.value().get(0).properties().manufacturer());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.value().get(0).properties().model());
-        Assertions.assertEquals("gyqagvrvmnpkuk", model.value().get(0).properties().operatingSystem());
-        Assertions.assertEquals("i", model.value().get(0).properties().operatingSystemVersion());
-        Assertions.assertEquals("xgwim",
-            model.value().get(0).properties().endpoints().inbound().get("xw").endpointType());
-        Assertions.assertEquals("njhf", model.value().get(0).properties().endpoints().inbound().get("xw").address());
-        Assertions.assertEquals("bjhwuaan",
-            model.value().get(0).properties().endpoints().outbound().assigned().get("zjosp").address());
-        Assertions.assertEquals("bqfatpxllrxcyjmo",
-            model.value().get(0).properties().endpoints().outbound().unassigned().get("dsuvarmywdmjsjqb").address());
-        Assertions.assertEquals("q", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("udfnbyxba", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("iilivpdtiirqtd", model.nextLink());
+        Assertions.assertEquals("bxarzgszufoxci", model.value().get(0).location());
+        Assertions.assertEquals("idoamciodhkha", model.value().get(0).tags().get("xkhnzbonlwnto"));
+        Assertions.assertFalse(model.value().get(0).properties().enabled());
+        Assertions.assertEquals("tkacj", model.value().get(0).properties().externalDeviceId());
+        Assertions.assertEquals("f", model.value().get(0).properties().discoveredDeviceRef());
+        Assertions.assertEquals("lfoakg", model.value().get(0).properties().manufacturer());
+        Assertions.assertEquals("fpagaowpulp", model.value().get(0).properties().model());
+        Assertions.assertEquals("lyls", model.value().get(0).properties().operatingSystem());
+        Assertions.assertEquals("k", model.value().get(0).properties().operatingSystemVersion());
+        Assertions.assertEquals("jervtia",
+            model.value().get(0).properties().endpoints().inbound().get("kfzbeyvpnqicvi").endpointType());
+        Assertions.assertEquals("xsdszuempsb",
+            model.value().get(0).properties().endpoints().inbound().get("kfzbeyvpnqicvi").address());
+        Assertions.assertEquals("zpof",
+            model.value().get(0).properties().endpoints().outbound().assigned().get("cckwyfzqwhxxbu").address());
+        Assertions.assertEquals("rmrlxqtvcof",
+            model.value().get(0).properties().endpoints().outbound().unassigned().get("dflvkg").address());
+        Assertions.assertEquals("bjcntujitc", model.value().get(0).properties().policy().resourceId());
+        Assertions.assertEquals("waezkojvd", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("pzfoqoui", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("evxccedcp", model.nextLink());
     }
 }

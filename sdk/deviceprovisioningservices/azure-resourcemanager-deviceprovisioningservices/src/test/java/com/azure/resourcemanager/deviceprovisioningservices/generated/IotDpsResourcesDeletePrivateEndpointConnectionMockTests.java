@@ -10,19 +10,15 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager;
-import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkServiceConnectionStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class IotDpsResourcesDeletePrivateEndpointConnectionMockTests {
     @Test
     public void testDeletePrivateEndpointConnection() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"ucerscdntnevfi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"mygtdssls\",\"actionsRequired\":\"mweriofzpy\"}},\"id\":\"emwabnet\",\"name\":\"hhszh\",\"type\":\"d\"}";
+        String responseStr = "{}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +27,8 @@ public final class IotDpsResourcesDeletePrivateEndpointConnectionMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PrivateEndpointConnection response = manager.iotDpsResources()
+        manager.iotDpsResources()
             .deletePrivateEndpointConnection("od", "xzb", "cblylpstdbhhxsr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
-            response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("mygtdssls", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("mweriofzpy",
-            response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

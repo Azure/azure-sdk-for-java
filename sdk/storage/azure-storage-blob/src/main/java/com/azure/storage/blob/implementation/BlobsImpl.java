@@ -29,7 +29,6 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
-import com.azure.storage.blob.implementation.models.BlobModifiedAccessConditions;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLHeaders;
@@ -10496,7 +10495,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10505,10 +10509,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsGetTagsHeaders, BlobTags>> getTagsWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch) {
         return FluxUtil
             .withContext(context -> getTagsWithResponseAsync(containerName, blob, timeout, requestId, snapshot,
-                versionId, ifTags, leaseId, blobModifiedAccessConditions, context))
+                versionId, ifTags, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10530,7 +10534,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10540,29 +10549,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsGetTagsHeaders, BlobTags>> getTagsWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        Context context) {
         final String comp = "tags";
         final String accept = "application/xml";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String ifMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -10592,7 +10582,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10600,10 +10595,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobTags> getTagsAsync(String containerName, String blob, Integer timeout, String requestId,
-        String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        String snapshot, String versionId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch) {
         return getTagsWithResponseAsync(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId,
-            blobModifiedAccessConditions)
+            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -10626,7 +10621,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10635,10 +10635,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobTags> getTagsAsync(String containerName, String blob, Integer timeout, String requestId,
-        String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        String snapshot, String versionId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Context context) {
         return getTagsWithResponseAsync(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId,
-            blobModifiedAccessConditions, context)
+            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -10661,7 +10661,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10670,10 +10675,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobTags>> getTagsNoCustomHeadersWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch) {
         return FluxUtil
-            .withContext(context -> getTagsNoCustomHeadersWithResponseAsync(containerName, blob, timeout, requestId,
-                snapshot, versionId, ifTags, leaseId, blobModifiedAccessConditions, context))
+            .withContext(
+                context -> getTagsNoCustomHeadersWithResponseAsync(containerName, blob, timeout, requestId, snapshot,
+                    versionId, ifTags, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10695,7 +10701,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10705,29 +10716,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobTags>> getTagsNoCustomHeadersWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        Context context) {
         final String comp = "tags";
         final String accept = "application/xml";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String ifMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -10757,7 +10749,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10767,30 +10764,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsGetTagsHeaders, BlobTags> getTagsWithResponse(String containerName, String blob,
         Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        Context context) {
         try {
             final String comp = "tags";
             final String accept = "application/xml";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            String ifMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-            }
-            String ifMatch = ifMatchInternal;
-            String ifNoneMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-            }
-            String ifNoneMatch = ifNoneMatchInternal;
             DateTimeRfc1123 ifModifiedSinceConverted
                 = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
             DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -10821,7 +10799,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10829,10 +10812,11 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobTags getTags(String containerName, String blob, Integer timeout, String requestId, String snapshot,
-        String versionId, String ifTags, String leaseId, BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        String versionId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch) {
         try {
             return getTagsWithResponse(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId,
-                blobModifiedAccessConditions, Context.NONE).getValue();
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -10856,7 +10840,12 @@ public final class BlobsImpl {
      * of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param blobModifiedAccessConditions Parameter group.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10866,30 +10855,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobTags> getTagsNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         String requestId, String snapshot, String versionId, String ifTags, String leaseId,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        Context context) {
         try {
             final String comp = "tags";
             final String accept = "application/xml";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            String ifMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-            }
-            String ifMatch = ifMatchInternal;
-            String ifNoneMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-            }
-            String ifNoneMatch = ifNoneMatchInternal;
             DateTimeRfc1123 ifModifiedSinceConverted
                 = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
             DateTimeRfc1123 ifUnmodifiedSinceConverted
@@ -10918,8 +10888,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10928,12 +10903,12 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsSetTagsHeaders, Void>> setTagsWithResponseAsync(String containerName, String blob,
         Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
-        String requestId, String ifTags, String leaseId, BlobTags tags,
-        BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        String requestId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, BlobTags tags) {
         return FluxUtil
-            .withContext(
-                context -> setTagsWithResponseAsync(containerName, blob, timeout, versionId, transactionalContentMD5,
-                    transactionalContentCrc64, requestId, ifTags, leaseId, tags, blobModifiedAccessConditions, context))
+            .withContext(context -> setTagsWithResponseAsync(containerName, blob, timeout, versionId,
+                transactionalContentMD5, transactionalContentCrc64, requestId, ifTags, leaseId, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, tags, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -10953,8 +10928,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -10964,30 +10944,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsSetTagsHeaders, Void>> setTagsWithResponseAsync(String containerName, String blob,
         Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
-        String requestId, String ifTags, String leaseId, BlobTags tags,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        String requestId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, BlobTags tags, Context context) {
         final String comp = "tags";
         final String accept = "application/xml";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String ifMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         DateTimeRfc1123 ifModifiedSinceConverted
@@ -11017,8 +10977,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11027,10 +10992,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTagsAsync(String containerName, String blob, Integer timeout, String versionId,
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, String ifTags,
-        String leaseId, BlobTags tags, BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, BlobTags tags) {
         return setTagsWithResponseAsync(containerName, blob, timeout, versionId, transactionalContentMD5,
-            transactionalContentCrc64, requestId, ifTags, leaseId, tags, blobModifiedAccessConditions)
-                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            transactionalContentCrc64, requestId, ifTags, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+            ifNoneMatch, tags).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -11050,8 +11016,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -11061,9 +11032,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTagsAsync(String containerName, String blob, Integer timeout, String versionId,
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, String ifTags,
-        String leaseId, BlobTags tags, BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, BlobTags tags, Context context) {
         return setTagsWithResponseAsync(containerName, blob, timeout, versionId, transactionalContentMD5,
-            transactionalContentCrc64, requestId, ifTags, leaseId, tags, blobModifiedAccessConditions, context)
+            transactionalContentCrc64, requestId, ifTags, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+            ifNoneMatch, tags, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -11084,8 +11057,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11094,12 +11072,12 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setTagsNoCustomHeadersWithResponseAsync(String containerName, String blob,
         Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
-        String requestId, String ifTags, String leaseId, BlobTags tags,
-        BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        String requestId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, BlobTags tags) {
         return FluxUtil
             .withContext(context -> setTagsNoCustomHeadersWithResponseAsync(containerName, blob, timeout, versionId,
-                transactionalContentMD5, transactionalContentCrc64, requestId, ifTags, leaseId, tags,
-                blobModifiedAccessConditions, context))
+                transactionalContentMD5, transactionalContentCrc64, requestId, ifTags, leaseId, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, tags, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -11119,8 +11097,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -11130,30 +11113,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setTagsNoCustomHeadersWithResponseAsync(String containerName, String blob,
         Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
-        String requestId, String ifTags, String leaseId, BlobTags tags,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        String requestId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, BlobTags tags, Context context) {
         final String comp = "tags";
         final String accept = "application/xml";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String ifMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (blobModifiedAccessConditions != null) {
-            ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         DateTimeRfc1123 ifModifiedSinceConverted
@@ -11182,8 +11145,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -11193,31 +11161,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsSetTagsHeaders, Void> setTagsWithResponse(String containerName, String blob,
         Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
-        String requestId, String ifTags, String leaseId, BlobTags tags,
-        BlobModifiedAccessConditions blobModifiedAccessConditions, Context context) {
+        String requestId, String ifTags, String leaseId, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, BlobTags tags, Context context) {
         try {
             final String comp = "tags";
             final String accept = "application/xml";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            String ifMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-            }
-            String ifMatch = ifMatchInternal;
-            String ifNoneMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-            }
-            String ifNoneMatch = ifNoneMatchInternal;
             String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
             String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             DateTimeRfc1123 ifModifiedSinceConverted
@@ -11249,8 +11197,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11258,9 +11211,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setTags(String containerName, String blob, Integer timeout, String versionId,
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, String ifTags,
-        String leaseId, BlobTags tags, BlobModifiedAccessConditions blobModifiedAccessConditions) {
+        String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, BlobTags tags) {
         setTagsWithResponse(containerName, blob, timeout, versionId, transactionalContentMD5, transactionalContentCrc64,
-            requestId, ifTags, leaseId, tags, blobModifiedAccessConditions, Context.NONE);
+            requestId, ifTags, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, tags, Context.NONE);
     }
 
     /**
@@ -11279,8 +11233,13 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param tags Blob tags.
-     * @param blobModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -11290,31 +11249,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setTagsNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId,
-        String ifTags, String leaseId, BlobTags tags, BlobModifiedAccessConditions blobModifiedAccessConditions,
-        Context context) {
+        String ifTags, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, BlobTags tags, Context context) {
         try {
             final String comp = "tags";
             final String accept = "application/xml";
-            OffsetDateTime ifModifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifModifiedSinceInternal = blobModifiedAccessConditions.getIfModifiedSince();
-            }
-            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-            OffsetDateTime ifUnmodifiedSinceInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifUnmodifiedSinceInternal = blobModifiedAccessConditions.getIfUnmodifiedSince();
-            }
-            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-            String ifMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifMatchInternal = blobModifiedAccessConditions.getIfMatch();
-            }
-            String ifMatch = ifMatchInternal;
-            String ifNoneMatchInternal = null;
-            if (blobModifiedAccessConditions != null) {
-                ifNoneMatchInternal = blobModifiedAccessConditions.getIfNoneMatch();
-            }
-            String ifNoneMatch = ifNoneMatchInternal;
             String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
             String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             DateTimeRfc1123 ifModifiedSinceConverted

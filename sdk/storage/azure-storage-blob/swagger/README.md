@@ -16,6 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.52'
+
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a618ec98a5982f08cd2c4779196f015c055475fb/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-04-06/blob.json
 java: true
 output-folder: ../
@@ -473,6 +474,13 @@ directive:
     delete $.IfNoneMatch["x-ms-parameter-grouping"];
     delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
     delete $.IfTags["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.IfBlobMatch["x-ms-parameter-grouping"];
+    delete $.IfBlobModifiedSince["x-ms-parameter-grouping"];
+    delete $.IfBlobNoneMatch["x-ms-parameter-grouping"];
+    delete $.IfBlobUnmodifiedSince["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >
