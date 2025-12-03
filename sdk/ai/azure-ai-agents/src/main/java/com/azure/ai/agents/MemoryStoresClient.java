@@ -15,7 +15,7 @@ import com.azure.ai.agents.models.ListAgentsRequestOrder;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
-import com.azure.ai.agents.models.MemoryStoreObject;
+import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreSearchResponse;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
 import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
@@ -528,7 +528,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreObject createMemoryStore(String name, MemoryStoreDefinition definition, String description,
+    public MemoryStoreDetails createMemoryStore(String name, MemoryStoreDefinition definition, String description,
         Map<String, String> metadata) {
         // Generated convenience method for createMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -536,7 +536,7 @@ public final class MemoryStoresClient {
             = new CreateMemoryStoreRequest(name, definition).setDescription(description).setMetadata(metadata);
         BinaryData createMemoryStoreRequest = BinaryData.fromObject(createMemoryStoreRequestObj);
         return createMemoryStoreWithResponse(createMemoryStoreRequest, requestOptions).getValue()
-            .toObject(MemoryStoreObject.class);
+            .toObject(MemoryStoreDetails.class);
     }
 
     /**
@@ -554,13 +554,13 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreObject createMemoryStore(String name, MemoryStoreDefinition definition) {
+    public MemoryStoreDetails createMemoryStore(String name, MemoryStoreDefinition definition) {
         // Generated convenience method for createMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateMemoryStoreRequest createMemoryStoreRequestObj = new CreateMemoryStoreRequest(name, definition);
         BinaryData createMemoryStoreRequest = BinaryData.fromObject(createMemoryStoreRequestObj);
         return createMemoryStoreWithResponse(createMemoryStoreRequest, requestOptions).getValue()
-            .toObject(MemoryStoreObject.class);
+            .toObject(MemoryStoreDetails.class);
     }
 
     /**
@@ -577,10 +577,10 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreObject getMemoryStore(String name) {
+    public MemoryStoreDetails getMemoryStore(String name) {
         // Generated convenience method for getMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getMemoryStoreWithResponse(name, requestOptions).getValue().toObject(MemoryStoreObject.class);
+        return getMemoryStoreWithResponse(name, requestOptions).getValue().toObject(MemoryStoreDetails.class);
     }
 
     /**
@@ -606,7 +606,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MemoryStoreObject> listMemoryStores(Integer limit, ListAgentsRequestOrder order, String after,
+    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, ListAgentsRequestOrder order, String after,
         String before) {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
@@ -623,7 +623,7 @@ public final class MemoryStoresClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient.listMemoryStores(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -638,11 +638,11 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MemoryStoreObject> listMemoryStores() {
+    public PagedIterable<MemoryStoreDetails> listMemoryStores() {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listMemoryStores(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -792,14 +792,14 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreObject updateMemoryStore(String name, String description, Map<String, String> metadata) {
+    public MemoryStoreDetails updateMemoryStore(String name, String description, Map<String, String> metadata) {
         // Generated convenience method for updateMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoryStoreRequest updateMemoryStoreRequestObj
             = new UpdateMemoryStoreRequest().setDescription(description).setMetadata(metadata);
         BinaryData updateMemoryStoreRequest = BinaryData.fromObject(updateMemoryStoreRequestObj);
         return updateMemoryStoreWithResponse(name, updateMemoryStoreRequest, requestOptions).getValue()
-            .toObject(MemoryStoreObject.class);
+            .toObject(MemoryStoreDetails.class);
     }
 
     /**
@@ -816,13 +816,13 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreObject updateMemoryStore(String name) {
+    public MemoryStoreDetails updateMemoryStore(String name) {
         // Generated convenience method for updateMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoryStoreRequest updateMemoryStoreRequestObj = new UpdateMemoryStoreRequest();
         BinaryData updateMemoryStoreRequest = BinaryData.fromObject(updateMemoryStoreRequestObj);
         return updateMemoryStoreWithResponse(name, updateMemoryStoreRequest, requestOptions).getValue()
-            .toObject(MemoryStoreObject.class);
+            .toObject(MemoryStoreDetails.class);
     }
 
     /**

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.resourcemanager.netapp.models.Cache;
+import com.azure.resourcemanager.netapp.models.CacheUpdate;
 import com.azure.resourcemanager.netapp.models.CacheUpdateProperties;
 
 /**
@@ -20,9 +20,9 @@ public final class CachesUpdateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void cachesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        Cache resource = manager.caches()
-            .getWithResponse("myRG", "account1", "pool1", "cache1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withProperties(new CacheUpdateProperties().withSize(214748364800L)).apply();
+        manager.caches()
+            .update("myRG", "account1", "pool1", "cache1",
+                new CacheUpdate().withProperties(new CacheUpdateProperties().withSize(214748364800L)),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,17 +12,18 @@ public final class SchemaVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionProperties model = BinaryData.fromString(
-            "{\"uuid\":\"mf\",\"description\":\"uwasqvd\",\"schemaContent\":\"e\",\"hash\":\"guxak\",\"provisioningState\":\"Failed\"}")
+            "{\"uuid\":\"hmkdasvfl\",\"description\":\"bxcudchx\",\"schemaContent\":\"srboldforobw\",\"hash\":\"vizbfhfo\",\"provisioningState\":\"Accepted\"}")
             .toObject(SchemaVersionProperties.class);
-        Assertions.assertEquals("uwasqvd", model.description());
-        Assertions.assertEquals("e", model.schemaContent());
+        Assertions.assertEquals("bxcudchx", model.description());
+        Assertions.assertEquals("srboldforobw", model.schemaContent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionProperties model = new SchemaVersionProperties().withDescription("uwasqvd").withSchemaContent("e");
+        SchemaVersionProperties model
+            = new SchemaVersionProperties().withDescription("bxcudchx").withSchemaContent("srboldforobw");
         model = BinaryData.fromObject(model).toObject(SchemaVersionProperties.class);
-        Assertions.assertEquals("uwasqvd", model.description());
-        Assertions.assertEquals("e", model.schemaContent());
+        Assertions.assertEquals("bxcudchx", model.description());
+        Assertions.assertEquals("srboldforobw", model.schemaContent());
     }
 }

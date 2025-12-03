@@ -1956,7 +1956,9 @@ public class BlobClientBase {
 
         Callable<ResponseBase<BlobsGetTagsHeaders, BlobTags>> operation = () -> this.azureBlobStorage.getBlobs()
             .getTagsWithResponse(containerName, blobName, null, null, snapshot, versionId,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), finalContext);
 
         ResponseBase<BlobsGetTagsHeaders, BlobTags> response
             = sendRequest(operation, timeout, BlobStorageException.class);
@@ -2029,7 +2031,9 @@ public class BlobClientBase {
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
             .setTagsNoCustomHeadersWithResponse(containerName, blobName, null, versionId, null, null, null,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, null, finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), t, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
