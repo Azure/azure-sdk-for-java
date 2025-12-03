@@ -81,12 +81,21 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildResponsesAsyncClient();
     }
 
+    protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresClient();
+    }
+
+    protected MemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresAsyncClient();
+    }
+
     private void addTestRecordCustomSanitizers() {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-        sanitizers.add(new TestProxySanitizer("$..endpoint", "https://.+?/api/projects/.+?/", "https://REDACTED/",
-            TestProxySanitizerType.URL));
+        sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
         sanitizers.add(new TestProxySanitizer("Content-Type",
             "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
@@ -97,6 +106,17 @@ public class ClientTestBase extends TestProxyTestBase {
 
     private void addCustomMatchers() {
         interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
+    }
+
+    protected void sleep(long millis) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

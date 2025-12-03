@@ -3,6 +3,9 @@
 ## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for the StartFrom parameter on `DataLakeFileSystemClient.listPaths()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+
 
 ### Breaking Changes
 

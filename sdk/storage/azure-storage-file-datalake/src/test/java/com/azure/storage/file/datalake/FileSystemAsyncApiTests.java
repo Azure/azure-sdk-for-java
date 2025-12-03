@@ -2584,4 +2584,25 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         DataLakeDirectoryAsyncClient directoryClient = fileSystemClient.getDirectoryAsyncClient(generatePathName());
         assertTrue(directoryClient.getPathUrl().contains(expectedName));
     }
+
+    @Test
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
+
+        StepVerifier.create(dir.create()
+            .then(setupDirectoryForListing(dir)) // properly chained
+            .thenMany(dir.listPaths(new ListPathsOptions().setRecursive(true).setStartFrom("foo"), null))
+            .collectList()).assertNext(pathsNames -> assertEquals(3, pathsNames.size())).verifyComplete();
+    }
+
+    private Mono<DataLakeDirectoryAsyncClient> setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
+        return client.createSubdirectory("foo")
+            .flatMap(foo -> foo.createSubdirectory("foo").then(foo.createSubdirectory("bar")))
+            .then(client.createSubdirectory("bar"))
+            .then(client.createSubdirectory("baz"))
+            .flatMap(baz -> baz.createSubdirectory("foo")
+                .flatMap(foo2 -> foo2.createSubdirectory("bar"))
+                .then(baz.createSubdirectory("bar/foo")));
+    }
 }

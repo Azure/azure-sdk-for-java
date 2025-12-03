@@ -23,7 +23,7 @@ public final class AlertRuleResourcesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alertRuleResourceId\":\"wyhzdx\",\"createdWithProperties\":\"CreatedWithActionGroup\",\"creationTime\":\"2021-03-28T04:38:02Z\",\"provisioningState\":\"Succeeded\",\"alertRuleTemplateId\":\"zmnvdfznudaod\",\"alertRuleTemplateVersion\":\"xzb\"},\"id\":\"blylpstdbh\",\"name\":\"xsrz\",\"type\":\"zucerscdntnev\"}";
+            = "{\"properties\":{\"alertRuleResourceId\":\"mefqsgzvahapjyzh\",\"createdWithProperties\":\"None\",\"creationTime\":\"2021-04-21T18:37:49Z\",\"provisioningState\":\"Failed\",\"alertRuleTemplateId\":\"cjrvxdjzlmwlxkv\",\"alertRuleTemplateVersion\":\"gfhzovawjvzunlut\"},\"id\":\"n\",\"name\":\"rnxipei\",\"type\":\"pjzu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +33,19 @@ public final class AlertRuleResourcesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AlertRuleResource response = manager.alertRuleResources()
-            .define("l")
-            .withExistingWatcher("doy", "mifthnzdnd")
-            .withProperties(new AlertRuleResourceProperties().withAlertRuleResourceId("ayqigynduhav")
-                .withCreatedWithProperties(AlertRuleCreationProperties.CREATED_WITH_ACTION_GROUP)
-                .withCreationTime(OffsetDateTime.parse("2021-02-05T08:21:04Z"))
-                .withAlertRuleTemplateId("humaqolbgyc")
-                .withAlertRuleTemplateVersion("uie"))
+            .define("yzm")
+            .withExistingWatcher("j", "zg")
+            .withProperties(new AlertRuleResourceProperties().withAlertRuleResourceId("xongmtsavjcbpwxq")
+                .withCreatedWithProperties(AlertRuleCreationProperties.NONE)
+                .withCreationTime(OffsetDateTime.parse("2020-12-25T00:52:56Z"))
+                .withAlertRuleTemplateId("ftguv")
+                .withAlertRuleTemplateVersion("iuhprwmdyvxqta"))
             .create();
 
-        Assertions.assertEquals("wyhzdx", response.properties().alertRuleResourceId());
-        Assertions.assertEquals(AlertRuleCreationProperties.CREATED_WITH_ACTION_GROUP,
-            response.properties().createdWithProperties());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T04:38:02Z"), response.properties().creationTime());
-        Assertions.assertEquals("zmnvdfznudaod", response.properties().alertRuleTemplateId());
-        Assertions.assertEquals("xzb", response.properties().alertRuleTemplateVersion());
+        Assertions.assertEquals("mefqsgzvahapjyzh", response.properties().alertRuleResourceId());
+        Assertions.assertEquals(AlertRuleCreationProperties.NONE, response.properties().createdWithProperties());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T18:37:49Z"), response.properties().creationTime());
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", response.properties().alertRuleTemplateId());
+        Assertions.assertEquals("gfhzovawjvzunlut", response.properties().alertRuleTemplateVersion());
     }
 }

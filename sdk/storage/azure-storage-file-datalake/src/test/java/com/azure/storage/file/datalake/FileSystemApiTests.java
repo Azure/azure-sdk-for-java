@@ -2411,6 +2411,34 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertTrue(directoryClient.getPathUrl().contains(expectedName));
     }
 
+    @Test
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        setupDirectoryForListing(dir);
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
+
+        List<PathItem> pathsFromFoo = dir.listPaths(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(3, pathsFromFoo.size());
+    }
+
+    private void setupDirectoryForListing(DataLakeDirectoryClient client) {
+        // Create 3 subdirs
+        DataLakeDirectoryClient foo = client.createSubdirectory("foo");
+        client.createSubdirectory("bar");
+        DataLakeDirectoryClient baz = client.createSubdirectory("baz");
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo");
+        foo.createSubdirectory("bar");
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").createSubdirectory("bar");
+        baz.createSubdirectory("bar/foo");
+    }
+
     //    @Test
     //    public void rename() {
     //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());
