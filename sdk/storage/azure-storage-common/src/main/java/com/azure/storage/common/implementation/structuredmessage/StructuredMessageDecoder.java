@@ -19,26 +19,94 @@ import static com.azure.storage.common.implementation.structuredmessage.Structur
 
 /**
  * Decoder for structured messages with support for segmenting and CRC64 checksums.
+ * 
+ * <p>This decoder properly handles partial headers and segment splits across HTTP chunks
+ * by maintaining a pending buffer and only advancing offsets when complete structures
+ * have been fully read and validated.</p>
+ * 
+ * <p>Key invariants:
+ * <ul>
+ *   <li>Never read partial headers - always check buffer remaining >= required bytes</li>
+ *   <li>Only advance messageOffset when bytes are fully consumed and validated</li>
+ *   <li>lastCompleteSegmentStart always points to a valid segment boundary for retry</li>
+ * </ul>
  */
 public class StructuredMessageDecoder {
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageDecoder.class);
-    private long messageLength;
+
+    // Message state
+    private long messageLength = -1;
     private StructuredMessageFlags flags;
-    private int numSegments;
+    private int numSegments = -1;
     private final long expectedContentLength;
 
-    private long messageOffset = 0;
+    // Offset tracking
+    private long messageOffset = 0;  // Absolute encoded bytes consumed from the message
+    private long totalDecodedPayloadBytes = 0;  // Total decoded (payload) bytes output
+
+    // Current segment state  
     private int currentSegmentNumber = 0;
     private long currentSegmentContentLength = 0;
     private long currentSegmentContentOffset = 0;
 
+    // CRC validation
     private long messageCrc64 = 0;
     private long segmentCrc64 = 0;
     private final Map<Integer, Long> segmentCrcs = new HashMap<>();
 
-    // Track the last complete segment boundary for smart retry
+    // Smart retry tracking - lastCompleteSegmentStart is the absolute offset where the last
+    // fully completed segment ended. This is the safe retry boundary.
     private long lastCompleteSegmentStart = 0;
-    private long currentSegmentStart = 0;
+
+    // Pending buffer for handling partial headers/segments across chunks
+    private final ByteArrayOutputStream pendingBytes = new ByteArrayOutputStream();
+
+    /**
+     * Decode result status codes.
+     */
+    public enum DecodeStatus {
+        /** Decoding succeeded, more data may be available */
+        SUCCESS,
+        /** Need more bytes to continue (partial header/segment) */
+        NEED_MORE_BYTES,
+        /** Decoding completed successfully */
+        COMPLETED,
+        /** Invalid data encountered */
+        INVALID
+    }
+
+    /**
+     * Result of a decode operation.
+     */
+    public static class DecodeResult {
+        private final DecodeStatus status;
+        private final ByteBuffer decodedPayload;
+        private final String message;
+        private final int bytesConsumed;
+
+        DecodeResult(DecodeStatus status, ByteBuffer decodedPayload, int bytesConsumed, String message) {
+            this.status = status;
+            this.decodedPayload = decodedPayload;
+            this.bytesConsumed = bytesConsumed;
+            this.message = message;
+        }
+
+        public DecodeStatus getStatus() {
+            return status;
+        }
+
+        public ByteBuffer getDecodedPayload() {
+            return decodedPayload;
+        }
+
+        public int getBytesConsumed() {
+            return bytesConsumed;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 
     /**
      * Constructs a new StructuredMessageDecoder.
@@ -60,12 +128,51 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Returns the canonical absolute byte index (0-based) that should be used to resume a failed/incomplete download.
+     * This MUST be used directly as the Range header start value: "Range: bytes={retryStartOffset}-"
+     * 
+     * <p>This is equivalent to {@link #getLastCompleteSegmentStart()} but provides a clearer semantic name
+     * for the smart retry use case.</p>
+     *
+     * @return The absolute byte index for the retry start offset.
+     */
+    public long getRetryStartOffset() {
+        return getLastCompleteSegmentStart();
+    }
+
+    /**
      * Gets the current message offset (total bytes consumed from the structured message).
      *
      * @return The current message offset.
      */
     public long getMessageOffset() {
         return messageOffset;
+    }
+
+    /**
+     * Gets the total decoded payload bytes produced so far.
+     *
+     * @return The total decoded payload bytes.
+     */
+    public long getTotalDecodedPayloadBytes() {
+        return totalDecodedPayloadBytes;
+    }
+
+    /**
+     * Advances the message offset by the specified number of bytes.
+     * This should be called after consuming an encoded segment to maintain
+     * the authoritative encoded offset.
+     *
+     * @param bytes The number of bytes to advance.
+     */
+    public void advanceMessageOffset(long bytes) {
+        long priorOffset = messageOffset;
+        messageOffset += bytes;
+        LOGGER.atInfo()
+            .addKeyValue("priorOffset", priorOffset)
+            .addKeyValue("bytesAdvanced", bytes)
+            .addKeyValue("newOffset", messageOffset)
+            .log("Advanced message offset");
     }
 
     /**
@@ -86,45 +193,13 @@ public class StructuredMessageDecoder {
             // Reset current segment state - next decode will read the segment header
             currentSegmentContentOffset = 0;
             currentSegmentContentLength = 0;
+            // Clear any pending bytes since we're resetting to a known boundary
+            pendingBytes.reset();
         } else {
             LOGGER.atVerbose()
                 .addKeyValue("offset", messageOffset)
                 .log("Decoder already at last complete segment boundary, no reset needed");
         }
-    }
-
-    /**
-     * Reads the message header from the given buffer.
-     *
-     * @param buffer The buffer containing the message header.
-     * @throws IllegalArgumentException if the buffer does not contain a valid message header.
-     */
-    private void readMessageHeader(ByteBuffer buffer) {
-        if (buffer.remaining() < V1_HEADER_LENGTH) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Content not long enough to contain a valid " + "message header."));
-        }
-
-        int messageVersion = Byte.toUnsignedInt(buffer.get());
-        if (messageVersion != DEFAULT_MESSAGE_VERSION) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Unsupported structured message version: " + messageVersion));
-        }
-
-        messageLength = (int) buffer.getLong();
-        if (messageLength < V1_HEADER_LENGTH) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Content not long enough to contain a valid " + "message header."));
-        }
-        if (messageLength != expectedContentLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Structured message length " + messageLength
-                + " did not match content length " + expectedContentLength));
-        }
-
-        flags = StructuredMessageFlags.fromValue(Short.toUnsignedInt(buffer.getShort()));
-        numSegments = Short.toUnsignedInt(buffer.getShort());
-
-        messageOffset += V1_HEADER_LENGTH;
     }
 
     /**
@@ -139,10 +214,69 @@ public class StructuredMessageDecoder {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < out.length; i++) {
             sb.append(String.format("%02X", out[i]));
-            if (i < out.length - 1)
+            if (i < out.length - 1) {
                 sb.append(' ');
+            }
         }
         return sb.toString();
+    }
+
+    /**
+     * Gets the total available bytes (pending + buffer remaining).
+     */
+    private int getAvailableBytes(ByteBuffer buffer) {
+        return pendingBytes.size() + buffer.remaining();
+    }
+
+    /**
+     * Creates a combined buffer from pending bytes and new buffer.
+     * Returns a new buffer with position=0 and LITTLE_ENDIAN order.
+     * The original buffer's position is NOT advanced.
+     */
+    private ByteBuffer getCombinedBuffer(ByteBuffer buffer) {
+        if (pendingBytes.size() == 0) {
+            ByteBuffer dup = buffer.duplicate();
+            dup.order(ByteOrder.LITTLE_ENDIAN);
+            return dup;
+        }
+
+        byte[] pending = pendingBytes.toByteArray();
+        ByteBuffer combined = ByteBuffer.allocate(pending.length + buffer.remaining());
+        combined.order(ByteOrder.LITTLE_ENDIAN);
+        combined.put(pending);
+        combined.put(buffer.duplicate());
+        combined.flip();
+        return combined;
+    }
+
+    /**
+     * Consumes bytes from pending first, then from buffer.
+     * Updates the buffer's position to reflect bytes consumed.
+     */
+    private void consumeBytes(int bytesToConsume, ByteBuffer buffer) {
+        int pendingSize = pendingBytes.size();
+        if (bytesToConsume <= pendingSize) {
+            // All bytes come from pending - remove from pending
+            byte[] remaining = pendingBytes.toByteArray();
+            pendingBytes.reset();
+            if (bytesToConsume < pendingSize) {
+                pendingBytes.write(remaining, bytesToConsume, pendingSize - bytesToConsume);
+            }
+        } else {
+            // Consume all pending and some from buffer
+            int bytesFromBuffer = bytesToConsume - pendingSize;
+            pendingBytes.reset();
+            buffer.position(buffer.position() + bytesFromBuffer);
+        }
+    }
+
+    /**
+     * Appends remaining buffer bytes to pending for next chunk.
+     */
+    private void appendToPending(ByteBuffer buffer) {
+        while (buffer.hasRemaining()) {
+            pendingBytes.write(buffer.get());
+        }
     }
 
     /**
@@ -172,102 +306,182 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Reads and validates segment length with diagnostic logging.
+     * Gets the expected message length from the header.
+     *
+     * @return The message length, or -1 if header not yet read.
      */
-    private long readAndValidateSegmentLength(ByteBuffer buffer, long remaining) {
-        final int SEGMENT_SIZE_BYTES = 8; // segment size is 8 bytes (long)
-        if (buffer.remaining() < SEGMENT_SIZE_BYTES) {
-            LOGGER.error("Not enough bytes to read segment size. pos={}, remaining={}", buffer.position(),
-                buffer.remaining());
-            throw new IllegalStateException("Not enough bytes to read segment size");
-        }
-
-        // Diagnostic: dump first 16 bytes at this position so we can see what's being read
-        LOGGER.atInfo()
-            .addKeyValue("decoderOffset", messageOffset)
-            .addKeyValue("bufferPos", buffer.position())
-            .addKeyValue("bufferRemaining", buffer.remaining())
-            .addKeyValue("peek16", toHex(buffer, 16))
-            .addKeyValue("lastCompleteSegment", lastCompleteSegmentStart)
-            .log("Decoder about to read segment length");
-
-        long segmentLength = buffer.getLong();
-
-        if (segmentLength < 0 || segmentLength > remaining) {
-            // Peek next bytes for extra detail
-            String peekNext = toHex(buffer, 16);
-            LOGGER.error(
-                "Invalid segment length read: segmentLength={}, remaining={}, decoderOffset={}, "
-                    + "lastCompleteSegment={}, bufferPos={}, peek-next-bytes={}",
-                segmentLength, remaining, messageOffset, lastCompleteSegmentStart, buffer.position(), peekNext);
-            throw new IllegalArgumentException("Invalid segment size detected: " + segmentLength + " (remaining="
-                + remaining + ", decoderOffset=" + messageOffset + ")");
-        }
-
-        LOGGER.atVerbose()
-            .addKeyValue("segmentLength", segmentLength)
-            .addKeyValue("decoderOffset", messageOffset)
-            .log("Valid segment length read");
-
-        return segmentLength;
+    public long getMessageLength() {
+        return messageLength;
     }
 
     /**
-     * Reads the segment header from the given buffer.
+     * Gets the number of segments from the header.
      *
-     * @param buffer The buffer containing the segment header.
-     * @throws IllegalArgumentException if the buffer does not contain a valid segment header.
+     * @return The number of segments, or -1 if header not yet read.
      */
-    private void readSegmentHeader(ByteBuffer buffer) {
-        if (buffer.remaining() < V1_SEGMENT_HEADER_LENGTH) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Segment header is incomplete."));
+    public int getNumSegments() {
+        return numSegments;
+    }
+
+    /**
+     * Checks if the message header has been read.
+     *
+     * @return true if header has been read, false otherwise.
+     */
+    public boolean isHeaderRead() {
+        return messageLength != -1;
+    }
+
+    /**
+     * Reads the message header if we have enough bytes.
+     * 
+     * @param buffer The buffer to read from.
+     * @return true if header was successfully read, false if more bytes needed.
+     */
+    private boolean tryReadMessageHeader(ByteBuffer buffer) {
+        if (messageLength != -1) {
+            return true; // Already read
         }
 
-        // Mark the start of this segment (before reading the header)
-        currentSegmentStart = messageOffset;
+        int available = getAvailableBytes(buffer);
+        if (available < V1_HEADER_LENGTH) {
+            LOGGER.atInfo()
+                .addKeyValue("available", available)
+                .addKeyValue("required", V1_HEADER_LENGTH)
+                .addKeyValue("pendingBytes", pendingBytes.size())
+                .log("Not enough bytes for message header, waiting for more");
+            appendToPending(buffer);
+            return false;
+        }
 
-        int segmentNum = Short.toUnsignedInt(buffer.getShort());
+        ByteBuffer combined = getCombinedBuffer(buffer);
 
-        // Read segment size with validation and diagnostics
-        long segmentSize = readAndValidateSegmentLength(buffer, buffer.remaining());
+        int messageVersion = Byte.toUnsignedInt(combined.get());
+        if (messageVersion != DEFAULT_MESSAGE_VERSION) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                enrichExceptionMessage("Unsupported structured message version: " + messageVersion)));
+        }
 
+        long msgLen = combined.getLong();
+        if (msgLen < V1_HEADER_LENGTH) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(enrichExceptionMessage("Message length too small: " + msgLen)));
+        }
+        if (msgLen != expectedContentLength) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                "Structured message length " + msgLen + " did not match content length " + expectedContentLength)));
+        }
+
+        flags = StructuredMessageFlags.fromValue(Short.toUnsignedInt(combined.getShort()));
+        numSegments = Short.toUnsignedInt(combined.getShort());
+
+        // Consume the bytes from pending/buffer
+        consumeBytes(V1_HEADER_LENGTH, buffer);
+        messageOffset += V1_HEADER_LENGTH;
+        messageLength = msgLen;
+
+        LOGGER.atInfo()
+            .addKeyValue("messageLength", messageLength)
+            .addKeyValue("numSegments", numSegments)
+            .addKeyValue("flags", flags)
+            .addKeyValue("messageOffset", messageOffset)
+            .log("Message header read successfully");
+
+        return true;
+    }
+
+    /**
+     * Reads a segment header if we have enough bytes.
+     *
+     * @param buffer The buffer to read from.
+     * @return true if segment header was read, false if more bytes needed.
+     */
+    private boolean tryReadSegmentHeader(ByteBuffer buffer) {
+        int available = getAvailableBytes(buffer);
+        if (available < V1_SEGMENT_HEADER_LENGTH) {
+            LOGGER.atInfo()
+                .addKeyValue("available", available)
+                .addKeyValue("required", V1_SEGMENT_HEADER_LENGTH)
+                .addKeyValue("pendingBytes", pendingBytes.size())
+                .addKeyValue("decoderOffset", messageOffset)
+                .log("Not enough bytes for segment header, waiting for more");
+            appendToPending(buffer);
+            return false;
+        }
+
+        ByteBuffer combined = getCombinedBuffer(buffer);
+
+        // Log the raw bytes we're about to read
+        LOGGER.atInfo()
+            .addKeyValue("decoderOffset", messageOffset)
+            .addKeyValue("bufferPos", combined.position())
+            .addKeyValue("bufferRemaining", combined.remaining())
+            .addKeyValue("peek16", toHex(combined, 16))
+            .addKeyValue("lastCompleteSegment", lastCompleteSegmentStart)
+            .log("Decoder about to read segment header");
+
+        int segmentNum = Short.toUnsignedInt(combined.getShort());
+        long segmentSize = combined.getLong();
+
+        // Validate segment number
         if (segmentNum != currentSegmentNumber + 1) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected segment number."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                "Unexpected segment number. Expected: " + (currentSegmentNumber + 1) + ", got: " + segmentNum)));
         }
 
+        // Validate segment size - must be non-negative and reasonable
+        // We can't have segments larger than the remaining message length
+        long remainingMessageBytes = messageLength - messageOffset - V1_SEGMENT_HEADER_LENGTH;
+        if (segmentSize < 0 || segmentSize > remainingMessageBytes) {
+            LOGGER.error("Invalid segment length read: segmentLength={}, decoderOffset={}, lastCompleteSegment={}",
+                segmentSize, messageOffset, lastCompleteSegmentStart);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                "Invalid segment size detected: " + segmentSize + " (remaining=" + remainingMessageBytes + ")")));
+        }
+
+        // Consume the bytes and update state
+        consumeBytes(V1_SEGMENT_HEADER_LENGTH, buffer);
+        messageOffset += V1_SEGMENT_HEADER_LENGTH;
         currentSegmentNumber = segmentNum;
         currentSegmentContentLength = segmentSize;
         currentSegmentContentOffset = 0;
-
-        if (segmentSize == 0) {
-            readSegmentFooter(buffer);
-        }
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             segmentCrc64 = 0;
         }
 
-        messageOffset += V1_SEGMENT_HEADER_LENGTH;
+        LOGGER.atInfo()
+            .addKeyValue("segmentNum", segmentNum)
+            .addKeyValue("segmentLength", segmentSize)
+            .addKeyValue("decoderOffset", messageOffset)
+            .log("Segment header read successfully");
+
+        return true;
     }
 
     /**
-     * Reads the segment content from the given buffer and writes it to the output stream.
+     * Reads segment content bytes if available.
      *
-     * @param buffer The buffer containing the segment content.
-     * @param output The output stream to write the segment content to.
-     * @param size The maximum number of bytes to read.
-     * @throws IllegalArgumentException if there is a segment size mismatch.
+     * @param buffer The buffer to read from.
+     * @param output The output stream to write decoded payload to.
+     * @return The number of payload bytes read, or -1 if more bytes needed for CRC.
      */
-    private void readSegmentContent(ByteBuffer buffer, ByteArrayOutputStream output, int size) {
+    private int tryReadSegmentContent(ByteBuffer buffer, ByteArrayOutputStream output) {
         long remaining = currentSegmentContentLength - currentSegmentContentOffset;
-        int toRead = (int) Math.min(buffer.remaining(), Math.min(remaining, size));
-
-        if (toRead == 0) {
-            return;
+        if (remaining == 0) {
+            return 0; // All content read, need to read footer
         }
 
+        int available = getAvailableBytes(buffer);
+        if (available == 0) {
+            return 0; // No bytes available
+        }
+
+        int toRead = (int) Math.min(available, remaining);
+        ByteBuffer combined = getCombinedBuffer(buffer);
+
         byte[] content = new byte[toRead];
-        buffer.get(content);
+        combined.get(content);
         output.write(content, 0, toRead);
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
@@ -275,48 +489,52 @@ public class StructuredMessageDecoder {
             messageCrc64 = StorageCrc64Calculator.compute(content, messageCrc64);
         }
 
+        consumeBytes(toRead, buffer);
         messageOffset += toRead;
         currentSegmentContentOffset += toRead;
+        totalDecodedPayloadBytes += toRead;
 
-        if (currentSegmentContentOffset > currentSegmentContentLength) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Segment size mismatch detected in segment " + currentSegmentNumber));
-        }
-
-        if (currentSegmentContentOffset == currentSegmentContentLength) {
-            readSegmentFooter(buffer);
-        }
+        return toRead;
     }
 
     /**
-     * Reads the segment footer from the given buffer.
+     * Reads the segment CRC footer if needed and available.
      *
-     * @param buffer The buffer containing the segment footer.
-     * @throws IllegalArgumentException if the buffer does not contain a valid segment footer.
+     * @param buffer The buffer to read from.
+     * @return true if footer was read (or not needed), false if more bytes needed.
      */
-    private void readSegmentFooter(ByteBuffer buffer) {
+    private boolean tryReadSegmentFooter(ByteBuffer buffer) {
         if (currentSegmentContentOffset != currentSegmentContentLength) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Segment content length mismatch in segment " + currentSegmentNumber
-                    + ". Expected: " + currentSegmentContentLength + ", Read: " + currentSegmentContentOffset));
+            return true; // Content not fully read yet
         }
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-            if (buffer.remaining() < CRC64_LENGTH) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Segment footer is incomplete."));
+            int available = getAvailableBytes(buffer);
+            if (available < CRC64_LENGTH) {
+                LOGGER.atInfo()
+                    .addKeyValue("available", available)
+                    .addKeyValue("required", CRC64_LENGTH)
+                    .addKeyValue("segmentNum", currentSegmentNumber)
+                    .log("Not enough bytes for segment CRC footer, waiting for more");
+                appendToPending(buffer);
+                return false;
             }
 
-            long reportedCrc64 = buffer.getLong();
+            ByteBuffer combined = getCombinedBuffer(buffer);
+            long reportedCrc64 = combined.getLong();
+
             if (segmentCrc64 != reportedCrc64) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("CRC64 mismatch detected in segment " + currentSegmentNumber));
+                    new IllegalArgumentException(enrichExceptionMessage("CRC64 mismatch detected in segment "
+                        + currentSegmentNumber + ". Expected: " + segmentCrc64 + ", got: " + reportedCrc64)));
             }
+
+            consumeBytes(CRC64_LENGTH, buffer);
             segmentCrcs.put(currentSegmentNumber, segmentCrc64);
             messageOffset += CRC64_LENGTH;
         }
 
-        // Mark that this segment is complete - update the last complete segment boundary
-        // This is the position where we can safely resume if a retry occurs
+        // Mark that this segment is complete
         lastCompleteSegmentStart = messageOffset;
         LOGGER.atInfo()
             .addKeyValue("segmentNum", currentSegmentNumber)
@@ -324,39 +542,139 @@ public class StructuredMessageDecoder {
             .addKeyValue("segmentLength", currentSegmentContentLength)
             .log("Segment complete at byte offset");
 
+        // Check if we need to read message footer
         if (currentSegmentNumber == numSegments) {
-            readMessageFooter(buffer);
+            return tryReadMessageFooter(buffer);
         }
+
+        return true;
     }
 
     /**
-     * Reads the segment footer from the given buffer.
+     * Reads the message CRC footer if needed and available.
      *
-     * @param buffer The buffer containing the segment footer.
-     * @throws IllegalArgumentException if the buffer does not contain a valid segment footer.
+     * @param buffer The buffer to read from.
+     * @return true if footer was read (or not needed), false if more bytes needed.
      */
-    private void readMessageFooter(ByteBuffer buffer) {
+    private boolean tryReadMessageFooter(ByteBuffer buffer) {
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-            if (buffer.remaining() < CRC64_LENGTH) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Message footer is incomplete."));
+            int available = getAvailableBytes(buffer);
+            if (available < CRC64_LENGTH) {
+                LOGGER.atInfo()
+                    .addKeyValue("available", available)
+                    .addKeyValue("required", CRC64_LENGTH)
+                    .log("Not enough bytes for message CRC footer, waiting for more");
+                appendToPending(buffer);
+                return false;
             }
 
-            long reportedCrc = buffer.getLong();
+            ByteBuffer combined = getCombinedBuffer(buffer);
+            long reportedCrc = combined.getLong();
+
             if (messageCrc64 != reportedCrc) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("CRC64 mismatch detected in message " + "footer."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                    "CRC64 mismatch detected in message footer. Expected: " + messageCrc64 + ", got: " + reportedCrc)));
             }
+
+            consumeBytes(CRC64_LENGTH, buffer);
             messageOffset += CRC64_LENGTH;
         }
 
-        if (messageOffset != messageLength) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Decoded message length does not match " + "expected length."));
+        return true;
+    }
+
+    /**
+     * Decodes as much as possible from the given buffer.
+     * This method properly handles partial headers and segments by buffering
+     * incomplete data and returning NEED_MORE_BYTES when more data is required.
+     *
+     * @param buffer The buffer containing encoded data.
+     * @return A DecodeResult indicating the outcome and any decoded payload.
+     */
+    public DecodeResult decodeChunk(ByteBuffer buffer) {
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        ByteArrayOutputStream decodedContent = new ByteArrayOutputStream();
+        int startPos = buffer.position();
+
+        // Handle empty buffer with no pending bytes - nothing to decode
+        if (buffer.remaining() == 0 && pendingBytes.size() == 0) {
+            LOGGER.atVerbose()
+                .addKeyValue("decoderOffset", messageOffset)
+                .log("Empty buffer with no pending bytes, returning NEED_MORE_BYTES");
+            return new DecodeResult(DecodeStatus.NEED_MORE_BYTES, null, 0, "Empty buffer");
+        }
+
+        LOGGER.atInfo()
+            .addKeyValue("newBytes", buffer.remaining())
+            .addKeyValue("pendingBytes", pendingBytes.size())
+            .addKeyValue("decoderOffset", messageOffset)
+            .addKeyValue("lastCompleteSegment", lastCompleteSegmentStart)
+            .log("Received buffer in decode");
+
+        try {
+            // Step 1: Read message header if not yet read
+            if (!tryReadMessageHeader(buffer)) {
+                return new DecodeResult(DecodeStatus.NEED_MORE_BYTES, null, 0, "Waiting for message header");
+            }
+
+            // Step 2: Process segments
+            while (messageOffset < messageLength) {
+                // Read segment header if needed
+                if (currentSegmentContentOffset == currentSegmentContentLength) {
+                    if (!tryReadSegmentHeader(buffer)) {
+                        break; // Need more bytes for segment header
+                    }
+                }
+
+                // Read segment content
+                int payloadRead = tryReadSegmentContent(buffer, decodedContent);
+
+                // Read segment footer (CRC) if content is complete
+                if (currentSegmentContentOffset == currentSegmentContentLength) {
+                    if (!tryReadSegmentFooter(buffer)) {
+                        break; // Need more bytes for segment footer
+                    }
+                }
+
+                // Check if all segments are complete
+                if (currentSegmentNumber == numSegments && messageOffset >= messageLength) {
+                    LOGGER.atInfo()
+                        .addKeyValue("messageOffset", messageOffset)
+                        .addKeyValue("messageLength", messageLength)
+                        .addKeyValue("totalDecodedPayload", totalDecodedPayloadBytes)
+                        .log("Message decode completed");
+
+                    ByteBuffer result
+                        = decodedContent.size() > 0 ? ByteBuffer.wrap(decodedContent.toByteArray()) : null;
+                    return new DecodeResult(DecodeStatus.COMPLETED, result, buffer.position() - startPos,
+                        "Decode completed");
+                }
+
+                // If we couldn't read any bytes and no data available, need more
+                if (payloadRead == 0 && getAvailableBytes(buffer) == 0) {
+                    break;
+                }
+            }
+
+            // Return any decoded content even if we need more bytes
+            ByteBuffer result = decodedContent.size() > 0 ? ByteBuffer.wrap(decodedContent.toByteArray()) : null;
+
+            if (messageOffset >= messageLength) {
+                return new DecodeResult(DecodeStatus.COMPLETED, result, buffer.position() - startPos,
+                    "Decode completed");
+            }
+
+            return new DecodeResult(DecodeStatus.NEED_MORE_BYTES, result, buffer.position() - startPos,
+                "Waiting for more data");
+
+        } catch (IllegalArgumentException e) {
+            return new DecodeResult(DecodeStatus.INVALID, null, buffer.position() - startPos, e.getMessage());
         }
     }
 
     /**
      * Decodes the structured message from the given buffer up to the specified size.
+     * This is a convenience method that wraps decodeChunk for backwards compatibility.
      *
      * @param buffer The buffer containing the structured message.
      * @param size The maximum number of bytes to decode.
@@ -368,15 +686,26 @@ public class StructuredMessageDecoder {
         ByteArrayOutputStream decodedContent = new ByteArrayOutputStream();
 
         if (messageOffset == 0) {
-            readMessageHeader(buffer);
+            if (!tryReadMessageHeader(buffer)) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    enrichExceptionMessage("Content not long enough to contain a valid message header.")));
+            }
         }
 
         while (buffer.hasRemaining() && decodedContent.size() < size) {
             if (currentSegmentContentOffset == currentSegmentContentLength) {
-                readSegmentHeader(buffer);
+                if (!tryReadSegmentHeader(buffer)) {
+                    break; // Need more bytes
+                }
             }
 
-            readSegmentContent(buffer, decodedContent, size - decodedContent.size());
+            tryReadSegmentContent(buffer, decodedContent);
+
+            if (currentSegmentContentOffset == currentSegmentContentLength) {
+                if (!tryReadSegmentFooter(buffer)) {
+                    break; // Need more bytes
+                }
+            }
         }
 
         return ByteBuffer.wrap(decodedContent.toByteArray());
@@ -394,14 +723,40 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Finalizes the decoding process and validates that the entire message has been decoded.
+     * Finalizes the decoding process and returns any final decoded bytes still buffered internally.
+     * The policy should aggregate decoded byte counts and perform the final length comparison.
      *
-     * @throws IllegalArgumentException if the decoded message length does not match the expected length.
+     * @return A ByteBuffer containing any final decoded bytes, or null if none remain.
+     * @throws IllegalArgumentException if the encoded message offset doesn't match expected length.
      */
-    public void finalizeDecoding() {
+    public ByteBuffer finalizeDecoding() {
         if (messageOffset != messageLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Decoded message length does not match "
-                + "expected length. Expected: " + messageLength + ", but was: " + messageOffset));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                enrichExceptionMessage("Decoded message length does not match expected length. Expected: "
+                    + messageLength + ", but was: " + messageOffset)));
         }
+        // No buffered decoded bytes in current implementation
+        return null;
+    }
+
+    /**
+     * Checks if decoding is complete.
+     *
+     * @return true if all expected bytes have been decoded, false otherwise.
+     */
+    public boolean isComplete() {
+        return messageLength != -1 && messageOffset >= messageLength;
+    }
+
+    /**
+     * Enriches an exception message with decoder offset information for debugging and retry.
+     * Format: "original message [decoderOffset=X,lastCompleteSegment=Y]"
+     *
+     * @param message The original exception message.
+     * @return The enriched message with offset information.
+     */
+    private String enrichExceptionMessage(String message) {
+        return String.format("%s [decoderOffset=%d,lastCompleteSegment=%d]", message, messageOffset,
+            lastCompleteSegmentStart);
     }
 }

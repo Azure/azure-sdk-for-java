@@ -14,16 +14,16 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecoder;
-import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a decoding policy in an {@link com.azure.core.http.HttpPipeline} to decode structured messages in
@@ -41,9 +41,63 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
 
     /**
+     * Machine-readable token pattern for extracting retry start offset from exception messages.
+     * Format: RETRY-START-OFFSET={number}
+     */
+    private static final String RETRY_OFFSET_TOKEN = "RETRY-START-OFFSET=";
+    private static final Pattern RETRY_OFFSET_PATTERN = Pattern.compile("RETRY-START-OFFSET=(\\d+)");
+
+    /**
      * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
      */
     public StorageContentValidationDecoderPolicy() {
+    }
+
+    /**
+     * Parses the retry start offset from an exception message containing the RETRY-START-OFFSET token.
+     *
+     * @param message The exception message to parse.
+     * @return The retry start offset, or -1 if not found.
+     */
+    public static long parseRetryStartOffset(String message) {
+        if (message == null) {
+            return -1;
+        }
+        Matcher matcher = RETRY_OFFSET_PATTERN.matcher(message);
+        if (matcher.find()) {
+            try {
+                return Long.parseLong(matcher.group(1));
+            } catch (NumberFormatException e) {
+                return -1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Parses decoder offset information from enriched exception messages.
+     * Format: "[decoderOffset=X,lastCompleteSegment=Y]"
+     *
+     * @param message The exception message to parse.
+     * @return A long array [decoderOffset, lastCompleteSegment], or null if not found.
+     */
+    public static long[] parseDecoderOffsets(String message) {
+        if (message == null) {
+            return null;
+        }
+        // Pattern: [decoderOffset=123,lastCompleteSegment=456]
+        Pattern pattern = Pattern.compile("\\[decoderOffset=(\\d+),lastCompleteSegment=(\\d+)\\]");
+        Matcher matcher = pattern.matcher(message);
+        if (matcher.find()) {
+            try {
+                long decoderOffset = Long.parseLong(matcher.group(1));
+                long lastCompleteSegment = Long.parseLong(matcher.group(2));
+                return new long[] { decoderOffset, lastCompleteSegment };
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -81,8 +135,11 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     /**
      * Decodes a stream of byte buffers using the decoder state.
-     * Uses relative indexing based on decoder's message offset to correctly
-     * slice encoded segments and handle pending buffers across chunks.
+     * The decoder properly handles partial headers and segments split across chunks.
+     * 
+     * <p>When an error occurs or the stream ends prematurely, an IOException is thrown with a
+     * machine-readable token RETRY-START-OFFSET=&lt;number&gt; that can be parsed to determine
+     * the correct offset for retry requests.</p>
      *
      * @param encodedFlux The flux of encoded byte buffers.
      * @param state The decoder state.
@@ -90,158 +147,159 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
         return encodedFlux.concatMap(encodedBuffer -> {
-            // Capture absoluteStartOfCombined BEFORE adding new bytes
-            long absoluteStartOfCombined = state.totalEncodedBytesProcessed.get();
-
-            // Track the NEW bytes received from the network
-            int newBytesReceived = encodedBuffer.remaining();
-            // Note: we add to totalEncodedBytesProcessed AFTER we're done processing this chunk
-
-            int pendingSize = (state.pendingBuffer != null) ? state.pendingBuffer.remaining() : 0;
-            // Adjust absoluteStartOfCombined to account for pending bytes that came before
-            absoluteStartOfCombined -= pendingSize;
+            // Skip empty buffers that may be emitted by reactor-netty
+            if (encodedBuffer == null || !encodedBuffer.hasRemaining()) {
+                LOGGER.atVerbose()
+                    .addKeyValue("bufferLength", encodedBuffer == null ? "null" : encodedBuffer.remaining())
+                    .log("Skipping empty/null buffer in decodeStream");
+                return Flux.empty();
+            }
 
             LOGGER.atInfo()
-                .addKeyValue("newBytes", newBytesReceived)
-                .addKeyValue("pendingBytes", pendingSize)
-                .addKeyValue("absoluteStartOfCombined", absoluteStartOfCombined)
+                .addKeyValue("newBytes", encodedBuffer.remaining())
                 .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
                 .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
+                .addKeyValue("totalDecodedPayload", state.decoder.getTotalDecodedPayloadBytes())
                 .log("Received buffer in decodeStream");
 
-            // Combine with pending data if any - always returns buffer with position=0 and LITTLE_ENDIAN
-            ByteBuffer combined = state.combineWithPending(encodedBuffer);
-
             try {
-                java.io.ByteArrayOutputStream decodedOutput = new java.io.ByteArrayOutputStream();
+                // Use the new decodeChunk API which properly handles partial headers
+                StructuredMessageDecoder.DecodeResult result = state.decoder.decodeChunk(encodedBuffer);
 
-                // Loop to decode complete segments from combined buffer
-                while (true) {
-                    long decoderOffset = state.decoder.getMessageOffset();
-                    int relativeIndex = (int) (decoderOffset - absoluteStartOfCombined);
+                LOGGER.atInfo()
+                    .addKeyValue("status", result.getStatus())
+                    .addKeyValue("bytesConsumed", result.getBytesConsumed())
+                    .addKeyValue("decoderOffset", state.decoder.getMessageOffset())
+                    .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
+                    .log("Decode chunk result");
 
-                    // Defensive check
-                    if (relativeIndex < 0) {
-                        LOGGER.error(
-                            "Negative relative index detected: relativeIndex={}, decoderOffset={}, absoluteStart={}",
-                            relativeIndex, decoderOffset, absoluteStartOfCombined);
-                        throw new IllegalStateException("Negative relative index: " + relativeIndex);
-                    }
+                switch (result.getStatus()) {
+                    case SUCCESS:
+                    case NEED_MORE_BYTES:
+                    case COMPLETED:
+                        // All three cases update counters and return any decoded payload
+                        // SUCCESS and NEED_MORE_BYTES: partial decode, more data expected
+                        // COMPLETED: decode finished successfully
 
-                    // Check if we have enough for segment header
-                    if (relativeIndex + StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH > combined.limit()) {
-                        // Save remaining as pending and break
-                        if (relativeIndex < combined.limit()) {
-                            combined.position(relativeIndex);
-                            state.updatePendingBuffer(combined.slice());
-                        } else {
-                            state.pendingBuffer = null;
+                        long currentLastCompleteSegment = state.decoder.getLastCompleteSegmentStart();
+
+                        // Only update decodedBytesAtLastCompleteSegment when lastCompleteSegmentStart changes
+                        // This indicates that a segment boundary was just crossed
+                        if (state.lastCompleteSegmentStart != currentLastCompleteSegment) {
+                            state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();
+                            state.lastCompleteSegmentStart = currentLastCompleteSegment;
+
+                            LOGGER.atInfo()
+                                .addKeyValue("newSegmentBoundary", currentLastCompleteSegment)
+                                .addKeyValue("decodedBytesAtBoundary", state.decodedBytesAtLastCompleteSegment)
+                                .log("Segment boundary crossed, updated decoded bytes snapshot");
                         }
-                        break;
-                    }
 
-                    // For the first chunk, we need to read message header first
-                    if (decoderOffset == 0) {
-                        // Decode up to message header length to bootstrap
-                        ByteBuffer headerSlice = combined.duplicate();
-                        headerSlice.position(relativeIndex);
-                        headerSlice.order(ByteOrder.LITTLE_ENDIAN);
-                        ByteBuffer decoded
-                            = state.decoder.decode(headerSlice, StructuredMessageConstants.V1_HEADER_LENGTH);
-                        // After header is read, continue loop to process segments
-                        continue;
-                    }
+                        state.totalEncodedBytesProcessed.set(state.decoder.getMessageOffset());
+                        state.totalBytesDecoded.set(state.decoder.getTotalDecodedPayloadBytes());
 
-                    // Peek segment length
-                    long segmentLength = state.decoder.peekNextSegmentLength(combined, relativeIndex);
-                    if (segmentLength < 0) {
-                        // Not enough bytes to read segment header
-                        combined.position(relativeIndex);
-                        state.updatePendingBuffer(combined.slice());
-                        break;
-                    }
+                        if (result.getDecodedPayload() != null && result.getDecodedPayload().hasRemaining()) {
+                            return Flux.just(result.getDecodedPayload());
+                        }
+                        return Flux.empty();
 
-                    // Calculate encoded segment size
-                    int crcLength = (state.decoder.getFlags() == StructuredMessageFlags.STORAGE_CRC64)
-                        ? StructuredMessageConstants.CRC64_LENGTH
-                        : 0;
-                    long encodedSegmentSize
-                        = StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH + segmentLength + crcLength;
+                    case INVALID:
+                        LOGGER.error("Invalid data during decode: {}", result.getMessage());
+                        return Flux.error(createRetryableException(state,
+                            "Failed to decode structured message: " + result.getMessage()));
 
-                    // Check if we have the complete segment
-                    if (relativeIndex + encodedSegmentSize > combined.limit()) {
-                        // Save pending and break
-                        combined.position(relativeIndex);
-                        state.updatePendingBuffer(combined.slice());
-                        break;
-                    }
-
-                    // Slice encoded segment
-                    ByteBuffer encodedSlice = combined.duplicate();
-                    encodedSlice.position(relativeIndex);
-                    encodedSlice.limit(relativeIndex + (int) encodedSegmentSize);
-                    encodedSlice = encodedSlice.slice();
-                    encodedSlice.order(ByteOrder.LITTLE_ENDIAN);
-
-                    // Decode the segment
-                    ByteBuffer decoded = state.decoder.decode(encodedSlice);
-
-                    LOGGER.atVerbose()
-                        .addKeyValue("relativeIndex", relativeIndex)
-                        .addKeyValue("encodedSegmentSize", encodedSegmentSize)
-                        .addKeyValue("decodedBytes", decoded.remaining())
-                        .addKeyValue("newDecoderOffset", state.decoder.getMessageOffset())
-                        .log("Decoded segment");
-
-                    // Update tracked bytes
-                    state.totalEncodedBytesProcessed.addAndGet(encodedSegmentSize);
-                    if (decoded.remaining() > 0) {
-                        state.totalBytesDecoded.addAndGet(decoded.remaining());
-                        // Accumulate decoded bytes
-                        byte[] decodedBytes = new byte[decoded.remaining()];
-                        decoded.get(decodedBytes);
-                        decodedOutput.write(decodedBytes, 0, decodedBytes.length);
-                    }
-
-                    // Check if we've completed the message
-                    if (state.decoder.getMessageOffset() >= state.expectedContentLength) {
-                        state.pendingBuffer = null;
-                        break;
-                    }
+                    default:
+                        return Flux.error(new IllegalStateException("Unknown decode status: " + result.getStatus()));
                 }
 
-                // Return decoded data if any
-                byte[] decodedBytes = decodedOutput.toByteArray();
-                if (decodedBytes.length > 0) {
-                    return Flux.just(ByteBuffer.wrap(decodedBytes));
-                } else {
-                    return Flux.empty();
-                }
-
-            } catch (IllegalArgumentException e) {
-                // Handle decoder exceptions - check if it's due to incomplete data
-                String errorMsg = e.getMessage();
-                if (errorMsg != null && (errorMsg.contains("not long enough") || errorMsg.contains("is incomplete"))) {
-                    // Not enough data to decode yet - preserve all data in pending buffer
-                    state.updatePendingBuffer(combined);
-                    return Flux.empty();
-                } else {
-                    LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
-                    return Flux.error(e);
-                }
             } catch (Exception e) {
                 LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
-                return Flux.error(e);
+                return Flux.error(createRetryableException(state, e.getMessage(), e));
             }
-        }).doOnComplete(() -> {
-            // Finalize when stream completes
-            try {
-                state.decoder.finalizeDecoding();
-            } catch (IllegalArgumentException e) {
-                // Expected if we haven't received all data yet (e.g., interrupted download)
-                LOGGER.verbose("Decoding not finalized - may resume on retry: " + e.getMessage());
+        }).onErrorResume(throwable -> {
+            // Wrap any error with retry offset information
+            if (throwable instanceof IOException) {
+                // Check if already has retry offset token
+                if (throwable.getMessage() != null && throwable.getMessage().contains(RETRY_OFFSET_TOKEN)) {
+                    return Flux.error(throwable);
+                }
             }
-        });
+            // Wrap the error with retry offset
+            return Flux.error(createRetryableException(state, throwable.getMessage(), throwable));
+        }).concatWith(Mono.defer(() -> {
+            // Check on completion if decode is finished - if not, throw with retry offset
+            if (!state.decoder.isComplete()) {
+                LOGGER.atInfo()
+                    .addKeyValue("messageOffset", state.decoder.getMessageOffset())
+                    .addKeyValue("messageLength", state.decoder.getMessageLength())
+                    .addKeyValue("totalDecodedPayload", state.decoder.getTotalDecodedPayloadBytes())
+                    .addKeyValue("lastCompleteSegment", state.decoder.getLastCompleteSegmentStart())
+                    .log("Stream ended but decode not finalized - throwing retryable exception");
+                return Mono.error(createRetryableException(state,
+                    "Stream ended prematurely before structured message decoding completed"));
+            } else {
+                LOGGER.atInfo()
+                    .addKeyValue("messageOffset", state.decoder.getMessageOffset())
+                    .addKeyValue("totalDecodedPayload", state.decoder.getTotalDecodedPayloadBytes())
+                    .log("Stream complete and decode finalized successfully");
+                return Mono.empty();
+            }
+        }));
+    }
+
+    /**
+     * Creates an IOException with the retry start offset encoded in the message.
+     *
+     * @param state The decoder state.
+     * @param message The error message.
+     * @return An IOException with retry offset information.
+     */
+    private IOException createRetryableException(DecoderState state, String message) {
+        return createRetryableException(state, message, null);
+    }
+
+    /**
+     * Creates an IOException with the retry start offset encoded in the message.
+     *
+     * @param state The decoder state.
+     * @param message The error message.
+     * @param cause The original cause, may be null.
+     * @return An IOException with retry offset information.
+     */
+    private IOException createRetryableException(DecoderState state, String message, Throwable cause) {
+        long retryOffset = state.decoder.getRetryStartOffset();
+        long decodedSoFar = state.decoder.getTotalDecodedPayloadBytes();
+        long expectedLength = state.decoder.getMessageLength();
+
+        // Check if the exception message already has decoder offset information
+        // If so, prefer lastCompleteSegment from the enriched message
+        String originalMessage = message != null ? message : "";
+        long[] decoderOffsets = parseDecoderOffsets(originalMessage);
+        if (decoderOffsets != null) {
+            // Use lastCompleteSegment from the enriched exception as the retry offset
+            retryOffset = decoderOffsets[1];  // lastCompleteSegment
+            LOGGER.atInfo()
+                .addKeyValue("decoderOffset", decoderOffsets[0])
+                .addKeyValue("lastCompleteSegment", decoderOffsets[1])
+                .log("Parsed decoder offsets from enriched exception");
+        }
+
+        // Build message components for clarity
+        long displayExpected = expectedLength > 0 ? expectedLength : 0;
+
+        String fullMessage = String.format("Incomplete structured message: decoded %d of %d bytes. %s%d. %s",
+            decodedSoFar, displayExpected, RETRY_OFFSET_TOKEN, retryOffset, originalMessage);
+
+        LOGGER.atInfo()
+            .addKeyValue("retryOffset", retryOffset)
+            .addKeyValue("decodedSoFar", decodedSoFar)
+            .addKeyValue("expectedLength", expectedLength)
+            .log("Creating retryable exception with offset");
+
+        if (cause != null) {
+            return new IOException(fullMessage, cause);
+        }
+        return new IOException(fullMessage);
     }
 
     /**
@@ -321,7 +379,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         private final long expectedContentLength;
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
-        private ByteBuffer pendingBuffer;
+        private long decodedBytesAtLastCompleteSegment;
+        private long lastCompleteSegmentStart; // Tracks the last value to detect changes
 
         /**
          * Creates a new decoder state.
@@ -333,50 +392,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             this.decoder = new StructuredMessageDecoder(expectedContentLength);
             this.totalBytesDecoded = new AtomicLong(0);
             this.totalEncodedBytesProcessed = new AtomicLong(0);
-            this.pendingBuffer = null;
-        }
-
-        /**
-         * Combines pending buffer with new data.
-         * Always returns a buffer with position=0 and LITTLE_ENDIAN byte order.
-         *
-         * @param newBuffer The new buffer to combine.
-         * @return Combined buffer with LITTLE_ENDIAN byte order and position=0.
-         */
-        private ByteBuffer combineWithPending(ByteBuffer newBuffer) {
-            if (pendingBuffer == null || !pendingBuffer.hasRemaining()) {
-                // Return a duplicate slice with LITTLE_ENDIAN and position=0
-                ByteBuffer dup = newBuffer.duplicate().slice();
-                dup.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-                return dup;
-            }
-
-            // Create slices with LITTLE_ENDIAN order
-            ByteBuffer pendingSlice = pendingBuffer.duplicate().slice();
-            pendingSlice.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-            ByteBuffer newSlice = newBuffer.duplicate().slice();
-            newSlice.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-
-            // Allocate combined buffer with LITTLE_ENDIAN order
-            ByteBuffer combined = ByteBuffer.allocate(pendingSlice.remaining() + newSlice.remaining());
-            combined.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-            combined.put(pendingSlice);
-            combined.put(newSlice);
-            combined.flip();
-            return combined;
-        }
-
-        /**
-         * Updates the pending buffer with remaining data.
-         * Allocates a new buffer with LITTLE_ENDIAN byte order.
-         *
-         * @param dataToProcess The buffer with remaining data.
-         */
-        private void updatePendingBuffer(ByteBuffer dataToProcess) {
-            pendingBuffer = ByteBuffer.allocate(dataToProcess.remaining());
-            pendingBuffer.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-            pendingBuffer.put(dataToProcess);
-            pendingBuffer.flip();
+            this.decodedBytesAtLastCompleteSegment = 0;
         }
 
         /**
@@ -402,8 +418,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          * This uses the decoder's last complete segment boundary to ensure retries
          * resume from a valid segment boundary, not mid-segment.
          * 
-         * Also clears the pending buffer and resets decoder state to align with
-         * the segment boundary.
+         * Also resets decoder state to align with the segment boundary.
          *
          * @return The offset for retry requests (last complete segment boundary).
          */
@@ -412,31 +427,30 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             // This ensures we resume from a segment boundary, not mid-segment
             long retryOffset = decoder.getLastCompleteSegmentStart();
             long decoderOffsetBefore = decoder.getMessageOffset();
-            int pendingSize = (pendingBuffer != null) ? pendingBuffer.remaining() : 0;
+            long totalProcessedBefore = totalEncodedBytesProcessed.get();
 
             LOGGER.atInfo()
                 .addKeyValue("retryOffset", retryOffset)
                 .addKeyValue("decoderOffsetBefore", decoderOffsetBefore)
-                .addKeyValue("pendingBytes", pendingSize)
-                .addKeyValue("totalProcessed", totalEncodedBytesProcessed.get())
+                .addKeyValue("totalProcessedBefore", totalProcessedBefore)
                 .log("Computing retry offset");
 
             // Reset decoder to the last complete segment boundary
             // This ensures messageOffset and segment state match the retry offset
             decoder.resetToLastCompleteSegment();
 
-            // Clear pending buffer since we're restarting from the segment boundary
-            // Any bytes in pending are from after this boundary and will be re-fetched
-            if (pendingBuffer != null && pendingBuffer.hasRemaining()) {
-                LOGGER.atInfo()
-                    .addKeyValue("pendingBytes", pendingBuffer.remaining())
-                    .addKeyValue("retryOffset", retryOffset)
-                    .log("Clearing pending bytes for retry from segment boundary");
-                pendingBuffer = null;
-            }
+            // Reset totalEncodedBytesProcessed to match the retry offset
+            // This ensures absoluteStartOfCombined calculation is correct for retry data
+            totalEncodedBytesProcessed.set(retryOffset);
+
+            // Reset totalBytesDecoded to the snapshot at last complete segment
+            // This ensures decoded byte counting is correct for retry
+            totalBytesDecoded.set(decodedBytesAtLastCompleteSegment);
 
             LOGGER.atInfo()
                 .addKeyValue("retryOffset", retryOffset)
+                .addKeyValue("totalProcessedAfter", totalEncodedBytesProcessed.get())
+                .addKeyValue("totalDecodedAfter", totalBytesDecoded.get())
                 .log("Retry offset calculated (last complete segment boundary)");
             return retryOffset;
         }
@@ -447,7 +461,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          * @return true if finalized, false otherwise.
          */
         public boolean isFinalized() {
-            return totalEncodedBytesProcessed.get() >= expectedContentLength;
+            return decoder.isComplete();
         }
     }
 
