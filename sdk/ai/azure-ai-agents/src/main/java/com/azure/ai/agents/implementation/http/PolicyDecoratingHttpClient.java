@@ -42,10 +42,10 @@ public final class PolicyDecoratingHttpClient implements HttpClient {
         this.pipeline = builder.build();
     }
 
-    @Override
     /**
      * Sends the request using the decorated pipeline without a custom {@link Context}.
      */
+    @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return pipeline.send(request);
     }
