@@ -175,8 +175,10 @@ public interface ManagedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters);
+    FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationContentWrapper parameters);
 
     /**
      * Starts a fault simulation on the cluster.
@@ -188,9 +190,10 @@ public interface ManagedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters,
-        Context context);
+    FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationContentWrapper parameters, Context context);
 
     /**
      * Stops a fault simulation on the cluster.
@@ -201,8 +204,10 @@ public interface ManagedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters);
+    FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationIdContent parameters);
 
     /**
      * Stops a fault simulation on the cluster.
@@ -214,9 +219,10 @@ public interface ManagedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters,
-        Context context);
+    FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationIdContent parameters, Context context);
 
     /**
      * Get a Service Fabric managed cluster resource created or in the process of being created in the specified
