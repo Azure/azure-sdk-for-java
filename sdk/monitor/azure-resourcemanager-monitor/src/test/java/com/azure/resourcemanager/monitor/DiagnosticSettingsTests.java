@@ -101,7 +101,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withResource(vm.id())
             .withStorageAccount(sa.id())
             // .withEventHub(evenHubNsRule.id())
-            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 0)
             .create();
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
@@ -112,11 +112,13 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertTrue(setting.logs().isEmpty());
         Assertions.assertFalse(setting.metrics().isEmpty());
 
-        setting.update().withoutStorageAccount().withoutLogs().apply();
+        // At least one data sink needs to be specified.
+        // setting.update().withoutStorageAccount().withoutLogs().apply();
+        setting.update().withoutLogs().apply();
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
         // assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
-        Assertions.assertNull(setting.storageAccountId());
+        // Assertions.assertNull(setting.storageAccountId());
         Assertions.assertNull(setting.eventHubName());
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertTrue(setting.logs().isEmpty());
