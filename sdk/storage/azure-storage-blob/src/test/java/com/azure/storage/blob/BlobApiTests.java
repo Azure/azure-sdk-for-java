@@ -67,6 +67,7 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -3184,6 +3185,66 @@ public class BlobApiTests extends BlobTestBase {
         BlobClient blobClient = containerClient.getBlobClient(generateBlobName());
         String expectedEncodedContainerName = "my%20container";
         assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
+    }
+
+    @Test
+    public void temporarySKUSupportTest() {
+        //test service, container, blobs
+        String standardGZRSAccountName = "seangzrs";
+        //test service, container
+        String premiumZRSAccountName = "nickpremiumzrs";
+        //test blobs
+        String premiumZRSBlockBlobAccountName = "nickblockblobpremiumzrs";
+        //test service, container, blobs
+        String standardRAGZRSAccountName = "nickstandardragzrs";
+
+        String standardGZRSAccountKey
+            = "";
+        String premiumZRSAccountKey
+            = "";
+        String premiumZRSBlockBlobAccountKey
+            = "";
+        String standardRAGZRSAccountKey
+            = "";
+
+        BlobServiceClient standardGZRSServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format("https://%s.blob.core.windows.net", standardGZRSAccountName))
+            .credential(new StorageSharedKeyCredential(standardGZRSAccountName, standardGZRSAccountKey))
+            .buildClient();
+        BlobServiceClient premiumZRSServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format("https://%s.blob.core.windows.net", premiumZRSAccountName))
+            .credential(new StorageSharedKeyCredential(premiumZRSAccountName, premiumZRSAccountKey))
+            .buildClient();
+        BlobServiceClient premiumZRSBlockBlobServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format("https://%s.blob.core.windows.net", premiumZRSBlockBlobAccountName))
+            .credential(new StorageSharedKeyCredential(premiumZRSBlockBlobAccountName, premiumZRSBlockBlobAccountKey))
+            .buildClient();
+        BlobServiceClient standardRAGZRSServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format("https://%s.blob.core.windows.net", standardRAGZRSAccountName))
+            .credential(new StorageSharedKeyCredential(standardRAGZRSAccountName, standardRAGZRSAccountKey))
+            .buildClient();
+
+        assertDoesNotThrow(standardGZRSServiceClient::getAccountInfo);
+        assertDoesNotThrow(
+            () -> standardGZRSServiceClient.getBlobContainerClient(generateContainerName()).getAccountInfo(null));
+        assertDoesNotThrow(() -> standardGZRSServiceClient.getBlobContainerClient(generateContainerName())
+            .getBlobClient(generateBlobName())
+            .getAccountInfo());
+
+        assertDoesNotThrow(premiumZRSServiceClient::getAccountInfo);
+        assertDoesNotThrow(
+            () -> premiumZRSServiceClient.getBlobContainerClient(generateContainerName()).getAccountInfo(null));
+
+        assertDoesNotThrow(() -> premiumZRSBlockBlobServiceClient.getBlobContainerClient(generateContainerName())
+            .getBlobClient(generateBlobName())
+            .getAccountInfo());
+
+        assertDoesNotThrow(standardRAGZRSServiceClient::getAccountInfo);
+        assertDoesNotThrow(
+            () -> standardRAGZRSServiceClient.getBlobContainerClient(generateContainerName()).getAccountInfo(null));
+        assertDoesNotThrow(() -> standardRAGZRSServiceClient.getBlobContainerClient(generateContainerName())
+            .getBlobClient(generateBlobName())
+            .getAccountInfo());
     }
 
 }
