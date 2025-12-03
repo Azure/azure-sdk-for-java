@@ -44,9 +44,8 @@ final class OpenAiRequestUrlBuilder {
                 path, query, null);
             return resolved.toURL();
         } catch (MalformedURLException | URISyntaxException ex) {
-            throw LOGGER.logThrowableAsWarning(
-                new IllegalStateException(
-                    "Failed to build Azure HTTP request URL from base: " + request.baseUrl(), ex));
+            throw LOGGER.logThrowableAsWarning(new IllegalStateException(
+                "Failed to build Azure HTTP request URL from base: " + request.baseUrl(), ex));
         }
     }
 
