@@ -28,6 +28,8 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HttpClientHelperTests {
 
@@ -74,6 +76,108 @@ class HttpClientHelperTests {
             assertEquals(204, response.statusCode());
         }
         assertEquals(1, recordingClient.getSendCount());
+    }
+
+    @Test
+    void executeWithNullRequestBodySucceeds() throws Exception {
+        RecordingHttpClient recordingClient = new RecordingHttpClient(request -> {
+            // Verify the request has no body (or empty body)
+            com.azure.core.util.BinaryData bodyData = request.getBodyAsBinaryData();
+            if (bodyData != null) {
+                assertEquals(0, bodyData.toBytes().length);
+            }
+            return createMockResponse(request, 200, new HttpHeaders(), "success");
+        });
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .addPathSegment("test")
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+            assertEquals("success", new String(readAllBytes(response.body()), StandardCharsets.UTF_8));
+        }
+    }
+
+    @Test
+    void executeThrowsUncheckedIOExceptionOnBodyBufferingFailure() {
+        RecordingHttpClient recordingClient
+            = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .body(new FailingHttpRequestBody())
+            .build();
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            openAiClient.execute(openAiRequest);
+        });
+        // Verify the error is related to body buffering failure
+        boolean hasBufferMessage = exception.getMessage() != null && exception.getMessage().contains("buffer");
+        boolean hasIOCause = exception.getCause() instanceof IOException;
+        assertTrue(hasBufferMessage || hasIOCause, "Expected error related to buffer failure, got: " + exception);
+    }
+
+    @Test
+    void executeThrowsExceptionOnMalformedUrl() {
+        RecordingHttpClient recordingClient
+            = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("not-a-valid-url")
+            .build();
+
+        // Malformed URLs should throw an exception (typically IllegalArgumentException or IllegalStateException)
+        assertThrows(RuntimeException.class, () -> {
+            openAiClient.execute(openAiRequest);
+        });
+    }
+
+    @Test
+    void executeAsyncPropagatesRequestBuildingErrors() {
+        RecordingHttpClient recordingClient
+            = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(recordingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .body(new FailingHttpRequestBody())
+            .build();
+
+        CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
+
+        Exception exception = assertThrows(Exception.class, future::join);
+        Throwable cause = exception.getCause();
+        assertNotNull(cause, "Expected a cause for the exception");
+        // The error should be related to request building/buffering failure
+        assertTrue(cause instanceof RuntimeException, "Expected RuntimeException, got: " + cause.getClass().getName());
+    }
+
+    @Test
+    void executeAsyncPropagatesHttpClientFailures() {
+        FailingHttpClient failingClient = new FailingHttpClient(new RuntimeException("Network error"));
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.httpClientMapper(failingClient);
+
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .build();
+
+        CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
+
+        Exception exception = assertThrows(Exception.class, future::join);
+        Throwable cause = exception.getCause();
+        assertNotNull(cause);
+        assertTrue(cause instanceof RuntimeException);
+        assertEquals("Network error", cause.getMessage());
     }
 
     private static com.openai.core.http.HttpRequest createOpenAiRequest() {
@@ -171,6 +275,52 @@ class HttpClientHelperTests {
         @Override
         public void close() {
             // no-op
+        }
+    }
+
+    private static final class FailingHttpRequestBody implements HttpRequestBody {
+        @Override
+        public void writeTo(OutputStream outputStream) {
+            // Simulate an I/O failure during body write
+            throw new UncheckedIOException(new IOException("Simulated I/O failure during body write"));
+        }
+
+        @Override
+        public String contentType() {
+            return "application/octet-stream";
+        }
+
+        @Override
+        public long contentLength() {
+            return -1;
+        }
+
+        @Override
+        public boolean repeatable() {
+            return false;
+        }
+
+        @Override
+        public void close() {
+            // no-op
+        }
+    }
+
+    private static final class FailingHttpClient implements HttpClient {
+        private final RuntimeException error;
+
+        private FailingHttpClient(RuntimeException error) {
+            this.error = error;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return Mono.error(error);
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            return send(request);
         }
     }
 }
