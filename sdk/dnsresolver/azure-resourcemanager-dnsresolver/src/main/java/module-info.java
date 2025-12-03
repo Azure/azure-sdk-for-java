@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.dnsresolver {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.dnsresolver;
     exports com.azure.resourcemanager.dnsresolver.fluent;
     exports com.azure.resourcemanager.dnsresolver.fluent.models;
     exports com.azure.resourcemanager.dnsresolver.models;
+
     opens com.azure.resourcemanager.dnsresolver.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.dnsresolver.models to com.azure.core;
     opens com.azure.resourcemanager.dnsresolver.implementation.models to com.azure.core;

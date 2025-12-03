@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.netapp {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.netapp;
     exports com.azure.resourcemanager.netapp.fluent;
     exports com.azure.resourcemanager.netapp.fluent.models;
     exports com.azure.resourcemanager.netapp.models;
+
     opens com.azure.resourcemanager.netapp.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.netapp.models to com.azure.core;
     opens com.azure.resourcemanager.netapp.implementation.models to com.azure.core;

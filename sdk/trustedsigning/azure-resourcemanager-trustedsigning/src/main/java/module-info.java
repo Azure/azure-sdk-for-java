@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.trustedsigning {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.trustedsigning;
     exports com.azure.resourcemanager.trustedsigning.fluent;
     exports com.azure.resourcemanager.trustedsigning.fluent.models;
     exports com.azure.resourcemanager.trustedsigning.models;
+
     opens com.azure.resourcemanager.trustedsigning.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.trustedsigning.models to com.azure.core;
     opens com.azure.resourcemanager.trustedsigning.implementation.models to com.azure.core;

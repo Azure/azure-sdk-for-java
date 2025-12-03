@@ -4,7 +4,9 @@
 
 module com.azure.monitor.query.logs {
     requires transitive com.azure.core;
+
     exports com.azure.monitor.query.logs;
     exports com.azure.monitor.query.logs.models;
+
     opens com.azure.monitor.query.logs.implementation.models to com.azure.core;
 }

@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.databasewatcher {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.databasewatcher;
     exports com.azure.resourcemanager.databasewatcher.fluent;
     exports com.azure.resourcemanager.databasewatcher.fluent.models;
     exports com.azure.resourcemanager.databasewatcher.models;
+
     opens com.azure.resourcemanager.databasewatcher.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.databasewatcher.models to com.azure.core;
     opens com.azure.resourcemanager.databasewatcher.implementation.models to com.azure.core;

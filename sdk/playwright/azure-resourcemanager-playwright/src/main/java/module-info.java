@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.playwright {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.playwright;
     exports com.azure.resourcemanager.playwright.fluent;
     exports com.azure.resourcemanager.playwright.fluent.models;
     exports com.azure.resourcemanager.playwright.models;
+
     opens com.azure.resourcemanager.playwright.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.playwright.models to com.azure.core;
     opens com.azure.resourcemanager.playwright.implementation.models to com.azure.core;

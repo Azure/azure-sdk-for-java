@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.portalservicescopilot {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.portalservicescopilot;
     exports com.azure.resourcemanager.portalservicescopilot.fluent;
     exports com.azure.resourcemanager.portalservicescopilot.fluent.models;
     exports com.azure.resourcemanager.portalservicescopilot.models;
+
     opens com.azure.resourcemanager.portalservicescopilot.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.portalservicescopilot.models to com.azure.core;
     opens com.azure.resourcemanager.portalservicescopilot.implementation.models to com.azure.core;

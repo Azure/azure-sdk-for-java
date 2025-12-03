@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.resources.bicep {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.resources.bicep;
     exports com.azure.resourcemanager.resources.bicep.fluent;
     exports com.azure.resourcemanager.resources.bicep.fluent.models;
     exports com.azure.resourcemanager.resources.bicep.models;
+
     opens com.azure.resourcemanager.resources.bicep.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.resources.bicep.models to com.azure.core;
 }

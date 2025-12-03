@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.dell.storage {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.dell.storage;
     exports com.azure.resourcemanager.dell.storage.fluent;
     exports com.azure.resourcemanager.dell.storage.fluent.models;
     exports com.azure.resourcemanager.dell.storage.models;
+
     opens com.azure.resourcemanager.dell.storage.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.dell.storage.models to com.azure.core;
     opens com.azure.resourcemanager.dell.storage.implementation.models to com.azure.core;

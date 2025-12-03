@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.playwrighttesting {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.playwrighttesting;
     exports com.azure.resourcemanager.playwrighttesting.fluent;
     exports com.azure.resourcemanager.playwrighttesting.fluent.models;
     exports com.azure.resourcemanager.playwrighttesting.models;
+
     opens com.azure.resourcemanager.playwrighttesting.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.playwrighttesting.models to com.azure.core;
     opens com.azure.resourcemanager.playwrighttesting.implementation.models to com.azure.core;

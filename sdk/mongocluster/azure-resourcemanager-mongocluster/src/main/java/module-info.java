@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.mongocluster {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.mongocluster;
     exports com.azure.resourcemanager.mongocluster.fluent;
     exports com.azure.resourcemanager.mongocluster.fluent.models;
     exports com.azure.resourcemanager.mongocluster.models;
+
     opens com.azure.resourcemanager.mongocluster.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.mongocluster.models to com.azure.core;
     opens com.azure.resourcemanager.mongocluster.implementation.models to com.azure.core;

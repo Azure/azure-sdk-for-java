@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.impactreporting {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.impactreporting;
     exports com.azure.resourcemanager.impactreporting.fluent;
     exports com.azure.resourcemanager.impactreporting.fluent.models;
     exports com.azure.resourcemanager.impactreporting.models;
+
     opens com.azure.resourcemanager.impactreporting.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.impactreporting.models to com.azure.core;
     opens com.azure.resourcemanager.impactreporting.implementation.models to com.azure.core;

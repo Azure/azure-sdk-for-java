@@ -4,7 +4,9 @@
 
 module com.azure.ai.documentintelligence {
     requires transitive com.azure.core;
+
     exports com.azure.ai.documentintelligence;
     exports com.azure.ai.documentintelligence.models;
+
     opens com.azure.ai.documentintelligence.models to com.azure.core;
 }

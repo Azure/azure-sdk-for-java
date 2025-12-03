@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.mongodbatlas {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.mongodbatlas;
     exports com.azure.resourcemanager.mongodbatlas.fluent;
     exports com.azure.resourcemanager.mongodbatlas.fluent.models;
     exports com.azure.resourcemanager.mongodbatlas.models;
+
     opens com.azure.resourcemanager.mongodbatlas.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.mongodbatlas.models to com.azure.core;
     opens com.azure.resourcemanager.mongodbatlas.implementation.models to com.azure.core;

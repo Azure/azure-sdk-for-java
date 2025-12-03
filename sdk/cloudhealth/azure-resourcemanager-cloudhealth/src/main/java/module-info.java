@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.cloudhealth {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.cloudhealth;
     exports com.azure.resourcemanager.cloudhealth.fluent;
     exports com.azure.resourcemanager.cloudhealth.fluent.models;
     exports com.azure.resourcemanager.cloudhealth.models;
+
     opens com.azure.resourcemanager.cloudhealth.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.cloudhealth.models to com.azure.core;
     opens com.azure.resourcemanager.cloudhealth.implementation.models to com.azure.core;

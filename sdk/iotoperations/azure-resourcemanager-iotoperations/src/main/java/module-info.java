@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.iotoperations {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.iotoperations;
     exports com.azure.resourcemanager.iotoperations.fluent;
     exports com.azure.resourcemanager.iotoperations.fluent.models;
     exports com.azure.resourcemanager.iotoperations.models;
+
     opens com.azure.resourcemanager.iotoperations.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.iotoperations.models to com.azure.core;
     opens com.azure.resourcemanager.iotoperations.implementation.models to com.azure.core;

@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.storageactions {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.storageactions;
     exports com.azure.resourcemanager.storageactions.fluent;
     exports com.azure.resourcemanager.storageactions.fluent.models;
     exports com.azure.resourcemanager.storageactions.models;
+
     opens com.azure.resourcemanager.storageactions.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.storageactions.models to com.azure.core;
     opens com.azure.resourcemanager.storageactions.implementation.models to com.azure.core;

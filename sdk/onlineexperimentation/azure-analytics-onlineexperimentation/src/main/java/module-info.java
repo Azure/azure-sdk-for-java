@@ -4,7 +4,9 @@
 
 module com.azure.analytics.onlineexperimentation {
     requires transitive com.azure.core;
+
     exports com.azure.analytics.onlineexperimentation;
     exports com.azure.analytics.onlineexperimentation.models;
+
     opens com.azure.analytics.onlineexperimentation.models to com.azure.core;
 }

@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.terraform {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.terraform;
     exports com.azure.resourcemanager.terraform.fluent;
     exports com.azure.resourcemanager.terraform.fluent.models;
     exports com.azure.resourcemanager.terraform.models;
+
     opens com.azure.resourcemanager.terraform.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.terraform.models to com.azure.core;
     opens com.azure.resourcemanager.terraform.implementation.models to com.azure.core;

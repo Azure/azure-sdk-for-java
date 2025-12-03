@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.servicenetworking {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.servicenetworking;
     exports com.azure.resourcemanager.servicenetworking.fluent;
     exports com.azure.resourcemanager.servicenetworking.fluent.models;
     exports com.azure.resourcemanager.servicenetworking.models;
+
     opens com.azure.resourcemanager.servicenetworking.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.servicenetworking.models to com.azure.core;
     opens com.azure.resourcemanager.servicenetworking.implementation.models to com.azure.core;

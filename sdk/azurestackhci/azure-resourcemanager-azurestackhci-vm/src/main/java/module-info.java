@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.azurestackhci.vm {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.azurestackhci.vm;
     exports com.azure.resourcemanager.azurestackhci.vm.fluent;
     exports com.azure.resourcemanager.azurestackhci.vm.fluent.models;
     exports com.azure.resourcemanager.azurestackhci.vm.models;
+
     opens com.azure.resourcemanager.azurestackhci.vm.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.azurestackhci.vm.models to com.azure.core;
     opens com.azure.resourcemanager.azurestackhci.vm.implementation.models to com.azure.core;

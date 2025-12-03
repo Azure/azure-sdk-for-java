@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.compute.recommender {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.compute.recommender;
     exports com.azure.resourcemanager.compute.recommender.fluent;
     exports com.azure.resourcemanager.compute.recommender.fluent.models;
     exports com.azure.resourcemanager.compute.recommender.models;
+
     opens com.azure.resourcemanager.compute.recommender.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.compute.recommender.models to com.azure.core;
     opens com.azure.resourcemanager.compute.recommender.implementation.models to com.azure.core;

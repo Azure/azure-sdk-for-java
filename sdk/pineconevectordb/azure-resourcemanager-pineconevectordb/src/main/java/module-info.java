@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.pineconevectordb {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.pineconevectordb;
     exports com.azure.resourcemanager.pineconevectordb.fluent;
     exports com.azure.resourcemanager.pineconevectordb.fluent.models;
     exports com.azure.resourcemanager.pineconevectordb.models;
+
     opens com.azure.resourcemanager.pineconevectordb.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.pineconevectordb.models to com.azure.core;
     opens com.azure.resourcemanager.pineconevectordb.implementation.models to com.azure.core;

@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.planetarycomputer {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.planetarycomputer;
     exports com.azure.resourcemanager.planetarycomputer.fluent;
     exports com.azure.resourcemanager.planetarycomputer.fluent.models;
     exports com.azure.resourcemanager.planetarycomputer.models;
+
     opens com.azure.resourcemanager.planetarycomputer.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.planetarycomputer.models to com.azure.core;
     opens com.azure.resourcemanager.planetarycomputer.implementation.models to com.azure.core;
