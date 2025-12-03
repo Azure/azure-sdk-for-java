@@ -79,7 +79,7 @@ com.azure:azure-communication-common;1.4.4;1.5.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.1.1;1.2.0-beta.2
 com.azure:azure-communication-identity;1.6.9;1.7.0-beta.1
-com.azure:azure-communication-jobrouter;1.1.17;1.2.0-beta.1
+com.azure:azure-communication-jobrouter;1.1.17;2.0.0-beta.1
 com.azure:azure-communication-messages;1.1.8;1.2.0-beta.2
 com.azure:azure-communication-phonenumbers;1.4.2;1.5.0-beta.1
 com.azure:azure-communication-rooms;1.2.5;1.3.0-beta.1
@@ -278,7 +278,7 @@ com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.5;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.55.1;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.54.1;2.55.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.56.1;2.57.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.56.1;2.57.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.54.0;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.5;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.5;2.54.0-beta.1

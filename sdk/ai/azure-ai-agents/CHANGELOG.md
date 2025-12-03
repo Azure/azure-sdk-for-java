@@ -4,7 +4,13 @@
 
 ### Features Added
 
+- New `MemorySearchAgent` sample was added demonstrating memory search functionality
+- Tests for `MemoryStoresClient` and `MemoryStoresAsyncClient`
+- Various documentation updates
+
 ### Breaking Changes
+
+- `MemoryStoreObject` was renamed to `MemoryStoreDetails`
 
 ### Bugs Fixed
 
