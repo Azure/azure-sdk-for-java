@@ -1,16 +1,11 @@
 # Release History
 
-## 12.28.0-beta.1 (Unreleased)
+## 12.28.0-beta.1 (2025-12-03)
 
 ### Features Added
 - Added support for User Delegation SAS.
 - Added support for Principal-Bound Identity User Delegation SAS.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version 2026-02-06.
 
 ## 12.27.0 (2025-10-21)
 
