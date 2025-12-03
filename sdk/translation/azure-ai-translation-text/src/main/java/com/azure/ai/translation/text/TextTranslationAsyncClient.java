@@ -510,7 +510,7 @@ public final class TextTranslationAsyncClient {
     /**
      * Translate Text.
      *
-     * @param body Defines the content of the request.
+     * @param input Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
