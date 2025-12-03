@@ -384,9 +384,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals("Percentage CPU", ma.alertCriterias().get("Metric1").metricName());
 
             // The date and time format should be: yyyy-dd-MMTHH:mm:ss.ffZ. For example: 2021-31-12T11:00:00.00Z.
-            OffsetDateTime time30MinBefore = OffsetDateTime.now(ZoneOffset.UTC)
-                .minusMinutes(30)
-                .withNano(0);
+            OffsetDateTime time30MinBefore = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(30).withNano(0);
 
             ma.update()
                 .withDescription("This alert rule is for U3 - Multiple resource, dynamic criteria")
