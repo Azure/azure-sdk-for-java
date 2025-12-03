@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class AutoUpgradeProfileOperationsGenerateUpdateRunMockTests {
     @Test
     public void testGenerateUpdateRun() throws Exception {
-        String responseStr = "{\"id\":\"v\"}";
+        String responseStr = "{\"id\":\"rkambt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class AutoUpgradeProfileOperationsGenerateUpdateRunMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GenerateResponse response = manager.autoUpgradeProfileOperations()
-            .generateUpdateRun("vgoup", "fiibfggjioolvr", "x", com.azure.core.util.Context.NONE);
+            .generateUpdateRun("uxrkjp", "dwxf", "wiivwzjbhyzsx", com.azure.core.util.Context.NONE);
 
     }
 }
