@@ -16,74 +16,82 @@ public final class NamespaceDiscoveredManagementGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredManagementGroup model = BinaryData.fromString(
-            "{\"name\":\"csdtclusiypbs\",\"managementGroupConfiguration\":\"ytguslf\",\"typeRef\":\"dcygqukyhejhz\",\"dataSource\":\"xgfpelolppv\",\"defaultTopic\":\"r\",\"defaultTimeoutInSeconds\":500405809,\"actions\":[{\"name\":\"zraehtwd\",\"actionConfiguration\":\"ftswibyrcdlbhsh\",\"targetUri\":\"wpracstwitykhev\",\"typeRef\":\"cedcpnmdy\",\"topic\":\"nwzxltjcv\",\"actionType\":\"Read\",\"timeoutInSeconds\":823307226,\"lastUpdatedOn\":\"2021-08-16T09:13:32Z\"},{\"name\":\"cxnavv\",\"actionConfiguration\":\"qiby\",\"targetUri\":\"unyowxwl\",\"typeRef\":\"jrkvfgbvfvpdbo\",\"topic\":\"cizsjqlhkrribdei\",\"actionType\":\"Read\",\"timeoutInSeconds\":972824299,\"lastUpdatedOn\":\"2021-05-03T06:31:18Z\"},{\"name\":\"hvxndzwmkrefajpj\",\"actionConfiguration\":\"wkqnyhg\",\"targetUri\":\"ij\",\"typeRef\":\"ivfxzsjabibsyst\",\"topic\":\"fsdjpvkvp\",\"actionType\":\"Write\",\"timeoutInSeconds\":1795251983,\"lastUpdatedOn\":\"2021-11-27T09:38:57Z\"}],\"lastUpdatedOn\":\"2021-05-24T23:12:37Z\"}")
+            "{\"name\":\"byrqufeg\",\"managementGroupConfiguration\":\"vwz\",\"typeRef\":\"nhlmctlpdng\",\"dataSource\":\"vgbmhr\",\"defaultTopic\":\"kw\",\"defaultTimeoutInSeconds\":881216516,\"actions\":[{\"name\":\"jvegrhbpnaixexcc\",\"actionConfiguration\":\"reaxhcexdr\",\"targetUri\":\"vqahqkghtpwi\",\"typeRef\":\"hyjsvfycx\",\"topic\":\"fvoow\",\"actionType\":\"Call\",\"timeoutInSeconds\":64762748,\"lastUpdatedOn\":\"2021-12-04T01:16:08Z\"},{\"name\":\"qp\",\"actionConfiguration\":\"ostronz\",\"targetUri\":\"yhgfipnsx\",\"typeRef\":\"cwaekrrjre\",\"topic\":\"xt\",\"actionType\":\"Write\",\"timeoutInSeconds\":1781492308,\"lastUpdatedOn\":\"2021-06-07T04:38:31Z\"},{\"name\":\"lik\",\"actionConfiguration\":\"wslolbqp\",\"targetUri\":\"uzlm\",\"typeRef\":\"elfk\",\"topic\":\"plcrpwjxeznoig\",\"actionType\":\"Read\",\"timeoutInSeconds\":78326163,\"lastUpdatedOn\":\"2021-07-10T07:09:22Z\"},{\"name\":\"kpnb\",\"actionConfiguration\":\"zejjoqk\",\"targetUri\":\"gfhsxttaugzxn\",\"typeRef\":\"azpxdtnkdmkqjjl\",\"topic\":\"envrkpyouaibrebq\",\"actionType\":\"Call\",\"timeoutInSeconds\":34950484,\"lastUpdatedOn\":\"2021-11-07T06:56:28Z\"}],\"lastUpdatedOn\":\"2021-04-29T05:21:23Z\"}")
             .toObject(NamespaceDiscoveredManagementGroup.class);
-        Assertions.assertEquals("csdtclusiypbs", model.name());
-        Assertions.assertEquals("ytguslf", model.managementGroupConfiguration());
-        Assertions.assertEquals("dcygqukyhejhz", model.typeRef());
-        Assertions.assertEquals("xgfpelolppv", model.dataSource());
-        Assertions.assertEquals("r", model.defaultTopic());
-        Assertions.assertEquals(500405809, model.defaultTimeoutInSeconds());
-        Assertions.assertEquals("zraehtwd", model.actions().get(0).name());
-        Assertions.assertEquals("ftswibyrcdlbhsh", model.actions().get(0).actionConfiguration());
-        Assertions.assertEquals("wpracstwitykhev", model.actions().get(0).targetUri());
-        Assertions.assertEquals("cedcpnmdy", model.actions().get(0).typeRef());
-        Assertions.assertEquals("nwzxltjcv", model.actions().get(0).topic());
-        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.READ, model.actions().get(0).actionType());
-        Assertions.assertEquals(823307226, model.actions().get(0).timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T09:13:32Z"), model.actions().get(0).lastUpdatedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T23:12:37Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("byrqufeg", model.name());
+        Assertions.assertEquals("vwz", model.managementGroupConfiguration());
+        Assertions.assertEquals("nhlmctlpdng", model.typeRef());
+        Assertions.assertEquals("vgbmhr", model.dataSource());
+        Assertions.assertEquals("kw", model.defaultTopic());
+        Assertions.assertEquals(881216516, model.defaultTimeoutInSeconds());
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.actions().get(0).name());
+        Assertions.assertEquals("reaxhcexdr", model.actions().get(0).actionConfiguration());
+        Assertions.assertEquals("vqahqkghtpwi", model.actions().get(0).targetUri());
+        Assertions.assertEquals("hyjsvfycx", model.actions().get(0).typeRef());
+        Assertions.assertEquals("fvoow", model.actions().get(0).topic());
+        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.CALL, model.actions().get(0).actionType());
+        Assertions.assertEquals(64762748, model.actions().get(0).timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T01:16:08Z"), model.actions().get(0).lastUpdatedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T05:21:23Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredManagementGroup model = new NamespaceDiscoveredManagementGroup().withName("csdtclusiypbs")
-            .withManagementGroupConfiguration("ytguslf")
-            .withTypeRef("dcygqukyhejhz")
-            .withDataSource("xgfpelolppv")
-            .withDefaultTopic("r")
-            .withDefaultTimeoutInSeconds(500405809)
+        NamespaceDiscoveredManagementGroup model = new NamespaceDiscoveredManagementGroup().withName("byrqufeg")
+            .withManagementGroupConfiguration("vwz")
+            .withTypeRef("nhlmctlpdng")
+            .withDataSource("vgbmhr")
+            .withDefaultTopic("kw")
+            .withDefaultTimeoutInSeconds(881216516)
             .withActions(Arrays.asList(
-                new NamespaceDiscoveredManagementAction().withName("zraehtwd")
-                    .withActionConfiguration("ftswibyrcdlbhsh")
-                    .withTargetUri("wpracstwitykhev")
-                    .withTypeRef("cedcpnmdy")
-                    .withTopic("nwzxltjcv")
-                    .withActionType(NamespaceDiscoveredManagementActionType.READ)
-                    .withTimeoutInSeconds(823307226)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-08-16T09:13:32Z")),
-                new NamespaceDiscoveredManagementAction().withName("cxnavv")
-                    .withActionConfiguration("qiby")
-                    .withTargetUri("unyowxwl")
-                    .withTypeRef("jrkvfgbvfvpdbo")
-                    .withTopic("cizsjqlhkrribdei")
-                    .withActionType(NamespaceDiscoveredManagementActionType.READ)
-                    .withTimeoutInSeconds(972824299)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-05-03T06:31:18Z")),
-                new NamespaceDiscoveredManagementAction().withName("hvxndzwmkrefajpj")
-                    .withActionConfiguration("wkqnyhg")
-                    .withTargetUri("ij")
-                    .withTypeRef("ivfxzsjabibsyst")
-                    .withTopic("fsdjpvkvp")
+                new NamespaceDiscoveredManagementAction().withName("jvegrhbpnaixexcc")
+                    .withActionConfiguration("reaxhcexdr")
+                    .withTargetUri("vqahqkghtpwi")
+                    .withTypeRef("hyjsvfycx")
+                    .withTopic("fvoow")
+                    .withActionType(NamespaceDiscoveredManagementActionType.CALL)
+                    .withTimeoutInSeconds(64762748)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-12-04T01:16:08Z")),
+                new NamespaceDiscoveredManagementAction().withName("qp")
+                    .withActionConfiguration("ostronz")
+                    .withTargetUri("yhgfipnsx")
+                    .withTypeRef("cwaekrrjre")
+                    .withTopic("xt")
                     .withActionType(NamespaceDiscoveredManagementActionType.WRITE)
-                    .withTimeoutInSeconds(1795251983)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-11-27T09:38:57Z"))))
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-05-24T23:12:37Z"));
+                    .withTimeoutInSeconds(1781492308)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-06-07T04:38:31Z")),
+                new NamespaceDiscoveredManagementAction().withName("lik")
+                    .withActionConfiguration("wslolbqp")
+                    .withTargetUri("uzlm")
+                    .withTypeRef("elfk")
+                    .withTopic("plcrpwjxeznoig")
+                    .withActionType(NamespaceDiscoveredManagementActionType.READ)
+                    .withTimeoutInSeconds(78326163)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-07-10T07:09:22Z")),
+                new NamespaceDiscoveredManagementAction().withName("kpnb")
+                    .withActionConfiguration("zejjoqk")
+                    .withTargetUri("gfhsxttaugzxn")
+                    .withTypeRef("azpxdtnkdmkqjjl")
+                    .withTopic("envrkpyouaibrebq")
+                    .withActionType(NamespaceDiscoveredManagementActionType.CALL)
+                    .withTimeoutInSeconds(34950484)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-11-07T06:56:28Z"))))
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-04-29T05:21:23Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredManagementGroup.class);
-        Assertions.assertEquals("csdtclusiypbs", model.name());
-        Assertions.assertEquals("ytguslf", model.managementGroupConfiguration());
-        Assertions.assertEquals("dcygqukyhejhz", model.typeRef());
-        Assertions.assertEquals("xgfpelolppv", model.dataSource());
-        Assertions.assertEquals("r", model.defaultTopic());
-        Assertions.assertEquals(500405809, model.defaultTimeoutInSeconds());
-        Assertions.assertEquals("zraehtwd", model.actions().get(0).name());
-        Assertions.assertEquals("ftswibyrcdlbhsh", model.actions().get(0).actionConfiguration());
-        Assertions.assertEquals("wpracstwitykhev", model.actions().get(0).targetUri());
-        Assertions.assertEquals("cedcpnmdy", model.actions().get(0).typeRef());
-        Assertions.assertEquals("nwzxltjcv", model.actions().get(0).topic());
-        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.READ, model.actions().get(0).actionType());
-        Assertions.assertEquals(823307226, model.actions().get(0).timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T09:13:32Z"), model.actions().get(0).lastUpdatedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T23:12:37Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("byrqufeg", model.name());
+        Assertions.assertEquals("vwz", model.managementGroupConfiguration());
+        Assertions.assertEquals("nhlmctlpdng", model.typeRef());
+        Assertions.assertEquals("vgbmhr", model.dataSource());
+        Assertions.assertEquals("kw", model.defaultTopic());
+        Assertions.assertEquals(881216516, model.defaultTimeoutInSeconds());
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.actions().get(0).name());
+        Assertions.assertEquals("reaxhcexdr", model.actions().get(0).actionConfiguration());
+        Assertions.assertEquals("vqahqkghtpwi", model.actions().get(0).targetUri());
+        Assertions.assertEquals("hyjsvfycx", model.actions().get(0).typeRef());
+        Assertions.assertEquals("fvoow", model.actions().get(0).topic());
+        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.CALL, model.actions().get(0).actionType());
+        Assertions.assertEquals(64762748, model.actions().get(0).timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T01:16:08Z"), model.actions().get(0).lastUpdatedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T05:21:23Z"), model.lastUpdatedOn());
     }
 }

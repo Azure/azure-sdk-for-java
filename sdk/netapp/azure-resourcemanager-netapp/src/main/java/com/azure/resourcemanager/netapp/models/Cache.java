@@ -273,12 +273,12 @@ public interface Cache {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The resource-specific properties for this resource..
+             * Specifies the properties property: Cache properties.
              * 
-             * @param properties The resource-specific properties for this resource.
+             * @param properties Cache properties.
              * @return the next definition stage.
              */
-            Update withProperties(CacheUpdateProperties properties);
+            Update withProperties(CacheProperties properties);
         }
     }
 
@@ -325,9 +325,8 @@ public interface Cache {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Cache poolChange(PoolChangeRequest body);
+    void poolChange(PoolChangeRequest body);
 
     /**
      * Moves Cache to another Capacity Pool.
@@ -337,7 +336,6 @@ public interface Cache {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Cache poolChange(PoolChangeRequest body, Context context);
+    void poolChange(PoolChangeRequest body, Context context);
 }

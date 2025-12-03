@@ -111,9 +111,8 @@ public interface Watchers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher start(String resourceGroupName, String watcherName);
+    void start(String resourceGroupName, String watcherName);
 
     /**
      * The action to start monitoring all targets configured for a database watcher.
@@ -124,9 +123,8 @@ public interface Watchers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher start(String resourceGroupName, String watcherName, Context context);
+    void start(String resourceGroupName, String watcherName, Context context);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -136,9 +134,8 @@ public interface Watchers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher stop(String resourceGroupName, String watcherName);
+    void stop(String resourceGroupName, String watcherName);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -149,9 +146,8 @@ public interface Watchers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher stop(String resourceGroupName, String watcherName, Context context);
+    void stop(String resourceGroupName, String watcherName, Context context);
 
     /**
      * Get a Watcher.
