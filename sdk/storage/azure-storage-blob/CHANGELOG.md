@@ -3,6 +3,9 @@
 ## 12.33.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs. 
+- Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
 
 ### Breaking Changes
 
