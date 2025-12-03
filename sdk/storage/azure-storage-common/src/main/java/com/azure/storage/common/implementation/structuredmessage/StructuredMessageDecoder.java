@@ -358,17 +358,18 @@ public class StructuredMessageDecoder {
 
         int messageVersion = Byte.toUnsignedInt(combined.get());
         if (messageVersion != DEFAULT_MESSAGE_VERSION) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Unsupported structured message version: " + messageVersion));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                enrichExceptionMessage("Unsupported structured message version: " + messageVersion)));
         }
 
         long msgLen = combined.getLong();
         if (msgLen < V1_HEADER_LENGTH) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Message length too small: " + msgLen));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(enrichExceptionMessage("Message length too small: " + msgLen)));
         }
         if (msgLen != expectedContentLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Structured message length " + msgLen + " did not match content length " + expectedContentLength));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                "Structured message length " + msgLen + " did not match content length " + expectedContentLength)));
         }
 
         flags = StructuredMessageFlags.fromValue(Short.toUnsignedInt(combined.getShort()));
@@ -424,8 +425,8 @@ public class StructuredMessageDecoder {
 
         // Validate segment number
         if (segmentNum != currentSegmentNumber + 1) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Unexpected segment number. Expected: " + (currentSegmentNumber + 1) + ", got: " + segmentNum));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                "Unexpected segment number. Expected: " + (currentSegmentNumber + 1) + ", got: " + segmentNum)));
         }
 
         // Validate segment size - must be non-negative and reasonable
@@ -434,8 +435,8 @@ public class StructuredMessageDecoder {
         if (segmentSize < 0 || segmentSize > remainingMessageBytes) {
             LOGGER.error("Invalid segment length read: segmentLength={}, decoderOffset={}, lastCompleteSegment={}",
                 segmentSize, messageOffset, lastCompleteSegmentStart);
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Invalid segment size detected: " + segmentSize + " (decoderOffset=" + messageOffset + ")"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                "Invalid segment size detected: " + segmentSize + " (remaining=" + remainingMessageBytes + ")")));
         }
 
         // Consume the bytes and update state
@@ -523,8 +524,9 @@ public class StructuredMessageDecoder {
             long reportedCrc64 = combined.getLong();
 
             if (segmentCrc64 != reportedCrc64) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("CRC64 mismatch detected in segment "
-                    + currentSegmentNumber + ". Expected: " + segmentCrc64 + ", got: " + reportedCrc64));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException(enrichExceptionMessage("CRC64 mismatch detected in segment "
+                        + currentSegmentNumber + ". Expected: " + segmentCrc64 + ", got: " + reportedCrc64)));
             }
 
             consumeBytes(CRC64_LENGTH, buffer);
@@ -570,9 +572,8 @@ public class StructuredMessageDecoder {
             long reportedCrc = combined.getLong();
 
             if (messageCrc64 != reportedCrc) {
-                throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException("CRC64 mismatch detected in message footer. "
-                        + "Expected: " + messageCrc64 + ", got: " + reportedCrc));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
+                    "CRC64 mismatch detected in message footer. Expected: " + messageCrc64 + ", got: " + reportedCrc)));
             }
 
             consumeBytes(CRC64_LENGTH, buffer);
@@ -678,8 +679,8 @@ public class StructuredMessageDecoder {
 
         if (messageOffset == 0) {
             if (!tryReadMessageHeader(buffer)) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Content not long enough to contain a valid message header."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    enrichExceptionMessage("Content not long enough to contain a valid message header.")));
             }
         }
 
@@ -722,8 +723,9 @@ public class StructuredMessageDecoder {
      */
     public ByteBuffer finalizeDecoding() {
         if (messageOffset != messageLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Decoded message length does not match "
-                + "expected length. Expected: " + messageLength + ", but was: " + messageOffset));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                enrichExceptionMessage("Decoded message length does not match expected length. Expected: "
+                    + messageLength + ", but was: " + messageOffset)));
         }
         // No buffered decoded bytes in current implementation
         return null;
@@ -736,5 +738,17 @@ public class StructuredMessageDecoder {
      */
     public boolean isComplete() {
         return messageLength != -1 && messageOffset >= messageLength;
+    }
+
+    /**
+     * Enriches an exception message with decoder offset information for debugging and retry.
+     * Format: "original message [decoderOffset=X,lastCompleteSegment=Y]"
+     *
+     * @param message The original exception message.
+     * @return The enriched message with offset information.
+     */
+    private String enrichExceptionMessage(String message) {
+        return String.format("%s [decoderOffset=%d,lastCompleteSegment=%d]", message, messageOffset,
+            lastCompleteSegmentStart);
     }
 }

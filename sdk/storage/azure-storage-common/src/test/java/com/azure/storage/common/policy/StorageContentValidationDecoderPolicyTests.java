@@ -5,7 +5,9 @@ package com.azure.storage.common.policy;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit tests for StorageContentValidationDecoderPolicy.
@@ -58,5 +60,46 @@ public class StorageContentValidationDecoderPolicyTests {
         String message = "RETRY-START-OFFSET=abc";
         long offset = StorageContentValidationDecoderPolicy.parseRetryStartOffset(message);
         assertEquals(-1, offset);
+    }
+
+    @Test
+    public void parseDecoderOffsetsFromEnrichedMessage() {
+        String message = "Invalid segment size [decoderOffset=523,lastCompleteSegment=287]";
+        long[] offsets = StorageContentValidationDecoderPolicy.parseDecoderOffsets(message);
+        assertArrayEquals(new long[] { 523, 287 }, offsets);
+    }
+
+    @Test
+    public void parseDecoderOffsetsWithZeroValues() {
+        String message = "Header error [decoderOffset=0,lastCompleteSegment=0]";
+        long[] offsets = StorageContentValidationDecoderPolicy.parseDecoderOffsets(message);
+        assertArrayEquals(new long[] { 0, 0 }, offsets);
+    }
+
+    @Test
+    public void parseDecoderOffsetsWithLargeValues() {
+        String message = "Error [decoderOffset=9999999999,lastCompleteSegment=8888888888]";
+        long[] offsets = StorageContentValidationDecoderPolicy.parseDecoderOffsets(message);
+        assertArrayEquals(new long[] { 9999999999L, 8888888888L }, offsets);
+    }
+
+    @Test
+    public void parseDecoderOffsetsReturnsNullForMissingPattern() {
+        String message = "Error without decoder offset information";
+        long[] offsets = StorageContentValidationDecoderPolicy.parseDecoderOffsets(message);
+        assertNull(offsets);
+    }
+
+    @Test
+    public void parseDecoderOffsetsReturnsNullForNullMessage() {
+        long[] offsets = StorageContentValidationDecoderPolicy.parseDecoderOffsets(null);
+        assertNull(offsets);
+    }
+
+    @Test
+    public void parseDecoderOffsetsReturnsNullForMalformedPattern() {
+        String message = "[decoderOffset=abc,lastCompleteSegment=xyz]";
+        long[] offsets = StorageContentValidationDecoderPolicy.parseDecoderOffsets(message);
+        assertNull(offsets);
     }
 }

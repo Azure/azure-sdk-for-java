@@ -74,6 +74,32 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         return -1;
     }
 
+    /**
+     * Parses decoder offset information from enriched exception messages.
+     * Format: "[decoderOffset=X,lastCompleteSegment=Y]"
+     *
+     * @param message The exception message to parse.
+     * @return A long array [decoderOffset, lastCompleteSegment], or null if not found.
+     */
+    public static long[] parseDecoderOffsets(String message) {
+        if (message == null) {
+            return null;
+        }
+        // Pattern: [decoderOffset=123,lastCompleteSegment=456]
+        Pattern pattern = Pattern.compile("\\[decoderOffset=(\\d+),lastCompleteSegment=(\\d+)\\]");
+        Matcher matcher = pattern.matcher(message);
+        if (matcher.find()) {
+            try {
+                long decoderOffset = Long.parseLong(matcher.group(1));
+                long lastCompleteSegment = Long.parseLong(matcher.group(2));
+                return new long[] { decoderOffset, lastCompleteSegment };
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // Check if structured message decoding is enabled for this request
@@ -231,9 +257,21 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         long decodedSoFar = state.decoder.getTotalDecodedPayloadBytes();
         long expectedLength = state.decoder.getMessageLength();
 
+        // Check if the exception message already has decoder offset information
+        // If so, prefer lastCompleteSegment from the enriched message
+        String originalMessage = message != null ? message : "";
+        long[] decoderOffsets = parseDecoderOffsets(originalMessage);
+        if (decoderOffsets != null) {
+            // Use lastCompleteSegment from the enriched exception as the retry offset
+            retryOffset = decoderOffsets[1];  // lastCompleteSegment
+            LOGGER.atInfo()
+                .addKeyValue("decoderOffset", decoderOffsets[0])
+                .addKeyValue("lastCompleteSegment", decoderOffsets[1])
+                .log("Parsed decoder offsets from enriched exception");
+        }
+
         // Build message components for clarity
         long displayExpected = expectedLength > 0 ? expectedLength : 0;
-        String originalMessage = message != null ? message : "";
 
         String fullMessage = String.format("Incomplete structured message: decoded %d of %d bytes. %s%d. %s",
             decodedSoFar, displayExpected, RETRY_OFFSET_TOKEN, retryOffset, originalMessage);
