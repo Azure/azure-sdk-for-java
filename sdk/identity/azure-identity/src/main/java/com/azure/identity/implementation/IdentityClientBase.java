@@ -95,6 +95,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -142,6 +144,14 @@ public abstract class IdentityClientBase {
     private Class<?> interactiveBrowserBroker;
     private Method getMsalRuntimeBroker;
     HttpPipeline httpPipeline;
+
+    // Dedicated pool for MSAL async work to avoid circular waits with SharedExecutorService (which may use VTs).
+    private static final ExecutorService MSAL_EXECUTOR = Executors.newCachedThreadPool(r -> {
+        Thread t = new Thread(r);
+        t.setName("azure-identity-msal-" + t.getId());
+        t.setDaemon(true);
+        return t;
+    });
 
     /**
      * Creates an IdentityClient with the given options.
@@ -265,9 +275,12 @@ public abstract class IdentityClientBase {
         }
 
         if (options.getExecutorService() != null) {
-            applicationBuilder.executorService(options.getExecutorService());
+            //applicationBuilder.executorService(options.getExecutorService());
+            applicationBuilder.executorService(MSAL_EXECUTOR);
+
         } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
+            //applicationBuilder.executorService(SharedExecutorService.getInstance());
+            applicationBuilder.executorService(MSAL_EXECUTOR);
         }
 
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
@@ -328,9 +341,11 @@ public abstract class IdentityClientBase {
         }
 
         if (options.getExecutorService() != null) {
-            builder.executorService(options.getExecutorService());
+           // builder.executorService(options.getExecutorService());
+            builder.executorService(MSAL_EXECUTOR);
         } else {
-            builder.executorService(SharedExecutorService.getInstance());
+           // builder.executorService(SharedExecutorService.getInstance());
+            builder.executorService(MSAL_EXECUTOR);
         }
 
         if (enableCae) {
@@ -425,9 +440,11 @@ public abstract class IdentityClientBase {
         }
 
         if (options.getExecutorService() != null) {
-            miBuilder.executorService(options.getExecutorService());
+            //miBuilder.executorService(options.getExecutorService());
+            miBuilder.executorService(MSAL_EXECUTOR);
         } else {
-            miBuilder.executorService(SharedExecutorService.getInstance());
+            //miBuilder.executorService(SharedExecutorService.getInstance());
+            miBuilder.executorService(MSAL_EXECUTOR);
         }
 
         return miBuilder.build();
@@ -470,7 +487,8 @@ public abstract class IdentityClientBase {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
+            //applicationBuilder.executorService(SharedExecutorService.getInstance());
+            applicationBuilder.executorService(MSAL_EXECUTOR);
         }
 
         return applicationBuilder.build();
