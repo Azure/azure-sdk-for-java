@@ -596,6 +596,14 @@ public class StructuredMessageDecoder {
         ByteArrayOutputStream decodedContent = new ByteArrayOutputStream();
         int startPos = buffer.position();
 
+        // Handle empty buffer with no pending bytes - nothing to decode
+        if (buffer.remaining() == 0 && pendingBytes.size() == 0) {
+            LOGGER.atVerbose()
+                .addKeyValue("decoderOffset", messageOffset)
+                .log("Empty buffer with no pending bytes, returning NEED_MORE_BYTES");
+            return new DecodeResult(DecodeStatus.NEED_MORE_BYTES, null, 0, "Empty buffer");
+        }
+
         LOGGER.atInfo()
             .addKeyValue("newBytes", buffer.remaining())
             .addKeyValue("pendingBytes", pendingBytes.size())
