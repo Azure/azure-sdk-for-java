@@ -1611,8 +1611,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(FaultSimulationContentWrapper parameters);
+    FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters);
 
     /**
      * Starts a fault simulation on the node type.
@@ -1622,8 +1623,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(FaultSimulationContentWrapper parameters, Context context);
+    FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context);
 
     /**
      * Stops a fault simulation on the node type.
@@ -1632,8 +1634,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(FaultSimulationIdContent parameters);
+    FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters);
 
     /**
      * Stops a fault simulation on the node type.
@@ -1643,8 +1646,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(FaultSimulationIdContent parameters, Context context);
+    FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context);
 
     /**
      * Gets a fault simulation by the simulationId.
