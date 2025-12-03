@@ -85,6 +85,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1342,24 +1343,65 @@ public class BlobAsyncClientBase {
                     try {
                         // For retry context, preserve decoder state if structured message validation is enabled
                         Context retryContext = firstRangeContext;
+                        BlobRange retryRange;
 
-                        // If structured message decoding is enabled, we need to include the decoder state
-                        // so the retry can continue from where we left off
+                        // If structured message decoding is enabled, we need to calculate the retry offset
+                        // based on the encoded bytes processed, not the decoded bytes
                         if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            // The decoder state will be set by the policy during processing
-                            // We preserve it in the context for the retry request
-                            Object decoderState
+                            // Get the decoder state to determine how many encoded bytes were processed
+                            Object decoderStateObj
                                 = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
                                     .orElse(null);
-                            if (decoderState != null) {
+
+                            if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
+                                StorageContentValidationDecoderPolicy.DecoderState decoderState
+                                    = (StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+
+                                // Use getRetryOffset() to get the correct offset for retry
+                                // This accounts for pending bytes that have been received but not yet consumed
+                                long encodedOffset = decoderState.getRetryOffset();
+                                long remainingCount = finalCount - encodedOffset;
+                                retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
+
+                                LOGGER.info(
+                                    "Structured message smart retry: resuming from offset {} (initial={}, encoded={})",
+                                    initialOffset + encodedOffset, initialOffset, encodedOffset);
+
+                                // Preserve the decoder state for the retry
                                 retryContext = retryContext
                                     .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                            } else {
+                                // No decoder state available, try to parse retry offset from exception message
+                                // The exception message contains RETRY-START-OFFSET=<number> token
+                                long retryStartOffset = StorageContentValidationDecoderPolicy
+                                    .parseRetryStartOffset(throwable.getMessage());
+                                if (retryStartOffset >= 0) {
+                                    long remainingCount = finalCount - retryStartOffset;
+                                    // Validate remainingCount to avoid negative values
+                                    if (remainingCount <= 0) {
+                                        LOGGER.warning("Retry offset {} exceeds finalCount {}, using fallback",
+                                            retryStartOffset, finalCount);
+                                        retryRange = new BlobRange(initialOffset + offset, newCount);
+                                    } else {
+                                        retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
+
+                                        LOGGER.info(
+                                            "Structured message smart retry from exception: resuming from offset {} "
+                                                + "(initial={}, parsed={})",
+                                            initialOffset + retryStartOffset, initialOffset, retryStartOffset);
+                                    }
+                                } else {
+                                    // Fallback to normal retry logic if no offset found
+                                    retryRange = new BlobRange(initialOffset + offset, newCount);
+                                }
                             }
+                        } else {
+                            // For non-structured downloads, use smart retry from the interrupted offset
+                            retryRange = new BlobRange(initialOffset + offset, newCount);
                         }
 
-                        return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, finalGetMD5, retryContext);
+                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, retryContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
