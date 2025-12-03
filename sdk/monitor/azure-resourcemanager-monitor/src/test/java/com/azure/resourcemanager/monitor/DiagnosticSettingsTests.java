@@ -55,7 +55,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     public void canCRUDDiagnosticSettings() {
 
         // make sure there exists a VM
-        Region region = Region.US_WEST;
+        Region region = Region.US_WEST2;
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
         VirtualMachine vm = ensureVM(region, resourceGroup, vmName, "10.0.0.0/28");
@@ -73,6 +73,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(vm.region())
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         EventHubNamespace namespace = eventHubManager.namespaces()
@@ -145,6 +146,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         String resourceId = "subscriptions/" + monitorManager.subscriptionId();
@@ -205,6 +207,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         Vault vault = ensureVault(region, rgName);
@@ -316,6 +319,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         // diagnostic setting
@@ -360,6 +364,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         SqlElasticPool sqlElasticPool = ensureElasticPoolWithWhiteSpace(region, rgName);
