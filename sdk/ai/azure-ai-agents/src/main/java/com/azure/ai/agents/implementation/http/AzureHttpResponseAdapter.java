@@ -54,6 +54,7 @@ final class AzureHttpResponseAdapter implements HttpResponse {
     @Override
     public void close() {
         try {
+            azureResponse.close();
             bodyStream.close();
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsWarning(new UncheckedIOException("Failed to close response body stream", ex));
