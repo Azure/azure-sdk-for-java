@@ -116,7 +116,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
         // assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
-        // Assertions.assertNull(setting.storageAccountId());
+        assertResourceIdEquals(sa.id(), setting.storageAccountId());
         Assertions.assertNull(setting.eventHubName());
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertTrue(setting.logs().isEmpty());
