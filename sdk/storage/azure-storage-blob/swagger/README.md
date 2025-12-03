@@ -477,6 +477,13 @@ directive:
 - from: swagger-document
   where: $.parameters
   transform: >
+    delete $.IfBlobMatch["x-ms-parameter-grouping"];
+    delete $.IfBlobModifiedSince["x-ms-parameter-grouping"];
+    delete $.IfBlobNoneMatch["x-ms-parameter-grouping"];
+    delete $.IfBlobUnmodifiedSince["x-ms-parameter-grouping"];
+- from: swagger-document
+  where: $.parameters
+  transform: >
     delete $.BlobConditionAppendPos["x-ms-parameter-grouping"];
     delete $.BlobConditionMaxSize["x-ms-parameter-grouping"];
 - from: swagger-document

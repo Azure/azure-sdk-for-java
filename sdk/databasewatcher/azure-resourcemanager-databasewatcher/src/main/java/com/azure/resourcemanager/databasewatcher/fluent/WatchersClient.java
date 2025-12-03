@@ -276,7 +276,7 @@ public interface WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStart(String resourceGroupName, String watcherName);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String watcherName);
 
     /**
      * The action to start monitoring all targets configured for a database watcher.
@@ -290,8 +290,7 @@ public interface WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStart(String resourceGroupName, String watcherName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String watcherName, Context context);
 
     /**
      * The action to start monitoring all targets configured for a database watcher.
@@ -301,10 +300,9 @@ public interface WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner start(String resourceGroupName, String watcherName);
+    void start(String resourceGroupName, String watcherName);
 
     /**
      * The action to start monitoring all targets configured for a database watcher.
@@ -315,10 +313,9 @@ public interface WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner start(String resourceGroupName, String watcherName, Context context);
+    void start(String resourceGroupName, String watcherName, Context context);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -331,7 +328,7 @@ public interface WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStop(String resourceGroupName, String watcherName);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String watcherName);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -345,8 +342,7 @@ public interface WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStop(String resourceGroupName, String watcherName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String watcherName, Context context);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -356,10 +352,9 @@ public interface WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner stop(String resourceGroupName, String watcherName);
+    void stop(String resourceGroupName, String watcherName);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -370,8 +365,7 @@ public interface WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WatcherInner stop(String resourceGroupName, String watcherName, Context context);
+    void stop(String resourceGroupName, String watcherName, Context context);
 }

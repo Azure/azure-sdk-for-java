@@ -1,10 +1,9 @@
 # Release History
 
-## 12.29.0-beta.1 (Unreleased)
+## 12.29.0-beta.1 (2025-12-03)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for service version 2026-02-06.
 
 ### Bugs Fixed
 - Fixed an issue where `BlobBatchSetBlobAccessTierOptions` would not properly handle blob names with special characters.

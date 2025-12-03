@@ -19,7 +19,7 @@ import java.util.Map;
  * A memory store that can store and retrieve user memories.
  */
 @Immutable
-public final class MemoryStoreObject implements JsonSerializable<MemoryStoreObject> {
+public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDetails> {
 
     /*
      * The object type, which is always 'memory_store'.
@@ -70,7 +70,7 @@ public final class MemoryStoreObject implements JsonSerializable<MemoryStoreObje
     private final MemoryStoreDefinition definition;
 
     /**
-     * Creates an instance of MemoryStoreObject class.
+     * Creates an instance of MemoryStoreDetails class.
      *
      * @param id the id value to set.
      * @param createdAt the createdAt value to set.
@@ -79,7 +79,7 @@ public final class MemoryStoreObject implements JsonSerializable<MemoryStoreObje
      * @param definition the definition value to set.
      */
     @Generated
-    private MemoryStoreObject(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name,
+    private MemoryStoreDetails(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name,
         MemoryStoreDefinition definition) {
         this.id = id;
         if (createdAt == null) {
@@ -195,16 +195,16 @@ public final class MemoryStoreObject implements JsonSerializable<MemoryStoreObje
     }
 
     /**
-     * Reads an instance of MemoryStoreObject from the JsonReader.
+     * Reads an instance of MemoryStoreDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MemoryStoreObject if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of MemoryStoreDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MemoryStoreObject.
+     * @throws IOException If an error occurs while reading the MemoryStoreDetails.
      */
     @Generated
-    public static MemoryStoreObject fromJson(JsonReader jsonReader) throws IOException {
+    public static MemoryStoreDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             OffsetDateTime createdAt = null;
@@ -234,11 +234,11 @@ public final class MemoryStoreObject implements JsonSerializable<MemoryStoreObje
                     reader.skipChildren();
                 }
             }
-            MemoryStoreObject deserializedMemoryStoreObject
-                = new MemoryStoreObject(id, createdAt, updatedAt, name, definition);
-            deserializedMemoryStoreObject.description = description;
-            deserializedMemoryStoreObject.metadata = metadata;
-            return deserializedMemoryStoreObject;
+            MemoryStoreDetails deserializedMemoryStoreDetails
+                = new MemoryStoreDetails(id, createdAt, updatedAt, name, definition);
+            deserializedMemoryStoreDetails.description = description;
+            deserializedMemoryStoreDetails.metadata = metadata;
+            return deserializedMemoryStoreDetails;
         });
     }
 }

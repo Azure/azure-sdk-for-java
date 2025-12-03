@@ -17,15 +17,19 @@ import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
+import com.azure.storage.file.share.models.ShareNfsSettings;
+import com.azure.storage.file.share.models.ShareNfsSettingsEncryptionInTransit;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocolSettings;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSmbSettings;
+import com.azure.storage.file.share.models.ShareSmbSettingsEncryptionInTransit;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.SmbMultichannel;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -563,5 +567,112 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertTrue(share.getProperties().isPaidBurstingEnabled());
         assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
         assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileServiceGetUserDelegationKey() {
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+        Response<UserDelegationKey> response
+            = oAuthServiceClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, null);
+
+        assertEquals(expiry, response.getValue().getSignedExpiry());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    public void fileServiceGetUserDelegationKeyAuthError() {
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+
+        //not oauth client
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryFileServiceClient
+            .getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, null));
+
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void getSetServicePropertiesEncryptionInTransitSMB() {
+
+        ShareServiceClient service = primaryFileServiceClient;
+        Response<ShareServiceProperties> propertiesResponse = service.getPropertiesWithResponse(null, null);
+        ShareServiceProperties properties = propertiesResponse.getValue();
+
+        if (properties.getProtocol() != null
+            && properties.getProtocol().getSmb() != null
+            && properties.getProtocol().getSmb().getEncryptionInTransit() != null
+            && Boolean.TRUE.equals(properties.getProtocol().getSmb().getEncryptionInTransit().isRequired())) {
+
+            properties.getProtocol().getSmb().setMultichannel(null);
+            properties.getProtocol().getSmb().getEncryptionInTransit().setRequired(false);
+            service.setPropertiesWithResponse(properties, null, null);
+            propertiesResponse = service.getPropertiesWithResponse(null, null);
+            properties = propertiesResponse.getValue();
+
+            assertFalse(properties.getProtocol().getSmb().getEncryptionInTransit().isRequired());
+
+            properties.getProtocol().getSmb().getEncryptionInTransit().setRequired(false);
+            properties.getProtocol().getSmb().setMultichannel(null);
+            service.setPropertiesWithResponse(properties, null, null);
+        } else {
+            properties.setProtocol(new ShareProtocolSettings());
+            properties.getProtocol()
+                .setSmb(new ShareSmbSettings()
+                    .setEncryptionInTransit(new ShareSmbSettingsEncryptionInTransit().setRequired(true))
+                    .setMultichannel(null));
+            service.setPropertiesWithResponse(properties, null, null);
+            propertiesResponse = service.getPropertiesWithResponse(null, null);
+            properties = propertiesResponse.getValue();
+
+            assertTrue(properties.getProtocol().getSmb().getEncryptionInTransit().isRequired());
+
+            properties.getProtocol().getSmb().setMultichannel(null);
+            properties.getProtocol().getSmb().getEncryptionInTransit().setRequired(false);
+            service.setPropertiesWithResponse(properties, null, null);
+        }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-02-06")
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void getSetServicePropertiesEncryptionInTransitNFS() {
+
+        ShareServiceClient service = premiumFileServiceClient;
+        Response<ShareServiceProperties> propertiesResponse = service.getPropertiesWithResponse(null, null);
+        ShareServiceProperties properties = propertiesResponse.getValue();
+
+        if (properties.getProtocol() != null
+            && properties.getProtocol().getNfs() != null
+            && properties.getProtocol().getNfs().getEncryptionInTransit() != null
+            && Boolean.TRUE.equals(properties.getProtocol().getNfs().getEncryptionInTransit().isRequired())) {
+
+            properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(false);
+            service.setPropertiesWithResponse(properties, null, null);
+            propertiesResponse = service.getPropertiesWithResponse(null, null);
+            properties = propertiesResponse.getValue();
+
+            assertFalse(properties.getProtocol().getNfs().getEncryptionInTransit().isRequired());
+
+            properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(true);
+            service.setPropertiesWithResponse(properties, null, null);
+        } else {
+            properties.setProtocol(new ShareProtocolSettings());
+            properties.getProtocol()
+                .setNfs(new ShareNfsSettings()
+                    .setEncryptionInTransit(new ShareNfsSettingsEncryptionInTransit().setRequired(true)));
+            service.setPropertiesWithResponse(properties, null, null);
+            propertiesResponse = service.getPropertiesWithResponse(null, null);
+            properties = propertiesResponse.getValue();
+
+            assertTrue(properties.getProtocol().getNfs().getEncryptionInTransit().isRequired());
+
+            properties.getProtocol().getNfs().getEncryptionInTransit().setRequired(false);
+            service.setPropertiesWithResponse(properties, null, null);
+        }
     }
 }
