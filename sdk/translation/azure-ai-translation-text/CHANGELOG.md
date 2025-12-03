@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for the latest Azure AI Translator API, including translations using LLM models, adaptive custom translation, tone variant translations, and geneder-specific translations.
+- Added support for the latest Azure AI Translator API, including translations using LLM models, adaptive custom translation, tone variant translations, and gender-specific translations.
 - Added `TranslationTarget` class for configuring translation options.
 
 ### Breaking Changes

@@ -119,31 +119,31 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     private final String language;
 
     /*
-     * An interger indicating the number of characters in the source text string
+     * An integer indicating the number of characters in the source text string
      */
     @Generated
     private Integer sourceCharacters;
 
     /*
-     * An interger indicating the number of tokens used in generating the translated text
+     * An integer indicating the number of tokens used in generating the translated text
      */
     @Generated
     private Integer instructionTokens;
 
     /*
-     * An interger indicating the number of tokens used in the source sentence
+     * An integer indicating the number of tokens used in the source sentence
      */
     @Generated
     private Integer sourceTokens;
 
     /*
-     * An interger indicating the number of tokens used in the translation response
+     * An integer indicating the number of tokens used in the translation response
      */
     @Generated
     private Integer responseTokens;
 
     /*
-     * An interger indicating the number of tokens used in the target sentence
+     * An integer indicating the number of tokens used in the target sentence
      */
     @Generated
     private Integer targetTokens;
@@ -159,7 +159,7 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the sourceCharacters property: An interger indicating the number of characters in the source text string.
+     * Get the sourceCharacters property: An integer indicating the number of characters in the source text string.
      *
      * @return the sourceCharacters value.
      */
@@ -169,7 +169,7 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the instructionTokens property: An interger indicating the number of tokens used in generating the translated
+     * Get the instructionTokens property: An integer indicating the number of tokens used in generating the translated
      * text.
      *
      * @return the instructionTokens value.
@@ -180,7 +180,7 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the sourceTokens property: An interger indicating the number of tokens used in the source sentence.
+     * Get the sourceTokens property: An integer indicating the number of tokens used in the source sentence.
      *
      * @return the sourceTokens value.
      */
@@ -190,7 +190,7 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the responseTokens property: An interger indicating the number of tokens used in the translation response.
+     * Get the responseTokens property: An integer indicating the number of tokens used in the translation response.
      *
      * @return the responseTokens value.
      */
@@ -200,7 +200,7 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the targetTokens property: An interger indicating the number of tokens used in the target sentence.
+     * Get the targetTokens property: An integer indicating the number of tokens used in the target sentence.
      *
      * @return the targetTokens value.
      */
