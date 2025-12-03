@@ -1,15 +1,12 @@
 # Release History
 
-## 12.33.0-beta.1 (Unreleased)
+## 12.33.0-beta.1 (2025-12-03)
 
 ### Features Added
 - Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs. 
 - Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
 - Added support for Principal-Bound Identity User Delegation SAS.
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2026-02-06.
 
 ### Other Changes
 - Added support for container names with special characters when using OneLake.
