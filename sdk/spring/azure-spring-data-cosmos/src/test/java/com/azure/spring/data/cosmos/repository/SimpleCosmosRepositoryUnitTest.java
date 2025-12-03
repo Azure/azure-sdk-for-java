@@ -10,23 +10,23 @@ import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SimpleCosmosRepositoryUnitTest {
     private static final Person TEST_PERSON =
             new Person(TestConstants.ID_1, TestConstants.FIRST_NAME, TestConstants.LAST_NAME,
@@ -41,15 +41,13 @@ public class SimpleCosmosRepositoryUnitTest {
     @Mock
     CosmosEntityInformation<Person, String> entityInformation;
 
-    @SuppressWarnings("deprecation")
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(entityInformation.getJavaType()).thenReturn(Person.class);
         when(entityInformation.getContainerName()).thenReturn(Person.class.getSimpleName());
-        when(cosmosOperations.findAll(anyString(), any())).thenReturn(Arrays.asList(TEST_PERSON));
+        lenient().when(cosmosOperations.findAll(anyString(), any())).thenReturn(Arrays.asList(TEST_PERSON));
 
         repository = new SimpleCosmosRepository<>(entityInformation, cosmosOperations);
     }
@@ -75,15 +73,15 @@ public class SimpleCosmosRepositoryUnitTest {
 
     @Test
     public void testFindOneExceptionForPartitioned() {
-        expectedException.expect(UnsupportedOperationException.class);
-        expectedException.expectMessage(PARTITION_VALUE_REQUIRED_MSG);
-
         repository.save(TEST_PERSON);
 
         when(cosmosOperations.findById(anyString(), anyString(), any()))
                 .thenThrow(new UnsupportedOperationException(PARTITION_VALUE_REQUIRED_MSG));
 
-        final Person result = repository.findById(TEST_PERSON.getId()).get();
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class, () -> {
+            repository.findById(TEST_PERSON.getId()).get();
+        });
+        assertEquals(PARTITION_VALUE_REQUIRED_MSG, exception.getMessage());
     }
 
     @Test

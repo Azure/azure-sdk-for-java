@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceInner;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceMigrateRequest;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceMigrateResponse;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdate;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdateProperties;
@@ -154,12 +153,12 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
         return this;
     }
 
-    public NamespaceMigrateResponse migrate(NamespaceMigrateRequest body) {
-        return serviceManager.namespaces().migrate(resourceGroupName, namespaceName, body);
+    public void migrate(NamespaceMigrateRequest body) {
+        serviceManager.namespaces().migrate(resourceGroupName, namespaceName, body);
     }
 
-    public NamespaceMigrateResponse migrate(NamespaceMigrateRequest body, Context context) {
-        return serviceManager.namespaces().migrate(resourceGroupName, namespaceName, body, context);
+    public void migrate(NamespaceMigrateRequest body, Context context) {
+        serviceManager.namespaces().migrate(resourceGroupName, namespaceName, body, context);
     }
 
     public NamespaceImpl withRegion(Region location) {

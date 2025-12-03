@@ -112,9 +112,8 @@ public interface Namespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    NamespaceMigrateResponse migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body);
+    void migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body);
 
     /**
      * Migrate the resources into Namespace.
@@ -126,10 +125,8 @@ public interface Namespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    NamespaceMigrateResponse migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body,
-        Context context);
+    void migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body, Context context);
 
     /**
      * Get a Namespace.
