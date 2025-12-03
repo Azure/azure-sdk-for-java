@@ -1,8 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (2025-12-03)
-
-- Azure Resource Manager Service Fabric Managed Clusters client library for Java. This package contains Microsoft Azure SDK for Service Fabric Managed Clusters Management SDK. Service Fabric Managed Clusters Management Client. Package api-version 2025-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
