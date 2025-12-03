@@ -68,7 +68,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientStaticCidrs")
     public interface StaticCidrsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/staticCidrs")
@@ -163,7 +163,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -215,7 +215,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -381,7 +381,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -431,7 +431,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -536,7 +536,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -582,7 +582,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -683,7 +683,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -729,7 +729,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -892,13 +892,16 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
     }
 
     /**
+     * Gets list of Static CIDR resources at Network Manager level.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of StaticCidr along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Static CIDR resources at Network Manager level along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticCidrInner>> listNextSinglePageAsync(String nextLink) {
@@ -917,6 +920,8 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
     }
 
     /**
+     * Gets list of Static CIDR resources at Network Manager level.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -924,7 +929,8 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of StaticCidr along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Static CIDR resources at Network Manager level along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticCidrInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -352,7 +352,7 @@ public class VectorSearchTests extends SearchTestBase {
     public void testVectorSearchCompressionsEnableRescoringDiscardOriginalsSync() {
         String indexName = randomIndexName("compressiontruncationdimension");
         String compressionName = "vector-compression-100";
-        RescoringOptions rescoringOptions = new RescoringOptions().setEnableRescoring(true)
+        RescoringOptions rescoringOptions = new RescoringOptions().setRescoringEnabled(true)
             .setRescoreStorageMethod(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS);
 
         SearchIndex searchIndex = new SearchIndex(indexName)
@@ -380,7 +380,7 @@ public class VectorSearchTests extends SearchTestBase {
         BinaryQuantizationCompression compression
             = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
         assertEquals(compressionName, compression.getCompressionName());
-        assertEquals(true, compression.getRescoringOptions().isEnableRescoring());
+        assertEquals(true, compression.getRescoringOptions().isRescoringEnabled());
         assertEquals(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS,
             compression.getRescoringOptions().getRescoreStorageMethod());
     }
@@ -389,7 +389,7 @@ public class VectorSearchTests extends SearchTestBase {
     public void testVectorSearchCompressionsEnableRescoringDiscardOriginalsAsync() {
         String indexName = randomIndexName("compressiontruncationdimension");
         String compressionName = "vector-compression-100";
-        RescoringOptions rescoringOptions = new RescoringOptions().setEnableRescoring(true)
+        RescoringOptions rescoringOptions = new RescoringOptions().setRescoringEnabled(true)
             .setRescoreStorageMethod(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS);
 
         SearchIndex searchIndex = new SearchIndex(indexName)
@@ -417,7 +417,7 @@ public class VectorSearchTests extends SearchTestBase {
             BinaryQuantizationCompression compression
                 = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
             assertEquals(compressionName, compression.getCompressionName());
-            assertEquals(true, compression.getRescoringOptions().isEnableRescoring());
+            assertEquals(true, compression.getRescoringOptions().isRescoringEnabled());
             assertEquals(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS,
                 compression.getRescoringOptions().getRescoreStorageMethod());
         }).verifyComplete();

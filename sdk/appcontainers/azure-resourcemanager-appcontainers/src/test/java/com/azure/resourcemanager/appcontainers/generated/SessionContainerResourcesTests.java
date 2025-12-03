@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SessionContainerResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SessionContainerResources model = BinaryData.fromString("{\"cpu\":31.679669569909052,\"memory\":\"xob\"}")
+        SessionContainerResources model = BinaryData.fromString("{\"cpu\":9.195063147234494,\"memory\":\"nb\"}")
             .toObject(SessionContainerResources.class);
-        Assertions.assertEquals(31.679669569909052D, model.cpu());
-        Assertions.assertEquals("xob", model.memory());
+        Assertions.assertEquals(9.195063147234494D, model.cpu());
+        Assertions.assertEquals("nb", model.memory());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SessionContainerResources model
-            = new SessionContainerResources().withCpu(31.679669569909052D).withMemory("xob");
+        SessionContainerResources model = new SessionContainerResources().withCpu(9.195063147234494D).withMemory("nb");
         model = BinaryData.fromObject(model).toObject(SessionContainerResources.class);
-        Assertions.assertEquals(31.679669569909052D, model.cpu());
-        Assertions.assertEquals("xob", model.memory());
+        Assertions.assertEquals(9.195063147234494D, model.cpu());
+        Assertions.assertEquals("nb", model.memory());
     }
 }

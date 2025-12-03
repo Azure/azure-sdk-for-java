@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AccessMode;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesAutoApproval;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesVisibility;
@@ -223,6 +224,29 @@ public final class PrivateLinkServiceInner extends Resource {
             this.innerProperties = new PrivateLinkServiceProperties();
         }
         this.innerProperties().withDestinationIpAddress(destinationIpAddress);
+        return this;
+    }
+
+    /**
+     * Get the accessMode property: The access mode of the private link service.
+     * 
+     * @return the accessMode value.
+     */
+    public AccessMode accessMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().accessMode();
+    }
+
+    /**
+     * Set the accessMode property: The access mode of the private link service.
+     * 
+     * @param accessMode the accessMode value to set.
+     * @return the PrivateLinkServiceInner object itself.
+     */
+    public PrivateLinkServiceInner withAccessMode(AccessMode accessMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceProperties();
+        }
+        this.innerProperties().withAccessMode(accessMode);
         return this;
     }
 

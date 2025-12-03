@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateLinkResourceInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResourceListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResourceList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,13 +61,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listByServer(@HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceList>> listByServer(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
@@ -76,7 +76,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PrivateLinkResourceListResult> listByServerSync(@HostParam("$host") String endpoint,
+        Response<PrivateLinkResourceList> listByServerSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
@@ -103,7 +103,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listByServerNext(
+        Mono<Response<PrivateLinkResourceList>> listByServerNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -111,7 +111,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PrivateLinkResourceListResult> listByServerNextSync(
+        Response<PrivateLinkResourceList> listByServerNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -202,7 +202,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
+        Response<PrivateLinkResourceList> res
             = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -242,7 +242,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
+        Response<PrivateLinkResourceList> res
             = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -405,8 +405,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the private link resources for PostgreSQL server along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -432,7 +432,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse}.
+     * @return the private link resources for PostgreSQL server along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByServerNextSinglePage(String nextLink) {
@@ -446,7 +446,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
+        Response<PrivateLinkResourceList> res
             = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -460,7 +460,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse}.
+     * @return the private link resources for PostgreSQL server along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByServerNextSinglePage(String nextLink, Context context) {
@@ -474,7 +474,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
+        Response<PrivateLinkResourceList> res
             = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

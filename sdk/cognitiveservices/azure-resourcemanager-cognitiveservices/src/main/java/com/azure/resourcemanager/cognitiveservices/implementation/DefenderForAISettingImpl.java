@@ -30,10 +30,6 @@ public final class DefenderForAISettingImpl
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String etag() {
         return this.innerModel().etag();
     }
@@ -45,6 +41,10 @@ public final class DefenderForAISettingImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public DefenderForAISettingState state() {

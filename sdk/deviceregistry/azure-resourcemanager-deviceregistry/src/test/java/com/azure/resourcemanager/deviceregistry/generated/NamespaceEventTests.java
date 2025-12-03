@@ -7,7 +7,6 @@ package com.azure.resourcemanager.deviceregistry.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.EventDestination;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceEvent;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceEventDataPoint;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,38 +14,25 @@ public final class NamespaceEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceEvent model = BinaryData.fromString(
-            "{\"name\":\"n\",\"eventNotifier\":\"z\",\"eventConfiguration\":\"zka\",\"destinations\":[{\"target\":\"EventDestination\"}],\"typeRef\":\"b\",\"dataPoints\":[{\"name\":\"wbme\",\"dataSource\":\"hseyvju\",\"dataPointConfiguration\":\"tslhspkdeem\"},{\"name\":\"ofmxagkvtmelmqkr\",\"dataSource\":\"ahvljuaha\",\"dataPointConfiguration\":\"hcdhmdual\"}]}")
+            "{\"name\":\"rmfqjhhkxbpvj\",\"dataSource\":\"jhxxjyn\",\"eventConfiguration\":\"divkrt\",\"destinations\":[{\"target\":\"EventDestination\"}],\"typeRef\":\"qzvszjf\"}")
             .toObject(NamespaceEvent.class);
-        Assertions.assertEquals("n", model.name());
-        Assertions.assertEquals("z", model.eventNotifier());
-        Assertions.assertEquals("zka", model.eventConfiguration());
-        Assertions.assertEquals("b", model.typeRef());
-        Assertions.assertEquals("wbme", model.dataPoints().get(0).name());
-        Assertions.assertEquals("hseyvju", model.dataPoints().get(0).dataSource());
-        Assertions.assertEquals("tslhspkdeem", model.dataPoints().get(0).dataPointConfiguration());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.name());
+        Assertions.assertEquals("jhxxjyn", model.dataSource());
+        Assertions.assertEquals("divkrt", model.eventConfiguration());
+        Assertions.assertEquals("qzvszjf", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceEvent model = new NamespaceEvent().withName("n")
-            .withEventNotifier("z")
-            .withEventConfiguration("zka")
+        NamespaceEvent model = new NamespaceEvent().withName("rmfqjhhkxbpvj")
+            .withDataSource("jhxxjyn")
+            .withEventConfiguration("divkrt")
             .withDestinations(Arrays.asList(new EventDestination()))
-            .withTypeRef("b")
-            .withDataPoints(Arrays.asList(
-                new NamespaceEventDataPoint().withName("wbme")
-                    .withDataSource("hseyvju")
-                    .withDataPointConfiguration("tslhspkdeem"),
-                new NamespaceEventDataPoint().withName("ofmxagkvtmelmqkr")
-                    .withDataSource("ahvljuaha")
-                    .withDataPointConfiguration("hcdhmdual")));
+            .withTypeRef("qzvszjf");
         model = BinaryData.fromObject(model).toObject(NamespaceEvent.class);
-        Assertions.assertEquals("n", model.name());
-        Assertions.assertEquals("z", model.eventNotifier());
-        Assertions.assertEquals("zka", model.eventConfiguration());
-        Assertions.assertEquals("b", model.typeRef());
-        Assertions.assertEquals("wbme", model.dataPoints().get(0).name());
-        Assertions.assertEquals("hseyvju", model.dataPoints().get(0).dataSource());
-        Assertions.assertEquals("tslhspkdeem", model.dataPoints().get(0).dataPointConfiguration());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.name());
+        Assertions.assertEquals("jhxxjyn", model.dataSource());
+        Assertions.assertEquals("divkrt", model.eventConfiguration());
+        Assertions.assertEquals("qzvszjf", model.typeRef());
     }
 }

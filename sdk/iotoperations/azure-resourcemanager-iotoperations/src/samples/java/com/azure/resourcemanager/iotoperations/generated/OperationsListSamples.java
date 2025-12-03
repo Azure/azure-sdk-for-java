@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.

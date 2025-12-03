@@ -41,14 +41,16 @@ public interface FirewallRule {
     SystemData systemData();
 
     /**
-     * Gets the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
+     * Gets the startIpAddress property: IP address defining the start of the range of addresses of a firewall rule.
+     * Must be expressed in IPv4 format.
      * 
      * @return the startIpAddress value.
      */
     String startIpAddress();
 
     /**
-     * Gets the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
+     * Gets the endIpAddress property: IP address defining the end of the range of addresses of a firewall rule. Must be
+     * expressed in IPv4 format.
      * 
      * @return the endIpAddress value.
      */
@@ -104,10 +106,11 @@ public interface FirewallRule {
          */
         interface WithStartIpAddress {
             /**
-             * Specifies the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4
-             * format..
+             * Specifies the startIpAddress property: IP address defining the start of the range of addresses of a
+             * firewall rule. Must be expressed in IPv4 format..
              * 
-             * @param startIpAddress The start IP address of the server firewall rule. Must be IPv4 format.
+             * @param startIpAddress IP address defining the start of the range of addresses of a firewall rule. Must be
+             * expressed in IPv4 format.
              * @return the next definition stage.
              */
             WithEndIpAddress withStartIpAddress(String startIpAddress);
@@ -118,10 +121,11 @@ public interface FirewallRule {
          */
         interface WithEndIpAddress {
             /**
-             * Specifies the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4
-             * format..
+             * Specifies the endIpAddress property: IP address defining the end of the range of addresses of a firewall
+             * rule. Must be expressed in IPv4 format..
              * 
-             * @param endIpAddress The end IP address of the server firewall rule. Must be IPv4 format.
+             * @param endIpAddress IP address defining the end of the range of addresses of a firewall rule. Must be
+             * expressed in IPv4 format.
              * @return the next definition stage.
              */
             WithCreate withEndIpAddress(String endIpAddress);
@@ -185,10 +189,11 @@ public interface FirewallRule {
          */
         interface WithStartIpAddress {
             /**
-             * Specifies the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4
-             * format..
+             * Specifies the startIpAddress property: IP address defining the start of the range of addresses of a
+             * firewall rule. Must be expressed in IPv4 format..
              * 
-             * @param startIpAddress The start IP address of the server firewall rule. Must be IPv4 format.
+             * @param startIpAddress IP address defining the start of the range of addresses of a firewall rule. Must be
+             * expressed in IPv4 format.
              * @return the next definition stage.
              */
             Update withStartIpAddress(String startIpAddress);
@@ -199,10 +204,11 @@ public interface FirewallRule {
          */
         interface WithEndIpAddress {
             /**
-             * Specifies the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4
-             * format..
+             * Specifies the endIpAddress property: IP address defining the end of the range of addresses of a firewall
+             * rule. Must be expressed in IPv4 format..
              * 
-             * @param endIpAddress The end IP address of the server firewall rule. Must be IPv4 format.
+             * @param endIpAddress IP address defining the end of the range of addresses of a firewall rule. Must be
+             * expressed in IPv4 format.
              * @return the next definition stage.
              */
             Update withEndIpAddress(String endIpAddress);

@@ -1,12 +1,29 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.29.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where `BlobBatchSetBlobAccessTierOptions` would not properly handle blob names with special characters.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+## 12.28.0 (2025-10-21)
+
+### Features Added
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
 
 ## 12.27.3 (2025-09-25)
 
@@ -53,7 +70,7 @@
 ## 12.28.0-beta.1 (2025-07-09)
 
 ### Features Added
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added support for service version 2025-11-05.
 
 ## 12.26.1 (2025-06-19)

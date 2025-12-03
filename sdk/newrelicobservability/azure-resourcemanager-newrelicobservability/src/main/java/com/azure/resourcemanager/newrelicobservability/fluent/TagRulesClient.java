@@ -19,7 +19,8 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.TagRuleUpda
  */
 public interface TagRulesClient {
     /**
-     * List TagRule resources by NewRelicMonitorResource.
+     * Lists all tag rules associated with a specific New Relic monitor resource, helping you manage and audit the rules
+     * that control resource monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -32,7 +33,8 @@ public interface TagRulesClient {
     PagedIterable<TagRuleInner> listByNewRelicMonitorResource(String resourceGroupName, String monitorName);
 
     /**
-     * List TagRule resources by NewRelicMonitorResource.
+     * Lists all tag rules associated with a specific New Relic monitor resource, helping you manage and audit the rules
+     * that control resource monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -47,7 +49,8 @@ public interface TagRulesClient {
         Context context);
 
     /**
-     * Get a TagRule.
+     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
+     * setup and status.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -56,14 +59,15 @@ public interface TagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule along with {@link Response}.
+     * @return a tag rule belonging to NewRelic account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TagRuleInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
         Context context);
 
     /**
-     * Get a TagRule.
+     * Retrieves the details of the tag rules for a specific New Relic monitor resource, providing insight into its
+     * setup and status.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -71,13 +75,14 @@ public interface TagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule.
+     * @return a tag rule belonging to NewRelic account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TagRuleInner get(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
-     * Create a TagRule.
+     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
+     * monitored based on their tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -93,7 +98,8 @@ public interface TagRulesClient {
         String ruleSetName, TagRuleInner resource);
 
     /**
-     * Create a TagRule.
+     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
+     * monitored based on their tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -110,7 +116,8 @@ public interface TagRulesClient {
         String ruleSetName, TagRuleInner resource, Context context);
 
     /**
-     * Create a TagRule.
+     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
+     * monitored based on their tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -126,7 +133,8 @@ public interface TagRulesClient {
         TagRuleInner resource);
 
     /**
-     * Create a TagRule.
+     * Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources are
+     * monitored based on their tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -143,64 +151,8 @@ public interface TagRulesClient {
         Context context);
 
     /**
-     * Delete a TagRule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName);
-
-    /**
-     * Delete a TagRule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName,
-        Context context);
-
-    /**
-     * Delete a TagRule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String monitorName, String ruleSetName);
-
-    /**
-     * Delete a TagRule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param ruleSetName Name of the TagRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context);
-
-    /**
-     * Update a TagRule.
+     * Updates the tag rules for a specific New Relic monitor resource, allowing you to modify the rules that control
+     * which Azure resources are monitored.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -217,7 +169,8 @@ public interface TagRulesClient {
         TagRuleUpdateInner properties, Context context);
 
     /**
-     * Update a TagRule.
+     * Updates the tag rules for a specific New Relic monitor resource, allowing you to modify the rules that control
+     * which Azure resources are monitored.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -231,4 +184,65 @@ public interface TagRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     TagRuleInner update(String resourceGroupName, String monitorName, String ruleSetName,
         TagRuleUpdateInner properties);
+
+    /**
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param ruleSetName Name of the TagRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName);
+
+    /**
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param ruleSetName Name of the TagRule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
+
+    /**
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param ruleSetName Name of the TagRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String monitorName, String ruleSetName);
+
+    /**
+     * Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+     * based on resource tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param ruleSetName Name of the TagRule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String monitorName, String ruleSetName, Context context);
 }

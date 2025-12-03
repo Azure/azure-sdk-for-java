@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.RaiContentFilterInner;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilter;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilterProperties;
@@ -33,6 +34,10 @@ public final class RaiContentFilterImpl implements RaiContentFilter {
 
     public RaiContentFilterProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public RaiContentFilterInner innerModel() {

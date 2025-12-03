@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-iothub</artifactId>
-  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-iothub;current} -->
+  <version>1.4.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-iothub;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for IotHub Management</name>
-  <description>This package contains Microsoft Azure SDK for IotHub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Use this API to manage the IoT hubs in your Azure subscription. Package tag package-2023-06.</description>
+  <description>This package contains Microsoft Azure SDK for IotHub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Use this API to manage the IoT hubs in your Azure subscription. Package tag package-preview-2025-08.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,7 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <spotless.skip>false</spotless.skip>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -91,7 +91,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.53.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

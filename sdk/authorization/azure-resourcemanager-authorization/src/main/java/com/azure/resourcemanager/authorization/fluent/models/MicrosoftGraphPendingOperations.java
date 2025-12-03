@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * pendingOperations.
+ * Represents a pending operations.
  */
 @Fluent
 public final class MicrosoftGraphPendingOperations implements JsonSerializable<MicrosoftGraphPendingOperations> {

@@ -100,7 +100,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.74.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.75.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -155,12 +155,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;springboot3_junit:junit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
@@ -201,18 +195,6 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>2.0.17</version> <!-- {x-version-update;springboot3_org.slf4j:slf4j-api;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>5.12.2</version> <!-- {x-version-update;springboot3_org.junit.vintage:junit-vintage-engine;external_dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest-core</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 

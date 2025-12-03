@@ -3,7 +3,7 @@
 
 package com.azure.spring.data.cosmos.core.mapping;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationContext;
 

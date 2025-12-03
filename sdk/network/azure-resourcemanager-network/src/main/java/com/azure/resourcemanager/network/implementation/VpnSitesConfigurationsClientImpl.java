@@ -61,7 +61,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientVpnSitesConfigurations")
     public interface VpnSitesConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnConfiguration")
@@ -109,7 +109,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.download(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -152,7 +152,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.download(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,

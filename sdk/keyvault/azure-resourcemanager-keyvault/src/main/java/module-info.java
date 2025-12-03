@@ -16,4 +16,5 @@ module com.azure.resourcemanager.keyvault {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.keyvault.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.keyvault.models to com.azure.core;
+    opens com.azure.resourcemanager.keyvault.implementation.models to com.azure.core;
 }

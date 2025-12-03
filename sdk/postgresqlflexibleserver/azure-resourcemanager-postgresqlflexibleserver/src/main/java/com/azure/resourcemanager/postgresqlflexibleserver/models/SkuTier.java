@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The tier of the particular SKU, e.g. Burstable.
+ * Tier of the compute assigned to a server.
  */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     /**

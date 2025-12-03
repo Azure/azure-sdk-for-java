@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VmssNetworkInterfaceList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VmssNetworkInterfaceList.json
      */
     /**
      * Sample code: List virtual machine scale set network interfaces.

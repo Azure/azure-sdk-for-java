@@ -14,21 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DiscoveredOutboundEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiscoveredOutboundEndpoints model = BinaryData.fromString(
-            "{\"assigned\":{\"oimwkslirc\":{\"endpointType\":\"n\",\"address\":\"cypsxjv\"},\"vlhv\":{\"endpointType\":\"jxv\",\"address\":\"dfcea\"}}}")
-            .toObject(DiscoveredOutboundEndpoints.class);
-        Assertions.assertEquals("n", model.assigned().get("oimwkslirc").endpointType());
-        Assertions.assertEquals("cypsxjv", model.assigned().get("oimwkslirc").address());
+        DiscoveredOutboundEndpoints model
+            = BinaryData.fromString("{\"assigned\":{\"biorktal\":{\"endpointType\":\"yuqdu\",\"address\":\"vmnnrw\"}}}")
+                .toObject(DiscoveredOutboundEndpoints.class);
+        Assertions.assertEquals("yuqdu", model.assigned().get("biorktal").endpointType());
+        Assertions.assertEquals("vmnnrw", model.assigned().get("biorktal").address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveredOutboundEndpoints model = new DiscoveredOutboundEndpoints().withAssigned(
-            mapOf("oimwkslirc", new DeviceMessagingEndpoint().withEndpointType("n").withAddress("cypsxjv"), "vlhv",
-                new DeviceMessagingEndpoint().withEndpointType("jxv").withAddress("dfcea")));
+            mapOf("biorktal", new DeviceMessagingEndpoint().withEndpointType("yuqdu").withAddress("vmnnrw")));
         model = BinaryData.fromObject(model).toObject(DiscoveredOutboundEndpoints.class);
-        Assertions.assertEquals("n", model.assigned().get("oimwkslirc").endpointType());
-        Assertions.assertEquals("cypsxjv", model.assigned().get("oimwkslirc").address());
+        Assertions.assertEquals("yuqdu", model.assigned().get("biorktal").endpointType());
+        Assertions.assertEquals("vmnnrw", model.assigned().get("biorktal").address());
     }
 
     // Use "Map.of" if available

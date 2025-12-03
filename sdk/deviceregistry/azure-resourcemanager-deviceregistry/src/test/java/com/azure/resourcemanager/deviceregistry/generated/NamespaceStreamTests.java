@@ -14,22 +14,22 @@ public final class NamespaceStreamTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceStream model = BinaryData.fromString(
-            "{\"name\":\"vxpvgomz\",\"streamConfiguration\":\"misgwbnb\",\"typeRef\":\"ldawkzbaliourqha\",\"destinations\":[{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"}]}")
+            "{\"name\":\"uvjfdxxive\",\"streamConfiguration\":\"t\",\"typeRef\":\"aqtdoqmcbx\",\"destinations\":[{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"}]}")
             .toObject(NamespaceStream.class);
-        Assertions.assertEquals("vxpvgomz", model.name());
-        Assertions.assertEquals("misgwbnb", model.streamConfiguration());
-        Assertions.assertEquals("ldawkzbaliourqha", model.typeRef());
+        Assertions.assertEquals("uvjfdxxive", model.name());
+        Assertions.assertEquals("t", model.streamConfiguration());
+        Assertions.assertEquals("aqtdoqmcbx", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceStream model = new NamespaceStream().withName("vxpvgomz")
-            .withStreamConfiguration("misgwbnb")
-            .withTypeRef("ldawkzbaliourqha")
-            .withDestinations(Arrays.asList(new StreamDestination(), new StreamDestination(), new StreamDestination()));
+        NamespaceStream model = new NamespaceStream().withName("uvjfdxxive")
+            .withStreamConfiguration("t")
+            .withTypeRef("aqtdoqmcbx")
+            .withDestinations(Arrays.asList(new StreamDestination(), new StreamDestination()));
         model = BinaryData.fromObject(model).toObject(NamespaceStream.class);
-        Assertions.assertEquals("vxpvgomz", model.name());
-        Assertions.assertEquals("misgwbnb", model.streamConfiguration());
-        Assertions.assertEquals("ldawkzbaliourqha", model.typeRef());
+        Assertions.assertEquals("uvjfdxxive", model.name());
+        Assertions.assertEquals("t", model.streamConfiguration());
+        Assertions.assertEquals("aqtdoqmcbx", model.typeRef());
     }
 }

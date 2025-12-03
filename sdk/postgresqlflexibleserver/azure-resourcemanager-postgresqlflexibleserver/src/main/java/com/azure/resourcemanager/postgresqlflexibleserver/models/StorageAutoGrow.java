@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Flag to enable / disable Storage Auto grow for flexible server.
+ * Flag to enable or disable the automatic growth of storage size of a server when available space is nearing zero and
+ * conditions allow for automatically growing storage size.
  */
 public final class StorageAutoGrow extends ExpandableStringEnum<StorageAutoGrow> {
     /**

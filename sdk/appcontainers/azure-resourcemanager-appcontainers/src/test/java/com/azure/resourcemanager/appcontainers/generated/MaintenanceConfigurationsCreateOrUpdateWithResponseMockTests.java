@@ -24,7 +24,7 @@ public final class MaintenanceConfigurationsCreateOrUpdateWithResponseMockTests 
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Sunday\",\"startHourUtc\":1519640068,\"durationHours\":668601365}]},\"id\":\"egqxsorchazrq\",\"name\":\"xz\",\"type\":\"hlbeqvhs\"}";
+            = "{\"properties\":{\"scheduledEntries\":[{\"weekDay\":\"Tuesday\",\"startHourUtc\":1864342091,\"durationHours\":229729592},{\"weekDay\":\"Thursday\",\"startHourUtc\":1659751922,\"durationHours\":485350824},{\"weekDay\":\"Tuesday\",\"startHourUtc\":962255720,\"durationHours\":1456715008}]},\"id\":\"gprkjgu\",\"name\":\"rjmwvvbtuqkxxi\",\"type\":\"wgxql\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +34,22 @@ public final class MaintenanceConfigurationsCreateOrUpdateWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceConfigurationResource response = manager.maintenanceConfigurations()
-            .define("fzcde")
-            .withExistingManagedEnvironment("lnxe", "rj")
+            .define("hmxvvl")
+            .withExistingManagedEnvironment("pcqzg", "hotjec")
             .withScheduledEntries(Arrays.asList(
-                new ScheduledEntry().withWeekDay(WeekDay.SATURDAY)
-                    .withStartHourUtc(1311614921)
-                    .withDurationHours(1599065009),
-                new ScheduledEntry().withWeekDay(WeekDay.SUNDAY)
-                    .withStartHourUtc(813309446)
-                    .withDurationHours(1380513780),
-                new ScheduledEntry().withWeekDay(WeekDay.SATURDAY)
-                    .withStartHourUtc(427570593)
-                    .withDurationHours(1652040318)))
+                new ScheduledEntry().withWeekDay(WeekDay.FRIDAY)
+                    .withStartHourUtc(1354713617)
+                    .withDurationHours(1723467853),
+                new ScheduledEntry().withWeekDay(WeekDay.MONDAY)
+                    .withStartHourUtc(750981171)
+                    .withDurationHours(709169599),
+                new ScheduledEntry().withWeekDay(WeekDay.FRIDAY)
+                    .withStartHourUtc(1117495980)
+                    .withDurationHours(782286269)))
             .create();
 
-        Assertions.assertEquals(WeekDay.SUNDAY, response.scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(1519640068, response.scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(668601365, response.scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(WeekDay.TUESDAY, response.scheduledEntries().get(0).weekDay());
+        Assertions.assertEquals(1864342091, response.scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(229729592, response.scheduledEntries().get(0).durationHours());
     }
 }

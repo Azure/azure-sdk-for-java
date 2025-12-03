@@ -17,26 +17,23 @@ public final class RaiBlockListItemsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListItemsResult model = BinaryData.fromString(
-            "{\"nextLink\":\"mrqemvvhmx\",\"value\":[{\"etag\":\"utacoe\",\"tags\":{\"guaadraufactkahz\":\"ewzcjznmwcp\",\"jjziuxxpsh\":\"v\"},\"properties\":{\"pattern\":\"kulfg\",\"isRegex\":false},\"id\":\"ubkwdle\",\"name\":\"rds\",\"type\":\"tujbazpju\"},{\"etag\":\"inyflnorwmduvwp\",\"tags\":{\"isze\":\"xwmygdxpgpqc\",\"rxgibbd\":\"nnbj\"},\"properties\":{\"pattern\":\"onfo\",\"isRegex\":false},\"id\":\"orsukokwbqp\",\"name\":\"hlvnuuepzlr\",\"type\":\"hw\"}]}")
+            "{\"nextLink\":\"qeevt\",\"value\":[{\"etag\":\"yutnwytpzdmov\",\"tags\":{\"wzqa\":\"va\",\"gzuriglaecxndt\":\"f\"},\"properties\":{\"pattern\":\"kpvzmlq\",\"isRegex\":false},\"id\":\"gxobfirclnp\",\"name\":\"ciayzriykhya\",\"type\":\"fvjlboxqvkjlmx\"}]}")
             .toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("mrqemvvhmx", model.nextLink());
-        Assertions.assertEquals("ewzcjznmwcp", model.value().get(0).tags().get("guaadraufactkahz"));
-        Assertions.assertEquals("kulfg", model.value().get(0).properties().pattern());
+        Assertions.assertEquals("qeevt", model.nextLink());
+        Assertions.assertEquals("va", model.value().get(0).tags().get("wzqa"));
+        Assertions.assertEquals("kpvzmlq", model.value().get(0).properties().pattern());
         Assertions.assertFalse(model.value().get(0).properties().isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlockListItemsResult model = new RaiBlockListItemsResult().withNextLink("mrqemvvhmx")
-            .withValue(Arrays.asList(
-                new RaiBlocklistItemInner().withTags(mapOf("guaadraufactkahz", "ewzcjznmwcp", "jjziuxxpsh", "v"))
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("kulfg").withIsRegex(false)),
-                new RaiBlocklistItemInner().withTags(mapOf("isze", "xwmygdxpgpqc", "rxgibbd", "nnbj"))
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("onfo").withIsRegex(false))));
+        RaiBlockListItemsResult model = new RaiBlockListItemsResult().withNextLink("qeevt")
+            .withValue(Arrays.asList(new RaiBlocklistItemInner().withTags(mapOf("wzqa", "va", "gzuriglaecxndt", "f"))
+                .withProperties(new RaiBlocklistItemProperties().withPattern("kpvzmlq").withIsRegex(false))));
         model = BinaryData.fromObject(model).toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("mrqemvvhmx", model.nextLink());
-        Assertions.assertEquals("ewzcjznmwcp", model.value().get(0).tags().get("guaadraufactkahz"));
-        Assertions.assertEquals("kulfg", model.value().get(0).properties().pattern());
+        Assertions.assertEquals("qeevt", model.nextLink());
+        Assertions.assertEquals("va", model.value().get(0).tags().get("wzqa"));
+        Assertions.assertEquals("kpvzmlq", model.value().get(0).properties().pattern());
         Assertions.assertFalse(model.value().get(0).properties().isRegex());
     }
 

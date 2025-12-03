@@ -23,7 +23,7 @@ public final class DefenderForAISettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"rsilcchskxxkansb\",\"tags\":{\"rulfuct\":\"aqgvto\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"hcfjzhxlyubqjro\",\"name\":\"tvrjeqmtz\",\"type\":\"beqrztrx\"}]}";
+            = "{\"value\":[{\"etag\":\"nx\",\"tags\":{\"nzuz\":\"rihufoihppiybxv\",\"cscpiuzvkunh\":\"bgk\"},\"properties\":{\"state\":\"Enabled\"},\"id\":\"ktirzka\",\"name\":\"gpucdocfq\",\"type\":\"lwgofm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DefenderForAISettingsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<DefenderForAISetting> response
-            = manager.defenderForAISettings().list("dcqjkedwqurc", "ojmrvvxwjongzse", com.azure.core.util.Context.NONE);
+        PagedIterable<DefenderForAISetting> response = manager.defenderForAISettings()
+            .list("hdidrmuhkahmjedb", "ucvkhhwmjpjbw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aqgvto", response.iterator().next().tags().get("rulfuct"));
-        Assertions.assertEquals(DefenderForAISettingState.DISABLED, response.iterator().next().state());
+        Assertions.assertEquals("rihufoihppiybxv", response.iterator().next().tags().get("nzuz"));
+        Assertions.assertEquals(DefenderForAISettingState.ENABLED, response.iterator().next().state());
     }
 }

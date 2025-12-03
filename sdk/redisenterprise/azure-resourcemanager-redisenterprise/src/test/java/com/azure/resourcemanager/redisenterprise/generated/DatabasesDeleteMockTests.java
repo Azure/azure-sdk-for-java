@@ -27,7 +27,7 @@ public final class DatabasesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.databases().delete("mtxpsiebtfh", "pesapskrdqmhjj", "htldwk", com.azure.core.util.Context.NONE);
+        manager.databases().delete("plpho", "uscrpabgyepsb", "tazqugxywpmueefj", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -29,7 +29,7 @@ public final class HostAuthentication implements JsonSerializable<HostAuthentica
     /*
      * Defines the certificate reference when Certificate user authentication mode is selected.
      */
-    private X509Credentials x509Credentials;
+    private X509CertificateCredentials x509Credentials;
 
     /**
      * Creates an instance of HostAuthentication class.
@@ -85,7 +85,7 @@ public final class HostAuthentication implements JsonSerializable<HostAuthentica
      * 
      * @return the x509Credentials value.
      */
-    public X509Credentials x509Credentials() {
+    public X509CertificateCredentials x509Credentials() {
         return this.x509Credentials;
     }
 
@@ -96,7 +96,7 @@ public final class HostAuthentication implements JsonSerializable<HostAuthentica
      * @param x509Credentials the x509Credentials value to set.
      * @return the HostAuthentication object itself.
      */
-    public HostAuthentication withX509Credentials(X509Credentials x509Credentials) {
+    public HostAuthentication withX509Credentials(X509CertificateCredentials x509Credentials) {
         this.x509Credentials = x509Credentials;
         return this;
     }
@@ -135,7 +135,7 @@ public final class HostAuthentication implements JsonSerializable<HostAuthentica
                     deserializedHostAuthentication.usernamePasswordCredentials
                         = UsernamePasswordCredentials.fromJson(reader);
                 } else if ("x509Credentials".equals(fieldName)) {
-                    deserializedHostAuthentication.x509Credentials = X509Credentials.fromJson(reader);
+                    deserializedHostAuthentication.x509Credentials = X509CertificateCredentials.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

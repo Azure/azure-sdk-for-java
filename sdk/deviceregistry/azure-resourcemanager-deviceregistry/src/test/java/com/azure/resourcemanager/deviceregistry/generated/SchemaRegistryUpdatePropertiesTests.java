@@ -12,18 +12,18 @@ public final class SchemaRegistryUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryUpdateProperties model
-            = BinaryData.fromString("{\"displayName\":\"fpmvmemfnczd\",\"description\":\"vbalxlllc\"}")
+            = BinaryData.fromString("{\"displayName\":\"itgvkx\",\"description\":\"yqdrf\"}")
                 .toObject(SchemaRegistryUpdateProperties.class);
-        Assertions.assertEquals("fpmvmemfnczd", model.displayName());
-        Assertions.assertEquals("vbalxlllc", model.description());
+        Assertions.assertEquals("itgvkx", model.displayName());
+        Assertions.assertEquals("yqdrf", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryUpdateProperties model
-            = new SchemaRegistryUpdateProperties().withDisplayName("fpmvmemfnczd").withDescription("vbalxlllc");
+            = new SchemaRegistryUpdateProperties().withDisplayName("itgvkx").withDescription("yqdrf");
         model = BinaryData.fromObject(model).toObject(SchemaRegistryUpdateProperties.class);
-        Assertions.assertEquals("fpmvmemfnczd", model.displayName());
-        Assertions.assertEquals("vbalxlllc", model.description());
+        Assertions.assertEquals("itgvkx", model.displayName());
+        Assertions.assertEquals("yqdrf", model.description());
     }
 }

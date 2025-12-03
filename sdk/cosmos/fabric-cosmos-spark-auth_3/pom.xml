@@ -12,7 +12,7 @@
 
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>fabric-cosmos-spark-auth_3</artifactId>
-  <version>1.1.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
+  <version>1.2.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/fabric-cosmos-spark-auth_3</url>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</name>
@@ -100,7 +100,7 @@
     <dependency>
       <groupId>com.azure.cosmos.spark</groupId>
       <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-      <version>4.41.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+      <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -185,7 +185,7 @@
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.41.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.42.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
                 <include>com.microsoft.azure.synapse:synapseutils_2.12:[1.5.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure.synapse:synapseutils_2.12;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -480,7 +480,7 @@
                 <transformationSet>
                   <dir>${project.basedir}</dir>
                   <includes>dependency-reduced-pom.xml</includes>
-                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3_2-12/stripDependencyReducedPom.xsl</stylesheet>
+                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3/stripDependencyReducedPom.xsl</stylesheet>
                   <outputDir>${project.basedir}</outputDir>
                   <skipDefaultExcludes>true</skipDefaultExcludes>
                   <addedToClasspath>false</addedToClasspath>
@@ -506,6 +506,12 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
               <includes>
                 <include>**/*.*</include>
                 <include>**/*Test.*</include>
@@ -513,6 +519,16 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
+              <properties>
+                <property>
+                  <name>surefire.testng.verbose</name>
+                  <value>2</value>
+                </property>
+                <property>
+                  <name>listener</name>
+                  <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+                </property>
+              </properties>
             </configuration>
           </plugin>
         </plugins>
