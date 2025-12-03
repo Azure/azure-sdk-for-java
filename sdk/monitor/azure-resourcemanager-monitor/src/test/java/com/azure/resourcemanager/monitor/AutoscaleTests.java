@@ -95,8 +95,6 @@ public class AutoscaleTests extends MonitorManagementTest {
                 .attach()
                 .withRecurrentSchedule("UTC", "12:13", DayOfWeek.FRIDAY)
                 .attach()
-                .withAdminEmailNotification()
-                .withCoAdminEmailNotification()
                 .withCustomEmailsNotification("me@mycorp.com", "you@mycorp.com", "him@mycorp.com")
                 .withAutoscaleDisabled()
                 .create();
@@ -104,8 +102,8 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(setting);
             Assertions.assertEquals("somesettingZ", setting.name());
             assertResourceIdEquals(servicePlan.id(), setting.targetResourceId());
-            Assertions.assertTrue(setting.adminEmailNotificationEnabled());
-            Assertions.assertTrue(setting.coAdminEmailNotificationEnabled());
+            Assertions.assertFalse(setting.adminEmailNotificationEnabled());
+            Assertions.assertFalse(setting.coAdminEmailNotificationEnabled());
             Assertions.assertFalse(setting.autoscaleEnabled());
             Assertions.assertEquals(3, setting.customEmailsNotification().size());
             Assertions.assertEquals("me@mycorp.com", setting.customEmailsNotification().get(0));
@@ -206,8 +204,8 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
             assertResourceIdEquals(servicePlan.id(), settingFromGet.targetResourceId());
-            Assertions.assertTrue(settingFromGet.adminEmailNotificationEnabled());
-            Assertions.assertTrue(settingFromGet.coAdminEmailNotificationEnabled());
+            Assertions.assertFalse(settingFromGet.adminEmailNotificationEnabled());
+            Assertions.assertFalse(settingFromGet.coAdminEmailNotificationEnabled());
             Assertions.assertFalse(settingFromGet.autoscaleEnabled());
             Assertions.assertEquals(3, settingFromGet.customEmailsNotification().size());
             Assertions.assertEquals("me@mycorp.com", settingFromGet.customEmailsNotification().get(0));
@@ -337,13 +335,12 @@ public class AutoscaleTests extends MonitorManagementTest {
                 .parent()
                 .withoutAutoscaleProfile("AutoScaleProfile1")
                 .withAutoscaleEnabled()
-                .withoutCoAdminEmailNotification()
                 .apply();
 
             Assertions.assertNotNull(setting);
             Assertions.assertEquals("somesettingZ", setting.name());
             assertResourceIdEquals(servicePlan.id(), setting.targetResourceId());
-            Assertions.assertTrue(setting.adminEmailNotificationEnabled());
+            Assertions.assertFalse(setting.adminEmailNotificationEnabled());
             Assertions.assertFalse(setting.coAdminEmailNotificationEnabled());
             Assertions.assertTrue(setting.autoscaleEnabled());
             Assertions.assertEquals(3, setting.customEmailsNotification().size());
@@ -454,7 +451,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
             assertResourceIdEquals(servicePlan.id(), settingFromGet.targetResourceId());
-            Assertions.assertTrue(settingFromGet.adminEmailNotificationEnabled());
+            Assertions.assertFalse(settingFromGet.adminEmailNotificationEnabled());
             Assertions.assertFalse(settingFromGet.coAdminEmailNotificationEnabled());
             Assertions.assertTrue(settingFromGet.autoscaleEnabled());
             Assertions.assertEquals(3, settingFromGet.customEmailsNotification().size());
