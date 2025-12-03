@@ -25,7 +25,10 @@ public class ActionGroupsTests extends MonitorManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        // Resource group could not be found.
+        if (resourceManager.resourceGroups().contain(rgName)) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
+        }
     }
 
     @Test
