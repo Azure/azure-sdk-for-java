@@ -356,7 +356,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<List<TransliteratedText>> transliterate(String language, String sourceLanguageScript,
         String targetLanguageScript, List<String> body) {
         return transliterateInner(language, sourceLanguageScript, targetLanguageScript,
@@ -496,6 +496,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<List<TranslatedTextItem>> translate(List<TranslateInputItem> body) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -519,6 +520,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranslatedTextItem> translate(TranslateInputItem input) {
         return translate(Arrays.asList(input))
             .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
@@ -545,7 +547,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<List<TranslatedTextItem>> translate(String targetLanguage, List<String> texts) {
         List<TranslateInputItem> body = new ArrayList<>();
         for (String text : texts) {
