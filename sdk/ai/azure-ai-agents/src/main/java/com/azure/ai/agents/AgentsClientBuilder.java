@@ -423,11 +423,7 @@ public final class AgentsClientBuilder
         if (this.httpClient == null) {
             return null;
         }
-        List<HttpPipelinePolicy> orderedPolicies = getOrderedCustomPolicies();
-        if (orderedPolicies.isEmpty()) {
-            return this.httpClient;
-        }
-        return new PolicyDecoratingHttpClient(this.httpClient, orderedPolicies);
+        return new PolicyDecoratingHttpClient(this.httpClient, getOrderedCustomPolicies());
     }
 
     private List<HttpPipelinePolicy> getOrderedCustomPolicies() {
@@ -436,11 +432,6 @@ public final class AgentsClientBuilder
                 ? HttpPipelinePosition.PER_CALL
                 : HttpPipelinePosition.PER_CALL))
             .collect(Collectors.toList());
-    }
-
-    private static HttpPipelinePosition pipelinePosition(HttpPipelinePolicy policy) {
-        HttpPipelinePosition position = policy.getPipelinePosition();
-        return position == null ? HttpPipelinePosition.PER_RETRY : position;
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);
