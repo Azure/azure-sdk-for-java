@@ -547,7 +547,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:azure-servicebus-jms:[2.0.0]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
+                <include>com.azure:azure-servicebus-jms:[2.1.0]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.mysql:mysql-connector-j:[9.5.0]</include> <!-- {x-include-update;springboot4_com.mysql:mysql-connector-j;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.20.1]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>io.lettuce:lettuce-core:[6.8.1.RELEASE]</include> <!-- {x-include-update;springboot4_io.lettuce:lettuce-core;external_dependency} -->
