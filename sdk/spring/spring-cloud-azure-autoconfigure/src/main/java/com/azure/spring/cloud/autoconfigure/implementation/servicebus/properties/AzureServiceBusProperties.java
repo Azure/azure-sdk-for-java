@@ -57,91 +57,91 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Producer buildProducerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get();
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         Producer properties = new Producer();
 
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
-        propertyMapper.from(this.getDomainName()).always().to(properties::setDomainName);
-        propertyMapper.from(this.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.getNamespace()).always().to(properties::setNamespace);
-        propertyMapper.from(this.getConnectionString()).always().to(properties::setConnectionString);
-        propertyMapper.from(this.getEntityName()).always().to(properties::setEntityName);
-        propertyMapper.from(this.getEntityType()).always().to(properties::setEntityType);
+        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
+        propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
-        propertyMapper.from(this.producer.getDomainName()).always().to(properties::setDomainName);
-        propertyMapper.from(this.producer.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.producer.getNamespace()).always().to(properties::setNamespace);
-        propertyMapper.from(this.producer.getConnectionString()).always().to(properties::setConnectionString);
-        propertyMapper.from(this.producer.getEntityType()).always().to(properties::setEntityType);
-        propertyMapper.from(this.producer.getEntityName()).always().to(properties::setEntityName);
+        propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.producer.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(this.producer.getEntityName()).to(properties::setEntityName);
 
         return properties;
     }
 
     public Consumer buildConsumerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get();
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         Consumer properties = new Consumer();
 
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
-        propertyMapper.from(this.getDomainName()).always().to(properties::setDomainName);
-        propertyMapper.from(this.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.getNamespace()).always().to(properties::setNamespace);
-        propertyMapper.from(this.getConnectionString()).always().to(properties::setConnectionString);
-        propertyMapper.from(this.getEntityName()).always().to(properties::setEntityName);
-        propertyMapper.from(this.getEntityType()).always().to(properties::setEntityType);
+        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
+        propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
-        propertyMapper.from(this.consumer.getDomainName()).always().to(properties::setDomainName);
-        propertyMapper.from(this.consumer.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.consumer.getNamespace()).always().to(properties::setNamespace);
-        propertyMapper.from(this.consumer.getConnectionString()).always().to(properties::setConnectionString);
-        propertyMapper.from(this.consumer.getEntityType()).always().to(properties::setEntityType);
-        propertyMapper.from(this.consumer.getEntityName()).always().to(properties::setEntityName);
+        propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.consumer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.consumer.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(this.consumer.getEntityName()).to(properties::setEntityName);
 
-        propertyMapper.from(this.consumer.getSessionEnabled()).always().to(properties::setSessionEnabled);
-        propertyMapper.from(this.consumer.getAutoComplete()).always().to(properties::setAutoComplete);
-        propertyMapper.from(this.consumer.getPrefetchCount()).always().to(properties::setPrefetchCount);
-        propertyMapper.from(this.consumer.getSubQueue()).always().to(properties::setSubQueue);
-        propertyMapper.from(this.consumer.getReceiveMode()).always().to(properties::setReceiveMode);
-        propertyMapper.from(this.consumer.getSubscriptionName()).always().to(properties::setSubscriptionName);
-        propertyMapper.from(this.consumer.getMaxAutoLockRenewDuration()).always().to(properties::setMaxAutoLockRenewDuration);
+        propertyMapper.from(this.consumer.getSessionEnabled()).to(properties::setSessionEnabled);
+        propertyMapper.from(this.consumer.getAutoComplete()).to(properties::setAutoComplete);
+        propertyMapper.from(this.consumer.getPrefetchCount()).to(properties::setPrefetchCount);
+        propertyMapper.from(this.consumer.getSubQueue()).to(properties::setSubQueue);
+        propertyMapper.from(this.consumer.getReceiveMode()).to(properties::setReceiveMode);
+        propertyMapper.from(this.consumer.getSubscriptionName()).to(properties::setSubscriptionName);
+        propertyMapper.from(this.consumer.getMaxAutoLockRenewDuration()).to(properties::setMaxAutoLockRenewDuration);
 
         return properties;
     }
 
     public Processor buildProcessorProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get();
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         Processor properties = new Processor();
 
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
-        propertyMapper.from(this.getDomainName()).always().to(properties::setDomainName);
-        propertyMapper.from(this.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.getNamespace()).always().to(properties::setNamespace);
-        propertyMapper.from(this.getConnectionString()).always().to(properties::setConnectionString);
-        propertyMapper.from(this.getEntityName()).always().to(properties::setEntityName);
-        propertyMapper.from(this.getEntityType()).always().to(properties::setEntityType);
+        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
+        propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
-        propertyMapper.from(this.processor.getDomainName()).always().to(properties::setDomainName);
-        propertyMapper.from(this.processor.getCustomEndpointAddress()).always().to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.processor.getNamespace()).always().to(properties::setNamespace);
-        propertyMapper.from(this.processor.getConnectionString()).always().to(properties::setConnectionString);
-        propertyMapper.from(this.processor.getEntityType()).always().to(properties::setEntityType);
-        propertyMapper.from(this.processor.getEntityName()).always().to(properties::setEntityName);
+        propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.processor.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.processor.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(this.processor.getEntityName()).to(properties::setEntityName);
 
-        propertyMapper.from(this.processor.getSessionEnabled()).always().to(properties::setSessionEnabled);
-        propertyMapper.from(this.processor.getAutoComplete()).always().to(properties::setAutoComplete);
-        propertyMapper.from(this.processor.getPrefetchCount()).always().to(properties::setPrefetchCount);
-        propertyMapper.from(this.processor.getSubQueue()).always().to(properties::setSubQueue);
-        propertyMapper.from(this.processor.getReceiveMode()).always().to(properties::setReceiveMode);
-        propertyMapper.from(this.processor.getSubscriptionName()).always().to(properties::setSubscriptionName);
-        propertyMapper.from(this.processor.getMaxAutoLockRenewDuration()).always().to(properties::setMaxAutoLockRenewDuration);
-        propertyMapper.from(this.processor.getMaxConcurrentCalls()).always().to(properties::setMaxConcurrentCalls);
-        propertyMapper.from(this.processor.getMaxConcurrentSessions()).always().to(properties::setMaxConcurrentSessions);
+        propertyMapper.from(this.processor.getSessionEnabled()).to(properties::setSessionEnabled);
+        propertyMapper.from(this.processor.getAutoComplete()).to(properties::setAutoComplete);
+        propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
+        propertyMapper.from(this.processor.getSubQueue()).to(properties::setSubQueue);
+        propertyMapper.from(this.processor.getReceiveMode()).to(properties::setReceiveMode);
+        propertyMapper.from(this.processor.getSubscriptionName()).to(properties::setSubscriptionName);
+        propertyMapper.from(this.processor.getMaxAutoLockRenewDuration()).to(properties::setMaxAutoLockRenewDuration);
+        propertyMapper.from(this.processor.getMaxConcurrentCalls()).to(properties::setMaxConcurrentCalls);
+        propertyMapper.from(this.processor.getMaxConcurrentSessions()).to(properties::setMaxConcurrentSessions);
 
         return properties;
     }
