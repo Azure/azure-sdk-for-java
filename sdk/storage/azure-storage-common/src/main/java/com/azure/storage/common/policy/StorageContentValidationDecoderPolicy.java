@@ -180,9 +180,23 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                         // All three cases update counters and return any decoded payload
                         // SUCCESS and NEED_MORE_BYTES: partial decode, more data expected
                         // COMPLETED: decode finished successfully
+
+                        long currentLastCompleteSegment = state.decoder.getLastCompleteSegmentStart();
+
+                        // Only update decodedBytesAtLastCompleteSegment when lastCompleteSegmentStart changes
+                        // This indicates that a segment boundary was just crossed
+                        if (state.lastCompleteSegmentStart != currentLastCompleteSegment) {
+                            state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();
+                            state.lastCompleteSegmentStart = currentLastCompleteSegment;
+
+                            LOGGER.atInfo()
+                                .addKeyValue("newSegmentBoundary", currentLastCompleteSegment)
+                                .addKeyValue("decodedBytesAtBoundary", state.decodedBytesAtLastCompleteSegment)
+                                .log("Segment boundary crossed, updated decoded bytes snapshot");
+                        }
+
                         state.totalEncodedBytesProcessed.set(state.decoder.getMessageOffset());
                         state.totalBytesDecoded.set(state.decoder.getTotalDecodedPayloadBytes());
-                        state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();
 
                         if (result.getDecodedPayload() != null && result.getDecodedPayload().hasRemaining()) {
                             return Flux.just(result.getDecodedPayload());
@@ -366,6 +380,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
         private long decodedBytesAtLastCompleteSegment;
+        private long lastCompleteSegmentStart; // Tracks the last value to detect changes
 
         /**
          * Creates a new decoder state.
