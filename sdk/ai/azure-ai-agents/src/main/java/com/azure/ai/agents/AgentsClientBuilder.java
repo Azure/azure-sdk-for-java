@@ -45,10 +45,11 @@ import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -334,7 +335,7 @@ public final class AgentsClientBuilder
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder -> {
             if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
             }
         }));
     }
@@ -348,7 +349,7 @@ public final class AgentsClientBuilder
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ConversationsClient(getOpenAIClientBuilder().build().withOptions(optionBuilder -> {
             if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
             }
         }));
     }
@@ -362,7 +363,7 @@ public final class AgentsClientBuilder
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ResponsesClient(getOpenAIClientBuilder().build().withOptions(optionBuilder -> {
             if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
             }
         }));
     }
@@ -376,7 +377,7 @@ public final class AgentsClientBuilder
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder -> {
             if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.httpClientMapper(decoratedHttpClient));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
             }
         }));
     }
@@ -430,17 +431,11 @@ public final class AgentsClientBuilder
     }
 
     private List<HttpPipelinePolicy> getOrderedCustomPolicies() {
-        if (this.pipelinePolicies.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<HttpPipelinePolicy> orderedPolicies = new ArrayList<>();
-        this.pipelinePolicies.stream()
-            .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_CALL)
-            .forEach(orderedPolicies::add);
-        this.pipelinePolicies.stream()
-            .filter(policy -> pipelinePosition(policy) == HttpPipelinePosition.PER_RETRY)
-            .forEach(orderedPolicies::add);
-        return orderedPolicies;
+        return this.pipelinePolicies.stream()
+            .sorted(Comparator.comparing(policy -> HttpPipelinePosition.PER_CALL == policy.getPipelinePosition()
+                ? HttpPipelinePosition.PER_CALL
+                : HttpPipelinePosition.PER_CALL))
+            .collect(Collectors.toList());
     }
 
     private static HttpPipelinePosition pipelinePosition(HttpPipelinePolicy policy) {

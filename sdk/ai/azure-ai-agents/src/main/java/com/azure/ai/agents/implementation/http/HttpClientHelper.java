@@ -42,13 +42,11 @@ public final class HttpClientHelper {
      * @param azureHttpClient The Azure HTTP client that should execute requests.
      * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
      */
-    public static com.openai.core.http.HttpClient httpClientMapper(com.azure.core.http.HttpClient azureHttpClient) {
+    public static com.openai.core.http.HttpClient mapToOpenAIHttpClient(com.azure.core.http.HttpClient azureHttpClient) {
         return new HttpClientWrapper(azureHttpClient);
     }
 
     private static final class HttpClientWrapper implements com.openai.core.http.HttpClient {
-
-        private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.CONTENT_TYPE;
 
         private final com.azure.core.http.HttpClient azureHttpClient;
 
@@ -116,8 +114,8 @@ public final class HttpClientHelper {
             }
 
             HttpHeaders headers = toAzureHeaders(request.headers());
-            if (!CoreUtils.isNullOrEmpty(contentType) && headers.getValue(CONTENT_TYPE) == null) {
-                headers.set(CONTENT_TYPE, contentType);
+            if (!CoreUtils.isNullOrEmpty(contentType) && headers.getValue(HttpHeaderName.CONTENT_TYPE) == null) {
+                headers.set(HttpHeaderName.CONTENT_TYPE, contentType);
             }
 
             com.azure.core.http.HttpRequest azureRequest
