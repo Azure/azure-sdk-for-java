@@ -235,6 +235,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withResource(vault.id())
             .withStorageAccount(sa.id())
             // Diagnostic settings does not support retention for new diagnostic settings.
+            // https://learn.microsoft.com/azure/azure-monitor/platform/migrate-to-azure-storage-lifecycle-policy?tabs=cli
             .withLogsAndMetrics(categories, Duration.ofMinutes(5), 0)
             .create();
 
