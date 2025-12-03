@@ -150,6 +150,11 @@ public enum BlobServiceVersion implements ServiceVersion {
     V2025_11_05("2025-11-05"),
 
     /**
+     * Service version {@code 2026-02-06}.
+     */
+    V2026_02_06("2026-02-06"),
+
+    /**
      * Service version {@code 2026-04-06}.
      */
     V2026_04_06("2026-04-06");

@@ -19,23 +19,25 @@ function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $
         Write-Error "No appropriate index for moniker $moniker"
     }
 
+    $packageDownloadUrl = 'https://repo1.maven.org/maven2'
+    if ($PackageSourceOverride) {
+        $packageDownloadUrl = $PackageSourceOverride
+    }
+
     $onboardedPackages = @()
-    foreach ($package in $metadata) { 
+    foreach ($package in $metadata) {
+
         $packageInfo = [ordered]@{
             packageArtifactId = $package.Name
             packageGroupId = $package.Group
             packageVersion = $package.Version
-            
-            # packageDownloadUrl is required by docs build and other values are
-            # rejected. This is a temporary workaround until the docs build
-            # supports more package stores.
-            packageDownloadUrl = 'https://repo1.maven.org/maven2'
+            packageDownloadUrl = $packageDownloadUrl
         }
 
         # Add items from 'DocsCiConfigProperties' into onboarding info. If a
         # property already exists, it will be overwritten.
-        if ($package.ContainsKey('DocsCiConfigProperties')) { 
-            foreach ($key in $package['DocsCiConfigProperties'].Keys) { 
+        if ($package.ContainsKey('DocsCiConfigProperties')) {
+            foreach ($key in $package['DocsCiConfigProperties'].Keys) {
                 $packageInfo[$key] = $package['DocsCiConfigProperties'][$key]
             }
         }
