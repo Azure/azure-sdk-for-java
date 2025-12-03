@@ -304,9 +304,8 @@ public interface Namespace {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    NamespaceMigrateResponse migrate(NamespaceMigrateRequest body);
+    void migrate(NamespaceMigrateRequest body);
 
     /**
      * Migrate the resources into Namespace.
@@ -316,7 +315,6 @@ public interface Namespace {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    NamespaceMigrateResponse migrate(NamespaceMigrateRequest body, Context context);
+    void migrate(NamespaceMigrateRequest body, Context context);
 }
