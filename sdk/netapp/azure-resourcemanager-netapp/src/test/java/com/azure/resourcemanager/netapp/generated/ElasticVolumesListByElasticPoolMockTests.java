@@ -30,7 +30,7 @@ public final class ElasticVolumesListByElasticPoolMockTests {
     @Test
     public void testListByElasticPool() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"filePath\":\"zuu\",\"size\":8029274061738843914,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1332995239,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"ti\",\"jnsxzajlnsjhwjuy\",\"xbxq\"],\"rootAccess\":\"Enabled\"}]},\"protocolTypes\":[\"NFSv3\",\"NFSv3\",\"NFSv3\"],\"provisioningState\":\"Succeeded\",\"availabilityStatus\":\"Online\",\"snapshotResourceId\":\"xeqbwp\",\"mountTargets\":[{\"ipAddress\":\"yksarcdrnxsluvlz\",\"smbServerFqdn\":\"dltxkpbq\"},{\"ipAddress\":\"fdqqjwkrhwz\",\"smbServerFqdn\":\"nojisgglmvok\"},{\"ipAddress\":\"uztjct\",\"smbServerFqdn\":\"pvbkaehxsmzyg\"},{\"ipAddress\":\"wakwseivmakxhys\",\"smbServerFqdn\":\"ljuxl\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"tvtfjms\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"hmaiubavlzwpvg\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"kzaz\"}},\"snapshotDirectoryVisibility\":\"Hidden\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"jqafkmkro\",\"restorationState\":\"Restoring\"},\"eTag\":\"hqet\",\"zones\":[\"rtvaoznqni\",\"iezeagm\",\"eituugedhfpjs\"],\"location\":\"zmblsyjdeol\",\"tags\":{\"ledjcustbvtqigd\":\"ebfsy\",\"xezppk\":\"zvsgeafgfosehxlz\",\"zeqtoyrplixlajml\":\"waaeskyfjl\"},\"id\":\"pq\",\"name\":\"evhamfowg\",\"type\":\"btmkekxpkzwaq\"}]}";
+            = "{\"value\":[{\"properties\":{\"filePath\":\"jlhwyxpzruzyt\",\"size\":7796990355130350629,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1628496274,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"nxdmnitmujdtv\"],\"rootAccess\":\"Disabled\"},{\"ruleIndex\":1161212440,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"dnyxfzuvrz\",\"z\",\"mzjqrbr\",\"vnmdyfoeboj\"],\"rootAccess\":\"Enabled\"}]},\"protocolTypes\":[\"SMB\",\"NFSv3\"],\"provisioningState\":\"Succeeded\",\"availabilityStatus\":\"Online\",\"snapshotResourceId\":\"kpjtnqjilaywk\",\"mountTargets\":[{\"ipAddress\":\"qsyrilmhxdqao\",\"smbServerFqdn\":\"ylnkkbjpjvlywltm\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"bjwhlwyjfnqzocr\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"czeuntgx\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"q\"}},\"snapshotDirectoryVisibility\":\"Hidden\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"fuvnyttzgixgyri\",\"restorationState\":\"Failed\"},\"eTag\":\"gbehlqtxnr\",\"zones\":[\"ndrndpgf\",\"odhda\",\"otwfhipxwgsab\"],\"location\":\"ipowza\",\"tags\":{\"veitit\":\"uumljcirvpefyc\"},\"id\":\"nsxzajlns\",\"name\":\"hwjuyxxbxqvmvua\",\"type\":\"tuadxkxeqb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,40 +40,40 @@ public final class ElasticVolumesListByElasticPoolMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ElasticVolume> response = manager.elasticVolumes()
-            .listByElasticPool("lkndrndpgfjodh", "aqotwfhipxwgsabv", "ipowza", com.azure.core.util.Context.NONE);
+            .listByElasticPool("rg", "vrbnyrukoil", "ciduwjle", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zmblsyjdeol", response.iterator().next().location());
-        Assertions.assertEquals("ebfsy", response.iterator().next().tags().get("ledjcustbvtqigd"));
-        Assertions.assertEquals("zuu", response.iterator().next().properties().filePath());
-        Assertions.assertEquals(8029274061738843914L, response.iterator().next().properties().size());
-        Assertions.assertEquals(1332995239,
+        Assertions.assertEquals("ipowza", response.iterator().next().location());
+        Assertions.assertEquals("uumljcirvpefyc", response.iterator().next().tags().get("veitit"));
+        Assertions.assertEquals("jlhwyxpzruzyt", response.iterator().next().properties().filePath());
+        Assertions.assertEquals(7796990355130350629L, response.iterator().next().properties().size());
+        Assertions.assertEquals(1628496274,
             response.iterator().next().properties().exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertEquals(ElasticUnixAccessRule.READ_WRITE,
             response.iterator().next().properties().exportPolicy().rules().get(0).unixAccessRule());
-        Assertions.assertEquals(ElasticNfsv3Access.DISABLED,
+        Assertions.assertEquals(ElasticNfsv3Access.ENABLED,
             response.iterator().next().properties().exportPolicy().rules().get(0).nfsv3());
         Assertions.assertEquals(ElasticNfsv4Access.ENABLED,
             response.iterator().next().properties().exportPolicy().rules().get(0).nfsv4());
-        Assertions.assertEquals("ti",
+        Assertions.assertEquals("nxdmnitmujdtv",
             response.iterator().next().properties().exportPolicy().rules().get(0).allowedClients().get(0));
-        Assertions.assertEquals(ElasticRootAccess.ENABLED,
+        Assertions.assertEquals(ElasticRootAccess.DISABLED,
             response.iterator().next().properties().exportPolicy().rules().get(0).rootAccess());
-        Assertions.assertEquals(ElasticProtocolType.NFSV3,
+        Assertions.assertEquals(ElasticProtocolType.SMB,
             response.iterator().next().properties().protocolTypes().get(0));
-        Assertions.assertEquals("xeqbwp", response.iterator().next().properties().snapshotResourceId());
-        Assertions.assertEquals("tvtfjms",
+        Assertions.assertEquals("kpjtnqjilaywk", response.iterator().next().properties().snapshotResourceId());
+        Assertions.assertEquals("bjwhlwyjfnqzocr",
             response.iterator().next().properties().dataProtection().snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("hmaiubavlzwpvg",
+        Assertions.assertEquals("czeuntgx",
             response.iterator().next().properties().dataProtection().backup().elasticBackupPolicyResourceId());
         Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED,
             response.iterator().next().properties().dataProtection().backup().policyEnforcement());
-        Assertions.assertEquals("kzaz",
+        Assertions.assertEquals("q",
             response.iterator().next().properties().dataProtection().backup().elasticBackupVaultResourceId());
         Assertions.assertEquals(SnapshotDirectoryVisibility.HIDDEN,
             response.iterator().next().properties().snapshotDirectoryVisibility());
         Assertions.assertEquals(ElasticSmbEncryption.DISABLED,
             response.iterator().next().properties().smbProperties().smbEncryption());
-        Assertions.assertEquals("jqafkmkro", response.iterator().next().properties().backupResourceId());
-        Assertions.assertEquals("rtvaoznqni", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("fuvnyttzgixgyri", response.iterator().next().properties().backupResourceId());
+        Assertions.assertEquals("ndrndpgf", response.iterator().next().zones().get(0));
     }
 }
