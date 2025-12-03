@@ -110,6 +110,12 @@ extends:
               workingDirectory: $(Pipeline.Workspace)
               displayName: "Save Package Properties"
 
+            - ${{if ne(parameters.SDKType, 'data')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+                parameters:
+                  PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+                  ForRelease: true
+
             - task: Maven@4
               displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
               inputs:
@@ -231,18 +237,6 @@ extends:
                 Paths: $(SparseCheckoutDirectories)
                 SkipCheckoutNone: true
 
-            # Save the Package Properties
-            #
-            # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is output by the
-            # generate_from_source_pom script above.
-            - pwsh: |
-                $ServiceDirs = '$(ServiceDirectories)'
-                foreach($ServiceDir in $ServiceDirs.Split(',')) {
-                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
-                }
-              workingDirectory: $(Pipeline.Workspace)
-              displayName: 'Save Package Properties'
-
             - template: /eng/common/pipelines/templates/steps/check-spelling.yml
               parameters:
                 CspellConfigPath: .vscode/cspell.json
@@ -293,12 +287,6 @@ extends:
               parameters:
                 SourceDirectory: $(Build.SourcesDirectory)
                 BasePathLength: 38
-
-            - ${{if ne(parameters.SDKType, 'data')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-                parameters:
-                  PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-                  ForRelease: true
 
             - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
