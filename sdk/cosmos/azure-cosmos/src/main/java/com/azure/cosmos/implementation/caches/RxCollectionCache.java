@@ -3,14 +3,17 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -85,9 +88,36 @@ public abstract class RxCollectionCache {
                         request.requestContext.resolvedCollectionRid = collection.getResourceId();
                         return Mono.just(new Utils.ValueHolder<>(collection));
 
-                    });
+                    }).onErrorMap(throwable -> {
+                            if (throwable instanceof CosmosException) {
+
+                                CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                                if (ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                                    BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                }
+
+                                return cosmosException;
+                            }
+
+                            return throwable;
+                        });
                 } else {
-                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties);
+                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties)
+                        .onErrorMap(throwable -> {
+                            if (throwable instanceof CosmosException) {
+
+                                CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                                if (ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                                    BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                }
+
+                                return cosmosException;
+                            }
+
+                            return throwable;
+                        });
                 }
             });
         } else {
@@ -99,6 +129,20 @@ public abstract class RxCollectionCache {
                     }
 
                     return this.resolveByRidAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties);
+                })
+                .onErrorMap(throwable -> {
+                    if (throwable instanceof CosmosException) {
+
+                        CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                        if (ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                            BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                        }
+
+                        return cosmosException;
+                    }
+
+                    return throwable;
                 });
         }
     }

@@ -316,7 +316,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
+            Mono<HttpResponse> httpResponseMono = null;
+
+            if (ResourceType.DocumentCollection.equals(request.getResourceType())) {
+                httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
+            } else {
+                httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
+            }
 
             if (this.gatewayServerErrorInjector != null) {
                 httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),

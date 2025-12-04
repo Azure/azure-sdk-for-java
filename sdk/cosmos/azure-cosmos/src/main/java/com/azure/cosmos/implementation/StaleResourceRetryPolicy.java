@@ -120,6 +120,21 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                         }
 
                         return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+                    })
+                    .onErrorMap(throwable -> {
+
+                        if (throwable instanceof CosmosException) {
+
+                            CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                            if (!ResourceType.DocumentCollection.equals(this.request.getResourceType()) && Exceptions.isNotFound(cosmosException)) {
+                                BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                            }
+
+                            return cosmosException;
+                        }
+
+                        return throwable;
                     });
 
             } else {
