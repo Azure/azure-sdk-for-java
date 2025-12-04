@@ -15,6 +15,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.models.PublicIpDdosProtectionStatusResultInner;
+import com.azure.resourcemanager.network.models.DisassociateCloudServicePublicIpRequest;
+import com.azure.resourcemanager.network.models.ReserveCloudServicePublicIpAddressRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -693,6 +695,251 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
     @ServiceMethod(returns = ReturnType.SINGLE)
     PublicIpDdosProtectionStatusResultInner ddosProtectionStatus(String resourceGroupName, String publicIpAddressName,
         Context context);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> reserveCloudServicePublicIpAddressWithResponseAsync(String resourceGroupName,
+        String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddressAsync(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddress(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddress(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters,
+        Context context);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PublicIpAddressInner> reserveCloudServicePublicIpAddressAsync(String resourceGroupName,
+        String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpAddressInner reserveCloudServicePublicIpAddress(String resourceGroupName, String publicIpAddressName,
+        ReserveCloudServicePublicIpAddressRequest parameters);
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpAddressInner reserveCloudServicePublicIpAddress(String resourceGroupName, String publicIpAddressName,
+        ReserveCloudServicePublicIpAddressRequest parameters, Context context);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> disassociateCloudServiceReservedPublicIpWithResponseAsync(String resourceGroupName,
+        String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginDisassociateCloudServiceReservedPublicIpAsync(String resourceGroupName, String publicIpAddressName,
+            DisassociateCloudServicePublicIpRequest parameters);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginDisassociateCloudServiceReservedPublicIp(
+        String resourceGroupName, String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginDisassociateCloudServiceReservedPublicIp(
+        String resourceGroupName, String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters,
+        Context context);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PublicIpAddressInner> disassociateCloudServiceReservedPublicIpAsync(String resourceGroupName,
+        String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpAddressInner disassociateCloudServiceReservedPublicIp(String resourceGroupName, String publicIpAddressName,
+        DisassociateCloudServicePublicIpRequest parameters);
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpAddressInner disassociateCloudServiceReservedPublicIp(String resourceGroupName, String publicIpAddressName,
+        DisassociateCloudServicePublicIpRequest parameters, Context context);
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.

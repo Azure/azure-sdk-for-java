@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
+## 2.55.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.54.0 (2025-11-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-15`.
 
 ## 2.54.0-beta.1 (2025-11-13)
 

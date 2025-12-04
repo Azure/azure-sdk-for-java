@@ -34,8 +34,8 @@ public final class TrunkedNetworksImpl implements TrunkedNetworks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TrunkedNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TrunkedNetwork> list(Context context) {
-        PagedIterable<TrunkedNetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<TrunkedNetwork> list(Integer top, String skipToken, Context context) {
+        PagedIterable<TrunkedNetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TrunkedNetworkImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class TrunkedNetworksImpl implements TrunkedNetworks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TrunkedNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TrunkedNetwork> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<TrunkedNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<TrunkedNetwork> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<TrunkedNetworkInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TrunkedNetworkImpl(inner1, this.manager()));
     }
 

@@ -52,6 +52,11 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
      */
     private List<VectorIndex> vectorIndexes;
 
+    /*
+     * List of paths to include in the full text indexing
+     */
+    private List<FullTextIndexPath> fullTextIndexes;
+
     /**
      * Creates an instance of IndexingPolicy class.
      */
@@ -199,6 +204,26 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
     }
 
     /**
+     * Get the fullTextIndexes property: List of paths to include in the full text indexing.
+     * 
+     * @return the fullTextIndexes value.
+     */
+    public List<FullTextIndexPath> fullTextIndexes() {
+        return this.fullTextIndexes;
+    }
+
+    /**
+     * Set the fullTextIndexes property: List of paths to include in the full text indexing.
+     * 
+     * @param fullTextIndexes the fullTextIndexes value to set.
+     * @return the IndexingPolicy object itself.
+     */
+    public IndexingPolicy withFullTextIndexes(List<FullTextIndexPath> fullTextIndexes) {
+        this.fullTextIndexes = fullTextIndexes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -219,6 +244,9 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
         if (vectorIndexes() != null) {
             vectorIndexes().forEach(e -> e.validate());
         }
+        if (fullTextIndexes() != null) {
+            fullTextIndexes().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -236,6 +264,8 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
         jsonWriter.writeArrayField("spatialIndexes", this.spatialIndexes,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("vectorIndexes", this.vectorIndexes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("fullTextIndexes", this.fullTextIndexes,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -274,6 +304,10 @@ public final class IndexingPolicy implements JsonSerializable<IndexingPolicy> {
                 } else if ("vectorIndexes".equals(fieldName)) {
                     List<VectorIndex> vectorIndexes = reader.readArray(reader1 -> VectorIndex.fromJson(reader1));
                     deserializedIndexingPolicy.vectorIndexes = vectorIndexes;
+                } else if ("fullTextIndexes".equals(fieldName)) {
+                    List<FullTextIndexPath> fullTextIndexes
+                        = reader.readArray(reader1 -> FullTextIndexPath.fromJson(reader1));
+                    deserializedIndexingPolicy.fullTextIndexes = fullTextIndexes;
                 } else {
                     reader.skipChildren();
                 }

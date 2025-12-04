@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServicesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.models.ServiceResourceList;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartReplicaRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -171,6 +173,28 @@ public final class ServicesClientImpl implements ServicesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}/restartReplica")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> restartReplica(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("applicationName") String applicationName, @PathParam("serviceName") String serviceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") RestartReplicaRequest parameters, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}/restartReplica")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> restartReplicaSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("applicationName") String applicationName, @PathParam("serviceName") String serviceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") RestartReplicaRequest parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -880,6 +904,198 @@ public final class ServicesClientImpl implements ServicesClient {
         return new PagedIterable<>(
             () -> listByApplicationsSinglePage(resourceGroupName, clusterName, applicationName, context),
             nextLink -> listByApplicationsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restartReplicaWithResponseAsync(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, RestartReplicaRequest parameters) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.restartReplica(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, serviceName,
+                contentType, parameters, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> restartReplicaWithResponse(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters) {
+        final String contentType = "application/json";
+        return service.restartReplicaSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, serviceName, contentType,
+            parameters, Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> restartReplicaWithResponse(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters, Context context) {
+        final String contentType = "application/json";
+        return service.restartReplicaSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, serviceName, contentType,
+            parameters, context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRestartReplicaAsync(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartReplicaWithResponseAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestartReplica(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters) {
+        Response<BinaryData> response
+            = restartReplicaWithResponse(resourceGroupName, clusterName, applicationName, serviceName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestartReplica(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters, Context context) {
+        Response<BinaryData> response = restartReplicaWithResponse(resourceGroupName, clusterName, applicationName,
+            serviceName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restartReplicaAsync(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, RestartReplicaRequest parameters) {
+        return beginRestartReplicaAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters) {
+        beginRestartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters).getFinalResult();
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters, Context context) {
+        beginRestartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
+            .getFinalResult();
     }
 
     /**

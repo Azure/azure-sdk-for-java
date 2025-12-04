@@ -22,7 +22,7 @@ public final class SchemaVersionsListBySchemaMockTests {
     @Test
     public void testListBySchema() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"xwcdomm\",\"description\":\"fqawzfgbrttui\",\"schemaContent\":\"clkiexhajl\",\"hash\":\"t\",\"provisioningState\":\"Accepted\"},\"id\":\"yuttdiygbpvnwswm\",\"name\":\"xkyctwwgzwx\",\"type\":\"l\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"pfdqwowftptnu\",\"description\":\"tkschgcgqyhl\",\"schemaContent\":\"seyqrhvyeldotjv\",\"hash\":\"wiswskukjtasbvw\",\"provisioningState\":\"Accepted\"},\"id\":\"xkdtxfkndlqvtwkn\",\"name\":\"gmmbu\",\"type\":\"tywatmqaq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class SchemaVersionsListBySchemaMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SchemaVersion> response
-            = manager.schemaVersions().listBySchema("patlbijp", "gsksrfhf", "olmk", com.azure.core.util.Context.NONE);
+            = manager.schemaVersions().listBySchema("taf", "bzf", "ovwmbjlzqsczpgvd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fqawzfgbrttui", response.iterator().next().properties().description());
-        Assertions.assertEquals("clkiexhajl", response.iterator().next().properties().schemaContent());
+        Assertions.assertEquals("tkschgcgqyhl", response.iterator().next().properties().description());
+        Assertions.assertEquals("seyqrhvyeldotjv", response.iterator().next().properties().schemaContent());
     }
 }

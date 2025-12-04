@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -16,16 +19,13 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -40,12 +40,13 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITIO
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AddressRepositoryIT {
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -60,9 +61,6 @@ public class AddressRepositoryIT {
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
-    @SuppressWarnings("deprecation")
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     CosmosPatchOperations patchSetOperation = CosmosPatchOperations
         .create()
@@ -79,7 +77,7 @@ public class AddressRepositoryIT {
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
@@ -167,8 +165,8 @@ public class AddressRepositoryIT {
         result.sort(Comparator.comparing(Address::getPostalCode));
         reference.sort(Comparator.comparing(Address::getPostalCode));
 
-        Assert.assertEquals(reference.size(), result.size());
-        Assert.assertEquals(reference, result);
+        assertEquals(reference.size(), result.size());
+        assertEquals(reference, result);
     }
 
     @Test
@@ -183,9 +181,8 @@ public class AddressRepositoryIT {
 
     @Test
     public void deleteWithoutPartitionedColumnShouldFail() {
-        expectedException.expect(Exception.class);
-
-        repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode());
+        assertThrows(Exception.class, () ->
+            repository.deleteById(TEST_ADDRESS1_PARTITION1.getPostalCode()));
     }
 
     @Test
@@ -302,7 +299,7 @@ public class AddressRepositoryIT {
             options.setFilterPredicate("FROM address a WHERE a.city = 'dummy'");
             Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation, options);
             assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
-            Assert.fail();
+            Assertions.fail();
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }

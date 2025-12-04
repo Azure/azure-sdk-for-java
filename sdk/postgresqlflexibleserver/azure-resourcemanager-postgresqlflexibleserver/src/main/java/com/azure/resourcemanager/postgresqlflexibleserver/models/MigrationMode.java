@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * There are two types of migration modes Online and Offline.
+ * Mode used to perform the migration: Online or Offline.
  */
 public final class MigrationMode extends ExpandableStringEnum<MigrationMode> {
     /**

@@ -418,6 +418,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
             jsonWriter.writeFieldName("max_output_tokens");
             this.maxOutputTokens.writeTo(jsonWriter);
         }
+        jsonWriter.writeJsonField("pre_generated_assistant_message", this.preGeneratedAssistantMessage);
         return jsonWriter.writeEndObject();
     }
 
@@ -471,6 +472,9 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                 } else if ("max_output_tokens".equals(fieldName)) {
                     deserializedResponseCreateParams.maxOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("pre_generated_assistant_message".equals(fieldName)) {
+                    deserializedResponseCreateParams.preGeneratedAssistantMessage
+                        = AssistantMessageItem.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -503,6 +507,39 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     @Generated
     public ResponseCreateParams setMaxOutputTokens(BinaryData maxOutputTokens) {
         this.maxOutputTokens = maxOutputTokens;
+        return this;
+    }
+
+    /*
+     * Create the response with pre-generated assistant message. The message item would be
+     * added into the conversation history and returned with synthesized audio output in the created response.
+     */
+    @Generated
+    private AssistantMessageItem preGeneratedAssistantMessage;
+
+    /**
+     * Get the preGeneratedAssistantMessage property: Create the response with pre-generated assistant message. The
+     * message item would be
+     * added into the conversation history and returned with synthesized audio output in the created response.
+     *
+     * @return the preGeneratedAssistantMessage value.
+     */
+    @Generated
+    public AssistantMessageItem getPreGeneratedAssistantMessage() {
+        return this.preGeneratedAssistantMessage;
+    }
+
+    /**
+     * Set the preGeneratedAssistantMessage property: Create the response with pre-generated assistant message. The
+     * message item would be
+     * added into the conversation history and returned with synthesized audio output in the created response.
+     *
+     * @param preGeneratedAssistantMessage the preGeneratedAssistantMessage value to set.
+     * @return the ResponseCreateParams object itself.
+     */
+    @Generated
+    public ResponseCreateParams setPreGeneratedAssistantMessage(AssistantMessageItem preGeneratedAssistantMessage) {
+        this.preGeneratedAssistantMessage = preGeneratedAssistantMessage;
         return this;
     }
 }

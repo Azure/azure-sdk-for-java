@@ -1,14 +1,30 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2025-12-03)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added image input support for multimodal conversations:
+  - `RequestImageContentPart` for including images in conversation messages with URL references
+  - `RequestImageContentPartDetail` enum for controlling image detail level (auto, low, high)
+  - `ContentPartType.INPUT_IMAGE` discriminator for image content parts
+- Added avatar configuration enhancements:
+  - `AvatarConfiguration` class for configuring avatar streaming and behavior with ICE servers, character selection, style, and video parameters
+  - `AvatarConfigTypes` enum for video and photo avatar types
+  - `AvatarOutputProtocol` enum supporting WebRTC and WebSocket protocols
+  - `PhotoAvatarBaseModes` enum with VASA-1 model support
+- Added token usage tracking improvements:
+  - `CachedTokenDetails` for tracking cached text, audio, and image tokens
+  - Enhanced `InputTokenDetails` with image token tracking and cached token details
+- Added MCP call lifecycle events:
+  - `ServerEventResponseMcpCallInProgress` for tracking ongoing MCP calls
+  - `ServerEventResponseMcpCallCompleted` for successful MCP call completion
+  - `ServerEventResponseMcpCallFailed` for failed MCP calls
+- Added two new OpenAI voices: `OpenAIVoiceName.MARIN` and `OpenAIVoiceName.CEDAR`
+- Enhanced `AzurePersonalVoice` with additional customization options:
+  - Custom lexicon URL support for pronunciation customization
+  - Locale preferences with `preferLocales` for multilingual scenarios
+  - Voice style, pitch, rate, and volume controls for fine-tuned voice characteristics
 
 ## 1.0.0-beta.2 (2025-11-14)
 

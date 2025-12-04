@@ -19,6 +19,11 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachinePatchParameters implements JsonSerializable<VirtualMachinePatchParameters> {
     /*
+     * The identity for the resource.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * The list of the resource properties.
      */
     private VirtualMachinePatchProperties innerProperties;
@@ -32,6 +37,26 @@ public final class VirtualMachinePatchParameters implements JsonSerializable<Vir
      * Creates an instance of VirtualMachinePatchParameters class.
      */
     public VirtualMachinePatchParameters() {
+    }
+
+    /**
+     * Get the identity property: The identity for the resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity for the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the VirtualMachinePatchParameters object itself.
+     */
+    public VirtualMachinePatchParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -95,6 +120,9 @@ public final class VirtualMachinePatchParameters implements JsonSerializable<Vir
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -106,6 +134,7 @@ public final class VirtualMachinePatchParameters implements JsonSerializable<Vir
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -127,7 +156,9 @@ public final class VirtualMachinePatchParameters implements JsonSerializable<Vir
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("properties".equals(fieldName)) {
+                if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachinePatchParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachinePatchParameters.innerProperties
                         = VirtualMachinePatchProperties.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

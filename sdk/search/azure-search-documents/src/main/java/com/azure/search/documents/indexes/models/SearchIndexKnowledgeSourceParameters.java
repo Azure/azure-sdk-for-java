@@ -13,6 +13,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Parameters for search index knowledge source.
@@ -30,7 +31,19 @@ public final class SearchIndexKnowledgeSourceParameters
      * Used to request additional fields for referenced source data.
      */
     @Generated
-    private String sourceDataSelect;
+    private List<SearchIndexFieldReference> sourceDataFields;
+
+    /*
+     * Used to restrict which fields to search on the search index.
+     */
+    @Generated
+    private List<SearchIndexFieldReference> searchFields;
+
+    /*
+     * Used to specify a different semantic configuration on the target search index other than the default one.
+     */
+    @Generated
+    private String semanticConfigurationName;
 
     /**
      * Creates an instance of SearchIndexKnowledgeSourceParameters class.
@@ -53,24 +66,70 @@ public final class SearchIndexKnowledgeSourceParameters
     }
 
     /**
-     * Get the sourceDataSelect property: Used to request additional fields for referenced source data.
+     * Get the sourceDataFields property: Used to request additional fields for referenced source data.
      * 
-     * @return the sourceDataSelect value.
+     * @return the sourceDataFields value.
      */
     @Generated
-    public String getSourceDataSelect() {
-        return this.sourceDataSelect;
+    public List<SearchIndexFieldReference> getSourceDataFields() {
+        return this.sourceDataFields;
     }
 
     /**
-     * Set the sourceDataSelect property: Used to request additional fields for referenced source data.
+     * Set the sourceDataFields property: Used to request additional fields for referenced source data.
      * 
-     * @param sourceDataSelect the sourceDataSelect value to set.
+     * @param sourceDataFields the sourceDataFields value to set.
      * @return the SearchIndexKnowledgeSourceParameters object itself.
      */
     @Generated
-    public SearchIndexKnowledgeSourceParameters setSourceDataSelect(String sourceDataSelect) {
-        this.sourceDataSelect = sourceDataSelect;
+    public SearchIndexKnowledgeSourceParameters setSourceDataFields(List<SearchIndexFieldReference> sourceDataFields) {
+        this.sourceDataFields = sourceDataFields;
+        return this;
+    }
+
+    /**
+     * Get the searchFields property: Used to restrict which fields to search on the search index.
+     * 
+     * @return the searchFields value.
+     */
+    @Generated
+    public List<SearchIndexFieldReference> getSearchFields() {
+        return this.searchFields;
+    }
+
+    /**
+     * Set the searchFields property: Used to restrict which fields to search on the search index.
+     * 
+     * @param searchFields the searchFields value to set.
+     * @return the SearchIndexKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceParameters setSearchFields(List<SearchIndexFieldReference> searchFields) {
+        this.searchFields = searchFields;
+        return this;
+    }
+
+    /**
+     * Get the semanticConfigurationName property: Used to specify a different semantic configuration on the target
+     * search index other than the default one.
+     * 
+     * @return the semanticConfigurationName value.
+     */
+    @Generated
+    public String getSemanticConfigurationName() {
+        return this.semanticConfigurationName;
+    }
+
+    /**
+     * Set the semanticConfigurationName property: Used to specify a different semantic configuration on the target
+     * search index other than the default one.
+     * 
+     * @param semanticConfigurationName the semanticConfigurationName value to set.
+     * @return the SearchIndexKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceParameters setSemanticConfigurationName(String semanticConfigurationName) {
+        this.semanticConfigurationName = semanticConfigurationName;
         return this;
     }
 
@@ -82,7 +141,10 @@ public final class SearchIndexKnowledgeSourceParameters
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("searchIndexName", this.searchIndexName);
-        jsonWriter.writeStringField("sourceDataSelect", this.sourceDataSelect);
+        jsonWriter.writeArrayField("sourceDataFields", this.sourceDataFields,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("semanticConfigurationName", this.semanticConfigurationName);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,7 +162,9 @@ public final class SearchIndexKnowledgeSourceParameters
         return jsonReader.readObject(reader -> {
             boolean searchIndexNameFound = false;
             String searchIndexName = null;
-            String sourceDataSelect = null;
+            List<SearchIndexFieldReference> sourceDataFields = null;
+            List<SearchIndexFieldReference> searchFields = null;
+            String semanticConfigurationName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -108,8 +172,12 @@ public final class SearchIndexKnowledgeSourceParameters
                 if ("searchIndexName".equals(fieldName)) {
                     searchIndexName = reader.getString();
                     searchIndexNameFound = true;
-                } else if ("sourceDataSelect".equals(fieldName)) {
-                    sourceDataSelect = reader.getString();
+                } else if ("sourceDataFields".equals(fieldName)) {
+                    sourceDataFields = reader.readArray(reader1 -> SearchIndexFieldReference.fromJson(reader1));
+                } else if ("searchFields".equals(fieldName)) {
+                    searchFields = reader.readArray(reader1 -> SearchIndexFieldReference.fromJson(reader1));
+                } else if ("semanticConfigurationName".equals(fieldName)) {
+                    semanticConfigurationName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -117,7 +185,9 @@ public final class SearchIndexKnowledgeSourceParameters
             if (searchIndexNameFound) {
                 SearchIndexKnowledgeSourceParameters deserializedSearchIndexKnowledgeSourceParameters
                     = new SearchIndexKnowledgeSourceParameters(searchIndexName);
-                deserializedSearchIndexKnowledgeSourceParameters.sourceDataSelect = sourceDataSelect;
+                deserializedSearchIndexKnowledgeSourceParameters.sourceDataFields = sourceDataFields;
+                deserializedSearchIndexKnowledgeSourceParameters.searchFields = searchFields;
+                deserializedSearchIndexKnowledgeSourceParameters.semanticConfigurationName = semanticConfigurationName;
 
                 return deserializedSearchIndexKnowledgeSourceParameters;
             }

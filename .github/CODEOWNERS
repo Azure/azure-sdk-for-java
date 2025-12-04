@@ -83,16 +83,16 @@
 # ServiceOwners:                                                   @mojayara @Prasanna-Padmanabhan
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jhakulin @jpalvarezl @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @trrwilson @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @jhakulin @jayantjha @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @dargilco @trrwilson @jayantjha @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
+/sdk/ai/azure-ai-inference/                                        @dargilco @trrwilson @glharper @Azure/azure-java-sdk
 
 # PRLabel: %Voice Live
-/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang
+/sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang @amber-yujueWang
 
 # ServiceLabel: %AKS
 # ServiceOwners:                                                   @Azure/aks-pm
@@ -107,7 +107,7 @@
 # ServiceOwners:                                                   @miaojiang
 
 # PRLabel: %App Configuration
-/sdk/appconfiguration/                                             @alzimmermsft @Azure/azure-java-sdk
+/sdk/appconfiguration/                                             @mrm9084 @rossgrambo @avanigupta @alzimmermsft @Azure/azure-java-sdk
 
 # ServiceLabel: %App Configuration
 # AzureSdkOwners:                                                  @mrm9084
@@ -925,7 +925,7 @@
 /common/perf-test-core/                                            @alzimmermsft @srnagar @g2vinay @Azure/azure-java-sdk
 
 # PRLabel: %common
-/.vscode/                                                          @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
+/.vscode/                                                          @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk @raych1
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                                  @alzimmermsft @srnagar

@@ -10,17 +10,18 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class VirtualEndpointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
      * VirtualEndpointsGet.json
      */
     /**
-     * Sample code: Get a virtual endpoint.
+     * Sample code: Get information about a pair of virtual endpoints.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void
-        getAVirtualEndpoint(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void getInformationAboutAPairOfVirtualEndpoints(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.virtualEndpoints()
-            .getWithResponse("testrg", "pgtestsvc4", "pgVirtualEndpoint1", com.azure.core.util.Context.NONE);
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplebasename",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -17,9 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class Cluster implements JsonSerializable<Cluster> {
     /*
-     * The node count for the cluster.
+     * Number of nodes assigned to the elastic cluster.
      */
     private Integer clusterSize;
+
+    /*
+     * Default database name for the elastic cluster.
+     */
+    private String defaultDatabaseName;
 
     /**
      * Creates an instance of Cluster class.
@@ -28,7 +33,7 @@ public final class Cluster implements JsonSerializable<Cluster> {
     }
 
     /**
-     * Get the clusterSize property: The node count for the cluster.
+     * Get the clusterSize property: Number of nodes assigned to the elastic cluster.
      * 
      * @return the clusterSize value.
      */
@@ -37,13 +42,33 @@ public final class Cluster implements JsonSerializable<Cluster> {
     }
 
     /**
-     * Set the clusterSize property: The node count for the cluster.
+     * Set the clusterSize property: Number of nodes assigned to the elastic cluster.
      * 
      * @param clusterSize the clusterSize value to set.
      * @return the Cluster object itself.
      */
     public Cluster withClusterSize(Integer clusterSize) {
         this.clusterSize = clusterSize;
+        return this;
+    }
+
+    /**
+     * Get the defaultDatabaseName property: Default database name for the elastic cluster.
+     * 
+     * @return the defaultDatabaseName value.
+     */
+    public String defaultDatabaseName() {
+        return this.defaultDatabaseName;
+    }
+
+    /**
+     * Set the defaultDatabaseName property: Default database name for the elastic cluster.
+     * 
+     * @param defaultDatabaseName the defaultDatabaseName value to set.
+     * @return the Cluster object itself.
+     */
+    public Cluster withDefaultDatabaseName(String defaultDatabaseName) {
+        this.defaultDatabaseName = defaultDatabaseName;
         return this;
     }
 
@@ -62,6 +87,7 @@ public final class Cluster implements JsonSerializable<Cluster> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("clusterSize", this.clusterSize);
+        jsonWriter.writeStringField("defaultDatabaseName", this.defaultDatabaseName);
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +108,8 @@ public final class Cluster implements JsonSerializable<Cluster> {
 
                 if ("clusterSize".equals(fieldName)) {
                     deserializedCluster.clusterSize = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultDatabaseName".equals(fieldName)) {
+                    deserializedCluster.defaultDatabaseName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

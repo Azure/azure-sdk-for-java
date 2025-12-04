@@ -328,33 +328,31 @@ public class BlobApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void uploadFailWithSmallTimeoutsForServiceClient() {
-        // setting very small timeout values for the service client
+        // Use realistic but small timeout values that will fail for upload but are deterministic in their behavior
+        HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofMillis(1))
+            .setReadTimeout(Duration.ofMillis(1))
+            .setWriteTimeout(Duration.ofMillis(1))
+            .setConnectTimeout(Duration.ofMillis(1));
+
+        BlobServiceClient serviceClient
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
+                .clientOptions(clientOptions)
+                .buildClient();
+
         liveTestScenarioWithRetry(() -> {
-            HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
-                .setResponseTimeout(Duration.ofNanos(1))
-                .setReadTimeout(Duration.ofNanos(1))
-                .setWriteTimeout(Duration.ofNanos(1))
-                .setConnectTimeout(Duration.ofNanos(1));
-
-            BlobServiceClientBuilder clientBuilder
-                = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-                    .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                    .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
-                    .clientOptions(clientOptions);
-
-            BlobServiceClient serviceClient = clientBuilder.buildClient();
-
             int size = 1024;
             byte[] randomData = getRandomByteArray(size);
             ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-            BlobContainerClient blobContainer = serviceClient.createBlobContainer(generateContainerName());
+            BlobContainerClient blobContainer = serviceClient.getBlobContainerClient(cc.getBlobContainerName());
             BlobClient blobClient = blobContainer.getBlobClient(generateBlobName());
             // test whether failure occurs due to small timeout intervals set on the service client
             assertThrows(RuntimeException.class, () -> blobClient.uploadWithResponse(input, size, null, null, null,
                 null, null, Duration.ofSeconds(10), null));
         });
-
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
@@ -1661,6 +1659,71 @@ public class BlobApiTests extends BlobTestBase {
 
     private static Stream<Arguments> setTagsACSupplier() {
         return Stream.of(Arguments.of((String) null), Arguments.of("\"foo\" = 'bar'"));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void setGetTagOptionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = new HashMap<>();
+
+        t.put("foo", "bar");
+
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertResponseStatusCode(
+            bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac), null, Context.NONE), 204);
+        assertResponseStatusCode(
+            bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, Context.NONE), 200);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void setTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+
+        //The x-ms-if-tags-request header is not supported
+        t.put("notfoo", "notbar");
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac), null, Context.NONE));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        //The x-ms-if-tags-request header is not supported
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, Context.NONE));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-07-07")
@@ -3106,6 +3169,21 @@ public class BlobApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @Test
+    public void blobNameEncodingOnGetBlobUrl() {
+        BlobClient blobClient = cc.getBlobClient("my blob");
+        String expectedEncodedBlobName = "my%20blob";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedBlobName));
+    }
+
+    @Test
+    void containerNameEncodingOnGetBlobUrl() {
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient("my container");
+        BlobClient blobClient = containerClient.getBlobClient(generateBlobName());
+        String expectedEncodedContainerName = "my%20container";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
     }
 
 }

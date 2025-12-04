@@ -12,10 +12,10 @@ public final class SchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"bezkgimsidxasic\",\"description\":\"yvvjskgfmo\",\"schemaContent\":\"wa\",\"hash\":\"qgatjeaahhvjhhn\",\"provisioningState\":\"Failed\"},\"id\":\"bbjjidjksyxk\",\"name\":\"xvxevblbjednljla\",\"type\":\"euaulxu\"},{\"properties\":{\"uuid\":\"jbnkpp\",\"description\":\"nenlsvxeizzg\",\"schemaContent\":\"klnsrmffey\",\"hash\":\"ckt\",\"provisioningState\":\"Accepted\"},\"id\":\"erteeammxqiekk\",\"name\":\"zddrt\",\"type\":\"g\"},{\"properties\":{\"uuid\":\"bmxva\",\"description\":\"efdeesve\",\"schemaContent\":\"uij\",\"hash\":\"txsu\",\"provisioningState\":\"Failed\"},\"id\":\"ujwsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"btuodxeszabbel\",\"description\":\"umuaslzkwrrwoycq\",\"schemaContent\":\"cwyhahno\",\"hash\":\"rkywuhpsvfuu\",\"provisioningState\":\"Failed\"},\"id\":\"we\",\"name\":\"xwlalniexzsrzpg\",\"type\":\"pqtybb\"},{\"properties\":{\"uuid\":\"gdakchz\",\"description\":\"lixqnrkcxkjibn\",\"schemaContent\":\"mysu\",\"hash\":\"wq\",\"provisioningState\":\"Succeeded\"},\"id\":\"lwi\",\"name\":\"psttexoq\",\"type\":\"pwcyyufmhr\"}],\"nextLink\":\"cuwmqsp\"}")
             .toObject(SchemaVersionListResult.class);
-        Assertions.assertEquals("yvvjskgfmo", model.value().get(0).properties().description());
-        Assertions.assertEquals("wa", model.value().get(0).properties().schemaContent());
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals("umuaslzkwrrwoycq", model.value().get(0).properties().description());
+        Assertions.assertEquals("cwyhahno", model.value().get(0).properties().schemaContent());
+        Assertions.assertEquals("cuwmqsp", model.nextLink());
     }
 }

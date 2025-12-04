@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
@@ -129,7 +128,7 @@ final class RntbdRequestFrame {
             case RidRange:
                 return RntbdResourceType.RidRange;
             default:
-                final String reason = Strings.lenientFormat("Unrecognized resource type: %s", resourceType);
+                final String reason = String.format("Unrecognized resource type: %s", resourceType);
                 throw new UnsupportedOperationException(reason);
         }
     }
@@ -206,7 +205,7 @@ final class RntbdRequestFrame {
             case Batch:
                 return RntbdOperationType.Batch;
             default:
-                final String reason = Strings.lenientFormat("Unrecognized operation type: %s", operationType);
+                final String reason = String.format("Unrecognized operation type: %s", operationType);
                 throw new UnsupportedOperationException(reason);
         }
     }

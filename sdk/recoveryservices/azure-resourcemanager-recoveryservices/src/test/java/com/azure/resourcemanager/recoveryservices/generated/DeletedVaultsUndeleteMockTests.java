@@ -10,7 +10,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
-import com.azure.resourcemanager.recoveryservices.models.DeletedVault;
 import com.azure.resourcemanager.recoveryservices.models.DeletedVaultUndeleteInput;
 import com.azure.resourcemanager.recoveryservices.models.DeletedVaultUndeleteInputProperties;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +20,7 @@ import reactor.core.publisher.Mono;
 public final class DeletedVaultsUndeleteMockTests {
     @Test
     public void testUndelete() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"vaultId\":\"wiwubm\",\"vaultDeletionTime\":\"2021-05-28T18:40:12Z\",\"purgeAt\":\"2021-02-22T15:24:40Z\"},\"id\":\"dnkwwtppjflcxog\",\"name\":\"okonzmnsikvmkqz\",\"type\":\"qqkdltfzxmhhvhgu\"}";
+        String responseStr = "{}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +29,10 @@ public final class DeletedVaultsUndeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DeletedVault response = manager.deletedVaults()
-            .undelete("emwabnet", "hhszh",
+        manager.deletedVaults()
+            .undelete("aolps", "lqlfm",
                 new DeletedVaultUndeleteInput()
-                    .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("d")),
+                    .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("dnbbglzps")),
                 com.azure.core.util.Context.NONE);
 
     }
