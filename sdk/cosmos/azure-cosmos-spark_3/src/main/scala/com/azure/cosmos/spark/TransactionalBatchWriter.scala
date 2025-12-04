@@ -458,7 +458,12 @@ private class TransactionalBatchPartitionExecutor(
         }
 
         val errorMessage = if (!isSuccess) {
-          Some(s"Operation failed with status code ${statusCode}")
+          val subStatusCode = result.getSubStatusCode
+          if (subStatusCode != 0) {
+            Some(s"Operation failed with status code ${statusCode}, sub-status code ${subStatusCode}")
+          } else {
+            Some(s"Operation failed with status code ${statusCode}")
+          }
         } else {
           None
         }

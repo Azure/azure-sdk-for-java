@@ -127,7 +127,8 @@ class TransactionalBatchITest extends IntegrationSpec
       container.readItem(item1Id, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
       fail("Item1 should not exist after batch rollback")
     } catch {
-      case _: CosmosException => // Expected - item doesn't exist (404 Not Found)
+      case e: CosmosException if e.getStatusCode == 404 => 
+        // Expected - item doesn't exist after rollback (404 Not Found)
     }
   }
 

@@ -126,7 +126,7 @@ object CosmosItemsDataSource {
    * 
    * Output DataFrame schema:
    * - id: String
-   * - partitionKey: String
+   * - partition key column: String (name matches container's partition key path)
    * - operationType: String
    * - statusCode: Int
    * - isSuccessStatusCode: Boolean
