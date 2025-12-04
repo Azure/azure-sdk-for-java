@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyDefinition, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
@@ -156,7 +156,8 @@ object CosmosItemsDataSource {
 
     // Initialize and broadcast the client states with partition key definition
     val (clientMetadataBroadcast, partitionKeyDefBroadcast) = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
-    val partitionKeyDefinition = partitionKeyDefBroadcast.value
+    // Deserialize partition key definition from JSON
+    val partitionKeyDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefBroadcast.value)
 
     // Create default extraction function based on DataFrame schema and partition key definition
     val defaultOperationExtraction = createBatchOperationExtraction(df, partitionKeyDefinition)

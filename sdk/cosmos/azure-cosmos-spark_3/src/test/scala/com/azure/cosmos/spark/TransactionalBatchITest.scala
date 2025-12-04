@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.CosmosException
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types._
@@ -377,11 +377,12 @@ class TransactionalBatchITest extends IntegrationSpec
       }
 
       // Verify items were created
-      val item1 = container.readItem(item1Id, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      val pk = new PartitionKeyBuilder().add(permId).add(sourceId).build()
+      val item1 = container.readItem(item1Id, pk, classOf[ObjectNode]).block()
       item1 should not be null
       item1.getItem.get("price").asDouble() shouldEqual 100.5
 
-      val item2 = container.readItem(item2Id, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      val item2 = container.readItem(item2Id, pk, classOf[ObjectNode]).block()
       item2 should not be null
       item2.getItem.get("price").asDouble() shouldEqual 101.25
     } finally {
@@ -461,12 +462,13 @@ class TransactionalBatchITest extends IntegrationSpec
       }
 
       // Verify old record was closed
-      val oldRecord = container.readItem(oldRecordId, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      val pk = new PartitionKeyBuilder().add(permId).add(sourceId).build()
+      val oldRecord = container.readItem(oldRecordId, pk, classOf[ObjectNode]).block()
       oldRecord should not be null
       oldRecord.getItem.get("valid_to").asText() shouldEqual "2024-06-01T00:00:00Z"
 
       // Verify new record was created
-      val newRecord = container.readItem(newRecordId, new PartitionKey(permId, sourceId), classOf[ObjectNode]).block()
+      val newRecord = container.readItem(newRecordId, pk, classOf[ObjectNode]).block()
       newRecord should not be null
       newRecord.getItem.get("price").asDouble() shouldEqual 150.0
       newRecord.getItem.get("valid_to").isNull shouldBe true

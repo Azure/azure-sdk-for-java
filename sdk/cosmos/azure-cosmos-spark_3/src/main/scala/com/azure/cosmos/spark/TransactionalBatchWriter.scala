@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse, CosmosContainerProperties, PartitionKey, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse, CosmosContainerProperties, PartitionKey, PartitionKeyDefinition, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException, SparkBridgeInternal}
@@ -68,7 +68,7 @@ private[spark] class TransactionalBatchWriter(
   val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
   logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
 
-  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[PartitionKeyDefinition]) = {
+  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[String]) = {
     val calledFrom = s"TransactionalBatchWriter($tableName).initializeAndBroadcastCosmosClientStateForContainer"
     Loan(
       List[Option[CosmosClientCacheItem]](
@@ -122,7 +122,10 @@ private[spark] class TransactionalBatchWriter(
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
         val metadataBroadcast = sparkSession.sparkContext.broadcast(metadataSnapshots)
-        val partitionKeyDefBroadcast = sparkSession.sparkContext.broadcast(partitionKeyDefinition)
+        
+        // Serialize PartitionKeyDefinition to JSON for broadcasting
+        val partitionKeyDefJson = partitionKeyDefinition.toJson()
+        val partitionKeyDefBroadcast = sparkSession.sparkContext.broadcast(partitionKeyDefJson)
         
         (metadataBroadcast, partitionKeyDefBroadcast)
       })
@@ -157,7 +160,7 @@ private[spark] class TransactionalBatchWriter(
   def writeTransactionalBatchWithClientStates(
     inputRdd: RDD[Row],
     operationExtraction: Row => BatchOperation,
-    clientStates: (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[PartitionKeyDefinition])
+    clientStates: (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[String])
   ): DataFrame = {
     val correlationActivityId = UUIDs.nonBlockingRandomUUID()
     val calledFrom = s"TransactionalBatchWriter.writeTransactionalBatch($correlationActivityId)"
@@ -234,7 +237,7 @@ private class TransactionalBatchPartitionExecutor(
   outputSchema: StructType,
   diagnosticsContext: DiagnosticsContext,
   cosmosClientStates: Broadcast[CosmosClientMetadataCachesSnapshots],
-  partitionKeyDefinitionBroadcast: Broadcast[PartitionKeyDefinition],
+  partitionKeyDefinitionBroadcast: Broadcast[String],
   diagnosticsConfig: DiagnosticsConfig,
   sparkEnvironmentInfo: String,
   taskContext: TaskContext,
@@ -243,7 +246,9 @@ private class TransactionalBatchPartitionExecutor(
 
   private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
-  private val partitionKeyDefinition: PartitionKeyDefinition = partitionKeyDefinitionBroadcast.value
+  // Deserialize PartitionKeyDefinition from JSON
+  private val partitionKeyDefinition: PartitionKeyDefinition = 
+    SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionBroadcast.value)
 
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(
@@ -337,19 +342,23 @@ private class TransactionalBatchPartitionExecutor(
     }
     
     Try {
-      // Create PartitionKey based on the number of values (hierarchical or single)
-      val partitionKey: PartitionKey = partitionKeyValues.size match {
-        case 1 => 
-          new PartitionKey(partitionKeyValues.head)
-        case 2 => 
-          new PartitionKey(partitionKeyValues(0), partitionKeyValues(1))
-        case 3 => 
-          new PartitionKey(partitionKeyValues(0), partitionKeyValues(1), partitionKeyValues(2))
-        case n => 
-          throw new IllegalArgumentException(
-            s"Cosmos DB supports up to 3 hierarchical partition key levels, but got $n values: ${partitionKeyValues.mkString("[", ", ", "]")}"
-          )
+      // Create PartitionKey using PartitionKeyBuilder
+      // This correctly handles hierarchical partition keys of any level (1-3)
+      val builder = new com.azure.cosmos.models.PartitionKeyBuilder()
+      partitionKeyValues.foreach { value =>
+        // PartitionKeyBuilder.add() has overloads for String, Double, and Boolean
+        // Cast the value to the appropriate type
+        value match {
+          case s: String => builder.add(s)
+          case d: Double => builder.add(d)
+          case f: Float => builder.add(f.toDouble)
+          case i: Int => builder.add(i.toDouble)
+          case l: Long => builder.add(l.toDouble)
+          case b: Boolean => builder.add(b)
+          case other => builder.add(other.toString) // Fallback to string representation
+        }
       }
+      val partitionKey: PartitionKey = builder.build()
       
       val pkDescription = partitionKeyValues.mkString("[", ", ", "]")
       logTrace(s"Creating batch with partition key: $pkDescription (${partitionKeyValues.size} levels)")
