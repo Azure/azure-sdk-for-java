@@ -21,7 +21,7 @@ public final class RansomwareReportsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-08-20T16:05:59Z\",\"state\":\"Active\",\"severity\":\"High\",\"clearedCount\":842328747,\"reportedCount\":766137540,\"suspects\":[{\"extension\":\"a\",\"resolution\":\"FalsePositive\",\"fileCount\":1448262455,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"mfczl\",\"resolution\":\"PotentialThreat\",\"fileCount\":1837335612,\"suspectFiles\":[{}]},{\"extension\":\"zgowox\",\"resolution\":\"PotentialThreat\",\"fileCount\":642254793,\"suspectFiles\":[{}]},{\"extension\":\"nyq\",\"resolution\":\"FalsePositive\",\"fileCount\":1232055835,\"suspectFiles\":[{},{},{},{}]}],\"provisioningState\":\"xisimjceagbj\"},\"id\":\"lsumywzashx\",\"name\":\"onoyjf\",\"type\":\"ipubyznclkfk\"}]}";
+            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-04-10T09:41:57Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":785027108,\"reportedCount\":332997027,\"suspects\":[{\"extension\":\"fcfxzirzzihvwy\",\"resolution\":\"PotentialThreat\",\"fileCount\":367979473,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"czwciidjsllfryvd\",\"resolution\":\"PotentialThreat\",\"fileCount\":1693179101,\"suspectFiles\":[{},{}]}],\"provisioningState\":\"frgnawbabgfbktyj\"},\"id\":\"czlfsy\",\"name\":\"kfrbzgowoxqmjea\",\"type\":\"cxn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RansomwareReportsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RansomwareReport> response = manager.ransomwareReports()
-            .list("hmedeilbjywfcfxz", "rzzihvwypus", "vjslczwcii", "jsllfryvd", com.azure.core.util.Context.NONE);
+            .list("zknxkv", "cxetyvkunmignoh", "k", "gqogjwpindedva", com.azure.core.util.Context.NONE);
 
     }
 }

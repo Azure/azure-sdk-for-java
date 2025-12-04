@@ -13,12 +13,12 @@ public final class RegionInfosListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfosList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"zeh\",\"isAvailable\":false},{\"availabilityZone\":\"qhnlbqnbld\",\"isAvailable\":true},{\"availabilityZone\":\"lgsc\",\"isAvailable\":false}]},\"id\":\"mkrsrrmoucsofl\",\"name\":\"puviyfcaabe\",\"type\":\"lhbhl\"},{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"bsxtkcudfbsfarfs\",\"isAvailable\":false}]},\"id\":\"kjxnqpvwgfstmhq\",\"name\":\"kizmdksaoafclu\",\"type\":\"v\"},{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"mr\",\"isAvailable\":true},{\"availabilityZone\":\"cwwp\",\"isAvailable\":false},{\"availabilityZone\":\"w\",\"isAvailable\":false},{\"availabilityZone\":\"sxwef\",\"isAvailable\":false}]},\"id\":\"bvopwndyqle\",\"name\":\"llklmtk\",\"type\":\"lowkxxpvb\"}],\"nextLink\":\"fjmzsyzfho\"}")
+            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"jmucftby\",\"isAvailable\":false},{\"availabilityZone\":\"ohkpigqfu\",\"isAvailable\":true},{\"availabilityZone\":\"zmkw\",\"isAvailable\":true}]},\"id\":\"oxaxm\",\"name\":\"e\",\"type\":\"alhhjnhgwydyynfs\"},{\"properties\":{\"storageToNetworkProximity\":\"T1\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ta\",\"isAvailable\":false},{\"availabilityZone\":\"dlpukhpyrne\",\"isAvailable\":true},{\"availabilityZone\":\"pe\",\"isAvailable\":true},{\"availabilityZone\":\"nmg\",\"isAvailable\":true}]},\"id\":\"xddbhfhpfpaz\",\"name\":\"zoyw\",\"type\":\"xhpdulontacnpqwt\"}],\"nextLink\":\"tuevrh\"}")
             .toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2AND_ACROSS_T2,
             model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("zeh", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals("jmucftby", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("fjmzsyzfho", model.nextLink());
+        Assertions.assertEquals("tuevrh", model.nextLink());
     }
 }

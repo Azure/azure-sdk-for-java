@@ -26,10 +26,10 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
     /*
      * Set of export policy rules
      */
-    private List<ExportPolicyRule> exportPolicy;
+    private CachePropertiesExportPolicy exportPolicy;
 
     /*
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol
+     * Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol
      */
     private List<ProtocolTypes> protocolTypes;
 
@@ -93,7 +93,7 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
      * 
      * @return the exportPolicy value.
      */
-    public List<ExportPolicyRule> exportPolicy() {
+    public CachePropertiesExportPolicy exportPolicy() {
         return this.exportPolicy;
     }
 
@@ -103,13 +103,13 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
      * @param exportPolicy the exportPolicy value to set.
      * @return the CacheUpdateProperties object itself.
      */
-    public CacheUpdateProperties withExportPolicy(List<ExportPolicyRule> exportPolicy) {
+    public CacheUpdateProperties withExportPolicy(CachePropertiesExportPolicy exportPolicy) {
         this.exportPolicy = exportPolicy;
         return this;
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol.
      * 
      * @return the protocolTypes value.
      */
@@ -118,7 +118,7 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the CacheUpdateProperties object itself.
@@ -241,7 +241,7 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
      */
     public void validate() {
         if (exportPolicy() != null) {
-            exportPolicy().forEach(e -> e.validate());
+            exportPolicy().validate();
         }
         if (smbSettings() != null) {
             smbSettings().validate();
@@ -255,7 +255,7 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("size", this.size);
-        jsonWriter.writeArrayField("exportPolicy", this.exportPolicy, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("exportPolicy", this.exportPolicy);
         jsonWriter.writeArrayField("protocolTypes", this.protocolTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("smbSettings", this.smbSettings);
@@ -285,9 +285,7 @@ public final class CacheUpdateProperties implements JsonSerializable<CacheUpdate
                 if ("size".equals(fieldName)) {
                     deserializedCacheUpdateProperties.size = reader.getNullable(JsonReader::getLong);
                 } else if ("exportPolicy".equals(fieldName)) {
-                    List<ExportPolicyRule> exportPolicy
-                        = reader.readArray(reader1 -> ExportPolicyRule.fromJson(reader1));
-                    deserializedCacheUpdateProperties.exportPolicy = exportPolicy;
+                    deserializedCacheUpdateProperties.exportPolicy = CachePropertiesExportPolicy.fromJson(reader);
                 } else if ("protocolTypes".equals(fieldName)) {
                     List<ProtocolTypes> protocolTypes
                         = reader.readArray(reader1 -> ProtocolTypes.fromString(reader1.getString()));

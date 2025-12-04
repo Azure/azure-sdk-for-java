@@ -10,7 +10,8 @@ import com.azure.resourcemanager.netapp.models.ElasticMountTargetProperties;
 public final class ElasticMountTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticMountTargetProperties model = BinaryData.fromString("{\"ipAddress\":\"rc\",\"smbServerFqdn\":\"tso\"}")
-            .toObject(ElasticMountTargetProperties.class);
+        ElasticMountTargetProperties model
+            = BinaryData.fromString("{\"ipAddress\":\"alhsnvkc\",\"smbServerFqdn\":\"xzrpo\"}")
+                .toObject(ElasticMountTargetProperties.class);
     }
 }
