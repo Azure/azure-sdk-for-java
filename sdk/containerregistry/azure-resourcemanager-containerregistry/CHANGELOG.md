@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-11-01-preview`.
+- Updated `RegistryTasks` to `2025-03-01-preview`.
 
 ## 2.54.1 (2025-11-24)
 
