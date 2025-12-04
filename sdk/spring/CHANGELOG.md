@@ -1,5 +1,21 @@
 # Release History
 
+## 6.1.0-beta.1 (Unreleased)
+
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+### Bugs Fixed
+- Fix TokenCredential bean name resolution in Spring Cloud Stream Binder [#47444](https://github.com/Azure/azure-sdk-for-java/pull/47444).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+### Bugs Fixed
+- Fix TokenCredential bean name resolution in Spring Cloud Stream Binder [#47444](https://github.com/Azure/azure-sdk-for-java/pull/47444).
+
+
+
 ## 6.0.0 (2025-09-22)
 - This release is compatible with Spring Boot 3.5.0-3.5.5. (Note: 3.5.x (x>5) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x(x>0) should be supported, but they aren't tested with this release.)
@@ -1708,7 +1724,7 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 #### Breaking Changes
 - Move classes for internal usage to the implementation package [#27281](https://github.com/Azure/azure-sdk-for-java/pull/27281).
 - Delete message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
-- Delete class `CheckpointConfig`. Please use `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is 
+- Delete class `CheckpointConfig`. Please use `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is
 equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
 - Refactor the constructors of `ServiceBusInboundChannelAdapter` to `ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer)` and `ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer, ListenerMode)` [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216), [#27421](https://github.com/Azure/azure-sdk-for-java/pull/27421).
 
@@ -1737,7 +1753,7 @@ This section includes changes in the `spring-messaging-azure` module.
 - Refactor the `*MessageListenerContainer` [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216), [#27543](https://github.com/Azure/azure-sdk-for-java/pull/27543):
   + Add `MessagingMessageListenerAdapter` to adapt Spring Messaging listeners.
   + Rename `*ProcessingListener` to `*MessageListener`.
-- Delete `getter/setter` methods from `AzureCheckpointer` [#27672](https://github.com/Azure/azure-sdk-for-java/pull/27672).  
+- Delete `getter/setter` methods from `AzureCheckpointer` [#27672](https://github.com/Azure/azure-sdk-for-java/pull/27672).
 
 ### Spring Messaging Azure Event Hubs
 This section includes changes in the `spring-messaging-azure-eventhubs` module.
