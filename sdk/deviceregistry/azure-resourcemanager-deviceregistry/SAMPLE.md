@@ -24,6 +24,15 @@
 - [Get](#billingcontainers_get)
 - [List](#billingcontainers_list)
 
+## Credentials
+
+- [CreateOrUpdate](#credentials_createorupdate)
+- [Delete](#credentials_delete)
+- [Get](#credentials_get)
+- [ListByResourceGroup](#credentials_listbyresourcegroup)
+- [Synchronize](#credentials_synchronize)
+- [Update](#credentials_update)
+
 ## NamespaceAssets
 
 - [CreateOrReplace](#namespaceassets_createorreplace)
@@ -74,6 +83,14 @@
 
 - [List](#operations_list)
 
+## Policies
+
+- [CreateOrUpdate](#policies_createorupdate)
+- [Delete](#policies_delete)
+- [Get](#policies_get)
+- [ListByResourceGroup](#policies_listbyresourcegroup)
+- [Update](#policies_update)
+
 ## SchemaRegistries
 
 - [CreateOrReplace](#schemaregistries_createorreplace)
@@ -111,7 +128,7 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.
@@ -137,7 +154,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_AssetEndpointProfile.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_AssetEndpointProfile.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile.
@@ -183,7 +200,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
  */
 public final class AssetEndpointProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_AssetEndpointProfile.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_AssetEndpointProfile.json
      */
     /**
      * Sample code: Delete_AssetEndpointProfile.
@@ -206,7 +223,7 @@ public final class AssetEndpointProfilesDeleteSamples {
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_AssetEndpointProfile.json
+     * x-ms-original-file: 2025-11-01-preview/Get_AssetEndpointProfile.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile.
@@ -220,7 +237,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_AssetEndpointProfile_With_SyncStatus.json
+     * x-ms-original-file: 2025-11-01-preview/Get_AssetEndpointProfile_With_SyncStatus.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile_With_SyncStatus.
@@ -244,7 +261,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
  */
 public final class AssetEndpointProfilesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_AssetEndpointProfiles_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_AssetEndpointProfiles_BySubscription.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_BySubscription.
@@ -266,7 +283,7 @@ public final class AssetEndpointProfilesListSamples {
  */
 public final class AssetEndpointProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_AssetEndpointProfiles_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_ByResourceGroup.
@@ -291,7 +308,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdat
  */
 public final class AssetEndpointProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_AssetEndpointProfile.json
+     * x-ms-original-file: 2025-11-01-preview/Update_AssetEndpointProfile.json
      */
     /**
      * Sample code: Update_AssetEndpointProfile.
@@ -333,7 +350,7 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_Without_DisplayName.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Asset_Without_DisplayName.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_DisplayName.
@@ -398,7 +415,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_DiscoveredAssetRefs.
@@ -465,7 +482,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_Without_ExternalAssetId.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Asset_Without_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_ExternalAssetId.
@@ -530,7 +547,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_With_ExternalAssetId.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Asset_With_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_ExternalAssetId.
@@ -617,7 +634,7 @@ public final class AssetsCreateOrReplaceSamples {
  */
 public final class AssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_Asset.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_Asset.json
      */
     /**
      * Sample code: Delete_Asset.
@@ -638,7 +655,7 @@ public final class AssetsDeleteSamples {
  */
 public final class AssetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Asset_With_SyncStatus.json
+     * x-ms-original-file: 2025-11-01-preview/Get_Asset_With_SyncStatus.json
      */
     /**
      * Sample code: Get_Asset_With_SyncStatus.
@@ -651,7 +668,7 @@ public final class AssetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_Asset.json
+     * x-ms-original-file: 2025-11-01-preview/Get_Asset.json
      */
     /**
      * Sample code: Get_Asset.
@@ -673,7 +690,7 @@ public final class AssetsGetByResourceGroupSamples {
  */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Assets_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_Assets_BySubscription.json
      */
     /**
      * Sample code: List_Assets_BySubscription.
@@ -695,7 +712,7 @@ public final class AssetsListSamples {
  */
 public final class AssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Assets_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_Assets_ByResourceGroup.json
      */
     /**
      * Sample code: List_Assets_ByResourceGroup.
@@ -720,7 +737,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  */
 public final class AssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_Asset.json
+     * x-ms-original-file: 2025-11-01-preview/Update_Asset.json
      */
     /**
      * Sample code: Update_Asset.
@@ -746,7 +763,7 @@ public final class AssetsUpdateSamples {
  */
 public final class BillingContainersGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_BillingContainer.json
+     * x-ms-original-file: 2025-11-01-preview/Get_BillingContainer.json
      */
     /**
      * Sample code: Get_BillingContainer.
@@ -767,7 +784,7 @@ public final class BillingContainersGetSamples {
  */
 public final class BillingContainersListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_BillingContainers_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_BillingContainers_BySubscription.json
      */
     /**
      * Sample code: List_BillingContainers_BySubscription.
@@ -777,6 +794,175 @@ public final class BillingContainersListSamples {
     public static void
         listBillingContainersBySubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.billingContainers().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.deviceregistry.fluent.models.CredentialInner;
+import com.azure.resourcemanager.deviceregistry.models.CredentialProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Credentials CreateOrUpdate.
+ */
+public final class CredentialsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Credentials.json
+     */
+    /**
+     * Sample code: CreateOrReplace_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createOrReplaceCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials()
+            .createOrUpdate("rgdeviceregistry", "mynamespace",
+                new CredentialInner().withLocation("East US 2")
+                    .withTags(mapOf("key7121", "fakeTokenPlaceholder"))
+                    .withProperties(new CredentialProperties()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Credentials_Delete
+
+```java
+/**
+ * Samples for Credentials Delete.
+ */
+public final class CredentialsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Delete_Credentials.json
+     */
+    /**
+     * Sample code: Delete_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void deleteCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().delete("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_Get
+
+```java
+/**
+ * Samples for Credentials Get.
+ */
+public final class CredentialsGetSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Get_Credentials.json
+     */
+    /**
+     * Sample code: Get_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().getWithResponse("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_ListByResourceGroup
+
+```java
+/**
+ * Samples for Credentials ListByResourceGroup.
+ */
+public final class CredentialsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/List_Credentials_ByResourceGroup.json
+     */
+    /**
+     * Sample code: List_Credentials_ByResourceGroup.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listCredentialsByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().listByResourceGroup("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_Synchronize
+
+```java
+/**
+ * Samples for Credentials Synchronize.
+ */
+public final class CredentialsSynchronizeSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Credentials_Synchronize.json
+     */
+    /**
+     * Sample code: Credentials_Synchronize.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void credentialsSynchronize(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().synchronize("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_Update
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CredentialUpdate;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Credentials Update.
+ */
+public final class CredentialsUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Update_Credentials.json
+     */
+    /**
+     * Sample code: Update_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void updateCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials()
+            .update("rgdeviceregistry", "mynamespace",
+                new CredentialUpdate().withTags(mapOf("key9580", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -816,7 +1002,7 @@ import java.util.Map;
  */
 public final class NamespaceAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceAsset.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceAsset.
@@ -963,7 +1149,7 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
  */
 public final class NamespaceAssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_NamespaceAsset.json
      */
     /**
      * Sample code: Delete_NamespaceAsset.
@@ -986,7 +1172,7 @@ public final class NamespaceAssetsDeleteSamples {
  */
 public final class NamespaceAssetsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceAsset.json
      */
     /**
      * Sample code: Get_NamespaceAsset.
@@ -1008,7 +1194,7 @@ public final class NamespaceAssetsGetSamples {
  */
 public final class NamespaceAssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceAssets_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_NamespaceAssets_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceAssets_ByResourceGroup.
@@ -1034,7 +1220,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdatePrope
  */
 public final class NamespaceAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceAsset.json
      */
     /**
      * Sample code: Update_NamespaceAssets.
@@ -1078,7 +1264,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_x509.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
      */
     /**
      * Sample code: Create edge enabled device with x509 inbound authentication.
@@ -1125,7 +1311,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
      */
     /**
      * Sample code: Create edge enabled device with anonymous host authentication.
@@ -1156,7 +1342,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
      */
     /**
      * Sample code: Create edge enabled device with UsernamesPassword inbound authentication.
@@ -1189,7 +1375,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDevices.
@@ -1236,7 +1422,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
  */
 public final class NamespaceDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_NamespaceDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDevice.
@@ -1259,7 +1445,7 @@ public final class NamespaceDevicesDeleteSamples {
  */
 public final class NamespaceDevicesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDeviceWithEndpointErrorStatus.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceDeviceWithEndpointErrorStatus.json
      */
     /**
      * Sample code: Get NamespaceDevice with Endpoint Error Status.
@@ -1273,7 +1459,7 @@ public final class NamespaceDevicesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceDevice.json
      */
     /**
      * Sample code: Get_NamespaceDevice.
@@ -1295,7 +1481,7 @@ public final class NamespaceDevicesGetSamples {
  */
 public final class NamespaceDevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceDevices_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_NamespaceDevices_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceDevices_ByResourceGroup.
@@ -1328,7 +1514,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceDevice.json
      */
     /**
      * Sample code: Update_NamespaceDevices.
@@ -1403,7 +1589,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredAsset.
@@ -1558,7 +1744,7 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
  */
 public final class NamespaceDiscoveredAssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredAsset.
@@ -1581,7 +1767,7 @@ public final class NamespaceDiscoveredAssetsDeleteSamples {
  */
 public final class NamespaceDiscoveredAssetsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Get_NamespaceDiscoveredAsset.
@@ -1605,7 +1791,7 @@ public final class NamespaceDiscoveredAssetsGetSamples {
  */
 public final class NamespaceDiscoveredAssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceDiscoveredAssets_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_NamespaceDiscoveredAssets_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceDiscoveredAssets_ByResourceGroup.
@@ -1631,7 +1817,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetU
  */
 public final class NamespaceDiscoveredAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredAsset.
@@ -1668,7 +1854,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredDevice.
@@ -1717,7 +1903,7 @@ public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
  */
 public final class NamespaceDiscoveredDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredDevice.
@@ -1740,7 +1926,7 @@ public final class NamespaceDiscoveredDevicesDeleteSamples {
  */
 public final class NamespaceDiscoveredDevicesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Get_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Get_NamespaceDiscoveredDevice.
@@ -1764,7 +1950,7 @@ public final class NamespaceDiscoveredDevicesGetSamples {
  */
 public final class NamespaceDiscoveredDevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceDiscoveredDevices_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_NamespaceDiscoveredDevices_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceDiscoveredDevices_ByResourceGroup.
@@ -1795,7 +1981,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredDevice.
@@ -1847,7 +2033,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
      */
     /**
      * Sample code: CreateOrReplace_Namespace_With_Endpoints.
@@ -1894,7 +2080,7 @@ public final class NamespacesCreateOrReplaceSamples {
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_Namespace.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_Namespace.json
      */
     /**
      * Sample code: Delete_Namespace.
@@ -1915,7 +2101,7 @@ public final class NamespacesDeleteSamples {
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Namespace.json
+     * x-ms-original-file: 2025-11-01-preview/Get_Namespace.json
      */
     /**
      * Sample code: Get_Namespace.
@@ -1938,7 +2124,7 @@ public final class NamespacesGetByResourceGroupSamples {
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Namespace_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_Namespace_BySubscription.json
      */
     /**
      * Sample code: List_Namespaces_BySubscription.
@@ -1960,7 +2146,7 @@ public final class NamespacesListSamples {
  */
 public final class NamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Namespace_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_Namespace_ByResourceGroup.json
      */
     /**
      * Sample code: List_Namespaces_ByResourceGroup.
@@ -1986,7 +2172,7 @@ import java.util.Arrays;
  */
 public final class NamespacesMigrateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Migrate_Assets_Namespace.json
+     * x-ms-original-file: 2025-11-01-preview/Migrate_Assets_Namespace.json
      */
     /**
      * Sample code: Namespace Migrate.
@@ -2020,7 +2206,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_Namespace_Endpoints.json
+     * x-ms-original-file: 2025-11-01-preview/Update_Namespace_Endpoints.json
      */
     /**
      * Sample code: Update_Namespace_Endpoints.
@@ -2063,7 +2249,7 @@ public final class NamespacesUpdateSamples {
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_OperationStatus.json
+     * x-ms-original-file: 2025-11-01-preview/Get_OperationStatus.json
      */
     /**
      * Sample code: Get_OperationStatus.
@@ -2085,7 +2271,7 @@ public final class OperationStatusGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Operations.json
+     * x-ms-original-file: 2025-11-01-preview/List_Operations.json
      */
     /**
      * Sample code: List_Operations.
@@ -2094,6 +2280,170 @@ public final class OperationsListSamples {
      */
     public static void listOperations(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
+import com.azure.resourcemanager.deviceregistry.models.SupportedKeyType;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Policies CreateOrUpdate.
+ */
+public final class PoliciesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Policies.json
+     */
+    /**
+     * Sample code: CreateOrReplace_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplacePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies()
+            .define("mypolicy")
+            .withRegion("zjqtuvprnxvimzkkxaobgkm")
+            .withExistingNamespace("rgdeviceregistry", "mynamespace")
+            .withTags(mapOf("key1088", "fakeTokenPlaceholder"))
+            .withProperties(new PolicyProperties().withCertificate(new CertificateConfiguration()
+                .withCertificateAuthorityConfiguration(
+                    new CertificateAuthorityConfiguration().withKeyType(SupportedKeyType.ECC))
+                .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Policies_Delete
+
+```java
+/**
+ * Samples for Policies Delete.
+ */
+public final class PoliciesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Delete_Policies.json
+     */
+    /**
+     * Sample code: Delete_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void deletePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies().delete("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_Get
+
+```java
+/**
+ * Samples for Policies Get.
+ */
+public final class PoliciesGetSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Get_Policies.json
+     */
+    /**
+     * Sample code: Get_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getPolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myPolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_ListByResourceGroup
+
+```java
+/**
+ * Samples for Policies ListByResourceGroup.
+ */
+public final class PoliciesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/List_Policies_ByResourceGroup.json
+     */
+    /**
+     * Sample code: List_Policies_ByResourceGroup.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listPoliciesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies().listByResourceGroup("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_Update
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.Policy;
+import com.azure.resourcemanager.deviceregistry.models.PolicyUpdateProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Policies Update.
+ */
+public final class PoliciesUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/Update_Policies.json
+     */
+    /**
+     * Sample code: Update_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void updatePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        Policy resource = manager.policies()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key5535", "fakeTokenPlaceholder"))
+            .withProperties(new PolicyUpdateProperties().withCertificate(new CertificateConfiguration()
+                .withCertificateAuthorityConfiguration(new CertificateAuthorityConfiguration())
+                .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -2110,7 +2460,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_SchemaRegistry.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_SchemaRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaRegistry.
@@ -2153,7 +2503,7 @@ public final class SchemaRegistriesCreateOrReplaceSamples {
  */
 public final class SchemaRegistriesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_SchemaRegistry.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_SchemaRegistry.json
      */
     /**
      * Sample code: Delete_SchemaRegistry.
@@ -2174,7 +2524,7 @@ public final class SchemaRegistriesDeleteSamples {
  */
 public final class SchemaRegistriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_SchemaRegistry.json
+     * x-ms-original-file: 2025-11-01-preview/Get_SchemaRegistry.json
      */
     /**
      * Sample code: Get_SchemaRegistry.
@@ -2196,7 +2546,7 @@ public final class SchemaRegistriesGetByResourceGroupSamples {
  */
 public final class SchemaRegistriesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_SchemaRegistries_BySubscription.json
+     * x-ms-original-file: 2025-11-01-preview/List_SchemaRegistries_BySubscription.json
      */
     /**
      * Sample code: List_SchemaRegistries_Subscription.
@@ -2218,7 +2568,7 @@ public final class SchemaRegistriesListSamples {
  */
 public final class SchemaRegistriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_SchemaRegistries_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_SchemaRegistries_ByResourceGroup.json
      */
     /**
      * Sample code: List_SchemaRegistries_ResourceGroup.
@@ -2245,7 +2595,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_SchemaRegistry.json
+     * x-ms-original-file: 2025-11-01-preview/Update_SchemaRegistry.json
      */
     /**
      * Sample code: Update_SchemaRegistry.
@@ -2287,7 +2637,7 @@ import com.azure.resourcemanager.deviceregistry.models.SchemaVersionProperties;
  */
 public final class SchemaVersionsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_SchemaVersion.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_SchemaVersion.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaVersion.
@@ -2315,7 +2665,7 @@ public final class SchemaVersionsCreateOrReplaceSamples {
  */
 public final class SchemaVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_SchemaVersion.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_SchemaVersion.json
      */
     /**
      * Sample code: Delete_SchemaVersion.
@@ -2337,7 +2687,7 @@ public final class SchemaVersionsDeleteSamples {
  */
 public final class SchemaVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_SchemaVersion.json
+     * x-ms-original-file: 2025-11-01-preview/Get_SchemaVersion.json
      */
     /**
      * Sample code: Get_SchemaVersion.
@@ -2360,7 +2710,7 @@ public final class SchemaVersionsGetSamples {
  */
 public final class SchemaVersionsListBySchemaSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_SchemaVersions_BySchema.json
+     * x-ms-original-file: 2025-11-01-preview/List_SchemaVersions_BySchema.json
      */
     /**
      * Sample code: List_SchemaVersions_Schema.
@@ -2389,7 +2739,7 @@ import java.util.Map;
  */
 public final class SchemasCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Schema.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Schema.json
      */
     /**
      * Sample code: CreateOrReplace_Schema.
@@ -2430,7 +2780,7 @@ public final class SchemasCreateOrReplaceSamples {
  */
 public final class SchemasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_Schema.json
+     * x-ms-original-file: 2025-11-01-preview/Delete_Schema.json
      */
     /**
      * Sample code: Delete_Schema.
@@ -2452,7 +2802,7 @@ public final class SchemasDeleteSamples {
  */
 public final class SchemasGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Schema.json
+     * x-ms-original-file: 2025-11-01-preview/Get_Schema.json
      */
     /**
      * Sample code: Schemas_Get.
@@ -2474,7 +2824,7 @@ public final class SchemasGetSamples {
  */
 public final class SchemasListBySchemaRegistrySamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Schemas_BySchemaRegistry.json
+     * x-ms-original-file: 2025-11-01-preview/List_Schemas_BySchemaRegistry.json
      */
     /**
      * Sample code: List_Schemas_SchemaRegistry.

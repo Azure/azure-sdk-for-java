@@ -34,7 +34,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -113,7 +112,7 @@ public class ReadMyWritesConsistencyTest {
             " -printingInterval 60" +
             "%s";
 
-        String cmd = lenientFormat(cmdFormat,
+        String cmd = String.format(cmdFormat,
             TestConfigurations.HOST,
             TestConfigurations.MASTER_KEY,
             database.getId(),

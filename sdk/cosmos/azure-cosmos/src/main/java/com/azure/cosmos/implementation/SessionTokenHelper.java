@@ -173,50 +173,21 @@ public class SessionTokenHelper {
                                                            Long collectionRid,
                                                            String partitionKeyRangeId,
                                                            String firstEffectivePreferredReadableRegion,
-                                                           boolean canUseBloomFilter) {
+                                                           GlobalEndpointManager globalEndpointManager) {
 
         if (partitionScopedRegionLevelProgress != null) {
 
-            Set<String> partitionKeyPossibleRegions = new HashSet<>();
-
             if (partitionScopedRegionLevelProgress.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
-
-                if (canUseBloomFilter) {
-                    partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
-                        .tryGetPossibleRegionsLogicalPartitionResolvedTo(
-                            request,
-                            collectionRid,
-                            partitionKey,
-                            partitionKeyDefinition);
-
-                    return partitionScopedRegionLevelProgress
-                        .tryResolveSessionToken(
-                            request,
-                            partitionKeyPossibleRegions,
-                            partitionKeyRangeId,
-                            firstEffectivePreferredReadableRegion,
-                            true);
-
-                }
-
                 return partitionScopedRegionLevelProgress
                     .tryResolveSessionToken(
                         request,
-                        partitionKeyPossibleRegions,
+                        collectionRid,
                         partitionKeyRangeId,
                         firstEffectivePreferredReadableRegion,
-                        false);
+                        partitionKeyBasedBloomFilter,
+                        globalEndpointManager);
 
             } else {
-                if (canUseBloomFilter) {
-                    partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
-                        .tryGetPossibleRegionsLogicalPartitionResolvedTo(
-                            request,
-                            collectionRid,
-                            partitionKey,
-                            partitionKeyDefinition);
-                }
-
                 ISessionToken parentSessionToken = null;
 
                 Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
@@ -232,10 +203,11 @@ public class SessionTokenHelper {
                             resolvedSessionTokenForParentPkRangeId = partitionScopedRegionLevelProgress
                                 .tryResolveSessionToken(
                                     request,
-                                    partitionKeyPossibleRegions,
+                                    collectionRid,
                                     parentPkRangeId,
                                     firstEffectivePreferredReadableRegion,
-                                    canUseBloomFilter);
+                                    partitionKeyBasedBloomFilter,
+                                    globalEndpointManager);
 
                             if (resolvedSessionTokenForParentPkRangeId != null) {
                                 parentSessionToken = parentSessionToken != null ?

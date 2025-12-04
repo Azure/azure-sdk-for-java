@@ -17,7 +17,6 @@ import io.netty.handler.codec.CorruptedFrameException;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * Methods included in this class are copied from com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdToken.
@@ -81,7 +80,7 @@ public class ServerRntbdToken {
                 this.value = codec.defaultValue();
                 this.value = codec.read(buffer);
             } catch (final CorruptedFrameException error) {
-                String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
+                String message = String.format("failed to read %s value: %s", this.getName(), error.getMessage());
                 throw new CorruptedFrameException(message);
             }
         } else {
@@ -156,7 +155,7 @@ public class ServerRntbdToken {
 
         if (!this.isPresent()) {
             if (this.isRequired()) {
-                final String message = lenientFormat("Missing value for required header: %s", this);
+                final String message = String.format("Missing value for required header: %s", this);
                 throw new IllegalStateException(message);
             }
             return;
