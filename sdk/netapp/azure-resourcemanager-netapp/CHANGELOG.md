@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2025-12-03)
+## 2.1.0-beta.1 (2025-12-04)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -392,8 +392,8 @@
 
 #### `models.NetAppAccountPatch` was modified
 
-* `ldapConfiguration()` was added
 * `withLdapConfiguration(models.LdapConfiguration)` was added
+* `ldapConfiguration()` was added
 
 #### `models.NetAppAccount$Update` was modified
 
@@ -401,48 +401,48 @@
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `ldapServerType()` was added
-* `withBreakthroughMode(models.BreakthroughMode)` was added
-* `breakthroughMode()` was added
-* `withLdapServerType(models.LdapServerType)` was added
-* `language()` was added
 * `withLargeVolumeType(models.LargeVolumeType)` was added
-* `withLanguage(models.VolumeLanguage)` was added
+* `ldapServerType()` was added
 * `largeVolumeType()` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `breakthroughMode()` was added
+* `language()` was added
+* `withBreakthroughMode(models.BreakthroughMode)` was added
+* `withLdapServerType(models.LdapServerType)` was added
 
 #### `models.Volume` was modified
 
-* `ldapServerType()` was added
-* `breakthroughMode()` was added
 * `listQuotaReport(com.azure.core.util.Context)` was added
-* `largeVolumeType()` was added
 * `language()` was added
+* `largeVolumeType()` was added
+* `breakthroughMode()` was added
 * `listQuotaReport()` was added
+* `ldapServerType()` was added
 
 #### `models.VolumePropertiesDataProtection` was modified
 
-* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
 * `ransomwareProtection()` was added
+* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
 
 #### `NetAppFilesManager` was modified
 
-* `elasticSnapshots()` was added
-* `elasticVolumes()` was added
-* `ransomwareReports()` was added
+* `buckets()` was added
 * `activeDirectoryConfigs()` was added
-* `caches()` was added
+* `elasticCapacityPools()` was added
 * `elasticAccounts()` was added
+* `caches()` was added
+* `elasticBackupPolicies()` was added
+* `ransomwareReports()` was added
+* `elasticSnapshotPolicies()` was added
+* `elasticVolumes()` was added
 * `elasticBackups()` was added
 * `elasticBackupVaults()` was added
-* `elasticSnapshotPolicies()` was added
-* `elasticCapacityPools()` was added
-* `buckets()` was added
-* `elasticBackupPolicies()` was added
+* `elasticSnapshots()` was added
 
 #### `models.VolumePatchPropertiesDataProtection` was modified
 
-* `ransomwareProtection()` was added
 * `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
+* `ransomwareProtection()` was added
 
 #### `models.Volumes` was modified
 
