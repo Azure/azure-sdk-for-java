@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"ci\",\"subnetId\":\"defxrdc\",\"networkSiblingSetStateId\":\"nbkkjanurnnq\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Updating\",\"nicInfoList\":[{\"ipAddress\":\"qltgrd\",\"volumeResourceIds\":[\"pxrxvbfihwu\",\"vctafsrb\"]},{\"ipAddress\":\"blml\",\"volumeResourceIds\":[\"xihspnxwq\",\"gnepz\"]},{\"ipAddress\":\"klsbsbqqqagw\",\"volumeResourceIds\":[\"ao\",\"zisglrrczezkhh\",\"tnjadhq\"]},{\"ipAddress\":\"wjqo\",\"volumeResourceIds\":[\"ayfbpcm\",\"plby\",\"rueqthwm\"]}]}")
+            "{\"networkSiblingSetId\":\"jdjltymkmvgui\",\"subnetId\":\"wartspphkixkykxd\",\"networkSiblingSetStateId\":\"j\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"hikkflrmy\",\"volumeResourceIds\":[\"nc\",\"lhrisw\",\"lmiiiovg\"]},{\"ipAddress\":\"gxuugqkctotio\",\"volumeResourceIds\":[\"teqdptj\",\"wdtgukranblw\",\"hqlkccuzgygqwaho\",\"ulwgniiprglvawuw\"]},{\"ipAddress\":\"ufypiv\",\"volumeResourceIds\":[\"bjpmcubk\",\"ifoxxkubvphav\",\"mhbrbqgvg\"]},{\"ipAddress\":\"pbbttefjoknss\",\"volumeResourceIds\":[\"qedikdfrd\",\"iqmrjgeihfqlggw\",\"iwzcxmjpbyeph\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("ci", model.networkSiblingSetId());
-        Assertions.assertEquals("defxrdc", model.subnetId());
-        Assertions.assertEquals("nbkkjanurnnq", model.networkSiblingSetStateId());
+        Assertions.assertEquals("jdjltymkmvgui", model.networkSiblingSetId());
+        Assertions.assertEquals("wartspphkixkykxd", model.subnetId());
+        Assertions.assertEquals("j", model.networkSiblingSetStateId());
         Assertions.assertEquals(NetworkFeatures.BASIC, model.networkFeatures());
-        Assertions.assertEquals("pxrxvbfihwu", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("nc", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

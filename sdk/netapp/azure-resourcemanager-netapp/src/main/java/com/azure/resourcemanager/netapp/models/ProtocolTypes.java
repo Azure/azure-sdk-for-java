@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Export policy rule.
+ * Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol.
  */
 public final class ProtocolTypes extends ExpandableStringEnum<ProtocolTypes> {
     /**
