@@ -17,17 +17,18 @@ import java.io.IOException;
 @Fluent
 public final class HighAvailability implements JsonSerializable<HighAvailability> {
     /*
-     * The HA mode for the server.
+     * High availability mode for a server.
      */
     private HighAvailabilityMode mode;
 
     /*
-     * A state of a HA server that is visible to user.
+     * Possible states of the standby server created when high availability is set to SameZone or ZoneRedundant.
      */
-    private ServerHAState state;
+    private HighAvailabilityState state;
 
     /*
-     * availability zone information of the standby.
+     * Availability zone associated to the standby server created when high availability is set to SameZone or
+     * ZoneRedundant.
      */
     private String standbyAvailabilityZone;
 
@@ -38,7 +39,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
     }
 
     /**
-     * Get the mode property: The HA mode for the server.
+     * Get the mode property: High availability mode for a server.
      * 
      * @return the mode value.
      */
@@ -47,7 +48,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
     }
 
     /**
-     * Set the mode property: The HA mode for the server.
+     * Set the mode property: High availability mode for a server.
      * 
      * @param mode the mode value to set.
      * @return the HighAvailability object itself.
@@ -58,16 +59,18 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
     }
 
     /**
-     * Get the state property: A state of a HA server that is visible to user.
+     * Get the state property: Possible states of the standby server created when high availability is set to SameZone
+     * or ZoneRedundant.
      * 
      * @return the state value.
      */
-    public ServerHAState state() {
+    public HighAvailabilityState state() {
         return this.state;
     }
 
     /**
-     * Get the standbyAvailabilityZone property: availability zone information of the standby.
+     * Get the standbyAvailabilityZone property: Availability zone associated to the standby server created when high
+     * availability is set to SameZone or ZoneRedundant.
      * 
      * @return the standbyAvailabilityZone value.
      */
@@ -76,7 +79,8 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
     }
 
     /**
-     * Set the standbyAvailabilityZone property: availability zone information of the standby.
+     * Set the standbyAvailabilityZone property: Availability zone associated to the standby server created when high
+     * availability is set to SameZone or ZoneRedundant.
      * 
      * @param standbyAvailabilityZone the standbyAvailabilityZone value to set.
      * @return the HighAvailability object itself.
@@ -123,7 +127,7 @@ public final class HighAvailability implements JsonSerializable<HighAvailability
                 if ("mode".equals(fieldName)) {
                     deserializedHighAvailability.mode = HighAvailabilityMode.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedHighAvailability.state = ServerHAState.fromString(reader.getString());
+                    deserializedHighAvailability.state = HighAvailabilityState.fromString(reader.getString());
                 } else if ("standbyAvailabilityZone".equals(fieldName)) {
                     deserializedHighAvailability.standbyAvailabilityZone = reader.getString();
                 } else {

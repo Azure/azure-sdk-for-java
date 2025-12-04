@@ -428,8 +428,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     if (logger.isDebugEnabled()) {
                         logger.debug("SslHandshake completed, adding idleStateHandler");
                     }
-
-                    context.pipeline().addAfter(
+                    // in tls 1.3 it is possible several completion events are fired, so
+                    // we need to check if the handler already exists
+                    if (context.pipeline().get(IdleStateHandler.class.toString()) == null) {
+                        context.pipeline().addAfter(
                             SslHandler.class.toString(),
                             IdleStateHandler.class.toString(),
                             new IdleStateHandler(
@@ -437,6 +439,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                                 this.idleConnectionTimerResolutionInNanos,
                                 0,
                                 TimeUnit.NANOSECONDS));
+                    }
                 } else {
                     // Even if we do not capture here, the channel will still be closed properly,
                     // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.

@@ -29,7 +29,9 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -572,9 +574,19 @@ public final class CosmosAsyncClient implements Closeable {
      * @param group Throughput control group going to be enabled.
      * @param throughputQueryMono The throughput query mono.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
+    void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group cannot be null");
-        this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
+        this.asyncDocumentClient.enableSDKThroughputControlGroup(group, throughputQueryMono);
+    }
+
+    /***
+     * Enable server throughput control group.
+     *
+     * @param group the server throughput control group.
+     */
+    void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
+        checkNotNull(group, "Argument 'group' can not be null");
+        this.asyncDocumentClient.enableServerThroughputControlGroup(group);
     }
 
     /***
@@ -783,6 +795,10 @@ public final class CosmosAsyncClient implements Closeable {
         return this.asyncDocumentClient.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
 
+    void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.asyncDocumentClient.registerTransportClientInterceptor(transportClientInterceptor);
+    }
+
     boolean isTransportLevelTracingEnabled() {
 
         CosmosClientTelemetryConfig effectiveConfig = this.clientTelemetryConfig != null ?
@@ -938,6 +954,14 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public CosmosItemSerializer getEffectiveItemSerializer(CosmosAsyncClient client, CosmosItemSerializer requestOptionsItemSerializer) {
                     return client.getEffectiveItemSerializer(requestOptionsItemSerializer);
+                }
+
+                @Override
+                public void registerTransportClientInterceptor(
+                    CosmosAsyncClient client,
+                    ITransportClientInterceptor transportClientInterceptor) {
+
+                    client.registerTransportClientInterceptor(transportClientInterceptor);
                 }
             }
         );

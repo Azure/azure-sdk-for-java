@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 6.0.0 (2025-09-22)
+
+#### Other Changes
+* regular release
+
 ### 5.23.0 (2025-08-05)
 
 #### Other Changes

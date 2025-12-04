@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class IntegrationFabricsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Create.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Create.json
      */
     /**
      * Sample code: IntegrationFabrics_Create.

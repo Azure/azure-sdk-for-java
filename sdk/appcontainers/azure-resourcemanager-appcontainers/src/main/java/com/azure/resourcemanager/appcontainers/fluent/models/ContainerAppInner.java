@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
@@ -42,6 +43,11 @@ public final class ContainerAppInner extends Resource {
      * removed from the template since it is managed by another resource.
      */
     private String managedBy;
+
+    /*
+     * Metadata to represent the container app kind, representing if a container app is workflowapp or functionapp.
+     */
+    private Kind kind;
 
     /*
      * ContainerApp resource specific properties
@@ -137,6 +143,28 @@ public final class ContainerAppInner extends Resource {
      */
     public ContainerAppInner withManagedBy(String managedBy) {
         this.managedBy = managedBy;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Metadata to represent the container app kind, representing if a container app is
+     * workflowapp or functionapp.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Metadata to represent the container app kind, representing if a container app is
+     * workflowapp or functionapp.
+     * 
+     * @param kind the kind value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withKind(Kind kind) {
+        this.kind = kind;
         return this;
     }
 
@@ -421,6 +449,7 @@ public final class ContainerAppInner extends Resource {
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -458,6 +487,8 @@ public final class ContainerAppInner extends Resource {
                     deserializedContainerAppInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("managedBy".equals(fieldName)) {
                     deserializedContainerAppInner.managedBy = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerAppInner.kind = Kind.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedContainerAppInner.innerProperties = ContainerAppProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

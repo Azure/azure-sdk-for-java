@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.23.0-beta.1 (Unreleased)
+### 2.25.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,16 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+
+### 2.24.0 (2025-10-21)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.75.0`.
+
+### 2.23.0 (2025-09-05)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.74.0`.
 
 ### 2.22.0 (2025-07-18)
 

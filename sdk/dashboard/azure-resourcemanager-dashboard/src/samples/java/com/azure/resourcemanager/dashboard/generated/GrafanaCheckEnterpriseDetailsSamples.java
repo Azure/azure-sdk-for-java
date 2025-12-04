@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class GrafanaCheckEnterpriseDetailsSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/EnterpriseDetails_Post.json
+     * x-ms-original-file: 2025-08-01/EnterpriseDetails_Post.json
      */
     /**
      * Sample code: EnterpriseDetails_Post.

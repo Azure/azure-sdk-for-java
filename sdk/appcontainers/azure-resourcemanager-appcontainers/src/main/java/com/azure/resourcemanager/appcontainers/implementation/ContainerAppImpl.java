@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningSt
 import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.SecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Template;
@@ -63,6 +64,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public String managedBy() {
         return this.innerModel().managedBy();
+    }
+
+    public Kind kind() {
+        return this.innerModel().kind();
     }
 
     public SystemData systemData() {
@@ -286,6 +291,11 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public ContainerAppImpl withManagedBy(String managedBy) {
         this.innerModel().withManagedBy(managedBy);
+        return this;
+    }
+
+    public ContainerAppImpl withKind(Kind kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 

@@ -28,19 +28,17 @@ public final class VirtualMachineScaleSetNetworkProfileTests {
             .toObject(VirtualMachineScaleSetNetworkProfile.class);
         Assertions.assertEquals("lhbxxhejjzzvdud", model.healthProbe().id());
         Assertions.assertEquals("slfhotwm", model.networkInterfaceConfigurations().get(0).name());
-        Assertions.assertEquals(false, model.networkInterfaceConfigurations().get(0).properties().primary());
-        Assertions.assertEquals(true,
-            model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
-        Assertions.assertEquals(false,
-            model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
-        Assertions.assertEquals(true, model.networkInterfaceConfigurations().get(0).properties().enableFpga());
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().primary());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableFpga());
         Assertions.assertEquals("cftadeh",
             model.networkInterfaceConfigurations().get(0).properties().networkSecurityGroup().id());
         Assertions.assertEquals("yfsoppu",
             model.networkInterfaceConfigurations().get(0).properties().dnsSettings().dnsServers().get(0));
         Assertions.assertEquals("dnvowg",
             model.networkInterfaceConfigurations().get(0).properties().ipConfigurations().get(0).name());
-        Assertions.assertEquals(true, model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
         Assertions.assertEquals(DeleteOptions.DELETE,
             model.networkInterfaceConfigurations().get(0).properties().deleteOption());
         Assertions.assertEquals(NetworkInterfaceAuxiliaryMode.FLOATING,
@@ -116,19 +114,17 @@ public final class VirtualMachineScaleSetNetworkProfileTests {
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetNetworkProfile.class);
         Assertions.assertEquals("lhbxxhejjzzvdud", model.healthProbe().id());
         Assertions.assertEquals("slfhotwm", model.networkInterfaceConfigurations().get(0).name());
-        Assertions.assertEquals(false, model.networkInterfaceConfigurations().get(0).properties().primary());
-        Assertions.assertEquals(true,
-            model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
-        Assertions.assertEquals(false,
-            model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
-        Assertions.assertEquals(true, model.networkInterfaceConfigurations().get(0).properties().enableFpga());
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().primary());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableFpga());
         Assertions.assertEquals("cftadeh",
             model.networkInterfaceConfigurations().get(0).properties().networkSecurityGroup().id());
         Assertions.assertEquals("yfsoppu",
             model.networkInterfaceConfigurations().get(0).properties().dnsSettings().dnsServers().get(0));
         Assertions.assertEquals("dnvowg",
             model.networkInterfaceConfigurations().get(0).properties().ipConfigurations().get(0).name());
-        Assertions.assertEquals(true, model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
         Assertions.assertEquals(DeleteOptions.DELETE,
             model.networkInterfaceConfigurations().get(0).properties().deleteOption());
         Assertions.assertEquals(NetworkInterfaceAuxiliaryMode.FLOATING,

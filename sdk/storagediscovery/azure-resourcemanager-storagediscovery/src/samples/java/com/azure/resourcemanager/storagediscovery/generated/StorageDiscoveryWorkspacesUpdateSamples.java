@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class StorageDiscoveryWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/StorageDiscoveryWorkspaces_Update.json
+     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_Update.json
      */
     /**
      * Sample code: Update a StorageDiscoveryWorkspace.
@@ -31,8 +31,7 @@ public final class StorageDiscoveryWorkspacesUpdateSamples {
             .getByResourceGroupWithResponse("sample-rg", "Sample-Storage-Workspace", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new StorageDiscoveryWorkspacePropertiesUpdate()
-                .withSku(StorageDiscoverySku.fromString("Premium"))
+            .withProperties(new StorageDiscoveryWorkspacePropertiesUpdate().withSku(StorageDiscoverySku.FREE)
                 .withDescription("Updated Sample Storage Discovery Workspace")
                 .withWorkspaceRoots(Arrays.asList("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"))
                 .withScopes(Arrays.asList(new StorageDiscoveryScope().withDisplayName("Updated-Sample-Collection")

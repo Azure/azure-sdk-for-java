@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConnectionsAsyncClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
@@ -113,7 +115,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.getConnection(connectionName, false);
+        Mono<Connection> connectionMono = connectionsAsyncClient.getConnection(connectionName);
 
         try {
             // Test retrieving a connection

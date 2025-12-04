@@ -63,14 +63,13 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String componentName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
-    }
-
     public void delete(String resourceGroupName, String connectedEnvironmentName, String componentName) {
         this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, componentName);
+    }
+
+    public void delete(String resourceGroupName, String connectedEnvironmentName, String componentName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 
     public Response<DaprSecretsCollection> listSecretsWithResponse(String resourceGroupName,
@@ -151,10 +150,10 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE);
+        this.delete(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -170,7 +169,7 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'daprComponents'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
+        this.delete(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 
     private ConnectedEnvironmentsDaprComponentsClient serviceClient() {

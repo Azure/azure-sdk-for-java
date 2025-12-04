@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OnlineExperimentationWorkspaceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OnlineExperimentationWorkspaceSku model = BinaryData.fromString("{\"name\":\"P0\",\"tier\":\"Developer\"}")
+        OnlineExperimentationWorkspaceSku model = BinaryData.fromString("{\"name\":\"D0\",\"tier\":\"Standard\"}")
             .toObject(OnlineExperimentationWorkspaceSku.class);
-        Assertions.assertEquals(OnlineExperimentationWorkspaceSkuName.P0, model.name());
+        Assertions.assertEquals(OnlineExperimentationWorkspaceSkuName.D0, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OnlineExperimentationWorkspaceSku model
-            = new OnlineExperimentationWorkspaceSku().withName(OnlineExperimentationWorkspaceSkuName.P0);
+            = new OnlineExperimentationWorkspaceSku().withName(OnlineExperimentationWorkspaceSkuName.D0);
         model = BinaryData.fromObject(model).toObject(OnlineExperimentationWorkspaceSku.class);
-        Assertions.assertEquals(OnlineExperimentationWorkspaceSkuName.P0, model.name());
+        Assertions.assertEquals(OnlineExperimentationWorkspaceSkuName.D0, model.name());
     }
 }

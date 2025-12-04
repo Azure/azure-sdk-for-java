@@ -30,6 +30,20 @@ public final class NettyHttpClientProvider extends HttpClientProvider {
     public NettyHttpClientProvider() {
     }
 
+    /**
+     * Creates a new {@link HttpClient} instance with a default, shared connection pool.
+     * <p>
+     * For more advanced customization, such as disabling pooling entirely, use the {@link NettyHttpClientBuilder}.
+     * <p>
+     * <b>Example: Creating a client without a connection pool</b>
+     * <pre>{@code
+     * HttpClient client = new NettyHttpClientBuilder()
+     * .connectionPoolSize(0)
+     * .build();
+     * }</pre>
+     *
+     * @return A new {@link HttpClient} instance.
+     */
     @Override
     public HttpClient getNewInstance() {
         return new NettyHttpClientBuilder().build();

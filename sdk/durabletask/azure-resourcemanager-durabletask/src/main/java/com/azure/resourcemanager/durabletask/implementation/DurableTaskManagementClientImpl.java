@@ -202,7 +202,7 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2025-11-01";
         this.operations = new OperationsClientImpl(this);
         this.schedulers = new SchedulersClientImpl(this);
         this.taskHubs = new TaskHubsClientImpl(this);

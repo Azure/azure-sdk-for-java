@@ -12,9 +12,8 @@ public final class InnerErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InnerError model
-            = BinaryData.fromString("{\"exceptionType\":\"cvqvpkeqdcv\",\"errorDetail\":\"hvoodsotbobzd\"}")
-                .toObject(InnerError.class);
-        Assertions.assertEquals("cvqvpkeqdcv", model.exceptionType());
-        Assertions.assertEquals("hvoodsotbobzd", model.errorDetail());
+            = BinaryData.fromString("{\"exceptionType\":\"iyq\",\"errorDetail\":\"uicpd\"}").toObject(InnerError.class);
+        Assertions.assertEquals("iyq", model.exceptionType());
+        Assertions.assertEquals("uicpd", model.errorDetail());
     }
 }

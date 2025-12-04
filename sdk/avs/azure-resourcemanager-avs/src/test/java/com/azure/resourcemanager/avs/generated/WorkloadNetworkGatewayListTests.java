@@ -12,9 +12,9 @@ public final class WorkloadNetworkGatewayListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"nsez\",\"path\":\"tbzsgfyccs\"},\"id\":\"wmdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kirsoodqxhc\",\"path\":\"nohjt\"},\"id\":\"whdsoifiyip\",\"name\":\"xsqwpgrjbznorc\",\"type\":\"xv\"}],\"nextLink\":\"byxqabn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"igovi\",\"path\":\"xk\"},\"id\":\"loazuruocbgoo\",\"name\":\"bteoybf\",\"type\":\"jxakv\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ordilmywwtkgkxny\",\"path\":\"abgyvudt\"},\"id\":\"ewbcihxuuw\",\"name\":\"c\",\"type\":\"yxccyb\"}],\"nextLink\":\"ayakkudzpx\"}")
             .toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("nsez", model.value().get(0).displayName());
-        Assertions.assertEquals("byxqabn", model.nextLink());
+        Assertions.assertEquals("igovi", model.value().get(0).displayName());
+        Assertions.assertEquals("ayakkudzpx", model.nextLink());
     }
 }

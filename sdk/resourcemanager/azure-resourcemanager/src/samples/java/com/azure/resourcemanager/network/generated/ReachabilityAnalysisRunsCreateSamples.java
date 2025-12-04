@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.ReachabilityAnalysisRunPropertie
 public final class ReachabilityAnalysisRunsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ReachabilityAnalysisRunPut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/ReachabilityAnalysisRunPut.
      * json
      */
     /**

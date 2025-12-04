@@ -60,4 +60,10 @@ public final class DeidentificationOperationType extends ExpandableStringEnum<De
     public static Collection<DeidentificationOperationType> values() {
         return values(DeidentificationOperationType.class);
     }
+
+    /**
+     * SurrogateOnly Operation will replace only specified entities of PHI with surrogate values.
+     */
+    @Generated
+    public static final DeidentificationOperationType SURROGATE_ONLY = fromString("SurrogateOnly");
 }

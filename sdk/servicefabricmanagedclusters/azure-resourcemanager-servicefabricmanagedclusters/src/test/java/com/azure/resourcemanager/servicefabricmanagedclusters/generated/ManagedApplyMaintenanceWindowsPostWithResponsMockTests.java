@@ -28,7 +28,7 @@ public final class ManagedApplyMaintenanceWindowsPostWithResponsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.managedApplyMaintenanceWindows()
-            .postWithResponse("nxfyqonm", "qoxwd", com.azure.core.util.Context.NONE);
+            .postWithResponse("d", "cpfnznthjtwkja", com.azure.core.util.Context.NONE);
 
     }
 }

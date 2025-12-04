@@ -15,22 +15,21 @@ public final class FaultSimulationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationInner model = BinaryData.fromString(
-            "{\"simulationId\":\"ycubeddgs\",\"status\":\"Starting\",\"startTime\":\"2021-01-03T15:36:46Z\",\"endTime\":\"2021-08-12T00:48:32Z\",\"details\":{\"clusterId\":\"lkrm\",\"operationId\":\"i\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"cqqudf\",\"status\":\"Active\",\"operationId\":\"baaa\",\"operationStatus\":\"Failed\"},{\"nodeTypeName\":\"ayffim\",\"status\":\"Active\",\"operationId\":\"uzqogsexnevf\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"wmewzsyy\",\"status\":\"Starting\",\"operationId\":\"soibjudpfrx\",\"operationStatus\":\"Failed\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":true,\"constraints\":{\"expirationTime\":\"2021-08-03T17:35Z\"}}}}")
+            "{\"simulationId\":\"ncckw\",\"status\":\"Active\",\"startTime\":\"2021-06-29T06:08:24Z\",\"endTime\":\"2021-07-28T19:48:05Z\",\"details\":{\"clusterId\":\"uyqaxzfeqztppr\",\"operationId\":\"lxorjaltolmncws\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"csdbnwdcfhuc\",\"status\":\"Done\",\"operationId\":\"uvglsbjjcanvx\",\"operationStatus\":\"Canceled\"},{\"nodeTypeName\":\"udutnco\",\"status\":\"Stopping\",\"operationId\":\"xqtvcofu\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"kgjubgdknnqvsazn\",\"status\":\"Active\",\"operationId\":\"rudsg\",\"operationStatus\":\"Aborted\"},{\"nodeTypeName\":\"kycgrauwj\",\"status\":\"Starting\",\"operationId\":\"eburu\",\"operationStatus\":\"Canceled\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-06-02T15:45:41Z\"}}}}")
             .toObject(FaultSimulationInner.class);
-        Assertions.assertEquals("ycubeddgs", model.simulationId());
-        Assertions.assertEquals(FaultSimulationStatus.STARTING, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T15:36:46Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T00:48:32Z"), model.endTime());
-        Assertions.assertEquals("lkrm", model.details().clusterId());
-        Assertions.assertEquals("i", model.details().operationId());
-        Assertions.assertEquals("cqqudf", model.details().nodeTypeFaultSimulation().get(0).nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.ACTIVE,
-            model.details().nodeTypeFaultSimulation().get(0).status());
-        Assertions.assertEquals("baaa", model.details().nodeTypeFaultSimulation().get(0).operationId());
-        Assertions.assertEquals(SfmcOperationStatus.FAILED,
+        Assertions.assertEquals("ncckw", model.simulationId());
+        Assertions.assertEquals(FaultSimulationStatus.ACTIVE, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T06:08:24Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T19:48:05Z"), model.endTime());
+        Assertions.assertEquals("uyqaxzfeqztppr", model.details().clusterId());
+        Assertions.assertEquals("lxorjaltolmncws", model.details().operationId());
+        Assertions.assertEquals("csdbnwdcfhuc", model.details().nodeTypeFaultSimulation().get(0).nodeTypeName());
+        Assertions.assertEquals(FaultSimulationStatus.DONE, model.details().nodeTypeFaultSimulation().get(0).status());
+        Assertions.assertEquals("uvglsbjjcanvx", model.details().nodeTypeFaultSimulation().get(0).operationId());
+        Assertions.assertEquals(SfmcOperationStatus.CANCELED,
             model.details().nodeTypeFaultSimulation().get(0).operationStatus());
-        Assertions.assertTrue(model.details().parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T17:35Z"),
+        Assertions.assertFalse(model.details().parameters().force());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T15:45:41Z"),
             model.details().parameters().constraints().expirationTime());
     }
 }

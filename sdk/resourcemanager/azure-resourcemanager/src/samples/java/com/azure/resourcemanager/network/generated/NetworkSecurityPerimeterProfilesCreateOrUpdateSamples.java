@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.NspProfileInner;
 public final class NetworkSecurityPerimeterProfilesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NspProfilePut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NspProfilePut.json
      */
     /**
      * Sample code: NspProfilesPut.

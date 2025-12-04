@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class FaultSimulationConstraintsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FaultSimulationConstraints model = BinaryData.fromString("{\"expirationTime\":\"2021-11-21T09:22:46Z\"}")
+        FaultSimulationConstraints model = BinaryData.fromString("{\"expirationTime\":\"2021-08-26T13:15:20Z\"}")
             .toObject(FaultSimulationConstraints.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T09:22:46Z"), model.expirationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T13:15:20Z"), model.expirationTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FaultSimulationConstraints model
-            = new FaultSimulationConstraints().withExpirationTime(OffsetDateTime.parse("2021-11-21T09:22:46Z"));
+            = new FaultSimulationConstraints().withExpirationTime(OffsetDateTime.parse("2021-08-26T13:15:20Z"));
         model = BinaryData.fromObject(model).toObject(FaultSimulationConstraints.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T09:22:46Z"), model.expirationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T13:15:20Z"), model.expirationTime());
     }
 }

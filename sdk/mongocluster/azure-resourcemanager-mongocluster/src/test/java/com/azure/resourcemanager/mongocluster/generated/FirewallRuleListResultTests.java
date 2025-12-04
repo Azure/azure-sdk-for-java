@@ -12,10 +12,10 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"fizuckyf\",\"endIpAddress\":\"hr\"},\"id\":\"dfvzwdzuhty\",\"name\":\"wisdkft\",\"type\":\"wxmnteiwao\"}],\"nextLink\":\"km\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"a\",\"endIpAddress\":\"bqidtqaj\"},\"id\":\"ulpkudjkrl\",\"name\":\"hbzhfepg\",\"type\":\"gqexzlocxs\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"erhhbcsglumm\",\"endIpAddress\":\"jtjaodxobnbdxkq\"},\"id\":\"okaj\",\"name\":\"onpimexgstxg\",\"type\":\"po\"}],\"nextLink\":\"maajrmvdjwzrlo\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("fizuckyf", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("hr", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("km", model.nextLink());
+        Assertions.assertEquals("a", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("bqidtqaj", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("maajrmvdjwzrlo", model.nextLink());
     }
 }

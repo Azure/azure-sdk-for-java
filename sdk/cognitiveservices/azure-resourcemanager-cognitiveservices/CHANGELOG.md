@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,132 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2025-10-24)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CustomTopicConfig` was added
+
+* `models.UpgradeAvailabilityStatus` was added
+
+* `models.RaiTopic` was added
+
+* `models.ReplacementConfig` was added
+
+* `models.TierUpgradePolicy` was added
+
+* `models.RaiTopicResult` was added
+
+* `models.RaiTopics` was added
+
+* `models.QuotaTier$DefinitionStages` was added
+
+* `models.QuotaTierUpgradeEligibilityInfo` was added
+
+* `models.QuotaTiers` was added
+
+* `models.RaiTopicConfig` was added
+
+* `models.RaiTopic$DefinitionStages` was added
+
+* `models.DeprecationStatus` was added
+
+* `models.RaiTopic$Definition` was added
+
+* `models.RaiTopic$Update` was added
+
+* `models.QuotaTier` was added
+
+* `models.QuotaTier$Definition` was added
+
+* `models.RaiTopicProperties` was added
+
+* `models.QuotaTier$UpdateStages` was added
+
+* `models.QuotaTierListResult` was added
+
+* `models.QuotaTier$Update` was added
+
+* `models.QuotaTierProperties` was added
+
+* `models.RaiTopic$UpdateStages` was added
+
+#### `models.AccountModel` was modified
+
+* `modelCatalogAssetId()` was added
+* `replacementConfig()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `quotaTiers()` was added
+* `raiTopics()` was added
+
+#### `models.RaiPolicyProperties` was modified
+
+* `customTopics()` was added
+* `withCustomTopics(java.util.List)` was added
+
+#### `models.ModelDeprecationInfo` was modified
+
+* `withDeprecationStatus(models.DeprecationStatus)` was added
+* `deprecationStatus()` was added
+
+#### `models.AzureEntityResource` was modified
+
+* `systemData()` was added
+
+#### `models.CapabilityHost` was modified
+
+* `systemData()` was added
+
+#### `models.ConnectionPropertiesV2BasicResource` was modified
+
+* `systemData()` was added
+
+#### `models.RaiContentFilter` was modified
+
+* `systemData()` was added
+
+#### `models.AccountProperties` was modified
+
+* `withStoredCompletionsDisabled(java.lang.Boolean)` was added
+* `storedCompletionsDisabled()` was added
+
+#### `models.NetworkSecurityPerimeterConfiguration` was modified
+
+* `systemData()` was added
+
+#### `models.ModelCapacityListResultValueItem` was modified
+
+* `systemData()` was added
+
+## 1.3.0 (2025-09-16)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NetworkInjections` was removed
+
+#### `models.AccountProperties` was modified
+
+* `models.NetworkInjections networkInjections()` -> `java.util.List networkInjections()`
+* `withNetworkInjections(models.NetworkInjections)` was removed
+
+### Features Added
+
+* `models.NetworkInjection` was added
+
+#### `models.AccountProperties` was modified
+
+* `withNetworkInjections(java.util.List)` was added
 
 ## 1.2.0 (2025-07-21)
 

@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_UserCreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_UserCreateOrUpdate.json
      */
     /**
      * Sample code: Creates a user on a Mongo Cluster resource.

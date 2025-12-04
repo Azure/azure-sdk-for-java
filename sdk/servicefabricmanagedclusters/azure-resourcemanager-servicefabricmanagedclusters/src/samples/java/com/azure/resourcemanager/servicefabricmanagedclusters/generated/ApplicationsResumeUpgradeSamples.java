@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeResu
  */
 public final class ApplicationsResumeUpgradeSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApplicationActionResumeUpgrade_example.json
+     * x-ms-original-file: 2025-10-01-preview/ApplicationActionResumeUpgrade_example.json
      */
     /**
      * Sample code: Resume upgrade.

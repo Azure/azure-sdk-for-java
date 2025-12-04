@@ -13,18 +13,18 @@ public final class SubscriberQueueLimitTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriberQueueLimit model
-            = BinaryData.fromString("{\"length\":7055485397509793612,\"strategy\":\"DropOldest\"}")
+            = BinaryData.fromString("{\"length\":5881942076944182815,\"strategy\":\"DropOldest\"}")
                 .toObject(SubscriberQueueLimit.class);
-        Assertions.assertEquals(7055485397509793612L, model.length());
+        Assertions.assertEquals(5881942076944182815L, model.length());
         Assertions.assertEquals(SubscriberMessageDropStrategy.DROP_OLDEST, model.strategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriberQueueLimit model = new SubscriberQueueLimit().withLength(7055485397509793612L)
+        SubscriberQueueLimit model = new SubscriberQueueLimit().withLength(5881942076944182815L)
             .withStrategy(SubscriberMessageDropStrategy.DROP_OLDEST);
         model = BinaryData.fromObject(model).toObject(SubscriberQueueLimit.class);
-        Assertions.assertEquals(7055485397509793612L, model.length());
+        Assertions.assertEquals(5881942076944182815L, model.length());
         Assertions.assertEquals(SubscriberMessageDropStrategy.DROP_OLDEST, model.strategy());
     }
 }

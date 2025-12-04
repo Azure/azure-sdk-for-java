@@ -238,7 +238,7 @@
           "code": "java.method.addedToInterface",
           "new": {
             "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager).*"
+            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform\\.|appservice\\.|authorization\\.|cdn\\.|compute\\.|containerinstance\\.|containerregistry\\.|containerservice\\.|cosmos\\.|dns\\.|eventhubs\\.|keyvault\\.|monitor\\.|msi\\.|network\\.|privatedns\\.|redis\\.|resources\\.|search\\.|servicebus\\.|sql\\.|storage\\.|trafficmanager\\.).*"
           },
           "justification": "resourcemanager interfaces are allowed to add methods, except for the 24 specific premium libraries."
         },
@@ -334,6 +334,11 @@
             "match": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::set(Password|RemoteUrl|Username)\\(java\\.lang\\.String\\)"
           },
           "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
+          "justification" : "Remove deprecated method"
         },
         {
           "code": "java.method.numberOfParametersChanged",
@@ -575,12 +580,12 @@
           "justification": "Migration to azure-json."
         },
         {
-          "code": "java.class.nowFinal",
+          "code": "java.method.removed",
           "old": {
             "matcher": "regex",
-            "match": "class com.azure.resourcemanager.(eventhubs|servicebus).models.(Identity|UserAssignedIdentity)"
+            "match": "method void com\\.azure\\.resourcemanager\\..*\\.models.*::validate\\(\\)"
           },
-          "justification": "Class is now final."
+          "justification": "Do not include client-side validation for SDK generated from TypeSpec."
         },
         {
           "code": "java.method.returnTypeErasureChanged",
@@ -593,116 +598,6 @@
           "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
           "new": "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.sql\\.models\\.(DatabaseIdentity|DatabaseUserIdentity|ResourceIdentity|UserIdentity)"
-          },
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
-          "justification": "Service changed the property to readOnly."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.field.addedStaticField",
-          "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
-          "justification": "Additional protocols are supported by Web PubSub."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
         },
         {
           "ignore": true,
@@ -742,12 +637,22 @@
           "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
         },
         {
-          "code": "java.field.enumConstantOrderChanged",
-          "old": {
-            "matcher": "regex",
-            "match": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)"
-          },
-          "justification": "Add Accepted to ProvisioningState."
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Double com.azure.search.documents.util.SearchPagedResponse::getCoverage()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.util.Map<java.lang.String, java.util.List<com.azure.search.documents.models.FacetResult>> com.azure.search.documents.util.SearchPagedResponse::getFacets()",
+          "justification": "Non-breaking change as class is final."
         },
         {
           "code": "java.method.varargOverloadsOnlyDifferInVarargParameter",
@@ -758,205 +663,114 @@
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::withType(java.lang.String)",
-          "justification" : "The property is a constant, which should not be changed."
+          "code": "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
+          "justification": "Not a break, same method exists on its parent class."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult com.azure.resourcemanager.network.models.ConnectionMonitor::query()",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service.."
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>()",
+          "new": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>(java.lang.Long)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Changed due to stream-style serialization."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method reactor.core.publisher.Mono<com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult> com.azure.resourcemanager.network.models.ConnectionMonitor::queryAsync()",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AlertSeverity com.azure.resourcemanager.monitor.models.AlertSeverity::fromLong(long)",
+          "justification": "Changed due to stream-style serialization."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method void com.azure.resourcemanager.network.models.ConnectionMonitor::start()",
-          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "new": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "superClass": "com.azure.core.util.ExpandableStringEnum<com.azure.resourcemanager.monitor.models.AlertSeverity>",
+          "justification": "Changed due to stream-style serialization."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method reactor.core.publisher.Mono<java.lang.Void> com.azure.resourcemanager.network.models.ConnectionMonitor::startAsync()",
-          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(java.lang.String)",
+          "justification": "The property is a constant, and hence not settable."
         },
         {
           "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "interface com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionState",
-          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionStateSnapshot",
-          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
-          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
+          "code" : "java.field.enumConstantOrderChanged",
           "old": {
             "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.appservice\\.models\\.(ActiveRevisionsMode|Configuration|Container|ContainerAppCollection|ContainerAppProvisioningState|ContainerAppSecret|ContainerResources|CustomScaleRule|Dapr|DaprComponent|DaprMetadata|EnvironmentVar|HttpScaleRule|Ingress|IngressTransportMethod|QueueScaleRule|QueueScaleRule|RegistryCredentials|RevisionCollection|RevisionHealthState|RevisionProvisioningState|Scale|ScaleRule|ScaleRuleAuth|Secret|Template|TrafficWeight)"
+            "match": "field com\\.azure\\.resourcemanager\\.appservice\\.models\\.ManagedServiceIdentityType\\..*"
           },
-          "justification" : "Removed with the unused ContainerApp APIs."
+          "justification": "Enum constant order change is not a breaking change."
         },
         {
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.compute.models.ComputeOperationListResult",
-          "justification" : "Pageable result class for implementation, not used by user."
-        },
-        {
-          "code" : "java.method.returnTypeChanged",
-          "old" : "method com.azure.resourcemanager.compute.models.PurchasePlanAutoGenerated com.azure.resourcemanager.compute.models.DiskUpdate::purchasePlan()",
-          "new" : "method com.azure.resourcemanager.compute.models.DiskPurchasePlan com.azure.resourcemanager.compute.models.DiskUpdate::purchasePlan()",
-          "justification" : "Swagger model name fix."
-        },
-        {
-          "code" : "java.method.parameterTypeChanged",
-          "old" : "parameter com.azure.resourcemanager.compute.models.DiskUpdate com.azure.resourcemanager.compute.models.DiskUpdate::withPurchasePlan(===com.azure.resourcemanager.compute.models.PurchasePlanAutoGenerated===)",
-          "new" : "parameter com.azure.resourcemanager.compute.models.DiskUpdate com.azure.resourcemanager.compute.models.DiskUpdate::withPurchasePlan(===com.azure.resourcemanager.compute.models.DiskPurchasePlan===)",
-          "justification" : "Swagger model name fix."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryApplicationUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryApplicationUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryApplicationVersionUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryApplicationVersionUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryImageUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryImageUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryImageVersionUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryImageVersionUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryInVMAccessControlProfileUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryInVMAccessControlProfileUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryInVMAccessControlProfileVersionUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryInVMAccessControlProfileVersionUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.method.returnTypeChanged",
-          "old" : "method com.azure.resourcemanager.compute.models.StorageAccountType com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::storageAccountType()",
-          "new" : "method com.azure.resourcemanager.compute.models.EdgeZoneStorageAccountType com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::storageAccountType()",
-          "justification" : "Swagger fix for duplicate enum names. `EdgeZoneStorageAccountType` is only for `GalleryTargetExtendedLocation`"
-        },
-        {
-          "code" : "java.method.parameterTypeChanged",
-          "old" : "parameter com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::withStorageAccountType(===com.azure.resourcemanager.compute.models.StorageAccountType===)",
-          "new" : "parameter com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::withStorageAccountType(===com.azure.resourcemanager.compute.models.EdgeZoneStorageAccountType===)",
-          "justification" : "Swagger fix for duplicate enum names. `EdgeZoneStorageAccountType` is only for `GalleryTargetExtendedLocation`"
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.GalleryUpdate",
-          "new" : "class com.azure.resourcemanager.compute.models.GalleryUpdate",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`."
-        },
-        {
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.compute.models.ProxyOnlyResource",
-          "justification" : "Swagger fix. Unify resource base class."
-        },
-        {
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.compute.models.PurchasePlanAutoGenerated",
-          "justification" : "Swagger fix for duplicate model name."
-        },
-        {
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.compute.models.ResourceWithOptionalLocation",
-          "justification" : "Swagger fix. Unify resource base class."
-        },
-        {
-          "code" : "java.field.removed",
-          "old" : "field com.azure.resourcemanager.compute.models.StorageAccountType.STANDARD_SSD_LRS",
-          "justification" : "Swagger fix. `STANDARD_SSD_LRS` is now moved to `EdgeZoneStorageAccountType`."
-        },
-        {
-          "code" : "java.missing.oldSuperType",
-          "old" : "class com.azure.resourcemanager.compute.models.UpdateResourceDefinition",
-          "new" : "class com.azure.resourcemanager.compute.models.UpdateResourceDefinition",
-          "justification" : "Swagger fix. Patch model should not inherit from `ProxyResource`"
-        },
-        {
-          "code" : "java.method.returnTypeChanged",
-          "old" : "method java.lang.String com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile::diskControllerType()",
-          "new" : "method com.azure.resourcemanager.compute.models.DiskControllerTypes com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile::diskControllerType()",
-          "justification" : "Swagger fix. It should be an extensible enum instead of plain string."
-        },
-        {
-          "code" : "java.method.parameterTypeChanged",
-          "old" : "parameter com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile::withDiskControllerType(===java.lang.String===)",
-          "new" : "parameter com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile::withDiskControllerType(===com.azure.resourcemanager.compute.models.DiskControllerTypes===)",
-          "justification" : "Swagger fix. It should be an extensible enum instead of plain string."
-        },
-        {
-          "code" : "java.method.returnTypeChanged",
-          "old" : "method java.lang.String com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile::diskControllerType()",
-          "new" : "method com.azure.resourcemanager.compute.models.DiskControllerTypes com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile::diskControllerType()",
-          "justification" : "Swagger fix. It should be an extensible enum instead of plain string."
-        },
-        {
-          "code" : "java.method.parameterTypeChanged",
-          "old" : "parameter com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile::withDiskControllerType(===java.lang.String===)",
-          "new" : "parameter com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile::withDiskControllerType(===com.azure.resourcemanager.compute.models.DiskControllerTypes===)",
-          "justification" : "Swagger fix. It should be an extensible enum instead of plain string."
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
         {
           "ignore": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.resourcemanager.compute.models.Expand",
-          "justification": "Swagger fix. For SDK and client tool needs, and to keep it consistent with virtualMachineImages_List $expand parameter, we need to keep it a string type."
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
         },
         {
           "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*Resource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
           "code": "java.class.removed",
-          "old": "class com.azure.resourcemanager.compute.models.VirtualMachineImagesWithPropertiesListResult",
-          "justification": "Swagger fix. Return type in actual REST API is not pageable list, it is an array of object, consistent with virtualMachineImages_List."
+          "old" : "class com.azure.resourcemanager.keyvault.models.ProxyResourceWithoutSystemData",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
+          "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
+          "justification" : "Not a break."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.ApplicationGatewayWafRuleSensitivityTypes.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
         }
       ]
     }

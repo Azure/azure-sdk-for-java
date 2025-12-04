@@ -14,8 +14,8 @@ public final class ApiServerAccessProfileTests {
         ApiServerAccessProfile model = BinaryData
             .fromString("{\"enablePrivateCluster\":false,\"enableVnetIntegration\":true,\"subnetId\":\"jbp\"}")
             .toObject(ApiServerAccessProfile.class);
-        Assertions.assertEquals(false, model.enablePrivateCluster());
-        Assertions.assertEquals(true, model.enableVnetIntegration());
+        Assertions.assertFalse(model.enablePrivateCluster());
+        Assertions.assertTrue(model.enableVnetIntegration());
         Assertions.assertEquals("jbp", model.subnetId());
     }
 
@@ -25,8 +25,8 @@ public final class ApiServerAccessProfileTests {
             .withEnableVnetIntegration(true)
             .withSubnetId("jbp");
         model = BinaryData.fromObject(model).toObject(ApiServerAccessProfile.class);
-        Assertions.assertEquals(false, model.enablePrivateCluster());
-        Assertions.assertEquals(true, model.enableVnetIntegration());
+        Assertions.assertFalse(model.enablePrivateCluster());
+        Assertions.assertTrue(model.enableVnetIntegration());
         Assertions.assertEquals("jbp", model.subnetId());
     }
 }

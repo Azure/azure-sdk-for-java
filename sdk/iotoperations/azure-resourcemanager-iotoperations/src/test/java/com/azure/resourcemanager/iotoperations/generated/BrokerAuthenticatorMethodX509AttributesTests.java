@@ -14,20 +14,20 @@ public final class BrokerAuthenticatorMethodX509AttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerAuthenticatorMethodX509Attributes model
-            = BinaryData.fromString("{\"attributes\":{\"dhbt\":\"cn\"},\"subject\":\"kphywpnvjto\"}")
+            = BinaryData.fromString("{\"attributes\":{\"wburvjxxjnspydpt\":\"gigr\"},\"subject\":\"oenkouknvudwti\"}")
                 .toObject(BrokerAuthenticatorMethodX509Attributes.class);
-        Assertions.assertEquals("cn", model.attributes().get("dhbt"));
-        Assertions.assertEquals("kphywpnvjto", model.subject());
+        Assertions.assertEquals("gigr", model.attributes().get("wburvjxxjnspydpt"));
+        Assertions.assertEquals("oenkouknvudwti", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BrokerAuthenticatorMethodX509Attributes model
-            = new BrokerAuthenticatorMethodX509Attributes().withAttributes(mapOf("dhbt", "cn"))
-                .withSubject("kphywpnvjto");
+            = new BrokerAuthenticatorMethodX509Attributes().withAttributes(mapOf("wburvjxxjnspydpt", "gigr"))
+                .withSubject("oenkouknvudwti");
         model = BinaryData.fromObject(model).toObject(BrokerAuthenticatorMethodX509Attributes.class);
-        Assertions.assertEquals("cn", model.attributes().get("dhbt"));
-        Assertions.assertEquals("kphywpnvjto", model.subject());
+        Assertions.assertEquals("gigr", model.attributes().get("wburvjxxjnspydpt"));
+        Assertions.assertEquals("oenkouknvudwti", model.subject());
     }
 
     // Use "Map.of" if available

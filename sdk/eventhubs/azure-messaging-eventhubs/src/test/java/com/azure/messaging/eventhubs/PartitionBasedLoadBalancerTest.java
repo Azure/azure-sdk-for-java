@@ -852,7 +852,8 @@ public class PartitionBasedLoadBalancerTest {
      * Creates an EventData with the received properties set.
      */
     private EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
-        final Message message = getMessage(contents, "messageId", sequenceNumber, offsetNumber, enqueuedTime);
+        final Message message
+            = getMessage(contents, "messageId", sequenceNumber, String.valueOf(offsetNumber), enqueuedTime);
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 }

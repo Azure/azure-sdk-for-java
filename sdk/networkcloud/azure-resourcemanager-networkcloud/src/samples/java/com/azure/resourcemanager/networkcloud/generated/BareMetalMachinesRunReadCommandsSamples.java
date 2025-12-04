@@ -14,8 +14,28 @@ import java.util.Arrays;
 public final class BareMetalMachinesRunReadCommandsSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
-     * BareMetalMachines_RunReadCommands.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * BareMetalMachines_RunReadCommands_Hostname.json
+     */
+    /**
+     * Sample code: Run and retrieve output from a single read only command on bare metal machine.
+     * 
+     * @param manager Entry point to NetworkCloudManager.
+     */
+    public static void runAndRetrieveOutputFromASingleReadOnlyCommandOnBareMetalMachine(
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.bareMetalMachines()
+            .runReadCommands("resourceGroupName", "bareMetalMachineName",
+                new BareMetalMachineRunReadCommandsParameters()
+                    .withCommands(Arrays.asList(new BareMetalMachineCommandSpecification().withCommand("hostname")))
+                    .withLimitTimeSeconds(60L),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * BareMetalMachines_RunReadCommands_Multiple.json
      */
     /**
      * Sample code: Run and retrieve output from read only commands on bare metal machine.

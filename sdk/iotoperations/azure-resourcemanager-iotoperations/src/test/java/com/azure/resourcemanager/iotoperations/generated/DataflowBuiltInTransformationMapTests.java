@@ -14,28 +14,28 @@ public final class DataflowBuiltInTransformationMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowBuiltInTransformationMap model = BinaryData.fromString(
-            "{\"type\":\"NewProperties\",\"description\":\"cvqvpkeqdcv\",\"inputs\":[\"hvoodsotbobzd\",\"pcjwv\"],\"expression\":\"dldwmgxc\",\"output\":\"rslpmutwuoeg\"}")
+            "{\"type\":\"NewProperties\",\"description\":\"swiydmcwyhzdx\",\"inputs\":[\"adbzmnvdfznud\",\"od\"],\"expression\":\"zbn\",\"output\":\"blylpstdbh\"}")
             .toObject(DataflowBuiltInTransformationMap.class);
         Assertions.assertEquals(DataflowMappingType.NEW_PROPERTIES, model.type());
-        Assertions.assertEquals("cvqvpkeqdcv", model.description());
-        Assertions.assertEquals("hvoodsotbobzd", model.inputs().get(0));
-        Assertions.assertEquals("dldwmgxc", model.expression());
-        Assertions.assertEquals("rslpmutwuoeg", model.output());
+        Assertions.assertEquals("swiydmcwyhzdx", model.description());
+        Assertions.assertEquals("adbzmnvdfznud", model.inputs().get(0));
+        Assertions.assertEquals("zbn", model.expression());
+        Assertions.assertEquals("blylpstdbh", model.output());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowBuiltInTransformationMap model
             = new DataflowBuiltInTransformationMap().withType(DataflowMappingType.NEW_PROPERTIES)
-                .withDescription("cvqvpkeqdcv")
-                .withInputs(Arrays.asList("hvoodsotbobzd", "pcjwv"))
-                .withExpression("dldwmgxc")
-                .withOutput("rslpmutwuoeg");
+                .withDescription("swiydmcwyhzdx")
+                .withInputs(Arrays.asList("adbzmnvdfznud", "od"))
+                .withExpression("zbn")
+                .withOutput("blylpstdbh");
         model = BinaryData.fromObject(model).toObject(DataflowBuiltInTransformationMap.class);
         Assertions.assertEquals(DataflowMappingType.NEW_PROPERTIES, model.type());
-        Assertions.assertEquals("cvqvpkeqdcv", model.description());
-        Assertions.assertEquals("hvoodsotbobzd", model.inputs().get(0));
-        Assertions.assertEquals("dldwmgxc", model.expression());
-        Assertions.assertEquals("rslpmutwuoeg", model.output());
+        Assertions.assertEquals("swiydmcwyhzdx", model.description());
+        Assertions.assertEquals("adbzmnvdfznud", model.inputs().get(0));
+        Assertions.assertEquals("zbn", model.expression());
+        Assertions.assertEquals("blylpstdbh", model.output());
     }
 }

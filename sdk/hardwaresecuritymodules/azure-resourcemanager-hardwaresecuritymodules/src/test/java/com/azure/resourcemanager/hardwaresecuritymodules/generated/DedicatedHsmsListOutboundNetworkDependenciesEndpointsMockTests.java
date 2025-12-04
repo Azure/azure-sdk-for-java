@@ -22,7 +22,7 @@ public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTest
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"cswsmystul\",\"endpoints\":[{\"domainName\":\"fcvlerch\",\"endpointDetails\":[{\"ipAddress\":\"f\",\"port\":546695443,\"protocol\":\"bwidfcxsspuunn\",\"description\":\"yhkx\"}]},{\"domainName\":\"ddrihpf\",\"endpointDetails\":[{\"ipAddress\":\"aaewdaomdjv\",\"port\":986861935,\"protocol\":\"xkzb\",\"description\":\"sgeivsiy\"},{\"ipAddress\":\"kdncj\",\"port\":1690186599,\"protocol\":\"bzo\",\"description\":\"culapzwyrpgogtq\"},{\"ipAddress\":\"pnylb\",\"port\":1407382097,\"protocol\":\"lyjt\",\"description\":\"of\"},{\"ipAddress\":\"hvfcibyfmow\",\"port\":1105067830,\"protocol\":\"jpvd\",\"description\":\"fzwiivwzjbhyz\"}]},{\"domainName\":\"jrkambtrnegvmnv\",\"endpointDetails\":[{\"ipAddress\":\"vldspa\",\"port\":1828448975,\"protocol\":\"kkdmfl\",\"description\":\"stmjlxrri\"},{\"ipAddress\":\"zapeewchpx\",\"port\":55990997,\"protocol\":\"kuziycsle\",\"description\":\"f\"},{\"ipAddress\":\"tcktyhjtqedcgzu\",\"port\":1160577956,\"protocol\":\"rqzz\",\"description\":\"jvpglydzgk\"}]},{\"domainName\":\"qeevt\",\"endpointDetails\":[{\"ipAddress\":\"yutnwytpzdmov\",\"port\":1887734722,\"protocol\":\"aawzqadfl\",\"description\":\"ur\"}]}]}]}";
+            = "{\"value\":[{\"category\":\"lves\",\"endpoints\":[{\"domainName\":\"xrrilozapee\",\"endpointDetails\":[{\"ipAddress\":\"xlktwkuzi\",\"port\":463707796,\"protocol\":\"evufuztck\",\"description\":\"h\"},{\"ipAddress\":\"qedcgzulwm\",\"port\":652058818,\"protocol\":\"zrrjvpgly\",\"description\":\"gkrvqeevto\"},{\"ipAddress\":\"r\",\"port\":108809884,\"protocol\":\"wytpzdmovz\",\"description\":\"va\"},{\"ipAddress\":\"zqadf\",\"port\":97417905,\"protocol\":\"riglaec\",\"description\":\"dticokpvzml\"}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OutboundEnvironmentEndpoint> response = manager.dedicatedHsms()
-            .listOutboundNetworkDependenciesEndpoints("podbzevwrdnh", "ukuv", com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("eqvldspast", "bkkd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cswsmystul", response.iterator().next().category());
-        Assertions.assertEquals("fcvlerch", response.iterator().next().endpoints().get(0).domainName());
-        Assertions.assertEquals("f",
+        Assertions.assertEquals("lves", response.iterator().next().category());
+        Assertions.assertEquals("xrrilozapee", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("xlktwkuzi",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(546695443,
+        Assertions.assertEquals(463707796,
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("bwidfcxsspuunn",
+        Assertions.assertEquals("evufuztck",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("yhkx",
+        Assertions.assertEquals("h",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).description());
     }
 }

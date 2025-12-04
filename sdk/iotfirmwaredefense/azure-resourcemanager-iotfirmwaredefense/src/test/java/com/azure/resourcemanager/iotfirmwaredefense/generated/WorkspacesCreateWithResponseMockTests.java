@@ -25,7 +25,7 @@ public final class WorkspacesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Pending\"},\"sku\":{\"name\":\"mnvdfzn\",\"tier\":\"Free\",\"size\":\"dvxzbncblylpst\",\"family\":\"hh\",\"capacity\":1188392360},\"location\":\"dzu\",\"tags\":{\"wjmy\":\"scdntnevf\"},\"id\":\"tdss\",\"name\":\"s\",\"type\":\"tmweriofzpyq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"sku\":{\"name\":\"hfwdsjnkaljutiis\",\"tier\":\"Standard\",\"size\":\"fgdkzzew\",\"family\":\"vhqcrail\",\"capacity\":70247298},\"location\":\"pfuflrw\",\"tags\":{\"gafcnihgwqapnedg\":\"dlxyjrxs\",\"cvdrhvoodsot\":\"bcvkcvqvpkeq\",\"wmgxcxrsl\":\"obzdopcjwvnhdl\",\"rpkhjwn\":\"mutwuoe\"},\"id\":\"yqsluic\",\"name\":\"dggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +35,24 @@ public final class WorkspacesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workspace response = manager.workspaces()
-            .define("bsrfbj")
-            .withRegion("tjrybnwjewgdr")
-            .withExistingResourceGroup("hsqfsubcgjbirxbp")
-            .withTags(
-                mapOf("ifthnz", "vnaenqpehindoyg", "vhqlkthumaqo", "ndslgnayqigynduh", "aolps", "bgycduiertgccym"))
-            .withSku(new Sku().withName("sotftpvj")
-                .withTier(SkuTier.PREMIUM)
-                .withSize("ilzznfqqnvwp")
-                .withFamily("taruoujmkcj")
-                .withCapacity(1589023977))
+            .define("tmuwlauwzi")
+            .withRegion("xe")
+            .withExistingResourceGroup("l")
+            .withTags(mapOf("glkfg", "zbtbhj", "dyhtozfikdowwquu", "hdneuelfph"))
+            .withSku(new Sku().withName("gcj")
+                .withTier(SkuTier.FREE)
+                .withSize("muvp")
+                .withFamily("tdum")
+                .withCapacity(95905507))
             .create();
 
-        Assertions.assertEquals("dzu", response.location());
-        Assertions.assertEquals("scdntnevf", response.tags().get("wjmy"));
-        Assertions.assertEquals("mnvdfzn", response.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.sku().tier());
-        Assertions.assertEquals("dvxzbncblylpst", response.sku().size());
-        Assertions.assertEquals("hh", response.sku().family());
-        Assertions.assertEquals(1188392360, response.sku().capacity());
+        Assertions.assertEquals("pfuflrw", response.location());
+        Assertions.assertEquals("dlxyjrxs", response.tags().get("gafcnihgwqapnedg"));
+        Assertions.assertEquals("hfwdsjnkaljutiis", response.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
+        Assertions.assertEquals("fgdkzzew", response.sku().size());
+        Assertions.assertEquals("vhqcrail", response.sku().family());
+        Assertions.assertEquals(70247298, response.sku().capacity());
     }
 
     // Use "Map.of" if available

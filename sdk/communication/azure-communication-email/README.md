@@ -35,7 +35,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
 </dependencyManagement>
 ```
 
-and then include the direct dependency in the dependencies section without the version tag.
+And then include the direct dependency in the dependencies section without the version tag.
 
 ```xml
 <dependencies>
@@ -49,27 +49,27 @@ and then include the direct dependency in the dependencies section without the v
 #### Include direct dependency
 
 If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
-
-[//]: # ({x-version-update-start;com.azure:azure-communication-email;current})
+add the direct dependency to your project as follows. "VERSION" below should be the version number you want. Example: 1.0.22
 
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>VERSION</version>
 </dependency>
 ```
 
-[//]: # ({x-version-update-end})
-
 ## Key concepts
 
-> More details coming soon.
+The email SDK provides two clients, a synchronous client and an asynchronous client:
+
+`EmailClient` and `EmailAsyncClient` provide an operation to send an email message (plain text or html). Inline images are supported for HTML formatted email message, making emails appealing for marketing campaigns.
+
+`EmailClient` and `EmailAsyncClient` also provide an operation to fetch the status of an email message sent.
 
 ## Examples
 
-`EmailClient` provides the functionality to send email messages .
+`EmailClient` provides the functionality to send email messages.
 
 ### Client Creation and Authentication
 
@@ -166,27 +166,6 @@ SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(mess
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
-```
-
-### Create a Poller from an Existing Operation ID
-
-If you have an operation ID from a previous send email request, you can create a poller to check the status of that operation at a later time.
-
-```java readme-sample-beginSendFromExistingOperationId
-EmailMessage message = new EmailMessage()
-    .setSenderAddress("<sender-email-address>")
-    .setToRecipients("<recipient-email-address>")
-    .setSubject("test subject")
-    .setBodyPlainText("test message");
-
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
-PollResponse<EmailSendResult> response = poller.waitForCompletion();
-String operationId = response.getValue().getId();
-
-SyncPoller<EmailSendResult, EmailSendResult> poller2 = emailClient.beginSend(operationId);
-PollResponse<EmailSendResult> response2 = poller2.waitForCompletion();
-
-System.out.println("Status: " + response2.getValue().getStatus());
 ```
 
 ### Send Email with Attachments

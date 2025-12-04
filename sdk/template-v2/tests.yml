@@ -1,0 +1,14 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: appconfiguration
+    Artifacts:
+      - name: azure-sdk-template
+        groupId: com.azure.v2
+        safeName: azuresdktemplate
+    EnvVars:
+      AZURE_TENANT_ID: $(TEMPLATE_TENANT_ID)
+      AZURE_CLIENT_SECRET: $(TEMPLATE_CLIENT_SECRET)
+      AZURE_CLIENT_ID: $(TEMPLATE_CLIENT_ID)

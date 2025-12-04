@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -304,27 +303,6 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
     public String resourceGroup() {
         return this.resourceGroup;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (vmwareFabricArmId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property vmwareFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
-        }
-        if (azStackHciFabricArmId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property azStackHciFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciRepExtnCustomProps.class);
 
     /**
      * {@inheritDoc}

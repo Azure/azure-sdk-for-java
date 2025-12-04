@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.test.implementation.faultinjection;
 
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
 import java.net.URI;
@@ -12,7 +13,7 @@ import java.util.Map;
 public interface IFaultInjectionRuleInternal {
     void disable();
     List<URI> getAddresses();
-    List<URI> getRegionEndpoints();
+    List<RegionalRoutingContext> getRegionalRoutingContexts();
     boolean isValid();
     String getId();
     long getHitCount();

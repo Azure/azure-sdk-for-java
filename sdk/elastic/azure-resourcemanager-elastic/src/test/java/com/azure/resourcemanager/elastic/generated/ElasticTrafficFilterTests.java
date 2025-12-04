@@ -15,45 +15,61 @@ public final class ElasticTrafficFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticTrafficFilter model = BinaryData.fromString(
-            "{\"id\":\"klbb\",\"name\":\"plwzbhvgyugu\",\"description\":\"vmkfssxqu\",\"region\":\"fpl\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":true,\"rules\":[{\"source\":\"zkd\",\"description\":\"lpvlopw\",\"azureEndpointGuid\":\"ighxpk\",\"azureEndpointName\":\"zb\",\"id\":\"uebbaumnyqup\"}]}")
+            "{\"id\":\"xisxyawjoyaqcsl\",\"name\":\"pkii\",\"description\":\"yexz\",\"region\":\"lixhnrztfol\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":true,\"rules\":[{\"source\":\"aulppggd\",\"description\":\"napnyiropuhpigv\",\"azureEndpointGuid\":\"ylgqgitxmedjvcsl\",\"azureEndpointName\":\"qwwncw\",\"id\":\"hxg\"},{\"source\":\"rmgucnap\",\"description\":\"eoellwptfdygp\",\"azureEndpointGuid\":\"b\",\"azureEndpointName\":\"ceopzfqrhhuaopp\",\"id\":\"qeqxo\"},{\"source\":\"dahzxctobg\",\"description\":\"dmoizpostmg\",\"azureEndpointGuid\":\"fbunrmfqjhhk\",\"azureEndpointName\":\"pvjymjhxxjyng\",\"id\":\"ivkrtsw\"},{\"source\":\"qzvszjf\",\"description\":\"vjfdx\",\"azureEndpointGuid\":\"vetvt\",\"azureEndpointName\":\"aqtdoqmcbx\",\"id\":\"vxysl\"}]}")
             .toObject(ElasticTrafficFilter.class);
-        Assertions.assertEquals("klbb", model.id());
-        Assertions.assertEquals("plwzbhvgyugu", model.name());
-        Assertions.assertEquals("vmkfssxqu", model.description());
-        Assertions.assertEquals("fpl", model.region());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.id());
+        Assertions.assertEquals("pkii", model.name());
+        Assertions.assertEquals("yexz", model.description());
+        Assertions.assertEquals("lixhnrztfol", model.region());
         Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, model.type());
-        Assertions.assertEquals(true, model.includeByDefault());
-        Assertions.assertEquals("zkd", model.rules().get(0).source());
-        Assertions.assertEquals("lpvlopw", model.rules().get(0).description());
-        Assertions.assertEquals("ighxpk", model.rules().get(0).azureEndpointGuid());
-        Assertions.assertEquals("zb", model.rules().get(0).azureEndpointName());
-        Assertions.assertEquals("uebbaumnyqup", model.rules().get(0).id());
+        Assertions.assertTrue(model.includeByDefault());
+        Assertions.assertEquals("aulppggd", model.rules().get(0).source());
+        Assertions.assertEquals("napnyiropuhpigv", model.rules().get(0).description());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.rules().get(0).azureEndpointGuid());
+        Assertions.assertEquals("qwwncw", model.rules().get(0).azureEndpointName());
+        Assertions.assertEquals("hxg", model.rules().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticTrafficFilter model = new ElasticTrafficFilter().withId("klbb")
-            .withName("plwzbhvgyugu")
-            .withDescription("vmkfssxqu")
-            .withRegion("fpl")
+        ElasticTrafficFilter model = new ElasticTrafficFilter().withId("xisxyawjoyaqcsl")
+            .withName("pkii")
+            .withDescription("yexz")
+            .withRegion("lixhnrztfol")
             .withType(Type.AZURE_PRIVATE_ENDPOINT)
             .withIncludeByDefault(true)
-            .withRules(Arrays.asList(new ElasticTrafficFilterRule().withSource("zkd")
-                .withDescription("lpvlopw")
-                .withAzureEndpointGuid("ighxpk")
-                .withAzureEndpointName("zb")
-                .withId("uebbaumnyqup")));
+            .withRules(Arrays.asList(
+                new ElasticTrafficFilterRule().withSource("aulppggd")
+                    .withDescription("napnyiropuhpigv")
+                    .withAzureEndpointGuid("ylgqgitxmedjvcsl")
+                    .withAzureEndpointName("qwwncw")
+                    .withId("hxg"),
+                new ElasticTrafficFilterRule().withSource("rmgucnap")
+                    .withDescription("eoellwptfdygp")
+                    .withAzureEndpointGuid("b")
+                    .withAzureEndpointName("ceopzfqrhhuaopp")
+                    .withId("qeqxo"),
+                new ElasticTrafficFilterRule().withSource("dahzxctobg")
+                    .withDescription("dmoizpostmg")
+                    .withAzureEndpointGuid("fbunrmfqjhhk")
+                    .withAzureEndpointName("pvjymjhxxjyng")
+                    .withId("ivkrtsw"),
+                new ElasticTrafficFilterRule().withSource("qzvszjf")
+                    .withDescription("vjfdx")
+                    .withAzureEndpointGuid("vetvt")
+                    .withAzureEndpointName("aqtdoqmcbx")
+                    .withId("vxysl")));
         model = BinaryData.fromObject(model).toObject(ElasticTrafficFilter.class);
-        Assertions.assertEquals("klbb", model.id());
-        Assertions.assertEquals("plwzbhvgyugu", model.name());
-        Assertions.assertEquals("vmkfssxqu", model.description());
-        Assertions.assertEquals("fpl", model.region());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.id());
+        Assertions.assertEquals("pkii", model.name());
+        Assertions.assertEquals("yexz", model.description());
+        Assertions.assertEquals("lixhnrztfol", model.region());
         Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, model.type());
-        Assertions.assertEquals(true, model.includeByDefault());
-        Assertions.assertEquals("zkd", model.rules().get(0).source());
-        Assertions.assertEquals("lpvlopw", model.rules().get(0).description());
-        Assertions.assertEquals("ighxpk", model.rules().get(0).azureEndpointGuid());
-        Assertions.assertEquals("zb", model.rules().get(0).azureEndpointName());
-        Assertions.assertEquals("uebbaumnyqup", model.rules().get(0).id());
+        Assertions.assertTrue(model.includeByDefault());
+        Assertions.assertEquals("aulppggd", model.rules().get(0).source());
+        Assertions.assertEquals("napnyiropuhpigv", model.rules().get(0).description());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.rules().get(0).azureEndpointGuid());
+        Assertions.assertEquals("qwwncw", model.rules().get(0).azureEndpointName());
+        Assertions.assertEquals("hxg", model.rules().get(0).id());
     }
 }

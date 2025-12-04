@@ -11,7 +11,7 @@ import tempfile
 import subprocess
 import urllib.parse
 from typing import Tuple, List, Union
-from typespec_utils import validate_tspconfig
+from datetime import datetime
 
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -201,6 +201,11 @@ def update_changelog(changelog_file, changelog):
         return
 
     first_version_part = old_changelog[: first_version.end() + second_version.start()]
+
+    # Update "Unreleased" to current date if present
+    current_date = datetime.now().date()
+    first_version_part = re.sub(r"\(Unreleased\)", f"({current_date})", first_version_part)
+
     # remove text starting from the first '###' (usually the block '### Features Added')
     first_version_part = re.sub(r"\n###.*", "\n", first_version_part, flags=re.S)
     first_version_part = re.sub(r"\s+$", "", first_version_part)
@@ -251,6 +256,8 @@ def compare_with_maven_package(
             if changelog is not None:
                 changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
                 update_changelog(changelog_file, changelog)
+                if changelog == "":
+                    logging.info("[Changelog] No change compared to last version.")
             else:
                 logging.error("[Changelog][Skip] Cannot get changelog")
         finally:
@@ -416,8 +423,12 @@ def generate_typespec_project(
             # generate from remote url
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
+                "--no",
+                "--prefix",
+                os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
                 "init",
+                "--update-if-exists",
                 "--debug",
                 "--tsp-config",
                 tsp_project,
@@ -425,12 +436,17 @@ def generate_typespec_project(
         else:
             # sdk automation/self serve
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
-            tspconfig_valid = validate_tspconfig(tsp_dir)
+            # skip "validate_tspconfig" for now, but keep the place, as we may need to re-enable it
+            # tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
+                "--no",
+                "--prefix",
+                os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
                 "init",
+                "--update-if-exists",
                 "--debug",
                 "--tsp-config",
                 tsp_dir,

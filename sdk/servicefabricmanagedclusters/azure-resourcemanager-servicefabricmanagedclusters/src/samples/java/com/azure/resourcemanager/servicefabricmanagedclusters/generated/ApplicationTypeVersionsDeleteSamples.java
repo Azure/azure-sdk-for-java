@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ApplicationTypeVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApplicationTypeVersionDeleteOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/ApplicationTypeVersionDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application type version.

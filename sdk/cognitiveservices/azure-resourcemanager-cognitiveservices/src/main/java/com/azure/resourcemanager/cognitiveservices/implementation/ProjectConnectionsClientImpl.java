@@ -966,6 +966,8 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
     }
 
     /**
+     * Lists all the available Cognitive Services project connections under the specified project.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -992,6 +994,8 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
     }
 
     /**
+     * Lists all the available Cognitive Services project connections under the specified project.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1019,6 +1023,8 @@ public final class ProjectConnectionsClientImpl implements ProjectConnectionsCli
     }
 
     /**
+     * Lists all the available Cognitive Services project connections under the specified project.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

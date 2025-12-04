@@ -14,6 +14,7 @@ import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSou
 import com.azure.resourcemanager.newrelicobservability.models.AppServiceInfo;
 import com.azure.resourcemanager.newrelicobservability.models.AppServicesGetRequest;
 import com.azure.resourcemanager.newrelicobservability.models.HostsGetRequest;
+import com.azure.resourcemanager.newrelicobservability.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.newrelicobservability.models.LiftrResourceCategories;
 import com.azure.resourcemanager.newrelicobservability.models.LinkedResource;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentity;
@@ -30,6 +31,8 @@ import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorRes
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
+import com.azure.resourcemanager.newrelicobservability.models.ResubscribeProperties;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import com.azure.resourcemanager.newrelicobservability.models.VMExtensionPayload;
@@ -102,6 +105,10 @@ public final class NewRelicMonitorResourceImpl
 
     public PlanData planData() {
         return this.innerModel().planData();
+    }
+
+    public SaaSData saaSData() {
+        return this.innerModel().saaSData();
     }
 
     public LiftrResourceCategories liftrResourceCategory() {
@@ -188,16 +195,14 @@ public final class NewRelicMonitorResourceImpl
     public NewRelicMonitorResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getMonitors()
-            .updateWithResponse(resourceGroupName, monitorName, updateProperties, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, monitorName, updateProperties, Context.NONE);
         return this;
     }
 
     public NewRelicMonitorResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getMonitors()
-            .updateWithResponse(resourceGroupName, monitorName, updateProperties, context)
-            .getValue();
+            .update(resourceGroupName, monitorName, updateProperties, context);
         return this;
     }
 
@@ -241,20 +246,28 @@ public final class NewRelicMonitorResourceImpl
         return serviceManager.monitors().getMetricStatus(resourceGroupName, monitorName, request);
     }
 
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context) {
+        return serviceManager.monitors().latestLinkedSaaSWithResponse(resourceGroupName, monitorName, context);
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS() {
+        return serviceManager.monitors().latestLinkedSaaS(resourceGroupName, monitorName);
+    }
+
+    public NewRelicMonitorResource linkSaaS(SaaSData body) {
+        return serviceManager.monitors().linkSaaS(resourceGroupName, monitorName, body);
+    }
+
+    public NewRelicMonitorResource linkSaaS(SaaSData body, Context context) {
+        return serviceManager.monitors().linkSaaS(resourceGroupName, monitorName, body, context);
+    }
+
     public PagedIterable<AppServiceInfo> listAppServices(AppServicesGetRequest request) {
         return serviceManager.monitors().listAppServices(resourceGroupName, monitorName, request);
     }
 
     public PagedIterable<AppServiceInfo> listAppServices(AppServicesGetRequest request, Context context) {
         return serviceManager.monitors().listAppServices(resourceGroupName, monitorName, request, context);
-    }
-
-    public Response<NewRelicMonitorResource> switchBillingWithResponse(SwitchBillingRequest request, Context context) {
-        return serviceManager.monitors().switchBillingWithResponse(resourceGroupName, monitorName, request, context);
-    }
-
-    public NewRelicMonitorResource switchBilling(SwitchBillingRequest request) {
-        return serviceManager.monitors().switchBilling(resourceGroupName, monitorName, request);
     }
 
     public PagedIterable<VMInfo> listHosts(HostsGetRequest request) {
@@ -265,6 +278,14 @@ public final class NewRelicMonitorResourceImpl
         return serviceManager.monitors().listHosts(resourceGroupName, monitorName, request, context);
     }
 
+    public PagedIterable<LinkedResource> listLinkedResources() {
+        return serviceManager.monitors().listLinkedResources(resourceGroupName, monitorName);
+    }
+
+    public PagedIterable<LinkedResource> listLinkedResources(Context context) {
+        return serviceManager.monitors().listLinkedResources(resourceGroupName, monitorName, context);
+    }
+
     public PagedIterable<MonitoredResource> listMonitoredResources() {
         return serviceManager.monitors().listMonitoredResources(resourceGroupName, monitorName);
     }
@@ -273,12 +294,28 @@ public final class NewRelicMonitorResourceImpl
         return serviceManager.monitors().listMonitoredResources(resourceGroupName, monitorName, context);
     }
 
-    public PagedIterable<LinkedResource> listLinkedResources() {
-        return serviceManager.monitors().listLinkedResources(resourceGroupName, monitorName);
+    public Response<Void> refreshIngestionKeyWithResponse(Context context) {
+        return serviceManager.monitors().refreshIngestionKeyWithResponse(resourceGroupName, monitorName, context);
     }
 
-    public PagedIterable<LinkedResource> listLinkedResources(Context context) {
-        return serviceManager.monitors().listLinkedResources(resourceGroupName, monitorName, context);
+    public void refreshIngestionKey() {
+        serviceManager.monitors().refreshIngestionKey(resourceGroupName, monitorName);
+    }
+
+    public NewRelicMonitorResource resubscribe() {
+        return serviceManager.monitors().resubscribe(resourceGroupName, monitorName);
+    }
+
+    public NewRelicMonitorResource resubscribe(ResubscribeProperties body, Context context) {
+        return serviceManager.monitors().resubscribe(resourceGroupName, monitorName, body, context);
+    }
+
+    public Response<NewRelicMonitorResource> switchBillingWithResponse(SwitchBillingRequest request, Context context) {
+        return serviceManager.monitors().switchBillingWithResponse(resourceGroupName, monitorName, request, context);
+    }
+
+    public NewRelicMonitorResource switchBilling(SwitchBillingRequest request) {
+        return serviceManager.monitors().switchBilling(resourceGroupName, monitorName, request);
     }
 
     public Response<VMExtensionPayload> vmHostPayloadWithResponse(Context context) {
@@ -350,6 +387,16 @@ public final class NewRelicMonitorResourceImpl
         }
     }
 
+    public NewRelicMonitorResourceImpl withSaaSData(SaaSData saaSData) {
+        if (isInCreateMode()) {
+            this.innerModel().withSaaSData(saaSData);
+            return this;
+        } else {
+            this.updateProperties.withSaaSData(saaSData);
+            return this;
+        }
+    }
+
     public NewRelicMonitorResourceImpl withOrgCreationSource(OrgCreationSource orgCreationSource) {
         if (isInCreateMode()) {
             this.innerModel().withOrgCreationSource(orgCreationSource);
@@ -381,6 +428,6 @@ public final class NewRelicMonitorResourceImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

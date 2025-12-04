@@ -95,7 +95,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.20.5</version>
+    <version>5.21.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -117,14 +117,12 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 
 The snippet below creates a synchronous Event Hub producer.
 
-```java com.azure.messaging.eventhubs.eventhubproducerclient.construct
-TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+```java com.azure.messaging.eventhubs.eventhubproducerclient.connectionstring
+String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+    + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-// "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-// "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
 EventHubProducerClient producer = new EventHubClientBuilder()
-    .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-        credential)
+    .connectionString(connectionString)
     .buildProducerClient();
 ```
 
@@ -138,7 +136,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.18.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

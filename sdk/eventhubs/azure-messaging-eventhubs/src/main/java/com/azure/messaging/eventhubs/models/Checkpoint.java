@@ -22,6 +22,7 @@ public class Checkpoint {
     private String consumerGroup;
     private String partitionId;
     private Long offset;
+    private String offsetString;
     private Long sequenceNumber;
 
     /**
@@ -113,10 +114,28 @@ public class Checkpoint {
     /**
      * Gets the offset of the last successfully processed event to store as checkpoint.
      *
-     * @return The offset of the last successfully processed event to store as checkpoint.
+     * @return The offset of the last successfully processed event to store as checkpoint. {@code null} if the
+     *     information has not been set, or the offset cannot be represented as a long.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}
      */
+    @Deprecated
     public Long getOffset() {
-        return offset;
+
+        if (offset != null) {
+            return offset;
+        }
+        if (this.offsetString == null) {
+            return null;
+        }
+
+        Long parsed;
+        try {
+            parsed = Long.valueOf(offsetString);
+        } catch (NumberFormatException ex) {
+            parsed = null;
+        }
+
+        return parsed;
     }
 
     /**
@@ -124,9 +143,32 @@ public class Checkpoint {
      *
      * @param offset The offset of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #setOffsetString(String)}.
      */
+    @Deprecated
     public Checkpoint setOffset(Long offset) {
         this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Gets the offset of the last successfully processed event to store as checkpoint.
+     *
+     * @return Offset of the last successfully processed event to store as checkpoint.
+     *
+     */
+    public String getOffsetString() {
+        return offsetString;
+    }
+
+    /**
+     * Sets the offset of the last successfully processed event to store as checkpoint.
+     *
+     * @param offsetString The offset of the last successfully processed event to store as checkpoint.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setOffsetString(String offsetString) {
+        this.offsetString = offsetString;
         return this;
     }
 

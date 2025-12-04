@@ -11,7 +11,7 @@ import com.azure.resourcemanager.playwright.models.QuotaName;
  */
 public final class PlaywrightQuotasGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/PlaywrightQuotas_Get.json
+     * x-ms-original-file: 2025-09-01/PlaywrightQuotas_Get.json
      */
     /**
      * Sample code: PlaywrightQuotas_Get.

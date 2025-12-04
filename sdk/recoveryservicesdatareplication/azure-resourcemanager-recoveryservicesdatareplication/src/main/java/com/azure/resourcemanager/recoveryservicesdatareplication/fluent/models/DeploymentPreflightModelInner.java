@@ -50,17 +50,6 @@ public final class DeploymentPreflightModelInner implements JsonSerializable<Dep
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (resources() != null) {
-            resources().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

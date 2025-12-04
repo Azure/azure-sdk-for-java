@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagediscovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -124,26 +123,6 @@ public final class StorageDiscoveryScope implements JsonSerializable<StorageDisc
         this.tags = tags;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property displayName in model StorageDiscoveryScope"));
-        }
-        if (resourceTypes() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceTypes in model StorageDiscoveryScope"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageDiscoveryScope.class);
 
     /**
      * {@inheritDoc}

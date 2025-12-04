@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The subject alternate names of a X509 object.
+ * The Subject Alternative Names of a X509 object.
  */
 @Fluent
 public final class SubjectAlternativeNames implements JsonSerializable<SubjectAlternativeNames> {
@@ -25,13 +25,13 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     private List<String> emails;
 
     /*
-     * Domain names.
+     * Domain Names.
      */
     @Generated
     private List<String> dnsNames;
 
     /*
-     * User principal names.
+     * User Principal Names.
      */
     @Generated
     private List<String> userPrincipalNames;
@@ -66,7 +66,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Get the dnsNames property: Domain names.
+     * Get the dnsNames property: Domain Names.
      * 
      * @return the dnsNames value.
      */
@@ -76,7 +76,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Set the dnsNames property: Domain names.
+     * Set the dnsNames property: Domain Names.
      * 
      * @param dnsNames the dnsNames value to set.
      * @return the SubjectAlternativeNames object itself.
@@ -88,7 +88,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Get the userPrincipalNames property: User principal names.
+     * Get the userPrincipalNames property: User Principal Names.
      * 
      * @return the userPrincipalNames value.
      */
@@ -98,7 +98,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Set the userPrincipalNames property: User principal names.
+     * Set the userPrincipalNames property: User Principal Names.
      * 
      * @param userPrincipalNames the userPrincipalNames value to set.
      * @return the SubjectAlternativeNames object itself.

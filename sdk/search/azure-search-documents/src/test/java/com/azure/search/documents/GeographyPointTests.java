@@ -66,7 +66,7 @@ public class GeographyPointTests extends SearchTestBase {
     @BeforeAll
     public static void createSharedIndex() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+            searchIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
                 .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();

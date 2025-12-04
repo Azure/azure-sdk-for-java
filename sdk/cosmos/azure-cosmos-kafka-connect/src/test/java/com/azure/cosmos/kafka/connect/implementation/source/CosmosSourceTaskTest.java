@@ -5,18 +5,22 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
+import com.azure.cosmos.kafka.connect.KafkaCosmosTestConfigurations;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.TestItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
+import org.apache.kafka.connect.source.SourceTaskContext;
+import org.apache.kafka.connect.storage.OffsetStorageReader;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -39,8 +43,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         String connectorName = "kafka-test-poll";
         Map<String, String> sourceConfigMap = new HashMap<>();
         sourceConfigMap.put("name", connectorName);
-        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(testContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -96,6 +100,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -159,8 +164,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         String connectorName = "kafka-test-poll";
         Map<String, String> sourceConfigMap = new HashMap<>();
         sourceConfigMap.put("name", connectorName);
-        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(testContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -198,6 +203,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -224,8 +230,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     public void pollWithSpecificFeedRange() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -262,6 +268,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -302,8 +309,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
 
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -343,6 +350,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
 
             CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
             sourceTask.start(taskConfigMap);
 
             // first creating few items in the container
@@ -366,6 +374,75 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                     })
                     .block();
 
+                // clean up containers
+                cleanUpContainer(clientCacheItem.getClient(), databaseName, singlePartitionContainer.getId());
+                CosmosClientCache.releaseCosmosClient(clientCacheItem.getClientConfig());
+                clientCacheItem.getClient().close();
+            }
+        }
+    }
+
+    @Test(groups = { "kafka-emulator" }, timeOut = TIMEOUT)
+    public void pollWithAllVersionsAndDeletes() throws InterruptedException {
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
+        List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
+        sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.changeFeed.mode", CosmosChangeFeedMode.ALL_VERSION_AND_DELETES.getName());
+        sourceConfigMap.put("azure.cosmos.source.changeFeed.startFrom", "Now");
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosClientCacheItem clientCacheItem =
+            CosmosClientCache.getCosmosClient(
+                sourceConfig.getAccountConfig(),
+                "pollWithAllVersionsAndDeletes");
+
+        CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(clientCacheItem.getClient());
+        try {
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+
+            // define feedRanges task
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                singlePartitionContainer.getId(),
+                singlePartitionContainer.getResourceId(),
+                FeedRange.forFullRange(),
+                null,
+                singlePartitionContainer.getId());
+            taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
+            sourceTask.start(taskConfigMap);
+            sourceTask.poll();
+
+            CosmosAsyncContainer container =
+                clientCacheItem
+                    .getClient()
+                    .getDatabase(databaseName)
+                    .getContainer(singlePartitionContainerName);
+
+            // create item
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+            // update item
+            testItem.setProp(UUID.randomUUID().toString());
+            container.upsertItem(testItem).block();
+            // delete item
+            container.deleteItem(testItem, new CosmosItemRequestOptions()).block();
+
+            Thread.sleep(500);
+            List<SourceRecord> sourceRecords = new ArrayList<>();
+            for (int i = 0; i < 10; i++) { // poll few times
+                sourceRecords.addAll(sourceTask.poll());
+            }
+
+            assertThat(sourceRecords.size()).isEqualTo(3);
+        } finally {
+            if (clientCacheItem != null) {
                 // clean up containers
                 cleanUpContainer(clientCacheItem.getClient(), databaseName, singlePartitionContainer.getId());
                 CosmosClientCache.releaseCosmosClient(clientCacheItem.getClientConfig());
@@ -434,5 +511,25 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
 
         return testItems;
+    }
+
+    public static class TestSourceTaskContext implements SourceTaskContext {
+        private final Map<String, String> map;
+        private final OffsetStorageReader offsetStorageReader;
+
+        public TestSourceTaskContext(Map<String, String> map) {
+            this.map = map;
+            this.offsetStorageReader = new InMemoryStorageReader();
+        }
+
+        @Override
+        public Map<String, String> configs() {
+            return this.map;
+        }
+
+        @Override
+        public OffsetStorageReader offsetStorageReader() {
+            return this.offsetStorageReader;
+        }
     }
 }

@@ -9,9 +9,15 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInne
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayNatRuleInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.RadiusServer;
+import com.azure.resourcemanager.network.models.ResourceIdentityType;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleBounds;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuTier;
@@ -23,6 +29,8 @@ import com.azure.resourcemanager.network.models.VpnNatRuleMode;
 import com.azure.resourcemanager.network.models.VpnNatRuleType;
 import com.azure.resourcemanager.network.models.VpnType;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for VirtualNetworkGateways CreateOrUpdate.
@@ -30,7 +38,7 @@ import java.util.Arrays;
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualNetworkGatewayUpdate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayUpdate.
      * json
      */
     /**
@@ -44,6 +52,10 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
             .serviceClient()
             .getVirtualNetworkGateways()
             .createOrUpdate("rg1", "vpngw", new VirtualNetworkGatewayInner().withLocation("centralus")
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
                 .withIpConfigurations(Arrays.asList(new VirtualNetworkGatewayIpConfigurationInner()
                     .withName("gwipconfig1")
                     .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
@@ -90,7 +102,7 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * VirtualNetworkScalableGatewayUpdate.json
      */
     /**
@@ -104,9 +116,11 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
             .serviceClient()
             .getVirtualNetworkGateways()
             .createOrUpdate("rg1", "ergw", new VirtualNetworkGatewayInner().withLocation("centralus")
+                .withAutoScaleConfiguration(new VirtualNetworkGatewayAutoScaleConfiguration()
+                    .withBounds(new VirtualNetworkGatewayAutoScaleBounds().withMin(2).withMax(3)))
                 .withIpConfigurations(Arrays.asList(new VirtualNetworkGatewayIpConfigurationInner()
                     .withName("gwipconfig1")
-                    .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
+                    .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"))
                     .withPublicIpAddress(new SubResource().withId(
@@ -118,24 +132,23 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
                 .withDisableIpSecReplayProtection(false)
                 .withSku(new VirtualNetworkGatewaySku().withName(VirtualNetworkGatewaySkuName.ER_GW_SCALE)
                     .withTier(VirtualNetworkGatewaySkuTier.ER_GW_SCALE))
-                .withNatRules(Arrays.asList(new VirtualNetworkGatewayNatRuleInner().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule1")
-                    .withName("natRule1")
-                    .withTypePropertiesType(VpnNatRuleType.STATIC)
-                    .withMode(VpnNatRuleMode.EGRESS_SNAT)
-                    .withInternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("10.10.0.0/24")))
-                    .withExternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("50.0.0.0/24")))
-                    .withIpConfigurationId(""),
-                    new VirtualNetworkGatewayNatRuleInner().withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule2")
-                        .withName("natRule2")
-                        .withTypePropertiesType(VpnNatRuleType.STATIC)
-                        .withMode(VpnNatRuleMode.INGRESS_SNAT)
-                        .withInternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("20.10.0.0/24")))
-                        .withExternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("30.0.0.0/24")))
-                        .withIpConfigurationId("")))
+                .withVirtualNetworkGatewayPolicyGroups(Arrays.asList())
+                .withNatRules(Arrays.asList())
                 .withEnableBgpRouteTranslationForNat(false)
                 .withAllowVirtualWanTraffic(false)
-                .withAllowRemoteVnetTraffic(false), com.azure.core.util.Context.NONE);
+                .withAllowRemoteVnetTraffic(false)
+                .withAdminState(AdminState.ENABLED), com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

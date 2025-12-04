@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cloudhealth.fluent.AuthenticationSettingsClient;
 import com.azure.resourcemanager.cloudhealth.fluent.models.AuthenticationSettingInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.AuthenticationSettingListResult;
@@ -110,7 +109,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AuthenticationSettingInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -118,10 +117,9 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("authenticationSettingName") String authenticationSettingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("authenticationSettingName") String authenticationSettingName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -129,8 +127,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("authenticationSettingName") String authenticationSettingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("authenticationSettingName") String authenticationSettingName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings")
@@ -183,26 +180,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthenticationSettingInner>> getWithResponseAsync(String resourceGroupName,
         String healthModelName, String authenticationSettingName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (authenticationSettingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter authenticationSettingName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -244,29 +221,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthenticationSettingInner> getWithResponse(String resourceGroupName, String healthModelName,
         String authenticationSettingName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (authenticationSettingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter authenticationSettingName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, healthModelName, authenticationSettingName, accept, context);
@@ -305,31 +259,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthenticationSettingInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String authenticationSettingName, AuthenticationSettingInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (authenticationSettingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter authenticationSettingName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -375,35 +304,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     public Response<AuthenticationSettingInner> createOrUpdateWithResponse(String resourceGroupName,
         String healthModelName, String authenticationSettingName, AuthenticationSettingInner resource,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (authenticationSettingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter authenticationSettingName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -444,31 +344,8 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String authenticationSettingName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (authenticationSettingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter authenticationSettingName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, accept,
-                context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -504,33 +381,8 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName,
         String authenticationSettingName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (authenticationSettingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter authenticationSettingName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, context);
     }
 
     /**
@@ -562,22 +414,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthenticationSettingInner>> listByHealthModelSinglePageAsync(String resourceGroupName,
         String healthModelName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModel(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -617,24 +453,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthenticationSettingInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AuthenticationSettingListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -657,24 +475,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthenticationSettingInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AuthenticationSettingListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -730,13 +530,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthenticationSettingInner>> listByHealthModelNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModelNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -756,15 +549,6 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthenticationSettingInner> listByHealthModelNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AuthenticationSettingListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -785,21 +569,10 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthenticationSettingInner> listByHealthModelNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AuthenticationSettingListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AuthenticationSettingsClientImpl.class);
 }

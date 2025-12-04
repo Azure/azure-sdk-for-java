@@ -16,7 +16,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerIn
  */
 public interface ReplicasClient {
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -29,7 +29,7 @@ public interface ReplicasClient {
     PagedFlux<ServerInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -42,7 +42,7 @@ public interface ReplicasClient {
     PagedIterable<ServerInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.

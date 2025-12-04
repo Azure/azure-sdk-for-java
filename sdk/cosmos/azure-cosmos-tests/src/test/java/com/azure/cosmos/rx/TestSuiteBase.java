@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -31,6 +32,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -69,8 +71,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -96,19 +96,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
-@Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends CosmosAsyncClientTest {
+public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
-    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
@@ -153,6 +150,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -205,7 +203,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "fi-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+        "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -221,14 +221,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
-        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
-    }
-
-    @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "fi-multi-master"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
+        "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -285,28 +280,51 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
-        int i = 0;
-        while (i < 100) {
-            try {
-                truncateCollectionInternal(cosmosContainer);
-                return;
-            } catch (CosmosException exception) {
-                if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
-                    || exception.getSubStatusCode() != 3200) {
 
-                    logger.error("No retry of exception", exception);
-                    throw exception;
-                }
-
-                i++;
-                logger.info("Retrying truncation after 100ms - iteration " + i);
+        try {
+            int i = 0;
+            while (i < 100) {
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    truncateCollectionInternal(cosmosContainer);
+                    return;
+                } catch (CosmosException exception) {
+                    if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                        || exception.getSubStatusCode() != 3200) {
+
+                        logger.error("No retry of exception", exception);
+                        throw exception;
+                    }
+
+                    i++;
+                    logger.info("Retrying truncation after 100ms - iteration " + i);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
+        } finally {
+            // TODO @fabianm - Resetting leak detection - there is some flakiness when tests
+            // truncate collection and hit throttling - this will need to be investigated
+            // separately
+            CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
         }
+    }
+
+    protected static void expectCount(CosmosAsyncContainer cosmosContainer, int expectedCount) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
+        options.setMaxDegreeOfParallelism(-1);
+        List<Integer> counts = cosmosContainer
+            .queryItems("SELECT VALUE COUNT(0) FROM root", options, Integer.class)
+            .collectList()
+            .block();
+        assertThat(counts).hasSize(1);
+        assertThat(counts.get(0)).isEqualTo(expectedCount);
     }
 
     private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
@@ -347,6 +365,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
                            return cosmosContainer.deleteItem(doc.getId(), partitionKey);
                        }).then().block();
+
+        expectCount(cosmosContainer, 0);
+
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
@@ -922,15 +943,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeCloseAsync(CosmosAsyncClient client) {
-        if (client != null) {
-            new Thread(() -> {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    logger.error("failed to close client", e);
-                }
-            }).start();
+    static protected void safeClose(QueryFeedOperationState state) {
+        if (state != null) {
+            safeClose(state.getClient());
         }
     }
 
@@ -1112,6 +1127,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] clientBuildersWithGateway() {
         return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}};
+    }
+
+    @DataProvider
+    public static Object[][] clientBuildersWithGatewayAndHttp2() {
+        return new Object[][]{
+            {createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true)},
+        };
     }
 
     @DataProvider
@@ -1322,7 +1344,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             false,
             null,
             true,
-            true);
+            true,
+            false);
         injectedProviderParameters[0] = builder;
 
         providers.add(injectedProviderParameters);
@@ -1460,7 +1483,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             multiMasterEnabled,
             preferredRegions,
             contentResponseOnWriteEnabled,
-            retryOnThrottledRequests);
+            retryOnThrottledRequests,
+            false);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(
@@ -1469,10 +1493,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         boolean multiMasterEnabled,
         List<String> preferredRegions,
         boolean contentResponseOnWriteEnabled,
-        boolean retryOnThrottledRequests) {
+        boolean retryOnThrottledRequests,
+        boolean isHttp2TransportRequired) {
 
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        if (Configs.isHttp2Enabled()) {
+        if (Configs.isHttp2Enabled() || isHttp2TransportRequired) {
             Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig()
                 .setEnabled(true)
                 .setMaxConnectionPoolSize(10)
@@ -1568,4 +1593,28 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
         return outputStream.toByteArray();
     }
+
+    public static String captureNettyLeaks() {
+        System.gc();
+        try {
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+        if (nettyLeaks.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n");
+            for (String leak : nettyLeaks) {
+                sb.append(leak).append("\n");
+            }
+
+            return "NETTY LEAKS detected: "
+                + "\n\n"
+                + sb;
+        }
+
+        return "";
+    }
+
 }

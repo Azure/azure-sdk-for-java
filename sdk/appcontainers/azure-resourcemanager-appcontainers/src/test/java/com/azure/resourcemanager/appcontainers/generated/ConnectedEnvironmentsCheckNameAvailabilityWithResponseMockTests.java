@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ConnectedEnvironmentsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"dwqslsrhmpqvw\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"dogypxrxvbfi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ConnectedEnvironmentsCheckNameAvailabilityWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.connectedEnvironments()
-            .checkNameAvailabilityWithResponse("plkeuachtomflryt", "wfpfmdgycx",
-                new CheckNameAvailabilityRequest().withName("skw").withType("jjyslurlps"),
+            .checkNameAvailabilityWithResponse("dmxzjijpv", "aurkihcirlde",
+                new CheckNameAvailabilityRequest().withName("rdcoxnbkkj").withType("urnnqbnqbpiz"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("dwqslsrhmpqvw", response.message());
+        Assertions.assertTrue(response.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("dogypxrxvbfi", response.message());
     }
 }

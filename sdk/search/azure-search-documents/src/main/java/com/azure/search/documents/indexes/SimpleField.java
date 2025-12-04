@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 
 import java.lang.annotation.ElementType;
@@ -54,9 +55,25 @@ public @interface SimpleField {
     boolean isFilterable() default false;
 
     /**
+     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
+     *
+     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
+     * {@link SearchField field}.
+     */
+    String normalizerName() default "";
+
+    /**
      * A value indicating whether the field should be used as a permission filter.
      *
      * @return A flag indicating if the field or method should generate as a permission filter {@link SearchField field}.
      */
     String permissionFilter() default "";
+
+    /**
+     * Indicates if the field or method should be used for sensitivity label filtering. This enables document-level
+     * filtering based on Microsoft Purview sensitivity labels.
+     *
+     * @return A flag indicating if the field or method should generate as a sensitivity label {@link SearchField field}.
+     */
+    boolean isSensitivityLabel() default false;
 }

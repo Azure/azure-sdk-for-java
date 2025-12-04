@@ -11,10 +11,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedcache.fluent.EnterpriseMccCacheNodesOperationsClient;
 import com.azure.resourcemanager.connectedcache.fluent.models.EnterpriseMccCacheNodeResourceInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeAutoUpdateHistoryInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeInstallDetailsInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeIssueHistoryInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeTlsCertificateHistoryInner;
 import com.azure.resourcemanager.connectedcache.models.EnterpriseMccCacheNodeResource;
 import com.azure.resourcemanager.connectedcache.models.EnterpriseMccCacheNodesOperations;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeAutoUpdateHistory;
 import com.azure.resourcemanager.connectedcache.models.MccCacheNodeInstallDetails;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeIssueHistory;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeTlsCertificateHistory;
 
 public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMccCacheNodesOperations {
     private static final ClientLogger LOGGER = new ClientLogger(EnterpriseMccCacheNodesOperationsImpl.class);
@@ -96,6 +102,78 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
             .getCacheNodeInstallDetails(resourceGroupName, customerResourceName, cacheNodeResourceName);
         if (inner != null) {
             return new MccCacheNodeInstallDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MccCacheNodeAutoUpdateHistory> getCacheNodeAutoUpdateHistoryWithResponse(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName, Context context) {
+        Response<MccCacheNodeAutoUpdateHistoryInner> inner = this.serviceClient()
+            .getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeAutoUpdateHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MccCacheNodeAutoUpdateHistory getCacheNodeAutoUpdateHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        MccCacheNodeAutoUpdateHistoryInner inner = this.serviceClient()
+            .getCacheNodeAutoUpdateHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+        if (inner != null) {
+            return new MccCacheNodeAutoUpdateHistoryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MccCacheNodeIssueHistory> getCacheNodeMccIssueDetailsHistoryWithResponse(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName, Context context) {
+        Response<MccCacheNodeIssueHistoryInner> inner = this.serviceClient()
+            .getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
+                cacheNodeResourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeIssueHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MccCacheNodeIssueHistory getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        MccCacheNodeIssueHistoryInner inner = this.serviceClient()
+            .getCacheNodeMccIssueDetailsHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+        if (inner != null) {
+            return new MccCacheNodeIssueHistoryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MccCacheNodeTlsCertificateHistory> getCacheNodeTlsCertificateHistoryWithResponse(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
+        Response<MccCacheNodeTlsCertificateHistoryInner> inner = this.serviceClient()
+            .getCacheNodeTlsCertificateHistoryWithResponse(resourceGroupName, customerResourceName,
+                cacheNodeResourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeTlsCertificateHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MccCacheNodeTlsCertificateHistory getCacheNodeTlsCertificateHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        MccCacheNodeTlsCertificateHistoryInner inner = this.serviceClient()
+            .getCacheNodeTlsCertificateHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+        if (inner != null) {
+            return new MccCacheNodeTlsCertificateHistoryImpl(inner, this.manager());
         } else {
             return null;
         }
