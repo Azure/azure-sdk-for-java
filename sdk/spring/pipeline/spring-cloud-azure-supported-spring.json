@@ -4,7 +4,31 @@
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
-    "spring-boot-version" : "3.5.4",
+    "spring-boot-version" : "3.5.8",
+    "spring-cloud-version" : "2025.0.0"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "3.5.7",
+    "spring-cloud-version" : "2025.0.0"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "3.5.6",
+    "spring-cloud-version" : "2025.0.0"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "3.5.5",
     "spring-cloud-version" : "2025.0.0"
   },
   {
