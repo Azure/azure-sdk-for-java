@@ -120,12 +120,14 @@ public class ServiceBusBinderConfiguration {
     @ConditionalOnMissingBean
     ServiceBusProducerFactoryCustomizer defaultServiceBusProducerFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        AzureServiceBusProperties serviceBusProperties,
+        ObjectProvider<AzureServiceBusProperties> serviceBusProperties,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = azureTokenCredentialResolver.resolve(serviceBusProperties);
+        TokenCredential tokenCredential = serviceBusProperties.getIfAvailable() != null
+            ? azureTokenCredentialResolver.resolve(serviceBusProperties.getIfAvailable())
+            : null;
         TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
         return new DefaultProducerFactoryCustomizer(credential, azureTokenCredentialResolver,
             clientBuilderCustomizers,
@@ -136,13 +138,15 @@ public class ServiceBusBinderConfiguration {
     @ConditionalOnMissingBean
     ServiceBusProcessorFactoryCustomizer defaultServiceBusProcessorFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        AzureServiceBusProperties serviceBusProperties,
+        ObjectProvider<AzureServiceBusProperties> serviceBusProperties,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = azureTokenCredentialResolver.resolve(serviceBusProperties);
+        TokenCredential tokenCredential = serviceBusProperties.getIfAvailable() != null
+            ? azureTokenCredentialResolver.resolve(serviceBusProperties.getIfAvailable())
+            : null;
         TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
         return new DefaultProcessorFactoryCustomizer(credential, azureTokenCredentialResolver,
             clientBuilderCustomizers,

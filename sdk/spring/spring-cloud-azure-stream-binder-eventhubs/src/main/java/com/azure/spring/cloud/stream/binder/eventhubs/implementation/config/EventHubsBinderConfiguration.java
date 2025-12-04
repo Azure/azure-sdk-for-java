@@ -119,11 +119,13 @@ public class EventHubsBinderConfiguration {
     @ConditionalOnMissingBean
     EventHubsProducerFactoryCustomizer defaultEventHubsProducerFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        AzureEventHubsProperties eventHubsProperties,
+        ObjectProvider<AzureEventHubsProperties> eventHubsProperties,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = azureTokenCredentialResolver.resolve(eventHubsProperties);
+        TokenCredential tokenCredential = eventHubsProperties.getIfAvailable() != null
+            ? azureTokenCredentialResolver.resolve(eventHubsProperties.getIfAvailable())
+            : null;
         TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
         return new DefaultProducerFactoryCustomizer(credential, azureTokenCredentialResolver, clientBuilderCustomizers);
     }
@@ -132,11 +134,13 @@ public class EventHubsBinderConfiguration {
     @ConditionalOnMissingBean
     EventHubsProcessorFactoryCustomizer defaultEventHubsProcessorFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        AzureEventHubsProperties eventHubsProperties,
+        ObjectProvider<AzureEventHubsProperties> eventHubsProperties,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = azureTokenCredentialResolver.resolve(eventHubsProperties);
+        TokenCredential tokenCredential = eventHubsProperties.getIfAvailable() != null
+            ? azureTokenCredentialResolver.resolve(eventHubsProperties.getIfAvailable())
+            : null;
         TokenCredential credential = tokenCredential != null ? tokenCredential : defaultCredential;
         return new DefaultProcessorFactoryCustomizer(credential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
     }
