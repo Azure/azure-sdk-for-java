@@ -58,43 +58,24 @@ public class BlobSasImplUtil {
         .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
-
     private OffsetDateTime startTime;
-
     private OffsetDateTime expiryTime;
-
     private String permissions;
-
     private SasIpRange sasIpRange;
-
     private String containerName;
-
     private String blobName;
-
     private String resource;
-
     private String snapshotId;
-
     private String versionId;
-
     private String identifier;
-
     private String cacheControl;
-
     private String contentDisposition;
-
     private String contentEncoding;
-
     private String contentLanguage;
-
     private String contentType;
-
     private String authorizedAadObjectId;
-
     private String correlationId;
-
     private String encryptionScope;
-
     private String delegatedUserObjectId;
 
     /**
@@ -260,8 +241,9 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTid());
 
-            /* Only parameters relevant for user delegation SAS. */
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
@@ -457,11 +439,14 @@ public class BlobSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTid() == null ? "" : key.getSignedDelegatedUserTid(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
                 versionSegment == null ? "" : versionSegment, this.encryptionScope == null ? "" : this.encryptionScope,
+                "", /* request header */
+                "", /* request query parameter */
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
