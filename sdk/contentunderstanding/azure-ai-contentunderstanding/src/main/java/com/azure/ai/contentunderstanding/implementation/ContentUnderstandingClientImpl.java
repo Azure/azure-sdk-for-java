@@ -1921,12 +1921,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      * }
@@ -2073,12 +2073,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      * }
@@ -2223,12 +2223,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      * }
@@ -2381,12 +2381,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      * }
@@ -2539,12 +2539,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      * }
@@ -2696,12 +2696,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      * }
@@ -2837,12 +2837,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -2942,12 +2942,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3076,12 +3076,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3181,12 +3181,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3314,12 +3314,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3419,12 +3419,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3561,12 +3561,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3666,12 +3666,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3808,12 +3808,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -3913,12 +3913,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -4054,12 +4054,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -4159,12 +4159,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -4360,12 +4360,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -4482,12 +4482,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -4665,12 +4665,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      *     usage (Optional): {
@@ -4806,12 +4806,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Required): [
+     *                 String (Required)
+     *             ]
+     *             embedding (Required): [
+     *                 String (Required)
+     *             ]
      *         }
      *     }
      *     usage (Optional): {
@@ -5251,12 +5251,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -5376,12 +5376,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -5499,12 +5499,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -5622,12 +5622,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -5745,12 +5745,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -5850,12 +5850,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -5976,12 +5976,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -6081,12 +6081,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -6298,12 +6298,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
@@ -6425,12 +6425,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Required): [
+     *             String (Required)
+     *         ]
+     *         embedding (Required): [
+     *             String (Required)
+     *         ]
      *     }
      * }
      * }
