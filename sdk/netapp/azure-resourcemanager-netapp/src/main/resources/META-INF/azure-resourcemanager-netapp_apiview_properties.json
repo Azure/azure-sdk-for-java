@@ -468,6 +468,7 @@
     "com.azure.resourcemanager.netapp.models.CacheLifeCycleState": "Microsoft.NetApp.CacheLifeCycleState",
     "com.azure.resourcemanager.netapp.models.CacheMountTargetProperties": "Microsoft.NetApp.CacheMountTargetProperties",
     "com.azure.resourcemanager.netapp.models.CacheProperties": "Microsoft.NetApp.CacheProperties",
+    "com.azure.resourcemanager.netapp.models.CachePropertiesExportPolicy": "Microsoft.NetApp.CachePropertiesExportPolicy",
     "com.azure.resourcemanager.netapp.models.CacheProvisioningState": "Microsoft.NetApp.CacheProvisioningState",
     "com.azure.resourcemanager.netapp.models.CacheUpdate": "Azure.ResourceManager.Foundations.ResourceUpdateModel",
     "com.azure.resourcemanager.netapp.models.CacheUpdateProperties": "Azure.ResourceManager.Foundations.ResourceUpdateModelProperties",

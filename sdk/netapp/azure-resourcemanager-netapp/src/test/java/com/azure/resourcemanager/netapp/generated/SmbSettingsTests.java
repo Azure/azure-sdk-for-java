@@ -15,20 +15,20 @@ public final class SmbSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SmbSettings model = BinaryData.fromString(
-            "{\"smbEncryption\":\"Enabled\",\"smbAccessBasedEnumerations\":\"Disabled\",\"smbNonBrowsable\":\"Disabled\"}")
+            "{\"smbEncryption\":\"Disabled\",\"smbAccessBasedEnumerations\":\"Disabled\",\"smbNonBrowsable\":\"Disabled\"}")
             .toObject(SmbSettings.class);
-        Assertions.assertEquals(SmbEncryptionState.ENABLED, model.smbEncryption());
+        Assertions.assertEquals(SmbEncryptionState.DISABLED, model.smbEncryption());
         Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumerations());
         Assertions.assertEquals(SmbNonBrowsable.DISABLED, model.smbNonBrowsable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SmbSettings model = new SmbSettings().withSmbEncryption(SmbEncryptionState.ENABLED)
+        SmbSettings model = new SmbSettings().withSmbEncryption(SmbEncryptionState.DISABLED)
             .withSmbAccessBasedEnumerations(SmbAccessBasedEnumeration.DISABLED)
             .withSmbNonBrowsable(SmbNonBrowsable.DISABLED);
         model = BinaryData.fromObject(model).toObject(SmbSettings.class);
-        Assertions.assertEquals(SmbEncryptionState.ENABLED, model.smbEncryption());
+        Assertions.assertEquals(SmbEncryptionState.DISABLED, model.smbEncryption());
         Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumerations());
         Assertions.assertEquals(SmbNonBrowsable.DISABLED, model.smbNonBrowsable());
     }

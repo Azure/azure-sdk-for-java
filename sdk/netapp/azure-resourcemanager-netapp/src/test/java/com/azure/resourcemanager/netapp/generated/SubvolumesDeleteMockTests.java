@@ -27,7 +27,8 @@ public final class SubvolumesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.subvolumes().delete("qwm", "q", "moxsa", "uxejgwecywnfyszz", "czs", com.azure.core.util.Context.NONE);
+        manager.subvolumes()
+            .delete("myqjog", "dsaidjanormovdxx", "rntu", "moil", "nwemhdeeljslkyo", com.azure.core.util.Context.NONE);
 
     }
 }
