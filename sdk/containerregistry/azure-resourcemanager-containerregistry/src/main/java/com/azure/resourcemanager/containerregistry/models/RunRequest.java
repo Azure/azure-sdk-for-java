@@ -160,12 +160,12 @@ public class RunRequest implements JsonSerializable<RunRequest> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("DockerBuildRequest".equals(discriminatorValue)) {
                     return DockerBuildRequest.fromJson(readerToUse.reset());
+                } else if ("EncodedTaskRunRequest".equals(discriminatorValue)) {
+                    return EncodedTaskRunRequest.fromJson(readerToUse.reset());
                 } else if ("FileTaskRunRequest".equals(discriminatorValue)) {
                     return FileTaskRunRequest.fromJson(readerToUse.reset());
                 } else if ("TaskRunRequest".equals(discriminatorValue)) {
                     return TaskRunRequest.fromJson(readerToUse.reset());
-                } else if ("EncodedTaskRunRequest".equals(discriminatorValue)) {
-                    return EncodedTaskRunRequest.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class RunsCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RunsCancel.json
      */
     /**
@@ -23,7 +23,7 @@ public final class RunsCancelSamples {
             .manager()
             .serviceClient()
             .getRuns()
-            .cancel("myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab",
+            .cancelWithResponse("myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab",
                 com.azure.core.util.Context.NONE);
     }
 }

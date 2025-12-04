@@ -29,17 +29,17 @@ import java.util.Map;
 @Fluent
 public final class TaskInner extends Resource {
     /*
-     * Identity for the resource.
-     */
-    private IdentityProperties identity;
-
-    /*
      * The properties of a task.
      */
     private TaskProperties innerProperties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Identity for the resource.
+     */
+    private IdentityProperties identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -65,6 +65,15 @@ public final class TaskInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: The properties of a task.
+     * 
+     * @return the innerProperties value.
+     */
+    private TaskProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the identity property: Identity for the resource.
      * 
      * @return the identity value.
@@ -85,16 +94,7 @@ public final class TaskInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: The properties of a task.
-     * 
-     * @return the innerProperties value.
-     */
-    private TaskProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -410,11 +410,11 @@ public final class TaskInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -426,8 +426,8 @@ public final class TaskInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -458,10 +458,10 @@ public final class TaskInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedTaskInner.withTags(tags);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedTaskInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedTaskInner.innerProperties = TaskProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTaskInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedTaskInner.systemData = SystemData.fromJson(reader);
                 } else {

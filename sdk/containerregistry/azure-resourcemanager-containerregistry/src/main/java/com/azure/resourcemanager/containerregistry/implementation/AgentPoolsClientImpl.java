@@ -75,34 +75,31 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceInterface(name = "ContainerRegistryManagementClientAgentPools")
     public interface AgentPoolsService {
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AgentPoolListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @PathParam("agentPoolName") String agentPoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @PathParam("agentPoolName") String agentPoolName,
-            @BodyParam("application/json") AgentPoolInner agentPool, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({ 200, 202, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @PathParam("agentPoolName") String agentPoolName,
+            @PathParam("agentPoolName") String agentPoolName, @BodyParam("application/json") AgentPoolInner agentPool,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -110,30 +107,29 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @PathParam("agentPoolName") String agentPoolName,
+            @PathParam("agentPoolName") String agentPoolName,
             @BodyParam("application/json") AgentPoolUpdateParameters updateParameters,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools")
-        @ExpectedResponses({ 200 })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentPoolListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}/listQueueStatus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolQueueStatusInner>> getQueueStatus(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @PathParam("agentPoolName") String agentPoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -144,10 +140,150 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-03-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, accept, context))
+            .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(String resourceGroupName, String registryName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-03-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                registryName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName));
+    }
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName, context));
+    }
+
+    /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -176,19 +312,19 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,18 +354,18 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-            apiVersion, agentPoolName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, agentPoolName, accept, context);
     }
 
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,8 +381,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,8 +399,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,14 +415,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -315,26 +452,28 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             agentPool.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, agentPool, accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, agentPoolName, agentPool, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -363,24 +502,25 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             agentPool.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, agentPool, accept, context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, agentPoolName, agentPool, accept, context);
     }
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateAsync(String resourceGroupName,
@@ -394,8 +534,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
@@ -403,6 +543,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateAsync(String resourceGroupName,
@@ -417,14 +558,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreate(String resourceGroupName,
@@ -435,8 +577,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
@@ -444,6 +586,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreate(String resourceGroupName,
@@ -455,14 +598,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> createAsync(String resourceGroupName, String registryName, String agentPoolName,
@@ -474,15 +618,16 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> createAsync(String resourceGroupName, String registryName, String agentPoolName,
@@ -494,14 +639,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner create(String resourceGroupName, String registryName, String agentPoolName,
@@ -512,8 +658,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
@@ -521,6 +667,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner create(String resourceGroupName, String registryName, String agentPoolName,
@@ -529,239 +676,17 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
-        String agentPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (agentPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
-        String agentPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (agentPoolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, accept, context);
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String agentPoolName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, agentPoolName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String agentPoolName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, registryName, agentPoolName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
-        String agentPoolName) {
-        return this.beginDeleteAsync(resourceGroupName, registryName, agentPoolName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
-        String agentPoolName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, registryName, agentPoolName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String agentPoolName) {
-        return beginDeleteAsync(resourceGroupName, registryName, agentPoolName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String agentPoolName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, agentPoolName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String registryName, String agentPoolName) {
-        deleteAsync(resourceGroupName, registryName, agentPoolName).block();
-    }
-
-    /**
-     * Deletes a specified agent pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String registryName, String agentPoolName, Context context) {
-        deleteAsync(resourceGroupName, registryName, agentPoolName, context).block();
-    }
-
-    /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -791,26 +716,28 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, updateParameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, agentPoolName, updateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -840,24 +767,25 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, updateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, agentPoolName, updateParameters, accept, context);
     }
 
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
@@ -871,8 +799,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @param context The context to associate with this operation.
@@ -880,6 +808,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
@@ -894,14 +823,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
@@ -912,8 +842,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @param context The context to associate with this operation.
@@ -921,6 +851,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
@@ -932,14 +863,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> updateAsync(String resourceGroupName, String registryName, String agentPoolName,
@@ -951,15 +883,16 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> updateAsync(String resourceGroupName, String registryName, String agentPoolName,
@@ -971,14 +904,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner update(String resourceGroupName, String registryName, String agentPoolName,
@@ -989,8 +923,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Updates an agent pool with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param updateParameters The parameters for updating an agent pool.
      * @param context The context to associate with this operation.
@@ -998,6 +932,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner update(String resourceGroupName, String registryName, String agentPoolName,
@@ -1006,17 +941,19 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Lists all the agent pools for a specified container registry.
+     * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String agentPoolName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1032,30 +969,32 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, accept, context))
-            .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, registryName, agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all the agent pools for a specified container registry.
+     * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(String resourceGroupName, String registryName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1071,85 +1010,164 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
+        if (agentPoolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-                apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, agentPoolName, accept, context);
     }
 
     /**
-     * Lists all the agent pools for a specified container registry.
+     * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String agentPoolName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, agentPoolName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Lists all the agent pools for a specified container registry.
+     * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String agentPoolName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, registryName, agentPoolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Lists all the agent pools for a specified container registry.
+     * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, registryName));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String agentPoolName) {
+        return this.beginDeleteAsync(resourceGroupName, registryName, agentPoolName).getSyncPoller();
     }
 
     /**
-     * Lists all the agent pools for a specified container registry.
+     * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, registryName, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String agentPoolName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, registryName, agentPoolName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a specified agent pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String agentPoolName) {
+        return beginDeleteAsync(resourceGroupName, registryName, agentPoolName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a specified agent pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String agentPoolName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, registryName, agentPoolName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a specified agent pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String registryName, String agentPoolName) {
+        deleteAsync(resourceGroupName, registryName, agentPoolName).block();
+    }
+
+    /**
+     * Deletes a specified agent pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String registryName, String agentPoolName, Context context) {
+        deleteAsync(resourceGroupName, registryName, agentPoolName, context).block();
     }
 
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1178,19 +1196,19 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getQueueStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, accept, context))
+            .withContext(context -> service.getQueueStatus(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, registryName, agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,18 +1238,18 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
+        final String apiVersion = "2025-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getQueueStatus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, accept, context);
+        return service.getQueueStatus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, registryName, agentPoolName, accept, context);
     }
 
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1248,8 +1266,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1266,8 +1284,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
