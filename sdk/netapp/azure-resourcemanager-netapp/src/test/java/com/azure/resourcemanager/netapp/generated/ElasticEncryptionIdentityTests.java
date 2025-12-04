@@ -12,15 +12,15 @@ public final class ElasticEncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticEncryptionIdentity model
-            = BinaryData.fromString("{\"principalId\":\"p\",\"userAssignedIdentity\":\"qyikvy\"}")
+            = BinaryData.fromString("{\"principalId\":\"jbkkdmflvestmjl\",\"userAssignedIdentity\":\"ril\"}")
                 .toObject(ElasticEncryptionIdentity.class);
-        Assertions.assertEquals("qyikvy", model.userAssignedIdentity());
+        Assertions.assertEquals("ril", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticEncryptionIdentity model = new ElasticEncryptionIdentity().withUserAssignedIdentity("qyikvy");
+        ElasticEncryptionIdentity model = new ElasticEncryptionIdentity().withUserAssignedIdentity("ril");
         model = BinaryData.fromObject(model).toObject(ElasticEncryptionIdentity.class);
-        Assertions.assertEquals("qyikvy", model.userAssignedIdentity());
+        Assertions.assertEquals("ril", model.userAssignedIdentity());
     }
 }
