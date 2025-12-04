@@ -42,7 +42,8 @@ public final class HttpClientHelper {
      * @param azureHttpClient The Azure HTTP client that should execute requests.
      * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
      */
-    public static com.openai.core.http.HttpClient mapToOpenAIHttpClient(com.azure.core.http.HttpClient azureHttpClient) {
+    public static com.openai.core.http.HttpClient
+        mapToOpenAIHttpClient(com.azure.core.http.HttpClient azureHttpClient) {
         return new HttpClientWrapper(azureHttpClient);
     }
 

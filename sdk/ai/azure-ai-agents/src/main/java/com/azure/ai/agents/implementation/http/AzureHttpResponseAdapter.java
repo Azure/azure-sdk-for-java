@@ -9,9 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpResponse;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 
 /**
  * Adapter that exposes an Azure {@link com.azure.core.http.HttpResponse} as an OpenAI {@link HttpResponse}. This keeps
@@ -22,8 +20,6 @@ final class AzureHttpResponseAdapter implements HttpResponse {
     private static final ClientLogger LOGGER = new ClientLogger(AzureHttpResponseAdapter.class);
 
     private final com.azure.core.http.HttpResponse azureResponse;
-    private final Headers headers;
-    private final InputStream bodyStream;
 
     /**
      * Creates a new adapter instance for the provided Azure response.
@@ -32,8 +28,6 @@ final class AzureHttpResponseAdapter implements HttpResponse {
      */
     AzureHttpResponseAdapter(com.azure.core.http.HttpResponse azureResponse) {
         this.azureResponse = azureResponse;
-        this.headers = toOpenAiHeaders(azureResponse.getHeaders());
-        this.bodyStream = azureResponse.getBodyAsBinaryData().toStream();
     }
 
     @Override
@@ -43,22 +37,17 @@ final class AzureHttpResponseAdapter implements HttpResponse {
 
     @Override
     public Headers headers() {
-        return headers;
+        return toOpenAiHeaders(azureResponse.getHeaders());
     }
 
     @Override
     public InputStream body() {
-        return bodyStream;
+        return azureResponse.getBodyAsBinaryData().toStream();
     }
 
     @Override
     public void close() {
-        try {
-            azureResponse.close();
-            bodyStream.close();
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsWarning(new UncheckedIOException("Failed to close response body stream", ex));
-        }
+        azureResponse.close();
     }
 
     /**
