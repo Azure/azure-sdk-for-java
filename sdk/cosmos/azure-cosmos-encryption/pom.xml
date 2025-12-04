@@ -183,13 +183,6 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>io.reactivex.rxjava2</groupId>
-      <artifactId>rxjava</artifactId>
-      <version>2.2.21</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->

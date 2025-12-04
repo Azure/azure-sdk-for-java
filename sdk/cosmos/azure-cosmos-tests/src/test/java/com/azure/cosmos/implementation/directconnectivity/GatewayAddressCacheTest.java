@@ -32,7 +32,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -45,6 +44,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -1565,13 +1565,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     public static<T> T getSuccessResult(Mono<T> observable, long timeout) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        return testSubscriber.values().get(0);
+        AtomicReference<T> value = new AtomicReference<>();
+        StepVerifier.create(observable)
+            .assertNext(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+        return value.get();
     }
 
     public static void validateSuccess(Mono<List<Address>> observable,
@@ -1580,13 +1579,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                        RxDocumentServiceRequest serviceRequest,
                                        int requestIndex,
                                        long timeout) {
-        TestSubscriber<List<Address>> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(observable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
         // Verifying activity id is being set in header on address call to gateway.
         String addressResolutionActivityId =
             BridgeInternal.getClientSideRequestStatics(serviceRequest.requestContext.cosmosDiagnostics).getAddressResolutionStatistics().keySet().iterator().next();

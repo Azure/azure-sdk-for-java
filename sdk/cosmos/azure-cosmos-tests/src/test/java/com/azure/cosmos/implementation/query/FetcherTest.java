@@ -3,25 +3,26 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -207,13 +208,9 @@ public class FetcherTest {
     }
 
     private FeedResponse<Document> validate(Mono<FeedResponse<Document>> page) {
-        TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>();
-        page.subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-        subscriber.assertComplete();
-        subscriber.assertNoErrors();
-        subscriber.assertValueCount(1);
-        return subscriber.values().get(0);
+        AtomicReference<FeedResponse<Document>> value = new AtomicReference<>();
+        StepVerifier.create(page).consumeNextWith(value::set).verifyComplete();
+        return value.get();
     }
 
     private String getExpectedContinuationTokenInRequest(String continuationToken,

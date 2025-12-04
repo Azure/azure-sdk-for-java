@@ -31,12 +31,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
@@ -44,6 +42,7 @@ import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -52,7 +51,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 
 @Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
@@ -766,15 +764,10 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
     public static <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
                                                             ResourceResponseValidator<T> validator, long timeout) {
-
-        TestSubscriber<ResourceResponse<T>> testSubscriber = new TestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(observable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public <T extends Resource> void validateFailure(Mono<ResourceResponse<T>> observable,
@@ -784,15 +777,9 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
     public static <T extends Resource> void validateFailure(Mono<ResourceResponse<T>> observable,
                                                             FailureValidator validator, long timeout) {
-
-        TestSubscriber<ResourceResponse<T>> testSubscriber = new TestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(observable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     public <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> observable,
@@ -802,14 +789,10 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
     public static <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> observable,
                                                                  FeedResponseListValidator<T> validator, long timeout) {
-
-        TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        validator.validate(testSubscriber.values());
+        StepVerifier.create(observable.collectList())
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> observable,
@@ -819,15 +802,9 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
     public static <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> observable,
                                                                  FailureValidator validator, long timeout) {
-
-        TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(observable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     @DataProvider

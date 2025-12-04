@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -26,6 +25,7 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -33,7 +33,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -42,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.time.Duration;
@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -210,13 +211,10 @@ public class DocumentProducerTest {
                     range1,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
+            AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .consumeNextWith(value::set)
+                .verifyComplete();
 
             validateSplitCaptureRequests(
                     requestCreator.invocations,
@@ -233,7 +231,7 @@ public class DocumentProducerTest {
                     .distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(initialPageSize));
 
             // expected results
-            validateSplitResults(subscriber.values(),
+            validateSplitResults(value.get(),
                                  parentPartitionId, leftChildPartitionId,
                                  rightChildPartitionId, resultFromParentPartition, resultFromLeftChildPartition,
                                  resultFromRightChildPartition, false);
@@ -327,13 +325,10 @@ public class DocumentProducerTest {
                         new HashMap<>(),
                         () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
+            AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .consumeNextWith(value::set)
+                .verifyComplete();
 
             validateSplitCaptureRequests(requestCreator.invocations, initialContinuationToken, parentPartitionId,
                                          leftChildPartitionId, rightChildPartitionId, resultFromParentPartition,
@@ -344,7 +339,7 @@ public class DocumentProducerTest {
             assertThat(requestCreator.invocations.stream().map(i -> i.maxItemCount).distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(initialPageSize));
 
             // expected results
-            validateSplitResults(subscriber.values(),
+            validateSplitResults(value.get(),
                                  parentPartitionId, leftChildPartitionId,
                                  rightChildPartitionId, resultFromParentPartition, resultFromLeftChildPartition,
                                  resultFromRightChildPartition, true);
@@ -420,13 +415,10 @@ public class DocumentProducerTest {
             currentFeedRange,
             () -> "n/a");
 
-        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-        documentProducer.produceAsync().subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
+        AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+        StepVerifier.create(documentProducer.produceAsync().collectList())
+            .consumeNextWith(value::set)
+            .verifyComplete();
 
         validateMergeCaptureRequests(
             requestCreator.invocations,
@@ -510,13 +502,10 @@ public class DocumentProducerTest {
                 new HashMap<>(),
                 () -> "n/a");
 
-        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-        documentProducer.produceAsync().subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
+        AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+        StepVerifier.create(documentProducer.produceAsync().collectList())
+            .consumeNextWith(value::set)
+            .verifyComplete();
 
         validateMergeCaptureRequests(
             requestCreator.invocations,
@@ -594,15 +583,9 @@ public class DocumentProducerTest {
                     range1,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
-
-            subscriber.assertValueCount(responses.size());
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .expectNextCount(responses.size())
+                .verifyComplete();
 
             // requests match
             assertThat(requestCreator.invocations.stream().map(i -> i.invocationResult).collect(Collectors.toList()))
@@ -696,15 +679,13 @@ public class DocumentProducerTest {
                     feedRangeEpk,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+            AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .consumeNextWith(value::set)
+                .verifyComplete();
 
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
-
-            subscriber.assertValueCount(responsesBeforeThrottle.size() + responsesAfterThrottle.size());
+            Assertions.assertThat(value.get().size())
+                .isEqualTo(responsesBeforeThrottle.size() + responsesAfterThrottle.size());
 
             // requested max page size match
             assertThat(requestCreator.invocations.stream().map(i -> i.maxItemCount).distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(7));
@@ -719,7 +700,7 @@ public class DocumentProducerTest {
                 .containsExactlyElementsOf(Collections.singletonList(feedRangeEpk));
 
             List<String> resultContinuationToken =
-                    subscriber.values().stream().map(r -> r.pageResult.getContinuationToken()).collect(Collectors.toList());
+                    value.get().stream().map(r -> r.pageResult.getContinuationToken()).collect(Collectors.toList());
             List<String> beforeExceptionContinuationTokens =
                     responsesBeforeThrottle.stream().map(FeedResponse::getContinuationToken).collect(Collectors.toList());
             List<String> afterExceptionContinuationTokens =
@@ -802,13 +783,10 @@ public class DocumentProducerTest {
                     feedRangeEpk,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertError(throttlingException);
-            subscriber.assertValueCount(responsesBeforeThrottle.size());
+            List<DocumentProducer<Document>.DocumentProducerFeedResponse> values = new ArrayList<>();
+            StepVerifier.create(documentProducer.produceAsync())
+                .thenConsumeWhile(values::add)
+                .verifyErrorMatches(throttlingException::equals);
         }
 
     private CosmosException mockThrottlingException(Duration retriesAfterDuration) {

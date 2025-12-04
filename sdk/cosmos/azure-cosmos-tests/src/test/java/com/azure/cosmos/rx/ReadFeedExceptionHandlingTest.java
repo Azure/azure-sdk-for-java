@@ -5,28 +5,24 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
@@ -72,12 +68,9 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
             pagedFluxOptions.setFeedOperationState(state);
             return response;
         }));
-        TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
-        mockedClientWrapper.readAllDatabases().byPage().subscribe(subscriber);
-        assertThat(subscriber.valueCount()).isEqualTo(2);
-        subscriber.assertNotComplete();
-        subscriber.assertTerminated();
-        assertThat(subscriber.errorCount()).isEqualTo(1);
+        StepVerifier.create(mockedClientWrapper.readAllDatabases().byPage())
+            .expectNextCount(2)
+            .verifyError();
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
