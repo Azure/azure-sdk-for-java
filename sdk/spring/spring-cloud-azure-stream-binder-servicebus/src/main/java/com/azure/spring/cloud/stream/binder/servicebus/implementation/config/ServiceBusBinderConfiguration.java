@@ -125,10 +125,7 @@ public class ServiceBusBinderConfiguration {
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = serviceBusProperties.getIfAvailable() != null
-            ? azureTokenCredentialResolver.resolve(serviceBusProperties.getIfAvailable())
-            : null;
-        TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
+        TokenCredential credential = resolveTokenCredential(azureTokenCredentialResolver, serviceBusProperties, defaultAzureCredential);
         return new DefaultProducerFactoryCustomizer(credential, azureTokenCredentialResolver,
             clientBuilderCustomizers,
             senderClientBuilderCustomizers);
@@ -144,14 +141,26 @@ public class ServiceBusBinderConfiguration {
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = serviceBusProperties.getIfAvailable() != null
-            ? azureTokenCredentialResolver.resolve(serviceBusProperties.getIfAvailable())
-            : null;
-        TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
+        TokenCredential credential = resolveTokenCredential(azureTokenCredentialResolver, serviceBusProperties, defaultAzureCredential);
         return new DefaultProcessorFactoryCustomizer(credential, azureTokenCredentialResolver,
             clientBuilderCustomizers,
             processorClientBuilderCustomizers,
             sessionProcessorClientBuilderCustomizers);
+    }
+
+    private static TokenCredential resolveTokenCredential(
+        AzureTokenCredentialResolver azureTokenCredentialResolver,
+        ObjectProvider<AzureServiceBusProperties> serviceBusProperties,
+        TokenCredential defaultCredential) {
+
+        AzureServiceBusProperties properties = serviceBusProperties.getIfAvailable();
+        if (properties != null) {
+            TokenCredential resolvedCredential = azureTokenCredentialResolver.resolve(properties);
+            if (resolvedCredential != null) {
+                return resolvedCredential;
+            }
+        }
+        return defaultCredential;
     }
 
     /**

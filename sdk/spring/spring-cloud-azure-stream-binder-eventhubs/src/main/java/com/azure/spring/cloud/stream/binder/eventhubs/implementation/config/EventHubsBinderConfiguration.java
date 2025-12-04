@@ -123,10 +123,7 @@ public class EventHubsBinderConfiguration {
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = eventHubsProperties.getIfAvailable() != null
-            ? azureTokenCredentialResolver.resolve(eventHubsProperties.getIfAvailable())
-            : null;
-        TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
+        TokenCredential credential = resolveTokenCredential(azureTokenCredentialResolver, eventHubsProperties, defaultAzureCredential);
         return new DefaultProducerFactoryCustomizer(credential, azureTokenCredentialResolver, clientBuilderCustomizers);
     }
 
@@ -138,11 +135,23 @@ public class EventHubsBinderConfiguration {
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
 
-        TokenCredential tokenCredential = eventHubsProperties.getIfAvailable() != null
-            ? azureTokenCredentialResolver.resolve(eventHubsProperties.getIfAvailable())
-            : null;
-        TokenCredential credential = tokenCredential != null ? tokenCredential : defaultCredential;
+        TokenCredential credential = resolveTokenCredential(azureTokenCredentialResolver, eventHubsProperties, defaultCredential);
         return new DefaultProcessorFactoryCustomizer(credential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
+    }
+
+    private static TokenCredential resolveTokenCredential(
+        AzureTokenCredentialResolver azureTokenCredentialResolver,
+        ObjectProvider<AzureEventHubsProperties> eventHubsProperties,
+        TokenCredential defaultCredential) {
+
+        AzureEventHubsProperties properties = eventHubsProperties.getIfAvailable();
+        if (properties != null) {
+            TokenCredential resolvedCredential = azureTokenCredentialResolver.resolve(properties);
+            if (resolvedCredential != null) {
+                return resolvedCredential;
+            }
+        }
+        return defaultCredential;
     }
 
     /**
