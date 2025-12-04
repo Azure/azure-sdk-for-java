@@ -152,13 +152,13 @@ stages:
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
+            - ${{if ne(parameters.SDKType, 'data')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+                parameters:
+                  PackagePropertiesFolder: $(Pipeline.Workspace)/packages-signed/PackageInfo
+                  ForRelease: true
+
             - ${{ each artifact in parameters.Artifacts }}:
-              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
               # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
               - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
                 parameters:

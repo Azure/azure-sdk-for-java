@@ -143,6 +143,12 @@ Licensed under the MIT License.
       <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
