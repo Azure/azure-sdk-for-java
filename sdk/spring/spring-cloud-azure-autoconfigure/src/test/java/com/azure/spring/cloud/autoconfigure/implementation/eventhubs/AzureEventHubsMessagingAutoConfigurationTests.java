@@ -130,4 +130,34 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             });
     }
 
+    @Test
+    void processorFactoryShouldConfigureCredentials() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubsProcessorFactory.class);
+                EventHubsProcessorFactory factory = context.getBean(EventHubsProcessorFactory.class);
+                assertThat(factory).isInstanceOf(com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory.class);
+            });
+    }
+
+    @Test
+    void producerFactoryShouldConfigureCredentials() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory.class);
+                com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory factory = 
+                    context.getBean(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory.class);
+                assertThat(factory).isInstanceOf(com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory.class);
+            });
+    }
+
 }
