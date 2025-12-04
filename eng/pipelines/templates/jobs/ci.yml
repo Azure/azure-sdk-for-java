@@ -184,6 +184,11 @@ jobs:
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+          parameters:
+            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
@@ -389,20 +394,6 @@ jobs:
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
-
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-            parameters:
-              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-        - ${{ else }}:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                parameters:
-                  PackageName: ${{artifact.name}}
-                  ServiceName: ${{parameters.ServiceDirectory}}
-                  ForRelease: false
 
       - task: UseNode@1
         inputs:
