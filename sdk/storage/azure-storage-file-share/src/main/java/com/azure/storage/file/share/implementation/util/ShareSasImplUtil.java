@@ -201,6 +201,8 @@ public class ShareSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTid());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
                 this.delegatedUserObjectId);
         }
@@ -219,7 +221,6 @@ public class ShareSasImplUtil {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-    
      * 1. If there is no version, use latest.
      * 2. If there is no identifier set, ensure expiryTime and permissions are set.
      * 3. Resource name is chosen by:
@@ -295,7 +296,8 @@ public class ShareSasImplUtil {
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
-            key.getSignedVersion() == null ? "" : key.getSignedVersion(), "", // SignedKeyDelegatedUserTenantId, will be added in a future release.
+            key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+            key.getSignedDelegatedUserTid() == null ? "" : key.getSignedDelegatedUserTid(),
             this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(), VERSION == null ? "" : VERSION,
