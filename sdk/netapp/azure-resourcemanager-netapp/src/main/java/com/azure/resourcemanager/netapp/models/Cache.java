@@ -273,12 +273,12 @@ public interface Cache {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: Cache properties.
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties Cache properties.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(CacheProperties properties);
+            Update withProperties(CacheUpdateProperties properties);
         }
     }
 
