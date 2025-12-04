@@ -134,10 +134,10 @@ public class TaskStepUpdateParameters implements JsonSerializable<TaskStepUpdate
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("Docker".equals(discriminatorValue)) {
                     return DockerBuildStepUpdateParameters.fromJson(readerToUse.reset());
-                } else if ("FileTask".equals(discriminatorValue)) {
-                    return FileTaskStepUpdateParameters.fromJson(readerToUse.reset());
                 } else if ("EncodedTask".equals(discriminatorValue)) {
                     return EncodedTaskStepUpdateParameters.fromJson(readerToUse.reset());
+                } else if ("FileTask".equals(discriminatorValue)) {
+                    return FileTaskStepUpdateParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

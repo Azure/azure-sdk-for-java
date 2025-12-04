@@ -31,7 +31,7 @@ import java.util.Map;
 public final class RegistriesScheduleRunSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun_FileTaskRun.json
      */
     /**
@@ -44,7 +44,8 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry", new FileTaskRunRequest().withTaskFilePath("acb.yaml")
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry", new FileTaskRunRequest()
+                .withTaskFilePath("acb.yaml")
                 .withValuesFilePath("prod-values.yaml")
                 .withValues(Arrays.asList(
                     new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
@@ -58,7 +59,7 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun.json
      */
     /**
@@ -71,7 +72,8 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry", new DockerBuildRequest().withIsArchiveEnabled(true)
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry", new DockerBuildRequest()
+                .withIsArchiveEnabled(true)
                 .withImageNames(Arrays.asList("azurerest:testtag"))
                 .withIsPushEnabled(true)
                 .withNoCache(true)
@@ -88,7 +90,7 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
      */
     /**
@@ -101,7 +103,7 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry", new EncodedTaskRunRequest()
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry", new EncodedTaskRunRequest()
                 .withEncodedTaskContent("fakeTokenPlaceholder")
                 .withEncodedValuesContent("fakeTokenPlaceholder")
                 .withValues(Arrays.asList(
@@ -113,7 +115,7 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
      */
     /**
@@ -127,7 +129,8 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry", new DockerBuildRequest().withIsArchiveEnabled(true)
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry", new DockerBuildRequest()
+                .withIsArchiveEnabled(true)
                 .withImageNames(Arrays.asList("azurerest:testtag"))
                 .withIsPushEnabled(true)
                 .withNoCache(true)
@@ -155,7 +158,7 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun_WithLogTemplate.json
      */
     /**
@@ -168,7 +171,8 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry", new DockerBuildRequest().withIsArchiveEnabled(true)
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry", new DockerBuildRequest()
+                .withIsArchiveEnabled(true)
                 .withLogTemplate("acr/tasks:{{.Run.OS}}")
                 .withImageNames(Arrays.asList("azurerest:testtag"))
                 .withIsPushEnabled(true)
@@ -186,7 +190,7 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun_Task.json
      */
     /**
@@ -199,7 +203,7 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry",
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry",
                 new TaskRunRequest().withTaskId("myTask")
                     .withOverrideTaskStepProperties(new OverrideTaskStepProperties().withFile("overriddenDockerfile")
                         .withArguments(Arrays.asList(
@@ -219,7 +223,7 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
      */
     /**
@@ -233,7 +237,8 @@ public final class RegistriesScheduleRunSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .scheduleRun("myResourceGroup", "myRegistry", new FileTaskRunRequest().withTaskFilePath("acb.yaml")
+            .scheduleRunWithResponse("myResourceGroup", "myRegistry", new FileTaskRunRequest()
+                .withTaskFilePath("acb.yaml")
                 .withValues(Arrays.asList(
                     new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
                     new SetValue().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))

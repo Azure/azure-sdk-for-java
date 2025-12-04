@@ -103,17 +103,17 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
     }
 
     /**
-     * The OperationsClient object to access its operations.
+     * The AgentPoolsClient object to access its operations.
      */
-    private final OperationsClient operations;
+    private final AgentPoolsClient agentPools;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the AgentPoolsClient object to access its operations.
      * 
-     * @return the OperationsClient object.
+     * @return the AgentPoolsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public AgentPoolsClient getAgentPools() {
+        return this.agentPools;
     }
 
     /**
@@ -128,6 +128,62 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public RegistriesClient getRegistries() {
         return this.registries;
+    }
+
+    /**
+     * The RunsClient object to access its operations.
+     */
+    private final RunsClient runs;
+
+    /**
+     * Gets the RunsClient object to access its operations.
+     * 
+     * @return the RunsClient object.
+     */
+    public RunsClient getRuns() {
+        return this.runs;
+    }
+
+    /**
+     * The TaskRunsClient object to access its operations.
+     */
+    private final TaskRunsClient taskRuns;
+
+    /**
+     * Gets the TaskRunsClient object to access its operations.
+     * 
+     * @return the TaskRunsClient object.
+     */
+    public TaskRunsClient getTaskRuns() {
+        return this.taskRuns;
+    }
+
+    /**
+     * The TasksClient object to access its operations.
+     */
+    private final TasksClient tasks;
+
+    /**
+     * Gets the TasksClient object to access its operations.
+     * 
+     * @return the TasksClient object.
+     */
+    public TasksClient getTasks() {
+        return this.tasks;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /**
@@ -243,62 +299,6 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
     }
 
     /**
-     * The AgentPoolsClient object to access its operations.
-     */
-    private final AgentPoolsClient agentPools;
-
-    /**
-     * Gets the AgentPoolsClient object to access its operations.
-     * 
-     * @return the AgentPoolsClient object.
-     */
-    public AgentPoolsClient getAgentPools() {
-        return this.agentPools;
-    }
-
-    /**
-     * The RunsClient object to access its operations.
-     */
-    private final RunsClient runs;
-
-    /**
-     * Gets the RunsClient object to access its operations.
-     * 
-     * @return the RunsClient object.
-     */
-    public RunsClient getRuns() {
-        return this.runs;
-    }
-
-    /**
-     * The TaskRunsClient object to access its operations.
-     */
-    private final TaskRunsClient taskRuns;
-
-    /**
-     * Gets the TaskRunsClient object to access its operations.
-     * 
-     * @return the TaskRunsClient object.
-     */
-    public TaskRunsClient getTaskRuns() {
-        return this.taskRuns;
-    }
-
-    /**
-     * The TasksClient object to access its operations.
-     */
-    private final TasksClient tasks;
-
-    /**
-     * Gets the TasksClient object to access its operations.
-     * 
-     * @return the TasksClient object.
-     */
-    public TasksClient getTasks() {
-        return this.tasks;
-    }
-
-    /**
      * Initializes an instance of ContainerRegistryManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -316,8 +316,12 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.operations = new OperationsClientImpl(this);
+        this.agentPools = new AgentPoolsClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
+        this.runs = new RunsClientImpl(this);
+        this.taskRuns = new TaskRunsClientImpl(this);
+        this.tasks = new TasksClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.cacheRules = new CacheRulesClientImpl(this);
         this.connectedRegistries = new ConnectedRegistriesClientImpl(this);
         this.credentialSets = new CredentialSetsClientImpl(this);
@@ -326,9 +330,5 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.scopeMaps = new ScopeMapsClientImpl(this);
         this.tokens = new TokensClientImpl(this);
         this.webhooks = new WebhooksClientImpl(this);
-        this.agentPools = new AgentPoolsClientImpl(this);
-        this.runs = new RunsClientImpl(this);
-        this.taskRuns = new TaskRunsClientImpl(this);
-        this.tasks = new TasksClientImpl(this);
     }
 }

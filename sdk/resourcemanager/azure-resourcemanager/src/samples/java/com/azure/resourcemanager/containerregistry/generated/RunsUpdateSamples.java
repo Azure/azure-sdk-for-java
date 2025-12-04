@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 public final class RunsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/RunsUpdate.json
      */
     /**
@@ -25,7 +25,7 @@ public final class RunsUpdateSamples {
             .manager()
             .serviceClient()
             .getRuns()
-            .update("myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab",
+            .updateWithResponse("myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab",
                 new RunUpdateParameters().withIsArchiveEnabled(true), com.azure.core.util.Context.NONE);
     }
 }

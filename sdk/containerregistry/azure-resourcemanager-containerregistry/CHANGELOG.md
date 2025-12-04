@@ -1,14 +1,12 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.55.0-beta.1 (2025-12-04)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `RegistryTasks` to `2025-03-01-preview`.
 
 ## 2.54.1 (2025-11-24)
 

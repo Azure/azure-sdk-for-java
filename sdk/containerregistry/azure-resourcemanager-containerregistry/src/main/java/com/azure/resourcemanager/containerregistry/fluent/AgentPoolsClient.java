@@ -25,10 +25,50 @@ import reactor.core.publisher.Mono;
  */
 public interface AgentPoolsClient {
     /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all the agent pools for a specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName, Context context);
+
+    /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,8 +83,8 @@ public interface AgentPoolsClient {
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,8 +97,8 @@ public interface AgentPoolsClient {
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,8 +113,8 @@ public interface AgentPoolsClient {
     /**
      * Gets the detailed information for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,14 +127,15 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -104,14 +145,15 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateAsync(String resourceGroupName,
@@ -120,14 +162,15 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreate(String resourceGroupName, String registryName,
@@ -136,8 +179,8 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
@@ -145,6 +188,7 @@ public interface AgentPoolsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreate(String resourceGroupName, String registryName,
@@ -153,14 +197,15 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentPoolInner> createAsync(String resourceGroupName, String registryName, String agentPoolName,
@@ -169,14 +214,15 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolInner create(String resourceGroupName, String registryName, String agentPoolName,
@@ -185,8 +231,8 @@ public interface AgentPoolsClient {
     /**
      * Creates an agent pool for a container registry with the specified parameters.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param agentPool The parameters of an agent pool that needs to scheduled.
      * @param context The context to associate with this operation.
@@ -194,16 +240,139 @@ public interface AgentPoolsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolInner create(String resourceGroupName, String registryName, String agentPoolName, AgentPoolInner agentPool,
         Context context);
 
     /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String agentPoolName, AgentPoolUpdateParameters updateParameters);
+
+    /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String agentPoolName, AgentPoolUpdateParameters updateParameters);
+
+    /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName, String registryName,
+        String agentPoolName, AgentPoolUpdateParameters updateParameters);
+
+    /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName, String registryName,
+        String agentPoolName, AgentPoolUpdateParameters updateParameters, Context context);
+
+    /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AgentPoolInner> updateAsync(String resourceGroupName, String registryName, String agentPoolName,
+        AgentPoolUpdateParameters updateParameters);
+
+    /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentPoolInner update(String resourceGroupName, String registryName, String agentPoolName,
+        AgentPoolUpdateParameters updateParameters);
+
+    /**
+     * Updates an agent pool with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param updateParameters The parameters for updating an agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the agentpool that has the ARM resource and properties.
+     * The agentpool will have all information to create an agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentPoolInner update(String resourceGroupName, String registryName, String agentPoolName,
+        AgentPoolUpdateParameters updateParameters, Context context);
+
+    /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -217,8 +386,8 @@ public interface AgentPoolsClient {
     /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -232,8 +401,8 @@ public interface AgentPoolsClient {
     /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -246,8 +415,8 @@ public interface AgentPoolsClient {
     /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,8 +431,8 @@ public interface AgentPoolsClient {
     /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -276,8 +445,8 @@ public interface AgentPoolsClient {
     /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -289,8 +458,8 @@ public interface AgentPoolsClient {
     /**
      * Deletes a specified agent pool resource.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,165 +470,10 @@ public interface AgentPoolsClient {
     void delete(String resourceGroupName, String registryName, String agentPoolName, Context context);
 
     /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
-        String agentPoolName, AgentPoolUpdateParameters updateParameters);
-
-    /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
-        String registryName, String agentPoolName, AgentPoolUpdateParameters updateParameters);
-
-    /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName, String registryName,
-        String agentPoolName, AgentPoolUpdateParameters updateParameters);
-
-    /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName, String registryName,
-        String agentPoolName, AgentPoolUpdateParameters updateParameters, Context context);
-
-    /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentPoolInner> updateAsync(String resourceGroupName, String registryName, String agentPoolName,
-        AgentPoolUpdateParameters updateParameters);
-
-    /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner update(String resourceGroupName, String registryName, String agentPoolName,
-        AgentPoolUpdateParameters updateParameters);
-
-    /**
-     * Updates an agent pool with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param updateParameters The parameters for updating an agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner update(String resourceGroupName, String registryName, String agentPoolName,
-        AgentPoolUpdateParameters updateParameters, Context context);
-
-    /**
-     * Lists all the agent pools for a specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all the agent pools for a specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all the agent pools for a specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName, Context context);
-
-    /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -474,8 +488,8 @@ public interface AgentPoolsClient {
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -489,8 +503,8 @@ public interface AgentPoolsClient {
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,8 +519,8 @@ public interface AgentPoolsClient {
     /**
      * Gets the count of queued runs for a given agent pool.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the Registry.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

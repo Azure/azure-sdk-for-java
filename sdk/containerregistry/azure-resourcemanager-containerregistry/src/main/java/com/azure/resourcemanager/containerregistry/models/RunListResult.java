@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Collection of runs.
+ * The collection of runs.
  */
 @Fluent
 public final class RunListResult implements JsonSerializable<RunListResult> {

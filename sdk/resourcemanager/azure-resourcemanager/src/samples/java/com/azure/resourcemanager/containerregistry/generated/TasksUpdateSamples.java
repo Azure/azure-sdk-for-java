@@ -11,6 +11,7 @@ import com.azure.resourcemanager.containerregistry.models.CustomRegistryCredenti
 import com.azure.resourcemanager.containerregistry.models.DockerBuildStepUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.SecretObject;
 import com.azure.resourcemanager.containerregistry.models.SecretObjectType;
+import com.azure.resourcemanager.containerregistry.models.SourceRegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerEvent;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.SourceUpdateParameters;
@@ -28,7 +29,40 @@ import java.util.Map;
 public final class TasksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
+     * preview/examples/ManagedIdentity/TasksUpdate_WithLoginIdentity.json
+     */
+    /**
+     * Sample code: Tasks_Update_WithLoginIdentity.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void tasksUpdateWithLoginIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .updateWithResponse("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                .withStatus(TaskStatus.ENABLED)
+                .withAgentConfiguration(new AgentProperties().withCpu(3))
+                .withStep(new DockerBuildStepUpdateParameters().withImageNames(Arrays.asList("azurerest:testtag1"))
+                    .withDockerFilePath("src/DockerFile"))
+                .withTrigger(
+                    new TriggerUpdateParameters().withSourceTriggers(Arrays.asList(new SourceTriggerUpdateParameters()
+                        .withSourceRepository(new SourceUpdateParameters()
+                            .withSourceControlAuthProperties(new AuthInfoUpdateParameters().withTokenType(TokenType.PAT)
+                                .withToken("fakeTokenPlaceholder")))
+                        .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
+                        .withName("mySourceTrigger"))))
+                .withCredentials(
+                    new Credentials().withSourceRegistry(new SourceRegistryCredentials().withIdentity("[system]"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/TasksUpdate_QuickTask.json
      */
     /**
@@ -41,7 +75,7 @@ public final class TasksUpdateSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .update("myResourceGroup", "myRegistry", "quicktask",
+            .updateWithResponse("myResourceGroup", "myRegistry", "quicktask",
                 new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withLogTemplate("acr/tasks:{{.Run.OS}}"),
@@ -50,7 +84,7 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/ManagedIdentity/TasksUpdate_WithMSICustomCredentials.json
      */
     /**
@@ -63,7 +97,7 @@ public final class TasksUpdateSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+            .updateWithResponse("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
                 .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                 .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
@@ -83,7 +117,7 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/ManagedIdentity/TasksUpdate_WithKeyVaultCustomCredentials.json
      */
     /**
@@ -96,7 +130,7 @@ public final class TasksUpdateSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+            .updateWithResponse("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
                 .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                 .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
@@ -123,7 +157,7 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/TasksUpdate.json
      */
     /**
@@ -136,7 +170,7 @@ public final class TasksUpdateSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+            .updateWithResponse("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
                 .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                 .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
@@ -161,7 +195,7 @@ public final class TasksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-
      * preview/examples/TasksUpdate_WithOpaqueCustomCredentials.json
      */
     /**
@@ -174,7 +208,7 @@ public final class TasksUpdateSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+            .updateWithResponse("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
                 .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                 .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
