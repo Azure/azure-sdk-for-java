@@ -93,8 +93,7 @@ public final class HttpClientHelper {
             }
 
             return this.azureHttpClient.send(azureRequest)
-                .map(AzureHttpResponseAdapter::new)
-                .map(response -> (HttpResponse) response)
+                .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 .toFuture();
         }
 
