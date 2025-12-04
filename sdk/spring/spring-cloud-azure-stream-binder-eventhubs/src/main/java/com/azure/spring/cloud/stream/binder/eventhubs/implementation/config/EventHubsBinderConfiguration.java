@@ -139,7 +139,7 @@ public class EventHubsBinderConfiguration {
         return new DefaultProcessorFactoryCustomizer(credential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
     }
 
-    private static TokenCredential resolveTokenCredential(
+    static TokenCredential resolveTokenCredential(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
         ObjectProvider<AzureEventHubsProperties> eventHubsProperties,
         TokenCredential defaultCredential) {

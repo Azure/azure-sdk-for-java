@@ -148,7 +148,7 @@ public class ServiceBusBinderConfiguration {
             sessionProcessorClientBuilderCustomizers);
     }
 
-    private static TokenCredential resolveTokenCredential(
+    static TokenCredential resolveTokenCredential(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
         ObjectProvider<AzureServiceBusProperties> serviceBusProperties,
         TokenCredential defaultCredential) {

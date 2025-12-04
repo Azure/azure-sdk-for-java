@@ -228,6 +228,70 @@ public class EventHubsBinderConfigurationTests {
             });
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    void resolveTokenCredentialReturnsCustomCredentialWhenBeanNameProvided() {
+        com.azure.core.credential.TokenCredential customCredential = mock(com.azure.core.credential.TokenCredential.class);
+        com.azure.core.credential.TokenCredential defaultCredential = mock(com.azure.core.credential.TokenCredential.class);
+        com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver resolver = 
+            mock(com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver.class);
+        
+        AzureEventHubsProperties properties = new AzureEventHubsProperties();
+        properties.setNamespace("fake-namespace");
+        properties.getCredential().setTokenCredentialBeanName("customCredential");
+        
+        org.springframework.beans.factory.ObjectProvider<AzureEventHubsProperties> propertiesProvider = 
+            mock(org.springframework.beans.factory.ObjectProvider.class);
+        org.mockito.Mockito.when(propertiesProvider.getIfAvailable()).thenReturn(properties);
+        org.mockito.Mockito.when(resolver.resolve(properties)).thenReturn(customCredential);
+        
+        com.azure.core.credential.TokenCredential result = 
+            com.azure.spring.cloud.stream.binder.eventhubs.implementation.config.EventHubsBinderConfiguration
+                .resolveTokenCredential(resolver, propertiesProvider, defaultCredential);
+        
+        assertThat(result).isEqualTo(customCredential);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void resolveTokenCredentialReturnsDefaultWhenNoCustomCredentialResolved() {
+        com.azure.core.credential.TokenCredential defaultCredential = mock(com.azure.core.credential.TokenCredential.class);
+        com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver resolver = 
+            mock(com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver.class);
+        
+        AzureEventHubsProperties properties = new AzureEventHubsProperties();
+        properties.setNamespace("fake-namespace");
+        
+        org.springframework.beans.factory.ObjectProvider<AzureEventHubsProperties> propertiesProvider = 
+            mock(org.springframework.beans.factory.ObjectProvider.class);
+        org.mockito.Mockito.when(propertiesProvider.getIfAvailable()).thenReturn(properties);
+        org.mockito.Mockito.when(resolver.resolve(properties)).thenReturn(null);
+        
+        com.azure.core.credential.TokenCredential result = 
+            com.azure.spring.cloud.stream.binder.eventhubs.implementation.config.EventHubsBinderConfiguration
+                .resolveTokenCredential(resolver, propertiesProvider, defaultCredential);
+        
+        assertThat(result).isEqualTo(defaultCredential);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void resolveTokenCredentialReturnsDefaultWhenPropertiesNotAvailable() {
+        com.azure.core.credential.TokenCredential defaultCredential = mock(com.azure.core.credential.TokenCredential.class);
+        com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver resolver = 
+            mock(com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver.class);
+        
+        org.springframework.beans.factory.ObjectProvider<AzureEventHubsProperties> propertiesProvider = 
+            mock(org.springframework.beans.factory.ObjectProvider.class);
+        org.mockito.Mockito.when(propertiesProvider.getIfAvailable()).thenReturn(null);
+        
+        com.azure.core.credential.TokenCredential result = 
+            com.azure.spring.cloud.stream.binder.eventhubs.implementation.config.EventHubsBinderConfiguration
+                .resolveTokenCredential(resolver, propertiesProvider, defaultCredential);
+        
+        assertThat(result).isEqualTo(defaultCredential);
+    }
+
     @Configuration
     @EnableConfigurationProperties(EventHubsExtendedBindingProperties.class)
     static class TestProcessorContainerConfiguration {
