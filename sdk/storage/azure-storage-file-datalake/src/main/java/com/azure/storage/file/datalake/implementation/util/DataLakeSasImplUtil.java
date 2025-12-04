@@ -53,45 +53,25 @@ public class DataLakeSasImplUtil {
         .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
-
     private OffsetDateTime startTime;
-
     private OffsetDateTime expiryTime;
-
     private String permissions;
-
     private SasIpRange sasIpRange;
-
     private String fileSystemName;
-
     private String pathName;
-
     private String resource;
-
     private String identifier;
-
     private String cacheControl;
-
     private String contentDisposition;
-
     private String contentEncoding;
-
     private String contentLanguage;
-
     private String contentType;
-
     private Boolean isDirectory;
-
     private Integer directoryDepth;
-
     private String authorizedAadObjectId;
-
     private String unauthorizedAadObjectId;
-
     private String correlationId;
-
     private String encryptionScope;
-
     private String delegatedUserObjectId;
 
     /**
@@ -252,6 +232,8 @@ public class DataLakeSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTenantId());
 
             /* Only parameters relevant for user delegation SAS. */
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
@@ -282,8 +264,7 @@ public class DataLakeSasImplUtil {
     }
 
     /**
-     * Ensures that the builder's properties are in a consistent state.
-    
+     * <p> Ensures that the builder's properties are in a consistent state.
      * 1. If there is no identifier set, ensure expiryTime and permissions are set.
      * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
@@ -291,11 +272,11 @@ public class DataLakeSasImplUtil {
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
      *    d. Otherwise, it is a blob resource.
      * 3. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
-     * 4. Ensure saoid is not set when suoid is set and vice versa.
+     * 4. Ensure saoid is not set when suoid is set and vice versa. </p>
      *
      * Taken from:
-     * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
-     * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
+     * <a href="https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33">sas_service.go</a>
+     * <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs">BlobSasBuilder.cs</a>
      */
     public void ensureState() {
         if (identifier == null) {
@@ -459,11 +440,13 @@ public class DataLakeSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.correlationId == null ? "" : this.correlationId,
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
-                this.encryptionScope == null ? "" : this.encryptionScope,
+                this.encryptionScope == null ? "" : this.encryptionScope, "", /* request header */
+                "", /* request query parameter */
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
