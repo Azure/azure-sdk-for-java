@@ -3,6 +3,7 @@
 ## 12.33.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
 
 ### Breaking Changes
 
