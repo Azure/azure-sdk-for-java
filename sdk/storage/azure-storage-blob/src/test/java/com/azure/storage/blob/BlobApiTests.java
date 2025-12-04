@@ -3185,4 +3185,5 @@ public class BlobApiTests extends BlobTestBase {
         String expectedEncodedContainerName = "my%20container";
         assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
     }
+
 }
