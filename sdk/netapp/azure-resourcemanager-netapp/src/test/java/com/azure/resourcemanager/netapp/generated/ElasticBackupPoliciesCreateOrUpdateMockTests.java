@@ -25,7 +25,7 @@ public final class ElasticBackupPoliciesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1902620686,\"weeklyBackupsToKeep\":2022478169,\"monthlyBackupsToKeep\":182145934,\"assignedVolumesCount\":1776924821,\"policyState\":\"Disabled\"},\"eTag\":\"ejbsvsiaies\",\"location\":\"ddzydisnu\",\"tags\":{\"nldpxottd\":\"wyj\",\"ocqibz\":\"i\",\"ph\":\"ihweeb\"},\"id\":\"yv\",\"name\":\"jw\",\"type\":\"w\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1909500161,\"weeklyBackupsToKeep\":86594429,\"monthlyBackupsToKeep\":216995249,\"assignedVolumesCount\":201365036,\"policyState\":\"Enabled\"},\"eTag\":\"micbigwcdgzseznu\",\"location\":\"euairaabmdlqjb\",\"tags\":{\"xlhupmomihzbdnp\":\"f\",\"cghf\":\"pkcdpreyxely\",\"sfxrkbhammgm\":\"rufssjyg\"},\"id\":\"fm\",\"name\":\"fgvqcpdw\",\"type\":\"gquxweysland\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,22 +35,22 @@ public final class ElasticBackupPoliciesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticBackupPolicy response = manager.elasticBackupPolicies()
-            .define("okjxebjvb")
-            .withRegion("ehaqidoyzltgio")
-            .withExistingElasticAccount("xstcyilbvzm", "xcjzlquze")
-            .withTags(mapOf("aeapfsergd", "qpep"))
-            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(716967552)
-                .withWeeklyBackupsToKeep(1595582968)
-                .withMonthlyBackupsToKeep(1539684502)
+            .define("yxhighc")
+            .withRegion("jei")
+            .withExistingElasticAccount("iyrgkoek", "zwx")
+            .withTags(mapOf("msgycqs", "gqaboohx", "gejkbvhh", "rmdvewuyqaeohpj"))
+            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(1400257872)
+                .withWeeklyBackupsToKeep(631913462)
+                .withMonthlyBackupsToKeep(1299436949)
                 .withPolicyState(ElasticBackupPolicyState.ENABLED))
             .create();
 
-        Assertions.assertEquals("ddzydisnu", response.location());
-        Assertions.assertEquals("wyj", response.tags().get("nldpxottd"));
-        Assertions.assertEquals(1902620686, response.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(2022478169, response.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(182145934, response.properties().monthlyBackupsToKeep());
-        Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, response.properties().policyState());
+        Assertions.assertEquals("euairaabmdlqjb", response.location());
+        Assertions.assertEquals("f", response.tags().get("xlhupmomihzbdnp"));
+        Assertions.assertEquals(1909500161, response.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(86594429, response.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(216995249, response.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, response.properties().policyState());
     }
 
     // Use "Map.of" if available
