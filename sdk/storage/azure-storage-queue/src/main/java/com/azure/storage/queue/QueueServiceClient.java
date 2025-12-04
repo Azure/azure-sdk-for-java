@@ -25,6 +25,7 @@ import com.azure.storage.queue.models.KeyInfo;
 import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
 import com.azure.storage.queue.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.queue.models.QueueCorsRule;
+import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueServiceProperties;
@@ -713,7 +714,8 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
+        return getUserDelegationKeyWithResponse(new QueueGetUserDelegationKeyOptions(expiry).setStartsOn(start), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -729,18 +731,38 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
+        return getUserDelegationKeyWithResponse(new QueueGetUserDelegationKeyOptions(expiry).setStartsOn(start),
+            timeout, context);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's queue storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options Options for getting the user delegation key.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(QueueGetUserDelegationKeyOptions options,
+        Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        StorageImplUtils.assertNotNull("options", options);
+        if (options.getStartsOn() != null && !options.getStartsOn().isBefore(options.getExpiresOn())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        Context finalContext = context == null ? Context.NONE : context;
+
         Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
             = () -> this.azureQueueStorage.getServices()
-                .getUserDelegationKeyWithResponse(
-                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                    null, null, finalContext);
+                .getUserDelegationKeyWithResponse(new KeyInfo()
+                    .setStart(options.getStartsOn() == null
+                        ? ""
+                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                    .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, finalContext);
+
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, QueueStorageException.class);
         return new SimpleResponse<>(response, response.getValue());

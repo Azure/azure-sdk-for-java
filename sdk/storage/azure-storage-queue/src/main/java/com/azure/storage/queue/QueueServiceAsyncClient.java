@@ -23,6 +23,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.KeyInfo;
 import com.azure.storage.queue.models.QueueCorsRule;
+import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueServiceProperties;
@@ -727,7 +728,8 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
+        return getUserDelegationKeyWithResponse(new QueueGetUserDelegationKeyOptions(expiry).setStartsOn(start))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -744,27 +746,46 @@ public final class QueueServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
+        return getUserDelegationKeyWithResponse(new QueueGetUserDelegationKeyOptions(expiry).setStartsOn(start));
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's queue storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options Options for getting the user delegation key.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * delegation key.
+     * @throws IllegalArgumentException If {@code options.getStartsOn()} isn't null and is after
+     * {@code options.getExpiresOn()}.
+     * @throws NullPointerException If {@code options.getExpiresOn()} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>>
+        getUserDelegationKeyWithResponse(QueueGetUserDelegationKeyOptions options) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+            return withContext(context -> getUserDelegationKeyWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(QueueGetUserDelegationKeyOptions options,
         Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
+        context = context == null ? Context.NONE : context;
+        StorageImplUtils.assertNotNull("options", options);
+        if (options.getStartsOn() != null && !options.getStartsOn().isBefore(options.getExpiresOn())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        context = context == null ? Context.NONE : context;
 
         return client.getServices()
-            .getUserDelegationKeyWithResponseAsync(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, context)
+            .getUserDelegationKeyWithResponseAsync(new KeyInfo()
+                .setStart(options.getStartsOn() == null
+                    ? ""
+                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }
