@@ -118,13 +118,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -193,7 +193,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>com.squareup.okio:okio:[3.16.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
+                <include>com.squareup.okio:okio:[3.16.4]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -81,7 +81,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.8.0</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,13 +101,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

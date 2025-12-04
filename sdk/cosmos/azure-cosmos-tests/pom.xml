@@ -145,7 +145,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -163,25 +163,25 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.25.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.25.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.25.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.8.0</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -207,13 +207,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

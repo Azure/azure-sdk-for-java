@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

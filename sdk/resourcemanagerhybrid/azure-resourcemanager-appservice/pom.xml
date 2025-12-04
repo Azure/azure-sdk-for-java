@@ -95,7 +95,7 @@
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
+      <version>3.12.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

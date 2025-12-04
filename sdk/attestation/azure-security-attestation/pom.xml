@@ -107,7 +107,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk18on</artifactId>
-      <version>1.81</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk18on;external_dependency} -->
+      <version>1.83</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk18on;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
