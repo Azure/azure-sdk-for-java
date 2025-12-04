@@ -119,20 +119,26 @@ public class EventHubsBinderConfiguration {
     @ConditionalOnMissingBean
     EventHubsProducerFactoryCustomizer defaultEventHubsProducerFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
+        AzureEventHubsProperties eventHubsProperties,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers) {
 
-        return new DefaultProducerFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver, clientBuilderCustomizers);
+        TokenCredential tokenCredential = azureTokenCredentialResolver.resolve(eventHubsProperties);
+        TokenCredential credential = tokenCredential != null ? tokenCredential : defaultAzureCredential;
+        return new DefaultProducerFactoryCustomizer(credential, azureTokenCredentialResolver, clientBuilderCustomizers);
     }
 
     @Bean
     @ConditionalOnMissingBean
     EventHubsProcessorFactoryCustomizer defaultEventHubsProcessorFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
+        AzureEventHubsProperties eventHubsProperties,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
 
-        return new DefaultProcessorFactoryCustomizer(defaultCredential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
+        TokenCredential tokenCredential = azureTokenCredentialResolver.resolve(eventHubsProperties);
+        TokenCredential credential = tokenCredential != null ? tokenCredential : defaultCredential;
+        return new DefaultProcessorFactoryCustomizer(credential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
     }
 
     /**
