@@ -3,6 +3,7 @@
 ## 12.33.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
 
 ### Breaking Changes
 

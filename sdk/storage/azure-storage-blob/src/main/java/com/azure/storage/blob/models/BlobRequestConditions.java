@@ -109,6 +109,7 @@ public class BlobRequestConditions extends BlobLeaseRequestConditions {
 
     /**
      * Gets the access-tier {@link OffsetDateTime} that the resource must have been modified since.
+     * <b> Currently, this is only supported for the Delete Blob operation. </b>
      *
      * @return The access-tier {@link OffsetDateTime} that the resource must have been modified since.
      */
@@ -119,6 +120,7 @@ public class BlobRequestConditions extends BlobLeaseRequestConditions {
     /**
      * Optionally limits requests to resources that have had their access-tier modified since the specified
      * {@link OffsetDateTime}.
+     * <b> Currently, this is only supported for the Delete Blob operation. </b>
      *
      * @param accessTierIfModifiedSince The access-tier {@link OffsetDateTime} that the resource must have been modified
      * since.
@@ -131,6 +133,7 @@ public class BlobRequestConditions extends BlobLeaseRequestConditions {
 
     /**
      * Gets the access-tier {@link OffsetDateTime} that the resource must have remained unmodified since.
+     * <b> Currently, this is only supported for the Delete Blob operation. </b>
      *
      * @return The access-tier {@link OffsetDateTime} that the resource must have remained unmodified since.
      */
@@ -141,7 +144,8 @@ public class BlobRequestConditions extends BlobLeaseRequestConditions {
     /**
      * Optionally limits requests to resources that have not had their access-tier modified since the specified
      * {@link OffsetDateTime}.
-     *
+     * <b> Currently, this is only supported for the Delete Blob operation. </b>
+     * 
      * @param accessTierIfUnmodifiedSince The access-tier {@link OffsetDateTime} that the resource must have remained
      * unmodified since.
      * @return The updated BlobRequestConditions object.
