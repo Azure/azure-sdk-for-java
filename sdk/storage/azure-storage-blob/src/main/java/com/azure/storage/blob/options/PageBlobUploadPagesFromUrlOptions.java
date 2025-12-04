@@ -197,7 +197,8 @@ public final class PageBlobUploadPagesFromUrlOptions {
      * @param sourceCustomerProvidedKey The {@link CustomerProvidedKey} used for encrypting the source blob.
      * @return The updated options.
      */
-    public PageBlobUploadPagesFromUrlOptions setSourceCustomerProvidedKey(CustomerProvidedKey sourceCustomerProvidedKey) {
+    public PageBlobUploadPagesFromUrlOptions
+        setSourceCustomerProvidedKey(CustomerProvidedKey sourceCustomerProvidedKey) {
         this.sourceCustomerProvidedKey = sourceCustomerProvidedKey;
         return this;
     }

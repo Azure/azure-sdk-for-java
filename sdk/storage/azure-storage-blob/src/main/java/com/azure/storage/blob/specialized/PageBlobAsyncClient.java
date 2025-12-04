@@ -703,8 +703,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
         String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
         String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
-        EncryptionAlgorithmType sourceCpkAlgorithm = sourceCustomerProvidedKey != null
-            ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
+        EncryptionAlgorithmType sourceCpkAlgorithm
+            = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
 
         return this.azureBlobStorage.getPageBlobs()
             .uploadPagesFromURLWithResponseAsync(containerName, blobName, options.getSourceUrl(), sourceRangeString, 0,
@@ -716,7 +716,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
                 sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
-                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope, context)
+                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope,
+                context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

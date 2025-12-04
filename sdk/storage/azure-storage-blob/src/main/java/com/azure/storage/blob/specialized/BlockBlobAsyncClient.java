@@ -577,8 +577,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
         String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
         String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
-        EncryptionAlgorithmType sourceCpkAlgorithm = sourceCustomerProvidedKey != null
-            ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
+        EncryptionAlgorithmType sourceCpkAlgorithm
+            = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
 
         try {
             new URL(options.getSourceUrl());
@@ -893,8 +893,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
         String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
         String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
-        EncryptionAlgorithmType sourceCpkAlgorithm = sourceCustomerProvidedKey != null
-            ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
+        EncryptionAlgorithmType sourceCpkAlgorithm
+            = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
 
         return this.azureBlobStorage.getBlockBlobs()
             .stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(), 0,
@@ -902,7 +902,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
                 sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
-                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope, context);
+                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope,
+                context);
     }
 
     /**

@@ -611,8 +611,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
         String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
         String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
-        EncryptionAlgorithmType sourceCpkAlgorithm = sourceCustomerProvidedKey != null
-            ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
+        EncryptionAlgorithmType sourceCpkAlgorithm
+            = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockFromUrlWithResponseAsync(containerName, blobName, options.getSourceUrl(), 0,

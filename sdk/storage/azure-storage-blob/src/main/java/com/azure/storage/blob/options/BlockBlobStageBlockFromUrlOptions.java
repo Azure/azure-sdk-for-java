@@ -196,7 +196,8 @@ public final class BlockBlobStageBlockFromUrlOptions {
      * @param sourceCustomerProvidedKey The {@link CustomerProvidedKey} used for encrypting the source blob.
      * @return The updated options.
      */
-    public BlockBlobStageBlockFromUrlOptions setSourceCustomerProvidedKey(CustomerProvidedKey sourceCustomerProvidedKey) {
+    public BlockBlobStageBlockFromUrlOptions
+        setSourceCustomerProvidedKey(CustomerProvidedKey sourceCustomerProvidedKey) {
         this.sourceCustomerProvidedKey = sourceCustomerProvidedKey;
         return this;
     }

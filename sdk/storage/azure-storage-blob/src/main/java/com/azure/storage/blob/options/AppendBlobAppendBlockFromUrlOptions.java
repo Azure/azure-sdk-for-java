@@ -186,7 +186,8 @@ public final class AppendBlobAppendBlockFromUrlOptions {
      * @param sourceCustomerProvidedKey The {@link CustomerProvidedKey} used for encrypting the source blob.
      * @return The updated options.
      */
-    public AppendBlobAppendBlockFromUrlOptions setSourceCustomerProvidedKey(CustomerProvidedKey sourceCustomerProvidedKey) {
+    public AppendBlobAppendBlockFromUrlOptions
+        setSourceCustomerProvidedKey(CustomerProvidedKey sourceCustomerProvidedKey) {
         this.sourceCustomerProvidedKey = sourceCustomerProvidedKey;
         return this;
     }
