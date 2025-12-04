@@ -2,6 +2,12 @@
 
 ## 6.1.0-beta.1 (Unreleased)
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+### Bugs Fixed
+- Fix credential not set in AzureEventHubsMessagingAutoConfiguration. [#47444](https://github.com/Azure/azure-sdk-for-java/pull/47444).
+
 ### Spring Cloud Stream Service Bus Binder
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
 
@@ -13,8 +19,6 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 ### Bugs Fixed
 - Fix TokenCredential bean name resolution in Spring Cloud Stream Binder [#47444](https://github.com/Azure/azure-sdk-for-java/pull/47444).
-
-
 
 ## 6.0.0 (2025-09-22)
 - This release is compatible with Spring Boot 3.5.0-3.5.5. (Note: 3.5.x (x>5) should be supported, but they aren't tested with this release.)
