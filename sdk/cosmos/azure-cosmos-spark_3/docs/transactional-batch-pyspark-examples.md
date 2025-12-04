@@ -10,6 +10,7 @@ Transactional batch operations enable atomic multi-document operations within a 
 
 - **Atomic Operations**: All operations in a batch succeed or fail together (ACID guarantees)
 - **Multiple Operation Types**: Supports create, replace, upsert, delete, and read operations
+- **Hierarchical Partition Keys**: Full support for 1-3 level hierarchical partition keys with JSON serialization for Spark broadcast compatibility
 - **100-Operation Limit**: Enforces Cosmos DB's limit of 100 operations per partition key (throws error if exceeded)
 - **Flexible Schema**: Optional `operationType` column (defaults to "upsert" if not provided)
 - **Partition Key Validation**: Ensures all operations within a batch target the same partition
@@ -87,7 +88,60 @@ results.show()
 +------+------------+-------------+----------+------------------+--------------+------------+
 ```
 
-## Example 2: Mixed Operations with Operation Type Column
+## Example 2: Financial Instrument Temporal Versioning (Hierarchical Partition Keys)
+
+This example demonstrates hierarchical partition keys for temporal versioning of financial instruments. The partition key consists of two levels: **`PermId`** (instrument identifier) and **`SourceId`** (data source):
+
+```python
+from pyspark.sql.types import StructType, StructField, StringType, DoubleType, TimestampType
+
+# Define schema with hierarchical partition key: PermId (level 1) + SourceId (level 2)
+schema = StructType([
+    StructField("id", StringType(), False),
+    StructField("PermId", StringType(), False),      # Partition key level 1
+    StructField("SourceId", StringType(), False),    # Partition key level 2
+    StructField("ValidFrom", TimestampType(), False),
+    StructField("ValidTo", TimestampType(), True),
+    StructField("Price", DoubleType(), False),
+    StructField("Currency", StringType(), False)
+])
+
+# Temporal update: close old record and create new version atomically
+# Both operations use the same hierarchical partition key [PermId="MSFT", SourceId="Bloomberg"]
+operations = [
+    # Close the current active record by setting ValidTo
+    ("inst-msft-v1", "MSFT", "Bloomberg", "2024-01-01", "2024-12-01", 100.50, "USD"),
+    # Create new version with updated price
+    ("inst-msft-v2", "MSFT", "Bloomberg", "2024-12-01", None, 105.75, "USD")
+]
+
+df = spark.createDataFrame(operations, schema)
+
+# Execute atomic temporal update - both succeed or both fail
+result_jdf = spark._jvm.com.azure.cosmos.spark.CosmosItemsDataSource.writeTransactionalBatch(
+    df._jdf,
+    spark._jvm.scala.collection.JavaConverters.mapAsJavaMap(cosmos_config)
+)
+
+results = DataFrame(result_jdf, spark)
+
+# Check for any failures
+results.filter(col("isSuccessStatusCode") == False).show()
+```
+
+**Note**: In this example, `PermId` and `SourceId` together form the hierarchical partition key (2 levels). All operations in the batch must use the same partition key values to maintain atomicity.
+
+**Output:**
+```
++-------------+-------------------+-------------+----------+------------------+--------------+------------+
+|           id|      partitionKey|operationType|statusCode|isSuccessStatusCode|resultDocument|errorMessage|
++-------------+-------------------+-------------+----------+------------------+--------------+------------+
+|inst-msft-v1|MSFT, Bloomberg    |       upsert|       201|              true|          null|        null|
+|inst-msft-v2|MSFT, Bloomberg    |       upsert|       201|              true|          null|        null|
++-------------+-------------------+-------------+----------+------------------+--------------+------------+
+```
+
+## Example 3: Mixed Operations with Operation Type Column
 
 Specify different operations per row using the `operationType` column:
 

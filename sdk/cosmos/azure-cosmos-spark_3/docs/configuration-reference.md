@@ -74,7 +74,7 @@
 | `spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds` | `2700`          | The time interval in seconds that write operations will wait when no progress can be made for bulk writes after the initial attempt (and restarting the bulk writer client-side). This time interval is supposed to be large enough to not fail Spark jobs even when there are transient write availability outages in the service. The default value of 45 minutes can be modified when you rather prefer Spark jobs to fail or extended when needed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 #### Transactional Batch Config
-The Transactional Batch API enables atomic execution of multiple operations on items within the same logical partition. All operations must succeed or all will be rolled back, ensuring atomicity.
+The Transactional Batch API enables atomic execution of multiple operations on items within the same logical partition. All operations must succeed or all will be rolled back, ensuring atomicity. Supports 1-3 level hierarchical partition keys with JSON serialization for Spark broadcast compatibility.
 
 **Usage Pattern (Simplified - Default Upsert):**
 ```scala
@@ -110,7 +110,9 @@ val resultDf = CosmosItemsDataSource.writeTransactionalBatch(df, cfg.asJava)
 
 **DataFrame Schema Requirements:**
 - `id` column (required): Document identifier
-- Partition key column (required): Column matching container's partition key path (e.g., "pk")
+- Partition key column(s) (required): Column(s) matching container's partition key path
+  - Single partition key: One column (e.g., "pk")
+  - Hierarchical partition keys (2-3 levels): Multiple columns in order (e.g., "PermId", "SourceId")
 - Data columns: Any number of columns representing document properties
 - `operationType` column (optional): When present, specifies operation type per row
   - Supported values: `create`, `upsert`, `replace`, `delete`, `read`
