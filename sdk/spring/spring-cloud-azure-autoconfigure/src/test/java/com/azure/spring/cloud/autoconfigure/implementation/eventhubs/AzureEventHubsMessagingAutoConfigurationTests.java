@@ -3,10 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.configuration.TestCheckpointStore;
-import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
@@ -147,7 +145,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 assertThat(context).hasSingleBean(EventHubsProcessorFactory.class);
                 EventHubsProcessorFactory factory = context.getBean(EventHubsProcessorFactory.class);
                 assertThat(factory).isInstanceOf(com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory.class);
-                
+
                 // Verify setDefaultCredential and setTokenCredentialResolver were called by checking the fields using reflection
                 // The values may be null when using connection string auth, but the important thing is that the methods
                 // were called and the fields exist (which they do since we successfully access them)
@@ -155,7 +153,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 defaultCredentialField.setAccessible(true);
                 Object defaultCredential = defaultCredentialField.get(factory);
                 // Field exists and is accessible, which means setDefaultCredential was called
-                
+
                 Field tokenCredentialResolverField = factory.getClass().getDeclaredField("tokenCredentialResolver");
                 tokenCredentialResolverField.setAccessible(true);
                 Object resolver = tokenCredentialResolverField.get(factory);
@@ -173,10 +171,10 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory.class);
-                com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory factory = 
+                com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory factory =
                     context.getBean(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory.class);
                 assertThat(factory).isInstanceOf(com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory.class);
-                
+
                 // Verify setDefaultCredential and setTokenCredentialResolver were called by checking the fields using reflection
                 // The values may be null when using connection string auth, but the important thing is that the methods
                 // were called and the fields exist (which they do since we successfully access them)
@@ -184,7 +182,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 defaultCredentialField.setAccessible(true);
                 Object defaultCredential = defaultCredentialField.get(factory);
                 // Field exists and is accessible, which means setDefaultCredential was called
-                
+
                 Field tokenCredentialResolverField = factory.getClass().getDeclaredField("tokenCredentialResolver");
                 tokenCredentialResolverField.setAccessible(true);
                 Object resolver = tokenCredentialResolverField.get(factory);
