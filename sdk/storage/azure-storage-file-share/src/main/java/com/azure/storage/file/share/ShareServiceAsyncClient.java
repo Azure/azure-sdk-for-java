@@ -36,6 +36,7 @@ import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
+import com.azure.storage.file.share.options.ShareGetUserDelegationKeyOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -869,7 +870,8 @@ public final class ShareServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
+        return getUserDelegationKeyWithResponse(new ShareGetUserDelegationKeyOptions(expiry).setStartsOn(start))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -886,27 +888,46 @@ public final class ShareServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
+        return getUserDelegationKeyWithResponse(new ShareGetUserDelegationKeyOptions(expiry).setStartsOn(start));
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options The {@link ShareGetUserDelegationKeyOptions options} to configure the request.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * delegation key.
+     * @throws IllegalArgumentException If {@code options.getStartsOn()} isn't null and is after
+     * {@code options.getExpiresOn()}.
+     * @throws NullPointerException If {@code options.getExpiresOn()} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>>
+        getUserDelegationKeyWithResponse(ShareGetUserDelegationKeyOptions options) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+            return withContext(context -> getUserDelegationKeyWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(ShareGetUserDelegationKeyOptions options,
         Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
+        context = context == null ? Context.NONE : context;
+        StorageImplUtils.assertNotNull("options", options);
+        if (options.getStartsOn() != null && !options.getStartsOn().isBefore(options.getExpiresOn())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        context = context == null ? Context.NONE : context;
 
         return this.azureFileStorageClient.getServices()
-            .getUserDelegationKeyWithResponseAsync(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, context)
+            .getUserDelegationKeyWithResponseAsync(new KeyInfo()
+                .setStart(options.getStartsOn() == null
+                    ? ""
+                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }

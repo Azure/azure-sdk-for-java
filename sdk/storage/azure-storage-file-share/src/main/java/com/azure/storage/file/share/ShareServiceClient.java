@@ -38,6 +38,7 @@ import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
+import com.azure.storage.file.share.options.ShareGetUserDelegationKeyOptions;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -811,7 +812,8 @@ public final class ShareServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
+        return getUserDelegationKeyWithResponse(new ShareGetUserDelegationKeyOptions(expiry).setStartsOn(start), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -827,18 +829,38 @@ public final class ShareServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
+        return getUserDelegationKeyWithResponse(new ShareGetUserDelegationKeyOptions(expiry).setStartsOn(start),
+            timeout, context);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options Options for getting the user delegation key.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(ShareGetUserDelegationKeyOptions options,
+        Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        StorageImplUtils.assertNotNull("options", options);
+        if (options.getStartsOn() != null && !options.getStartsOn().isBefore(options.getExpiresOn())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        Context finalContext = context == null ? Context.NONE : context;
+
         Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
             = () -> this.azureFileStorageClient.getServices()
-                .getUserDelegationKeyWithResponse(
-                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                    null, null, finalContext);
+                .getUserDelegationKeyWithResponse(new KeyInfo()
+                    .setStart(options.getStartsOn() == null
+                        ? ""
+                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                    .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, finalContext);
+
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, ShareStorageException.class);
         return new SimpleResponse<>(response, response.getValue());

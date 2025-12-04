@@ -44,6 +44,7 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -761,7 +762,8 @@ public final class BlobServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
+        return getUserDelegationKeyWithResponse(new BlobGetUserDelegationKeyOptions(expiry).setStartsOn(start), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -786,19 +788,39 @@ public final class BlobServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("expiry", expiry);
-        if (start != null && !start.isBefore(expiry)) {
+        return getUserDelegationKeyWithResponse(new BlobGetUserDelegationKeyOptions(expiry).setStartsOn(start), timeout,
+            context);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's blob storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options The {@link BlobGetUserDelegationKeyOptions options} to configure the request.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(BlobGetUserDelegationKeyOptions options,
+        Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        StorageImplUtils.assertNotNull("options", options);
+        throwOnAnonymousAccess();
+        if (options.getStartsOn() != null && !options.getStartsOn().isBefore(options.getExpiresOn())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
-        throwOnAnonymousAccess();
-        Context finalContext = context == null ? Context.NONE : context;
+
         Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
             = () -> this.azureBlobStorage.getServices()
-                .getUserDelegationKeyWithResponse(
-                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                    null, null, finalContext);
+                .getUserDelegationKeyWithResponse(new KeyInfo()
+                    .setStart(options.getStartsOn() == null
+                        ? ""
+                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                    .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, finalContext);
+
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, response.getValue());

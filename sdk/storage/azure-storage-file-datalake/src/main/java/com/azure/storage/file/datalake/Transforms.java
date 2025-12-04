@@ -42,6 +42,7 @@ import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
@@ -97,6 +98,7 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
@@ -122,12 +124,12 @@ class Transforms {
 
     private static final long EPOCH_CONVERSION;
 
-    public static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
-    public static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
-    public static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
-    public static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
-    public static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
-    public static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
+    static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
+    static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+    static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+    static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
+    static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+    static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -252,7 +254,18 @@ class Transforms {
             .setSignedService(blobUserDelegationKey.getSignedService())
             .setSignedStart(blobUserDelegationKey.getSignedStart())
             .setSignedVersion(blobUserDelegationKey.getSignedVersion())
+            .setSignedDelegatedUserTenantId(blobUserDelegationKey.getSignedDelegatedUserTid())
             .setValue(blobUserDelegationKey.getValue());
+    }
+
+    static BlobGetUserDelegationKeyOptions
+        toBlobGetUserDelegationKeyOptions(DataLakeGetUserDelegationKeyOptions dataLakeOptions) {
+        if (dataLakeOptions == null) {
+            return null;
+        }
+        return new BlobGetUserDelegationKeyOptions(dataLakeOptions.getExpiresOn())
+            .setStartsOn(dataLakeOptions.getStartsOn())
+            .setDelegatedUserTenantId(dataLakeOptions.getDelegatedUserTenantId());
     }
 
     static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {

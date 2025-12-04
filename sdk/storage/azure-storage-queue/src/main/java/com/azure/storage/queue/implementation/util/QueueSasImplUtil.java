@@ -160,6 +160,8 @@ public class QueueSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+                userDelegationKey.getSignedDelegatedUserTid());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
                 this.delegatedUserObjectId);
         }
@@ -221,7 +223,8 @@ public class QueueSasImplUtil {
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
-            key.getSignedVersion() == null ? "" : key.getSignedVersion(), "", // SignedKeyDelegatedUserTenantId, will be added in a future release.
+            key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+            key.getSignedDelegatedUserTid() == null ? "" : key.getSignedDelegatedUserTid(),
             this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(), VERSION);

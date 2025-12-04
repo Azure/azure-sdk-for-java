@@ -713,8 +713,8 @@ public final class BlobServiceSasSignatureValues {
      * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      * <p>
      * Taken from:
-     * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
-     * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
+     * <a href="https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33">sas_service.go</a>
+     * <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs">BlobSasBuilder.cs</a>
      */
     private void ensureState() {
         if (CoreUtils.isNullOrEmpty(blobName)) {

@@ -34,6 +34,7 @@ public class CommonSasQueryParameters {
     private final TimeAndFormat keyExpiry;
     private final String keyService;
     private final String keyVersion;
+    private final String keyDelegatedUserTenantId;
     private final String resource;
     private final String cacheControl;
     private final String contentDisposition;
@@ -87,6 +88,8 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
             removeSasParametersFromMap);
+        this.keyDelegatedUserTenantId = getQueryParameter(queryParamsMap,
+            Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID, removeSasParametersFromMap);
         this.resource
             = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE, removeSasParametersFromMap);
         this.cacheControl
@@ -188,6 +191,8 @@ public class CommonSasQueryParameters {
             SasImplUtils.formatQueryParameterDate(this.keyExpiry));
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE, this.keyService);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION, this.keyVersion);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
+            this.keyDelegatedUserTenantId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
@@ -323,6 +328,15 @@ public class CommonSasQueryParameters {
      */
     public String getKeyVersion() {
         return keyVersion;
+    }
+
+    /**
+     * Gets the tenant ID of the user that the key is delegated to.
+     *
+     * @return the tenant ID of the user that the key is delegated to.
+     */
+    public String getKeyDelegatedUserTenantId() {
+        return keyDelegatedUserTenantId;
     }
 
     /**
