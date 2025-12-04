@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-healthdataaiservices</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;current} -->
+  <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Health Data AI Services Management</name>
-  <description>This package contains Microsoft Azure SDK for Health Data AI Services Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.</description>
+  <description>This package contains Microsoft Azure SDK for Health Data AI Services Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package api-version 2024-09-20.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,8 +45,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <revapi.skip>true</revapi.skip>
-    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>
