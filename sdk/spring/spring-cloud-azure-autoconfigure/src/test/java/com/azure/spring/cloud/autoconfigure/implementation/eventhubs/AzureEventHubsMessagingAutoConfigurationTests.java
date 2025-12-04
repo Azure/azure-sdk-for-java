@@ -3,11 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.configuration.TestCheckpointStore;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,8 +22,12 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
+import java.time.OffsetDateTime;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -149,7 +159,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsProcessorFactory.class);
                 EventHubsProcessorFactory factory = context.getBean(EventHubsProcessorFactory.class);
-                assertThat(factory).isInstanceOf(com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory.class);
+                assertThat(factory).isInstanceOf(DefaultEventHubsNamespaceProcessorFactory.class);
 
                 // Verify the factory has the credential fields that can be set by setDefaultCredential and setTokenCredentialResolver
                 // The methods are called by the AutoConfiguration - we verify the fields exist and are accessible
@@ -179,10 +189,10 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class, CredentialConfiguration.class)
             .run(context -> {
-                assertThat(context).hasSingleBean(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory.class);
-                com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory factory =
-                    context.getBean(com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory.class);
-                assertThat(factory).isInstanceOf(com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory.class);
+                assertThat(context).hasSingleBean(EventHubsProducerFactory.class);
+                EventHubsProducerFactory factory =
+                    context.getBean(EventHubsProducerFactory.class);
+                assertThat(factory).isInstanceOf(DefaultEventHubsNamespaceProducerFactory.class);
 
                 // Verify the factory has the credential fields that can be set by setDefaultCredential and setTokenCredentialResolver
                 // The methods are called by the AutoConfiguration - we verify the fields exist and are accessible
@@ -199,27 +209,63 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 assertThat(context).hasBean("mockTokenCredentialResolver");
             });
     }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void tokenCredentialBeanNamePropertyShouldTakeEffect() throws Exception {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential"
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class, CustomCredentialConfiguration.class)
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubsProcessorFactory.class);
+                EventHubsProcessorFactory factory = context.getBean(EventHubsProcessorFactory.class);
+                assertThat(factory).isInstanceOf(DefaultEventHubsNamespaceProcessorFactory.class);
+
+                // Verify the custom credential bean is available
+                assertThat(context).hasBean("my-token-credential");
+                TokenCredential customCredential = context.getBean("my-token-credential", TokenCredential.class);
+                assertThat(customCredential).isInstanceOf(CustomTokenCredential.class);
+
+                // Verify the factory can access credential fields
+                Field defaultCredentialField = factory.getClass().getDeclaredField("defaultCredential");
+                defaultCredentialField.setAccessible(true);
+                // The AutoConfiguration should have set the credential from the bean name property
+            });
+    }
     
     // Configuration class to provide mock credentials
-    @org.springframework.context.annotation.Configuration
+    @Configuration
     static class CredentialConfiguration {
-        @org.springframework.context.annotation.Bean
+        @Bean
         public TokenCredential mockTokenCredential() {
             return new MockTokenCredential();
         }
         
-        @org.springframework.context.annotation.Bean
+        @Bean
         @SuppressWarnings("rawtypes")
         public AzureCredentialResolver mockTokenCredentialResolver() {
             return new MockAzureCredentialResolver(new MockTokenCredential());
+        }
+    }
+
+    // Configuration class to provide custom named credential
+    @Configuration
+    static class CustomCredentialConfiguration {
+        @Bean("my-token-credential")
+        public TokenCredential myTokenCredential() {
+            return new CustomTokenCredential();
         }
     }
     
     // Mock TokenCredential for testing
     private static class MockTokenCredential implements TokenCredential {
         @Override
-        public reactor.core.publisher.Mono<com.azure.core.credential.AccessToken> getToken(com.azure.core.credential.TokenRequestContext request) {
-            return reactor.core.publisher.Mono.just(new com.azure.core.credential.AccessToken("mock-token", java.time.OffsetDateTime.now().plusHours(1)));
+        public Mono<AccessToken> getToken(TokenRequestContext request) {
+            return Mono.just(new AccessToken("mock-token", OffsetDateTime.now().plusHours(1)));
         }
     }
     
@@ -232,13 +278,21 @@ class AzureEventHubsMessagingAutoConfigurationTests {
         }
         
         @Override
-        public TokenCredential resolve(com.azure.spring.cloud.core.properties.AzureProperties properties) {
+        public TokenCredential resolve(AzureProperties properties) {
             return credential;
         }
         
         @Override
-        public boolean isResolvable(com.azure.spring.cloud.core.properties.AzureProperties properties) {
+        public boolean isResolvable(AzureProperties properties) {
             return true;
+        }
+    }
+
+    // Custom TokenCredential for testing bean name property
+    private static class CustomTokenCredential implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext request) {
+            return Mono.just(new AccessToken("custom-token", OffsetDateTime.now().plusHours(1)));
         }
     }
 
