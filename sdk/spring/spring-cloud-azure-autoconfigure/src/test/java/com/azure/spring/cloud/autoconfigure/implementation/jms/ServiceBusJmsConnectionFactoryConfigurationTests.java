@@ -5,6 +5,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import jakarta.jms.Connection;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Destination;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Queue;
+import jakarta.jms.Session;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -18,6 +25,11 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ServiceBusJmsConnectionFactoryConfigurationTests {
 
@@ -138,6 +150,97 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(CachingConnectionFactory.class);
             });
+    }
+
+    @Test
+    void cachingConnectionFactoryReusesSameProducerForSameDestination() throws Exception {
+        // Create mock objects for JMS components
+        ConnectionFactory mockTargetConnectionFactory = mock(ConnectionFactory.class);
+        Connection mockConnection = mock(Connection.class);
+        // Create a mock inner session that ServiceBusJmsSession will wrap
+        Session mockInnerSession = mock(Session.class);
+        // Create mock inner queues that the inner session returns
+        Queue mockInnerQueue1 = mock(Queue.class);
+        Queue mockInnerQueue2 = mock(Queue.class);
+        Queue mockInnerQueue3 = mock(Queue.class);
+        when(mockInnerQueue1.getQueueName()).thenReturn("queue1");
+        when(mockInnerQueue2.getQueueName()).thenReturn("queue1");
+        when(mockInnerQueue3.getQueueName()).thenReturn("queue2");
+        when(mockInnerSession.createQueue("queue1"))
+            .thenReturn(mockInnerQueue1)
+            .thenReturn(mockInnerQueue2)
+            .thenReturn(mockInnerQueue1)
+            .thenReturn(mockInnerQueue2);
+        when(mockInnerSession.createQueue("queue2"))
+            .thenReturn(mockInnerQueue3)
+            .thenReturn(mockInnerQueue3);
+
+        // Create ServiceBusJmsSession using reflection (constructor is package-private)
+        // ServiceBusJmsSession.createQueue() wraps the inner Queue in ServiceBusJmsQueue
+        // which has the proper toString() implementation in azure-servicebus-jms 2.1.0
+        Session serviceBusJmsSession = createServiceBusJmsSession(mockInnerSession);
+
+        // Create mock producers - each call to createProducer returns a new unique producer
+        MessageProducer mockProducer1 = mock(MessageProducer.class);
+        MessageProducer mockProducer2 = mock(MessageProducer.class);
+        MessageProducer mockProducer3 = mock(MessageProducer.class);
+
+        // Setup mock behavior for connection and session
+        when(mockTargetConnectionFactory.createConnection()).thenReturn(mockConnection);
+        when(mockConnection.createSession(anyBoolean(), anyInt())).thenReturn(serviceBusJmsSession);
+        // Mock createProducer to return different producers for each call
+        // This simulates that each ServiceBusJmsQueue instance would get a different producer
+        // if caching doesn't work (i.e., toString() returns unique values as in 2.0.0)
+        when(mockInnerSession.createProducer(any(Destination.class)))
+            .thenReturn(mockProducer1)
+            .thenReturn(mockProducer2)
+            .thenReturn(mockProducer3);
+
+        // Create CachingConnectionFactory with caching enabled
+        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(mockTargetConnectionFactory);
+        cachingConnectionFactory.setCacheProducers(true);
+
+        // Get connection and session
+        Connection connection = cachingConnectionFactory.createConnection();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+        // Create queues - these are ServiceBusJmsQueue instances
+        Queue queue1FirstCall = session.createQueue("queue1");
+        Queue queue1SecondCall = session.createQueue("queue1");
+        Queue queue2 = session.createQueue("queue2");
+
+        // First call: create producer for queue1 (first ServiceBusJmsQueue instance)
+        MessageProducer producer1ForQueue1 = session.createProducer(queue1FirstCall);
+        // Second call: create producer for queue1 (second ServiceBusJmsQueue instance)
+        // In azure-servicebus-jms 2.1.0, this returns cached producer because toString() is consistent
+        // In azure-servicebus-jms 2.0.0, this would return a different producer because toString() was unique
+        MessageProducer producer2ForQueue1 = session.createProducer(queue1SecondCall);
+        // Third call: create producer for different queue2 - should return different producer
+        MessageProducer producerForQueue2 = session.createProducer(queue2);
+
+        // Verify: same producer is returned for same queue name
+        // This assertion would fail with azure-servicebus-jms 2.0.0 because toString() returned unique values
+        assertThat(producer1ForQueue1.toString())
+            .as("Same producer should be returned for ServiceBusJmsQueue instances with same queue name")
+            .isEqualTo(producer2ForQueue1.toString());
+
+        // Verify: different producer is returned for different queue name
+        assertThat(producer1ForQueue1.toString())
+            .as("Different producer should be returned for different queue name")
+            .isNotEqualTo(producerForQueue2.toString());
+
+        // Cleanup
+        connection.close();
+    }
+    
+    /**
+     * Creates a ServiceBusJmsSession instance using reflection since the constructor is package-private.
+     */
+    private Session createServiceBusJmsSession(Session innerSession) throws Exception {
+        Class<?> sessionClass = Class.forName("com.azure.servicebus.jms.ServiceBusJmsSession");
+        java.lang.reflect.Constructor<?> constructor = sessionClass.getDeclaredConstructor(Session.class);
+        constructor.setAccessible(true);
+        return (Session) constructor.newInstance(innerSession);
     }
 
     @Configuration

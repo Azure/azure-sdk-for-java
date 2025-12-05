@@ -140,9 +140,8 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body);
 
     /**
@@ -157,9 +156,8 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context);
 
     /**

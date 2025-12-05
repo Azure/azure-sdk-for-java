@@ -140,7 +140,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure:azure-servicebus-jms;external_dependency} -->
+      <version>2.1.0</version> <!-- {x-version-update;com.azure:azure-servicebus-jms;external_dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>

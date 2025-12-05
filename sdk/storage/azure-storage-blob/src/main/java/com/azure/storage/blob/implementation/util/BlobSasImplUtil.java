@@ -95,6 +95,8 @@ public class BlobSasImplUtil {
 
     private String encryptionScope;
 
+    private String delegatedUserObjectId;
+
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -140,6 +142,7 @@ public class BlobSasImplUtil {
         this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
         this.encryptionScope = encryptionScope;
+        this.delegatedUserObjectId = sasValues.getDelegatedUserObjectId();
     }
 
     /**
@@ -262,6 +265,8 @@ public class BlobSasImplUtil {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
+                this.delegatedUserObjectId);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
@@ -453,7 +458,7 @@ public class BlobSasImplUtil {
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
                 this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
-                "", /* new schema 2025-07-05 */
+                this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
                 versionSegment == null ? "" : versionSegment, this.encryptionScope == null ? "" : this.encryptionScope,

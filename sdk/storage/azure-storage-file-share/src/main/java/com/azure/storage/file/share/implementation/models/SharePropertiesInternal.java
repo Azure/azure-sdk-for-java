@@ -184,6 +184,12 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     private DateTimeRfc1123 nextAllowedProvisionedBandwidthDowngradeTime;
 
     /*
+     * The EnableSmbDirectoryLease property.
+     */
+    @Generated
+    private Boolean enableSmbDirectoryLease;
+
+    /*
      * Dictionary of <string>
      */
     @Generated
@@ -820,6 +826,28 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     }
 
     /**
+     * Get the enableSmbDirectoryLease property: The EnableSmbDirectoryLease property.
+     * 
+     * @return the enableSmbDirectoryLease value.
+     */
+    @Generated
+    public Boolean isEnableSmbDirectoryLease() {
+        return this.enableSmbDirectoryLease;
+    }
+
+    /**
+     * Set the enableSmbDirectoryLease property: The EnableSmbDirectoryLease property.
+     * 
+     * @param enableSmbDirectoryLease the enableSmbDirectoryLease value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    @Generated
+    public SharePropertiesInternal setEnableSmbDirectoryLease(Boolean enableSmbDirectoryLease) {
+        this.enableSmbDirectoryLease = enableSmbDirectoryLease;
+        return this;
+    }
+
+    /**
      * Get the metadata property: Dictionary of &lt;string&gt;.
      * 
      * @return the metadata value.
@@ -884,6 +912,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
             Objects.toString(this.nextAllowedProvisionedIopsDowngradeTime, null));
         xmlWriter.writeStringElement("NextAllowedProvisionedBandwidthDowngradeTime",
             Objects.toString(this.nextAllowedProvisionedBandwidthDowngradeTime, null));
+        xmlWriter.writeBooleanElement("EnableSmbDirectoryLease", this.enableSmbDirectoryLease);
         if (this.metadata != null) {
             xmlWriter.writeStartElement("Metadata");
             for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
@@ -996,6 +1025,9 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
                 } else if ("NextAllowedProvisionedBandwidthDowngradeTime".equals(elementName.getLocalPart())) {
                     deserializedSharePropertiesInternal.nextAllowedProvisionedBandwidthDowngradeTime
                         = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("EnableSmbDirectoryLease".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.enableSmbDirectoryLease
+                        = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("Metadata".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         if (deserializedSharePropertiesInternal.metadata == null) {

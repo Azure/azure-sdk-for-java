@@ -180,12 +180,12 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         return serviceManager.caches().listPeeringPassphrases(resourceGroupName, accountName, poolName, cacheName);
     }
 
-    public Cache poolChange(PoolChangeRequest body) {
-        return serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
+    public void poolChange(PoolChangeRequest body) {
+        serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
     }
 
-    public Cache poolChange(PoolChangeRequest body, Context context) {
-        return serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+    public void poolChange(PoolChangeRequest body, Context context) {
+        serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
     }
 
     public CacheImpl withRegion(Region location) {

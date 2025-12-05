@@ -159,6 +159,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
+            Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -179,10 +180,16 @@ jobs:
               -ServiceDirectory ${{parameters.ServiceDirectory}}
               -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
               -AddDevVersion
+              -artifactList @('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Select-Object -ExpandProperty name)
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+          parameters:
+            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -269,7 +276,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
           PackageInfoFiles:
-            - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
               - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
@@ -389,20 +396,6 @@ jobs:
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
-
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-            parameters:
-              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-        - ${{ else }}:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                parameters:
-                  PackageName: ${{artifact.name}}
-                  ServiceName: ${{parameters.ServiceDirectory}}
-                  ForRelease: false
 
       - task: UseNode@1
         inputs:
