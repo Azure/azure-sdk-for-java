@@ -4,6 +4,8 @@
 package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.openai.core.JsonValue;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.ConversationDeletedResource;
@@ -24,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConversationsAsyncTests extends ClientTestBase {
 
+    ClientLogger LOGGER = new ClientLogger(ConversationsAsyncTests.class);
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion)
@@ -35,6 +39,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "Create completed");
 
         // update
         ConversationUpdateParams.Metadata metadata = ConversationUpdateParams.Metadata.builder()
