@@ -181,7 +181,7 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> translate(@HostParam("Endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData translateInput,
             RequestOptions requestOptions, Context context);
 
         @Post("/translate")
@@ -192,7 +192,7 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> translateSync(@HostParam("Endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData translateInput,
             RequestOptions requestOptions, Context context);
 
         @Post("/transliterate")
@@ -205,7 +205,8 @@ public final class TextTranslationClientImpl {
             @QueryParam("language") String language, @QueryParam("fromScript") String fromScript,
             @QueryParam("toScript") String toScript, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData transliterateInput, RequestOptions requestOptions,
+            Context context);
 
         @Post("/transliterate")
         @ExpectedResponses({ 200 })
@@ -217,7 +218,8 @@ public final class TextTranslationClientImpl {
             @QueryParam("language") String language, @QueryParam("fromScript") String fromScript,
             @QueryParam("toScript") String toScript, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData transliterateInput, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -479,7 +481,7 @@ public final class TextTranslationClientImpl {
      * }
      * </pre>
      * 
-     * @param body Defines the content of the request.
+     * @param translateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -488,11 +490,12 @@ public final class TextTranslationClientImpl {
      * @return response for the translation API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> translateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> translateWithResponseAsync(BinaryData translateInput,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.translate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, translateInput, requestOptions, context));
     }
 
     /**
@@ -570,7 +573,7 @@ public final class TextTranslationClientImpl {
      * }
      * </pre>
      * 
-     * @param body Defines the content of the request.
+     * @param translateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -579,11 +582,11 @@ public final class TextTranslationClientImpl {
      * @return response for the translation API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> translateWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> translateWithResponse(BinaryData translateInput, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.translateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            body, requestOptions, Context.NONE);
+            translateInput, requestOptions, Context.NONE);
     }
 
     /**
@@ -634,7 +637,7 @@ public final class TextTranslationClientImpl {
      * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
      * output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param transliterateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -645,11 +648,11 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> transliterateWithResponseAsync(String language, String fromScript,
-        String toScript, BinaryData body, RequestOptions requestOptions) {
+        String toScript, BinaryData transliterateInput, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.transliterate(this.getEndpoint(), language, fromScript, toScript,
-            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, transliterateInput, requestOptions, context));
     }
 
     /**
@@ -700,7 +703,7 @@ public final class TextTranslationClientImpl {
      * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
      * output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param transliterateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -710,10 +713,11 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> transliterateWithResponse(String language, String fromScript, String toScript,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData transliterateInput, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.transliterateSync(this.getEndpoint(), language, fromScript, toScript,
-            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, transliterateInput, requestOptions,
+            Context.NONE);
     }
 }

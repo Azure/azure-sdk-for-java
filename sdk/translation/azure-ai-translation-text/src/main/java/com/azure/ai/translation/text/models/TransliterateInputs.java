@@ -13,34 +13,34 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Request data for translate.
+ * Request data for transliterate.
  */
 @Immutable
-public final class TranslateBody implements JsonSerializable<TranslateBody> {
+public final class TransliterateInputs implements JsonSerializable<TransliterateInputs> {
 
     /*
-     * Array of the input text elements to translate.
+     * Array of the input text elements to transliterate.
      */
     @Generated
-    private final List<TranslateInputItem> inputs;
+    private final List<InputTextItem> inputs;
 
     /**
-     * Creates an instance of TranslateBody class.
+     * Creates an instance of TransliterateInputs class.
      *
      * @param inputs the inputs value to set.
      */
     @Generated
-    public TranslateBody(List<TranslateInputItem> inputs) {
+    public TransliterateInputs(List<InputTextItem> inputs) {
         this.inputs = inputs;
     }
 
     /**
-     * Get the inputs property: Array of the input text elements to translate.
+     * Get the inputs property: Array of the input text elements to transliterate.
      *
      * @return the inputs value.
      */
     @Generated
-    public List<TranslateInputItem> getInputs() {
+    public List<InputTextItem> getInputs() {
         return this.inputs;
     }
 
@@ -56,28 +56,28 @@ public final class TranslateBody implements JsonSerializable<TranslateBody> {
     }
 
     /**
-     * Reads an instance of TranslateBody from the JsonReader.
+     * Reads an instance of TransliterateInputs from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TranslateBody if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of TransliterateInputs if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TranslateBody.
+     * @throws IOException If an error occurs while reading the TransliterateInputs.
      */
     @Generated
-    public static TranslateBody fromJson(JsonReader jsonReader) throws IOException {
+    public static TransliterateInputs fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<TranslateInputItem> inputs = null;
+            List<InputTextItem> inputs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> TranslateInputItem.fromJson(reader1));
+                    inputs = reader.readArray(reader1 -> InputTextItem.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TranslateBody(inputs);
+            return new TransliterateInputs(inputs);
         });
     }
 }

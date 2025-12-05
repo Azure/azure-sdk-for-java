@@ -7,12 +7,12 @@ import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.LanguageScope;
-import com.azure.ai.translation.text.models.TranslateBody;
+import com.azure.ai.translation.text.models.TranslateInputs;
 import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationResult;
 import com.azure.ai.translation.text.models.TranslationTarget;
-import com.azure.ai.translation.text.models.TransliterateBody;
+import com.azure.ai.translation.text.models.TransliterateInputs;
 import com.azure.ai.translation.text.models.TransliterateResult;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import com.azure.core.annotation.Generated;
@@ -283,7 +283,7 @@ public final class TextTranslationAsyncClient {
      * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
      * output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param transliterateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -295,8 +295,9 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> transliterateWithResponse(String language, String fromScript, String toScript,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.transliterateWithResponseAsync(language, fromScript, toScript, body, requestOptions);
+        BinaryData transliterateInput, RequestOptions requestOptions) {
+        return this.serviceClient.transliterateWithResponseAsync(language, fromScript, toScript, transliterateInput,
+            requestOptions);
     }
 
     /**
@@ -311,7 +312,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param inputs Defines the text inputs to transliterate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -321,9 +322,9 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     private Mono<List<TransliteratedText>> transliterateInner(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<InputTextItem> body) {
+        String targetLanguageScript, List<InputTextItem> inputs) {
         RequestOptions requestOptions = new RequestOptions();
-        TransliterateBody transliterateBody = new TransliterateBody(body);
+        TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
         return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
             BinaryData.fromObject(transliterateBody), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> {
@@ -347,7 +348,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param inputs Defines the text inputs to transliterate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -358,9 +359,9 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<List<TransliteratedText>> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<String> body) {
+        String targetLanguageScript, List<String> inputs) {
         return transliterateInner(language, sourceLanguageScript, targetLanguageScript,
-            convertTextsToInputTextItems(body));
+            convertTextsToInputTextItems(inputs));
     }
 
     /**
@@ -470,7 +471,7 @@ public final class TextTranslationAsyncClient {
      * }
      * </pre>
      *
-     * @param body Defines the content of the request.
+     * @param translateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -480,14 +481,14 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> translateWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.translateWithResponseAsync(body, requestOptions);
+    public Mono<Response<BinaryData>> translateWithResponse(BinaryData translateInput, RequestOptions requestOptions) {
+        return this.serviceClient.translateWithResponseAsync(translateInput, requestOptions);
     }
 
     /**
      * Translate Text.
      *
-     * @param body Defines the content of the request.
+     * @param inputs Defines the inputs to translate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -497,10 +498,10 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<TranslatedTextItem>> translate(List<TranslateInputItem> body) {
+    public Mono<List<TranslatedTextItem>> translate(List<TranslateInputItem> inputs) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        TranslateBody translateBody = new TranslateBody(body);
+        TranslateInputs translateBody = new TranslateInputs(inputs);
         return translateWithResponse(BinaryData.fromObject(translateBody), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> {
                 TranslationResult result = protocolMethodData.toObject(TranslationResult.class);

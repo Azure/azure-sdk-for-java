@@ -7,12 +7,12 @@ import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.LanguageScope;
-import com.azure.ai.translation.text.models.TranslateBody;
+import com.azure.ai.translation.text.models.TranslateInputs;
 import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationResult;
 import com.azure.ai.translation.text.models.TranslationTarget;
-import com.azure.ai.translation.text.models.TransliterateBody;
+import com.azure.ai.translation.text.models.TransliterateInputs;
 import com.azure.ai.translation.text.models.TransliterateResult;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import com.azure.core.annotation.Generated;
@@ -276,7 +276,7 @@ public final class TextTranslationClient {
      * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
      * output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param transliterateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -287,8 +287,9 @@ public final class TextTranslationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> transliterateWithResponse(String language, String fromScript, String toScript,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.transliterateWithResponse(language, fromScript, toScript, body, requestOptions);
+        BinaryData transliterateInput, RequestOptions requestOptions) {
+        return this.serviceClient.transliterateWithResponse(language, fromScript, toScript, transliterateInput,
+            requestOptions);
     }
 
     /**
@@ -303,7 +304,7 @@ public final class TextTranslationClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param inputs Defines the text inputs to transliterate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -313,9 +314,9 @@ public final class TextTranslationClient {
      * @return the response.
      */
     private List<TransliteratedText> transliterateInner(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<InputTextItem> body) {
+        String targetLanguageScript, List<InputTextItem> inputs) {
         RequestOptions requestOptions = new RequestOptions();
-        TransliterateBody transliterateBody = new TransliterateBody(body);
+        TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
         TransliterateResult result = transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
             BinaryData.fromObject(transliterateBody), requestOptions).getValue().toObject(TransliterateResult.class);
         return result.getValue();
@@ -336,7 +337,7 @@ public final class TextTranslationClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param body Defines the content of the request.
+     * @param inputs Defines the text inputs to transliterate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -347,9 +348,9 @@ public final class TextTranslationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<String> body) {
+        String targetLanguageScript, List<String> inputs) {
         return transliterateInner(language, sourceLanguageScript, targetLanguageScript,
-            convertTextsToInputTextItems(body));
+            convertTextsToInputTextItems(inputs));
     }
 
     /**
@@ -457,7 +458,7 @@ public final class TextTranslationClient {
      * }
      * </pre>
      *
-     * @param body Defines the content of the request.
+     * @param translateInput Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -467,14 +468,14 @@ public final class TextTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> translateWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.translateWithResponse(body, requestOptions);
+    public Response<BinaryData> translateWithResponse(BinaryData translateInput, RequestOptions requestOptions) {
+        return this.serviceClient.translateWithResponse(translateInput, requestOptions);
     }
 
     /**
      * Translate Text.
      *
-     * @param body Defines the content of the request.
+     * @param inputs Defines the inputs to translate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -484,10 +485,10 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<TranslatedTextItem> translate(List<TranslateInputItem> body) {
+    public List<TranslatedTextItem> translate(List<TranslateInputItem> inputs) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        TranslateBody translateBody = new TranslateBody(body);
+        TranslateInputs translateBody = new TranslateInputs(inputs);
         TranslationResult result
             = translateWithResponse(BinaryData.fromObject(translateBody), requestOptions).getValue()
                 .toObject(TranslationResult.class);
