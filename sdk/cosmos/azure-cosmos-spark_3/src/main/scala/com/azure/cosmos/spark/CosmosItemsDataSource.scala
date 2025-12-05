@@ -154,11 +154,30 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
-    // Initialize and broadcast client metadata (no PartitionKeyDefinition needed)
+    // Get partition key column names from container metadata
+    val partitionKeyColumns = batchWriter.getPartitionKeyColumnNames()
+
+    // Repartition DataFrame by partition key to ensure operations for same partition are together
+    // Then sort within partitions for optimal streaming buffer performance
+    val repartitionedDf = if (partitionKeyColumns.nonEmpty) {
+      // Convert column names to Column objects
+      val partitionCols = partitionKeyColumns.map(colName => df.col(colName))
+      
+      // Repartition by partition key columns
+      val repartitioned = df.repartition(partitionCols: _*)
+      
+      // Sort within each partition by the same columns
+      repartitioned.sortWithinPartitions(partitionCols: _*)
+    } else {
+      // Fallback: no repartitioning if partition key columns not found
+      df
+    }
+
+    // Initialize and broadcast client metadata
     val clientMetadataBroadcast = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
 
     // Use row extraction mode - executor will fetch PartitionKeyDefinition and extract operations
-    batchWriter.writeTransactionalBatchWithRowExtraction(df.rdd, clientMetadataBroadcast)
+    batchWriter.writeTransactionalBatchWithRowExtraction(repartitionedDf.rdd, clientMetadataBroadcast)
   }
 
   /**
@@ -197,11 +216,23 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
+    // Get partition key column names from container metadata
+    val partitionKeyColumns = batchWriter.getPartitionKeyColumnNames()
+
+    // Repartition DataFrame by partition key and sort within partitions
+    val repartitionedDf = if (partitionKeyColumns.nonEmpty) {
+      val partitionCols = partitionKeyColumns.map(colName => df.col(colName))
+      val repartitioned = df.repartition(partitionCols: _*)
+      repartitioned.sortWithinPartitions(partitionCols: _*)
+    } else {
+      df
+    }
+
     // Initialize and broadcast client metadata
     val clientMetadataBroadcast = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
 
-    // Use pre-extracted operations mode for custom extraction logic
-    batchWriter.writeTransactionalBatchWithPreExtractedOperations(df.rdd, operationExtraction, clientMetadataBroadcast)
+    // Use pre-extracted operations mode
+    batchWriter.writeTransactionalBatchWithPreExtractedOperations(repartitionedDf.rdd, operationExtraction, clientMetadataBroadcast)
   }
 
   /**

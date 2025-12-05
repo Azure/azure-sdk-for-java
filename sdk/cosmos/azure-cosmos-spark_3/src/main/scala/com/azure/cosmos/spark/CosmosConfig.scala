@@ -125,6 +125,7 @@ private[spark] object CosmosConfigNames {
   val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
   val WriteBulkUpdateColumnConfigs = "spark.cosmos.write.bulkUpdate.columnConfigs"
   val WriteStrategy = "spark.cosmos.write.strategy"
+  val WriteTransactionalBatchLogPartitionKeyTransitions = "spark.cosmos.write.transactionalBatch.logPartitionKeyTransitions"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
   val WriteFlushCloseIntervalInSeconds = "spark.cosmos.write.flush.intervalInSeconds"
   val WriteMaxNoProgressIntervalInSeconds = "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds"
@@ -254,6 +255,7 @@ private[spark] object CosmosConfigNames {
     WritePatchFilterPredicate,
     WriteBulkUpdateColumnConfigs,
     WriteStrategy,
+    WriteTransactionalBatchLogPartitionKeyTransitions,
     WriteMaxRetryCount,
     ChangeFeedStartFrom,
     ChangeFeedMode,

@@ -67,6 +67,51 @@ private[spark] class TransactionalBatchWriter(
   val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
   logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
 
+  /**
+   * Get partition key column names from the container.
+   * Maps partition key paths (e.g., "/pk") to DataFrame column names (e.g., "pk").
+   * This is safe to call on the driver as it only reads container metadata.
+   * 
+   * @return Sequence of column names that comprise the partition key
+   */
+  def getPartitionKeyColumnNames(): Seq[String] = {
+    val calledFrom = s"TransactionalBatchWriter($tableName).getPartitionKeyColumnNames"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(
+          CosmosClientCache(
+            CosmosClientConfiguration(
+              effectiveUserConfig,
+              readConsistencyStrategy = readConfig.readConsistencyStrategy,
+              sparkEnvironmentInfo),
+            None,
+            calledFrom)),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          effectiveUserConfig,
+          calledFrom,
+          None,
+          sparkEnvironmentInfo)
+      ))
+      .to(clientCacheItems => {
+        val container =
+          ThroughputControlHelper.getContainer(
+            effectiveUserConfig,
+            cosmosContainerConfig,
+            clientCacheItems(0).get,
+            clientCacheItems(1))
+
+        val containerProperties = container.read().block().getProperties
+        val partitionKeyDef = containerProperties.getPartitionKeyDefinition
+        val partitionKeyPaths = partitionKeyDef.getPaths.asScala.toSeq
+
+        // Map partition key paths (e.g., "/pk") to column names (e.g., "pk")
+        partitionKeyPaths.map { path =>
+          // Remove leading slash and any nested path separators
+          path.stripPrefix("/").split("/").head
+        }
+      })
+  }
+
   private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
     val calledFrom = s"TransactionalBatchWriter($tableName).initializeAndBroadcastCosmosClientStateForContainer"
     Loan(
@@ -315,18 +360,12 @@ private class TransactionalBatchPartitionExecutor(
     }
   }
 
-  // Group operations by partition key
-  // Use the full partition key values sequence as the key
-  private val operationsByPartitionKey: mutable.Map[Seq[Any], mutable.ArrayBuffer[BatchOperation]] = {
-    val grouped = mutable.Map[Seq[Any], mutable.ArrayBuffer[BatchOperation]]()
-    operations.foreach { op =>
-      val buffer = grouped.getOrElseUpdate(op.partitionKeyValues, mutable.ArrayBuffer[BatchOperation]())
-      buffer += op
-    }
-    grouped
-  }
-
-  private val resultIterator: Iterator[Row] = executeAllBatches()
+  // Process operations in streaming fashion - no Map-based grouping!
+  // Thanks to repartitioning + sorting in CosmosItemsDataSource:
+  // 1. All same partition key operations arrive consecutively (sorted)
+  // 2. All same partition key operations are in the same Spark partition (repartitioned)
+  // This allows streaming processing with a simple buffer for the current partition key
+  private val resultIterator: Iterator[Row] = executeAllBatchesStreaming()
 
   def hasNext(): Boolean = resultIterator.hasNext
   def next(): Row = resultIterator.next()
@@ -387,11 +426,104 @@ private class TransactionalBatchPartitionExecutor(
     BatchOperation(id, partitionKeyValues, operationType, documentNode)
   }
 
-  private def executeAllBatches(): Iterator[Row] = {
-    val allResults = mutable.ArrayBuffer[Row]()
-    try {
-      operationsByPartitionKey.foreach { case (partitionKeyValues, ops) =>
-        // Cosmos DB transactional batch limit: 100 operations per batch
+  /**
+   * Execute batches in streaming fashion without materializing all operations in memory.
+   * Leverages the fact that operations are sorted by partition key (thanks to repartitioning).
+   * Maintains a buffer for the current partition key and flushes when partition key changes.
+   */
+  private def executeAllBatchesStreaming(): Iterator[Row] = {
+    // Track partition key transitions for validation/debugging (disabled by default)
+    val logTransitions = effectiveUserConfig.getOrElse(
+      "spark.cosmos.write.transactionalBatch.logPartitionKeyTransitions", "false").toBoolean
+    var partitionKeyTransitionCount = 0
+    
+    new Iterator[Row] {
+      private var currentPartitionKeyOpt: Option[Seq[Any]] = None
+      private var currentBuffer: mutable.ArrayBuffer[BatchOperation] = mutable.ArrayBuffer[BatchOperation]()
+      private var pendingResults: Iterator[Row] = Iterator.empty
+      private var exhausted = false
+      private var clientsClosed = false
+
+      override def hasNext: Boolean = {
+        // If we have pending results, return true
+        if (pendingResults.hasNext) {
+          return true
+        }
+
+        // If operations iterator is exhausted and no pending buffer, cleanup and return false
+        if (!operations.hasNext && currentBuffer.isEmpty) {
+          if (!clientsClosed) {
+            closeClients()
+          }
+          return false
+        }
+
+        // Process next operation or flush buffer
+        while (operations.hasNext || currentBuffer.nonEmpty) {
+          if (operations.hasNext) {
+            val op = operations.next()
+
+            // Check if partition key changed (or first operation)
+            if (currentPartitionKeyOpt.isEmpty || currentPartitionKeyOpt.get != op.partitionKeyValues) {
+              // Track transition
+              if (currentPartitionKeyOpt.isDefined) {
+                partitionKeyTransitionCount += 1
+                if (logTransitions) {
+                  logInfo(s"Partition key transition #$partitionKeyTransitionCount: ${currentPartitionKeyOpt.get.mkString(",")} -> ${op.partitionKeyValues.mkString(",")}")
+                }
+              } else if (logTransitions) {
+                logInfo(s"First partition key: ${op.partitionKeyValues.mkString(",")}")
+              }
+              
+              // Flush current buffer if not empty
+              if (currentBuffer.nonEmpty) {
+                pendingResults = flushCurrentBuffer()
+                if (pendingResults.hasNext) {
+                  // Start new buffer with this operation
+                  currentPartitionKeyOpt = Some(op.partitionKeyValues)
+                  currentBuffer = mutable.ArrayBuffer[BatchOperation](op)
+                  return true
+                }
+              }
+
+              // Start new buffer
+              currentPartitionKeyOpt = Some(op.partitionKeyValues)
+              currentBuffer = mutable.ArrayBuffer[BatchOperation](op)
+            } else {
+              // Same partition key - add to buffer
+              currentBuffer += op
+            }
+          } else {
+            // No more operations - flush final buffer
+            if (currentBuffer.nonEmpty) {
+              pendingResults = flushCurrentBuffer()
+              if (!clientsClosed) {
+                closeClients()
+              }
+              return pendingResults.hasNext
+            }
+          }
+        }
+
+        // All done
+        if (!clientsClosed) {
+          closeClients()
+        }
+        false
+      }
+
+      override def next(): Row = {
+        if (!hasNext) {
+          throw new NoSuchElementException("No more results")
+        }
+        pendingResults.next()
+      }
+
+      private def flushCurrentBuffer(): Iterator[Row] = {
+        val partitionKeyValues = currentPartitionKeyOpt.get
+        val ops = currentBuffer.toSeq
+
+        // Validate batch size
         if (ops.size > 100) {
           val pkDescription = partitionKeyValues.mkString(", ")
           throw new IllegalArgumentException(
@@ -400,27 +532,34 @@ private class TransactionalBatchPartitionExecutor(
             s"Please reduce the number of operations for this partition key."
           )
         }
-        val batchResults = executeBatchForPartitionKey(partitionKeyValues, ops.toSeq)
-        allResults ++= batchResults
+
+        // Execute batch and return results
+        val results = executeBatchForPartitionKey(partitionKeyValues, ops)
+        currentBuffer.clear()
+        results.iterator
       }
-    } finally {
-      // Clean up clients
-      try {
-        clientCacheItem.close()
-      } catch {
-        case e: Exception =>
-          logError(s"Error closing main client cache item: ${e.getMessage}", e)
-      }
-      if (throughputControlClientCacheItemOpt.isDefined) {
+
+      private def closeClients(): Unit = {
+        if (logTransitions) {
+          logInfo(s"Partition key transition summary: $partitionKeyTransitionCount transitions")
+        }
         try {
-          throughputControlClientCacheItemOpt.get.close()
+          clientCacheItem.close()
         } catch {
           case e: Exception =>
-            logError(s"Error closing throughput control client cache item: ${e.getMessage}", e)
+            logError(s"Error closing main client cache item: ${e.getMessage}", e)
         }
+        if (throughputControlClientCacheItemOpt.isDefined) {
+          try {
+            throughputControlClientCacheItemOpt.get.close()
+          } catch {
+            case e: Exception =>
+              logError(s"Error closing throughput control client cache item: ${e.getMessage}", e)
+          }
+        }
+        clientsClosed = true
       }
     }
-    allResults.iterator
   }
 
   private def executeBatchForPartitionKey(

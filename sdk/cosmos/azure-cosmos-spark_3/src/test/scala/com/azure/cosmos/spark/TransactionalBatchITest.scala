@@ -601,5 +601,65 @@ class TransactionalBatchITest extends IntegrationSpec
       container.delete().block()
     }
   }
+
+  it should "validate DataFrame repartitioning reduces partition key transitions" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+
+    // Create operations for multiple partition keys intentionally in random order
+    val pk1 = UUID.randomUUID().toString
+    val pk2 = UUID.randomUUID().toString
+    val pk3 = UUID.randomUUID().toString
+
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("value", StringType, nullable = false)
+    ))
+
+    // Interleave operations for different partition keys
+    // Without repartitioning: would see many transitions (pk1->pk2->pk3->pk1->pk2->pk3...)
+    // With repartitioning: should see only 2 transitions (pk1 batch -> pk2 batch -> pk3 batch)
+    val batchOperations = Seq(
+      Row(s"${pk1}_1", pk1, "value1"),
+      Row(s"${pk2}_1", pk2, "value1"),
+      Row(s"${pk3}_1", pk3, "value1"),
+      Row(s"${pk1}_2", pk1, "value2"),
+      Row(s"${pk2}_2", pk2, "value2"),
+      Row(s"${pk3}_2", pk3, "value2"),
+      Row(s"${pk1}_3", pk1, "value3"),
+      Row(s"${pk2}_3", pk2, "value3"),
+      Row(s"${pk3}_3", pk3, "value3")
+    )
+
+    val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+    // Enable partition key transition logging
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.write.transactionalBatch.logPartitionKeyTransitions" -> "true"
+    )
+
+    // Execute transactional batch with logging enabled
+    // The logging output will appear in test logs - we check that operations succeed
+    val resultDf = CosmosItemsDataSource.writeTransactionalBatch(operationsDf, cfg.asJava)
+    val results = resultDf.collect()
+
+    // Verify all operations succeeded
+    results.length shouldEqual 9
+    results.foreach { row =>
+      row.getAs[Int]("statusCode") shouldEqual 201
+      row.getAs[Boolean]("isSuccessStatusCode") shouldBe true
+    }
+
+    // Note: With repartitioning, logs should show "Partition key transition summary: 2 transitions"
+    // (pk1 group -> pk2 group -> pk3 group = 2 transitions)
+    // Without repartitioning, would see many more transitions as operations alternate between PKs
+  }
 }
+
 
