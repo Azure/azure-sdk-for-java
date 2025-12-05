@@ -54,7 +54,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     public void canCRUDDiagnosticSettings() {
 
         // make sure there exists a VM
-        Region region = Region.US_WEST2;
+        Region region = Region.US_WEST3;
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
         VirtualMachine vm = ensureVM(region, resourceGroup, vmName, "10.0.0.0/28");
