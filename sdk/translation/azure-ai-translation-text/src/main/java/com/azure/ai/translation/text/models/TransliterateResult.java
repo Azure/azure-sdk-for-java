@@ -10,37 +10,35 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * Element containing the text for translation.
+ * Response for the transliteration API.
  */
 @Immutable
-public final class InputTextItem implements JsonSerializable<InputTextItem> {
+public final class TransliterateResult implements JsonSerializable<TransliterateResult> {
 
     /*
-     * Text to translate.
+     * Array of transliterated texts
      */
     @Generated
-    private final String text;
+    private List<TransliteratedText> value;
 
     /**
-     * Creates an instance of InputTextItem class.
-     *
-     * @param text the text value to set.
+     * Creates an instance of TransliterateResult class.
      */
     @Generated
-    public InputTextItem(String text) {
-        this.text = text;
+    private TransliterateResult() {
     }
 
     /**
-     * Get the text property: Text to translate.
+     * Get the value property: Array of transliterated texts.
      *
-     * @return the text value.
+     * @return the value value.
      */
     @Generated
-    public String getText() {
-        return this.text;
+    public List<TransliteratedText> getValue() {
+        return this.value;
     }
 
     /**
@@ -50,33 +48,33 @@ public final class InputTextItem implements JsonSerializable<InputTextItem> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of InputTextItem from the JsonReader.
+     * Reads an instance of TransliterateResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of InputTextItem if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of TransliterateResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the InputTextItem.
+     * @throws IOException If an error occurs while reading the TransliterateResult.
      */
     @Generated
-    public static InputTextItem fromJson(JsonReader jsonReader) throws IOException {
+    public static TransliterateResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String text = null;
+            TransliterateResult deserializedTransliterateResult = new TransliterateResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("text".equals(fieldName)) {
-                    text = reader.getString();
+                if ("value".equals(fieldName)) {
+                    List<TransliteratedText> value = reader.readArray(reader1 -> TransliteratedText.fromJson(reader1));
+                    deserializedTransliterateResult.value = value;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new InputTextItem(text);
+            return deserializedTransliterateResult;
         });
     }
 }

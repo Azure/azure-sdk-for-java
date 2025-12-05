@@ -23,23 +23,16 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     @Generated
     private final String language;
 
-    /*
-     * A float value indicating the confidence in the result.
-     * The score is between zero and one and a low score indicates a low confidence.
-     */
-    @Generated
-    private final double confidence;
-
     /**
      * Creates an instance of DetectedLanguage class.
      *
      * @param language the language value to set.
-     * @param confidence the confidence value to set.
+     * @param score the score value to set.
      */
     @Generated
-    private DetectedLanguage(String language, double confidence) {
+    private DetectedLanguage(String language, double score) {
         this.language = language;
-        this.confidence = confidence;
+        this.score = score;
     }
 
     /**
@@ -53,17 +46,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     }
 
     /**
-     * Get the confidence property: A float value indicating the confidence in the result.
-     * The score is between zero and one and a low score indicates a low confidence.
-     *
-     * @return the confidence value.
-     */
-    @Generated
-    public double getConfidence() {
-        return this.confidence;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -71,7 +53,7 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("language", this.language);
-        jsonWriter.writeDoubleField("score", this.confidence);
+        jsonWriter.writeDoubleField("score", this.score);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,19 +70,37 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     public static DetectedLanguage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String language = null;
-            double confidence = 0.0;
+            double score = 0.0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("language".equals(fieldName)) {
                     language = reader.getString();
                 } else if ("score".equals(fieldName)) {
-                    confidence = reader.getDouble();
+                    score = reader.getDouble();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new DetectedLanguage(language, confidence);
+            return new DetectedLanguage(language, score);
         });
+    }
+
+    /*
+     * A float value indicating the confidence in the result.
+     * The score is between zero and one and a low score indicates a low confidence.
+     */
+    @Generated
+    private final double score;
+
+    /**
+     * Get the score property: A float value indicating the confidence in the result.
+     * The score is between zero and one and a low score indicates a low confidence.
+     *
+     * @return the score value.
+     */
+    @Generated
+    public double getScore() {
+        return this.score;
     }
 }

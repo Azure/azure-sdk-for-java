@@ -44,11 +44,11 @@ public class TranslateMultipleSources {
         for (TranslatedTextItem translation : translations) {
             if (translation.getDetectedLanguage() != null) {
                 DetectedLanguage detectedLanguage = translation.getDetectedLanguage();
-                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getConfidence() + ".");
+                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getScore() + ".");
             }
 
             for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+                System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }
     }

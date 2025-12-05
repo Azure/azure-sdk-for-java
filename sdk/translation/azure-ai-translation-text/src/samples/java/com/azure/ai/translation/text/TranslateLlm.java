@@ -5,8 +5,6 @@ package com.azure.ai.translation.text;
 
 import java.util.Arrays;
 
-import com.azure.ai.translation.text.models.ProfanityAction;
-import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationTarget;
@@ -14,19 +12,20 @@ import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * Profanity handling: https://learn.microsoft.com/en-us/azure/cognitive-services/translator/reference/v3-0-translate#handle-profanity
- *
- * Normally the Translator service will retain profanity that is present in the source in the translation.
- * The degree of profanity and the context that makes words profane differ between cultures, and as a result
- * the degree of profanity in the target language may be amplified or reduced.
- *
- * If you want to avoid getting profanity in the translation, regardless of the presence of profanity
- * in the source text, you can use the profanity filtering option. The option allows you to choose whether
- * you want to see profanity deleted, whether you want to mark profanities with appropriate tags
- * (giving you the option to add your own post-processing), or you want no action taken. The accepted
- * values of `ProfanityAction` are `Deleted`, `Marked` and `NoAction` (default).
+ * By default, Azure Translator uses neural Machine Translation (NMT) technology. With the newest preview 
+ * release, you now can optionally select either the standard NMT translation or Large Language Model (LLM) 
+ * models — GPT-4o-mini or GPT-4o. You can choose a large language model for translation based on factors such 
+ * as quality, cost, and other considerations. However, using an LLM model requires you to have a [Microsoft 
+ * Foundry resource]. 
+ * 
+ * https://learn.microsoft.com/azure/ai-services/translator/how-to/create-translator-resource?tabs=foundry
+ * 
+ * To use an LLM model for translation, set the `deploymentName` property in the `TranslationTarget` object to the 
+ * name of your Foundry resource deployment, e.g., `gpt-4o-mini` or `gpt-4o`. You can also configure the tone and 
+ * gender of the translation by setting the `tone` and `gender` properties.
+ * 
  */
-public class TranslateProfanity {
+public class TranslateLlm {
     /**
      * Main method to invoke this demo.
      *
@@ -43,11 +42,13 @@ public class TranslateProfanity {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TranslationTarget target = new TranslationTarget("cs")
-            .setProfanityAction(ProfanityAction.MARKED)
-            .setProfanityMarker(ProfanityMarker.ASTERISK);
-        TranslateInputItem input = new TranslateInputItem("This is ***.", Arrays.asList(target))
-            .setLanguage("en");
+        TranslationTarget target = new TranslationTarget("es")
+            .setDeploymentName("gpt-4o-mini")
+            .setTone("formal")
+            .setGender("female");
+        TranslateInputItem input = new TranslateInputItem(
+            "Doctor is available next Monday. Do you want to schedule an appointment?",
+            Arrays.asList(target));
 
         TranslatedTextItem translation = client.translate(input);
 

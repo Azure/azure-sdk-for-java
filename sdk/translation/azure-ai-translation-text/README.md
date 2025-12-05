@@ -36,7 +36,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-translation-text</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +100,7 @@ GetSupportedLanguagesResult languages = client.getSupportedLanguages();
 
 System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
 System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");
-System.out.println("Number of supported languages for dictionary operations: " + languages.getDictionary().size() + ".");
+System.out.println("Number of supported models for translate operation: " + languages.getModels().size() + ".");
 
 System.out.println("Translation Languages:");
 for (Map.Entry<String, TranslationLanguage> translationLanguage : languages.getTranslation().entrySet()) {
@@ -112,9 +112,9 @@ for (Map.Entry<String, TransliterationLanguage> transliterationLanguage : langua
     System.out.println(transliterationLanguage.getKey() + " -- name: " + transliterationLanguage.getValue().getName() + ", supported script count: " + transliterationLanguage.getValue().getScripts().size());
 }
 
-System.out.println("Dictionary Languages:");
-for (Map.Entry<String, SourceDictionaryLanguage> dictionaryLanguage : languages.getDictionary().entrySet()) {
-    System.out.println(dictionaryLanguage.getKey() + " -- name: " + dictionaryLanguage.getValue().getName() + ", supported target languages count: " + dictionaryLanguage.getValue().getTranslations().size());
+System.out.println("Available models:");
+for (String model : languages.getModels()) {
+    System.out.println(model);
 }
 ```
 
@@ -125,14 +125,15 @@ Please refer to the service documentation for a conceptual discussion of [langua
 Renders single source-language text to multiple target-language texts with a single request.
 
 ```java getTextTranslationMultiple
-TranslateOptions translateOptions = new TranslateOptions()
-    .setSourceLanguage("en")
-    .addTargetLanguage("es");
+TranslateInputItem input = new TranslateInputItem(
+    "This is a test.", 
+    Arrays.asList(new TranslationTarget("es"), new TranslationTarget("fr")));
+input.setLanguage("en");
 
-TranslatedTextItem translation = client.translate("This is a test.", translateOptions);
+TranslatedTextItem translation = client.translate(input);
 
 for (TranslationText textTranslation : translation.getTranslations()) {
-    System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+    System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
 }
 ```
 
@@ -155,58 +156,6 @@ System.out.println("Input text was transliterated to '" + transliteration.getScr
 
 Please refer to the service documentation for a conceptual discussion of [transliterate][transliterate_doc].
 
-### Break Sentence
-
-Identifies the positioning of sentence boundaries in a piece of text.
-
-```java getTextTranslationSentenceBoundaries
-String sourceLanguage = "zh-Hans";
-String sourceScript = "Latn";
-String content = "zhè shì gè cè shì。";
-
-BreakSentenceItem breakSentence = client.findSentenceBoundaries(content, sourceLanguage, sourceScript);
-
-System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
-```
-
-Please refer to the service documentation for a conceptual discussion of [break sentence][breaksentence_doc].
-
-### Dictionary Lookup
-
-Returns equivalent words for the source term in the target language.
-
-```java getTextTranslationDictionaryLookup
-String sourceLanguage = "en";
-String targetLanguage = "es";
-String content = "fly";
-
-DictionaryLookupItem dictionaryEntry = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
-
-System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
-System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
-```
-
-Please refer to the service documentation for a conceptual discussion of [dictionary lookup][dictionarylookup_doc].
-
-### Dictionary Examples
-
-Returns grammatical structure and context examples for the source term and target term pair.
-
-```java getTextTranslationDictionaryExamples
-String sourceLanguage = "en";
-String targetLanguage = "es";
-List<DictionaryExampleTextItem> content = new ArrayList<>();
-content.add(new DictionaryExampleTextItem("fly", "volar"));
-
-List<DictionaryExampleItem> dictionaryEntries = client.lookupDictionaryExamples(sourceLanguage, targetLanguage, content);
-
-for (DictionaryExampleItem dictionaryEntry : dictionaryEntries) {
-    System.out.println("For the given input " + dictionaryEntry.getExamples().size() + " entries were found in the dictionary.");
-    System.out.println("Example: '" + dictionaryEntry.getExamples().get(0).getTargetPrefix() + dictionaryEntry.getExamples().get(0).getTargetTerm() + dictionaryEntry.getExamples().get(0).getTargetSuffix());
-}
-```
-
-Please refer to the service documentation for a conceptual discussion of [dictionary examples][dictionaryexamples_doc].
 
 ## Troubleshooting
 
@@ -250,7 +199,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference
+[product_documentation]: https://learn.microsoft.com/azure/ai-services/translator/text-translation/preview/overview
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
@@ -259,32 +208,23 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 
-[translator_auth]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference#authentication
+[translator_auth]: https://learn.microsoft.com/azure/ai-services/translator/text-translation/reference/authentication
 [translator_limits]: https://learn.microsoft.com/azure/cognitive-services/translator/request-limits
 
-[languages_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-languages
-[translate_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-translate
-[transliterate_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-transliterate
-[breaksentence_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-break-sentence
-[dictionarylookup_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-dictionary-lookup
-[dictionaryexamples_doc]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-dictionary-examples
+[languages_doc]: https://learn.microsoft.com/azure/ai-services/translator/text-translation/preview/get-languages
+[translate_doc]: https://learn.microsoft.com/azure/ai-services/translator/text-translation/preview/translate-api
+[transliterate_doc]: https://learn.microsoft.com/azure/ai-services/translator/text-translation/preview/transliterate-api
 
-[sample_breaksentence]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/BreakSentence.java
-[sample_dictionaryexamples]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/DictionaryExamples.java
-[sample_dictionarylookup]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/DictionaryLookup.java
 [sample_getlanguages]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguages.java
 [sample_getlanguagesaccept]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguagesAcceptLanguage.java
 [sample_getlanguagesscope]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguagesScope.java
 [sample_translate]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/Translate.java
-[sample_translatealignments]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateAlignments.java
 [sample_translatecustom]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateCustom.java
 [sample_translatedetection]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateDetection.java
-[sample_translatedictionary]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateDictionary.java
 [sample_translatesources]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateMultipleSources.java
 [sample_translatetargets]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateMultipleTargets.java
 [sample_translatenotranslate]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateNoTranslate.java
 [sample_translateprofanity]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateProfanity.java
-[sample_translatesentencelength]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateSentenceLength.java
 [sample_translatetexttypes]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateTextType.java
 [sample_translatetransliteration]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateWithTransliteration.java
 [sample_transliterate]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/Transliterate.java
