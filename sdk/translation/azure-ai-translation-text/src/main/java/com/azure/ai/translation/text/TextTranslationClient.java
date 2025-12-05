@@ -298,10 +298,10 @@ public final class TextTranslationClient {
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param inputs Defines the text inputs to transliterate.
@@ -313,11 +313,11 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    private List<TransliteratedText> transliterateInner(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<InputTextItem> inputs) {
+    private List<TransliteratedText> transliterateInner(String language, String fromScript,
+        String toScript, List<InputTextItem> inputs) {
         RequestOptions requestOptions = new RequestOptions();
         TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
-        TransliterateResult result = transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
+        TransliterateResult result = transliterateWithResponse(language, fromScript, toScript,
             BinaryData.fromObject(transliterateBody), requestOptions).getValue().toObject(TransliterateResult.class);
         return result.getValue();
     }
@@ -331,10 +331,10 @@ public final class TextTranslationClient {
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param inputs Defines the text inputs to transliterate.
@@ -347,9 +347,9 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<TransliteratedText> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<String> inputs) {
-        return transliterateInner(language, sourceLanguageScript, targetLanguageScript,
+    public List<TransliteratedText> transliterate(String language, String fromScript,
+        String toScript, List<String> inputs) {
+        return transliterateInner(language, fromScript, toScript,
             convertTextsToInputTextItems(inputs));
     }
 
@@ -362,10 +362,10 @@ public final class TextTranslationClient {
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param text Defines the content of the request.
@@ -378,9 +378,9 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransliteratedText transliterate(String language, String sourceLanguageScript, String targetLanguageScript,
+    public TransliteratedText transliterate(String language, String fromScript, String toScript,
         String text) {
-        return transliterate(language, sourceLanguageScript, targetLanguageScript, Arrays.asList(text)).get(0);
+        return transliterate(language, fromScript, toScript, Arrays.asList(text)).get(0);
     }
 
     /**

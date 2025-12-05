@@ -306,10 +306,10 @@ public final class TextTranslationAsyncClient {
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param inputs Defines the text inputs to transliterate.
@@ -321,11 +321,11 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    private Mono<List<TransliteratedText>> transliterateInner(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<InputTextItem> inputs) {
+    private Mono<List<TransliteratedText>> transliterateInner(String language, String fromScript,
+        String toScript, List<InputTextItem> inputs) {
         RequestOptions requestOptions = new RequestOptions();
         TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
-        return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
+        return transliterateWithResponse(language, fromScript, toScript,
             BinaryData.fromObject(transliterateBody), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> {
                     TransliterateResult result = protocolMethodData.toObject(TransliterateResult.class);
@@ -342,10 +342,10 @@ public final class TextTranslationAsyncClient {
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param inputs Defines the text inputs to transliterate.
@@ -358,9 +358,9 @@ public final class TextTranslationAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<TransliteratedText>> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<String> inputs) {
-        return transliterateInner(language, sourceLanguageScript, targetLanguageScript,
+    public Mono<List<TransliteratedText>> transliterate(String language, String fromScript,
+        String toScript, List<String> inputs) {
+        return transliterateInner(language, fromScript, toScript,
             convertTextsToInputTextItems(inputs));
     }
 
@@ -373,10 +373,10 @@ public final class TextTranslationAsyncClient {
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
      * @param text Defines the content of the request.
@@ -389,9 +389,9 @@ public final class TextTranslationAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransliteratedText> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, String text) {
-        return transliterate(language, sourceLanguageScript, targetLanguageScript, Arrays.asList(text))
+    public Mono<TransliteratedText> transliterate(String language, String fromScript,
+        String toScript, String text) {
+        return transliterate(language, fromScript, toScript, Arrays.asList(text))
             .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
             .defaultIfEmpty(null);
     }
