@@ -13,17 +13,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Server admin credentials.
+ * Credentials of administrator users for source and target servers.
  */
 @Fluent
 public final class AdminCredentials implements JsonSerializable<AdminCredentials> {
     /*
-     * Password for source server.
+     * Password for the user of the source server.
      */
     private String sourceServerPassword;
 
     /*
-     * Password for target server.
+     * Password for the user of the target server.
      */
     private String targetServerPassword;
 
@@ -34,7 +34,7 @@ public final class AdminCredentials implements JsonSerializable<AdminCredentials
     }
 
     /**
-     * Get the sourceServerPassword property: Password for source server.
+     * Get the sourceServerPassword property: Password for the user of the source server.
      * 
      * @return the sourceServerPassword value.
      */
@@ -43,7 +43,7 @@ public final class AdminCredentials implements JsonSerializable<AdminCredentials
     }
 
     /**
-     * Set the sourceServerPassword property: Password for source server.
+     * Set the sourceServerPassword property: Password for the user of the source server.
      * 
      * @param sourceServerPassword the sourceServerPassword value to set.
      * @return the AdminCredentials object itself.
@@ -54,7 +54,7 @@ public final class AdminCredentials implements JsonSerializable<AdminCredentials
     }
 
     /**
-     * Get the targetServerPassword property: Password for target server.
+     * Get the targetServerPassword property: Password for the user of the target server.
      * 
      * @return the targetServerPassword value.
      */
@@ -63,7 +63,7 @@ public final class AdminCredentials implements JsonSerializable<AdminCredentials
     }
 
     /**
-     * Set the targetServerPassword property: Password for target server.
+     * Set the targetServerPassword property: Password for the user of the target server.
      * 
      * @param targetServerPassword the targetServerPassword value to set.
      * @return the AdminCredentials object itself.

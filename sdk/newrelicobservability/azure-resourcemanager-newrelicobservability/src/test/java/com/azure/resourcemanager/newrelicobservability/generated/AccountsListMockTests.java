@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.AccountResource;
@@ -22,21 +22,21 @@ public final class AccountsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"organizationId\":\"bnxknalaulppg\",\"accountId\":\"tpnapnyiropuhpig\",\"accountName\":\"gylgqgitxmedjvcs\",\"region\":\"n\"},\"id\":\"wncwzzhxgktrmg\",\"name\":\"cnapkteoell\",\"type\":\"pt\"}]}";
+            = "{\"value\":[{\"properties\":{\"organizationId\":\"pigvpgylgqgitx\",\"accountId\":\"djvcsl\",\"accountName\":\"qwwncw\",\"region\":\"hxg\"},\"id\":\"rmgucnap\",\"name\":\"t\",\"type\":\"oellwp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AccountResource> response
-            = manager.accounts().list("iidzyexzne", "ixhnrztf", com.azure.core.util.Context.NONE);
+            = manager.accounts().list("p", "gdtpnapnyiro", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bnxknalaulppg", response.iterator().next().organizationId());
-        Assertions.assertEquals("tpnapnyiropuhpig", response.iterator().next().accountId());
-        Assertions.assertEquals("gylgqgitxmedjvcs", response.iterator().next().accountName());
-        Assertions.assertEquals("n", response.iterator().next().region());
+        Assertions.assertEquals("pigvpgylgqgitx", response.iterator().next().organizationId());
+        Assertions.assertEquals("djvcsl", response.iterator().next().accountId());
+        Assertions.assertEquals("qwwncw", response.iterator().next().accountName());
+        Assertions.assertEquals("hxg", response.iterator().next().region());
     }
 }

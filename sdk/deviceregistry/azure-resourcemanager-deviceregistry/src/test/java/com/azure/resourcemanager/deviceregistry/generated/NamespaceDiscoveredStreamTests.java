@@ -15,25 +15,25 @@ public final class NamespaceDiscoveredStreamTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredStream model = BinaryData.fromString(
-            "{\"name\":\"icccn\",\"streamConfiguration\":\"huexmk\",\"typeRef\":\"lstvlzywe\",\"destinations\":[{\"target\":\"StreamDestination\"},{\"target\":\"StreamDestination\"}],\"lastUpdatedOn\":\"2021-05-25T03:52:53Z\"}")
+            "{\"name\":\"tkkgllqwjy\",\"streamConfiguration\":\"jayvblmhv\",\"typeRef\":\"uhbxvvy\",\"destinations\":[{\"target\":\"StreamDestination\"}],\"lastUpdatedOn\":\"2021-10-11T00:15:08Z\"}")
             .toObject(NamespaceDiscoveredStream.class);
-        Assertions.assertEquals("icccn", model.name());
-        Assertions.assertEquals("huexmk", model.streamConfiguration());
-        Assertions.assertEquals("lstvlzywe", model.typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T03:52:53Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("tkkgllqwjy", model.name());
+        Assertions.assertEquals("jayvblmhv", model.streamConfiguration());
+        Assertions.assertEquals("uhbxvvy", model.typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T00:15:08Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredStream model = new NamespaceDiscoveredStream().withName("icccn")
-            .withStreamConfiguration("huexmk")
-            .withTypeRef("lstvlzywe")
-            .withDestinations(Arrays.asList(new StreamDestination(), new StreamDestination()))
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-05-25T03:52:53Z"));
+        NamespaceDiscoveredStream model = new NamespaceDiscoveredStream().withName("tkkgllqwjy")
+            .withStreamConfiguration("jayvblmhv")
+            .withTypeRef("uhbxvvy")
+            .withDestinations(Arrays.asList(new StreamDestination()))
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-10-11T00:15:08Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredStream.class);
-        Assertions.assertEquals("icccn", model.name());
-        Assertions.assertEquals("huexmk", model.streamConfiguration());
-        Assertions.assertEquals("lstvlzywe", model.typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T03:52:53Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("tkkgllqwjy", model.name());
+        Assertions.assertEquals("jayvblmhv", model.streamConfiguration());
+        Assertions.assertEquals("uhbxvvy", model.typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T00:15:08Z"), model.lastUpdatedOn());
     }
 }

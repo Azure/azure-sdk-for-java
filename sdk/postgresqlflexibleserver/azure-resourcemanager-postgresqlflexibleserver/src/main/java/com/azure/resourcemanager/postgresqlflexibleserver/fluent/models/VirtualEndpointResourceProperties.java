@@ -14,22 +14,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The properties of a virtual endpoint.
+ * Properties of a pair of virtual endpoints.
  */
 @Fluent
 public final class VirtualEndpointResourceProperties implements JsonSerializable<VirtualEndpointResourceProperties> {
     /*
-     * The endpoint type for the virtual endpoint.
+     * Type of endpoint for the virtual endpoints.
      */
     private VirtualEndpointType endpointType;
 
     /*
-     * List of members for a virtual endpoint
+     * List of servers that one of the virtual endpoints can refer to.
      */
     private List<String> members;
 
     /*
-     * List of virtual endpoints for a server
+     * List of virtual endpoints for a server.
      */
     private List<String> virtualEndpoints;
 
@@ -40,7 +40,7 @@ public final class VirtualEndpointResourceProperties implements JsonSerializable
     }
 
     /**
-     * Get the endpointType property: The endpoint type for the virtual endpoint.
+     * Get the endpointType property: Type of endpoint for the virtual endpoints.
      * 
      * @return the endpointType value.
      */
@@ -49,7 +49,7 @@ public final class VirtualEndpointResourceProperties implements JsonSerializable
     }
 
     /**
-     * Set the endpointType property: The endpoint type for the virtual endpoint.
+     * Set the endpointType property: Type of endpoint for the virtual endpoints.
      * 
      * @param endpointType the endpointType value to set.
      * @return the VirtualEndpointResourceProperties object itself.
@@ -60,7 +60,7 @@ public final class VirtualEndpointResourceProperties implements JsonSerializable
     }
 
     /**
-     * Get the members property: List of members for a virtual endpoint.
+     * Get the members property: List of servers that one of the virtual endpoints can refer to.
      * 
      * @return the members value.
      */
@@ -69,7 +69,7 @@ public final class VirtualEndpointResourceProperties implements JsonSerializable
     }
 
     /**
-     * Set the members property: List of members for a virtual endpoint.
+     * Set the members property: List of servers that one of the virtual endpoints can refer to.
      * 
      * @param members the members value to set.
      * @return the VirtualEndpointResourceProperties object itself.

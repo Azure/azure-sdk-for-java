@@ -20,7 +20,7 @@ public final class BackupsGetVolumeLatestRestoreStatusWithResponseMockTests {
     @Test
     public void testGetVolumeLatestRestoreStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"lgehg\",\"errorMessage\":\"ipifhpfeoajvg\",\"totalTransferBytes\":5736463297269671882}";
+            = "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Uninitialized\",\"unhealthyReason\":\"muabwibvjogjonmc\",\"errorMessage\":\"foyzbamwineof\",\"totalTransferBytes\":2978710069312659584}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class BackupsGetVolumeLatestRestoreStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RestoreStatus response = manager.backups()
-            .getVolumeLatestRestoreStatusWithResponse("ihchrphkmcrjdqn", "dfzpbgtgkylkdg", "rjeuut", "wxezwzhok",
+            .getVolumeLatestRestoreStatusWithResponse("uahxs", "xjcmmzrrsc", "biwsd", "npxqwodi",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

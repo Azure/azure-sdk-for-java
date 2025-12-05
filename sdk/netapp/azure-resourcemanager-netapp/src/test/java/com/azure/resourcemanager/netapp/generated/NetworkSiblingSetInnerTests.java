@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"qyikvy\",\"subnetId\":\"uyav\",\"networkSiblingSetStateId\":\"wmn\",\"networkFeatures\":\"Standard_Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"bvpoekrsgsgbdhu\",\"volumeResourceIds\":[\"njdgkynscliq\",\"zvhxnk\",\"mtk\",\"bo\"]},{\"ipAddress\":\"pnvdxz\",\"volumeResourceIds\":[\"hfrbbc\",\"vqagtltdhlf\",\"qojpy\"]}]}")
+            "{\"networkSiblingSetId\":\"jdjltymkmvgui\",\"subnetId\":\"wartspphkixkykxd\",\"networkSiblingSetStateId\":\"j\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"hikkflrmy\",\"volumeResourceIds\":[\"nc\",\"lhrisw\",\"lmiiiovg\"]},{\"ipAddress\":\"gxuugqkctotio\",\"volumeResourceIds\":[\"teqdptj\",\"wdtgukranblw\",\"hqlkccuzgygqwaho\",\"ulwgniiprglvawuw\"]},{\"ipAddress\":\"ufypiv\",\"volumeResourceIds\":[\"bjpmcubk\",\"ifoxxkubvphav\",\"mhbrbqgvg\"]},{\"ipAddress\":\"pbbttefjoknss\",\"volumeResourceIds\":[\"qedikdfrd\",\"iqmrjgeihfqlggw\",\"iwzcxmjpbyeph\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("qyikvy", model.networkSiblingSetId());
-        Assertions.assertEquals("uyav", model.subnetId());
-        Assertions.assertEquals("wmn", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.STANDARD_BASIC, model.networkFeatures());
-        Assertions.assertEquals("njdgkynscliq", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("jdjltymkmvgui", model.networkSiblingSetId());
+        Assertions.assertEquals("wartspphkixkykxd", model.subnetId());
+        Assertions.assertEquals("j", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.BASIC, model.networkFeatures());
+        Assertions.assertEquals("nc", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

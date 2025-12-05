@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesAuthorizeExternalReplicationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_AuthorizeExternalReplication.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_AuthorizeExternalReplication.json
      */
     /**
      * Sample code: Volumes_AuthorizeExternalReplication.

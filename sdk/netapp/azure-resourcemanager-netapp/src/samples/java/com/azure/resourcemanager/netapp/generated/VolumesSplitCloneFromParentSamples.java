@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesSplitCloneFromParentSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_SplitClone.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_SplitClone.json
      */
     /**
      * Sample code: Volumes_SplitClone.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
  */
 public final class VolumesListGetGroupIdListForLdapUserSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupIdListForLDAPUser.json
+     * x-ms-original-file: 2025-09-01-preview/GroupIdListForLDAPUser.json
      */
     /**
      * Sample code: GetGroupIdListForUser.

@@ -12,22 +12,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Storage edition capability.
+ * Capabilities in terms of storage tier.
  */
 @Immutable
 public final class StorageEditionCapability extends CapabilityBase {
     /*
-     * Storage edition name
+     * Name of storage tier.
      */
     private String name;
 
     /*
-     * Default storage size in MB for storage edition
+     * Default storage size (in MB) for this storage tier.
      */
     private Long defaultStorageSizeMb;
 
     /*
-     * Flexible server supported storage range in MB
+     * Configurations of storage supported for this storage tier.
      */
     private List<StorageMbCapability> supportedStorageMb;
 
@@ -48,7 +48,7 @@ public final class StorageEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the name property: Storage edition name.
+     * Get the name property: Name of storage tier.
      * 
      * @return the name value.
      */
@@ -57,7 +57,7 @@ public final class StorageEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the defaultStorageSizeMb property: Default storage size in MB for storage edition.
+     * Get the defaultStorageSizeMb property: Default storage size (in MB) for this storage tier.
      * 
      * @return the defaultStorageSizeMb value.
      */
@@ -66,7 +66,7 @@ public final class StorageEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedStorageMb property: Flexible server supported storage range in MB.
+     * Get the supportedStorageMb property: Configurations of storage supported for this storage tier.
      * 
      * @return the supportedStorageMb value.
      */

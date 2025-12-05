@@ -27,12 +27,23 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
+import com.azure.resourcemanager.netapp.fluent.ActiveDirectoryConfigsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.BackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
+import com.azure.resourcemanager.netapp.fluent.BucketsClient;
+import com.azure.resourcemanager.netapp.fluent.CachesClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticAccountsClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticBackupPoliciesClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticBackupVaultsClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticBackupsClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticCapacityPoolsClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticSnapshotPoliciesClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticSnapshotsClient;
+import com.azure.resourcemanager.netapp.fluent.ElasticVolumesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
@@ -41,6 +52,7 @@ import com.azure.resourcemanager.netapp.fluent.NetAppResourceUsagesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
+import com.azure.resourcemanager.netapp.fluent.RansomwareReportsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
@@ -272,6 +284,20 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The RansomwareReportsClient object to access its operations.
+     */
+    private final RansomwareReportsClient ransomwareReports;
+
+    /**
+     * Gets the RansomwareReportsClient object to access its operations.
+     * 
+     * @return the RansomwareReportsClient object.
+     */
+    public RansomwareReportsClient getRansomwareReports() {
+        return this.ransomwareReports;
+    }
+
+    /**
      * The BackupVaultsClient object to access its operations.
      */
     private final BackupVaultsClient backupVaults;
@@ -283,6 +309,160 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      */
     public BackupVaultsClient getBackupVaults() {
         return this.backupVaults;
+    }
+
+    /**
+     * The BucketsClient object to access its operations.
+     */
+    private final BucketsClient buckets;
+
+    /**
+     * Gets the BucketsClient object to access its operations.
+     * 
+     * @return the BucketsClient object.
+     */
+    public BucketsClient getBuckets() {
+        return this.buckets;
+    }
+
+    /**
+     * The CachesClient object to access its operations.
+     */
+    private final CachesClient caches;
+
+    /**
+     * Gets the CachesClient object to access its operations.
+     * 
+     * @return the CachesClient object.
+     */
+    public CachesClient getCaches() {
+        return this.caches;
+    }
+
+    /**
+     * The ElasticAccountsClient object to access its operations.
+     */
+    private final ElasticAccountsClient elasticAccounts;
+
+    /**
+     * Gets the ElasticAccountsClient object to access its operations.
+     * 
+     * @return the ElasticAccountsClient object.
+     */
+    public ElasticAccountsClient getElasticAccounts() {
+        return this.elasticAccounts;
+    }
+
+    /**
+     * The ElasticCapacityPoolsClient object to access its operations.
+     */
+    private final ElasticCapacityPoolsClient elasticCapacityPools;
+
+    /**
+     * Gets the ElasticCapacityPoolsClient object to access its operations.
+     * 
+     * @return the ElasticCapacityPoolsClient object.
+     */
+    public ElasticCapacityPoolsClient getElasticCapacityPools() {
+        return this.elasticCapacityPools;
+    }
+
+    /**
+     * The ElasticVolumesClient object to access its operations.
+     */
+    private final ElasticVolumesClient elasticVolumes;
+
+    /**
+     * Gets the ElasticVolumesClient object to access its operations.
+     * 
+     * @return the ElasticVolumesClient object.
+     */
+    public ElasticVolumesClient getElasticVolumes() {
+        return this.elasticVolumes;
+    }
+
+    /**
+     * The ElasticSnapshotsClient object to access its operations.
+     */
+    private final ElasticSnapshotsClient elasticSnapshots;
+
+    /**
+     * Gets the ElasticSnapshotsClient object to access its operations.
+     * 
+     * @return the ElasticSnapshotsClient object.
+     */
+    public ElasticSnapshotsClient getElasticSnapshots() {
+        return this.elasticSnapshots;
+    }
+
+    /**
+     * The ElasticSnapshotPoliciesClient object to access its operations.
+     */
+    private final ElasticSnapshotPoliciesClient elasticSnapshotPolicies;
+
+    /**
+     * Gets the ElasticSnapshotPoliciesClient object to access its operations.
+     * 
+     * @return the ElasticSnapshotPoliciesClient object.
+     */
+    public ElasticSnapshotPoliciesClient getElasticSnapshotPolicies() {
+        return this.elasticSnapshotPolicies;
+    }
+
+    /**
+     * The ElasticBackupVaultsClient object to access its operations.
+     */
+    private final ElasticBackupVaultsClient elasticBackupVaults;
+
+    /**
+     * Gets the ElasticBackupVaultsClient object to access its operations.
+     * 
+     * @return the ElasticBackupVaultsClient object.
+     */
+    public ElasticBackupVaultsClient getElasticBackupVaults() {
+        return this.elasticBackupVaults;
+    }
+
+    /**
+     * The ElasticBackupPoliciesClient object to access its operations.
+     */
+    private final ElasticBackupPoliciesClient elasticBackupPolicies;
+
+    /**
+     * Gets the ElasticBackupPoliciesClient object to access its operations.
+     * 
+     * @return the ElasticBackupPoliciesClient object.
+     */
+    public ElasticBackupPoliciesClient getElasticBackupPolicies() {
+        return this.elasticBackupPolicies;
+    }
+
+    /**
+     * The ElasticBackupsClient object to access its operations.
+     */
+    private final ElasticBackupsClient elasticBackups;
+
+    /**
+     * Gets the ElasticBackupsClient object to access its operations.
+     * 
+     * @return the ElasticBackupsClient object.
+     */
+    public ElasticBackupsClient getElasticBackups() {
+        return this.elasticBackups;
+    }
+
+    /**
+     * The ActiveDirectoryConfigsClient object to access its operations.
+     */
+    private final ActiveDirectoryConfigsClient activeDirectoryConfigs;
+
+    /**
+     * Gets the ActiveDirectoryConfigsClient object to access its operations.
+     * 
+     * @return the ActiveDirectoryConfigsClient object.
+     */
+    public ActiveDirectoryConfigsClient getActiveDirectoryConfigs() {
+        return this.activeDirectoryConfigs;
     }
 
     /**
@@ -442,7 +622,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2025-09-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
@@ -452,7 +632,19 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.snapshotPolicies = new SnapshotPoliciesClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
+        this.ransomwareReports = new RansomwareReportsClientImpl(this);
         this.backupVaults = new BackupVaultsClientImpl(this);
+        this.buckets = new BucketsClientImpl(this);
+        this.caches = new CachesClientImpl(this);
+        this.elasticAccounts = new ElasticAccountsClientImpl(this);
+        this.elasticCapacityPools = new ElasticCapacityPoolsClientImpl(this);
+        this.elasticVolumes = new ElasticVolumesClientImpl(this);
+        this.elasticSnapshots = new ElasticSnapshotsClientImpl(this);
+        this.elasticSnapshotPolicies = new ElasticSnapshotPoliciesClientImpl(this);
+        this.elasticBackupVaults = new ElasticBackupVaultsClientImpl(this);
+        this.elasticBackupPolicies = new ElasticBackupPoliciesClientImpl(this);
+        this.elasticBackups = new ElasticBackupsClientImpl(this);
+        this.activeDirectoryConfigs = new ActiveDirectoryConfigsClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);

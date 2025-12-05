@@ -27,6 +27,11 @@ public final class VolumePatchPropertiesDataProtection
      */
     private VolumeSnapshotProperties snapshot;
 
+    /*
+     * Advanced Ransomware Protection updatable settings
+     */
+    private RansomwareProtectionPatchSettings ransomwareProtection;
+
     /**
      * Creates an instance of VolumePatchPropertiesDataProtection class.
      */
@@ -74,6 +79,27 @@ public final class VolumePatchPropertiesDataProtection
     }
 
     /**
+     * Get the ransomwareProtection property: Advanced Ransomware Protection updatable settings.
+     * 
+     * @return the ransomwareProtection value.
+     */
+    public RansomwareProtectionPatchSettings ransomwareProtection() {
+        return this.ransomwareProtection;
+    }
+
+    /**
+     * Set the ransomwareProtection property: Advanced Ransomware Protection updatable settings.
+     * 
+     * @param ransomwareProtection the ransomwareProtection value to set.
+     * @return the VolumePatchPropertiesDataProtection object itself.
+     */
+    public VolumePatchPropertiesDataProtection
+        withRansomwareProtection(RansomwareProtectionPatchSettings ransomwareProtection) {
+        this.ransomwareProtection = ransomwareProtection;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -85,6 +111,9 @@ public final class VolumePatchPropertiesDataProtection
         if (snapshot() != null) {
             snapshot().validate();
         }
+        if (ransomwareProtection() != null) {
+            ransomwareProtection().validate();
+        }
     }
 
     /**
@@ -95,6 +124,7 @@ public final class VolumePatchPropertiesDataProtection
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("backup", this.backup);
         jsonWriter.writeJsonField("snapshot", this.snapshot);
+        jsonWriter.writeJsonField("ransomwareProtection", this.ransomwareProtection);
         return jsonWriter.writeEndObject();
     }
 
@@ -119,6 +149,9 @@ public final class VolumePatchPropertiesDataProtection
                 } else if ("snapshot".equals(fieldName)) {
                     deserializedVolumePatchPropertiesDataProtection.snapshot
                         = VolumeSnapshotProperties.fromJson(reader);
+                } else if ("ransomwareProtection".equals(fieldName)) {
+                    deserializedVolumePatchPropertiesDataProtection.ransomwareProtection
+                        = RansomwareProtectionPatchSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
