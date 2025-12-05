@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 public final class PolicyDecoratingHttpClient implements HttpClient {
 
-    private final HttpClient delegate;
+//    private final HttpClient delegate;
     private final HttpPipeline pipeline;
 
     /**
@@ -31,15 +31,19 @@ public final class PolicyDecoratingHttpClient implements HttpClient {
      * @param delegate Underlying HTTP client that performs the actual network I/O.
      * @param policies Policies that should run before the request reaches the delegate.
      */
+    @Deprecated(forRemoval = true)
     public PolicyDecoratingHttpClient(HttpClient delegate, List<HttpPipelinePolicy> policies) {
-        this.delegate = Objects.requireNonNull(delegate, "delegate cannot be null");
-        Objects.requireNonNull(policies, "policies cannot be null");
+        Objects.requireNonNull(delegate, "delegate cannot be null");
 
-        HttpPipelineBuilder builder = new HttpPipelineBuilder().httpClient(this.delegate);
-        if (!policies.isEmpty()) {
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().httpClient(delegate);
+        if (policies == null || !policies.isEmpty()) {
             builder.policies(policies.toArray(new HttpPipelinePolicy[0]));
         }
         this.pipeline = builder.build();
+    }
+
+    public PolicyDecoratingHttpClient(HttpPipeline httpPipeline) {
+        this.pipeline = httpPipeline;
     }
 
     /**

@@ -154,7 +154,7 @@ public final class HttpClientHelper {
             if (requestBody == null) {
                 return null;
             }
-
+            
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 requestBody.writeTo(outputStream);
                 return BinaryData.fromBytes(outputStream.toByteArray());

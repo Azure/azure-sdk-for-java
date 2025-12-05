@@ -387,12 +387,10 @@ public final class AgentsClientBuilder
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        builder.replaceHeaders("User-Agent", getUserAgent());
         if (this.serviceVersion != null) {
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         }
-        builder.timeout(Duration.ofSeconds(30));
         return builder;
     }
 
@@ -401,37 +399,15 @@ public final class AgentsClientBuilder
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        builder.replaceHeaders("User-Agent", getUserAgent());
         if (this.serviceVersion != null) {
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         }
-        builder.timeout(Duration.ofSeconds(30));
         return builder;
     }
 
-    private String getUserAgent() {
-        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
-        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
-        String sdkName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String sdkVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
-        return UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration);
-    }
-
     private HttpClient getOpenAIHttpClient() {
-        if (this.httpClient == null) {
-            return null;
-        }
-        return new PolicyDecoratingHttpClient(this.httpClient, getOrderedCustomPolicies());
-    }
-
-    private List<HttpPipelinePolicy> getOrderedCustomPolicies() {
-        return this.pipelinePolicies.stream()
-            .sorted(Comparator.comparing(policy -> HttpPipelinePosition.PER_CALL == policy.getPipelinePosition()
-                ? HttpPipelinePosition.PER_CALL
-                : HttpPipelinePosition.PER_CALL))
-            .collect(Collectors.toList());
+        return new PolicyDecoratingHttpClient(createHttpPipeline());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);
