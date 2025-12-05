@@ -135,9 +135,13 @@ public class Sample08_UpdateAnalyzer {
         models.put("embedding", "text-embedding-3-large");
         updatedAnalyzer.setModels(models);
 
-        // Update the analyzer
+        // Update the analyzer (delete and recreate with same ID)
+        // Note: In production, you might want to use updateAnalyzerWithResponse for atomic updates
+        client.deleteAnalyzer(analyzerId);
+        System.out.println("Existing analyzer deleted for update");
+
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, updatedAnalyzer, false);
+            = client.beginCreateAnalyzer(analyzerId, updatedAnalyzer, true);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Analyzer updated successfully!");
