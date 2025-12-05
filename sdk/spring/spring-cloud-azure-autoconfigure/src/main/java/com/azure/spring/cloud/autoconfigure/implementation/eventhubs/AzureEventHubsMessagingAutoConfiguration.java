@@ -3,10 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
@@ -27,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -37,6 +40,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
@@ -83,10 +87,16 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
-            NamespaceProperties properties, CheckpointStore checkpointStore,
-            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
-            return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
+            NamespaceProperties properties,
+            CheckpointStore checkpointStore,
+            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
+            ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
+            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) ObjectProvider<TokenCredential> defaultTokenCredentials) {
+            DefaultEventHubsNamespaceProcessorFactory factory = new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
                 suppliers.getIfAvailable());
+            factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
+            factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
+            return factory;
         }
 
     }
@@ -98,8 +108,13 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
             NamespaceProperties properties,
-            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
-            return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
+            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers,
+            ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
+            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) ObjectProvider<TokenCredential> defaultTokenCredentials) {
+            DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
+            factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
+            factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
+            return factory;
         }
 
         @Bean
