@@ -39,7 +39,7 @@ public class Sample08_UpdateAnalyzer {
 
     @BeforeEach
     public void setup() {
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         client = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
             .buildClient();

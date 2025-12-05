@@ -40,7 +40,7 @@ public class Sample03_AnalyzeInvoice {
     @Test
     public void testAnalyzeInvoiceAsync() {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)

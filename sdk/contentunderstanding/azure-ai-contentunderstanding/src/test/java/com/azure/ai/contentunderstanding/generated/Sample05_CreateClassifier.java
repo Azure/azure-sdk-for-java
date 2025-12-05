@@ -39,7 +39,7 @@ public class Sample05_CreateClassifier {
     public void cleanup() {
         if (createdAnalyzerId != null) {
             try {
-                String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+                String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
                 ContentUnderstandingClient client
                     = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(endpoint)
@@ -55,7 +55,7 @@ public class Sample05_CreateClassifier {
     @Test
     public void testCreateClassifierAsync() {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)

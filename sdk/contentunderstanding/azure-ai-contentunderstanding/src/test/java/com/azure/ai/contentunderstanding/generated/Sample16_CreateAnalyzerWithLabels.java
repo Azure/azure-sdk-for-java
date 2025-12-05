@@ -53,12 +53,11 @@ public class Sample16_CreateAnalyzerWithLabels {
      * This test demonstrates the API pattern without requiring actual training data setup.
      */
     @Test
-    public void testCreateAnalyzerWithLabelsPattern() {
+    public void testCreateAnalyzerWithLabelsAsync() {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_API_KEY");
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        client = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint)
+        client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
             .buildClient();
 
@@ -150,9 +149,15 @@ public class Sample16_CreateAnalyzerWithLabels {
             analyzer.setFieldSchema(fieldSchema);
             // analyzer.setKnowledgeSources(knowledgeSources); // Add when using actual training data
 
+            // Add model mappings
+            Map<String, String> models = new HashMap<>();
+            models.put("completion", "gpt-4.1");
+            models.put("embedding", "text-embedding-3-large");
+            analyzer.setModels(models);
+
             // For demonstration without actual training data, create analyzer without knowledge sources
-            SyncPoller<ContentAnalyzer, ContentAnalyzer> createPoller =
-                client.beginCreateAnalyzer(analyzerId, analyzer);
+            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+                = client.beginCreateAnalyzer(analyzerId, analyzer, true);
             ContentAnalyzer result = createPoller.getFinalResult();
 
             System.out.println("Analyzer created: " + analyzerId);
@@ -223,7 +228,7 @@ public class Sample16_CreateAnalyzerWithLabels {
     @Test
     public void testCreateAnalyzerWithActualLabels() {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_API_KEY");
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
         String trainingDataSasUrl = System.getenv("TRAINING_DATA_SAS_URL");
 
         if (trainingDataSasUrl == null || trainingDataSasUrl.trim().isEmpty()) {
@@ -236,8 +241,7 @@ public class Sample16_CreateAnalyzerWithLabels {
             return;
         }
 
-        client = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint)
+        client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
             .buildClient();
 
@@ -270,7 +274,7 @@ public class Sample16_CreateAnalyzerWithLabels {
 
             // Create knowledge source with training data
             LabeledDataKnowledgeSource knowledgeSource = new LabeledDataKnowledgeSource();
-            knowledgeSource.setUrl(trainingDataSasUrl);
+            knowledgeSource.setContainerUrl(trainingDataSasUrl);
             knowledgeSource.setPrefix(trainingDataPath);
 
             // Create analyzer
@@ -284,13 +288,14 @@ public class Sample16_CreateAnalyzerWithLabels {
             System.out.println("Analyzer with training data created: " + analyzerId);
 
             // Test the analyzer with a sample document
-            String testDocUrl = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
+            String testDocUrl
+                = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
             AnalyzeInput input = new AnalyzeInput();
             input.setUrl(testDocUrl);
 
-            AnalyzeResult analyzeResult = client.beginAnalyze(analyzerId, Collections.singletonList(input))
-                .getFinalResult();
+            AnalyzeResult analyzeResult
+                = client.beginAnalyze(analyzerId, null, null, Collections.singletonList(input), null).getFinalResult();
 
             System.out.println("Analysis completed!");
             assertNotNull(analyzeResult);

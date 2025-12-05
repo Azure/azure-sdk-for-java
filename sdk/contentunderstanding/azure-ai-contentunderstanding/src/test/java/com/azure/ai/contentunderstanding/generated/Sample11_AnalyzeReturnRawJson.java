@@ -38,19 +38,21 @@ public class Sample11_AnalyzeReturnRawJson {
     @Test
     public void testAnalyzeReturnRawJsonAsync() throws IOException {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
                 .buildClient();
 
         // BEGIN:ContentUnderstandingAnalyzeReturnRawJson
-        // Using a publicly accessible sample file from Azure-Samples GitHub repository
-        String documentUrl
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/sample_invoice.pdf";
+        // Load local test file
+        Path filePath = Paths.get("src/test/resources/sample_invoice.pdf");
+        byte[] fileBytes = Files.readAllBytes(filePath);
 
-        // Prepare request as JSON
-        String requestJson = String.format("{\"inputs\": [{\"url\": \"%s\"}]}", documentUrl);
+        // Prepare request body with binary data using JSON format
+        // Note: The API expects a JSON request with "inputs" array containing document data
+        String base64Data = java.util.Base64.getEncoder().encodeToString(fileBytes);
+        String requestJson = String.format("{\"inputs\": [{\"data\": \"%s\"}]}", base64Data);
         BinaryData requestBody = BinaryData.fromString(requestJson);
 
         // Use protocol method to get raw JSON response
@@ -63,9 +65,9 @@ public class Sample11_AnalyzeReturnRawJson {
         // END:ContentUnderstandingAnalyzeReturnRawJson
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeReturnRawJson
-        Assertions.assertNotNull(documentUrl, "Document URL should not be null");
-        Assertions.assertFalse(documentUrl.isEmpty(), "Document URL should not be empty");
-        System.out.println("Document URL: " + documentUrl);
+        Assertions.assertTrue(Files.exists(filePath), "Sample file should exist at " + filePath);
+        Assertions.assertTrue(fileBytes.length > 0, "File should not be empty");
+        System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
 
         Assertions.assertNotNull(operation, "Analysis operation should not be null");
         Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");

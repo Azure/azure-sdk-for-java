@@ -42,20 +42,20 @@ public class Sample10_AnalyzeConfigs {
     @Test
     public void testAnalyzeConfigsAsync() throws IOException {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
                 .buildClient();
 
         // BEGIN:ContentUnderstandingAnalyzeWithConfigs
-        // Using a publicly accessible sample file from Azure-Samples GitHub repository
-        String documentUrl
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/sample_invoice.pdf";
+        // Load local test file
+        Path filePath = Paths.get("src/test/resources/sample_document_features.pdf");
+        byte[] fileBytes = Files.readAllBytes(filePath);
 
         com.azure.ai.contentunderstanding.models.AnalyzeInput input
             = new com.azure.ai.contentunderstanding.models.AnalyzeInput();
-        input.setUrl(documentUrl);
+        input.setData(fileBytes);
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas

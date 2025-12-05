@@ -26,7 +26,7 @@ public class Sample07_ListAnalyzers {
     @Test
     public void testListAnalyzersAsync() {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
@@ -129,7 +129,7 @@ public class Sample07_ListAnalyzers {
     @Test
     public void testListReadyAnalyzersAsync() {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)

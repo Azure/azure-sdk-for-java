@@ -49,12 +49,11 @@ public class Sample15_GrantCopyAuth {
      * This test is simplified to demonstrate the API without requiring cross-resource setup.
      */
     @Test
-    public void testGrantCopyAuthPattern() {
+    public void testGrantCopyAuthAsync() {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_API_KEY");
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        sourceClient = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint)
+        sourceClient = new ContentUnderstandingClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
             .buildClient();
 
@@ -95,8 +94,8 @@ public class Sample15_GrantCopyAuth {
             models.put("completion", "gpt-4.1");
             sourceAnalyzer.setModels(models);
 
-            SyncPoller<ContentAnalyzer, ContentAnalyzer> createPoller =
-                sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
+            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+                = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
             ContentAnalyzer sourceResult = createPoller.getFinalResult();
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
@@ -158,7 +157,8 @@ public class Sample15_GrantCopyAuth {
             System.out.println("   2. Call grantCopyAuthorizationWithResponse on source client:");
             System.out.println("      Request body: {\"targetAzureResourceId\":\"...\",\"targetRegion\":\"...\"}");
             System.out.println("   3. Use target client to call beginCopyAnalyzer:");
-            System.out.println("      Request body: {\"sourceAnalyzerId\":\"...\",\"sourceAzureResourceId\":\"...\",\"sourceRegion\":\"...\"}");
+            System.out.println(
+                "      Request body: {\"sourceAnalyzerId\":\"...\",\"sourceAzureResourceId\":\"...\",\"sourceRegion\":\"...\"}");
             System.out.println("   4. Wait for copy operation to complete");
 
             System.out.println("\n✅ GrantCopyAuth pattern demonstration completed");
@@ -190,7 +190,7 @@ public class Sample15_GrantCopyAuth {
     @Test
     public void testCrossResourceCopy() {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_API_KEY");
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
         // Check for required environment variables
         String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
@@ -200,8 +200,11 @@ public class Sample15_GrantCopyAuth {
         String targetRegion = System.getenv("TARGET_REGION");
         String targetKey = System.getenv("TARGET_KEY");
 
-        if (sourceResourceId == null || sourceRegion == null ||
-            targetEndpoint == null || targetResourceId == null || targetRegion == null) {
+        if (sourceResourceId == null
+            || sourceRegion == null
+            || targetEndpoint == null
+            || targetResourceId == null
+            || targetRegion == null) {
             System.out.println("⚠️ Cross-resource copying requires environment variables:");
             System.out.println("   SOURCE_RESOURCE_ID, SOURCE_REGION");
             System.out.println("   TARGET_ENDPOINT, TARGET_RESOURCE_ID, TARGET_REGION, TARGET_KEY (optional)");
@@ -209,13 +212,11 @@ public class Sample15_GrantCopyAuth {
             return;
         }
 
-        sourceClient = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint)
+        sourceClient = new ContentUnderstandingClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
             .buildClient();
 
-        targetClient = new ContentUnderstandingClientBuilder()
-            .endpoint(targetEndpoint)
+        targetClient = new ContentUnderstandingClientBuilder().endpoint(targetEndpoint)
             .credential(new AzureKeyCredential(targetKey != null ? targetKey : key))
             .buildClient();
 
@@ -228,19 +229,18 @@ public class Sample15_GrantCopyAuth {
             sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
             sourceAnalyzer.setDescription("Test analyzer for cross-resource copying");
 
-            ContentAnalyzer sourceResult = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer)
-                .getFinalResult();
+            ContentAnalyzer sourceResult
+                = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer).getFinalResult();
             System.out.println("Source analyzer created: " + sourceAnalyzerId);
 
             // Grant copy authorization
-            String authRequestJson = String.format(
-                "{\"targetAzureResourceId\":\"%s\",\"targetRegion\":\"%s\"}",
+            String authRequestJson = String.format("{\"targetAzureResourceId\":\"%s\",\"targetRegion\":\"%s\"}",
                 targetResourceId, targetRegion);
             BinaryData authRequest = BinaryData.fromString(authRequestJson);
 
             RequestOptions requestOptions = new RequestOptions();
-            com.azure.core.http.rest.Response<BinaryData> authResponse =
-                sourceClient.grantCopyAuthorizationWithResponse(sourceAnalyzerId, authRequest, requestOptions);
+            com.azure.core.http.rest.Response<BinaryData> authResponse
+                = sourceClient.grantCopyAuthorizationWithResponse(sourceAnalyzerId, authRequest, requestOptions);
 
             System.out.println("Copy authorization granted!");
             System.out.println("  Response status: " + authResponse.getStatusCode());
@@ -251,8 +251,8 @@ public class Sample15_GrantCopyAuth {
                 sourceAnalyzerId, sourceResourceId, sourceRegion);
             BinaryData copyRequest = BinaryData.fromString(copyRequestJson);
 
-            SyncPoller<BinaryData, BinaryData> copyPoller =
-                targetClient.beginCopyAnalyzer(targetAnalyzerId, copyRequest, requestOptions);
+            SyncPoller<BinaryData, BinaryData> copyPoller
+                = targetClient.beginCopyAnalyzer(targetAnalyzerId, copyRequest, requestOptions);
             BinaryData copyResult = copyPoller.getFinalResult();
 
             System.out.println("Analyzer copied to target resource successfully!");

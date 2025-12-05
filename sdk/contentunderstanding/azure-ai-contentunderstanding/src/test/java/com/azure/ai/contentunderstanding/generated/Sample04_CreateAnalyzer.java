@@ -51,7 +51,7 @@ public class Sample04_CreateAnalyzer {
     public void cleanup() {
         if (createdAnalyzerId != null) {
             try {
-                String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+                String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
                 ContentUnderstandingClient client
                     = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(endpoint)
@@ -67,7 +67,7 @@ public class Sample04_CreateAnalyzer {
     @Test
     public void testCreateAnalyzerAsync() {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
@@ -271,7 +271,7 @@ public class Sample04_CreateAnalyzer {
     @Test
     public void testUseCustomAnalyzerAsync() {
         // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)

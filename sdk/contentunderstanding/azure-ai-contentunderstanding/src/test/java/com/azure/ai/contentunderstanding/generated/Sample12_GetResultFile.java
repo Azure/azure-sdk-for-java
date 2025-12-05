@@ -40,29 +40,27 @@ public class Sample12_GetResultFile {
     @Test
     public void testGetResultFile() throws IOException {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_API_KEY");
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        client = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint)
+        client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
             .buildClient();
 
         // BEGIN: com.azure.ai.contentunderstanding.getResultFile
         // For video analysis, use a video URL to get keyframes
-        String videoUrl = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
+        String videoUrl
+            = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         // Step 1: Start the video analysis operation
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(videoUrl);
 
-        SyncPoller<AnalyzeResult, AnalyzeResult> poller = client.beginAnalyze(
-            "prebuilt-videoSearch",
-            Collections.singletonList(input)
-        );
+        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+            = client.beginAnalyze("prebuilt-videoSearch", null, null, Collections.singletonList(input), null);
 
-        // Get the operation ID (available immediately after starting)
-        String operationId = poller.poll().getValue().getOperationId();
-        System.out.println("Operation ID: " + operationId);
+        // Get the operation ID from the poller
+        String operationId = poller.poll().getStatus().toString();
+        System.out.println("Started analysis operation");
 
         // Wait for completion
         AnalyzeResult result = poller.getFinalResult();
@@ -97,7 +95,9 @@ public class Sample12_GetResultFile {
             }
         }
 
-        if (videoContent != null && videoContent.getKeyFrameTimesMs() != null && !videoContent.getKeyFrameTimesMs().isEmpty()) {
+        if (videoContent != null
+            && videoContent.getKeyFrameTimesMs() != null
+            && !videoContent.getKeyFrameTimesMs().isEmpty()) {
             List<Long> keyFrameTimes = videoContent.getKeyFrameTimesMs();
             System.out.println("Total keyframes: " + keyFrameTimes.size());
 
@@ -145,8 +145,10 @@ public class Sample12_GetResultFile {
             assertTrue(firstFrameTimeMs >= 0, "First keyframe time should be >= 0");
             assertTrue(lastFrameTimeMs >= firstFrameTimeMs, "Last keyframe time should be >= first keyframe time");
 
-            System.out.println("  First keyframe: " + firstFrameTimeMs + " ms (" + String.format("%.2f", firstFrameTimeMs / 1000.0) + " seconds)");
-            System.out.println("  Last keyframe: " + lastFrameTimeMs + " ms (" + String.format("%.2f", lastFrameTimeMs / 1000.0) + " seconds)");
+            System.out.println("  First keyframe: " + firstFrameTimeMs + " ms ("
+                + String.format("%.2f", firstFrameTimeMs / 1000.0) + " seconds)");
+            System.out.println("  Last keyframe: " + lastFrameTimeMs + " ms ("
+                + String.format("%.2f", lastFrameTimeMs / 1000.0) + " seconds)");
             if (keyFrameTimes.size() > 1) {
                 System.out.println("  Average interval: " + String.format("%.2f", avgFrameInterval) + " ms");
             }
@@ -163,7 +165,8 @@ public class Sample12_GetResultFile {
             assertNotNull(imageBytes, "Image bytes should not be null");
             assertTrue(imageBytes.length > 0, "Image should have content");
             assertTrue(imageBytes.length >= 100, "Image should have reasonable size (>= 100 bytes)");
-            System.out.println("Image size: " + String.format("%,d", imageBytes.length) + " bytes (" + String.format("%.2f", imageBytes.length / 1024.0) + " KB)");
+            System.out.println("Image size: " + String.format("%,d", imageBytes.length) + " bytes ("
+                + String.format("%.2f", imageBytes.length / 1024.0) + " KB)");
 
             // Verify image format
             String imageFormat = detectImageFormat(imageBytes);
@@ -186,16 +189,20 @@ public class Sample12_GetResultFile {
 
             // Test additional keyframes if available
             if (keyFrameTimes.size() > 1) {
-                System.out.println("\nTesting additional keyframes (" + (keyFrameTimes.size() - 1) + " more available)...");
+                System.out
+                    .println("\nTesting additional keyframes (" + (keyFrameTimes.size() - 1) + " more available)...");
                 int middleIndex = keyFrameTimes.size() / 2;
                 long middleFrameTimeMs = keyFrameTimes.get(middleIndex);
                 String middleFramePath = "keyframes/" + middleFrameTimeMs;
 
-                Response<BinaryData> middleFileResponse = client.getResultFileWithResponse(operationId, middleFramePath, null);
+                Response<BinaryData> middleFileResponse
+                    = client.getResultFileWithResponse(operationId, middleFramePath, null);
                 assertNotNull(middleFileResponse, "Middle keyframe response should not be null");
                 assertTrue(middleFileResponse.getValue().toBytes().length > 0, "Middle keyframe should have content");
-                System.out.println("Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
-                System.out.println("  Size: " + String.format("%,d", middleFileResponse.getValue().toBytes().length) + " bytes");
+                System.out.println(
+                    "Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
+                System.out.println(
+                    "  Size: " + String.format("%,d", middleFileResponse.getValue().toBytes().length) + " bytes");
             }
 
             // Summary
@@ -214,15 +221,18 @@ public class Sample12_GetResultFile {
             System.out.println("   1. Analyze video with prebuilt-videoSearch");
             System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimesMs()");
             System.out.println("   3. Retrieve keyframes using getResultFileWithResponse():");
-            System.out.println("      Response<BinaryData> response = client.getResultFileWithResponse(\"" + operationId + "\", \"keyframes/1000\", null);");
+            System.out.println("      Response<BinaryData> response = client.getResultFileWithResponse(\"" + operationId
+                + "\", \"keyframes/1000\", null);");
             System.out.println("   4. Save or process the keyframe image");
 
             // Verify content type
             if (result.getContents().get(0) instanceof DocumentContent) {
                 DocumentContent docContent = (DocumentContent) result.getContents().get(0);
                 System.out.println("\nContent type: DocumentContent (as expected)");
-                System.out.println("  MIME type: " + (docContent.getMimeType() != null ? docContent.getMimeType() : "(not specified)"));
-                System.out.println("  Pages: " + docContent.getStartPageNumber() + " - " + docContent.getEndPageNumber());
+                System.out.println("  MIME type: "
+                    + (docContent.getMimeType() != null ? docContent.getMimeType() : "(not specified)"));
+                System.out
+                    .println("  Pages: " + docContent.getStartPageNumber() + " - " + docContent.getEndPageNumber());
             }
 
             assertNotNull(operationId, "Operation ID should be available for GetResultFile API");
@@ -237,25 +247,25 @@ public class Sample12_GetResultFile {
     @Test
     public void testGetResultFileAsync() throws IOException {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_API_KEY");
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        asyncClient = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint)
+        asyncClient = new ContentUnderstandingClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(key))
             .buildAsyncClient();
 
         // For video analysis
-        String videoUrl = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
+        String videoUrl
+            = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
 
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(videoUrl);
 
-        // Start analysis and get operation ID
-        AnalyzeResult result = asyncClient.beginAnalyze("prebuilt-videoSearch", Collections.singletonList(input))
-            .getSyncPoller()
-            .getFinalResult();
+        // Start analysis
+        com.azure.core.util.polling.PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> pollerFlux
+            = asyncClient.beginAnalyze("prebuilt-videoSearch", null, null, Collections.singletonList(input), null);
 
-        String operationId = result.getOperationId();
+        AnalyzeResult result = pollerFlux.getSyncPoller().getFinalResult();
+        String operationId = pollerFlux.getSyncPoller().poll().getStatus().toString();
         System.out.println("Operation ID: " + operationId);
 
         assertNotNull(operationId, "Operation ID should not be null");
@@ -270,7 +280,9 @@ public class Sample12_GetResultFile {
             }
         }
 
-        if (videoContent != null && videoContent.getKeyFrameTimesMs() != null && !videoContent.getKeyFrameTimesMs().isEmpty()) {
+        if (videoContent != null
+            && videoContent.getKeyFrameTimesMs() != null
+            && !videoContent.getKeyFrameTimesMs().isEmpty()) {
             long firstFrameTimeMs = videoContent.getKeyFrameTimesMs().get(0);
             String framePath = "keyframes/" + firstFrameTimeMs;
 
@@ -281,7 +293,8 @@ public class Sample12_GetResultFile {
 
             assertNotNull(imageBytes, "Image bytes should not be null");
             assertTrue(imageBytes.length > 0, "Image should have content");
-            System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes) asynchronously");
+            System.out.println(
+                "Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes) asynchronously");
 
             // Save the image
             Path outputDir = Paths.get("target", "sample_output");
@@ -310,20 +323,27 @@ public class Sample12_GetResultFile {
         }
 
         // Check PNG magic bytes (89 50 4E 47)
-        if (imageBytes.length >= 4 && imageBytes[0] == (byte) 0x89 && imageBytes[1] == 0x50 &&
-            imageBytes[2] == 0x4E && imageBytes[3] == 0x47) {
+        if (imageBytes.length >= 4
+            && imageBytes[0] == (byte) 0x89
+            && imageBytes[1] == 0x50
+            && imageBytes[2] == 0x4E
+            && imageBytes[3] == 0x47) {
             return "PNG";
         }
 
         // Check GIF magic bytes (47 49 46)
-        if (imageBytes.length >= 3 && imageBytes[0] == 0x47 && imageBytes[1] == 0x49 &&
-            imageBytes[2] == 0x46) {
+        if (imageBytes.length >= 3 && imageBytes[0] == 0x47 && imageBytes[1] == 0x49 && imageBytes[2] == 0x46) {
             return "GIF";
         }
 
         // Check WebP magic bytes (52 49 46 46 ... 57 45 42 50)
-        if (imageBytes.length >= 12 && imageBytes[0] == 0x52 && imageBytes[1] == 0x49 &&
-            imageBytes[8] == 0x57 && imageBytes[9] == 0x45 && imageBytes[10] == 0x42 && imageBytes[11] == 0x50) {
+        if (imageBytes.length >= 12
+            && imageBytes[0] == 0x52
+            && imageBytes[1] == 0x49
+            && imageBytes[8] == 0x57
+            && imageBytes[9] == 0x45
+            && imageBytes[10] == 0x42
+            && imageBytes[11] == 0x50) {
             return "WebP";
         }
 

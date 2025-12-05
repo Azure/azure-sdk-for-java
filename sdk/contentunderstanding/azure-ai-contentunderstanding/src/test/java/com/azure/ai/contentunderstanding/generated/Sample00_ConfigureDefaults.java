@@ -28,7 +28,7 @@ public class Sample00_ConfigureDefaults {
         // Create the Content Understanding client
         ContentUnderstandingClient client
             = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT"))
                 .buildClient();
 
         // Step 1: Get current defaults
