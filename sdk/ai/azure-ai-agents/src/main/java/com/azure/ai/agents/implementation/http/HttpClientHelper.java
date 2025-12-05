@@ -94,7 +94,15 @@ public final class HttpClientHelper {
 
             return this.azureHttpClient.send(azureRequest)
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
-                .toFuture();
+//                    .onErrorMap(t -> {
+//                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
+//                        // - Auth
+//                        // - Resource not found
+//                        // - HttpResponse Ex
+//                        //
+//                        // new StainlessException(t.getCause())
+//                    })
+                    .toFuture();
         }
 
         /**

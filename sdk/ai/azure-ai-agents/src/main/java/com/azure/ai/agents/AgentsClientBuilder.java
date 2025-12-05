@@ -6,7 +6,6 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
-import com.azure.ai.agents.implementation.http.PolicyDecoratingHttpClient;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -19,8 +18,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -36,7 +33,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -45,15 +41,11 @@ import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -337,11 +329,8 @@ public final class AgentsClientBuilder
      */
     public ConversationsAsyncClient buildConversationsAsyncClient() {
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
-        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder -> {
-            if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
-            }
-        }));
+        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder ->
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
     }
 
     /**
@@ -351,11 +340,8 @@ public final class AgentsClientBuilder
      */
     public ConversationsClient buildConversationsClient() {
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
-        return new ConversationsClient(getOpenAIClientBuilder().build().withOptions(optionBuilder -> {
-            if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
-            }
-        }));
+        return new ConversationsClient(getOpenAIClientBuilder().build().withOptions(optionBuilder ->
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
     }
 
     /**
@@ -365,11 +351,8 @@ public final class AgentsClientBuilder
      */
     public ResponsesClient buildResponsesClient() {
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
-        return new ResponsesClient(getOpenAIClientBuilder().build().withOptions(optionBuilder -> {
-            if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
-            }
-        }));
+        return new ResponsesClient(getOpenAIClientBuilder().build().withOptions(optionBuilder ->
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
     }
 
     /**
@@ -379,11 +362,8 @@ public final class AgentsClientBuilder
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
         HttpClient decoratedHttpClient = getOpenAIHttpClient();
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder -> {
-            if (decoratedHttpClient != null) {
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient));
-            }
-        }));
+        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder ->
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
@@ -395,6 +375,7 @@ public final class AgentsClientBuilder
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         }
+        builder.maxRetries(0);
         return builder;
     }
 
@@ -407,6 +388,7 @@ public final class AgentsClientBuilder
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         }
+        builder.maxRetries(0);
         return builder;
     }
 
