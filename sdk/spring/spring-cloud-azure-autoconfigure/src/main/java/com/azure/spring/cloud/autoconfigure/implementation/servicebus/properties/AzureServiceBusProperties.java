@@ -57,7 +57,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Producer buildProducerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Producer properties = new Producer();
 
@@ -81,7 +81,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Consumer buildConsumerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Consumer properties = new Consumer();
 
@@ -113,7 +113,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Processor buildProcessorProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Processor properties = new Processor();
 
