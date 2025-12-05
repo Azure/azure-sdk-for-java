@@ -46,7 +46,7 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -122,19 +122,6 @@ public final class TranscriptionClient {
     }
 
     // Customized method added via post-generation customization
-    /**
-     * Transcribes the provided audio stream with the specified options.
-     *
-     * @param options the transcription options including audio file details or audio URL
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the transcribe operation.
-     */
-    // Customized method added via post-generation customization
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TranscriptionResult transcribe(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
@@ -144,18 +131,6 @@ public final class TranscriptionClient {
         return transcribe(requestContent);
     }
 
-    /**
-     * Transcribes the provided audio stream with the specified options.
-     *
-     * @param options the transcription options including audio file details or audio URL
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing the result of the transcribe operation.
-     */
     // Customized method added via post-generation customization
     public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);

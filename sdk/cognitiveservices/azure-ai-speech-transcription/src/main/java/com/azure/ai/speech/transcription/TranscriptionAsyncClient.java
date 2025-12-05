@@ -48,7 +48,7 @@ public final class TranscriptionAsyncClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -125,18 +125,6 @@ public final class TranscriptionAsyncClient {
                 .map(protocolMethodData -> protocolMethodData.toObject(TranscriptionResult.class));
     }
 
-    /**
-     * Transcribes the provided audio stream with the specified options.
-     *
-     * @param options the transcription options including audio file details or audio URL
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the transcribe operation on successful completion of Mono.
-     */
     // Customized method added via post-generation customization
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranscriptionResult> transcribe(TranscriptionOptions options) {
@@ -147,18 +135,6 @@ public final class TranscriptionAsyncClient {
         return transcribe(requestContent);
     }
 
-    /**
-     * Transcribes the provided audio stream with the specified options.
-     *
-     * @param options the transcription options including audio file details or audio URL
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing the result of the transcribe operation on successful completion of Mono.
-     */
     // Customized method added via post-generation customization
     public Mono<Response<TranscriptionResult>> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
