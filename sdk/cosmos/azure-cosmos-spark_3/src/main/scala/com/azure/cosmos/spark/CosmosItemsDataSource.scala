@@ -257,7 +257,7 @@ object CosmosItemsDataSource {
         // Remove leading "/" from path (e.g., "/PermId" -> "PermId")
         val fieldName = if (path.startsWith("/")) path.substring(1) else path
         val valueNode = documentNode.get(fieldName)
-        if (valueNode == null || valueNode.isNull) {
+        if (Option(valueNode).isEmpty || valueNode.isNull) {
           throw new IllegalArgumentException(
             s"Missing or null partition key field '$fieldName' in document. " +
             s"Document must contain all partition key fields: ${partitionKeyPaths.mkString(", ")}. " +

@@ -30,7 +30,7 @@ import scala.collection.JavaConverters._
  * - Flat columns corresponding to the properties of the Cosmos DB item to be operated on.
  * - The partition key column name must match the container's partition key path (e.g., "pk" if the path is "/pk").
  * - The "id" column (String) is required.
- * - An optional "operationType" column (String) can be provided to specify the operation ("create", "replace", "upsert", "delete", "read") for each row.
+ * - An optional "operationType" column (String) can be provided to specify the operation ("create", "replace", "upsert", "delete") for each row.
  *   If not provided, the default operation is "upsert".
  * 
  * Output DataFrame schema:
@@ -39,7 +39,6 @@ import scala.collection.JavaConverters._
  * - operationType: String
  * - statusCode: Int
  * - isSuccessStatusCode: Boolean
- * - resultDocument: String (optional - for read operations)
  * - errorMessage: String (optional)
  */
 private[spark] class TransactionalBatchWriter(
@@ -93,17 +92,6 @@ private[spark] class TransactionalBatchWriter(
             cosmosContainerConfig,
             clientCacheItems(0).get,
             clientCacheItems(1))
-        
-        // Warm up the client by attempting a read
-        try {
-          container.readItem(
-            UUIDs.nonBlockingRandomUUID().toString,
-            new PartitionKey(UUIDs.nonBlockingRandomUUID().toString),
-            classOf[ObjectNode])
-            .block()
-        } catch {
-          case _: CosmosException => None
-        }
 
         val state = new CosmosClientMetadataCachesSnapshot()
         state.serialize(clientCacheItems(0).get.cosmosClient)
@@ -240,7 +228,6 @@ private[spark] class TransactionalBatchWriter(
         StructField("operationType", StringType, nullable = false),
         StructField("statusCode", IntegerType, nullable = false),
         StructField("isSuccessStatusCode", BooleanType, nullable = false),
-        StructField("resultDocument", StringType, nullable = true),
         StructField("errorMessage", StringType, nullable = true)
       ))
     }
@@ -373,7 +360,7 @@ private class TransactionalBatchPartitionExecutor(
       val fieldName = if (path.startsWith("/")) path.substring(1) else path
       val valueNode = documentNode.get(fieldName)
 
-      if (valueNode == null || valueNode.isNull) {
+      if (Option(valueNode).isEmpty || valueNode.isNull) {
         throw new IllegalArgumentException(
           s"Partition key field '$fieldName' is missing or null in row with id '$id'. " +
             s"All partition key fields must be present and non-null for transactional batch operations.")
@@ -492,11 +479,8 @@ private class TransactionalBatchPartitionExecutor(
           case "delete" =>
             batch.deleteItemOperation(op.id)
 
-          case "read" =>
-            batch.readItemOperation(op.id)
-
           case other =>
-            throw new IllegalArgumentException(s"Unknown operation type: $other")
+            throw new IllegalArgumentException(s"Unsupported operation type: $other. Supported types are: create, replace, upsert, delete")
         }
       }
 
@@ -558,15 +542,6 @@ private class TransactionalBatchPartitionExecutor(
       if (result != null) {
         val statusCode = result.getStatusCode
         val isSuccess = statusCode >= 200 && statusCode < 300
-        
-        val resultDocument = if (operation.operationType.toLowerCase == "read" && isSuccess) {
-          Try {
-            val item = result.getItem(classOf[ObjectNode])
-            if (item != null) Some(item.toString) else None
-          }.getOrElse(None)
-        } else {
-          None
-        }
 
         val errorMessage = if (!isSuccess) {
           val subStatusCode = result.getSubStatusCode
@@ -579,7 +554,7 @@ private class TransactionalBatchPartitionExecutor(
           None
         }
 
-        results += createResultRow(operation, statusCode, isSuccess, resultDocument, errorMessage)
+        results += createResultRow(operation, statusCode, isSuccess, errorMessage)
       } else {
         results += createErrorRow(operation, 500, "No result returned for operation")
       }
@@ -592,7 +567,6 @@ private class TransactionalBatchPartitionExecutor(
     operation: BatchOperation,
     statusCode: Int,
     isSuccessStatusCode: Boolean,
-    resultDocument: Option[String],
     errorMessage: Option[String]
   ): Row = {
     Row(
@@ -601,7 +575,6 @@ private class TransactionalBatchPartitionExecutor(
       operation.operationType,
       statusCode,
       isSuccessStatusCode,
-      resultDocument.orNull,
       errorMessage.orNull
     )
   }
@@ -613,7 +586,6 @@ private class TransactionalBatchPartitionExecutor(
       operation.operationType,
       statusCode,
       false,
-      null,
       errorMessage
     )
   }
