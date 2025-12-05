@@ -200,15 +200,4 @@ public final class PartitionKeyDefinition {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
-
-    /**
-     * Converts the partition key definition to a JSON string.
-     * This is useful for serialization in distributed systems like Apache Spark.
-     *
-     * @return JSON string representation of the partition key definition
-     */
-    public String toJson() {
-        this.populatePropertyBag();
-        return this.jsonSerializable.toJson();
-    }
 }

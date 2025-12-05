@@ -154,16 +154,11 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
-    // Initialize and broadcast the client states with partition key definition
-    val (clientMetadataBroadcast, partitionKeyDefBroadcast) = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
-    // Deserialize partition key definition from JSON
-    val partitionKeyDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefBroadcast.value)
+    // Initialize and broadcast client metadata (no PartitionKeyDefinition needed)
+    val clientMetadataBroadcast = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
 
-    // Create default extraction function based on DataFrame schema and partition key definition
-    val defaultOperationExtraction = createBatchOperationExtraction(df, partitionKeyDefinition)
-
-    // Execute the batch with the pre-initialized client states
-    batchWriter.writeTransactionalBatchWithClientStates(df.rdd, defaultOperationExtraction, (clientMetadataBroadcast, partitionKeyDefBroadcast))
+    // Use row extraction mode - executor will fetch PartitionKeyDefinition and extract operations
+    batchWriter.writeTransactionalBatchWithRowExtraction(df.rdd, clientMetadataBroadcast)
   }
 
   /**
@@ -202,7 +197,11 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
-    batchWriter.writeTransactionalBatch(df.rdd, operationExtraction)
+    // Initialize and broadcast client metadata
+    val clientMetadataBroadcast = batchWriter.initializeAndBroadcastCosmosClientStatesForContainer()
+
+    // Use pre-extracted operations mode for custom extraction logic
+    batchWriter.writeTransactionalBatchWithPreExtractedOperations(df.rdd, operationExtraction, clientMetadataBroadcast)
   }
 
   /**

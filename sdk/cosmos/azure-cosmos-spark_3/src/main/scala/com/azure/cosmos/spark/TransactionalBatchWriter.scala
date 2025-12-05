@@ -68,7 +68,7 @@ private[spark] class TransactionalBatchWriter(
   val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
   logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
 
-  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[String]) = {
+  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
     val calledFrom = s"TransactionalBatchWriter($tableName).initializeAndBroadcastCosmosClientStateForContainer"
     Loan(
       List[Option[CosmosClientCacheItem]](
@@ -94,12 +94,6 @@ private[spark] class TransactionalBatchWriter(
             clientCacheItems(0).get,
             clientCacheItems(1))
         
-        // Read container properties to get partition key definition
-        val containerProperties: CosmosContainerProperties = 
-          SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
-        val partitionKeyDefinition: PartitionKeyDefinition = 
-          containerProperties.getPartitionKeyDefinition()
-        
         // Warm up the client by attempting a read
         try {
           container.readItem(
@@ -121,18 +115,12 @@ private[spark] class TransactionalBatchWriter(
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
-        val metadataBroadcast = sparkSession.sparkContext.broadcast(metadataSnapshots)
-        
-        // Serialize PartitionKeyDefinition to JSON for broadcasting
-        val partitionKeyDefJson = partitionKeyDefinition.toJson()
-        val partitionKeyDefBroadcast = sparkSession.sparkContext.broadcast(partitionKeyDefJson)
-        
-        (metadataBroadcast, partitionKeyDefBroadcast)
+        sparkSession.sparkContext.broadcast(metadataSnapshots)
       })
   }
 
   /**
-   * Execute transactional batch operations from the input RDD.
+   * Execute transactional batch operations from the input RDD with pre-extracted operations.
    * Operations are grouped by partition key and executed atomically.
    * This follows the same pattern as CosmosReadManyReader.readMany().
    * 
@@ -145,27 +133,71 @@ private[spark] class TransactionalBatchWriter(
     operationExtraction: Row => BatchOperation
   ): DataFrame = {
     val clientStates = initializeAndBroadcastCosmosClientStatesForContainer()
-    writeTransactionalBatchWithClientStates(inputRdd, operationExtraction, clientStates)
+    writeTransactionalBatchWithPreExtractedOperations(inputRdd, operationExtraction, clientStates)
   }
 
   /**
-   * Execute transactional batch operations with pre-initialized client states.
-   * This version is used when the partition key definition is needed for extraction logic.
+   * Execute transactional batch operations from raw Rows.
+   * Partition key definition is fetched on each executor (like ChangeFeedPartitionReader).
+   * This eliminates the need for JSON serialization and broadcasting of PartitionKeyDefinition.
+   * 
+   * @param inputRdd RDD containing raw rows
+   * @param clientStates Broadcast of metadata caches
+   * @return DataFrame with execution results
+   */
+  def writeTransactionalBatchWithRowExtraction(
+    inputRdd: RDD[Row],
+    clientStates: Broadcast[CosmosClientMetadataCachesSnapshots]
+  ): DataFrame = {
+    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
+    val calledFrom = s"TransactionalBatchWriter.writeTransactionalBatchWithRowExtraction($correlationActivityId)"
+
+    val outputSchema = getOutputSchema()
+
+    sparkSession.sqlContext.createDataFrame(
+      inputRdd.mapPartitionsWithIndex(
+        (partitionIndex: Int, rowsIterator: Iterator[Row]) => {
+          logInfo(s"Executing transactional batch operations for Activity $correlationActivityId " +
+            s"on input partition [$partitionIndex] ${tableName}")
+
+          val executor = new TransactionalBatchPartitionExecutor(
+            effectiveUserConfig,
+            outputSchema,
+            DiagnosticsContext(correlationActivityId, partitionIndex.toString),
+            clientStates,
+            diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(effectiveUserConfig),
+            sparkEnvironmentInfo,
+            TaskContext.get,
+            rowsIterator = Some(rowsIterator),
+            operationsIterator = None)
+
+          new Iterator[Row] {
+            override def hasNext: Boolean = executor.hasNext()
+            override def next(): Row = executor.next()
+          }
+        },
+        preservesPartitioning = true
+      ),
+      outputSchema)
+  }
+
+  /**
+   * Execute transactional batch operations with pre-extracted BatchOperations.
+   * This version is used when custom extraction logic is provided.
    * 
    * @param inputRdd RDD containing rows with batch operation data
    * @param operationExtraction Function to extract BatchOperation from each Row
-   * @param clientStates Tuple of broadcasts (metadata caches, partition key definition)
+   * @param clientStates Broadcast of metadata caches
    * @return DataFrame with execution results
    */
-  def writeTransactionalBatchWithClientStates(
+  def writeTransactionalBatchWithPreExtractedOperations(
     inputRdd: RDD[Row],
     operationExtraction: Row => BatchOperation,
-    clientStates: (Broadcast[CosmosClientMetadataCachesSnapshots], Broadcast[String])
+    clientStates: Broadcast[CosmosClientMetadataCachesSnapshots]
   ): DataFrame = {
     val correlationActivityId = UUIDs.nonBlockingRandomUUID()
-    val calledFrom = s"TransactionalBatchWriter.writeTransactionalBatch($correlationActivityId)"
+    val calledFrom = s"TransactionalBatchWriter.writeTransactionalBatchWithPreExtractedOperations($correlationActivityId)"
 
-    // Determine output schema
     val outputSchema = getOutputSchema()
 
     sparkSession.sqlContext.createDataFrame(
@@ -181,12 +213,12 @@ private[spark] class TransactionalBatchWriter(
             effectiveUserConfig,
             outputSchema,
             DiagnosticsContext(correlationActivityId, partitionIndex.toString),
-            clientStates._1,
-            clientStates._2,
-            DiagnosticsConfig.parseDiagnosticsConfig(effectiveUserConfig),
+            clientStates,
+            diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(effectiveUserConfig),
             sparkEnvironmentInfo,
             TaskContext.get,
-            operations)
+            rowsIterator = None,
+            operationsIterator = Some(operations))
 
           new Iterator[Row] {
             override def hasNext: Boolean = executor.hasNext()
@@ -231,24 +263,24 @@ private case class BatchOperation(
 /**
  * Executes transactional batch operations for a single partition.
  * Groups operations by partition key and executes them atomically.
+ * Supports two modes:
+ * 1. Row extraction mode: Fetches PartitionKeyDefinition from container and extracts BatchOperations from Rows
+ * 2. Pre-extracted mode: Uses pre-extracted BatchOperations (for custom extraction logic)
  */
 private class TransactionalBatchPartitionExecutor(
   effectiveUserConfig: Map[String, String],
   outputSchema: StructType,
   diagnosticsContext: DiagnosticsContext,
   cosmosClientStates: Broadcast[CosmosClientMetadataCachesSnapshots],
-  partitionKeyDefinitionBroadcast: Broadcast[String],
   diagnosticsConfig: DiagnosticsConfig,
   sparkEnvironmentInfo: String,
   taskContext: TaskContext,
-  operations: Iterator[BatchOperation]
+  rowsIterator: Option[Iterator[Row]],
+  operationsIterator: Option[Iterator[BatchOperation]]
 ) extends BasicLoggingTrait {
 
   private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
-  // Deserialize PartitionKeyDefinition from JSON
-  private val partitionKeyDefinition: PartitionKeyDefinition = 
-    SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionBroadcast.value)
 
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(
@@ -273,6 +305,29 @@ private class TransactionalBatchPartitionExecutor(
       clientCacheItem,
       throughputControlClientCacheItemOpt)
 
+  // Fetch PartitionKeyDefinition from container (like ChangeFeedPartitionReader)
+  // Only needed when processing raw rows
+  private val partitionKeyDefinition: Option[PartitionKeyDefinition] = 
+    if (rowsIterator.isDefined) {
+      Some(SparkBridgeInternal
+        .getContainerPropertiesFromCollectionCache(container)
+        .getPartitionKeyDefinition)
+    } else {
+      None
+    }
+
+  // Extract operations from rows or use pre-extracted operations
+  private val operations: Iterator[BatchOperation] = {
+    if (rowsIterator.isDefined) {
+      // Extract from rows using partition key definition
+      val pkDef = partitionKeyDefinition.get
+      rowsIterator.get.map(row => extractBatchOperationFromRow(row, pkDef))
+    } else {
+      // Use pre-extracted operations
+      operationsIterator.get
+    }
+  }
+
   // Group operations by partition key
   // Use the full partition key values sequence as the key
   private val operationsByPartitionKey: mutable.Map[Seq[Any], mutable.ArrayBuffer[BatchOperation]] = {
@@ -288,6 +343,62 @@ private class TransactionalBatchPartitionExecutor(
 
   def hasNext(): Boolean = resultIterator.hasNext
   def next(): Row = resultIterator.next()
+
+  /**
+   * Extract BatchOperation from Row using PartitionKeyDefinition.
+   * This replicates the logic from CosmosItemsDataSource.createBatchOperationExtraction.
+   */
+  private def extractBatchOperationFromRow(row: Row, pkDef: PartitionKeyDefinition): BatchOperation = {
+    // Get partition key paths from definition
+    val partitionKeyPaths: Seq[String] = pkDef.getPaths.asScala.toSeq
+
+    // Get id field
+    val idFieldIndex = row.schema.fieldIndex("id")
+    val id = row.getString(idFieldIndex)
+
+    // Get operationType (default to upsert)
+    val operationType = if (row.schema.fieldNames.contains("operationType")) {
+      val opTypeIndex = row.schema.fieldIndex("operationType")
+      if (row.isNullAt(opTypeIndex)) "upsert" else row.getString(opTypeIndex)
+    } else {
+      "upsert"
+    }
+
+    // Convert row to ObjectNode
+    val documentNode = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(effectiveUserConfig))
+      .fromRowToObjectNode(row)
+
+    // Extract partition key values based on partition key definition
+    val partitionKeyValues: Seq[Any] = partitionKeyPaths.map { path =>
+      val fieldName = if (path.startsWith("/")) path.substring(1) else path
+      val valueNode = documentNode.get(fieldName)
+
+      if (valueNode == null || valueNode.isNull) {
+        throw new IllegalArgumentException(
+          s"Partition key field '$fieldName' is missing or null in row with id '$id'. " +
+            s"All partition key fields must be present and non-null for transactional batch operations.")
+      }
+
+      // Extract value based on type
+      if (valueNode.isTextual) {
+        valueNode.asText()
+      } else if (valueNode.isNumber) {
+        if (valueNode.isIntegralNumber) {
+          if (valueNode.canConvertToLong) valueNode.asLong()
+          else valueNode.asInt()
+        } else {
+          valueNode.asDouble()
+        }
+      } else if (valueNode.isBoolean) {
+        valueNode.asBoolean()
+      } else {
+        throw new IllegalArgumentException(
+          s"Unsupported partition key value type for field '$fieldName': ${valueNode.getNodeType}")
+      }
+    }
+
+    BatchOperation(id, partitionKeyValues, operationType, documentNode)
+  }
 
   private def executeAllBatches(): Iterator[Row] = {
     val allResults = mutable.ArrayBuffer[Row]()
