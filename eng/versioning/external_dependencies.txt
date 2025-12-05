@@ -8,7 +8,7 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.3.14
-com.azure:azure-servicebus-jms;2.1.0
+com.azure:azure-servicebus-jms;2.0.0
 com.azure.tools:azure-autorest-customization;1.0.0-beta.11
 com.fasterxml:aalto-xml;1.3.3
 com.fasterxml.jackson.core:jackson-annotations;2.18.4
