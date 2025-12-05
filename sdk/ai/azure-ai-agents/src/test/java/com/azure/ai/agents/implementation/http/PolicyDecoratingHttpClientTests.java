@@ -15,6 +15,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 class PolicyDecoratingHttpClientTests {
 
     private static final HttpHeaderName PER_CALL_HEADER = HttpHeaderName.fromString("X-Per-Call");

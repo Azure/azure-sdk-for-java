@@ -19,6 +19,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -43,6 +45,8 @@ import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -407,7 +411,7 @@ public final class AgentsClientBuilder
     }
 
     private HttpClient getOpenAIHttpClient() {
-        return new PolicyDecoratingHttpClient(createHttpPipeline());
+        return createHttpPipeline()::send;
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);

@@ -20,9 +20,10 @@ import java.util.Objects;
  * the provided delegate client. This makes it possible to reuse the Azure pipeline policy system with HTTP clients that
  * originate outside of the Azure SDK (e.g. OpenAI generated clients).
  */
+@Deprecated
 public final class PolicyDecoratingHttpClient implements HttpClient {
 
-//    private final HttpClient delegate;
+    //    private final HttpClient delegate;
     private final HttpPipeline pipeline;
 
     /**
@@ -31,7 +32,7 @@ public final class PolicyDecoratingHttpClient implements HttpClient {
      * @param delegate Underlying HTTP client that performs the actual network I/O.
      * @param policies Policies that should run before the request reaches the delegate.
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public PolicyDecoratingHttpClient(HttpClient delegate, List<HttpPipelinePolicy> policies) {
         Objects.requireNonNull(delegate, "delegate cannot be null");
 
