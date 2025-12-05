@@ -4,8 +4,10 @@
 
 module com.azure.ai.contentunderstanding {
     requires transitive com.azure.core;
+
     exports com.azure.ai.contentunderstanding;
     exports com.azure.ai.contentunderstanding.models;
+
     opens com.azure.ai.contentunderstanding.models to com.azure.core;
     opens com.azure.ai.contentunderstanding.implementation.models to com.azure.core;
 }
